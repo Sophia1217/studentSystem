@@ -5,6 +5,8 @@
     transition: margin-left .28s;
     margin-left: $base-sidebar-width;
     position: relative;
+    background: #f8f8f8;
+    padding:20px;
   }
 
   .sidebarHide {

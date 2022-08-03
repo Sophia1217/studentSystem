@@ -120,6 +120,16 @@ export const constantRoutes = [
         component: () => import("@/views/class/divisionclass/index"),
       },
       {
+        path: "operateClass",
+        name: "operateClass",
+        hidden: true,
+        component: () =>
+          import(
+            "@/views/class/divisionclass/subComponents/operateClass.vue"
+          ),
+        meta: { title: "分班管理" },
+      },
+      {
         path: "headerTeacher",
         name: "headerTeacher",
         hidden: false,
@@ -143,6 +153,9 @@ export const constantRoutes = [
     ],
   },
 ];
+
+// 班级管理内部路由
+export const classRoutes = [];
 
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes = [

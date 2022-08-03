@@ -1,170 +1,194 @@
 <template>
   <div class="app-container">
-    <el-form
-      :model="queryParams"
-      ref="queryForm"
-      size="small"
-      :inline="true"
-      v-show="showSearch"
-      label-width="68px"
-      class="table-header"
-    >
-      <el-form-item label="培养单位" prop="noticeType" class="header-item">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="计算机学院"
-          clearable
-        >
-          <!-- <el-option
-            v-for="dict in dict.type.sys_notice_type"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          /> -->
-        </el-select>
-      </el-form-item>
-      <el-form-item label="培养层次" prop="noticeType" class="header-item">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="本科"
-          clearable
-        >
-          <!-- <el-option
-            v-for="dict in dict.type.sys_notice_type"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          /> -->
-        </el-select>
-      </el-form-item>
-      <el-form-item label="年级" prop="noticeType" class="header-item">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="2022"
-          clearable
-        >
-          <!-- <el-option
-            v-for="dict in dict.type.sys_notice_type"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          /> -->
-        </el-select>
-      </el-form-item>
-      <el-form-item label="班级编号" prop="noticeTitle" class="header-item">
-        <el-input
-          v-model="queryParams.noticeTitle"
-          placeholder="请输入班级编号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item class="header-item">
-        <el-button
-          type="primary"
-          size="mini"
-          icon="el-icon-search"
-          class="search"
-          @click="handleQuery"
-          >查询</el-button
-        >
-        <el-button size="mini" @click="resetQuery" class="reset">
-          <span class="iconfont reset_icon">&#xe614;</span>
-
-          重置</el-button
-        >
-      </el-form-item>
-    </el-form>
-
-    <div class="table-content">
-      <div class="title" icon="el-icon-refresh">
-        <span class="title-item">班级列表</span>
-        <span class="iconfont">&#xe631;</span>
+    <div class="tab">
+      <div class="tab_list">
+        <ul>
+          <li
+            class="tab_title_item"
+            v-for="(title, index) in tab_title"
+            :class="currentIndex == index ? 'activate' : ''"
+            :key="title"
+            @click="tabClick(index)"
+          >
+            {{ title }}
+          </li>
+        </ul>
       </div>
-      <!-- v-loading="loading" -->
-      <el-table :data="noticeList" @selection-change="handleSelectionChange">
-        <el-table-column label="序号" align="center" prop="id" width="100" />
-        <el-table-column
-          label="班级编号"
-          align="center"
-          prop="classId"
-          width="100"
-        />
-        <el-table-column
-          label="班级姓名"
-          align="center"
-          prop="className"
-          width="300"
-        >
-          <el-input
-            :value="noticeList[0].className"
-            clearable
-            @keyup.enter.native="handleQuery"
-          />
-        </el-table-column>
-        <el-table-column
-          label="学院"
-          align="center"
-          prop="college"
-          width="150"
-        />
-        <el-table-column
-          label="培养层次"
-          align="center"
-          prop="level"
-          width="100"
-        />
-        <el-table-column
-          label="班级人数"
-          align="center"
-          prop="nums"
-          width="100"
-        />
-        <el-table-column
-          label="创建时间"
-          align="center"
-          prop="beginTime"
-          width="150"
-        />
-        <el-table-column
-          label="更新时间"
-          align="center"
-          prop="updateTime"
-          width="150"
-        />
-        <el-table-column label="操作" align="center" width="100">
-          <template
-            ><!-- slot-scope="scope" -->
-            <div @click="operate" class="operate">
-              <span class="operateSpan">分班管理</span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="操作"
-          align="center"
-          prop="record"
-          class-name="small-padding fixed-width"
-        />
+      <div class="tab_con">
+        <div class="class_info tab_item" v-show="currentIndex == 0">
+          <el-form
+            :model="queryParams"
+            ref="queryForm"
+            size="small"
+            :inline="true"
+            v-show="showSearch"
+            label-width="68px"
+            class="table-header"
+          >
+            <el-form-item label="专业" prop="noticeType" class="header-item">
+              <el-select
+                v-model="queryParams.noticeType"
+                placeholder="信息安全"
+                clearable
+              >
+                <!-- <el-option
+            v-for="dict in dict.type.sys_notice_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          /> -->
+              </el-select>
+            </el-form-item>
+            <el-form-item label="生源地" prop="noticeType" class="header-item">
+              <el-select
+                v-model="queryParams.noticeType"
+                placeholder="湖北省"
+                clearable
+              >
+                <!-- <el-option
+            v-for="dict in dict.type.sys_notice_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          /> -->
+              </el-select>
+            </el-form-item>
+            <el-form-item label="性别" prop="noticeType" class="header-item">
+              <el-select
+                v-model="queryParams.noticeType"
+                placeholder="男"
+                clearable
+              >
+                <!-- <el-option
+            v-for="dict in dict.type.sys_notice_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          /> -->
+              </el-select>
+            </el-form-item>
+            <el-form-item label="学号" prop="noticeTitle" class="header-item">
+              <el-input
+                v-model="queryParams.noticeTitle"
+                placeholder="请输入学号"
+                clearable
+                @keyup.enter.native="handleQuery"
+              />
+            </el-form-item>
+            <el-form-item class="header-item">
+              <el-button
+                type="primary"
+                size="mini"
+                icon="el-icon-search"
+                class="search"
+                @click="handleQuery"
+                >查询</el-button
+              >
+              <el-button size="mini" @click="resetQuery" class="reset">
+                <span class="iconfont reset_icon">&#xe614;</span>
 
-        <!-- <el-table-column
+                重置</el-button
+              >
+            </el-form-item>
+          </el-form>
+
+          <div class="table-content">
+            <div class="title" icon="el-icon-refresh">
+              <span class="title-item">班级列表</span>
+              <span class="iconfont">&#xe631;</span>
+            </div>
+            <!-- v-loading="loading" -->
+            <el-table
+              :data="noticeList"
+              @selection-change="handleSelectionChange"
+            >
+              <el-table-column
+                label="序号"
+                align="center"
+                prop="id"
+                width="100"
+              />
+              <el-table-column
+                label="班级编号"
+                align="center"
+                prop="classId"
+                width="100"
+              />
+              <el-table-column
+                label="班级姓名"
+                align="center"
+                prop="className"
+                width="300"
+              >
+                <el-input
+                  :value="noticeList[0].className"
+                  clearable
+                  @keyup.enter.native="handleQuery"
+                />
+              </el-table-column>
+              <el-table-column
+                label="学院"
+                align="center"
+                prop="college"
+                width="150"
+              />
+              <el-table-column
+                label="培养层次"
+                align="center"
+                prop="level"
+                width="100"
+              />
+              <el-table-column
+                label="班级人数"
+                align="center"
+                prop="nums"
+                width="100"
+              />
+              <el-table-column
+                label="创建时间"
+                align="center"
+                prop="beginTime"
+                width="150"
+              />
+              <el-table-column
+                label="更新时间"
+                align="center"
+                prop="updateTime"
+                width="150"
+              />
+              <el-table-column label="操作" align="center" width="100">
+                <template
+                  ><!-- slot-scope="scope" -->
+                  <div @click="operate" class="operate">
+                    <span class="operateSpan">分班管理</span>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="操作"
+                align="center"
+                prop="record"
+                class-name="small-padding fixed-width"
+              />
+
+              <!-- <el-table-column
         label="公告标题"
         align="center"
         prop="noticeTitle"
         :show-overflow-tooltip="true"
       /> -->
-        <!-- <el-table-column label="公告类型" align="center" prop="noticeType" width="100">
+              <!-- <el-table-column label="公告类型" align="center" prop="noticeType" width="100">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_notice_type" :value="scope.row.noticeType"/>
         </template>
       </el-table-column> -->
-        <!-- <el-table-column label="创建者" align="center" prop="createBy" width="100" />
+              <!-- <el-table-column label="创建者" align="center" prop="createBy" width="100" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="100">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column> -->
-        <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+              <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -182,15 +206,21 @@
           >删除</el-button>
         </template>
       </el-table-column> -->
-      </el-table>
-      <pagination
-        id="pagenation"
-        v-show="total > 0"
-        :total="total"
-        :page.sync="queryParams.pageNum"
-        :limit.sync="queryParams.pageSize"
-        @pagination="getList"
-      />
+            </el-table>
+            <pagination
+              id="pagenation"
+              v-show="total > 0"
+              :total="total"
+              :page.sync="queryParams.pageNum"
+              :limit.sync="queryParams.pageSize"
+              @pagination="getList"
+            />
+          </div>
+        </div>
+        <div class="stu_info tab_item" v-show="currentIndex == 1">
+          学生名单内容
+        </div>
+      </div>
     </div>
 
     <!-- 添加或修改公告对话框 -->
@@ -260,6 +290,9 @@ export default {
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
   data() {
     return {
+      // tab栏切换
+      tab_title: ["22级电子信息1班", "未分配学生名单"],
+      currentIndex: 0,
       // 遮罩层
       // loading: true,
       // 选中数组
@@ -343,6 +376,10 @@ export default {
       this.$router.push({
         path: "/class/operateClass",
       });
+    },
+    // tab栏切换
+    tabClick(index) {
+      this.currentIndex = index;
     },
     /** 查询公告列表 */
     getList() {
@@ -443,7 +480,36 @@ export default {
   background-color: #f0f0f0;
   height: 100vh;
 }
+/* tab前端开始 */
+.tab {
+  height: 100vh;
+}
+ul,
+li {
+  list-style-type: none;
+}
 
+.tab_list {
+  height: 43px;
+  background-color: #ffffff;
+}
+.tab_con {
+  height: 100%;
+}
+.tab_list li {
+  margin: 12px 0;
+  height: 43px;
+  box-sizing: border-box;
+  padding: 5px 10px;
+  display: inline-block;
+  cursor: pointer;
+}
+.activate {
+  color: #005657;
+  border-bottom: 2px solid #005657;
+}
+
+/* tab切换结束 */
 .table-header {
   background-color: #ffffff;
   height: 128px;
@@ -490,7 +556,7 @@ export default {
 .table-content {
   padding-top: 32px;
   padding-left: 40px;
-  height: 100%;
+  height: 100vh;
   background-color: #ffffff;
   margin-top: 24px;
 }

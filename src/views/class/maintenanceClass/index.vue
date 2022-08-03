@@ -77,8 +77,13 @@
 
     <el-row :gutter="10" class="mb8" style="float: right">
       <el-col :span="1.5">
-        <el-button type="primary" class="create" icon="el-icon-search"
-          >新建班级</el-button
+        <el-button
+          type="primary"
+          class="create"
+          icon="el-icon-search"
+          @click="handleAdd"
+        >
+          新建班级</el-button
         >
         <!-- <el-button
           type="primary"
@@ -90,7 +95,9 @@
         >新增</el-button> -->
       </el-col>
       <el-col :span="1.5">
-        <el-button class="delete" icon="el-icon-delete">删除空班级</el-button>
+        <el-button class="delete" icon="el-icon-delete" @click="handleDelete"
+          >删除空班级</el-button
+        >
         <!-- <el-button
           type="success"
           plain
@@ -132,7 +139,7 @@
         width="100"
       />
       <el-table-column
-        label="班级姓名"
+        label="班级名称"
         align="center"
         prop="className"
         width="300"
@@ -143,7 +150,13 @@
           @keyup.enter.native="handleQuery"
         />
       </el-table-column>
-      <el-table-column label="学院" align="center" prop="college" width="150" />
+      <el-table-column
+        label="培养单位"
+        align="center"
+        prop="college"
+        width="150"
+      />
+      <el-table-column label="年级" align="center" prop="size" width="150" />
       <el-table-column
         label="培养层次"
         align="center"
@@ -166,12 +179,6 @@
         label="更新时间"
         align="center"
         prop="updateTime"
-        width="150"
-      />
-      <el-table-column
-        label="操作"
-        align="center"
-        prop="record"
         class-name="small-padding fixed-width"
       />
 
@@ -221,58 +228,117 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改公告对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="780px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <!-- 新增班级对话框 -->
+    <el-dialog
+      :title="title"
+      :visible.sync="open"
+      width="800px"
+      height="243px"
+      append-to-body
+    >
+      <el-form
+        :inline="true"
+        ref="form"
+        :model="form"
+        :rules="rules"
+        label-width="80px"
+      >
         <el-row>
           <el-col :span="12">
-            <el-form-item label="公告标题" prop="noticeTitle">
-              <el-input
+            <el-form-item label="所属学院" prop="noticeTitle">
+              <el-select
+                v-model="form.noticeType"
+                placeholder="计算机学院"
+              ></el-select>
+              <!-- <el-input
                 v-model="form.noticeTitle"
                 placeholder="请输入公告标题"
-              />
+              /> -->
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="公告类型" prop="noticeType">
-              <el-select v-model="form.noticeType" placeholder="请选择公告类型">
-                <!-- <el-option
+            <el-form-item label="培养层次" prop="noticeType">
+              <el-select
+                v-model="form.noticeType"
+                placeholder="本科"
+              ></el-select>
+              <!-- <el-select v-model="form.noticeType" placeholder="请选择公告类型"> -->
+              <!-- <el-option
                   v-for="dict in dict.type.sys_notice_type"
                   :key="dict.value"
                   :label="dict.label"
                   :value="dict.value"
                 ></el-option> -->
-              </el-select>
+              <!-- </el-select> -->
             </el-form-item>
           </el-col>
-          <el-col :span="24">
-            <el-form-item label="状态">
-              <el-radio-group v-model="form.status">
-                <!-- <el-radio
+          <el-col :span="12">
+            <el-form-item label="所属年级">
+              <el-select
+                v-model="form.noticeType"
+                placeholder="2022"
+              ></el-select>
+              <!-- <el-radio-group v-model="form.status"> -->
+              <!-- <el-radio
                   v-for="dict in dict.type.sys_notice_status"
                   :key="dict.value"
                   :label="dict.value"
                 >{{dict.label}}</el-radio> -->
-              </el-radio-group>
+              <!-- </el-radio-group> -->
             </el-form-item>
           </el-col>
-          <el-col :span="24">
-            <el-form-item label="内容">
-              <editor v-model="form.noticeContent" :min-height="192" />
+          <el-col :span="12">
+            <el-form-item label="班级数量">
+              <!-- <editor v-model="form.noticeContent" :min-height="192" /> -->
+              <el-select v-model="form.noticeType" placeholder="10"></el-select>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitForm" class="confirm"
+          >确 定</el-button
+        >
       </div>
     </el-dialog>
+
+    <!-- 删除空班级对话框 -->
+    <el-dialog
+      :title="title"
+      :visible.sync="dialogVisible"
+      width="800px"
+      height="243px"
+      append-to-body
+    >
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitForm" class="confirm"
+          >确 定</el-button
+        >
+      </div>
+    </el-dialog>
+    <!-- <el-dialog
+      title="title"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <span
+        >是否确认删除空班级？*每次仅支持删除一个班级，且该班级代码编号为最末尾</span
+      >
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false" class="confirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog> -->
   </div>
 </template>
 
 <script>
-import "@/assets/fonts/export/iconfont.css";
+import "@/assets/fonts/record/iconfont.css";
 import {
   listNotice,
   getNotice,
@@ -305,39 +371,41 @@ export default {
           classId: 13070025,
           className: "计算机工程硕士2022级1班",
           college: "计算机工程学院",
+          size: "2020级",
           level: "本科",
           nums: 34,
           beginTime: "2022-07-07",
           updateTime: "2022-07-07",
-          record: "班级操作记录",
         },
         {
           id: 2,
           classId: 13070025,
           className: "计算机工程硕士2022级2班",
           college: "计算机工程学院",
+          size: "2020级",
           level: "本科",
           nums: 34,
           beginTime: "2022-07-07",
           updateTime: "2022-07-07",
-          record: "班级操作记录",
         },
         {
           id: 3,
           classId: 13070025,
           className: "计算机工程硕士2022级3班",
           college: "计算机工程学院",
+          size: "2020级",
           level: "本科",
           nums: 34,
           beginTime: "2022-07-07",
           updateTime: "2022-07-07",
-          record: "班级操作记录",
         },
       ],
       // 弹出层标题
       title: "",
-      // 是否显示弹出层
+      // 是否显示新建班级弹出层
       open: false,
+      // 是否显示删除空班级弹出层
+      dialogVisible: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -351,10 +419,10 @@ export default {
       // 表单校验
       rules: {
         noticeTitle: [
-          { required: true, message: "公告标题不能为空", trigger: "blur" },
+          { required: true, message: "所属学院为空", trigger: "blur" },
         ],
         noticeType: [
-          { required: true, message: "公告类型不能为空", trigger: "change" },
+          { required: true, message: "培养层次不能为空", trigger: "change" },
         ],
       },
     };
@@ -363,6 +431,12 @@ export default {
     // this.getList();
   },
   methods: {
+    // 查看班级操作记录
+    showRecord(row) {
+      // const Id = row.roleId;
+      // this.$router.push("/class/role-auth/user/" + roleId);
+      this.$router.push("/class/record");
+    },
     /** 查询公告列表 */
     getList() {
       this.loading = true;
@@ -404,11 +478,17 @@ export default {
       this.single = selection.length != 1;
       this.multiple = !selection.length;
     },
-    /** 新增按钮操作 */
+    /** 新增班级按钮操作 */
     handleAdd() {
-      this.reset();
-      this.open = true;
-      this.title = "添加公告";
+      this.reset(); //表单清空
+      this.open = true; //弹出对话框
+      this.title = "新建班级";
+    },
+    // 删除空班级操作
+    handleDelete() {
+      // this.reset();
+      this.dialogVisible = true;
+      this.title = "删除空班级";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -480,6 +560,28 @@ export default {
   color: #005657;
   border-color: #005657;
 }
+.confirm {
+  background-color: #005657;
+}
+.record_icon {
+  color: #005657;
+  margin-top: 2px;
+  margin-right: 5px;
+}
+.record_icon + span {
+  color: #005657;
+}
+
+.el-dialog {
+  display: flex;
+  flex-direction: column;
+  margin: 0 !important;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 #test {
   left: 50%;
   transform: translateX(-50%);

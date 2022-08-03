@@ -95,15 +95,23 @@ export const constantRoutes = [
     hidden: false,
     children: [
       {
+        name: "class_maintenance",
         path: "maintenanceClass",
         component: (resolve) =>
           require(["@/views/class/maintenanceClass/index"], resolve),
-        name: "class_maintenance",
         meta: {
           title: "班级维护",
           icon: "",
         },
+
       },
+      {
+        name: 'record',
+        path: 'record',
+        hidden: true,
+        component: () => import('@/views/class/maintenanceClass/record'),
+      },
+
       {
         path: "divisionclass",
         name: "divisionclass",

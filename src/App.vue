@@ -17,3 +17,11 @@ export default  {
     }
 }
 </script>
+<style>
+.el-tabs__item.is-active{
+  color:#005657 !important;
+}
+.el-tabs__active-bar{
+  background-color:#005657 !important;
+}
+</style>

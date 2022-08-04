@@ -1354,6 +1354,10 @@
         </div>
       </div>
     </div>
+    <div class="editBottom" v-if="isEdit == 2">
+      <div class="btn cancel">取消</div>
+      <div class="btn confirm">保存</div>
+    </div>
   </div>
 </template>
 
@@ -1496,6 +1500,36 @@ export default {
           }
         }
       }
+    }
+  }
+  .editBottom{
+    width:100%;
+    height: 60px;
+    background: #fff;
+    box-shadow: 0 0 2px 0 rgba(0,0,0,0.10), 0 -2px 6px -1px rgba(0,0,0,0.20);
+    position: fixed;
+    bottom:0;
+    left:0;
+    z-index:100;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    .btn{
+      width: 84px;
+      height: 36px;
+      line-height: 36px;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid #005657;
+      border-radius: 2px;
+      margin-right: 20px;
+    }
+    .cancel{
+      color: #005657;
+    }
+    .confirm{
+      background: #005657;
+      color:#fff;
     }
   }
 }

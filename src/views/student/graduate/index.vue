@@ -56,7 +56,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">学 籍：</el-col>
+          <el-col :span="3">学籍状态：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom :objProp="studentStatus" @training="studentStatusAll" @checkedTraining="studentStatusCheck"></checkboxCom>
@@ -152,10 +152,10 @@ export default {
         checkBox: [{label:'2年',val:1},{label: '3年',val:2},{label: '3年',val:3}],
         isIndeterminate: true
       },
-      studentStatus: { // 学籍
+      studentStatus: { // 学籍状态
         checkAll: false,
         choose: [],
-        checkBox: [{label:'有学籍',val:1},{label: '无学籍',val:2}],
+        checkBox: [{label:'毕业',val:1},{label: '休学',val:2}],
         isIndeterminate: true
       },
       ethnic:{  // 名族
@@ -167,7 +167,7 @@ export default {
       politica:{  // 政治面貌：
         checkAll: false,
         choose: [],
-        checkBox: [{label:'中共党员',val:1},{label: '中共预备',val:2},{label:'共青团员',val:3}],
+        checkBox: [{label:'中共党员',val:1},{label: '中共预备',val:2},{label:'共青团员',val:3},{label:'群众',val:4}],
         isIndeterminate: true
       },
       tableData: [{ date: 1 }],

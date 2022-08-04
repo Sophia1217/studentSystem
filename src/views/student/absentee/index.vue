@@ -17,7 +17,7 @@
 import ManStudent from './manStudent/index.vue'
 import AllStudent from './allStudent/index.vue'
 export default {
-  name: 'absentee',
+  name: 'absentee',    
   components:{ ManStudent, AllStudent },
   data() {
     return {

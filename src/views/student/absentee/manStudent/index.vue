@@ -113,10 +113,10 @@
           <el-table-column prop="address" label="学籍状态" sortable> </el-table-column>
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="hadleDetail(scope.row,1)">
+              <el-button type="text" size="small" @click="hadleDetail(scope.row,1,1)">
                 <i class="scopeIncon handledie"></i> <span class="handleName">详情</span>
               </el-button>
-              <el-button type="text" size="small" @click="hadleDetail(scope.row,2)">
+              <el-button type="text" size="small" @click="hadleDetail(scope.row,2,2)">
                 <i class="scopeIncon handleEdit"></i> <span class="handleName">编辑</span>
               </el-button>
             </template>
@@ -292,12 +292,13 @@ export default {
     handleConfirm() {
       this.showExport = false
     },
-    hadleDetail(row,flag) {
+    hadleDetail(row,flag,schooling) {
       this.$router.push({
         path: '/student/studetails',
         query: {
           id: row.date,
-          show:flag
+          show: flag,
+          schooling: schooling
         }
       })
     }

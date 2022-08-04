@@ -1305,51 +1305,291 @@
           </div>
         </div>
 
-        <div class="headline">家庭成员信息</div>
+        <div class="headline">
+          <div>家庭成员信息</div>
+          <div class="editBtn" v-if="isEdit ==2" @click="addDetailTable"><i class="addIcon"></i> 添加家庭成员信息</div>
+        </div>
         <div class="tableStyle">
           <el-table :data="tableData" style="width: 100%;">
-            <el-table-column prop="date" label="姓名"> </el-table-column>
-            <el-table-column prop="date" label="出生年月"> </el-table-column>
-            <el-table-column prop="date" label="关系"> </el-table-column>
-            <el-table-column prop="date" label="民族"> </el-table-column>
-            <el-table-column prop="date" label="国籍/地区"> </el-table-column>
-            <el-table-column prop="date" label="健康状况"> </el-table-column>
-            <el-table-column prop="date" label="工作单位"> </el-table-column>
-            <el-table-column prop="date" label="工作单位地址"> </el-table-column>
-            <el-table-column prop="date" label="身份证号码"> </el-table-column>
-            <el-table-column prop="date" label="专业技术职务"> </el-table-column>
-            <el-table-column prop="date" label="职务级别"> </el-table-column>
-            <el-table-column prop="date" label="移动电话"> </el-table-column>
-            <el-table-column prop="date" label="电子邮箱"> </el-table-column>
+            <el-table-column prop="date" label="姓名">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="出生年月">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="关系">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="民族">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="国籍/地区">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="健康状况">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="工作单位">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="工作单位地址">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="身份证号码">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="专业技术职务">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="职务级别">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="移动电话">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="电子邮箱">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column  label="" v-if="isEdit ==2">
+              <template slot-scope="scope">
+                <div class="deteleBtn" @click="deteleItem(scope.row,scope.$index)">
+                  <i class="el-icon-close"></i>
+                </div>
+              </template>
+            </el-table-column>
           </el-table>
         </div>
 
-        <div class="headline">学习经历</div>
+        <div class="headline">
+          <div>学习经历</div>
+          <div class="editBtn" v-if="isEdit ==2" @click="addDetailTable"><i class="addIcon"></i> 添加学习经历</div>
+        </div>
         <div class="tableStyle">
           <el-table :data="tableData" style="width: 100%;">
-            <el-table-column prop="date" label="起始时间"> </el-table-column>
-            <el-table-column prop="date" label="终止时间"> </el-table-column>
-            <el-table-column prop="date" label="学习单位"> </el-table-column>
-            <el-table-column prop="date" label="所学专业"> </el-table-column>
-            <el-table-column prop="date" label="获得学位"> </el-table-column>
-            <el-table-column prop="date" label="学习证明人"> </el-table-column>
-            <el-table-column prop="date" label="证明人单位"> </el-table-column>
-            <el-table-column prop="date" label="学习简历备注"> </el-table-column>
+            <el-table-column prop="date" label="起始时间">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="终止时间">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="学习单位">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="所学专业">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="获得学位">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="学习证明人">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="证明人单位">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="学习简历备注">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column  label="" v-if="isEdit ==2">
+              <template slot-scope="scope">
+                <div class="deteleBtn" @click="deteleItem(scope.row,scope.$index)">
+                  <i class="el-icon-close"></i>
+                </div>
+              </template>
+            </el-table-column>
           </el-table>
         </div>
 
-        <div class="headline">工作经历</div>
+        <div class="headline">
+          <div>工作经历</div>
+          <div class="editBtn" v-if="isEdit ==2" @click="addDetailTable"><i class="addIcon"></i> 添加工作经历</div>
+        </div>
         <div class="tableStyle">
           <el-table :data="tableData" style="width: 100%;">
-            <el-table-column prop="date" label="起始时间"> </el-table-column>
-            <el-table-column prop="date" label="终止时间"> </el-table-column>
-            <el-table-column prop="date" label="工作单位"> </el-table-column>
-            <el-table-column prop="date" label="工作内容"> </el-table-column>
-            <el-table-column prop="date" label="曾任党政职务"> </el-table-column>
-            <el-table-column prop="date" label="曾任专业技术职务"> </el-table-column>
-            <el-table-column prop="date" label="工作证明人"> </el-table-column>
-            <el-table-column prop="date" label="证明人在何处"> </el-table-column>
-            <el-table-column prop="date" label="工作简历备注"> </el-table-column>
+            <el-table-column prop="date" label="起始时间">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="终止时间">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="工作单位">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="工作内容">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="曾任党政职务">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="曾任专业技术职务">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="工作证明人">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="证明人在何处">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="date" label="工作简历备注">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.date}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column  label="" v-if="isEdit ==2">
+              <template slot-scope="scope">
+                <div class="deteleBtn" @click="deteleItem(scope.row,scope.$index)">
+                  <i class="el-icon-close"></i>
+                </div>
+              </template>
+            </el-table-column>
           </el-table>
         </div>
       </div>
@@ -1369,7 +1609,7 @@ export default {
     return {
       dtailsList: ['基本信息', '联系方式', '家庭成员信息', '学习经历', '工作经历'],
       current: 0,
-      tableData: [],
+      tableData: [{date:1}],
       isEdit: false,
       schooling:'',
       value:''
@@ -1386,6 +1626,15 @@ export default {
   methods: {
     handleList(index) {
       this.current = index
+    },
+    addDetailTable() {
+      this.tableData.push({
+        date:3
+      })
+    },
+    deteleItem(row, index) {
+      console.log(index)
+      this.tableData.splice(index, 1)
     }
   },
 };
@@ -1453,6 +1702,26 @@ export default {
         font-size: 20px;
         color: #1F1F1F;
         line-height: 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .editBtn{
+          padding:4px 5px;
+          margin-right: 20px;
+          border: 1px solid #005657;
+          border-radius: 4px;
+          font-weight: 400;
+          font-size: 14px;
+          color: #005657;
+          cursor: pointer;
+          .addIcon{
+            display: inline-block;
+            width:15px;
+            height: 15px;
+            background: url('../../../../../assets/images/addicon.png') no-repeat center;
+            vertical-align: middle;
+          }
+        }
       }
       .tableStyle{
         position: relative;

@@ -103,13 +103,12 @@ export const constantRoutes = [
           title: "班级维护",
           icon: "",
         },
-
       },
       {
-        name: 'record',
-        path: 'record',
+        name: "record",
+        path: "record",
         hidden: true,
-        component: () => import('@/views/class/maintenanceClass/record'),
+        component: () => import("@/views/class/maintenanceClass/record"),
       },
 
       {
@@ -124,10 +123,8 @@ export const constantRoutes = [
         name: "operateClass",
         hidden: true,
         component: () =>
-          import(
-            "@/views/class/divisionclass/subComponents/operateClass.vue"
-          ),
-        meta: { title: "分班管理" },
+          import("@/views/class/divisionclass/subComponents/operateClass.vue"),
+        meta: { title: "分班管理操作" },
       },
       {
         path: "headerTeacher",

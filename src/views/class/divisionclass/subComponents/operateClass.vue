@@ -94,7 +94,7 @@
 
           <div class="table-content">
             <div class="title" icon="el-icon-refresh">
-              <span class="title-item">班级列表</span>
+              <span class="title-item">22电子信息</span>
               <span class="iconfont">&#xe631;</span>
             </div>
             <!-- v-loading="loading" -->
@@ -164,13 +164,6 @@
                   </div>
                 </template>
               </el-table-column>
-              <el-table-column
-                label="操作"
-                align="center"
-                prop="record"
-                class-name="small-padding fixed-width"
-              />
-
               <!-- <el-table-column
         label="公告标题"
         align="center"
@@ -275,7 +268,6 @@
 
 <script>
 import "@/assets/fonts/export/iconfont.css";
-import AppLink from "@/layout/components/Sidebar/Link.vue";
 import "@/assets/fonts/refresh/iconfont.css";
 import {
   listNotice,

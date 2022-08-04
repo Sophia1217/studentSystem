@@ -140,13 +140,6 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column
-          label="操作"
-          align="center"
-          prop="record"
-          class-name="small-padding fixed-width"
-        />
-
         <!-- <el-table-column
         label="公告标题"
         align="center"

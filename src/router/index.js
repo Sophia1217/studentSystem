@@ -89,6 +89,77 @@ export const constantRoutes = [
   //   ]
   // },
   {
+    path: "/student",
+    meta: { title: "学生信息管理", icon: "monitor" },
+    component: Layout,
+    hidden: false,
+    children: [
+      {
+        path: "absentee",
+        component: resolve => require(["@/views/student/absentee/index"], resolve),
+        name: "absentee",
+        meta: { title: "在籍学生信息", icon: "" },
+      },
+      {
+        path: "studetails",
+        hidden: true,
+        component: resolve => require(["@/views/student/absentee/manStudent/details/index"], resolve),
+        name: "studetails",
+        meta: { title: "学生信息", icon: "" }
+      },
+      {
+        path: "informationStu",
+        name: "informationStu",
+        hidden: false,
+        meta: { title: "学生信息修改", icon: "" },
+        component: () => import('../index.vue'),
+        children: [
+          {
+            path: "forcedEdit",
+            component: resolve => require(["@/views/student/informationStu/forcedEdit/index"], resolve),
+            name: "forcedEdit",
+            meta: { title: "强制修改名单设置", icon: "" }
+          },
+          {
+            path: "auditStu",
+            component: resolve => require(["@/views/student/informationStu/auditStu/index"], resolve),
+            name: "auditStu",
+            meta: {
+              title: "学生信息修改审核",
+              icon: ""
+            }
+          },
+        ]
+      },
+      {
+        path: "stuChange",
+        component: resolve => require(["@/views/student/stuChange/index"], resolve),
+        name: "stuChange",
+        meta: { title: "学籍异动情况", icon: "" },
+      },
+      {
+        path: "stuChangeDetail",
+        hidden: true,
+        component: resolve => require(["@/views/student/stuChange/detail/index"], resolve),
+        name: "stuChangeDetail",
+        meta: { title: "学籍异动情况详情", icon: "" },
+      },
+      {
+        path: "graduate",
+        component: resolve => require(["@/views/student/graduate/index"], resolve),
+        name: "graduate",
+        meta: { title: "毕业学生信息", icon: "" },
+      },
+      {
+        path: "graduateDetail",
+        hidden: true,
+        component: resolve => require(["@/views/student/graduate/detail/index"], resolve),
+        name: "graduateDetail",
+        meta: { title: "毕业学生信息详情", icon: "" },
+      },
+    ]
+  },
+  {
     path: "/class",
     meta: { title: "班级管理", icon: "monitor" },
     component: Layout,

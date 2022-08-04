@@ -9,10 +9,10 @@
             <el-option label="身份证号" value="3"></el-option>
             <el-option label="手机号" value="4"></el-option>
           </el-select>
-          <el-button slot="append" icon="el-icon-search" @click="handleSearch">查询</el-button>
+          <el-button slot="append" icon="el-icon-search" class="searchBtn" @click="handleSearch">查询</el-button>
         </el-input>
         <div class="more" @click="handleMore">
-          <span>更多分类</span>
+          <span> {{!isMore?"更多分类":"收起分类"}}</span>
           <i v-if="!isMore" class="moreIcon chevronDown"></i>
           <i v-else class="moreIcon chevronUp"></i>
         </div>
@@ -113,10 +113,10 @@
           <el-table-column prop="address" label="学籍状态" sortable> </el-table-column>
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="hadleDetail(scope.row,1)">
+              <el-button type="text" size="small" @click="hadleDetail(scope.row,1,1)">
                 <i class="scopeIncon handledie"></i> <span class="handleName">详情</span>
               </el-button>
-              <el-button type="text" size="small" @click="hadleDetail(scope.row,2)">
+              <el-button type="text" size="small" @click="hadleDetail(scope.row,2,2)">
                 <i class="scopeIncon handleEdit"></i> <span class="handleName">编辑</span>
               </el-button>
             </template>
@@ -292,12 +292,13 @@ export default {
     handleConfirm() {
       this.showExport = false
     },
-    hadleDetail(row,flag) {
+    hadleDetail(row,flag,schooling) {
       this.$router.push({
         path: '/student/studetails',
         query: {
           id: row.date,
-          show:flag
+          show: flag,
+          schooling: schooling
         }
       })
     }
@@ -317,6 +318,10 @@ export default {
       display: flex;
       flex-direction: row;
       align-items: center;
+      .searchBtn{
+        // background: #005657;
+        // color:#fff;
+      }
       .elSelect{
         width:110px;
       }

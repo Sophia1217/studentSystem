@@ -32,9 +32,10 @@ const permission = {
     // 生成路由
     GenerateRoutes({ commit }) {
       return new Promise(resolve => {
-        const asyncRoutes = filterDynamicRoutes(dynamicRoutes);
-        router.addRoutes(asyncRoutes);
-        commit('SET_SIDEBAR_ROUTERS', constantRoutes.concat())
+        commit('SET_ROUTES', constantRoutes)
+        commit('SET_SIDEBAR_ROUTERS', constantRoutes)
+        commit('SET_DEFAULT_ROUTES', constantRoutes)
+        commit('SET_TOPBAR_ROUTES', constantRoutes)
         return
         // 向后端请求路由数据
         getRouters().then(res => {

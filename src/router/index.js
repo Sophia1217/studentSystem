@@ -89,6 +89,51 @@ export const constantRoutes = [
   //   ]
   // },
   {
+    path: "/student",
+    meta: { title: "学生信息管理", icon: "monitor" },
+    component: Layout,
+    hidden: false,
+    children: [
+      {
+        path: "absentee",
+        component: resolve => require(["@/views/student/absentee/index"], resolve),
+        name: "absentee",
+        meta: { title: "在籍学生信息", icon: "" },
+      },
+      {
+        path: "studetails",
+        hidden: true,
+        component: resolve => require(["@/views/student/absentee/manStudent/details/index"], resolve),
+        name: "studetails",
+        meta: { title: "学生信息", icon: "" }
+      },
+      {
+        path: "informationStu",
+        name: "informationStu",
+        hidden: false,
+        meta: { title: "学生信息修改", icon: "" },
+        component: () => import('../index.vue'),
+        children: [
+          {
+            path: "forcedEdit",
+            component: resolve => require(["@/views/student/informationStu/forcedEdit/index"], resolve),
+            name: "forcedEdit",
+            meta: { title: "强制修改名单设置", icon: "" }
+          },
+          {
+            path: "auditStu",
+            component: resolve => require(["@/views/student/informationStu/auditStu/index"], resolve),
+            name: "auditStu",
+            meta: {
+              title: "学生信息修改审核",
+              icon: ""
+            }
+          },
+        ]
+      }
+    ]
+  },
+  {
     path: "/class",
     meta: { title: "班级管理", icon: "monitor" },
     component: Layout,

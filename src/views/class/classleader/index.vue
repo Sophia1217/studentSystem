@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "classleader", //班干部管理
+  name: "classleader", //班干部管理1111
   data() {
     return {};
   },

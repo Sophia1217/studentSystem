@@ -205,6 +205,13 @@ export const constantRoutes = [
         component: () => import("@/views/class/headerTeacher/index"),
       },
       {
+        path: 'classTeacher',
+        name: 'classTeacher',
+        hidden: true,
+        meta: { title: "分配班主任", icon: "" },
+        component: () => import('@/views/class/headerTeacher/classTeacher')
+      },
+      {
         path: "instructor",
         name: "instructor",
         hidden: false,

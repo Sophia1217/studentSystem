@@ -8,7 +8,7 @@
       v-show="showSearch"
       label-width="68px"
     >
-      <el-form-item label="学院" prop="noticeType">
+      <el-form-item label="培养单位" prop="noticeType">
         <el-select
           v-model="queryParams.noticeType"
           placeholder="计算机学院"
@@ -65,7 +65,7 @@
           icon="el-icon-search"
           class="search"
           @click="handleQuery"
-          >搜索</el-button
+          >查询</el-button
         >
         <el-button size="mini" @click="resetQuery" class="reset">
           <span class="iconfont reset_icon">&#xe614;</span>
@@ -74,18 +74,22 @@
         >
       </el-form-item>
     </el-form>
-
-    <el-row :gutter="10" class="mb8" style="float: right">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          class="create"
-          icon="el-icon-search"
-          @click="handleAdd"
-        >
-          新建班级</el-button
-        >
-        <!-- <el-button
+    <div>
+      <h3 class="title-item">
+        班级列表<span class="iconfont repeat_icon">&#xe7b1; </span>
+      </h3>
+      <el-row :gutter="10" class="mb8" style="float: right; margin-top: 15px">
+        <!-- <el-col :span="1.5" style="float: left"> 班级列表 </el-col> -->
+        <el-col :span="1.5">
+          <el-button
+            type="primary"
+            class="create"
+            icon="el-icon-search"
+            @click="handleAdd"
+          >
+            新建班级</el-button
+          >
+          <!-- <el-button
           type="primary"
           plain
           icon="el-icon-plus"
@@ -93,12 +97,12 @@
           @click="handleAdd"
           v-hasPermi="['system:notice:add']"
         >新增</el-button> -->
-      </el-col>
-      <el-col :span="1.5">
-        <el-button class="delete" icon="el-icon-delete" @click="handleDelete"
-          >删除空班级</el-button
-        >
-        <!-- <el-button
+        </el-col>
+        <el-col :span="1.5">
+          <el-button class="delete" icon="el-icon-delete" @click="handleDelete"
+            >删除空班级</el-button
+          >
+          <!-- <el-button
           type="success"
           plain
           icon="el-icon-edit"
@@ -107,13 +111,13 @@
           @click="handleUpdate"
           v-hasPermi="['system:notice:edit']"
         >修改</el-button> -->
-      </el-col>
-      <el-col :span="1.5">
-        <el-button class="export">
-          <span class="iconfont icon-daochu-06"></span>
-          导出班级名单</el-button
-        >
-        <!-- <el-button
+        </el-col>
+        <el-col :span="1.5">
+          <el-button class="export">
+            <span class="iconfont icon-daochu-06"></span>
+            导出班级名单</el-button
+          >
+          <!-- <el-button
           type="danger"
           plain
           icon="el-icon-delete"
@@ -122,27 +126,36 @@
           @click="handleDelete"
           v-hasPermi="['system:notice:remove']"
         >删除</el-button> -->
-      </el-col>
-      <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
-    </el-row>
+        </el-col>
+        <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
+      </el-row>
+    </div>
 
     <el-table
       v-loading="loading"
       :data="noticeList"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column label="序号" align="center" prop="id" width="100" />
+      <el-table-column
+        label="序号"
+        align="center"
+        prop="id"
+        width="100"
+        type="index"
+      />
       <el-table-column
         label="班级编号"
         align="center"
         prop="classId"
         width="100"
+        sortable
       />
       <el-table-column
         label="班级名称"
         align="center"
         prop="className"
         width="300"
+        sortable
       >
         <el-input
           :value="noticeList[0].className"
@@ -155,30 +168,41 @@
         align="center"
         prop="college"
         width="150"
+        sortable
       />
-      <el-table-column label="年级" align="center" prop="size" width="150" />
+      <el-table-column
+        label="年级"
+        align="center"
+        prop="size"
+        width="150"
+        sortable
+      />
       <el-table-column
         label="培养层次"
         align="center"
         prop="level"
         width="100"
+        sortable
       />
       <el-table-column
         label="班级人数"
         align="center"
         prop="nums"
         width="100"
+        sortable
       />
       <el-table-column
         label="创建时间"
         align="center"
         prop="beginTime"
         width="150"
+        sortable
       />
       <el-table-column
         label="更新时间"
         align="center"
         prop="updateTime"
+        sortable
         class-name="small-padding fixed-width"
       />
 
@@ -303,42 +327,30 @@
       </div>
     </el-dialog>
 
-    <!-- 删除空班级对话框 -->
     <el-dialog
       :title="title"
-      :visible.sync="dialogVisible"
-      width="800px"
-      height="243px"
-      append-to-body
-    >
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="submitForm" class="confirm"
-          >确 定</el-button
-        >
-      </div>
-    </el-dialog>
-    <!-- <el-dialog
-      title="title"
       :visible.sync="dialogVisible"
       width="30%"
       :before-close="handleClose"
     >
       <span
-        >是否确认删除空班级？*每次仅支持删除一个班级，且该班级代码编号为最末尾</span
+        >是否确认删除空班级？<span style="color: #ed5234"
+          >*每次仅支持删除一个班级，且该班级代码编号为最末尾</span
+        ></span
       >
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false" class="confirm"
+        <el-button @click="classCancel">取 消</el-button>
+        <el-button type="primary" @click="classConfirm" class="confirm"
           >确 定</el-button
         >
       </span>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import "@/assets/fonts/record/iconfont.css";
+import "@/assets/fonts/repeat/iconfont.css";
+import { Notification } from "element-ui"; // 引入通知
 import {
   listNotice,
   getNotice,
@@ -367,7 +379,6 @@ export default {
       // 表格数据
       noticeList: [
         {
-          id: 1,
           classId: 13070025,
           className: "计算机工程硕士2022级1班",
           college: "计算机工程学院",
@@ -378,7 +389,6 @@ export default {
           updateTime: "2022-07-07",
         },
         {
-          id: 2,
           classId: 13070025,
           className: "计算机工程硕士2022级2班",
           college: "计算机工程学院",
@@ -389,7 +399,6 @@ export default {
           updateTime: "2022-07-07",
         },
         {
-          id: 3,
           classId: 13070025,
           className: "计算机工程硕士2022级3班",
           college: "计算机工程学院",
@@ -431,22 +440,22 @@ export default {
     // this.getList();
   },
   methods: {
-    // 查看班级操作记录
-    showRecord(row) {
-      // const Id = row.roleId;
-      // this.$router.push("/class/role-auth/user/" + roleId);
-      this.$router.push("/class/record");
-    },
-    /** 查询公告列表 */
-    getList() {
-      this.loading = true;
-      listNotice(this.queryParams).then((response) => {
-        this.noticeList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
-    },
-    // 取消按钮
+    // // 查看班级操作记录
+    // showRecord(row) {
+    //   // const Id = row.roleId;
+    //   // this.$router.push("/class/role-auth/user/" + roleId);
+    //   this.$router.push("/class/record");
+    // },
+    // /** 查询公告列表 */
+    // getList() {
+    //   this.loading = true;
+    //   listNotice(this.queryParams).then((response) => {
+    //     this.noticeList = response.rows;
+    //     this.total = response.total;
+    //     this.loading = false;
+    //   });
+    // },
+    // 新建班级-取消按钮
     cancel() {
       this.open = false;
       this.reset();
@@ -462,22 +471,22 @@ export default {
       };
       this.resetForm("form");
     },
-    /** 搜索按钮操作 */
-    handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
-    },
-    /** 重置按钮操作 */
-    resetQuery() {
-      this.resetForm("queryForm");
-      this.handleQuery();
-    },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.noticeId);
-      this.single = selection.length != 1;
-      this.multiple = !selection.length;
-    },
+    // /** 搜索按钮操作 */
+    // handleQuery() {
+    //   this.queryParams.pageNum = 1;
+    //   this.getList();
+    // },
+    // /** 重置按钮操作 */
+    // resetQuery() {
+    //   this.resetForm("queryForm");
+    //   this.handleQuery();
+    // },
+    // // 多选框选中数据
+    // handleSelectionChange(selection) {
+    //   this.ids = selection.map((item) => item.noticeId);
+    //   this.single = selection.length != 1;
+    //   this.multiple = !selection.length;
+    // },
     /** 新增班级按钮操作 */
     handleAdd() {
       this.reset(); //表单清空
@@ -490,16 +499,44 @@ export default {
       this.dialogVisible = true;
       this.title = "删除空班级";
     },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset();
-      const noticeId = row.noticeId || this.ids;
-      getNotice(noticeId).then((response) => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改公告";
+    // 删除空班级-取消操作
+    classCancel() {
+      this.dialogVisible = false;
+      // const h = this.$createElement;
+      // this.$notify({
+      //   type: "error",
+      //   title: "错误",
+      //   customClass: "error",
+      //   message: h(
+      //     "h3",
+      //     { style: "color: #ED5234" },
+      //     "班级代码编号末尾班级目前仍有成员，请删除班级所有成员后重试"
+      //   ),
+      //   duration: 0,
+      // });
+    },
+    // 删除空班级-确认操作
+    classConfirm() {
+      this.dialogVisible = false;
+      this.$notify({
+        type: "success",
+        title: "成功",
+        customClass: "success",
+        message: "空班级【计算机工程硕士2022级21班】删除成功！",
+        duration: 0,
       });
     },
+
+    // /** 修改按钮操作 */
+    // handleUpdate(row) {
+    //   this.reset();
+    //   const noticeId = row.noticeId || this.ids;
+    //   getNotice(noticeId).then((response) => {
+    //     this.form = response.data;
+    //     this.open = true;
+    //     this.title = "修改公告";
+    //   });
+    // },
     /** 提交按钮 */
     submitForm: function () {
       this.$refs["form"].validate((valid) => {
@@ -520,20 +557,20 @@ export default {
         }
       });
     },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      const noticeIds = row.noticeId || this.ids;
-      this.$modal
-        .confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项？')
-        .then(function () {
-          return delNotice(noticeIds);
-        })
-        .then(() => {
-          this.getList();
-          this.$modal.msgSuccess("删除成功");
-        })
-        .catch(() => {});
-    },
+    // /** 删除按钮操作 */
+    // handleDelete(row) {
+    //   const noticeIds = row.noticeId || this.ids;
+    //   this.$modal
+    //     .confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项？')
+    //     .then(function () {
+    //       return delNotice(noticeIds);
+    //     })
+    //     .then(() => {
+    //       this.getList();
+    //       this.$modal.msgSuccess("删除成功");
+    //     })
+    //     .catch(() => {});
+    // },
   },
 };
 </script>
@@ -571,7 +608,10 @@ export default {
 .record_icon + span {
   color: #005657;
 }
-
+.repeat_icon {
+  font-size: 20px;
+  margin-left: 5px;
+}
 .el-dialog {
   display: flex;
   flex-direction: column;
@@ -582,6 +622,30 @@ export default {
   transform: translate(-50%, -50%);
 }
 
+.error {
+  background-color: #fef5f4;
+}
+.success {
+  background-color: #ecfbf4;
+  color: #ecfbf4;
+}
+
+.el-notification.right {
+  left: 30%;
+  transform: translateX(50%);
+}
+/* .el-notification__title {
+  color: #ed5234;
+} */
+.title-item {
+  display: inline-block;
+  width: 120px;
+  height: 28px;
+  font-family: "PingFangSC-Semibold";
+  font-weight: 600;
+  font-size: 20px;
+  color: #1f1f1f;
+}
 #test {
   left: 50%;
   transform: translateX(-50%);

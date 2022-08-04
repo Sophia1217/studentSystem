@@ -1,12 +1,20 @@
 <template>
   <div>
     <h2>辅导员管理</h2>
+    <tea-search></tea-search>
+    <tea-table></tea-table>
   </div>
 </template>
 
 <script>
+import teaSearch from "./form/teaSearch.vue";
+import teaTable from "./form/teaTable.vue";
 export default {
   name: "instructor", //辅导员管理
+  components: {
+    teaSearch,
+    teaTable,
+  },
   data() {
     return {};
   },

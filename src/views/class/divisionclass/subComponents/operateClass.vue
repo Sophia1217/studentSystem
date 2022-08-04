@@ -94,111 +94,86 @@
 
           <div class="table-content">
             <div class="title" icon="el-icon-refresh">
-              <span class="title-item">22电子信息</span>
+              <span class="title-item">22电子信息1班学生列表</span>
               <span class="iconfont">&#xe631;</span>
+              <el-row :gutter="10" class="mb8" style="float: right">
+                <el-col :span="1.5">
+                  <el-button
+                    type="primary"
+                    class="create"
+                    icon="el-icon-search"
+                    @click="handleAdd"
+                  >
+                    调出班级</el-button
+                  >
+                  <!-- <el-button
+          type="primary"
+          plain
+          icon="el-icon-plus"
+          size="mini"
+          @click="handleAdd"
+          v-hasPermi="['system:notice:add']"
+        >新增</el-button> -->
+                </el-col>
+                <el-col :span="1.5">
+                  <el-button
+                    class="delete"
+                    icon="el-icon-delete"
+                    @click="handleDelete"
+                    >移出班级</el-button
+                  >
+                  <!-- <el-button
+          type="success"
+          plain
+          icon="el-icon-edit"
+          size="mini"
+          :disabled="single"
+          @click="handleUpdate"
+          v-hasPermi="['system:notice:edit']"
+        >修改</el-button> -->
+                </el-col>
+                <el-col :span="1.5">
+                  <el-button class="export">
+                    <span class="iconfont icon-daochu-06"></span>
+                    导出</el-button
+                  >
+                  <!-- <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+          v-hasPermi="['system:notice:remove']"
+        >删除</el-button> -->
+                </el-col>
+                <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
+              </el-row>
             </div>
             <!-- v-loading="loading" -->
             <el-table
               :data="noticeList"
               @selection-change="handleSelectionChange"
+              class="table-body"
             >
-              <el-table-column
-                label="序号"
-                align="center"
-                prop="id"
-                width="100"
-              />
-              <el-table-column
-                label="班级编号"
-                align="center"
-                prop="classId"
-                width="100"
-              />
-              <el-table-column
-                label="班级姓名"
-                align="center"
-                prop="className"
-                width="300"
-              >
+              <el-table-column type="selection" width="65" align="center" />
+              <el-table-column label="序号" align="center" prop="id" />
+              <el-table-column label="学号" align="center" prop="classId" />
+              <el-table-column label="姓名" align="center" prop="className">
                 <el-input
                   :value="noticeList[0].className"
                   clearable
                   @keyup.enter.native="handleQuery"
                 />
               </el-table-column>
+              <el-table-column label="性别" align="center" prop="college" />
+              <el-table-column label="专业" align="center" prop="level" />
+              <el-table-column label="生源地" align="center" prop="nums" />
               <el-table-column
-                label="学院"
-                align="center"
-                prop="college"
-                width="150"
-              />
-              <el-table-column
-                label="培养层次"
-                align="center"
-                prop="level"
-                width="100"
-              />
-              <el-table-column
-                label="班级人数"
-                align="center"
-                prop="nums"
-                width="100"
-              />
-              <el-table-column
-                label="创建时间"
+                label="出生年月"
                 align="center"
                 prop="beginTime"
-                width="150"
               />
-              <el-table-column
-                label="更新时间"
-                align="center"
-                prop="updateTime"
-                width="150"
-              />
-              <el-table-column label="操作" align="center" width="100">
-                <template
-                  ><!-- slot-scope="scope" -->
-                  <div @click="operate" class="operate">
-                    <span class="operateSpan">分班管理</span>
-                  </div>
-                </template>
-              </el-table-column>
-              <!-- <el-table-column
-        label="公告标题"
-        align="center"
-        prop="noticeTitle"
-        :show-overflow-tooltip="true"
-      /> -->
-              <!-- <el-table-column label="公告类型" align="center" prop="noticeType" width="100">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_notice_type" :value="scope.row.noticeType"/>
-        </template>
-      </el-table-column> -->
-              <!-- <el-table-column label="创建者" align="center" prop="createBy" width="100" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="100">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column> -->
-              <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:notice:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:notice:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column> -->
             </el-table>
             <pagination
               id="pagenation"
@@ -547,10 +522,20 @@ li {
 
 .table-content {
   padding-top: 32px;
-  padding-left: 40px;
+  padding-left: 10%;
+  padding-right: 10%;
   height: 100vh;
   background-color: #ffffff;
   margin-top: 24px;
+}
+.table-body {
+  width: 80%;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.table-body::before {
+  height: 0;
 }
 
 .title {

@@ -1481,7 +1481,7 @@ export default {
             align-items: center;
             .title{
               flex: 0 0 160px;
-              line-height: 36px;
+              line-height: 48px;
               background: #E0E0E0;
               text-align: right;
               padding-right: 5px;

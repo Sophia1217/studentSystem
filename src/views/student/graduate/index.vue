@@ -6,11 +6,13 @@
           <el-select v-model="select" class="elSelect" slot="prepend" placeholder="查询条件">
             <el-option label="学号" value="1"></el-option>
             <el-option label="姓名" value="2"></el-option>
+            <el-option label="身份证号" value="3"></el-option>
+            <el-option label="手机号" value="4"></el-option>
           </el-select>
-          <el-button slot="append" icon="el-icon-search" @click="handleSearch">查询</el-button>
+          <el-button slot="append" icon="el-icon-search" class="searchBtn" @click="handleSearch">查询</el-button>
         </el-input>
         <div class="more" @click="handleMore">
-          <span>{{!isMore?"更多分类":"收起分类"}}</span>
+          <span> {{!isMore?"更多分类":"收起分类"}}</span>
           <i v-if="!isMore" class="moreIcon chevronDown"></i>
           <i v-else class="moreIcon chevronUp"></i>
         </div>
@@ -30,19 +32,11 @@
               <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-col>
-          <!-- <el-col :span="8">
+          <el-col :span="8">
             <span>班 级：</span>
             <el-select v-model="moreIform.value3" multiple collapse-tags placeholder="请选择" size="small">
               <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
-          </el-col> -->
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">年 级：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom :objProp="learnHe" @training="learnHeAll" @checkedTraining="learnHeCheck"></checkboxCom>
-            </div>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
@@ -53,8 +47,15 @@
             </div>
           </el-col>
         </el-row>
-        
-        <!-- <el-row :gutter="20" class="mt15">
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="3">学 制：</el-col>
+          <el-col :span="20">
+            <div class="checkbox">
+              <checkboxCom :objProp="learnHe" @training="learnHeAll" @checkedTraining="learnHeCheck"></checkboxCom>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" class="mt15">
           <el-col :span="3">学 籍：</el-col>
           <el-col :span="20">
             <div class="checkbox">
@@ -77,34 +78,59 @@
               <checkboxCom :objProp="politica" @training="politicaAll" @checkedTraining="politicaCheck"></checkboxCom>
             </div>
           </el-col>
-        </el-row> -->
+        </el-row>
       </div>
     </div>
     <!-- table -->
     <div class="tableWrap mt15">
       <div class="headerTop">
-        <div class="headerLeft"><span class="title">学生信息列表</span> <i class="Updataicon"></i></div>
+        <div class="headerLeft"><span class="title">毕业学生信息列表</span> <i class="Updataicon"></i></div>
+        <div class="headerRight">
+          <div class="btns borderBlue"><i class="icon blueIcon"></i><span class="title">毕业生登记表</span></div>
+          <div class="btns borderOrange"><i class="icon orangeIcon"></i><span class="title">学生登记表</span></div>
+          <div class="btns borderLight"><i class="icon lightIcon"></i><span class="title">学生卡片</span></div>
+          <div class="btns borderGreen" @click="handleExport"><i class="icon greenIcon"></i><span class="title">导出</span></div>
+        </div>
       </div>
       <div class="mt15">
-        <el-table :data="tableData" ref="multipleTable" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}">
+        <el-table :data="tableData" ref="multipleTable" @selection-change="handleSelectionChange" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}">
+        <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="date" label="学号" sortable> </el-table-column>
           <el-table-column prop="name" label="姓名" sortable> </el-table-column>
+          <el-table-column prop="address" label="政治面貌" sortable> </el-table-column>
+          <el-table-column prop="address" label="民族" sortable> </el-table-column>
           <el-table-column prop="address" label="学院" sortable> </el-table-column>
           <el-table-column prop="address" label="专业" sortable> </el-table-column>
           <el-table-column prop="address" label="年级" sortable> </el-table-column>
           <el-table-column prop="address" label="培养层次" sortable> </el-table-column>
+          <el-table-column prop="address" label="学制" sortable> </el-table-column>
+          <el-table-column prop="address" label="学习形式" sortable> </el-table-column>
+          <el-table-column prop="address" label="无学籍原因" sortable> </el-table-column>
+          <el-table-column prop="address" label="学籍状态" sortable> </el-table-column>
+          <el-table-column fixed="right" label="操作" width="180">
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="hadleDetail(scope.row,1)">
+                <i class="scopeIncon handledie"></i> <span class="handleName">详情</span>
+              </el-button>
+              <el-button type="text" size="small" @click="hadleDetail(scope.row,2)">
+                <i class="scopeIncon handleEdit"></i> <span class="handleName">编辑</span>
+              </el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
     </div>
+    <exportView v-if="showExport" :showExport="showExport" @handleCancel="handleCancel" @handleConfirm="handleConfirm"></exportView>
   </div>
 </template>
 
 <script>
-import CheckboxCom from '../../../components/checkboxCom'
+import CheckboxCom from '../../components/checkboxCom'
+import exportView from '../absentee/manStudent/exportView/index.vue'
 export default {
   name: 'manStudent',
-  components:{ CheckboxCom },
+  components:{ CheckboxCom, exportView },
   data() {
     return {
       searchVal: '',
@@ -120,31 +146,33 @@ export default {
         checkBox: [{label:'大学本科',val:1},{label: '硕士研究生',val:2},{label: '博士研究生',val:3}],
         isIndeterminate: true
       },
-      learnHe: {  //年级：
+      learnHe: {  //学 制：
         checkAll: false,
         choose: [],
-        checkBox: [{label:'2022级',val:1},{label: '2021级',val:2},{label: '2020级',val:3},{label: '2019级',val:4}],
+        checkBox: [{label:'2年',val:1},{label: '3年',val:2},{label: '3年',val:3}],
         isIndeterminate: true
       },
-      // studentStatus: { // 学籍
-      //   checkAll: false,
-      //   choose: [],
-      //   checkBox: [{label:'有学籍',val:1},{label: '无学籍',val:2}],
-      //   isIndeterminate: true
-      // },
-      // ethnic:{  // 名族
-      //   checkAll: false,
-      //   choose: [],
-      //   checkBox: [{label:'汉族',val:1},{label: '蒙古族',val:2},{label:'藏族',val:3}],
-      //   isIndeterminate: true
-      // },
-      // politica:{  // 政治面貌：
-      //   checkAll: false,
-      //   choose: [],
-      //   checkBox: [{label:'中共党员',val:1},{label: '中共预备',val:2},{label:'共青团员',val:3}],
-      //   isIndeterminate: true
-      // },
-      tableData: [{ date: 1 }]
+      studentStatus: { // 学籍
+        checkAll: false,
+        choose: [],
+        checkBox: [{label:'有学籍',val:1},{label: '无学籍',val:2}],
+        isIndeterminate: true
+      },
+      ethnic:{  // 名族
+        checkAll: false,
+        choose: [],
+        checkBox: [{label:'汉族',val:1},{label: '蒙古族',val:2},{label:'藏族',val:3}],
+        isIndeterminate: true
+      },
+      politica:{  // 政治面貌：
+        checkAll: false,
+        choose: [],
+        checkBox: [{label:'中共党员',val:1},{label: '中共预备',val:2},{label:'共青团员',val:3}],
+        isIndeterminate: true
+      },
+      tableData: [{ date: 1 }],
+      multipleSelection: [],
+      showExport: false
     };
   },
 
@@ -248,6 +276,27 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       console.log(this.multipleSelection)
+    },
+    // 打开导出弹窗
+    handleExport() {
+      this.showExport = true
+    },
+    // 导出取消
+    handleCancel() {
+      this.showExport = false
+    },
+    // 导出确认
+    handleConfirm() {
+      this.showExport = false
+    },
+    hadleDetail(row,flag) {
+      this.$router.push({
+        path: '/student/graduateDetail',
+        query: {
+          id: row.date,
+          show: flag
+        }
+      })
     }
   },
 };
@@ -265,6 +314,10 @@ export default {
       display: flex;
       flex-direction: row;
       align-items: center;
+      .searchBtn{
+        // background: #005657;
+        // color:#fff;
+      }
       .elSelect{
         width:110px;
       }
@@ -285,10 +338,10 @@ export default {
           height: 20px;
         }
         .chevronDown{
-          background: url('../../../../assets/images/chevronDown.png') no-repeat;
+          background: url('../../../assets/images/chevronDown.png') no-repeat;
         }
         .chevronUp{
-          background: url('../../../../assets/images/chevronUp.png') no-repeat;
+          background: url('../../../assets/images/chevronUp.png') no-repeat;
         }
       }
     }
@@ -319,9 +372,80 @@ export default {
           margin-left: 10px;
           width:20px;
           height: 20px;
-          background: url('../../../../assets/images/updata.png') no-repeat;
+          background: url('../../../assets/images/updata.png') no-repeat;
         }
       }
+      .headerRight{
+        display: flex;
+        .borderBlue{
+          border:1px solid #0D84E0;
+          color:#0D84E0;
+          background: #ebfafd;
+        }
+        .borderOrange{
+          border:1px solid #CC3014;
+          color:#CC3014;
+          background: #fdf6f3;
+        }
+        .borderLight{
+          border:1px solid #0090A1;
+          color:#0090A1;
+          background: #e7fcfc;
+        }
+        .borderGreen{
+          border:1px solid #005657;
+          color:#005657;
+          background: #fff;
+        }
+        .btns{
+          margin-right: 15px;
+          padding:5px 10px;
+          cursor:pointer;
+          .title{
+            font-size: 14px;
+            text-align: center;
+            line-height: 22px;
+            // vertical-align: middle;
+          }
+          .icon{
+            display: inline-block;
+            width:20px;
+            height: 20px;
+            vertical-align: top;
+            margin-right: 5px;
+          }
+          .blueIcon{
+            background: url('../../../assets/images/icon_1.png') no-repeat;
+          }
+          .orangeIcon{
+            background: url('../../../assets/images/icon_2.png') no-repeat;
+          }
+          .lightIcon{
+            background: url('../../../assets/images/icon_3.png') no-repeat;
+          }
+          .greenIcon{
+            background: url('../../../assets/images/export.png');
+          }
+        }
+      }
+    }
+    .scopeIncon{
+      display: inline-block;
+      width:20px;
+      height: 20px; 
+      vertical-align: middle;
+    }
+    .handleName{
+      font-weight: 400;
+      font-size: 14px;
+      color: #005657;
+      line-height: 28px;
+    }
+    .handledie{
+      background: url('../../../assets/images/details.png');
+    }
+    .handleEdit{
+      background: url('../../../assets/images/edit.png');
     }
   }
 }

@@ -130,7 +130,33 @@ export const constantRoutes = [
             }
           },
         ]
-      }
+      },
+      {
+        path: "stuChange",
+        component: resolve => require(["@/views/student/stuChange/index"], resolve),
+        name: "stuChange",
+        meta: { title: "学籍异动情况", icon: "" },
+      },
+      {
+        path: "stuChangeDetail",
+        hidden: true,
+        component: resolve => require(["@/views/student/stuChange/detail/index"], resolve),
+        name: "stuChangeDetail",
+        meta: { title: "学籍异动情况详情", icon: "" },
+      },
+      {
+        path: "graduate",
+        component: resolve => require(["@/views/student/graduate/index"], resolve),
+        name: "graduate",
+        meta: { title: "毕业学生信息", icon: "" },
+      },
+      {
+        path: "graduateDetail",
+        hidden: true,
+        component: resolve => require(["@/views/student/graduate/detail/index"], resolve),
+        name: "graduateDetail",
+        meta: { title: "毕业学生信息详情", icon: "" },
+      },
     ]
   },
   {

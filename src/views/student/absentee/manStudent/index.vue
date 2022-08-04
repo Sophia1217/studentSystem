@@ -12,7 +12,7 @@
           <el-button slot="append" icon="el-icon-search" class="searchBtn" @click="handleSearch">查询</el-button>
         </el-input>
         <div class="more" @click="handleMore">
-          <span>更多分类</span>
+          <span> {{!isMore?"更多分类":"收起分类"}}</span>
           <i v-if="!isMore" class="moreIcon chevronDown"></i>
           <i v-else class="moreIcon chevronUp"></i>
         </div>
@@ -319,8 +319,8 @@ export default {
       flex-direction: row;
       align-items: center;
       .searchBtn{
-        background: #005657;
-        color:#fff;
+        // background: #005657;
+        // color:#fff;
       }
       .elSelect{
         width:110px;

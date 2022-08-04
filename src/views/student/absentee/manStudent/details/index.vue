@@ -1024,8 +1024,8 @@
           </div>
         </div>
 
-        <div class="headline">学历学位信息</div>
-        <div class="tableStyle">
+        <div class="headline" v-if="schooling==2">学历学位信息</div>
+        <div class="tableStyle" v-if="schooling==2">
           <div class="information">
             <el-row :gutter="20">
                 <el-col :span="12" class="rowStyle">

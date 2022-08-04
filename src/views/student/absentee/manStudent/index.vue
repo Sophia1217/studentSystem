@@ -9,7 +9,7 @@
             <el-option label="身份证号" value="3"></el-option>
             <el-option label="手机号" value="4"></el-option>
           </el-select>
-          <el-button slot="append" icon="el-icon-search" @click="handleSearch">查询</el-button>
+          <el-button slot="append" icon="el-icon-search" class="searchBtn" @click="handleSearch">查询</el-button>
         </el-input>
         <div class="more" @click="handleMore">
           <span>更多分类</span>
@@ -318,6 +318,10 @@ export default {
       display: flex;
       flex-direction: row;
       align-items: center;
+      .searchBtn{
+        background: #005657;
+        color:#fff;
+      }
       .elSelect{
         width:110px;
       }

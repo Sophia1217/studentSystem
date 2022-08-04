@@ -30,28 +30,15 @@
               <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-col>
-          <el-col :span="8">
+          <!-- <el-col :span="8">
             <span>班 级：</span>
             <el-select v-model="moreIform.value3" multiple collapse-tags placeholder="请选择" size="small">
               <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
-          </el-col>
+          </el-col> -->
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">培养层次：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom :objProp="training" @training="handleCheckAllChangeTraining" @checkedTraining="handleCheckedCitiesChangeTraining"></checkboxCom>
-              <!-- <el-checkbox class="elcheckbox" :indeterminate="training.isIndeterminate" 
-                v-model="training.checkAll" @change="handleCheckAllChangeTraining">全选</el-checkbox>
-              <el-checkbox-group v-model="training.choose" @change="handleCheckedCitiesChangeTraining">
-                <el-checkbox v-for="item in training.checkBox" :label="item.val" :key="item.val">{{item.label}}</el-checkbox>
-              </el-checkbox-group> -->
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">学 制：</el-col>
+          <el-col :span="3">年 级：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom :objProp="learnHe" @training="learnHeAll" @checkedTraining="learnHeCheck"></checkboxCom>
@@ -59,6 +46,15 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
+          <el-col :span="3">培养层次：</el-col>
+          <el-col :span="20">
+            <div class="checkbox">
+              <checkboxCom :objProp="training" @training="handleCheckAllChangeTraining" @checkedTraining="handleCheckedCitiesChangeTraining"></checkboxCom>
+            </div>
+          </el-col>
+        </el-row>
+        
+        <!-- <el-row :gutter="20" class="mt15">
           <el-col :span="3">学 籍：</el-col>
           <el-col :span="20">
             <div class="checkbox">
@@ -81,7 +77,7 @@
               <checkboxCom :objProp="politica" @training="politicaAll" @checkedTraining="politicaCheck"></checkboxCom>
             </div>
           </el-col>
-        </el-row>
+        </el-row> -->
       </div>
     </div>
     <!-- table -->
@@ -124,30 +120,30 @@ export default {
         checkBox: [{label:'大学本科',val:1},{label: '硕士研究生',val:2},{label: '博士研究生',val:3}],
         isIndeterminate: true
       },
-      learnHe: {  //学 制：
+      learnHe: {  //年级：
         checkAll: false,
         choose: [],
-        checkBox: [{label:'2年',val:1},{label: '3年',val:2},{label: '3年',val:3}],
+        checkBox: [{label:'2022级',val:1},{label: '2021级',val:2},{label: '2020级',val:3},{label: '2019级',val:4}],
         isIndeterminate: true
       },
-      studentStatus: { // 学籍
-        checkAll: false,
-        choose: [],
-        checkBox: [{label:'有学籍',val:1},{label: '无学籍',val:2}],
-        isIndeterminate: true
-      },
-      ethnic:{  // 名族
-        checkAll: false,
-        choose: [],
-        checkBox: [{label:'汉族',val:1},{label: '蒙古族',val:2},{label:'藏族',val:3}],
-        isIndeterminate: true
-      },
-      politica:{  // 政治面貌：
-        checkAll: false,
-        choose: [],
-        checkBox: [{label:'中共党员',val:1},{label: '中共预备',val:2},{label:'共青团员',val:3}],
-        isIndeterminate: true
-      },
+      // studentStatus: { // 学籍
+      //   checkAll: false,
+      //   choose: [],
+      //   checkBox: [{label:'有学籍',val:1},{label: '无学籍',val:2}],
+      //   isIndeterminate: true
+      // },
+      // ethnic:{  // 名族
+      //   checkAll: false,
+      //   choose: [],
+      //   checkBox: [{label:'汉族',val:1},{label: '蒙古族',val:2},{label:'藏族',val:3}],
+      //   isIndeterminate: true
+      // },
+      // politica:{  // 政治面貌：
+      //   checkAll: false,
+      //   choose: [],
+      //   checkBox: [{label:'中共党员',val:1},{label: '中共预备',val:2},{label:'共青团员',val:3}],
+      //   isIndeterminate: true
+      // },
       tableData: [{ date: 1 }]
     };
   },

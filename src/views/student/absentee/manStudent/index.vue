@@ -94,7 +94,7 @@
           <div class="btns borderBlue"><i class="icon blueIcon"></i><span class="title">毕业生登记表</span></div>
           <div class="btns borderOrange"><i class="icon orangeIcon"></i><span class="title">学生登记表</span></div>
           <div class="btns borderLight"><i class="icon lightIcon"></i><span class="title">学生卡片</span></div>
-          <div class="btns borderGreen"><i class="icon greenIcon"></i><span class="title">导出</span></div>
+          <div class="btns borderGreen" @click="handleExport"><i class="icon greenIcon"></i><span class="title">导出</span></div>
         </div>
       </div>
       <div class="mt15">
@@ -112,22 +112,28 @@
           <el-table-column prop="address" label="学制" sortable> </el-table-column>
           <el-table-column prop="address" label="学籍状态" sortable> </el-table-column>
           <el-table-column fixed="right" label="操作" width="180">
-            <template>
-              <el-button type="text" size="small"><i class="scopeIncon handledie"></i> <span class="handleName">详情</span></el-button>
-              <el-button type="text" size="small"><i class="scopeIncon handleEdit"></i> <span class="handleName">编辑</span></el-button>
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="hadleDetail(scope.row,1)">
+                <i class="scopeIncon handledie"></i> <span class="handleName">详情</span>
+              </el-button>
+              <el-button type="text" size="small" @click="hadleDetail(scope.row,2)">
+                <i class="scopeIncon handleEdit"></i> <span class="handleName">编辑</span>
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
     </div>
+    <exportView v-if="showExport" :showExport="showExport" @handleCancel="handleCancel" @handleConfirm="handleConfirm"></exportView>
   </div>
 </template>
 
 <script>
 import CheckboxCom from '../../../components/checkboxCom'
+import exportView from './exportView/index.vue'
 export default {
   name: 'manStudent',
-  components:{ CheckboxCom },
+  components:{ CheckboxCom, exportView },
   data() {
     return {
       searchVal: '',
@@ -168,7 +174,8 @@ export default {
         isIndeterminate: true
       },
       tableData: [{ date: 1 }],
-      multipleSelection: []
+      multipleSelection: [],
+      showExport: false
     };
   },
 
@@ -272,6 +279,27 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       console.log(this.multipleSelection)
+    },
+    // 打开导出弹窗
+    handleExport() {
+      this.showExport = true
+    },
+    // 导出取消
+    handleCancel() {
+      this.showExport = false
+    },
+    // 导出确认
+    handleConfirm() {
+      this.showExport = false
+    },
+    hadleDetail(row,flag) {
+      this.$router.push({
+        path: '/student/studetails',
+        query: {
+          id: row.date,
+          show:flag
+        }
+      })
     }
   },
 };

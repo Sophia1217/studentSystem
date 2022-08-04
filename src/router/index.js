@@ -98,10 +98,14 @@ export const constantRoutes = [
         path: "absentee",
         component: resolve => require(["@/views/student/absentee/index"], resolve),
         name: "absentee",
-        meta: {
-          title: "在籍学生信息",
-          icon: ""
-        }
+        meta: { title: "在籍学生信息", icon: "" },
+      },
+      {
+        path: "studetails",
+        hidden: true,
+        component: resolve => require(["@/views/student/absentee/manStudent/details/index"], resolve),
+        name: "studetails",
+        meta: { title: "学生信息", icon: "" }
       },
       {
         path: "informationStu",

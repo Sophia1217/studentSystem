@@ -115,13 +115,27 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="scope">
-          <div @click="action(scope.row)">
-            <span class="iconfont allocate_class">&#xe638;</span>
-            <span style="color: #005657; margin-left: 5px; margin-right: 10px"
+          <div>
+            <span
+              class="iconfont allocate_class"
+              @click="allocateClass(scope.row)"
+              >&#xe638;</span
+            >
+            <span
+              style="color: #005657; margin-left: 5px; margin-right: 10px"
+              @click="allocateClass(scope.row)"
               >分配班级</span
             >
-            <span class="iconfont allocate_none">&#xe638;</span>
-            <span style="color: #005657; margin-left: 5px">取消分配</span>
+            <span
+              class="iconfont allocate_none"
+              @click="allocateNone(scope.row)"
+              >&#xe638;</span
+            >
+            <span
+              style="color: #005657; margin-left: 5px"
+              @click="allocateNone(scope.row)"
+              >取消分配</span
+            >
           </div>
         </template>
       </el-table-column>
@@ -136,76 +150,43 @@
       @pagination="getList"
     />
 
-    <!-- 新增班级对话框 -->
-    <el-dialog
-      :title="title"
-      :visible.sync="open"
-      width="800px"
-      height="243px"
-      append-to-body
-    >
-      <el-form
-        :inline="true"
-        ref="form"
-        :model="form"
-        :rules="rules"
-        label-width="80px"
-      >
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="所属学院" prop="noticeTitle">
-              <el-select
-                v-model="form.noticeType"
-                placeholder="计算机学院"
-              ></el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="培养层次" prop="noticeType">
-              <el-select
-                v-model="form.noticeType"
-                placeholder="本科"
-              ></el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="所属年级">
-              <el-select
-                v-model="form.noticeType"
-                placeholder="2022"
-              ></el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="班级数量">
-              <!-- <editor v-model="form.noticeContent" :min-height="192" /> -->
-              <el-select v-model="form.noticeType" placeholder="10"></el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
+    <!-- 取消分配、批量取消对话框 -->
+    <el-dialog title="取消分配" :visible.sync="cancelAllocateDialogFormVisible">
+      <el-form :model="form">
+        <el-form-item label="撤任理由" prop="reason">
+          <el-select v-model="form.reason" placeholder="休学">
+            <!-- <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option> -->
+          </el-select>
+        </el-form-item>
+        <el-form-item label="撤任详情" prop="detail">
+          <el-input
+            v-model="form.detail"
+            autocomplete="off"
+            type="textarea"
+            :autosize="{ minRows: 2, maxRows: 4 }"
+          ></el-input>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="submitForm" class="confirm"
-          >确 定</el-button
-        >
+        <el-button @click="qx">取 消</el-button>
+        <el-button type="primary" @click="qd">确 定</el-button>
       </div>
     </el-dialog>
 
+    <!-- 取消分配、批量取消对话框-二次确定 -->
     <el-dialog
       :title="title"
-      :visible.sync="dialogVisible"
+      :visible.sync="doublecheck"
       width="30%"
       :before-close="handleClose"
     >
       <span
-        >是否确认删除空班级？<span style="color: #ed5234"
-          >*每次仅支持删除一个班级，且该班级代码编号为最末尾</span
-        ></span
+        >确认将取消【78788】【张曼丽】【计算机硕士22级1班】、【计算机硕士22级2班】班主任任命？</span
       >
       <span slot="footer" class="dialog-footer">
-        <el-button @click="classCancel">取 消</el-button>
-        <el-button type="primary" @click="classConfirm" class="confirm"
+        <el-button @click="doublecheck = 'false'">取 消</el-button>
+        <el-button type="primary" @click="doublecheck = 'false'" class="confirm"
           >确 定</el-button
         >
       </span>
@@ -215,6 +196,7 @@
 
 <script>
 import "@/assets/fonts/person/iconfont.css";
+import { Message } from "element-ui";
 export default {
   name: "classTeacher",
   data() {
@@ -259,8 +241,10 @@ export default {
       title: "",
       // 是否显示新建班级弹出层
       open: false,
-      // 是否显示删除空班级弹出层
-      dialogVisible: false,
+      // 是否显示取消分配、批量取消弹出层
+      cancelAllocateDialogFormVisible: false,
+      // 取消分配-二次确认弹出框
+      doublecheck: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -302,9 +286,38 @@ export default {
       };
       this.resetForm("form");
     },
-    // 分配班主任
-    action(row) {
-      this.$router.push("/class/classTeacher");
+    // 班主任对班级一对一分配班级（点击分配班级时根据row获取信息）、一对多分配班级（点击批量分配时根据list判断列表中有几个勾选）
+    allocateClass(row) {
+      console.log("班主任对班级一对一分配班级");
+      this.$confirm(
+        "确认将【学工号】【张曼丽】、【学工号】【汪曼纳】任命为【22电子信息1班】班主任？",
+        "分配班级",
+        {
+          distinguishCancelAndClose: true,
+          confirmButtonText: "确认",
+          confirmButtonClass: "ack",
+          cancelButtonText: "取消",
+        }
+      )
+        .then(() => {
+          this.$message({
+            type: "info",
+            message: "分配班级操作成功",
+          });
+        })
+        .catch((action) => {
+          this.$message({
+            type: "info",
+            message:
+              // action === "cancel" ? "放弃保存并离开页面" : "停留在当前页面",
+              "分配班级操作取消",
+          });
+        });
+    },
+    // 班主任对班级一对一取消分配班级
+    allocateNone(row) {
+      console.log("班主任对班级一对一取消分配班级");
+      this.cancelAllocateDialogFormVisible = true;
     },
     /** 新增班级按钮操作 */
     handleAdd() {
@@ -345,6 +358,7 @@ export default {
         duration: 0,
       });
     },
+
     /** 提交按钮 */
     submitForm: function () {
       this.$refs["form"].validate((valid) => {
@@ -379,6 +393,15 @@ export default {
     //     })
     //     .catch(() => {});
     // },
+  },
+  //
+  qx() {
+    this.cancelAllocateDialogFormVisible = false;
+    this.doublecheck = true;
+  },
+  qd() {
+    this.cancelAllocateDialogFormVisible = false;
+    this.doublecheck = true;
   },
 };
 </script>
@@ -465,5 +488,13 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
+}
+.ack {
+  color: #ffffff !important;
+  background-color: #005657 !important;
+}
+.el-textarea.el-input--medium {
+  display: inline;
+  width: 100px;
 }
 </style>

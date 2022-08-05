@@ -8,9 +8,9 @@
       v-show="showSearch"
       label-width="68px"
     >
-      <el-form-item label="培养单位" prop="noticeType">
+      <el-form-item label="培养单位" prop="college">
         <el-select
-          v-model="queryParams.noticeType"
+          v-model="queryParams.college"
           placeholder="计算机学院"
           clearable
         >
@@ -22,12 +22,8 @@
           /> -->
         </el-select>
       </el-form-item>
-      <el-form-item label="培养层次" prop="noticeType">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="本科"
-          clearable
-        >
+      <el-form-item label="培养层次" prop="level">
+        <el-select v-model="queryParams.level" placeholder="本科" clearable>
           <!-- <el-option
             v-for="dict in dict.type.sys_notice_type"
             :key="dict.value"
@@ -36,12 +32,8 @@
           /> -->
         </el-select>
       </el-form-item>
-      <el-form-item label="年级" prop="noticeType">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="2022"
-          clearable
-        >
+      <el-form-item label="年级" prop="grade">
+        <el-select v-model="queryParams.grade" placeholder="2022" clearable>
           <!-- <el-option
             v-for="dict in dict.type.sys_notice_type"
             :key="dict.value"
@@ -50,9 +42,9 @@
           /> -->
         </el-select>
       </el-form-item>
-      <el-form-item label="班级编号" prop="noticeTitle">
+      <el-form-item label="班级编号" prop="classId">
         <el-input
-          v-model="queryParams.noticeTitle"
+          v-model="queryParams.classId"
           placeholder="请输入班级编号"
           clearable
           @keyup.enter.native="handleQuery"
@@ -344,7 +336,7 @@
 <script>
 import "@/assets/fonts/repeat/iconfont.css";
 import { Notification } from "element-ui"; // 引入通知
-import axios from "axios";
+// import { classList } from "@/api/class/maintenanceClass";
 import {
   listNotice,
   getNotice,
@@ -352,6 +344,7 @@ import {
   addNotice,
   updateNotice,
 } from "@/api/system/notice";
+// import { json } from "stream/consumers";
 
 export default {
   name: "maintenanceClass",
@@ -411,11 +404,12 @@ export default {
       dialogVisible: false,
       // 查询参数
       queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        noticeTitle: undefined,
-        createBy: undefined,
-        status: undefined,
+        // pageNum: 1,
+        // pageSize: 10,
+        college: undefined,
+        level: undefined,
+        grade: undefined,
+        classId: undefined,
       },
       // 表单参数
       form: {},
@@ -430,26 +424,27 @@ export default {
       },
     };
   },
-  created() {
-    // this.getList();
-  },
+  // created() {
+  //   this.getList({ bjdm: this.queryParams.classId });
+  // },
   methods: {
     // // 查看班级操作记录
-    showRecord(row) {
-      // const Id = row.roleId;
-      // this.$router.push("/class/role-auth/user/" + roleId);
-      this.$router.push("/class/record");
-    },
-    // /** 查询公告列表 */
-    getList(bjdm) {
+    // showRecord(row) {
+    //   // const Id = row.roleId;
+    //   // this.$router.push("/class/role-auth/user/" + roleId);
+    //   this.$router.push("/class/record");
+    // },
+    /** 查询公告列表 */
+    getList(queryParams) {
+      console.log("1");
       // this.loading = true;
-      // this.queryParams
-      listNotice(bjdm).then((response) => {
-        // this.noticeList = response.rows;
-        // this.total = response.total;
-        // this.loading = false;
-        console.log(response);
-      });
+    //   classList(queryParams).then((response) => {
+    //     console.log("2");
+    //     console.log(response);
+    //     //  this.noticeList = response.rows;
+    //     //  this.total = response.total;
+    //     //  this.loading = false;
+    //   });
     },
     // 新建班级-取消按钮
     cancel() {
@@ -470,7 +465,9 @@ export default {
     // /** 搜索按钮操作 */
     handleQuery() {
       // this.queryParams.pageNum = 1;
-      this.getList({ bjdm: "070101000501" });
+
+      let obj = { bjdm: "070101000501" };
+      this.getList(obj);
     },
     // /** 重置按钮操作 */
     resetQuery() {

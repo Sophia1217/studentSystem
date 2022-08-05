@@ -41,6 +41,8 @@ export default {
 .auditStu{
   padding:20px;
   .tabs{
+    background: #fff;
+    padding-left: 20px;
     .icon{
       display: inline-block;
       width:20px;

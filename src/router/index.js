@@ -139,6 +139,24 @@ export const constantRoutes = [
               icon: ""
             }
           },
+          {
+            path: "parameterStu",
+            component: resolve => require(["@/views/student/informationStu/parameterStu/index"], resolve),
+            name: "parameterStu",
+            meta: {
+              title: "学生信息修改参数",
+              icon: ""
+            }
+          },
+          {
+            path: "fieldSettings",
+            component: resolve => require(["@/views/student/informationStu/fieldSettings/index"], resolve),
+            name: "fieldSettings",
+            meta: {
+              title: "信息修改字段设置",
+              icon: ""
+            }
+          },
         ]
       },
       {

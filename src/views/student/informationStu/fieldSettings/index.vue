@@ -1,24 +1,24 @@
 <template>
-  <div class="forcedEdit">
+  <div class="auditStu">
     <el-tabs v-model="activeName" class="tabs" @tab-click="handleClick">
-      <el-tab-pane label="强制修改名单" name="first">
-        <span slot="label"><i class="icon tabsicon_ke"></i>强制修改名单</span>
+      <el-tab-pane label="学生" name="first">
+        <span slot="label"><i class="icon tabsicon_ke"></i>学生</span>
       </el-tab-pane>
-      <el-tab-pane label="学生名单" name="second">
-        <span slot="label"><i class="icon tabsicon_quan"></i>学生名单</span>
+      <el-tab-pane label="审核人员" name="second">
+        <span slot="label"><i class="icon tabsicon_quan"></i>审核人员</span>
       </el-tab-pane>
     </el-tabs>
-    <modifyList v-if="activeName == 'first'"></modifyList>
-    <allList v-if="activeName == 'second'" @changeActiveName="changeActiveName"></allList>
+    <studentSeting v-if="activeName == 'first'"></studentSeting>
+    <teacherSeting v-if="activeName == 'second'"></teacherSeting>
   </div>
 </template>
 
 <script>
-import ModifyList from "./modifyList/index.vue"
-import AllList from "./allList/index.vue"
+import studentSeting from './studentSeting'
+import teacherSeting from './teacherSeting'
 export default {
-  name: 'forcedEdit',
-  components:{ModifyList, AllList },
+  name: 'auditStu',
+  components:{studentSeting,teacherSeting},
   data() {
     return {
       activeName: 'first'
@@ -32,16 +32,13 @@ export default {
   methods: {
     handleClick(tab, event) {
       this.activeName = tab.name
-    },
-    changeActiveName() {
-      this.activeName = 'first'
-     }
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.forcedEdit{
+.auditStu{
   padding:20px;
   .tabs{
     background: #fff;
@@ -59,7 +56,7 @@ export default {
       vertical-align: middle;
     }
     .tabsicon_quan{
-      background: url('~@/assets/images/icon_quan.png');
+      background: url('~@/assets/images/teacher.png');
       background-repeat: no-repeat;
       background-position: center;
       vertical-align: middle;

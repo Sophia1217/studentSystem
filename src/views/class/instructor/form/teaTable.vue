@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h2>班主任管理</h2>
+    <p>表</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: "headTeacher", //班主任管理
+  name: "teaTable", // 辅导员表单内容
   data() {
     return {};
   },

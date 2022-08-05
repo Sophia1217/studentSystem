@@ -102,18 +102,10 @@
                     type="primary"
                     class="create"
                     icon="el-icon-search"
-                    @click="handleAdd"
+                    @click="handleChange"
                   >
-                    调出班级</el-button
+                    调整班级</el-button
                   >
-                  <!-- <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:notice:add']"
-        >新增</el-button> -->
                 </el-col>
                 <el-col :span="1.5">
                   <el-button
@@ -131,6 +123,21 @@
           @click="handleUpdate"
           v-hasPermi="['system:notice:edit']"
         >修改</el-button> -->
+                </el-col>
+                <el-col :span="1.5">
+                  <el-button class="export">
+                    <span class="iconfont icon-daochu-06"></span>
+                    导入</el-button
+                  >
+                  <!-- <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+          v-hasPermi="['system:notice:remove']"
+        >删除</el-button> -->
                 </el-col>
                 <el-col :span="1.5">
                   <el-button class="export">
@@ -186,56 +193,197 @@
           </div>
         </div>
         <div class="stu_info tab_item" v-show="currentIndex == 1">
-          学生名单内容
+          <el-form
+            :model="queryParams"
+            ref="queryForm"
+            size="small"
+            :inline="true"
+            v-show="showSearch"
+            label-width="68px"
+            class="table-header"
+          >
+            <el-form-item label="专业" prop="noticeType" class="header-item">
+              <el-select
+                v-model="queryParams.noticeType"
+                placeholder="信息安全"
+                clearable
+              >
+                <!-- <el-option
+            v-for="dict in dict.type.sys_notice_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          /> -->
+              </el-select>
+            </el-form-item>
+            <el-form-item label="生源地" prop="noticeType" class="header-item">
+              <el-select
+                v-model="queryParams.noticeType"
+                placeholder="湖北省"
+                clearable
+              >
+                <!-- <el-option
+            v-for="dict in dict.type.sys_notice_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          /> -->
+              </el-select>
+            </el-form-item>
+            <el-form-item label="性别" prop="noticeType" class="header-item">
+              <el-select
+                v-model="queryParams.noticeType"
+                placeholder="男"
+                clearable
+              >
+                <!-- <el-option
+            v-for="dict in dict.type.sys_notice_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          /> -->
+              </el-select>
+            </el-form-item>
+            <el-form-item label="学号" prop="noticeTitle" class="header-item">
+              <el-input
+                v-model="queryParams.noticeTitle"
+                placeholder="请输入学号"
+                clearable
+                @keyup.enter.native="handleQuery"
+              />
+            </el-form-item>
+            <el-form-item class="header-item">
+              <el-button
+                type="primary"
+                size="mini"
+                icon="el-icon-search"
+                class="search"
+                @click="handleQuery"
+                >查询</el-button
+              >
+              <el-button size="mini" @click="resetQuery" class="reset">
+                <span class="iconfont reset_icon">&#xe614;</span>
+
+                重置</el-button
+              >
+            </el-form-item>
+          </el-form>
+
+          <div class="table-content">
+            <div class="title" icon="el-icon-refresh">
+              <span class="title-item">未分配学生列表</span>
+              <span class="iconfont">&#xe631;</span>
+              <el-row :gutter="10" class="mb8" style="float: right">
+                <el-col :span="1.5">
+                  <el-button
+                    type="primary"
+                    class="create"
+                    icon="el-icon-search"
+                    @click="handleChange"
+                  >
+                    调入班级</el-button
+                  >
+                </el-col>
+                <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
+              </el-row>
+            </div>
+            <!-- v-loading="loading" -->
+            <el-table
+              :data="noticeList"
+              @selection-change="handleSelectionChange"
+              class="table-body"
+            >
+              <el-table-column type="selection" width="65" align="center" />
+              <el-table-column label="序号" align="center" prop="id" />
+              <el-table-column label="学号" align="center" prop="classId" />
+              <el-table-column label="姓名" align="center" prop="className">
+                <el-input
+                  :value="noticeList[0].className"
+                  clearable
+                  @keyup.enter.native="handleQuery"
+                />
+              </el-table-column>
+              <el-table-column label="性别" align="center" prop="college" />
+              <el-table-column label="专业" align="center" prop="level" />
+              <el-table-column label="生源地" align="center" prop="nums" />
+              <el-table-column
+                label="出生年月"
+                align="center"
+                prop="beginTime"
+              />
+            </el-table>
+            <pagination
+              id="pagenation"
+              v-show="total > 0"
+              :total="total"
+              :page.sync="queryParams.pageNum"
+              :limit.sync="queryParams.pageSize"
+              @pagination="getList"
+            />
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- 添加或修改公告对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="780px" append-to-body>
+    <!-- 调整班级对话框 -->
+    <el-dialog
+      class="change_class"
+      :title="title"
+      :visible.sync="open"
+      width="780px"
+      append-to-body
+    >
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="公告标题" prop="noticeTitle">
+        <el-row class="change_row">
+          <el-col :span="10">
+            <el-form-item label="当前班级" prop="noticeTitle" width="100">
               <el-input
                 v-model="form.noticeTitle"
-                placeholder="请输入公告标题"
+                placeholder="20级学硕计算机一班"
               />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="公告类型" prop="noticeType">
-              <el-select v-model="form.noticeType" placeholder="请选择公告类型">
+          <el-col :span="10">
+            <el-form-item label="班级编号" prop="noticeType">
+              <el-input v-model="form.noticeType" placeholder="202011093112">
                 <!-- <el-option
                   v-for="dict in dict.type.sys_notice_type"
                   :key="dict.value"
                   :label="dict.label"
                   :value="dict.value"
                 ></el-option> -->
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="状态">
-              <el-radio-group v-model="form.status">
-                <!-- <el-radio
-                  v-for="dict in dict.type.sys_notice_status"
-                  :key="dict.value"
-                  :label="dict.value"
-                >{{dict.label}}</el-radio> -->
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="内容">
-              <editor v-model="form.noticeContent" :min-height="192" />
+              </el-input>
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row class="change_row">
+          <el-col :span="10">
+            <el-form-item label="当前学院" prop="noticeTitle">
+              <el-input v-model="form.noticeTitle" placeholder="计算机学院" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="10" style="margin-right='10px'">
+            <el-form-item label="转入学院" prop="noticeType">
+              <el-select v-model="form.noticeType" placeholder="计算机学院">
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row class="change_row">
+          <el-col :span="10" class="in_class">
+            <el-form-item label="转入班级" prop="noticeTitle">
+              <el-select
+                v-model="form.noticeTitle"
+                placeholder="20级学硕计算机二班"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="10" class="in_class"> </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button @click="cancel" class="cancel_btn">取消</el-button>
+        <el-button @click="submitForm" class="submit_btn">确认</el-button>
       </div>
     </el-dialog>
   </div>
@@ -254,6 +402,8 @@ import {
 
 export default {
   name: "divisionClass", //分班管理
+  components: {
+  },
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
   data() {
     return {
@@ -337,7 +487,7 @@ export default {
     // this.getList();
   },
   methods: {
-    // 分班管理
+    // 分班管理路由跳转
     operate() {
       console.log(123);
       this.$router.push({
@@ -389,11 +539,12 @@ export default {
       // this.single = selection.length != 1;
       // this.multiple = !selection.length;
     },
-    /** 新增按钮操作 */
-    handleAdd() {
+    /** 调整班级操作 */
+    handleChange() {
       // this.reset();
-      // this.open = true;
-      // this.title = "添加公告";
+      this.open = true;
+      this.title = "调整班级";
+      console.log("123");
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -438,6 +589,8 @@ export default {
       //     this.$modal.msgSuccess("删除成功");
       //   })
       //   .catch(() => {});
+      this.$modal.confirm("是否删除？");
+      console.log(123);
     },
   },
 };
@@ -520,11 +673,14 @@ li {
   text-align: center;
 }
 
+.tab_con {
+  height: 100vh;
+}
 .table-content {
   padding-top: 32px;
   padding-left: 10%;
   padding-right: 10%;
-  height: 100vh;
+  height: 100vh !important;
   background-color: #ffffff;
   margin-top: 24px;
 }
@@ -564,4 +720,28 @@ li {
   font-size: 14px;
   color: #005657;
 }
+
+/* 调整班级对话框开始 */
+.change_class {
+  top: 30%;
+  font-weight: 700;
+}
+
+.change_row {
+  display: flex;
+  justify-content: space-around;
+}
+
+.cancel_btn {
+  background-color: #ffffff;
+  font-size: 14px;
+  color: #1f1f1f;
+}
+
+.submit_btn {
+  background-color: #005657;
+  font-size: 14px;
+  color: #ffffff;
+}
+/* 调整班级对话框结束 */
 </style>

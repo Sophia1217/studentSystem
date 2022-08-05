@@ -9,30 +9,30 @@
       label-width="68px"
       class="table-header"
     >
-      <el-form-item label="专业" prop="noticeType" class="header-item">
+      <el-form-item label="工作单位" prop="noticeType" class="header-item">
         <el-select
           v-model="queryParams.noticeType"
-          placeholder="信息安全"
+          placeholder="计算机学院"
           clearable
         >
         </el-select>
       </el-form-item>
-      <el-form-item label="生源地" prop="noticeType" class="header-item">
+      <el-form-item label="培养层次" prop="noticeType" class="header-item">
         <el-select
           v-model="queryParams.noticeType"
-          placeholder="湖北省"
+          placeholder="本科"
           clearable
         >
         </el-select>
       </el-form-item>
-      <el-form-item label="性别" prop="noticeType" class="header-item">
-        <el-select v-model="queryParams.noticeType" placeholder="男" clearable>
+      <el-form-item label="年级" prop="noticeType" class="header-item">
+        <el-select v-model="queryParams.noticeType" placeholder="2022" clearable>
         </el-select>
       </el-form-item>
-      <el-form-item label="学号" prop="noticeTitle" class="header-item">
+      <el-form-item label="班级编号" prop="noticeTitle" class="header-item">
         <el-input
           v-model="queryParams.noticeTitle"
-          placeholder="请输入学号"
+          placeholder="请输入班级编号"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -258,6 +258,7 @@ export default {
   justify-content: space-around;
   align-items: center;
   padding: 0 20px;
+  margin-top: 10px;
 }
 
 .header-item {

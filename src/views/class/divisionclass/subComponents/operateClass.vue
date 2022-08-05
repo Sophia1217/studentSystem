@@ -678,14 +678,13 @@ li {
 }
 .table-content {
   padding-top: 32px;
-  padding-left: 10%;
-  padding-right: 10%;
+  padding-left: 40px;
+  padding-right: 40px;
   height: 100vh !important;
   background-color: #ffffff;
   margin-top: 24px;
 }
 .table-body {
-  width: 80%;
   left: 50%;
   transform: translate(-50%);
 }

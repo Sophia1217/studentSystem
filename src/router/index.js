@@ -247,6 +247,13 @@ export const constantRoutes = [
         component: () => import("@/views/class/instructor/index"),
       },
       {
+        path: "assignTea",
+        name: "assignTea",
+        hidden: false,
+        meta: { title: "分配辅导员", icon: "" },
+        component: () => import("@/views/class/instructor/subComponents/assignTea.vue"),
+      },
+      {
         path: "classleader",
         name: "classleaderu",
         hidden: false,

@@ -131,11 +131,8 @@
       </el-row>
     </div>
 
-    <el-table
-      v-loading="loading"
-      :data="noticeList"
-      @selection-change="handleSelectionChange"
-    >
+    <!-- v-loading="loading" -->
+    <el-table :data="noticeList" @selection-change="handleSelectionChange">
       <el-table-column
         label="序号"
         align="center"
@@ -327,12 +324,8 @@
       </div>
     </el-dialog>
 
-    <el-dialog
-      :title="title"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
+    <el-dialog :title="title" :visible.sync="dialogVisible" width="30%">
+      <!--  :before-close="handleClose" -->
       <span
         >是否确认删除空班级？<span style="color: #ed5234"
           >*每次仅支持删除一个班级，且该班级代码编号为最末尾</span
@@ -351,6 +344,7 @@
 <script>
 import "@/assets/fonts/repeat/iconfont.css";
 import { Notification } from "element-ui"; // 引入通知
+import axios from "axios";
 import {
   listNotice,
   getNotice,
@@ -441,20 +435,22 @@ export default {
   },
   methods: {
     // // 查看班级操作记录
-    // showRecord(row) {
-    //   // const Id = row.roleId;
-    //   // this.$router.push("/class/role-auth/user/" + roleId);
-    //   this.$router.push("/class/record");
-    // },
+    showRecord(row) {
+      // const Id = row.roleId;
+      // this.$router.push("/class/role-auth/user/" + roleId);
+      this.$router.push("/class/record");
+    },
     // /** 查询公告列表 */
-    // getList() {
-    //   this.loading = true;
-    //   listNotice(this.queryParams).then((response) => {
-    //     this.noticeList = response.rows;
-    //     this.total = response.total;
-    //     this.loading = false;
-    //   });
-    // },
+    getList(bjdm) {
+      // this.loading = true;
+      // this.queryParams
+      listNotice(bjdm).then((response) => {
+        // this.noticeList = response.rows;
+        // this.total = response.total;
+        // this.loading = false;
+        console.log(response);
+      });
+    },
     // 新建班级-取消按钮
     cancel() {
       this.open = false;
@@ -472,21 +468,21 @@ export default {
       this.resetForm("form");
     },
     // /** 搜索按钮操作 */
-    // handleQuery() {
-    //   this.queryParams.pageNum = 1;
-    //   this.getList();
-    // },
+    handleQuery() {
+      // this.queryParams.pageNum = 1;
+      this.getList({ bjdm: "070101000501" });
+    },
     // /** 重置按钮操作 */
-    // resetQuery() {
-    //   this.resetForm("queryForm");
-    //   this.handleQuery();
-    // },
+    resetQuery() {
+      // this.resetForm("queryForm");
+      // this.handleQuery();
+    },
     // // 多选框选中数据
-    // handleSelectionChange(selection) {
-    //   this.ids = selection.map((item) => item.noticeId);
-    //   this.single = selection.length != 1;
-    //   this.multiple = !selection.length;
-    // },
+    handleSelectionChange(selection) {
+      // this.ids = selection.map((item) => item.noticeId);
+      // this.single = selection.length != 1;
+      // this.multiple = !selection.length;
+    },
     /** 新增班级按钮操作 */
     handleAdd() {
       this.reset(); //表单清空

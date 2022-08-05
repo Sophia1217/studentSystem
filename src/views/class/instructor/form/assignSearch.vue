@@ -1,124 +1,61 @@
 <template>
-  <div class="tea-table">
-    <div class="table-content">
-      <div class="title" icon="el-icon-refresh">
-        <span class="title-item">班级列表</span>
-        <span class="iconfont">&#xe631;</span>
-      </div>
-      <!-- v-loading="loading" -->
-      <el-table :data="noticeList" @selection-change="handleSelectionChange">
-        <el-table-column label="序号" align="center" prop="id" width="120" />
-        <el-table-column
-          label="班级编号"
-          align="center"
-          prop="classId"
-          width="120"
-        />
-        <el-table-column
-          label="班级名称"
-          align="center"
-          prop="className"
-          width="320"
-        >
-          <el-input
-            :value="noticeList[0].className"
+  <div>
+    <el-form
+      :model="queryParams"
+      ref="queryForm"
+      size="small"
+      :inline="true"
+      v-show="showSearch"
+      label-width="68px"
+      class="table-header"
+    >
+      <div class="assignInput">
+        <el-form-item label="工号" prop="noticeType" class="header-item">
+          <el-select
+            v-model="queryParams.noticeType"
+            placeholder="计算机学院"
             clearable
-            @keyup.enter.native="handleQuery"
-          />
-        </el-table-column>
-        <el-table-column
-          label="培养单位"
-          align="center"
-          prop="college"
-          width="180"
-        />
-        <el-table-column
-          label="培养层次"
-          align="center"
-          prop="level"
-          width="120"
-        />
-        <el-table-column
-          label="班级人数"
-          align="center"
-          prop="nums"
-          width="120"
-        />
-        <el-table-column
-          label="创建时间"
-          align="center"
-          prop="beginTime"
-          width="180"
-        />
-        <el-table-column
-          label="更新时间"
-          align="center"
-          prop="updateTime"
-          width="180"
-        />
-        <el-table-column label="操作" align="center" width="100">
-          <template
-            ><!-- slot-scope="scope" -->
-            <div @click="operate" class="operate">
-              <span class="assignTea">分配辅导员</span>
-            </div>
-          </template>
-        </el-table-column>
-        <!-- <el-table-column
-        label="公告标题"
-        align="center"
-        prop="noticeTitle"
-        :show-overflow-tooltip="true"
-      /> -->
-        <!-- <el-table-column label="公告类型" align="center" prop="noticeType" width="100">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_notice_type" :value="scope.row.noticeType"/>
-        </template>
-      </el-table-column> -->
-        <!-- <el-table-column label="创建者" align="center" prop="createBy" width="100" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="100">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column> -->
-        <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
+          >
+          </el-select>
+        </el-form-item>
+        <el-form-item label="工作单位" prop="noticeType" class="header-item">
+          <el-select
+            v-model="queryParams.noticeType"
+            placeholder="本科"
+            clearable
+          >
+          </el-select>
+        </el-form-item>
+      </div>
+      <div class="assignBtn">
+        <el-form-item class="header-item">
           <el-button
+            type="primary"
             size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:notice:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:notice:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column> -->
-      </el-table>
-      <pagination
-        id="pagenation"
-        v-show="total > 0"
-        :total="total"
-        :page.sync="queryParams.pageNum"
-        :limit.sync="queryParams.pageSize"
-        @pagination="getList"
-      />
-    </div>
+            icon="el-icon-search"
+            class="search"
+            @click="handleQuery"
+            >查询</el-button
+          >
+          <el-button size="mini" @click="resetQuery" class="reset">
+            <span class="iconfont reset_icon">&#xe614;</span>
+
+            重置</el-button
+          >
+        </el-form-item>
+      </div>
+    </el-form>
   </div>
 </template>
 
 <script>
-import "@/assets/fonts/refresh/iconfont.css";
 export default {
-  name: "teaTable", //辅导员管理
-  dicts: [], // ['sys_notice_status', 'sys_notice_type']
+  name: "assignSearch",
   data() {
     return {
+      // tab栏切换
+      tab_title: ["22级电子信息1班", "未分配学生名单"],
+      currentIndex: 0,
       // 遮罩层
       // loading: true,
       // 选中数组
@@ -196,11 +133,16 @@ export default {
     // this.getList();
   },
   methods: {
-    // 辅导员任命
+    // 分班管理路由跳转
     operate() {
+      console.log(123);
       this.$router.push({
-        path: "/class/assignTea",
+        path: "/class/operateClass",
       });
+    },
+    // tab栏切换
+    tabClick(index) {
+      this.currentIndex = index;
     },
     /** 查询公告列表 */
     getList() {
@@ -243,11 +185,12 @@ export default {
       // this.single = selection.length != 1;
       // this.multiple = !selection.length;
     },
-    /** 新增按钮操作 */
-    handleAdd() {
+    /** 调整班级操作 */
+    handleChange() {
       // this.reset();
-      // this.open = true;
-      // this.title = "添加公告";
+      this.open = true;
+      this.title = "调整班级";
+      console.log("123");
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -292,55 +235,40 @@ export default {
       //     this.$modal.msgSuccess("删除成功");
       //   })
       //   .catch(() => {});
+      this.$modal.confirm("是否删除？");
+      console.log(123);
     },
   },
 };
 </script>
 
-<style>
-.tea-table {
-  height: 100vh;
+<style scoped>
+.table-header {
   background-color: #ffffff;
+  height: 128px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  margin-top: 10px;
 }
-#pagenation {
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
+.assignInput {
+  display: flex;
+  justify-content: center;
 }
-
-.table-content {
-  padding-top: 32px;
-  padding-left: 40px;
-  padding-right: 40px;
-  height: 100%;
-  background-color: #ffffff;
-  margin-top: 24px;
+.assignInput .header-item:nth-child(1) {
+  margin-right: 90px;
 }
-
-.title {
-  margin-bottom: 32px;
+.header-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.title-item {
-  width: 80px;
-  height: 28px;
-  font-family: "PingFangSC-Semibold";
-  font-weight: 600;
-  font-size: 20px;
-  color: #1f1f1f;
-  line-height: 28px;
-  margin-right: 12px;
+.search {
+  background: #005657;
 }
-/* 分页背景颜色修改 */
-.el-pagination.is-background .el-pager li:not(.disabled).active {
-  background-color: #005657;
-}
-.operate {
-  cursor: pointer;
-}
-.assignTea {
-  font-family: "PingFangSC-Regular";
-  font-weight: 700;
-  font-size: 14px;
+.reset {
   color: #005657;
+  border-color: #005657;
 }
 </style>

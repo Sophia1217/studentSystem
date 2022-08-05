@@ -1,12 +1,13 @@
-import request from '@/utils/request'
+import request from "@/utils/request";
 
 // 查询公告列表
 export function listNotice(query) {
-  // return request({
-  //   url: '/system/notice/list',
-  //   method: 'get',
-  //   params: query
-  // })
+  return request({
+    // url: '/system/notice/list',
+    url: "/sws/class/queryClassList",
+    method: "post",
+    data: query,
+  });
 }
 
 // 查询公告详细

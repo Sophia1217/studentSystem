@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>辅导员管理</h2>
     <tea-search></tea-search>
     <tea-table></tea-table>
   </div>

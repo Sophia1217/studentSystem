@@ -3,7 +3,7 @@
     <div class="wrap">
       <div class="detail_left">
         <div v-for="(item,index) in dtailsList" :key="index">
-          <div class="list" :class="index==current?'active':''" @click="handleList(index)">
+          <div class="list" :class="index==current?'active':''" @click="handleList(index,'tag')">
             <div>{{item}}</div>
             <i :class="index==current?'el-icon-arrow-right':''"></i>
           </div>
@@ -16,7 +16,7 @@
             <span>创建时间：2022-03-23 23:21:34 </span> <span class="updataTime">更新时间：2022-03-23 23:21:34</span>
           </div>
         </div>
-        <div class="headline">基本信息</div>
+        <div class="headline" id="tag_0">基本信息</div>
         <div class="tableStyle">
           <div class="imgWrap">
             <div class="photo">
@@ -1101,7 +1101,7 @@
           </div>
         </div>
 
-        <div class="headline">联系方式</div>
+        <div class="headline" id="tag_1">联系方式</div>
         <div class="tableStyle" v-if="schooling==1">
           <div class="information">
             <el-row :gutter="20">
@@ -1305,7 +1305,7 @@
           </div>
         </div>
 
-        <div class="headline">
+        <div class="headline" id="tag_2">
           <div>家庭成员信息</div>
           <div class="editBtn" v-if="isEdit ==2" @click="addDetailTable"><i class="addIcon"></i> 添加家庭成员信息</div>
         </div>
@@ -1425,7 +1425,7 @@
           </el-table>
         </div>
 
-        <div class="headline">
+        <div class="headline" id="tag_3">
           <div>学习经历</div>
           <div class="editBtn" v-if="isEdit ==2" @click="addDetailTable"><i class="addIcon"></i> 添加学习经历</div>
         </div>
@@ -1505,7 +1505,7 @@
           </el-table>
         </div>
 
-        <div class="headline">
+        <div class="headline" id="tag_4">
           <div>工作经历</div>
           <div class="editBtn" v-if="isEdit ==2" @click="addDetailTable"><i class="addIcon"></i> 添加工作经历</div>
         </div>
@@ -1624,8 +1624,15 @@ export default {
   },
 
   methods: {
-    handleList(index) {
+    handleList(index,tag) {
       this.current = index
+      var id = "#" + tag + '_' + index;
+      console.log(id)
+      document.querySelector(id).scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "nearest",
+      });
     },
     addDetailTable() {
       this.tableData.push({

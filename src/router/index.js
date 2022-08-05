@@ -129,6 +129,16 @@ export const constantRoutes = [
               icon: ""
             }
           },
+          {
+            path: "auditSteps",
+            hidden: true,
+            component: resolve => require(["@/views/student/informationStu/auditStu/processed/auditSteips/index"], resolve),
+            name: "auditSteps",
+            meta: {
+              title: "审核",
+              icon: ""
+            }
+          },
         ]
       },
       {

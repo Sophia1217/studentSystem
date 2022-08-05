@@ -83,18 +83,18 @@
       </div>
       <!-- v-loading="loading" -->
       <el-table :data="noticeList" @selection-change="handleSelectionChange">
-        <el-table-column label="序号" align="center" prop="id" width="100" />
+        <el-table-column label="序号" align="center" prop="id" width="120" />
         <el-table-column
           label="班级编号"
           align="center"
           prop="classId"
-          width="100"
+          width="120"
         />
         <el-table-column
           label="班级姓名"
           align="center"
           prop="className"
-          width="300"
+          width="320"
         >
           <el-input
             :value="noticeList[0].className"
@@ -106,31 +106,31 @@
           label="学院"
           align="center"
           prop="college"
-          width="150"
+          width="180"
         />
         <el-table-column
           label="培养层次"
           align="center"
           prop="level"
-          width="100"
+          width="120"
         />
         <el-table-column
           label="班级人数"
           align="center"
           prop="nums"
-          width="100"
+          width="120"
         />
         <el-table-column
           label="创建时间"
           align="center"
           prop="beginTime"
-          width="150"
+          width="180"
         />
         <el-table-column
           label="更新时间"
           align="center"
           prop="updateTime"
-          width="150"
+          width="180"
         />
         <el-table-column label="操作" align="center" width="100">
           <template
@@ -483,6 +483,7 @@ export default {
 .table-content {
   padding-top: 32px;
   padding-left: 40px;
+  padding-right: 40px;
   height: 100%;
   background-color: #ffffff;
   margin-top: 24px;

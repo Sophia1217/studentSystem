@@ -1,9 +1,27 @@
 <template>
-  <div class="tea-table">
+  <div class="assign-table">
     <div class="table-content">
       <div class="title" icon="el-icon-refresh">
-        <span class="title-item">班级列表</span>
+        <span class="title-item">22电子信息1班</span>
         <span class="iconfont">&#xe631;</span>
+        <el-row :gutter="10" class="mb8" style="float: right">
+          <el-col :span="1.5">
+            <el-button
+              type="primary"
+              class="create"
+              icon="el-icon-search"
+            >
+              批量分配</el-button
+            >
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              class="delete"
+              icon="el-icon-delete"
+              >批量取消</el-button
+            >
+          </el-col>
+        </el-row>
       </div>
       <!-- v-loading="loading" -->
       <el-table :data="noticeList" @selection-change="handleSelectionChange">
@@ -115,7 +133,7 @@
 <script>
 import "@/assets/fonts/refresh/iconfont.css";
 export default {
-  name: "teaTable", //辅导员管理
+  name: "assignTable", //分配辅导员表格
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
   data() {
     return {
@@ -298,10 +316,11 @@ export default {
 </script>
 
 <style>
-.tea-table {
+.assign-table {
   height: 100vh;
   background-color: #ffffff;
 }
+
 #pagenation {
   left: 50%;
   transform: translateX(-50%);
@@ -321,7 +340,7 @@ export default {
   margin-bottom: 32px;
 }
 .title-item {
-  width: 80px;
+  width: 133px;
   height: 28px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;

@@ -49,14 +49,20 @@
       <el-row :gutter="10" class="mb8" style="float: right; margin-top: 15px">
         <!-- <el-col :span="1.5" style="float: left"> 班级列表 </el-col> -->
         <el-col :span="1.5">
-          <el-button class="allocate" @click="handleDelete">
-            <span class="iconfont allocate_icon">&#xe638;</span>
+          <el-button class="allocate" @click="distributeSomeClass">
+            <span class="iconfont allocate_icon" @click="distributeSomeClass"
+              >&#xe638;</span
+            >
             批量分配</el-button
           >
         </el-col>
         <el-col :span="1.5">
-          <el-button class="onrecord">
-            <span class="iconfont record_icon">&#xe694;</span>
+          <el-button class="onrecord" @click="cancelDistributeSomeClass">
+            <span
+              class="iconfont record_icon"
+              @click="cancelDistributeSomeClass"
+              >&#xe694;</span
+            >
             批量取消</el-button
           >
         </el-col>
@@ -64,6 +70,7 @@
       </el-row>
     </div>
 
+    <!-- 班主任列表 -->
     <el-table
       v-loading="loading"
       :data="noticeList"
@@ -150,8 +157,26 @@
       @pagination="getList"
     />
 
-    <!-- 取消分配、批量取消对话框 -->
-    <el-dialog title="取消分配" :visible.sync="cancelAllocateDialogFormVisible">
+    <!-- 给班主任分配班级操作：teacherClass-->
+    <!-- :before-close="handleClose" -->
+    <el-dialog title="分配班级" :visible.sync="teacherClass" width="30%">
+      <span
+        >确认将【78788(学工号)】【张曼丽】任命为【22电子信息1班】班主任？</span
+      >
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="teacherClass = false">取 消</el-button>
+        <!-- distributeClassConfirm(row) -->
+        <el-button
+          type="primary"
+          @click="distributeClassConfirm(row)"
+          class="confirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+
+    <!-- 给班主任取消分配班级操作：cancelAllocate -->
+    <el-dialog title="取消分配" :visible.sync="cancelAllocate" width="50%">
       <el-form :model="form">
         <el-form-item label="撤任理由" prop="reason">
           <el-select v-model="form.reason" placeholder="休学">
@@ -169,24 +194,25 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="qx">取 消</el-button>
-        <el-button type="primary" @click="qd">确 定</el-button>
+        <el-button @click="cancelAllocate = false">取 消</el-button>
+        <el-button type="primary" @click="cancelAllocateConfirm"
+          >确 定</el-button
+        >
       </div>
     </el-dialog>
 
-    <!-- 取消分配、批量取消对话框-二次确定 -->
-    <el-dialog
-      :title="title"
-      :visible.sync="doublecheck"
-      width="30%"
-      :before-close="handleClose"
-    >
+    <!-- 给班主任取消分配班级操作——二次确定：checkDouble -->
+    <el-dialog title="取消分配" :visible.sync="doubleCheck" width="50%">
       <span
-        >确认将取消【78788】【张曼丽】【计算机硕士22级1班】、【计算机硕士22级2班】班主任任命？</span
+        >确认取消【78788(学工号)】【张曼丽】对【计算机硕士22级1班】【计算机硕士22级1班】班主任任命？</span
       >
       <span slot="footer" class="dialog-footer">
-        <el-button @click="doublecheck = 'false'">取 消</el-button>
-        <el-button type="primary" @click="doublecheck = 'false'" class="confirm"
+        <el-button @click="doubleCheck = false">取 消</el-button>
+        <!-- distributeClassConfirm(row) -->
+        <el-button
+          type="primary"
+          @click="doubleCheckConfirm(row)"
+          class="confirm"
           >确 定</el-button
         >
       </span>
@@ -239,12 +265,12 @@ export default {
       ],
       // 弹出层标题
       title: "",
-      // 是否显示新建班级弹出层
-      open: false,
+      // 分配班级弹出层
+      teacherClass: false,
       // 是否显示取消分配、批量取消弹出层
-      cancelAllocateDialogFormVisible: false,
+      cancelAllocate: false,
       // 取消分配-二次确认弹出框
-      doublecheck: false,
+      doubleCheck: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -286,77 +312,45 @@ export default {
       };
       this.resetForm("form");
     },
-    // 班主任对班级一对一分配班级（点击分配班级时根据row获取信息）、一对多分配班级（点击批量分配时根据list判断列表中有几个勾选）
+    // 班级对班主任一对一分配（点击分配班级时根据row获取信息）、一对多分配（点击批量分配时根据list判断列表中有几个勾选）
     allocateClass(row) {
-      console.log("班主任对班级一对一分配班级");
-      this.$confirm(
-        "确认将【学工号】【张曼丽】、【学工号】【汪曼纳】任命为【22电子信息1班】班主任？",
-        "分配班级",
-        {
-          distinguishCancelAndClose: true,
-          confirmButtonText: "确认",
-          confirmButtonClass: "ack",
-          cancelButtonText: "取消",
-        }
-      )
-        .then(() => {
-          this.$message({
-            type: "info",
-            message: "分配班级操作成功",
-          });
-        })
-        .catch((action) => {
-          this.$message({
-            type: "info",
-            message:
-              // action === "cancel" ? "放弃保存并离开页面" : "停留在当前页面",
-              "分配班级操作取消",
-          });
-        });
+      this.teacherClass = true;
     },
     // 班主任对班级一对一取消分配班级
     allocateNone(row) {
-      console.log("班主任对班级一对一取消分配班级");
-      this.cancelAllocateDialogFormVisible = true;
+      this.cancelAllocate = true;
     },
-    /** 新增班级按钮操作 */
-    handleAdd() {
-      this.reset(); //表单清空
-      this.open = true; //弹出对话框
-      this.title = "新建班级";
-    },
-    // 删除空班级操作
-    handleDelete() {
-      // this.reset();
-      this.dialogVisible = true;
-      this.title = "删除空班级";
-    },
-    // 删除空班级-取消操作
-    classCancel() {
-      this.dialogVisible = false;
-      // const h = this.$createElement;
-      // this.$notify({
-      //   type: "error",
-      //   title: "错误",
-      //   customClass: "error",
-      //   message: h(
-      //     "h3",
-      //     { style: "color: #ED5234" },
-      //     "班级代码编号末尾班级目前仍有成员，请删除班级所有成员后重试"
-      //   ),
-      //   duration: 0,
-      // });
-    },
-    // 删除空班级-确认操作
-    classConfirm() {
-      this.dialogVisible = false;
-      this.$notify({
+    // 分配班级-确认操作
+    distributeClassConfirm(row) {
+      this.teacherClass = false;
+      this.$message({
+        message: "分配班级成功",
         type: "success",
-        title: "成功",
-        customClass: "success",
-        message: "空班级【计算机工程硕士2022级21班】删除成功！",
-        duration: 0,
       });
+    },
+    // 取消分配-确认操作
+    cancelAllocateConfirm() {
+      this.cancelAllocate = false;
+      setTimeout(() => {
+        this.doubleCheck = true;
+      }, 500);
+    },
+    // 取消分配-二次确认按钮
+    doubleCheckConfirm() {
+      this.doubleCheck = false;
+      this.$message({
+        message: "取消分配班级操作成功",
+        type: "success",
+      });
+    },
+    // 批量分配班级——1个班主任对应多个班级
+    distributeSomeClass() {
+      // 拿到勾选的那几个班主任信息，后弹出分配班级弹出框
+      this.teacherClass = true;
+    },
+    // 批量取消分配班级
+    cancelDistributeSomeClass() {
+      this.cancelAllocate = true;
     },
 
     /** 提交按钮 */
@@ -394,19 +388,20 @@ export default {
     //     .catch(() => {});
     // },
   },
-  //
-  qx() {
-    this.cancelAllocateDialogFormVisible = false;
-    this.doublecheck = true;
-  },
-  qd() {
-    this.cancelAllocateDialogFormVisible = false;
-    this.doublecheck = true;
-  },
+  //取消分配-确定按钮
+  // qd() {
+  //   console.log("1");
+  //   this.cancelAllocate = false;
+  //   // this.doublecheck = true;
+  // },
 };
 </script>
 
 <style>
+.app-container {
+  height: 100vh;
+  background-color: white;
+}
 .search {
   background: #005657;
 }
@@ -494,7 +489,14 @@ export default {
   background-color: #005657 !important;
 }
 .el-textarea.el-input--medium {
-  display: inline;
-  width: 100px;
+  display: inline-block;
+  width: 60%;
+}
+.pagination-container {
+  margin-top: 0px;
+  height: 100%;
+}
+.el-pagination {
+  margin-top: 20px;
 }
 </style>

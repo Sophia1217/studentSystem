@@ -78,12 +78,12 @@
       </el-row>
     </div>
 
+    <!-- 班级列表 -->
     <el-table
       v-loading="loading"
       :data="noticeList"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="序号" align="center" width="100" type="index" />
       <el-table-column
         label="班级编号"
@@ -144,7 +144,7 @@
         <template slot-scope="scope">
           <div @click="action(scope.row)">
             <span class="iconfont allocate_teacher">&#xe638;</span>
-            <span style="color: #005657">{{ noticeList[0].action }}</span>
+            <span style="color: #005657; margin-left: 5px"> 分配班主任 </span>
           </div>
         </template>
       </el-table-column>
@@ -264,7 +264,6 @@ export default {
           nums: 34,
           beginTime: "2022-07-07",
           updateTime: "2022-07-07",
-          action: "分配班主任",
         },
         {
           classId: 13070025,
@@ -274,7 +273,6 @@ export default {
           nums: 34,
           beginTime: "2022-07-07",
           updateTime: "2022-07-07",
-          action: "分配班主任",
         },
         {
           classId: 13070025,
@@ -284,7 +282,6 @@ export default {
           nums: 34,
           beginTime: "2022-07-07",
           updateTime: "2022-07-07",
-          action: "分配班主任",
         },
       ],
       // 弹出层标题
@@ -416,6 +413,10 @@ export default {
 </script>
 
 <style>
+.app-container {
+  height: 100vh;
+  background-color: white;
+}
 .search {
   background: #005657;
 }
@@ -494,5 +495,16 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
+}
+.pagination-container {
+  margin-top: 0px;
+  height: 100%;
+}
+.el-pagination {
+  margin-top: 20px;
+}
+.el-textarea.el-input--medium {
+  display: inline-block;
+  width: 80%;
 }
 </style>

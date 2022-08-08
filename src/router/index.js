@@ -272,7 +272,8 @@ export const constantRoutes = [
         name: "record",
         path: "record",
         hidden: true,
-        component: () => import("@/views/class/maintenanceClass/record"),
+        meta: { title: "任职记录", icon: "" },
+        component: () => import("@/views/class/headerTeacher/record"),
       },
 
       {
@@ -296,6 +297,13 @@ export const constantRoutes = [
         hidden: false,
         meta: { title: "班主任管理", icon: "" },
         component: () => import("@/views/class/headerTeacher/index"),
+      },
+      {
+        name: "LeadRecord",
+        path: "leadRecord",
+        hidden: true,
+        meta: { title: "任职记录", icon: "" },
+        component: () => import("@/views/class/classleader/leadRecord"),
       },
       {
         path: 'classTeacher',

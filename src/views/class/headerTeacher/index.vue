@@ -125,7 +125,7 @@
         label="创建时间"
         align="center"
         prop="beginTime"
-        width="150"
+        width="100"
         sortable
       />
       <el-table-column
@@ -142,9 +142,25 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="scope">
-          <div @click="action(scope.row)">
-            <span class="iconfont allocate_teacher">&#xe638;</span>
-            <span style="color: #005657; margin-left: 5px"> 分配班主任 </span>
+          <div>
+            <span class="iconfont allocate_teacher" @click="action(scope.row)"
+              >&#xe638;</span
+            >
+            <span
+              style="color: #005657; margin-left: 5px; margin-right: 5px"
+              @click="action(scope.row)"
+            >
+              分配班主任
+            </span>
+            <span
+              class="iconfont record_icon"
+              style="margin-left: 5px"
+              @click="record(scope.row)"
+              >&#xe694;</span
+            >
+            <span style="color: #005657" @click="record(scope.row)">
+              任职记录
+            </span>
           </div>
         </template>
       </el-table-column>
@@ -372,6 +388,12 @@ export default {
         customClass: "success",
         message: "空班级【计算机工程硕士2022级21班】删除成功！",
         duration: 0,
+      });
+    },
+    // 任职记录表
+    record(row) {
+      this.$router.push({
+        path: "./record",
       });
     },
     /** 提交按钮 */

@@ -362,7 +362,6 @@ import deleteClassDoubleVue from "./deleteClassDouble.vue";
 export default {
   name: "maintenanceClass",
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
-  props: { deleteClassDoubleVue },
   data() {
     return {
       // 遮罩层

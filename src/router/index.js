@@ -272,7 +272,8 @@ export const constantRoutes = [
         name: "record",
         path: "record",
         hidden: true,
-        component: () => import("@/views/class/maintenanceClass/record"),
+        meta: { title: "任职记录", icon: "" },
+        component: () => import("@/views/class/headerTeacher/record"),
       },
 
       {

@@ -546,10 +546,8 @@ export default {
       display: flex;
       flex-direction: row;
       align-items: center;
-      .searchBtn{
-        // background: #005657;
-        // color:#fff;
-      }
+      background: #fff;
+      .searchBtn{}
       .elSelect{
         width:110px;
       }

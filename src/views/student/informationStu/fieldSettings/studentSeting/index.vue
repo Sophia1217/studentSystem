@@ -18,8 +18,8 @@
         <div class="headline">
           <div>基本信息</div>
           <div class="boxSelect">
-             <el-checkbox v-model="basicCheckBox.readOnly">全部只读</el-checkbox>
-             <el-checkbox v-model="basicCheckBox.writeOnly">全部必填</el-checkbox>
+             <el-checkbox v-model="basicCheckBox.readOnly1" >全部只读</el-checkbox>
+             <el-checkbox v-model="basicCheckBox.writeOnly1">全部必填</el-checkbox>
           </div>
         </div>
         <div class="information">
@@ -29,7 +29,7 @@
                   <div class="title">学号</div>
                   <div class="content">
                     <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
+                    <el-checkbox v-model="basicCheckBox.checked1_1">必填</el-checkbox>
                   </div>
                 </div>
               </el-col>
@@ -37,17 +37,17 @@
                 <div class="wrap">
                   <div class="title">姓名</div>
                   <div class="content">
-                    <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
+                    <el-checkbox v-model="basicCheckBox.checked2">只读</el-checkbox>
+                    <el-checkbox v-model="basicCheckBox.checked_2">必填</el-checkbox>
                   </div>
                 </div>
               </el-col>
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">姓名</div>
+                  <div class="title">拼音姓</div>
                   <div class="content">
-                    <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
+                    <el-checkbox v-model="basicCheckBox.checked3">只读</el-checkbox>
+                    <el-checkbox v-model="basicCheckBox.checked3_3">必填</el-checkbox>
                   </div>
                 </div>
               </el-col>

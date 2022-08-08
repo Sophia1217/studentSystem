@@ -74,6 +74,20 @@ export const constantRoutes = [
       },
     ],
   },
+  {
+    path: "",
+    component: Layout,
+    hidden: true,
+    redirect: "selectRole",
+    children: [
+      {
+        path: "selectRole",
+        component: () => import("@/views/selectRole/index"),
+        name: "selectRole",
+        meta: { title: "角色选择", icon: "dashboard", affix: true },
+      },
+    ],
+  },
   // {
   //   path: '/user',
   //   component: Layout,

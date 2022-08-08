@@ -202,6 +202,57 @@ export const constantRoutes = [
     ]
   },
   {
+    path: "/politicalwork",
+    meta: { title: "政工队伍管理", icon: "monitor" },
+    component: Layout,
+    hidden: false,
+    children: [
+      {
+        path: "basicinfo",
+        component: resolve => require(["@/views/politicalwork/basicInfo/index"], resolve),
+        name: "basicinfo",
+        meta: {
+          title: "政工干部基本信息",
+          icon: ""
+        }
+      },
+      {
+        path: "detailinfo",
+        hidden: true,
+        component: resolve => require(["@/views/politicalwork/basicInfo/detailInfo/index"], resolve),
+        name: "detailinfo",
+        meta: { title: "详情", icon: "" }
+      },
+      {
+        path: "assistantappoint",
+        component: resolve => require(["@/views/politicalwork/assistantappoint/index"], resolve),
+        name: "assistantappoint",
+        meta: {
+          title: "辅导员任命",
+          icon: ""
+        }
+      },
+      {
+        path: "teacherappoint",
+        component: resolve => require(["@/views/politicalwork/teacherappoint/index"], resolve),
+        name: "teacherappoint",
+        meta: {
+          title: "班主任任命",
+          icon: ""
+        }
+      },
+      {
+        path: "infoEdit",
+        component: resolve => require(["@/views/politicalwork/infoEdit/index"], resolve),
+        name: "infoEdit",
+        meta: {
+          title: "信息修改字段设置",
+          icon: ""
+        }
+      }
+    ]
+  },
+  {
     path: "/class",
     meta: { title: "班级管理", icon: "monitor" },
     component: Layout,

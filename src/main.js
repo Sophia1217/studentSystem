@@ -85,13 +85,13 @@ Vue.use(Element, {
 
 Vue.config.productionTip = false;
 
-import axios from "axios";
-axios
-  .post("http://10.161.23.133:8081/sws/class/queryClassList", {
-    bjdm: "070101000501",
-  })
-  .then((res) => console.log(res))
-  .catch((err) => console.log(err));
+// import axios from "axios";
+// axios
+//   .post("http://10.161.23.133:8081/sws/class/queryClassList", {
+//     bjdm: "070101000501",
+//   })
+//   .then((res) => console.log(res))
+//   .catch((err) => console.log(err));
 
 new Vue({
   el: "#app",

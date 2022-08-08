@@ -4,22 +4,9 @@
       <div class="title" icon="el-icon-refresh">
         <span class="title-item">班级列表</span>
         <span class="iconfont">&#xe631;</span>
-        <el-row :gutter="10" class="mb8" style="float: right">
-          <el-col :span="1.5">
-            <el-button
-              @click="empRecordClick"
-              type="primary"
-              class="teaRecord"
-              icon="el-icon-search"
-            >
-              任职记录</el-button
-            >
-          </el-col>
-        </el-row>
       </div>
       <!-- v-loading="loading" -->
       <el-table :data="noticeList" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="65" align="center" />
         <el-table-column label="序号" align="center" prop="id" />
         <el-table-column label="班级编号" align="center" prop="classId" />
         <el-table-column label="班级名称" align="center" prop="className">
@@ -34,7 +21,7 @@
         <el-table-column label="班级人数" align="center" prop="nums" />
         <el-table-column label="创建时间" align="center" prop="beginTime" />
         <el-table-column label="更新时间" align="center" prop="updateTime" />
-        <el-table-column label="操作" align="center" width="165">
+        <el-table-column label="操作" align="center">
           <template
             ><!-- slot-scope="scope" -->
             <div @click="operate" class="operate">
@@ -42,6 +29,41 @@
             </div>
           </template>
         </el-table-column>
+        <!-- <el-table-column
+        label="公告标题"
+        align="center"
+        prop="noticeTitle"
+        :show-overflow-tooltip="true"
+      /> -->
+        <!-- <el-table-column label="公告类型" align="center" prop="noticeType" width="100">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_notice_type" :value="scope.row.noticeType"/>
+        </template>
+      </el-table-column> -->
+        <!-- <el-table-column label="创建者" align="center" prop="createBy" width="100" />
+      <el-table-column label="创建时间" align="center" prop="createTime" width="100">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column> -->
+        <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['system:notice:edit']"
+          >修改</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row)"
+            v-hasPermi="['system:notice:remove']"
+          >删除</el-button>
+        </template>
+      </el-table-column> -->
       </el-table>
       <pagination
         id="pagenation"
@@ -144,10 +166,6 @@ export default {
       this.$router.push({
         path: "/class/assignTea",
       });
-    },
-    // 任职记录
-    empRecordClick() {
-      this.$router.push("/class/empRecord");
     },
     /** 查询公告列表 */
     getList() {
@@ -289,20 +307,5 @@ export default {
   font-weight: 700;
   font-size: 14px;
   color: #005657;
-}
-/* 任职记录 */
-.teaRecord {
-  background-color: rgba(0, 144, 161, 0.1) !important;
-  border: 1px solid #0090a1 !important;
-  font-weight: 600;
-  font-size: 14px;
-  color: #0090a1;
-}
-/* 批量分配 */
-.teaAssign {
-  background-color: #005657;
-  font-weight: 600;
-  font-size: 14px;
-  color: #ffffff;
 }
 </style>

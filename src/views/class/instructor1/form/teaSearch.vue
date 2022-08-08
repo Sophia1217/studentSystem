@@ -1,67 +1,69 @@
 <template>
-  <div class="tea-table">
-    <div class="table-content">
-      <div class="title" icon="el-icon-refresh">
-        <span class="title-item">班级列表</span>
-        <span class="iconfont">&#xe631;</span>
-        <el-row :gutter="10" class="mb8" style="float: right">
-          <el-col :span="1.5">
-            <el-button
-              @click="empRecordClick"
-              type="primary"
-              class="teaRecord"
-              icon="el-icon-search"
-            >
-              任职记录</el-button
-            >
-          </el-col>
-        </el-row>
-      </div>
-      <!-- v-loading="loading" -->
-      <el-table :data="noticeList" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="65" align="center" />
-        <el-table-column label="序号" align="center" prop="id" />
-        <el-table-column label="班级编号" align="center" prop="classId" />
-        <el-table-column label="班级名称" align="center" prop="className">
-          <el-input
-            :value="noticeList[0].className"
-            clearable
-            @keyup.enter.native="handleQuery"
-          />
-        </el-table-column>
-        <el-table-column label="培养单位" align="center" prop="college" />
-        <el-table-column label="培养层次" align="center" prop="level" />
-        <el-table-column label="班级人数" align="center" prop="nums" />
-        <el-table-column label="创建时间" align="center" prop="beginTime" />
-        <el-table-column label="更新时间" align="center" prop="updateTime" />
-        <el-table-column label="操作" align="center" width="165">
-          <template
-            ><!-- slot-scope="scope" -->
-            <div @click="operate" class="operate">
-              <span class="assignTea">分配辅导员</span>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-      <pagination
-        id="pagenation"
-        v-show="total > 0"
-        :total="total"
-        :page.sync="queryParams.pageNum"
-        :limit.sync="queryParams.pageSize"
-        @pagination="getList"
-      />
-    </div>
+  <div>
+    <el-form
+      :model="queryParams"
+      ref="queryForm"
+      size="small"
+      :inline="true"
+      v-show="showSearch"
+      label-width="68px"
+      class="table-header"
+    >
+      <el-form-item label="工作单位" prop="noticeType" class="header-item">
+        <el-select
+          v-model="queryParams.noticeType"
+          placeholder="计算机学院"
+          clearable
+        >
+        </el-select>
+      </el-form-item>
+      <el-form-item label="培养层次" prop="noticeType" class="header-item">
+        <el-select
+          v-model="queryParams.noticeType"
+          placeholder="本科"
+          clearable
+        >
+        </el-select>
+      </el-form-item>
+      <el-form-item label="年级" prop="noticeType" class="header-item">
+        <el-select v-model="queryParams.noticeType" placeholder="2022" clearable>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="班级编号" prop="noticeTitle" class="header-item">
+        <el-input
+          v-model="queryParams.noticeTitle"
+          placeholder="请输入班级编号"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item class="header-item">
+        <el-button
+          type="primary"
+          size="mini"
+          icon="el-icon-search"
+          class="search"
+          @click="handleQuery"
+          >查询</el-button
+        >
+        <el-button size="mini" @click="resetQuery" class="reset">
+          <span class="iconfont reset_icon">&#xe614;</span>
+
+          重置</el-button
+        >
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
 <script>
-import "@/assets/fonts/refresh/iconfont.css";
 export default {
-  name: "teaTable", //辅导员管理
-  dicts: [], // ['sys_notice_status', 'sys_notice_type']
+  name: "teaSearch", // 辅导员查找
   data() {
     return {
+      // tab栏切换
+      tab_title: ["22级电子信息1班", "未分配学生名单"],
+      currentIndex: 0,
       // 遮罩层
       // loading: true,
       // 选中数组
@@ -139,15 +141,16 @@ export default {
     // this.getList();
   },
   methods: {
-    // 辅导员任命
+    // 分班管理路由跳转
     operate() {
+      console.log(123);
       this.$router.push({
-        path: "/class/assignTea",
+        path: "/class/operateClass",
       });
     },
-    // 任职记录
-    empRecordClick() {
-      this.$router.push("/class/empRecord");
+    // tab栏切换
+    tabClick(index) {
+      this.currentIndex = index;
     },
     /** 查询公告列表 */
     getList() {
@@ -190,11 +193,12 @@ export default {
       // this.single = selection.length != 1;
       // this.multiple = !selection.length;
     },
-    /** 新增按钮操作 */
-    handleAdd() {
+    /** 调整班级操作 */
+    handleChange() {
       // this.reset();
-      // this.open = true;
-      // this.title = "添加公告";
+      this.open = true;
+      this.title = "调整班级";
+      console.log("123");
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -239,70 +243,34 @@ export default {
       //     this.$modal.msgSuccess("删除成功");
       //   })
       //   .catch(() => {});
+      this.$modal.confirm("是否删除？");
+      console.log(123);
     },
   },
 };
 </script>
 
-<style>
-.tea-table {
-  height: 100vh;
+<style scoped>
+.table-header {
   background-color: #ffffff;
-}
-#pagenation {
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
+  height: 128px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 20px;
+  margin-top: 10px;
 }
 
-.table-content {
-  padding-top: 32px;
-  padding-left: 40px;
-  padding-right: 40px;
-  height: 100%;
-  background-color: #ffffff;
-  margin-top: 24px;
+.header-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
-.title {
-  margin-bottom: 32px;
+.search {
+  background: #005657;
 }
-.title-item {
-  width: 80px;
-  height: 28px;
-  font-family: "PingFangSC-Semibold";
-  font-weight: 600;
-  font-size: 20px;
-  color: #1f1f1f;
-  line-height: 28px;
-  margin-right: 12px;
-}
-/* 分页背景颜色修改 */
-.el-pagination.is-background .el-pager li:not(.disabled).active {
-  background-color: #005657;
-}
-.operate {
-  cursor: pointer;
-}
-.assignTea {
-  font-family: "PingFangSC-Regular";
-  font-weight: 700;
-  font-size: 14px;
+.reset {
   color: #005657;
-}
-/* 任职记录 */
-.teaRecord {
-  background-color: rgba(0, 144, 161, 0.1) !important;
-  border: 1px solid #0090a1 !important;
-  font-weight: 600;
-  font-size: 14px;
-  color: #0090a1;
-}
-/* 批量分配 */
-.teaAssign {
-  background-color: #005657;
-  font-weight: 600;
-  font-size: 14px;
-  color: #ffffff;
+  border-color: #005657;
 }
 </style>

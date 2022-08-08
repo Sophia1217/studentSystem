@@ -1480,7 +1480,7 @@ export default {
           display: inline-block;
           width:20px;
           height: 20px;
-          background: url('../../../../assets/images/saveIcon.png');
+          background: url('~@/assets/images/saveIcon.png');
           vertical-align: middle;
         }
         .timeWrap{
@@ -1517,7 +1517,7 @@ export default {
             display: inline-block;
             width:15px;
             height: 15px;
-            background: url('../../../../assets/images/addicon.png') no-repeat center;
+            background: url('~@/assets/images/addicon.png') no-repeat center;
             vertical-align: middle;
           }
         }

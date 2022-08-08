@@ -51,13 +51,13 @@ export default {
       margin-right: 8px;
     }
     .tabsicon_on{
-      background: url('../../../assets/images/icon_onDuty.png');
+      background: url('~@/assets/images/icon_onDuty.png');
       background-repeat: no-repeat;
       background-position: center;
       vertical-align: middle;
     }
     .tabsicon_off{
-      background: url('../../../assets/images/icon_offDuty.png');
+      background: url('~@/assets/images/icon_offDuty.png');
       background-repeat: no-repeat;
       background-position: center;
       vertical-align: middle;

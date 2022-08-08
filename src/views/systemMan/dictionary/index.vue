@@ -41,12 +41,12 @@
       <div class="content_top">
         <h3 class="title-item">字典管理<span class="iconfont repeat_icon">&#xe7b1; </span></h3>
         <div class="headerRight">
-          <div class="btns borderBlue" @click="handleAdd(null)">
+          <!-- <div class="btns borderBlue" @click="handleAdd(null)">
             <i class="icon blueIcon"></i><span class="title">新增字典</span>
-          </div>
-          <div class="btns borderOrange" @click="handleDetele">
+          </div> -->
+          <!-- <div class="btns borderOrange" @click="handleDetele">
             <i class="icon orangeIcon"></i><span class="title">删除</span>
-          </div>
+          </div> -->
         </div>
       </div>
       

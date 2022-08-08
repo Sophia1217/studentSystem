@@ -69,8 +69,8 @@
           <el-table-column prop="name" label="学工号" sortable> </el-table-column>
           <el-table-column prop="address" label="姓名" sortable> </el-table-column>
           <el-table-column prop="address" label="单位" sortable> </el-table-column>
-          <el-table-column prop="address" label="IP" sortable> </el-table-column>
-          <el-table-column prop="address" label="邮箱" sortable> </el-table-column>
+          <!-- <el-table-column prop="address" label="IP" sortable> </el-table-column>
+          <el-table-column prop="address" label="邮箱" sortable> </el-table-column> -->
           <el-table-column prop="address" label="角色" sortable> </el-table-column>
           <el-table-column prop="address" label="用户状态" sortable>
             <template slot-scope="scope">

@@ -50,13 +50,13 @@
 
       <el-table :data="noticeList">
         <el-table-column label="序号" align="center" prop="id" width="100" type="index" />
-        <el-table-column label="角色名称" align="center" prop="classId" sortable />
+        <el-table-column label="角色名称" align="center" prop="roleName" sortable />
         <el-table-column label="权限描述" align="center" prop="className" sortable />
-        <el-table-column label="创建时间" align="center" prop="college" sortable />
-        <el-table-column label="角色状态" align="center" prop="size" sortable >
+        <el-table-column label="创建时间" align="center" prop="modTime" sortable />
+        <el-table-column label="角色状态" align="center" prop="isUse" sortable >
           <template slot-scope="scope">
             <div>
-              <el-switch v-model="scope.row.size" active-color="#23AD6F" inactive-color="#E0E0E0"></el-switch>
+              <el-switch v-model="scope.row.isUse" active-color="#23AD6F" inactive-color="#E0E0E0"></el-switch>
             </div>
           </template>
         </el-table-column>
@@ -75,7 +75,7 @@
 
 <script>
 import "@/assets/fonts/repeat/iconfont.css";
-
+import {  queryRoleList} from "@/api/systemMan/role"
 export default {
   name: "role",
   data() {
@@ -87,23 +87,20 @@ export default {
         roleDate:'',
       },
       roleNameOps:[],
-      noticeList: [
-        {
-          classId: 13070025,
-          className: "计算机工程硕士2022级1班",
-          college: "计算机工程学院",
-          size: true,
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-        },
-      ]
+      noticeList: []
     };
+  },
+  created() {
+    this.handleQuery()
   },
   methods: {
     //搜索按钮操作 
     handleQuery() {
+      let data = { roleId: '01'}
+      queryRoleList(data).then(res => {
+        console.log(res.data.rows)
+        this.noticeList = res.data.rows
+      }).catch(err=>{})
     },
     //重置按钮操作 
     resetQuery(queryForm) {

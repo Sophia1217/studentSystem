@@ -90,11 +90,11 @@
           v-hasPermi="['system:notice:add']"
         >新增</el-button> -->
         </el-col>
-        <el-col :span="1.5">
+        <!-- <el-col :span="1.5">
           <el-button class="delete" icon="el-icon-delete" @click="handleDelete"
             >删除空班级</el-button
           >
-          <!-- <el-button
+         <el-button
           type="success"
           plain
           icon="el-icon-edit"
@@ -102,8 +102,8 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:notice:edit']"
-        >修改</el-button> -->
-        </el-col>
+        >修改</el-button> 
+        </el-col>-->
         <el-col :span="1.5">
           <el-button class="export">
             <span class="iconfont icon-daochu-06"></span>
@@ -194,6 +194,15 @@
         sortable
         class-name="small-padding fixed-width"
       />
+      <el-table-column
+        label="操作"
+        align="center"
+        prop="updateTime"
+        sortable
+        class-name="small-padding fixed-width"
+      >
+        <span @click="handleDelete(row)">删除空班级</span>
+      </el-table-column>
 
       <!-- <el-table-column
         label="公告标题"
@@ -316,11 +325,12 @@
       </div>
     </el-dialog>
 
+    <!-- 删除空班级对话框 -->
     <el-dialog :title="title" :visible.sync="dialogVisible" width="30%">
       <!--  :before-close="handleClose" -->
       <span
         >是否确认删除空班级？<span style="color: #ed5234"
-          >*每次仅支持删除一个班级，且该班级代码编号为最末尾</span
+          >*每次仅支持删除一个班级，且该班级编号为最末尾</span
         ></span
       >
       <span slot="footer" class="dialog-footer">
@@ -330,25 +340,29 @@
         >
       </span>
     </el-dialog>
+
+    <!-- 删除空班级对话框-确认按钮-显示提醒消息 -->
   </div>
 </template>
 
 <script>
 import "@/assets/fonts/repeat/iconfont.css";
-import { Notification } from "element-ui"; // 引入通知
+// import { Notification } from "element-ui"; // 引入通知
+import deleteClassDoubleVue from "./deleteClassDouble.vue";
 // import { classList } from "@/api/class/maintenanceClass";
-import {
-  listNotice,
-  getNotice,
-  delNotice,
-  addNotice,
-  updateNotice,
-} from "@/api/system/notice";
+// import {
+//   listNotice,
+//   getNotice,
+//   delNotice,
+//   addNotice,
+//   updateNotice,
+// } from "@/api/system/notice";
 // import { json } from "stream/consumers";
 
 export default {
   name: "maintenanceClass",
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
+  props: { deleteClassDoubleVue },
   data() {
     return {
       // 遮罩层
@@ -438,13 +452,13 @@ export default {
     getList(queryParams) {
       console.log("1");
       // this.loading = true;
-    //   classList(queryParams).then((response) => {
-    //     console.log("2");
-    //     console.log(response);
-    //     //  this.noticeList = response.rows;
-    //     //  this.total = response.total;
-    //     //  this.loading = false;
-    //   });
+      //   classList(queryParams).then((response) => {
+      //     console.log("2");
+      //     console.log(response);
+      //     //  this.noticeList = response.rows;
+      //     //  this.total = response.total;
+      //     //  this.loading = false;
+      //   });
     },
     // 新建班级-取消按钮
     cancel() {
@@ -487,7 +501,7 @@ export default {
       this.title = "新建班级";
     },
     // 删除空班级操作
-    handleDelete() {
+    handleDelete(row) {
       // this.reset();
       this.dialogVisible = true;
       this.title = "删除空班级";
@@ -511,12 +525,11 @@ export default {
     // 删除空班级-确认操作
     classConfirm() {
       this.dialogVisible = false;
-      this.$notify({
-        type: "success",
-        title: "成功",
-        customClass: "success",
-        message: "空班级【计算机工程硕士2022级21班】删除成功！",
-        duration: 0,
+      // 确认得根据返回消息确定是否删除空班级成功——这里默认错误
+      this.$message({
+        showClose: true,
+        message: "班级编号末尾班级目前仍有成员，请调出所有成员后重试！",
+        type: "error",
       });
     },
 
@@ -568,6 +581,10 @@ export default {
 };
 </script>
 <style>
+.app-container {
+  height: 100vh;
+  background-color: white;
+}
 .search {
   background: #005657;
 }
@@ -643,5 +660,12 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
+}
+.pagination-container {
+  margin-top: 0px;
+  height: 100%;
+}
+.el-pagination {
+  margin-top: 20px;
 }
 </style>

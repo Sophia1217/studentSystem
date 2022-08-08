@@ -158,13 +158,241 @@ export default {
       studentStatus: { // 学籍
         checkAll: false,
         choose: [],
-        checkBox: [{label:'有学籍',val:1},{label: '无学籍',val:2}],
+        checkBox: [
+          { label: '有学籍', val: 1 },
+          { label: '无学籍', val: 2 }
+        ],
         isIndeterminate: true
       },
       ethnic:{  // 名族
         checkAll: false,
         choose: [],
-        checkBox: [{label:'汉族',val:1},{label: '蒙古族',val:2},{label:'藏族',val:3}],
+        checkBox: [
+          {
+	          label: "汉族",
+	          val: 1,
+	        },
+	        {
+	          label: "壮族",
+	          val: 2,
+	        },
+	        {
+	          label: "满族",
+	          val: 3,
+	        },
+	        {
+	          label: "回族",
+	          val: 4,
+	        },
+	        {
+	          label: "苗族",
+	          val: 5,
+	        },
+	        {
+	          label: "维吾尔族",
+	          val: 6,
+	        },
+	        {
+	          label: "土家族",
+	          val: 7,
+	        },
+	        {
+	          label: "彝族",
+	          val: 8,
+	        },
+	        {
+	          label: "蒙古族",
+	          val: 9,
+	        },
+	        {
+	          label: "藏族",
+	          val: 10,
+	        },
+	        {
+	          label: "布依族",
+	          val: 11,
+	        },
+	        {
+	          label: "侗族",
+	          val: 12,
+	        },
+	        {
+	          label: "瑶族",
+	          val: 13,
+	        },
+	        {
+	          label: "朝鲜族",
+	          val: 14,
+	        },
+	        {
+	          label: "白族",
+	          val: 15,
+	        },
+	        {
+	          label: "哈尼族",
+	          val: 16,
+	        },
+	        {
+	          label: "哈萨克族",
+	          val: 17,
+	        },
+	        {
+	          label: "黎族",
+	          val: 18,
+	        },
+	        {
+	          label: "傣族",
+	          val: 19,
+	        },
+	        {
+	          label: "畲族",
+	          val: 20,
+	        },
+	        {
+	          label: "傈僳族",
+	          val: 21,
+	        },
+	        {
+	          label: "仡佬族",
+	          val: 22,
+	        },
+	        {
+	          label: "东乡族",
+	          val: 23,
+	        },
+	        {
+	          label: "高山族",
+	          val: 24,
+	        },
+	        {
+	          label: "拉祜族",
+	          val: 25,
+	        },
+	        {
+	          label: "水族",
+	          val: 26,
+	        },
+	        {
+	          label: "佤族",
+	          val: 27,
+	        },
+	        {
+	          label: "纳西族",
+	          val: 28,
+	        },
+	        {
+	          label: "羌族",
+	          val: 29,
+	        },
+	        {
+	          label: "土族",
+	          val: 30,
+	        },
+	        {
+	          label: "仫佬族",
+	          val: 31,
+	        },
+	        {
+	          label: "锡伯族",
+	          val: 32,
+	        },
+	        {
+	          label: "柯尔克孜族",
+	          val: 33,
+	        },
+	        {
+	          label: "达斡尔族",
+	          val: 34,
+	        },
+	        {
+	          label: "景颇族",
+	          val: 35,
+	        },
+	        {
+	          label: "毛南族",
+	          val: 36,
+	        },
+	        {
+	          label: "撒拉族",
+	          val: 37,
+	        },
+	        {
+	          label: "布朗族",
+	          val: 38,
+	        },
+	        {
+	          label: "塔吉克族",
+	          val: 39,
+	        },
+	        {
+	          label: "阿昌族",
+	          val: 40,
+	        },
+	        {
+	          label: "普米族",
+	          val: 41,
+	        },
+	        {
+	          label: "鄂温克族",
+	          val: 42,
+	        },
+	        {
+	          label: "怒族",
+	          val: 43,
+	        },
+	        {
+	          label: "京族",
+	          val: 44,
+	        },
+	        {
+	          label: "基诺族",
+	          val: 45,
+	        },
+	        {
+	          label: "德昂族",
+	          val: 46,
+	        },
+	        {
+	          label: "保安族",
+	          val: 47,
+	        },
+	        {
+	          label: "俄罗斯族",
+	          val: 48,
+	        },
+	        {
+	          label: "裕固族",
+	          val: 49,
+	        },
+	        {
+	          label: "乌孜别克族",
+	          val: 50,
+	        },
+	        {
+	          label: "门巴族",
+	          val: 51,
+	        },
+	        {
+	          label: "鄂伦春族",
+	          val: 52,
+	        },
+	        {
+	          label: "独龙族",
+	          val: 53,
+	        },
+	        {
+	          label: "塔塔尔族",
+	          val: 54,
+	        },
+	        {
+	          label: "赫哲族",
+	          val: 55,
+	        },
+	        {
+	          label: "珞巴族",
+	          val: 56,
+	        },
+	      ],
         isIndeterminate: true
       },
       politica:{  // 政治面貌：
@@ -318,10 +546,8 @@ export default {
       display: flex;
       flex-direction: row;
       align-items: center;
-      .searchBtn{
-        // background: #005657;
-        // color:#fff;
-      }
+      background: #fff;
+      .searchBtn{}
       .elSelect{
         width:110px;
       }

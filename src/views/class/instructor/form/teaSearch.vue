@@ -257,7 +257,7 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 15px;
   margin-top: 10px;
 }
 

@@ -247,9 +247,9 @@ export default {
   background-color: #ffffff;
   height: 128px;
   display: flex;
+  justify-content: space-around;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 40px;
+  padding: 0 15px;
   margin-top: 10px;
 }
 .assignInput {

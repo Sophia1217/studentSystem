@@ -74,6 +74,20 @@ export const constantRoutes = [
       },
     ],
   },
+  {
+    path: "",
+    component: Layout,
+    hidden: true,
+    redirect: "selectRole",
+    children: [
+      {
+        path: "selectRole",
+        component: () => import("@/views/selectRole/index"),
+        name: "selectRole",
+        meta: { title: "角色选择", icon: "dashboard", affix: true },
+      },
+    ],
+  },
   // {
   //   path: '/user',
   //   component: Layout,
@@ -188,6 +202,57 @@ export const constantRoutes = [
     ]
   },
   {
+    path: "/politicalwork",
+    meta: { title: "政工队伍管理", icon: "monitor" },
+    component: Layout,
+    hidden: false,
+    children: [
+      {
+        path: "basicinfo",
+        component: resolve => require(["@/views/politicalwork/basicInfo/index"], resolve),
+        name: "basicinfo",
+        meta: {
+          title: "政工干部基本信息",
+          icon: ""
+        }
+      },
+      {
+        path: "detailinfo",
+        hidden: true,
+        component: resolve => require(["@/views/politicalwork/basicInfo/detailInfo/index"], resolve),
+        name: "detailinfo",
+        meta: { title: "详情", icon: "" }
+      },
+      {
+        path: "assistantappoint",
+        component: resolve => require(["@/views/politicalwork/assistantappoint/index"], resolve),
+        name: "assistantappoint",
+        meta: {
+          title: "辅导员任命",
+          icon: ""
+        }
+      },
+      {
+        path: "teacherappoint",
+        component: resolve => require(["@/views/politicalwork/teacherappoint/index"], resolve),
+        name: "teacherappoint",
+        meta: {
+          title: "班主任任命",
+          icon: ""
+        }
+      },
+      {
+        path: "infoEdit",
+        component: resolve => require(["@/views/politicalwork/infoEdit/index"], resolve),
+        name: "infoEdit",
+        meta: {
+          title: "信息修改字段设置",
+          icon: ""
+        }
+      }
+    ]
+  },
+  {
     path: "/class",
     meta: { title: "班级管理", icon: "monitor" },
     component: Layout,
@@ -247,9 +312,16 @@ export const constantRoutes = [
         component: () => import("@/views/class/instructor/index"),
       },
       {
+        path: "empRecord",
+        name: "empRecord",
+        hidden: true,
+        meta: { title: "任职记录", icon: "" },
+        component: () => import("@/views/class/instructor/subComponents/empRecord.vue"),
+      },
+      {
         path: "assignTea",
         name: "assignTea",
-        hidden: false,
+        hidden: true,
         meta: { title: "分配辅导员", icon: "" },
         component: () => import("@/views/class/instructor/subComponents/assignTea.vue"),
       },
@@ -262,6 +334,46 @@ export const constantRoutes = [
       },
     ],
   },
+  {
+    path: "/systems",
+    meta: { title: "系统管理", icon: "monitor" },
+    component: Layout,
+    hidden: false,
+    children: [
+      {
+        name: "role",
+        path: "role",
+        component: (resolve) => require(["@/views/systemMan/role/index"], resolve),
+        meta: { title: "角色管理", icon: "", },
+      },
+      {
+        name: "addRole",
+        path: "addRole",
+        hidden: true,
+        component: (resolve) => require(["@/views/systemMan/role/addRole"], resolve),
+        meta: { title: "角色信息", icon: "", },
+      },
+      {
+        name: "user",
+        path: "user",
+        component: (resolve) => require(["@/views/systemMan/user/index"], resolve),
+        meta: { title: "用户管理", icon: "", },
+      },
+      {
+        name: "dataPermis",
+        path: "dataPermis",
+        hidden: true,
+        component: (resolve) => require(["@/views/systemMan/user/permissions/index"], resolve),
+        meta: { title: "数据权限", icon: "", },
+      },
+      {
+        name: "dictionary",
+        path: "dictionary",
+        component: (resolve) => require(["@/views/systemMan/dictionary/index"], resolve),
+        meta: { title: "字典管理", icon: "", },
+      },
+    ]
+  }
 ];
 
 // 班级管理内部路由
@@ -272,7 +384,7 @@ export const dynamicRoutes = [
   {
     path: "/system/user-auth",
     component: Layout,
-    hidden: true,
+    hidden: false,
     permissions: ["system:user:edit"],
     children: [
       {

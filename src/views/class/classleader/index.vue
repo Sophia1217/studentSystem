@@ -128,7 +128,7 @@
         <template slot-scope="scope">
           <div @click="action(scope.row)">
             <span class="iconfont allocate_teacher">&#xe638;</span>
-            <span style="color: #005657; margin-left: 5px"> 班主任任命 </span>
+            <span class="leaderAssign" style="color: #005657; margin-left: 5px" @click="leaderAssign"> 班干部任命 </span>
           </div>
         </template>
       </el-table-column>
@@ -295,7 +295,12 @@ export default {
       },
     };
   },
-  methods: {},
+  methods: {
+    // 班干部任命
+    leaderAssign(){
+      this.$router.push('/class/leaderAssign')
+    }
+  },
 };
 </script>
 
@@ -389,5 +394,10 @@ export default {
 .el-textarea.el-input--medium {
   display: inline-block;
   width: 80%;
+}
+
+/* 班干部任命按钮 */
+.leaderAssign{
+  cursor: pointer;
 }
 </style>

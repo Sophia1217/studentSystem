@@ -332,6 +332,13 @@ export const constantRoutes = [
         meta: { title: "班干部管理", icon: "" },
         component: () => import("@/views/class/classleader/index"),
       },
+      {
+        path: "leaderAssign",
+        name: "leaderAssign",
+        hidden: true,
+        meta: { title: "班干部任命", icon: "" },
+        component: () => import("@/views/class/classleader/subComponents/leaderAssign.vue"),
+      },
     ],
   },
   {

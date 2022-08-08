@@ -335,7 +335,7 @@ export default {
 } */
 .title-item {
   display: inline-block;
-  width: 200px;
+  width: 400px;
   height: 28px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;

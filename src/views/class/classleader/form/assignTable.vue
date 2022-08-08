@@ -24,12 +24,16 @@
                   class="stuRecord"
                   type="primary"
                   icon="el-icon-search"
+                  @click="studentRecord"
                 >
                   任职记录</el-button
                 >
               </el-col>
               <el-col :span="1.5">
-                <el-button class="delete" icon="el-icon-delete"
+                <el-button
+                  class="delete"
+                  icon="el-icon-delete"
+                  @click="deleteSome"
                   >批量撤任</el-button
                 >
               </el-col>
@@ -77,13 +81,15 @@
                   class="stuRecord"
                   type="primary"
                   icon="el-icon-search"
+                  @click="studentRecord"
                 >
                   任职记录</el-button
                 >
               </el-col>
               <el-col :span="1.5">
-                <el-button class="delete" icon="el-icon-delete"
-                  >批量撤任</el-button
+                <el-button class="allocate" @click="action()">
+                  <span class="iconfont allocate_icon">&#xe638;</span>
+                  批量任命</el-button
                 >
               </el-col>
             </el-row>
@@ -110,6 +116,21 @@
             </el-table-column>
             <el-table-column label="性别" align="center" prop="college" />
             <el-table-column label="班级职位" align="center" prop="level" />
+            <el-table-column label="操作" align="center" prop="level">
+              <template slot-scope="scope">
+                <span
+                  class="iconfont allocate_teacher"
+                  @click="action(scope.row)"
+                  >&#xe638;</span
+                >
+                <span
+                  style="color: #005657; margin-left: 5px; margin-right: 5px"
+                  @click="action(scope.row)"
+                >
+                  分配班干部
+                </span>
+              </template>
+            </el-table-column>
           </el-table>
           <pagination
             id="pagenation"
@@ -122,87 +143,71 @@
         </div>
       </div>
     </div>
-    <!-- 分配班级对话框 -->
-    <el-dialog
-      class="assign_class"
-      :title="title"
-      :visible.sync="openAssignClass"
-      width="780px"
-      append-to-body
-    >
-      <span class="assignTips"
-        >确认将【学工号】【张曼莉】任命为【22电子信息1班】辅导员</span
+    <!-- 分配班干部操作：teacherClass-->
+    <!-- :before-close="handleClose" -->
+    <el-dialog title="分配班干部" :visible.sync="teacherClass" width="30%">
+      <span
+        >确认将【78788(学工号)】【张曼丽】任命为【22电子信息1班】班主任？</span
       >
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
-        <el-button @click="submitTips" class="submit_btn">确认</el-button>
-      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="teacherClass = false">取 消</el-button>
+        <!-- distributeClassConfirm(row) -->
+        <el-button
+          type="primary"
+          @click="distributeClassConfirm(row)"
+          class="confirm"
+          >确 定</el-button
+        >
+      </span>
     </el-dialog>
 
-    <!-- 取消分配对话框 -->
-    <el-dialog
-      :title="title"
-      :visible.sync="openCancelAssignClass"
-      width="780px"
-      append-to-body
-    >
-      <el-form
-        ref="form"
-        :model="form"
-        :rules="rules"
-        label-width="80px"
-        class="cancel_class"
-      >
-        <el-row class="change_row">
-          <el-col :span="24" class="in_class">
-            <el-form-item label="撤任理由" prop="noticeTitle">
-              <el-select
-                v-model="form.noticeTitle"
-                placeholder="休学"
-                style="width: 100%"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="10" class="in_class"> </el-col>
-        </el-row>
-        <el-row>
-          <el-form-item label="撤任详情">
-            <el-input
-              type="textarea"
-              placeholder="休学回家种地"
-              style="width: 100%"
-              :rows="5"
-            />
-          </el-form-item>
-        </el-row>
+    <!-- 批量撤任对话框：cancelAllocate-->
+    <el-dialog title="取消分配" :visible.sync="cancelAllocate" width="50%">
+      <el-form :model="form">
+        <el-form-item label="撤任理由" prop="reason">
+          <el-select v-model="form.reason" placeholder="休学">
+            <!-- <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option> -->
+          </el-select>
+        </el-form-item>
+        <el-form-item label="撤任详情" prop="detail">
+          <el-input
+            v-model="form.detail"
+            autocomplete="off"
+            type="textarea"
+            :autosize="{ minRows: 2, maxRows: 4 }"
+          ></el-input>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
-        <el-button @click="submitOut" class="submit_btn">确认</el-button>
+        <el-button @click="cancelAllocate = false">取 消</el-button>
+        <el-button type="primary" @click="cancelAllocateConfirm"
+          >确 定</el-button
+        >
       </div>
     </el-dialog>
 
-    <!-- 二次确认取消对话框 -->
-    <el-dialog
-      :title="title"
-      :visible.sync="openSecondCancelAssign"
-      width="780px"
-      append-to-body
-    >
-      <span class="cancelTips"
-        >确认将取消【学工号】【张曼莉】【22电子信息1班】辅导员任命？</span
+    <!-- 批量撤任——二次确定：checkDouble -->
+    <el-dialog title="取消分配" :visible.sync="doubleCheck" width="50%">
+      <span
+        >确认取消【78788(学工号)】【张曼丽】对【计算机硕士22级1班】【计算机硕士22级1班】班干部任命？</span
       >
-
-      <div slot="footer" classt="dialog-footer">
-        <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
-        <el-button @click="submitOut2" class="submit_btn">确认</el-button>
-      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="doubleCheck = false">取 消</el-button>
+        <!-- distributeClassConfirm(row) -->
+        <el-button
+          type="primary"
+          @click="doubleCheckConfirm(row)"
+          class="confirm"
+          >确 定</el-button
+        >
+      </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import "@/assets/fonts/refresh/iconfont.css";
+import "@/assets/fonts/circle/iconfont.css";
 export default {
   name: "assignTable", //班干部任命表格
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
@@ -263,10 +268,11 @@ export default {
       title: "",
       // 是否显示分配班级弹框
       openAssignClass: false,
-      // 是否显示取消分配班级弹框
-      openCancelAssignClass: false,
-      // 是否显示第二次取消分配班级单矿
-      openSecondCancelAssign: false,
+      // 是否显示批量取消分配班干部弹框
+      cancelAllocate: false,
+      // 批量取消分配二次确定
+      teacherClass: false,
+      doubleCheck: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -292,6 +298,43 @@ export default {
     // this.getList();
   },
   methods: {
+    // 班干部任职记录
+    studentRecord() {
+      this.$router.push({
+        path: "/class/leadRecord",
+      });
+    },
+    // 班干部批量撤任操作
+    deleteSome() {
+      this.cancelAllocate = "true";
+    },
+    // 批量取消分配-确认操作
+    cancelAllocateConfirm() {
+      this.cancelAllocate = false;
+      setTimeout(() => {
+        this.doubleCheck = true;
+      }, 500);
+    },
+    // 取消分配-二次确认按钮
+    doubleCheckConfirm() {
+      this.doubleCheck = false;
+      this.$message({
+        message: "批量撤任班干部操作成功",
+        type: "success",
+      });
+    },
+    // 批量分配
+    action(row) {
+      this.teacherClass = true;
+    },
+    // 分配班干部-确认操作
+    distributeClassConfirm(row) {
+      this.teacherClass = false;
+      this.$message({
+        message: "分配班干部成功",
+        type: "success",
+      });
+    },
     // 辅导员任命
     operate() {
       this.$router.push({
@@ -530,4 +573,15 @@ li {
   border-bottom: 2px solid #005657;
 }
 /* 表单tab栏切换结束 */
+.el-textarea.el-input--medium {
+  display: inline-block;
+  width: 60%;
+}
+.pagination-container {
+  margin-top: 0px;
+  height: 100%;
+}
+.el-pagination {
+  margin-top: 20px;
+}
 </style>

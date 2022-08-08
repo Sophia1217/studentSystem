@@ -299,6 +299,13 @@ export const constantRoutes = [
         component: () => import("@/views/class/headerTeacher/index"),
       },
       {
+        name: "LeadRecord",
+        path: "leadRecord",
+        hidden: true,
+        meta: { title: "任职记录", icon: "" },
+        component: () => import("@/views/class/classleader/leadRecord"),
+      },
+      {
         path: 'classTeacher',
         name: 'classTeacher',
         hidden: true,

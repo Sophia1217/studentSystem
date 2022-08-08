@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="operate-class">
     <div class="tab">
       <div class="tab_list">
         <ul>
@@ -336,7 +336,7 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row class="change_row">
           <el-col :span="10">
-            <el-form-item label="当前班级" prop="noticeTitle" width="100">
+            <el-form-item label="当前班级" prop="noticeTitle">
               <el-input
                 v-model="form.noticeTitle"
                 placeholder="20级学硕计算机一班"
@@ -544,7 +544,6 @@ export default {
       // this.reset();
       this.open = true;
       this.title = "调整班级";
-      console.log("123");
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -596,7 +595,7 @@ export default {
 };
 </script>
 <style>
-.app-container {
+.operate-class {
   background-color: #f0f0f0;
   height: 100vh;
 }

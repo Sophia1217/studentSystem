@@ -7,9 +7,9 @@ function resolve(dir) {
 
 const CompressionPlugin = require("compression-webpack-plugin");
 
-const name = process.env.VUE_APP_TITLE || "学生事务服务系统"; // 网页标题
+const name = process.env.VUE_APP_TITLE || "若依管理系统"; // 网页标题
 
-const port = process.env.port || process.env.npm_config_port || 80; // 端口
+const port = process.env.port || process.env.npm_config_port || 8081; // 端口
 
 // vue.config.js 配置说明
 //官方vue.config.js 参考文档 https://cli.vuejs.org/zh/config/#css-loaderoptions
@@ -124,10 +124,10 @@ module.exports = {
         },
       });
       config.optimization.runtimeChunk("single"),
-      {
-        from: path.resolve(__dirname, "./public/robots.txt"), //防爬虫文件
-        to: "./", //到根目录下
-      };
+        {
+          from: path.resolve(__dirname, "./public/robots.txt"), //防爬虫文件
+          to: "./", //到根目录下
+        };
     });
   },
 };

@@ -272,7 +272,8 @@ export const constantRoutes = [
         name: "record",
         path: "record",
         hidden: true,
-        component: () => import("@/views/class/maintenanceClass/record"),
+        meta: { title: "任职记录", icon: "" },
+        component: () => import("@/views/class/headerTeacher/record"),
       },
 
       {
@@ -298,6 +299,13 @@ export const constantRoutes = [
         component: () => import("@/views/class/headerTeacher/index"),
       },
       {
+        name: "LeadRecord",
+        path: "leadRecord",
+        hidden: true,
+        meta: { title: "任职记录", icon: "" },
+        component: () => import("@/views/class/classleader/leadRecord"),
+      },
+      {
         path: 'classTeacher',
         name: 'classTeacher',
         hidden: true,
@@ -312,9 +320,16 @@ export const constantRoutes = [
         component: () => import("@/views/class/instructor/index"),
       },
       {
+        path: "empRecord",
+        name: "empRecord",
+        hidden: true,
+        meta: { title: "任职记录", icon: "" },
+        component: () => import("@/views/class/instructor/subComponents/empRecord.vue"),
+      },
+      {
         path: "assignTea",
         name: "assignTea",
-        hidden: false,
+        hidden: true,
         meta: { title: "分配辅导员", icon: "" },
         component: () => import("@/views/class/instructor/subComponents/assignTea.vue"),
       },
@@ -324,6 +339,13 @@ export const constantRoutes = [
         hidden: false,
         meta: { title: "班干部管理", icon: "" },
         component: () => import("@/views/class/classleader/index"),
+      },
+      {
+        path: "leaderAssign",
+        name: "leaderAssign",
+        hidden: true,
+        meta: { title: "班干部任命", icon: "" },
+        component: () => import("@/views/class/classleader/subComponents/leaderAssign.vue"),
       },
     ],
   },

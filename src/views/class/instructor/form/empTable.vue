@@ -1,47 +1,73 @@
 <template>
-  <div class="tea-table">
+  <div class="emp-table">
     <div class="table-content">
       <div class="title" icon="el-icon-refresh">
-        <span class="title-item">班级列表</span>
+        <span class="title-item">辅导员任职记录</span>
         <span class="iconfont">&#xe631;</span>
         <el-row :gutter="10" class="mb8" style="float: right">
-          <el-col :span="1.5">
-            <el-button
-              @click="empRecordClick"
-              type="primary"
-              class="teaRecord"
-              icon="el-icon-search"
-            >
-              任职记录</el-button
-            >
-          </el-col>
+          <el-button class="delete" icon="el-icon-delete" @click="handleDelete"
+            >删除</el-button
+          >
         </el-row>
       </div>
       <!-- v-loading="loading" -->
       <el-table :data="noticeList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="65" align="center" />
         <el-table-column label="序号" align="center" prop="id" />
-        <el-table-column label="班级编号" align="center" prop="classId" />
-        <el-table-column label="班级名称" align="center" prop="className">
+        <el-table-column label="学工号" align="center" prop="classId" />
+        <el-table-column label="姓名" align="center" prop="className">
           <el-input
             :value="noticeList[0].className"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-table-column>
-        <el-table-column label="培养单位" align="center" prop="college" />
-        <el-table-column label="培养层次" align="center" prop="level" />
-        <el-table-column label="班级人数" align="center" prop="nums" />
+        <el-table-column label="性别" align="center" prop="college" />
+        <el-table-column label="工作单位" align="center" prop="level" />
+        <el-table-column label="任职班级" align="center" prop="nums" />
         <el-table-column label="创建时间" align="center" prop="beginTime" />
-        <el-table-column label="更新时间" align="center" prop="updateTime" />
-        <el-table-column label="操作" align="center" width="165">
-          <template
-            ><!-- slot-scope="scope" -->
-            <div @click="operate" class="operate">
-              <span class="assignTea">分配辅导员</span>
-            </div>
-          </template>
-        </el-table-column>
+        <el-table-column label="任命人" align="center" prop="updateTime" />
+        <el-table-column label="任命年度" align="center" prop="updateTime" />
+        <el-table-column label="任命学期" align="center" prop="updateTime" />
+        <el-table-column label="任命时间" align="center" prop="updateTime" />
+        <el-table-column label="撤任人" align="center" prop="updateTime" />
+        <el-table-column label="撤任时间" align="center" prop="updateTime" />
+        <el-table-column label="任职状态" align="center" prop="updateTime" />
+        <!-- <el-table-column
+        label="公告标题"
+        align="center"
+        prop="noticeTitle"
+        :show-overflow-tooltip="true"
+      /> -->
+        <!-- <el-table-column label="公告类型" align="center" prop="noticeType" width="100">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_notice_type" :value="scope.row.noticeType"/>
+        </template>
+      </el-table-column> -->
+        <!-- <el-table-column label="创建者" align="center" prop="createBy" width="100" />
+      <el-table-column label="创建时间" align="center" prop="createTime" width="100">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column> -->
+        <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['system:notice:edit']"
+          >修改</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row)"
+            v-hasPermi="['system:notice:remove']"
+          >删除</el-button>
+        </template>
+      </el-table-column> -->
       </el-table>
       <pagination
         id="pagenation"
@@ -58,7 +84,7 @@
 <script>
 import "@/assets/fonts/refresh/iconfont.css";
 export default {
-  name: "teaTable", //辅导员管理
+  name: "empTable", //辅导员任职记录
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
   data() {
     return {
@@ -147,6 +173,7 @@ export default {
     },
     // 任职记录
     empRecordClick() {
+      console.log(1);
       this.$router.push("/class/empRecord");
     },
     /** 查询公告列表 */
@@ -245,7 +272,7 @@ export default {
 </script>
 
 <style>
-.tea-table {
+.emp-table {
   height: 100vh;
   background-color: #ffffff;
 }

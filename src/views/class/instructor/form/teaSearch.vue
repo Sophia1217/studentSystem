@@ -26,7 +26,11 @@
         </el-select>
       </el-form-item>
       <el-form-item label="年级" prop="noticeType" class="header-item">
-        <el-select v-model="queryParams.noticeType" placeholder="2022" clearable>
+        <el-select
+          v-model="queryParams.noticeType"
+          placeholder="2022"
+          clearable
+        >
         </el-select>
       </el-form-item>
       <el-form-item label="班级编号" prop="noticeTitle" class="header-item">
@@ -48,7 +52,6 @@
         >
         <el-button size="mini" @click="resetQuery" class="reset">
           <span class="iconfont reset_icon">&#xe614;</span>
-
           重置</el-button
         >
       </el-form-item>
@@ -57,6 +60,7 @@
 </template>
 
 <script>
+import "@/assets/fonts/refresh/iconfont.css";
 export default {
   name: "teaSearch", // 辅导员查找
   data() {
@@ -255,9 +259,9 @@ export default {
   background-color: #ffffff;
   height: 128px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 15px;
   margin-top: 10px;
 }
 

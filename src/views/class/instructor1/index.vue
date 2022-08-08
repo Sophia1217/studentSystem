@@ -9,7 +9,7 @@
 import teaSearch from "./form/teaSearch.vue";
 import teaTable from "./form/teaTable.vue";
 export default {
-  name: "instructor", //辅导员管理主界面
+  name: "instructor", //辅导员管理
   components: {
     teaSearch,
     teaTable,

@@ -6,117 +6,36 @@
         <span class="iconfont">&#xe631;</span>
         <el-row :gutter="10" class="mb8" style="float: right">
           <el-col :span="1.5">
-            <el-button
-              type="primary"
-              class="create"
-              icon="el-icon-search"
-            >
+            <el-button type="primary" class="create" icon="el-icon-search">
               批量分配</el-button
             >
           </el-col>
           <el-col :span="1.5">
-            <el-button
-              class="delete"
-              icon="el-icon-delete"
-              >批量取消</el-button
-            >
+            <el-button class="delete" icon="el-icon-delete">批量取消</el-button>
           </el-col>
         </el-row>
       </div>
       <!-- v-loading="loading" -->
       <el-table :data="noticeList" @selection-change="handleSelectionChange">
-        <el-table-column label="序号" align="center" prop="id" width="120" />
-        <el-table-column
-          label="班级编号"
-          align="center"
-          prop="classId"
-          width="120"
-        />
-        <el-table-column
-          label="班级名称"
-          align="center"
-          prop="className"
-          width="320"
-        >
+        <el-table-column type="selection" align="center" />
+        <el-table-column label="序号" align="center" prop="id" width="60px"/>
+        <el-table-column label="学工号" align="center" prop="classId" />
+        <el-table-column label="姓名" align="center" prop="className">
           <el-input
             :value="noticeList[0].className"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-table-column>
-        <el-table-column
-          label="培养单位"
-          align="center"
-          prop="college"
-          width="180"
-        />
-        <el-table-column
-          label="培养层次"
-          align="center"
-          prop="level"
-          width="120"
-        />
-        <el-table-column
-          label="班级人数"
-          align="center"
-          prop="nums"
-          width="120"
-        />
-        <el-table-column
-          label="创建时间"
-          align="center"
-          prop="beginTime"
-          width="180"
-        />
-        <el-table-column
-          label="更新时间"
-          align="center"
-          prop="updateTime"
-          width="180"
-        />
-        <el-table-column label="操作" align="center" width="100">
-          <template
-            ><!-- slot-scope="scope" -->
-            <div @click="operate" class="operate">
-              <span class="assignTea">分配辅导员</span>
-            </div>
+        <el-table-column label="性别" align="center" prop="college" />
+        <el-table-column label="工作单位" align="center" prop="level" />
+        <el-table-column label="已任职班级数量" align="center" prop="nums" />
+        <el-table-column label="操作" align="center">
+          <template>
+            <button @click="assignClass">分配班级</button>
+            <button @click="cancelAssignClass">取消分配</button>
           </template>
         </el-table-column>
-        <!-- <el-table-column
-        label="公告标题"
-        align="center"
-        prop="noticeTitle"
-        :show-overflow-tooltip="true"
-      /> -->
-        <!-- <el-table-column label="公告类型" align="center" prop="noticeType" width="100">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_notice_type" :value="scope.row.noticeType"/>
-        </template>
-      </el-table-column> -->
-        <!-- <el-table-column label="创建者" align="center" prop="createBy" width="100" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="100">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column> -->
-        <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:notice:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:notice:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column> -->
       </el-table>
       <pagination
         id="pagenation"
@@ -127,6 +46,82 @@
         @pagination="getList"
       />
     </div>
+    <!-- 分配班级对话框 -->
+    <el-dialog
+      class="assign_class"
+      :title="title"
+      :visible.sync="openAssignClass"
+      width="780px"
+      append-to-body
+    >
+      <span class="assignTips"
+        >确认将【学工号】【张曼莉】任命为【22电子信息1班】辅导员</span
+      >
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
+        <el-button @click="submitTips" class="submit_btn">确认</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 取消分配对话框 -->
+    <el-dialog
+      :title="title"
+      :visible.sync="openCancelAssignClass"
+      width="780px"
+      append-to-body
+    >
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
+        label-width="80px"
+        class="cancel_class"
+      >
+        <el-row class="change_row">
+          <el-col :span="24" class="in_class">
+            <el-form-item label="撤任理由" prop="noticeTitle">
+              <el-select
+                v-model="form.noticeTitle"
+                placeholder="休学"
+                style="width: 100%"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="10" class="in_class"> </el-col>
+        </el-row>
+        <el-row>
+          <el-form-item label="撤任详情">
+            <el-input
+              type="textarea"
+              placeholder="休学回家种地"
+              style="width: 100%"
+              :rows="5"
+            />
+          </el-form-item>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
+        <el-button @click="submitOut" class="submit_btn">确认</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 二次确认取消对话框 -->
+    <el-dialog
+      :title="title"
+      :visible.sync="openSecondCancelAssign"
+      width="780px"
+      append-to-body
+    >
+      <span class="cancelTips"
+        >确认将取消【学工号】【张曼莉】【22电子信息1班】辅导员任命？</span
+      >
+
+      <div slot="footer" classt="dialog-footer">
+        <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
+        <el-button @click="submitOut2" class="submit_btn">确认</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -187,8 +182,12 @@ export default {
       ],
       // 弹出层标题
       title: "",
-      // 是否显示弹出层
-      open: false,
+      // 是否显示分配班级弹框
+      openAssignClass: false,
+      // 是否显示取消分配班级弹框
+      openCancelAssignClass: false,
+      // 是否显示第二次取消分配班级单矿
+      openSecondCancelAssign: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -218,6 +217,45 @@ export default {
     operate() {
       this.$router.push({
         path: "/class/assignTea",
+      });
+    },
+    // 第一个对话框
+    // 分配班级
+    assignClass() {
+      this.openAssignClass = true;
+      this.title = "分配班级";
+    },
+    // 分配班级tips点击“确定”按钮
+    submitTips() {
+      this.$message({
+        message: "分配成功",
+        type: "success",
+      });
+      this.openAssignClass = false;
+    },
+    // 取消按钮关闭窗口
+    cancelTips() {
+      this.openAssignClass = false;
+      this.openCancelAssignClass = false;
+      this.openSecondCancelAssign = false;
+    },
+    // 第二个对话框
+    // 取消分配tips
+    cancelAssignClass() {
+      this.openCancelAssignClass = true;
+      this.title = "取消分配";
+    },
+    submitOut() {
+      this.openCancelAssignClass = false;
+      this.openSecondCancelAssign = true;
+    },
+    // 第三个对话框
+    submitOut2() {
+      this.openSecondCancelAssign = false;
+      this.title = "取消分配";
+      this.$message({
+        message: "取消分配成功",
+        type: "success",
       });
     },
     /** 查询公告列表 */
@@ -340,7 +378,6 @@ export default {
   margin-bottom: 32px;
 }
 .title-item {
-  width: 133px;
   height: 28px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;
@@ -362,4 +399,17 @@ export default {
   font-size: 14px;
   color: #005657;
 }
+/* 对话框样式开始 */
+.el-dialog__title {
+  font-weight: 700;
+}
+.submit_btn {
+  background-color: #005657;
+  color: #ffffff;
+}
+.cancel_class {
+  padding-left: 140px;
+  padding-right: 140px;
+}
+/* 对话框样式结束 */
 </style>

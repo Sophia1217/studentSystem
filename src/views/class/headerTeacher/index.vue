@@ -78,12 +78,12 @@
       </el-row>
     </div>
 
+    <!-- 班级列表 -->
     <el-table
       v-loading="loading"
       :data="noticeList"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="序号" align="center" width="100" type="index" />
       <el-table-column
         label="班级编号"
@@ -125,7 +125,7 @@
         label="创建时间"
         align="center"
         prop="beginTime"
-        width="150"
+        width="100"
         sortable
       />
       <el-table-column
@@ -142,9 +142,25 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="scope">
-          <div @click="action(scope.row)">
-            <span class="iconfont allocate_teacher">&#xe638;</span>
-            <span style="color: #005657">{{ noticeList[0].action }}</span>
+          <div>
+            <span class="iconfont allocate_teacher" @click="action(scope.row)"
+              >&#xe638;</span
+            >
+            <span
+              style="color: #005657; margin-left: 5px; margin-right: 5px"
+              @click="action(scope.row)"
+            >
+              分配班主任
+            </span>
+            <span
+              class="iconfont record_icon"
+              style="margin-left: 5px"
+              @click="record(scope.row)"
+              >&#xe694;</span
+            >
+            <span style="color: #005657" @click="record(scope.row)">
+              任职记录
+            </span>
           </div>
         </template>
       </el-table-column>
@@ -264,7 +280,6 @@ export default {
           nums: 34,
           beginTime: "2022-07-07",
           updateTime: "2022-07-07",
-          action: "分配班主任",
         },
         {
           classId: 13070025,
@@ -274,7 +289,6 @@ export default {
           nums: 34,
           beginTime: "2022-07-07",
           updateTime: "2022-07-07",
-          action: "分配班主任",
         },
         {
           classId: 13070025,
@@ -284,7 +298,6 @@ export default {
           nums: 34,
           beginTime: "2022-07-07",
           updateTime: "2022-07-07",
-          action: "分配班主任",
         },
       ],
       // 弹出层标题
@@ -377,6 +390,12 @@ export default {
         duration: 0,
       });
     },
+    // 任职记录表
+    record(row) {
+      this.$router.push({
+        path: "./record",
+      });
+    },
     /** 提交按钮 */
     submitForm: function () {
       this.$refs["form"].validate((valid) => {
@@ -416,6 +435,10 @@ export default {
 </script>
 
 <style>
+.app-container {
+  height: 100vh;
+  background-color: white;
+}
 .search {
   background: #005657;
 }
@@ -494,5 +517,16 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
+}
+.pagination-container {
+  margin-top: 0px;
+  height: 100%;
+}
+.el-pagination {
+  margin-top: 20px;
+}
+.el-textarea.el-input--medium {
+  display: inline-block;
+  width: 80%;
 }
 </style>

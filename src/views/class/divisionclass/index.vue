@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="division-class">
     <el-form
       :model="queryParams"
       ref="queryForm"
@@ -83,12 +83,11 @@
       </div>
       <!-- v-loading="loading" -->
       <el-table :data="noticeList" @selection-change="handleSelectionChange">
-        <el-table-column label="序号" align="center" prop="id" width="120" />
+        <el-table-column label="序号" align="center" prop="id" />
         <el-table-column
           label="班级编号"
           align="center"
           prop="classId"
-          width="120"
         />
         <el-table-column
           label="班级姓名"
@@ -106,33 +105,28 @@
           label="学院"
           align="center"
           prop="college"
-          width="180"
         />
         <el-table-column
           label="培养层次"
           align="center"
           prop="level"
-          width="120"
         />
         <el-table-column
           label="班级人数"
           align="center"
           prop="nums"
-          width="120"
         />
         <el-table-column
           label="创建时间"
           align="center"
           prop="beginTime"
-          width="180"
         />
         <el-table-column
           label="更新时间"
           align="center"
           prop="updateTime"
-          width="180"
         />
-        <el-table-column label="操作" align="center" width="100">
+        <el-table-column label="操作" align="center">
           <template
             ><!-- slot-scope="scope" -->
             <div @click="operate" class="operate">
@@ -432,9 +426,10 @@ export default {
 };
 </script>
 <style>
-.app-container {
+.division-class {
   background-color: #f0f0f0;
   height: 100vh;
+  margin-top: 10px;
 }
 
 .table-header {

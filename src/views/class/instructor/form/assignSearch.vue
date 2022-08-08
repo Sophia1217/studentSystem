@@ -39,7 +39,6 @@
           >
           <el-button size="mini" @click="resetQuery" class="reset">
             <span class="iconfont reset_icon">&#xe614;</span>
-
             重置</el-button
           >
         </el-form-item>
@@ -49,6 +48,7 @@
 </template>
 
 <script>
+import "@/assets/fonts/refresh/iconfont.css";
 export default {
   name: "assignSearch",
   data() {
@@ -247,7 +247,7 @@ export default {
   background-color: #ffffff;
   height: 128px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   padding: 0 15px;
   margin-top: 10px;

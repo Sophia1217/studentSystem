@@ -9,52 +9,40 @@
       label-width="68px"
       class="table-header"
     >
-      <el-form-item label="工作单位" prop="noticeType" class="header-item">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="计算机学院"
-          clearable
-        >
-        </el-select>
-      </el-form-item>
-      <el-form-item label="培养层次" prop="noticeType" class="header-item">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="本科"
-          clearable
-        >
-        </el-select>
-      </el-form-item>
-      <el-form-item label="年级" prop="noticeType" class="header-item">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="2022"
-          clearable
-        >
-        </el-select>
-      </el-form-item>
-      <el-form-item label="班级编号" prop="noticeTitle" class="header-item">
-        <el-input
-          v-model="queryParams.noticeTitle"
-          placeholder="请输入班级编号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item class="header-item">
-        <el-button
-          type="primary"
-          size="mini"
-          icon="el-icon-search"
-          class="search"
-          @click="handleQuery"
-          >查询</el-button
-        >
-        <el-button size="mini" @click="resetQuery" class="reset">
-          <span class="iconfont reset_icon">&#xe614;</span>
-          重置</el-button
-        >
-      </el-form-item>
+      <div class="assignInput">
+        <el-form-item label="学号" prop="noticeType" class="header-item">
+          <el-select
+            v-model="queryParams.noticeType"
+            placeholder="请输入"
+            clearable
+          >
+          </el-select>
+        </el-form-item>
+        <el-form-item label="职位状态" prop="noticeType" class="header-item">
+          <el-select
+            v-model="queryParams.noticeType"
+            placeholder="在职"
+            clearable
+          >
+          </el-select>
+        </el-form-item>
+      </div>
+      <div class="assignBtn">
+        <el-form-item class="header-item">
+          <el-button
+            type="primary"
+            size="mini"
+            icon="el-icon-search"
+            class="search"
+            @click="handleQuery"
+            >查询</el-button
+          >
+          <el-button size="mini" @click="resetQuery" class="reset">
+            <span class="iconfont reset_icon">&#xe614;</span>
+            重置</el-button
+          >
+        </el-form-item>
+      </div>
     </el-form>
   </div>
 </template>
@@ -62,7 +50,7 @@
 <script>
 import "@/assets/fonts/refresh/iconfont.css";
 export default {
-  name: "teaSearch", // 辅导员查找
+  name: "assignSearch", // 把干部任命搜索框
   data() {
     return {
       // tab栏切换
@@ -264,7 +252,13 @@ export default {
   padding: 0 15px;
   margin-top: 10px;
 }
-
+.assignInput {
+  display: flex;
+  justify-content: center;
+}
+.assignInput .header-item:nth-child(1) {
+  margin-right: 90px;
+}
 .header-item {
   display: flex;
   justify-content: center;

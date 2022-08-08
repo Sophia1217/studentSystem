@@ -36,7 +36,8 @@ module.exports = {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
         // target: `http://10.161.11.70:8080`,
-        target: `http://localhost:8080`,
+        // target: `http://localhost:8080`,
+        target: `http://10.161.23.133:8081`,
         changeOrigin: true,
         pathRewrite: {
           ["^" + process.env.VUE_APP_BASE_API]: "",
@@ -123,10 +124,10 @@ module.exports = {
         },
       });
       config.optimization.runtimeChunk("single"),
-      {
-        from: path.resolve(__dirname, "./public/robots.txt"), //防爬虫文件
-        to: "./", //到根目录下
-      };
+        {
+          from: path.resolve(__dirname, "./public/robots.txt"), //防爬虫文件
+          to: "./", //到根目录下
+        };
     });
   },
 };

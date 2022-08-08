@@ -349,7 +349,7 @@
 import "@/assets/fonts/repeat/iconfont.css";
 // import { Notification } from "element-ui"; // 引入通知
 import deleteClassDoubleVue from "./deleteClassDouble.vue";
-// import { classList } from "@/api/class/maintenanceClass";
+import { classList } from "@/api/class/maintenanceClass";
 // import {
 //   listNotice,
 //   getNotice,
@@ -452,13 +452,13 @@ export default {
     getList(queryParams) {
       console.log("1");
       // this.loading = true;
-      //   classList(queryParams).then((response) => {
-      //     console.log("2");
-      //     console.log(response);
-      //     //  this.noticeList = response.rows;
-      //     //  this.total = response.total;
-      //     //  this.loading = false;
-      //   });
+        classList(queryParams).then((response) => {
+          console.log("2");
+          console.log(response);
+          //  this.noticeList = response.rows;
+          //  this.total = response.total;
+          //  this.loading = false;
+        });
     },
     // 新建班级-取消按钮
     cancel() {

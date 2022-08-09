@@ -19,17 +19,17 @@
       <el-table :data="noticeList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" align="center" />
         <el-table-column label="序号" align="center" prop="id" width="60px"/>
-        <el-table-column label="学工号" align="center" prop="classId" />
-        <el-table-column label="姓名" align="center" prop="className">
+        <el-table-column label="学工号" align="center" prop="classId" sortable />
+        <el-table-column label="姓名" align="center" prop="className" sortable>
           <el-input
             :value="noticeList[0].className"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-table-column>
-        <el-table-column label="性别" align="center" prop="college" />
-        <el-table-column label="工作单位" align="center" prop="level" />
-        <el-table-column label="已任职班级数量" align="center" prop="nums" />
+        <el-table-column label="性别" align="center" prop="college" sortable />
+        <el-table-column label="工作单位" align="center" prop="level" sortable/>
+        <el-table-column label="已任职班级数量" align="center" prop="nums" sortable />
         <el-table-column label="操作" align="center">
           <template>
             <button @click="assignClass">分配班级</button>

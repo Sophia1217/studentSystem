@@ -165,21 +165,47 @@
             >
               <el-table-column type="selection" width="65" align="center" />
               <el-table-column label="序号" align="center" prop="id" />
-              <el-table-column label="学号" align="center" prop="classId" />
-              <el-table-column label="姓名" align="center" prop="className">
+              <el-table-column
+                label="学号"
+                align="center"
+                prop="classId"
+                sortable
+              />
+              <el-table-column
+                label="姓名"
+                align="center"
+                prop="className"
+                sortable
+              >
                 <el-input
                   :value="noticeList[0].className"
                   clearable
                   @keyup.enter.native="handleQuery"
                 />
               </el-table-column>
-              <el-table-column label="性别" align="center" prop="college" />
-              <el-table-column label="专业" align="center" prop="level" />
-              <el-table-column label="生源地" align="center" prop="nums" />
+              <el-table-column
+                label="性别"
+                align="center"
+                prop="college"
+                sortable
+              />
+              <el-table-column
+                label="专业"
+                align="center"
+                prop="level"
+                sortable
+              />
+              <el-table-column
+                label="生源地"
+                align="center"
+                prop="nums"
+                sortable
+              />
               <el-table-column
                 label="出生年月"
                 align="center"
                 prop="beginTime"
+                sortable
               />
             </el-table>
             <pagination
@@ -402,8 +428,7 @@ import {
 
 export default {
   name: "divisionClass", //分班管理
-  components: {
-  },
+  components: {},
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
   data() {
     return {
@@ -696,7 +721,6 @@ li {
   margin-bottom: 32px;
 }
 .title-item {
-  width: 80px;
   height: 28px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;

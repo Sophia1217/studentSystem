@@ -19,21 +19,21 @@
       </div>
       <!-- v-loading="loading" -->
       <el-table :data="noticeList" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="65" align="center" />
-        <el-table-column label="序号" align="center" prop="id" />
-        <el-table-column label="班级编号" align="center" prop="classId" />
-        <el-table-column label="班级名称" align="center" prop="className">
+        <el-table-column type="selection" width="65" align="center"/>
+        <el-table-column label="序号" align="center" prop="id"/>
+        <el-table-column label="班级编号" align="center" prop="classId" sortable />
+        <el-table-column label="班级名称" align="center" prop="className" sortable>
           <el-input
             :value="noticeList[0].className"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-table-column>
-        <el-table-column label="培养单位" align="center" prop="college" />
-        <el-table-column label="培养层次" align="center" prop="level" />
-        <el-table-column label="班级人数" align="center" prop="nums" />
-        <el-table-column label="创建时间" align="center" prop="beginTime" />
-        <el-table-column label="更新时间" align="center" prop="updateTime" />
+        <el-table-column label="培养单位" align="center" prop="college" sortable />
+        <el-table-column label="培养层次" align="center" prop="level" sortable />
+        <el-table-column label="班级人数" align="center" prop="nums" sortable />
+        <el-table-column label="创建时间" align="center" prop="beginTime" sortable />
+        <el-table-column label="更新时间" align="center" prop="updateTime" sortable />
         <el-table-column label="操作" align="center" width="165">
           <template
             ><!-- slot-scope="scope" -->

@@ -88,12 +88,14 @@
           label="班级编号"
           align="center"
           prop="classId"
+          sortable
         />
         <el-table-column
           label="班级姓名"
           align="center"
           prop="className"
           width="320"
+          sortable
         >
           <el-input
             :value="noticeList[0].className"
@@ -105,26 +107,31 @@
           label="学院"
           align="center"
           prop="college"
+          sortable
         />
         <el-table-column
           label="培养层次"
           align="center"
           prop="level"
+          sortable
         />
         <el-table-column
           label="班级人数"
           align="center"
           prop="nums"
+          sortable
         />
         <el-table-column
           label="创建时间"
           align="center"
           prop="beginTime"
+          sortable
         />
         <el-table-column
           label="更新时间"
           align="center"
           prop="updateTime"
+          sortable
         />
         <el-table-column label="操作" align="center">
           <template

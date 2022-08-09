@@ -38,6 +38,8 @@ module.exports = {
         // target: `http://10.161.11.70:8080`,
         // target: `http://10.161.23.133:8081`,
         target: `http://10.160.5.245:8081`,  // 涂晓招
+        // target: `http://10.222.7.135:8081`,  // 朱老师
+        // target: `http://10.161.10.116:8081`,  // 华庚兴
         changeOrigin: true,
         pathRewrite: {
           ["^" + process.env.VUE_APP_BASE_API]: "",

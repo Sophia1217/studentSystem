@@ -65,20 +65,17 @@
         <el-table :data="tableData" ref="multipleTable" @selection-change="handleSelectionChange" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
-          <el-table-column prop="date" label="用户ID" sortable> </el-table-column>
-          <el-table-column prop="name" label="学工号" sortable> </el-table-column>
-          <el-table-column prop="address" label="姓名" sortable> </el-table-column>
-          <el-table-column prop="address" label="单位" sortable> </el-table-column>
-          <!-- <el-table-column prop="address" label="IP" sortable> </el-table-column>
-          <el-table-column prop="address" label="邮箱" sortable> </el-table-column> -->
-          <el-table-column prop="address" label="角色" sortable> </el-table-column>
-          <el-table-column prop="address" label="用户状态" sortable>
+          <el-table-column prop="userId" label="学工号" sortable> </el-table-column>
+          <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
+          <el-table-column prop="dwmc" label="单位" sortable> </el-table-column>
+          <el-table-column prop="roleNames" label="角色" sortable> </el-table-column>
+          <!-- <el-table-column prop="address" label="用户状态" sortable>
             <template slot-scope="scope">
               <div>
                 <el-switch v-model="scope.row.address" active-color="#23AD6F" inactive-color="#E0E0E0"></el-switch>
               </div>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="handleOpenEdit(scope.row)">
@@ -138,8 +135,9 @@
 
 <script>
 import CheckboxCom from '../../components/checkboxCom'
+import { queryUserPageList } from "@/api/systemMan/user"
 export default {
-  name: 'manUser',
+  name: 'user',
   components:{ CheckboxCom },
   data() {
     return {
@@ -187,7 +185,7 @@ export default {
         isIndeterminate: true
       },
       
-      tableData: [{ date: 1 }],
+      tableData: [],
       dialogFormVisible: false,
       editForm: {
         name: '123',
@@ -197,12 +195,24 @@ export default {
     };
   },
 
-  mounted() {},
-
+  created() {
+    this.handleSearch()
+  },
+  activated() {
+    this.handleSearch()
+  },
   methods: {
     // 查询
-    handleSearch(){ 
-      console.log(this.searchVal,this.select)
+    handleSearch() {
+      let data = {
+        userId: "2005690002",
+        roleId: "01",
+        pageNum: "01",
+        pageSize: "01"
+      }
+      queryUserPageList(data).then(res => {
+        this.tableData = res.rows
+      }).catch(err=>{})
     },
     // 点击更多
     handleMore() {

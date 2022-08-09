@@ -9,11 +9,7 @@
       label-width="68px"
     >
       <el-form-item label="培养单位" prop="college">
-        <el-select
-          v-model="queryParams.college"
-          placeholder="计算机学院"
-          clearable
-        >
+        <el-select v-model="queryParams.college" placeholder="未选择" clearable>
           <!-- <el-option
             v-for="dict in dict.type.sys_notice_type"
             :key="dict.value"
@@ -23,7 +19,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="培养层次" prop="level">
-        <el-select v-model="queryParams.level" placeholder="本科" clearable>
+        <el-select v-model="queryParams.level" placeholder="未选择" clearable>
           <!-- <el-option
             v-for="dict in dict.type.sys_notice_type"
             :key="dict.value"
@@ -33,7 +29,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="年级" prop="grade">
-        <el-select v-model="queryParams.grade" placeholder="2022" clearable>
+        <el-select v-model="queryParams.grade" placeholder="未选择" clearable>
           <!-- <el-option
             v-for="dict in dict.type.sys_notice_type"
             :key="dict.value"
@@ -45,7 +41,7 @@
       <el-form-item label="班级编号" prop="classId">
         <el-input
           v-model="queryParams.classId"
-          placeholder="请输入班级编号"
+          placeholder="未选择"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -125,66 +121,37 @@
 
     <!-- v-loading="loading" -->
     <el-table :data="noticeList" @selection-change="handleSelectionChange">
-      <el-table-column
-        label="序号"
-        align="center"
-        prop="id"
-        width="100"
-        type="index"
-      />
-      <el-table-column
-        label="班级编号"
-        align="center"
-        prop="classId"
-        width="100"
-        sortable
-      />
+      <el-table-column label="序号" align="center" type="index" />
+      <el-table-column label="班级编号" align="center" prop="bjdm" sortable />
       <el-table-column
         label="班级名称"
         align="center"
-        prop="className"
-        width="300"
+        width="250px"
+        prop="bjmc"
         sortable
       >
-        <el-input
-          :value="noticeList[0].className"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <template slot-scope="{ row }">
+          <el-input
+            v-model="row.bjmc"
+            clearable
+            width="200px"
+            @keyup.enter.native="alterClassName(row)"
+          />
+        </template>
       </el-table-column>
-      <el-table-column
-        label="培养单位"
-        align="center"
-        prop="college"
-        width="150"
-        sortable
-      />
-      <el-table-column
-        label="年级"
-        align="center"
-        prop="size"
-        width="150"
-        sortable
-      />
-      <el-table-column
-        label="培养层次"
-        align="center"
-        prop="level"
-        width="100"
-        sortable
-      />
+      <el-table-column label="培养单位" align="center" prop="pycc" sortable />
+      <el-table-column label="年级" align="center" prop="ssnj" sortable />
+      <el-table-column label="培养层次" align="center" prop="pycc" sortable />
       <el-table-column
         label="班级人数"
         align="center"
-        prop="nums"
-        width="100"
+        prop="stuNumOfClass"
         sortable
       />
       <el-table-column
         label="创建时间"
         align="center"
-        prop="beginTime"
-        width="150"
+        prop="createTime"
         sortable
       />
       <el-table-column
@@ -197,7 +164,6 @@
       <el-table-column
         label="操作"
         align="center"
-        prop="updateTime"
         sortable
         class-name="small-padding fixed-width"
       >
@@ -348,8 +314,8 @@
 <script>
 import "@/assets/fonts/repeat/iconfont.css";
 // import { Notification } from "element-ui"; // 引入通知
-import deleteClassDoubleVue from "./deleteClassDouble.vue";
-import { classList } from "@/api/class/maintenanceClass";
+// import deleteClassDoubleVue from "./deleteClassDouble.vue";
+import { classList, modifyClassName } from "@/api/class/maintenanceClass"; // 引入班级列表查询、修改班级名称接口
 // import {
 //   listNotice,
 //   getNotice,
@@ -377,38 +343,19 @@ export default {
       // 总条数
       total: 100,
       // 表格数据
-      noticeList: [
+      /* 
         {
-          classId: 13070025,
-          className: "计算机工程硕士2022级1班",
-          college: "计算机工程学院",
-          size: "2020级",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
+          bjdm: '', // 班级编号
+          bjmc: "", // 班级名称
+          pydw: "计算机工程学院", // 培养单位-目前这一列缺失
+          ssnj: "", // 年级
+          pycc: "", // 培养层次
+          stuNumOfClass: 0, // 班级数量
+          createTime: "", // 创建时间
+          updateTime: "", // 更新时间
         },
-        {
-          classId: 13070025,
-          className: "计算机工程硕士2022级2班",
-          college: "计算机工程学院",
-          size: "2020级",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-        },
-        {
-          classId: 13070025,
-          className: "计算机工程硕士2022级3班",
-          college: "计算机工程学院",
-          size: "2020级",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-        },
-      ],
+      */
+      noticeList: [],
       // 弹出层标题
       title: "",
       // 是否显示新建班级弹出层
@@ -417,12 +364,12 @@ export default {
       dialogVisible: false,
       // 查询参数
       queryParams: {
-        // pageNum: 1,
-        // pageSize: 10,
-        college: undefined,
-        level: undefined,
-        grade: undefined,
-        classId: undefined,
+        pageNum: 1, // 默认请求第一页数据
+        pageSize: 10, // 默认一页10条数据
+        college: "", // 培养单位
+        level: "", // 培养层次
+        grade: "", // 年级
+        classId: "", // 班级编号
       },
       // 表单参数
       form: {},
@@ -440,6 +387,11 @@ export default {
   // created() {
   //   this.getList({ bjdm: this.queryParams.classId });
   // },
+  // 组件创建完请求数据
+  mounted() {
+    // this.getList({ bjdm: this.queryParams.classId });  // { pydw, pycc, ssnj, bjdm: this.queryParams.classId, pageNum-Y, pageSize-Y}
+    this.getList();
+  },
   methods: {
     // // 查看班级操作记录
     // showRecord(row) {
@@ -447,17 +399,26 @@ export default {
     //   // this.$router.push("/class/role-auth/user/" + roleId);
     //   this.$router.push("/class/record");
     // },
-    /** 查询公告列表 */
-    getList(queryParams) {
-      console.log("1");
+    /** 根据培养单位college、培养层次level、年级grade、班级编号classId、查询班级列表、页码pageNum、每页条数pageSize*/
+    getList(queryParams = {}) {
       // this.loading = true;
-        classList(queryParams).then((response) => {
-          console.log("2");
-          console.log(response);
-          //  this.noticeList = response.rows;
-          //  this.total = response.total;
-          //  this.loading = false;
-        });
+      classList(queryParams).then((response) => {
+        // console.log(response);
+        this.noticeList = response.BjList; // 根据状态码接收数据
+        //  this.total = response.total;
+        //  this.loading = false;
+      });
+    },
+    // 修改班级名称回调
+    alterClassName(row) {
+      // 整理参数
+      const { bjdm, bjmc } = row;
+      console.log({ bjdm, bjmc });
+      modifyClassName({ bjdm, bjmc }).then((response) => {
+        //response：{new className: '计算机学院硕士2020级5班'} {"fail to modify className": false}
+        // console.log(response["new className"]);
+        // 根据返回状态码确定是否修改成功——成功则重新请求数据刷新页面后弹出信息提醒；失败也弹出信息提醒
+      });
     },
     // 新建班级-取消按钮
     cancel() {
@@ -478,7 +439,6 @@ export default {
     // /** 搜索按钮操作 */
     handleQuery() {
       // this.queryParams.pageNum = 1;
-
       let obj = { bjdm: "070101000501" };
       this.getList(obj);
     },
@@ -666,5 +626,10 @@ export default {
 }
 .el-pagination {
   margin-top: 20px;
+}
+.el-input--medium .el-input__inner {
+  height: 36px;
+  line-height: 36px;
+  width: fit-content;
 }
 </style>

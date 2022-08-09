@@ -61,6 +61,21 @@
             </el-table-column>
             <el-table-column label="性别" align="center" prop="college" />
             <el-table-column label="班级职位" align="center" prop="level" />
+            <el-table-column label="操作" align="center" prop="level">
+              <template slot-scope="scope">
+                <span
+                  class="iconfont allocate_teacher"
+                  @click="action(scope.row)"
+                  >&#xe638;</span
+                >
+                <span
+                  style="color: #005657; margin-left: 5px; margin-right: 5px"
+                  @click="action(scope.row)"
+                >
+                  撤任班干部
+                </span>
+              </template>
+            </el-table-column>
           </el-table>
           <pagination
             id="pagenation"
@@ -479,7 +494,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .assign-table {
   height: 100vh;
   background-color: #ffffff;
@@ -506,6 +521,7 @@ export default {
   height: 28px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;
+  width: 300px;
   font-size: 20px;
   color: #1f1f1f;
   line-height: 28px;

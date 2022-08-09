@@ -13,26 +13,88 @@
       <!-- v-loading="loading" -->
       <el-table :data="noticeList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="65" align="center" />
-        <el-table-column label="序号" align="center" prop="id" />
-        <el-table-column label="学工号" align="center" prop="classId" />
-        <el-table-column label="姓名" align="center" prop="className">
+        <el-table-column
+          label="序号"
+          align="center"
+          prop="id"
+          width="100"
+          sortable
+        />
+        <el-table-column
+          label="学工号"
+          align="center"
+          prop="classId"
+          width="100"
+        />
+        <el-table-column
+          label="姓名"
+          align="center"
+          prop="className"
+          width="100"
+          sortable
+        >
           <el-input
             :value="noticeList[0].className"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-table-column>
-        <el-table-column label="性别" align="center" prop="college" />
-        <el-table-column label="工作单位" align="center" prop="level" />
-        <el-table-column label="任职班级" align="center" prop="nums" />
-        <el-table-column label="创建时间" align="center" prop="beginTime" />
-        <el-table-column label="任命人" align="center" prop="updateTime" />
-        <el-table-column label="任命年度" align="center" prop="updateTime" />
-        <el-table-column label="任命学期" align="center" prop="updateTime" />
-        <el-table-column label="任命时间" align="center" prop="updateTime" />
-        <el-table-column label="撤任人" align="center" prop="updateTime" />
-        <el-table-column label="撤任时间" align="center" prop="updateTime" />
-        <el-table-column label="任职状态" align="center" prop="updateTime" />
+        <el-table-column label="性别" align="center" prop="college" sortable />
+        <el-table-column
+          label="工作单位"
+          align="center"
+          prop="level"
+          sortable
+        />
+        <el-table-column label="任职班级" align="center" prop="nums" sortable />
+        <el-table-column
+          label="创建时间"
+          align="center"
+          prop="beginTime"
+          sortable
+        />
+        <el-table-column
+          label="任命人"
+          align="center"
+          prop="updateTime"
+          sortable
+        />
+        <el-table-column
+          label="任命年度"
+          align="center"
+          prop="updateTime"
+          sortable
+        />
+        <el-table-column
+          label="任命学期"
+          align="center"
+          prop="updateTime"
+          sortable
+        />
+        <el-table-column
+          label="任命时间"
+          align="center"
+          prop="updateTime"
+          sortable
+        />
+        <el-table-column
+          label="撤任人"
+          align="center"
+          prop="updateTime"
+          sortable
+        />
+        <el-table-column
+          label="撤任时间"
+          align="center"
+          prop="updateTime"
+          sortable
+        />
+        <el-table-column
+          label="任职状态"
+          align="center"
+          prop="updateTime"
+          sortable
+        />
         <!-- <el-table-column
         label="公告标题"
         align="center"

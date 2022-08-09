@@ -22,20 +22,20 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <span>学 院：</span>
-            <el-select v-model="moreIform.value1" placeholder="请选择" size="small">
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-select v-model="moreIform.manageReg" placeholder="请选择" size="small">
+              <el-option v-for="item in manageRegOps" :key="item.ssdwdm" :label="item.dwwc" :value="item.ssdwdm"></el-option>
             </el-select>
           </el-col>
           <el-col :span="8">
             <span>专 业：</span>
-            <el-select v-model="moreIform.value2" placeholder="请选择" size="small">
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-select v-model="moreIform.stuInfo" placeholder="请选择" size="small">
+              <el-option v-for="item in manageRegOps" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-col>
           <el-col :span="8">
             <span>班 级：</span>
-            <el-select v-model="moreIform.value3" multiple collapse-tags placeholder="请选择" size="small">
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-select v-model="moreIform.pread" multiple collapse-tags placeholder="请选择" size="small">
+              <el-option v-for="item in manageRegOps" :key="item.bjdm" :label="item.bjmc" :value="item.bjdm"></el-option>
             </el-select>
           </el-col>
         </el-row>
@@ -131,6 +131,7 @@
 <script>
 import CheckboxCom from '../../../components/checkboxCom'
 import exportView from './exportView/index.vue'
+import { getManageRegStuInfoSearchSpread } from "@/api/student/index"
 export default {
   name: 'manStudent',
   components:{ CheckboxCom, exportView },
@@ -140,9 +141,11 @@ export default {
       select: '',
       isMore: false,
       moreIform: {
-        value1:''
+        manageReg:'', // 学院
+        stuInfo:'', // 专业
+        pread:'', // 班级
       },
-      options: [{ value: '选项2', label: '双皮奶' }, { value: '选项3', label: '蚵仔煎' }],
+      manageRegOps:[], // 学院下拉框
       training: {  // 培养层次
         checkAll: false,
         choose: [],
@@ -407,9 +410,18 @@ export default {
     };
   },
 
-  mounted() {},
+  mounted() {
+    this.getSpread()
+  },
 
   methods: {
+    // 获取学院专业班级
+    getSpread() {
+      getManageRegStuInfoSearchSpread().then(res => {
+        // console.log(res)
+        this.manageRegOps = res.dwhbj
+      }).catch(err=>{})
+    },
     // 查询
     handleSearch(){ 
       console.log(this.searchVal,this.select)

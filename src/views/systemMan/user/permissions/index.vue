@@ -2,16 +2,23 @@
   <div class="permissions">
     <el-form class="elForm" :inline="true" :model="formName">
       <el-form-item label="用 户 名">
-        <el-input size="small" :disabled="true" v-model="formName.userName" placeholder="请输入"></el-input>
+        <el-input size="small" :disabled="true" v-model="formName.xm" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="学 工 号">
-        <el-input size="small" :disabled="true" v-model="formName.userCode" placeholder="请输入"></el-input>
+        <el-input size="small" :disabled="true" v-model="formName.userId" placeholder="请输入"></el-input>
       </el-form-item>
     </el-form>
 
     <el-form class="elForm mart20" :inline="true" :model="formUser">
       <el-form-item label="用户角色">
-        <el-input size="small" v-model="formUser.userName" placeholder="请输入"></el-input>
+        <el-select v-model="formName.roleId" multiple collapse-tags size="small" placeholder="请选择">
+          <el-option
+            v-for="item in checkboxWrap"
+            :key="item.roleId"
+            :label="item.roleName"
+            :value="item.roleId">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="数据范围">
         <el-select v-model="formUser.value" size="small" placeholder="请选择">
@@ -38,16 +45,19 @@
 </template>
 
 <script>
+import { queryDataAuth } from "@/api/systemMan/user"
+import { queryRoleList } from "@/api/systemMan/role"
 export default {
   name: 'permissions',
-
   data() {
     return {
       formName: {
-        userName: '',
-        userCode:''
+        xm: '',
+        userId: '',
+        roleId:''
       },
-      formUser:{},
+      formUser: {},
+      checkboxWrap:[], //用户角色
       options: [],
       cascaderOptions: [
         {
@@ -86,10 +96,32 @@ export default {
   },
 
   mounted() {
-    
+    this.formName = this.$route.query
+    if (this.formName.roleId.length > 0) {
+      this.formName.roleId = this.formName.roleId.split(',')
+    }
+    this.getqueryRoleList()
+    this.getQueryDataAuth()
   },
 
   methods: {
+    getQueryDataAuth() {
+      let data = {
+        "userId": "2005690002",
+        "roleId": "01"
+      }
+      queryDataAuth(data).then(res => {
+        this.cascaderOptions = res.data.rows
+      }).catch(err => {})
+    },
+    // 获取用户角色
+    getqueryRoleList() {
+      let data = { roleId: '01' }
+      queryRoleList(data).then(res => {
+        this.checkboxWrap = res.data.rows
+      }).catch(res => { })
+    },
+
     handleChange(value) {
       console.log(value);
     }

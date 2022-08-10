@@ -7,7 +7,10 @@
         <!-- <el-checkbox v-for="item in objProp.checkBox" :label="item.val" :key="item.val">{{item.label}}</el-checkbox> -->
         <el-col :span="4" v-for="item in objProp.checkBox" :key="item.val">
           <el-checkbox :label="item.val">
-              {{ item.label }}
+          <el-tooltip class="item" v-if="item.label&&item.label.length>7" effect="dark" :content="item.label" placement="top-start">
+            <div class="ellipsis">{{ item.label }}</div>
+          </el-tooltip>
+           <div v-else class="ellipsis">{{ item.label }}</div>
             </el-checkbox>
         </el-col>
         <!-- </el-checkbox> -->
@@ -50,6 +53,14 @@ export default {
   display: flex;
   ::v-deep .el-checkbox{
     margin-bottom: 10px !important;
+    .ellipsis{
+      display: inline-block;
+      width:118px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
   }
   ::v-deep .el-checkbox-group{
     width: 100%;

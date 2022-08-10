@@ -118,10 +118,34 @@ export const constantRoutes = [
       },
       {
         path: "studentAngle",
-        component: () => import("@/views/homepage/studentAngle"),
+        component: () => import("../index.vue"),
         name: "studentAngle",
         hidden: false,
         meta: { title: "学生视角", icon: "", affix: true },
+        children:[
+          {
+            path: "studentHomePage",
+            component: () => import("@/views/homepage/studentAngle/studentHomePage.vue"),
+            name: "studentHomePage",
+            hidden: false,
+            meta: { title: "学生视角首页", icon: "", affix: true },
+          },
+          {
+            path: "lookAngle",
+            component: () => import("@/views/homepage/studentAngle/lookAngle.vue"),
+            name: "lookAngle",
+            hidden: false,
+            meta: { title: "学生视角查看", icon: "", affix: true },
+          },
+          {
+            path: "editAngle",
+            component: () => import("@/views/homepage/studentAngle/editAngle.vue"),
+            name: "editAngle",
+            hidden: false,
+            meta: { title: "学生视角编辑", icon: "", affix: true },
+          },
+
+        ]
       }
     ],
   },

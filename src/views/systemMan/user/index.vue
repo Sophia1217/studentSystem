@@ -203,7 +203,7 @@ export default {
 
   },
   activated() {
-    // this.handleSearch()
+    this.handleSearch()
   },
   methods: {
     // 获取用户角色

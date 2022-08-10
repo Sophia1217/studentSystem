@@ -11,7 +11,7 @@
 
     <el-form class="elForm mart20" :inline="true" :model="formUser">
       <el-form-item label="用户角色">
-        <el-select v-model="formName.roleId" multiple collapse-tags size="small" placeholder="请选择">
+        <el-select v-model="formName.roleId" class="elFormSelect" multiple collapse-tags size="small" placeholder="请选择">
           <el-option
             v-for="item in checkboxWrap"
             :key="item.roleId"
@@ -21,31 +21,44 @@
         </el-select>
       </el-form-item>
       <el-form-item label="数据范围">
-        <el-select v-model="formUser.value" size="small" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-
         <el-cascader
-          class="marl10"
           size="small"
-          v-model="formUser.value"
+          ref="elcascader"
+          v-model="formUser.dataAuth"
           :options="cascaderOptions"
-          :props="{ expandTrigger: 'hover' }"
+          :props="{ expandTrigger: 'click',label:'dwmc',value:'dwdm',children:'children', multiple: true, checkStrictly: true  }"
           @change="handleChange">
         </el-cascader>
+
+        <!-- <el-cascader
+          size="small" class="marl10"
+          v-model="formUser.classList"
+          :options="classListOps"
+          :props="{ expandTrigger: 'hover',label:'bjmc',value:'bjdm',children:'children' }"
+          @change="handleStuList">
+        </el-cascader>
+
+        <el-cascader
+          size="small" class="marl10"
+          v-model="formUser.studList"
+          :options="stuListOps"
+          :props="{ expandTrigger: 'hover',label:'xm',value:'xh',children:'children' }"
+          >
+        </el-cascader> -->
+
       </el-form-item>
-      
     </el-form>
+    <div class="editBottom">
+      <div class="btn cancel" @click="handleCencal"><i class="icon noIcon"></i> 取消</div>
+      <div class="btn confirm" @click="handleDataAuth">
+        <i class="icon yesIcon"></i> 提交
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { queryDataAuth } from "@/api/systemMan/user"
+import { queryDataAuth, queryClassList,queryStuList,updateDataAuth } from "@/api/systemMan/user"
 import { queryRoleList } from "@/api/systemMan/role"
 export default {
   name: 'permissions',
@@ -56,42 +69,15 @@ export default {
         userId: '',
         roleId:''
       },
-      formUser: {},
+      formUser: {
+        dataAuth: [], // 学院
+        classList: [], // 班级
+        studList:[] // 人
+      },
+      classListOps: [], // 班级
+      stuListOps:[], // 学生
       checkboxWrap:[], //用户角色
-      options: [],
-      cascaderOptions: [
-        {
-          value: 'zhinan',
-          label: '指南',
-          children: [{
-            value: 'shejiyuanze',
-            label: '设计原则',
-            children: [{
-              value: 'yizhi',
-              label: '一致'
-            }, {
-              value: 'fankui',
-              label: '反馈'
-            }, {
-              value: 'xiaolv',
-              label: '效率'
-            }, {
-              value: 'kekong',
-              label: '可控'
-            }]
-          }, {
-            value: 'daohang',
-            label: '导航',
-            children: [{
-              value: 'cexiangdaohang',
-              label: '侧向导航'
-            }, {
-              value: 'dingbudaohang',
-              label: '顶部导航'
-            }]
-          }]
-        }
-      ]
+      cascaderOptions: [] // 学院数据
     }
   },
 
@@ -107,7 +93,7 @@ export default {
   methods: {
     getQueryDataAuth() {
       let data = {
-        "userId": "2005690002",
+        "userId": "2005690002",//操作人
         "roleId": "01"
       }
       queryDataAuth(data).then(res => {
@@ -121,11 +107,66 @@ export default {
         this.checkboxWrap = res.data.rows
       }).catch(res => { })
     },
-
+    expandChange(val) {
+      console.log(val,'val123')
+    },
+    // 学院下拉框选择班级
     handleChange(value) {
-      console.log(value);
+      let downNode = this.$refs.elcascader.getCheckedNodes()
+      console.log(downNode)
+      return
+      console.log(downNode, 'down', value)
+      if (downNode.data.visitId == 0) {
+        this.getQueryClassList(downNode.data.dwdm)
+      }
+     
+      
+    },
+    getQueryClassList(value) {
+       let data = { ssdwdm: value }
+      queryClassList(data).then(res => {
+        let resdata = res.BjList
+        for (let x = 0; x < resdata.length; x++){
+          resdata[x].dwmc = resdata[x].bjmc
+          resdata[x].dwdm = resdata[x].bjdm
+        }
+        for (let i = 0; i < this.cascaderOptions.length; i++){
+          if (this.cascaderOptions[i].dwdm == data.ssdwdm) {
+            this.$set(this.cascaderOptions[i],'children',resdata)
+          }
+        }
+      }).catch(err=>{})
+    },
+    // 班级下拉选人
+    handleStuList(value) {
+      let data = {bjdm: value.join(',')}
+      queryStuList(data).then(res => {
+        this.stuListOps = res.row
+      }).catch(err => {
+        
+      })
+    },
+    // 取消
+    handleCencal() {
+      this.$router.push({
+        path: '/systems/user'
+      })
+    },
+    // 更新数据权限
+    handleDataAuth() { 
+      let data = {
+        "userId": this.formName.userId,
+        "roleId": this.formName.roleId,
+        "dataList": [
+          { "orginazationCode": "1234", "classNo": "", "stuId": "" },
+          { "orginazationCode": "1235", "classNo": "", "stuId": "" }
+        ]
+      }
+      updateDataAuth(data).then(res => {
+        
+      }).catch(err=>{})
     }
-  },
+  }
 };
 </script>
 
@@ -140,6 +181,56 @@ export default {
   .elForm{
     background: #fff;
     padding:20px;
+  }
+  .elFormSelect{
+    ::v-deep .el-tag{
+      &:nth-child(1){
+        width:120px;
+      }
+    }
+  }
+  .editBottom {
+    width: 100%;
+    height: 60px;
+    background: #fff;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 -2px 6px -1px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    .btn {
+      width: 84px;
+      height: 36px;
+      line-height: 36px;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid #005657;
+      border-radius: 2px;
+      margin-right: 20px;
+      .icon {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        vertical-align: middle;
+        margin-right: 5px;
+      }
+      .noIcon {
+        background: url("~@/assets/images/no.png");
+      }
+      .yesIcon {
+        background: url("~@/assets/images/yesW.png");
+      }
+    }
+    .cancel {
+      color: #005657;
+    }
+    .confirm {
+      background: #005657;
+      color: #fff;
+    }
   }
 }
 </style>

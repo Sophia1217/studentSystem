@@ -26,3 +26,31 @@ export function queryDataAuth(data) {
     data: data
   })
 }
+
+
+// 班级查询
+export function queryClassList(data) {
+  return request({
+    url: '/sws/class/queryClassList',
+    method: 'post',
+    data: data
+  })
+}
+
+// 人员查询
+export function queryStuList(data) {
+  return request({
+    url: '/sws/class/queryStuList',
+    method: 'post',
+    data: data
+  })
+}
+
+// 数据权限更新
+export function updateDataAuth(data) {
+  return request({
+    url: '/sws/manager/user/updateDataAuth',
+    method: 'post',
+    data: data
+  })
+}

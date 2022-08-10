@@ -17,3 +17,12 @@ export function updateUserRole(data) {
     data: data
   })
 }
+
+// 查询用户数据权限
+export function queryDataAuth(data) {
+  return request({
+    url: '/sws/manager/user/queryDataAuth',
+    method: 'post',
+    data: data
+  })
+}

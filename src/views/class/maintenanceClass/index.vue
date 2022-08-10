@@ -387,39 +387,7 @@ export default {
           pycc: "", // 培养层次
           stuNumOfClass: 0, // 班级数量
           createTime: "", // 创建时间
-          updateTime: "", // 更新时间
-      noticeList: [
-        {
-          bjdm: 1050100220005,
-          className: "计算机工程硕士2022级1班",
-          college: "计算机工程学院",
-          size: "2020级",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-        },
-        {
-          bjdm: 13070026,
-          className: "计算机工程硕士2022级2班",
-          college: "计算机工程学院",
-          size: "2020级",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-        },
-        {
-          bjdm: 13070027,
-          className: "计算机工程硕士2022级3班",
-          college: "计算机工程学院",
-          size: "2020级",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
->>>>>>> a75c4a3fa29875fcce15a54d50c1b14d86c4e2a1
-        },
+        }
       */
       noticeList: [],
       // 弹出层标题

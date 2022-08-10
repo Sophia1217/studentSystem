@@ -85,6 +85,15 @@ Vue.use(Element, {
 
 Vue.config.productionTip = false;
 
+// import axios from "axios";
+// axios
+//   .post("http://10.161.23.133:8081/sws/class/addClass", {
+//     pydw: "计算机学院",
+//     pycc: "硕士",
+//     ssnj: "2020",
+//     classNum: 2,
+//   })
+//   .then((res) => console.log(res));
 new Vue({
   el: "#app",
   router,

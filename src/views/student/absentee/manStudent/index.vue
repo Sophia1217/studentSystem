@@ -22,20 +22,20 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <span>学 院：</span>
-            <el-select v-model="moreIform.value1" placeholder="请选择" size="small">
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-select v-model="moreIform.manageReg" placeholder="请选择" size="small">
+              <el-option v-for="item in manageRegOps" :key="item.ssdwdm" :label="item.dwwc" :value="item.ssdwdm"></el-option>
             </el-select>
           </el-col>
           <el-col :span="8">
             <span>专 业：</span>
-            <el-select v-model="moreIform.value2" placeholder="请选择" size="small">
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-select v-model="moreIform.stuInfo" placeholder="请选择" size="small">
+              <el-option v-for="item in manageRegOps" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-col>
           <el-col :span="8">
             <span>班 级：</span>
-            <el-select v-model="moreIform.value3" multiple collapse-tags placeholder="请选择" size="small">
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-select v-model="moreIform.pread" multiple collapse-tags placeholder="请选择" size="small">
+              <el-option v-for="item in manageRegOps" :key="item.bjdm" :label="item.bjmc" :value="item.bjdm"></el-option>
             </el-select>
           </el-col>
         </el-row>
@@ -101,10 +101,10 @@
         <el-table :data="tableData" ref="multipleTable" @selection-change="handleSelectionChange" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
-          <el-table-column prop="date" label="学号" sortable> </el-table-column>
-          <el-table-column prop="name" label="姓名" sortable> </el-table-column>
-          <el-table-column prop="address" label="政治面貌" sortable> </el-table-column>
-          <el-table-column prop="address" label="民族" sortable> </el-table-column>
+          <el-table-column prop="xh" label="学号" sortable> </el-table-column>
+          <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
+          <el-table-column prop="zzmmm" label="政治面貌" sortable> </el-table-column>
+          <el-table-column prop="mzm" label="民族" sortable> </el-table-column>
           <el-table-column prop="address" label="学院" sortable> </el-table-column>
           <el-table-column prop="address" label="专业" sortable> </el-table-column>
           <el-table-column prop="address" label="年级" sortable> </el-table-column>
@@ -131,8 +131,9 @@
 <script>
 import CheckboxCom from '../../../components/checkboxCom'
 import exportView from './exportView/index.vue'
+import { getManageRegStuInfoSearchSpread, getManageRegStuInfoPageList } from "@/api/student/index"
 export default {
-  name: 'manStudent',
+  name: 'absentee',
   components:{ CheckboxCom, exportView },
   data() {
     return {
@@ -140,9 +141,11 @@ export default {
       select: '',
       isMore: false,
       moreIform: {
-        value1:''
+        manageReg:'', // 学院
+        stuInfo:'', // 专业
+        pread:'', // 班级
       },
-      options: [{ value: '选项2', label: '双皮奶' }, { value: '选项3', label: '蚵仔煎' }],
+      manageRegOps:[], // 学院下拉框
       training: {  // 培养层次
         checkAll: false,
         choose: [],
@@ -406,13 +409,49 @@ export default {
       showExport: false
     };
   },
+  watch: {
+    
+  },
 
-  mounted() {},
+  mounted() {
+    this.getSpread()
+    this.handleSearch()
+  },
+  activated() {
+    // this.handleSearch()
+  },
 
   methods: {
+    // 获取学院专业班级
+    getSpread() {
+      getManageRegStuInfoSearchSpread().then(res => {
+        // console.log(res)
+        this.manageRegOps = res.dwhbj
+      }).catch(err=>{})
+    },
     // 查询
-    handleSearch(){ 
-      console.log(this.searchVal,this.select)
+    handleSearch() { 
+      let data = {
+        XH:"",
+        XM:"",
+        SFZJH:"",
+        YDDH:"",
+        PYCCM:"",
+        XZ:"",
+        XJZT:"",
+        ZZMMM:"",
+        MZM:"",
+        BJM:"",
+        DWH:"",
+        ZYDM:"",
+        pageNum:1,
+        pageSize:10,
+        limitSql:""
+      }
+      getManageRegStuInfoPageList(data).then(res => {
+        console.log(res, 'res')
+        this.tableData = res.data
+      }).catch(err=>{})
     },
     // 点击更多
     handleMore() {

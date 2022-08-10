@@ -73,4 +73,14 @@ export default  {
   background-color: #005657;
   color: #fff;
 }
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color: #005657;
+    color: #FFFFFF;
+}
+.el-pagination.is-background .el-pager li:not(.disabled):hover {
+    color: #005657;
+}
+.el-pagination.is-background .el-pager li:not(.disabled):hover {
+    color: #fff;
+}
 </style>

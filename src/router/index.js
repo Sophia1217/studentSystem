@@ -439,6 +439,13 @@ export const constantRoutes = [
         component: (resolve) => require(["@/views/systemMan/dictionary/index"], resolve),
         meta: { title: "字典管理", icon: "", },
       },
+      {
+        name: "dictionaryDetail",
+        path: "dictionaryDetail",
+        hidden:true,
+        component: (resolve) => require(["@/views/systemMan/dictionary/dictionaryDetail"], resolve),
+        meta: { title: "字典列表", icon: "", },
+      },
     ]
   }
 ];

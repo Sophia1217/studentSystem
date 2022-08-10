@@ -78,7 +78,7 @@
           </el-table-column> -->
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="handleOpenEdit(scope.row)">
+              <el-button type="text" size="small" @click="handleOpenEdit(scope.row,scope.$index)">
                 <i class="scopeIncon handledie"></i> <span class="handleName">编辑</span>
               </el-button>
               <el-button type="text" size="small" @click="handlePermiss(scope.row)">
@@ -93,33 +93,33 @@
     <el-dialog title="编辑" :visible.sync="dialogFormVisible">
       <div>
         <el-row :gutter="20">
-          <el-col :span="3" :offset="3">用 户 名</el-col>
+          <el-col :span="4" :offset="3">用 户 名</el-col>
           <el-col :span="10">
-            <el-input v-model="editForm.name" :disabled="true" size="small" placeholder="请输入"></el-input>
+            <el-input v-model="editForm.xm" :disabled="true" size="small" placeholder="请输入"></el-input>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3" :offset="3">学 工 号</el-col>
+          <el-col :span="4" :offset="3">学 工 号</el-col>
           <el-col :span="10">
-            <el-input v-model="editForm.name" :disabled="true" size="small" placeholder="请输入"></el-input>
+            <el-input v-model="editForm.userId" :disabled="true" size="small" placeholder="请输入"></el-input>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3" :offset="3" class="greentColor">当前角色：</el-col>
+          <el-col :span="4" :offset="3" class="greentColor">当前角色：</el-col>
           <el-col :span="10">
-            <div class="greentColor">勤工助学负责人、培养单位本研学生工作负责人</div>
+            <div class="greentColor">{{editForm.roleNames}}</div>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3" :offset="3">用户角色:</el-col>
+          <el-col :span="4" :offset="3">用户角色:</el-col>
           <el-col :span="10">
             <div class="checkboxItem">
               <el-checkbox-group v-model="editForm.checkList">
-                <el-checkbox label="复选框 A"></el-checkbox>
-                <el-checkbox label="复选框 B"></el-checkbox>
+                <!-- <el-checkbox v-for="date in checkboxWrap" :label="date.roleName" :key="date.roleId"></el-checkbox> -->
+                <!-- <el-checkbox label="复选框 B"></el-checkbox>
                 <el-checkbox label="复选框 C"></el-checkbox>
                 <el-checkbox label="禁用"></el-checkbox>
-                <el-checkbox label="选中且禁用"></el-checkbox>
+                <el-checkbox label="选中且禁用"></el-checkbox> -->
               </el-checkbox-group>
             </div>
           </el-col>
@@ -136,6 +136,7 @@
 <script>
 import CheckboxCom from '../../components/checkboxCom'
 import { queryUserPageList } from "@/api/systemMan/user"
+import { queryRoleList } from "@/api/systemMan/role"
 export default {
   name: 'user',
   components:{ CheckboxCom },
@@ -144,10 +145,6 @@ export default {
       searchVal: '',
       select: '',
       isMore: false,
-      moreIform: {
-        value1:''
-      },
-      options: [{ value: '选项2', label: '双皮奶' }, { value: '选项3', label: '蚵仔煎' }],
       learnHe: {  //单位：：
         checkAll: false,
         choose: [],
@@ -184,24 +181,35 @@ export default {
         checkBox: [{label:'男',val:1},{label: '女',val:2}],
         isIndeterminate: true
       },
-      
       tableData: [],
       dialogFormVisible: false,
       editForm: {
-        name: '123',
+        xm: '',
+        userId: '',
+        roleNames: '',
         checkList:[]
       },
       multipleSelection: [],
+      checkboxWrap:[]
     };
   },
 
   created() {
     this.handleSearch()
+    this.getqueryRoleList()
   },
   activated() {
-    this.handleSearch()
+    // this.handleSearch()
   },
   methods: {
+    // 获取用户角色
+    getqueryRoleList() { 
+      let data = { roleId: '01'}
+      queryRoleList(data).then(res => {
+        // console.log(res.data.rows, '角色')
+        this.checkboxWrap = res.data.rows
+      }).catch(res=>{})
+    },
     // 查询
     handleSearch() {
       let data = {
@@ -286,7 +294,8 @@ export default {
         }
       })
     },
-    handleOpenEdit() { 
+    handleOpenEdit(row, index) { 
+      this.editForm = row
       this.dialogFormVisible = true
     }
   },

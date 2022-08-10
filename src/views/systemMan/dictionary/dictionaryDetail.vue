@@ -2,14 +2,11 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryParams" class="queryForm" size="small" :inline="true"
       label-width="68px">
-      <el-form-item label="字典类型" prop="roleName">
-        <el-input v-model="queryParams.roleName" size="small" placeholder="请输入字典类型"></el-input>
-      </el-form-item>
       <el-form-item label="字典名称" prop="roleName">
-        <el-input v-model="queryParams.roleName" size="small" placeholder="请输入字典名称"></el-input>
+        <el-input v-model="queryParams.roleName" :disabled="true" size="small" placeholder="请输入字典名称"></el-input>
       </el-form-item>
-      <el-form-item label="字典状态" prop="roleState">
-        <el-select v-model="queryParams.roleState" placeholder="请选择角色" clearable>
+      <el-form-item label="字典状态" prop="roleName">
+        <el-select v-model="queryParams.roleState" placeholder="请选择字典状态" clearable>
           <el-option
             v-for="dict in roleNameOps"
             :key="dict.value"
@@ -17,6 +14,9 @@
             :value="dict.value"
           />
         </el-select>
+      </el-form-item>
+      <el-form-item label="字典状态" prop="roleState">
+        <el-input v-model="queryParams.roleName" size="small" placeholder="请输入字典名称"></el-input>
       </el-form-item>
       <el-form-item label="创建时间" prop="roleDate">
         <el-date-picker 
@@ -39,8 +39,14 @@
 
     <div class="content">
       <div class="content_top">
-        <h3 class="title-item">字典管理<span class="iconfont repeat_icon">&#xe7b1; </span></h3>
+        <h3 class="title-item">班级操作字典 <span class="iconfont repeat_icon">&#xe7b1; </span></h3>
         <div class="headerRight">
+          <div class="btns borderBlue" @click="handleAdd(null)">
+            <i class="icon blueIcon"></i><span class="title">新增字典</span>
+          </div>
+          <!-- <div class="btns borderOrange" @click="handleDetele">
+            <i class="icon orangeIcon"></i><span class="title">删除</span>
+          </div> -->
         </div>
       </div>
       
@@ -48,16 +54,14 @@
       <el-table :data="noticeList"  @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="序号" align="center" prop="id" width="100" type="index" />
-        <el-table-column label="字典类型" align="center" prop="classId" sortable />
-        <el-table-column label="字典名称" align="center" prop="className" sortable />
-        <el-table-column label="字典状态" align="center" prop="college" sortable />
+        <el-table-column label="字典标签" align="center" prop="classId" sortable />
+        <el-table-column label="字典状态" align="center" prop="className" sortable />
         <el-table-column label="备注" align="center" prop="college" sortable />
         <el-table-column label="创建时间" align="center" prop="college" sortable />
         <el-table-column label="操作" width="200" sortable >
           <template slot-scope="scope">
             <div class="operation">
               <div class="editBtn" @click="handleAdd(scope.row)"> <i class="icon editIcon"></i> 编辑</div>
-              <div class="editBtn" @click="handleList(scope.row)"> <i class="icon deteleIcon"></i>字典列表</div>
             </div>
           </template>
         </el-table-column>
@@ -69,7 +73,7 @@
 
 <script>
 import "@/assets/fonts/repeat/iconfont.css";
-import DicDialog from './dicDialog.vue'
+import DicDialog from './detailDialog.vue'
 export default {
   name: "dictionary",
   components: { DicDialog },
@@ -124,11 +128,6 @@ export default {
     handleCommitDia() {
       this.dialogVisible = false
     },
-    handleList(row) {
-      this.$router.push({
-        path:'/systems/dictionaryDetail'
-      })
-    },
     handleSelectionChange(val) {
       console.log(val)
       this.multipleSelection = val;
@@ -163,8 +162,8 @@ export default {
     align-items: center;
     flex-direction: row;
     .title-item {
-      display: inline-block;
-      width: 120px;
+      // display: inline-block;
+      // width: 120px;
       height: 28px;
       font-family: "PingFangSC-Semibold";
       font-weight: 600;

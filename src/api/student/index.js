@@ -8,3 +8,12 @@ export function getManageRegStuInfoSearchSpread(data) {
     data: data
   })
 }
+
+// 查询学生信息 -可管理学生
+export function getManageRegStuInfoPageList(data) {
+  return request({
+    url: '/sws/regStuInfo/getManageRegStuInfoPageList',
+    method: 'post',
+    data: data
+  })
+}

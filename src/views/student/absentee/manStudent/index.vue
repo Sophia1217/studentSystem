@@ -101,10 +101,10 @@
         <el-table :data="tableData" ref="multipleTable" @selection-change="handleSelectionChange" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
-          <el-table-column prop="date" label="学号" sortable> </el-table-column>
-          <el-table-column prop="name" label="姓名" sortable> </el-table-column>
-          <el-table-column prop="address" label="政治面貌" sortable> </el-table-column>
-          <el-table-column prop="address" label="民族" sortable> </el-table-column>
+          <el-table-column prop="xh" label="学号" sortable> </el-table-column>
+          <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
+          <el-table-column prop="zzmmm" label="政治面貌" sortable> </el-table-column>
+          <el-table-column prop="mzm" label="民族" sortable> </el-table-column>
           <el-table-column prop="address" label="学院" sortable> </el-table-column>
           <el-table-column prop="address" label="专业" sortable> </el-table-column>
           <el-table-column prop="address" label="年级" sortable> </el-table-column>
@@ -131,9 +131,9 @@
 <script>
 import CheckboxCom from '../../../components/checkboxCom'
 import exportView from './exportView/index.vue'
-import { getManageRegStuInfoSearchSpread } from "@/api/student/index"
+import { getManageRegStuInfoSearchSpread, getManageRegStuInfoPageList } from "@/api/student/index"
 export default {
-  name: 'manStudent',
+  name: 'absentee',
   components:{ CheckboxCom, exportView },
   data() {
     return {
@@ -409,9 +409,16 @@ export default {
       showExport: false
     };
   },
+  watch: {
+    
+  },
 
   mounted() {
     this.getSpread()
+    this.handleSearch()
+  },
+  activated() {
+    // this.handleSearch()
   },
 
   methods: {
@@ -423,8 +430,28 @@ export default {
       }).catch(err=>{})
     },
     // 查询
-    handleSearch(){ 
-      console.log(this.searchVal,this.select)
+    handleSearch() { 
+      let data = {
+        XH:"",
+        XM:"",
+        SFZJH:"",
+        YDDH:"",
+        PYCCM:"",
+        XZ:"",
+        XJZT:"",
+        ZZMMM:"",
+        MZM:"",
+        BJM:"",
+        DWH:"",
+        ZYDM:"",
+        pageNum:1,
+        pageSize:10,
+        limitSql:""
+      }
+      getManageRegStuInfoPageList(data).then(res => {
+        console.log(res, 'res')
+        this.tableData = res.data
+      }).catch(err=>{})
     },
     // 点击更多
     handleMore() {

@@ -108,23 +108,6 @@
                   >
                 </el-col>
                 <el-col :span="1.5">
-                  <el-button
-                    class="delete"
-                    icon="el-icon-delete"
-                    @click="handleDelete"
-                    >移出班级</el-button
-                  >
-                  <!-- <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:notice:edit']"
-        >修改</el-button> -->
-                </el-col>
-                <el-col :span="1.5">
                   <el-button class="export">
                     <span class="iconfont icon-daochu-06"></span>
                     导入</el-button
@@ -388,14 +371,6 @@
               <el-input v-model="form.noticeTitle" placeholder="计算机学院" />
             </el-form-item>
           </el-col>
-          <el-col :span="10" style="margin-right='10px'">
-            <el-form-item label="转入学院" prop="noticeType">
-              <el-select v-model="form.noticeType" placeholder="计算机学院">
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row class="change_row">
           <el-col :span="10" class="in_class">
             <el-form-item label="转入班级" prop="noticeTitle">
               <el-select
@@ -404,7 +379,6 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="10" class="in_class"> </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">

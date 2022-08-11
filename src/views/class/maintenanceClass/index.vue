@@ -448,7 +448,7 @@ export default {
     getList(queryParams = {}) {
       // this.loading = true;
       classList(queryParams).then((response) => {
-        // console.log(response);
+        console.log(response);
         this.noticeList = response.BjList; // 根据状态码接收数据
         //  this.total = response.total;
         //  this.loading = false;

@@ -7,7 +7,7 @@ function resolve(dir) {
 
 const CompressionPlugin = require("compression-webpack-plugin");
 
-const name = process.env.VUE_APP_TITLE || "若依管理系统"; // 网页标题
+const name = process.env.VUE_APP_TITLE || "华中师范大学学生工作服务系统"; // 网页标题
 
 const port = process.env.port || process.env.npm_config_port || 8081; // 端口
 
@@ -36,9 +36,9 @@ module.exports = {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
         // target: `http://10.161.11.70:8080`,
-        // target: `http://10.161.23.133:8081`,//黄聪
+        target: `http://10.161.23.133:8081`,//黄聪
         // target: `http://10.161.23.133:8081`,
-        target: `http://10.146.83.42:8081`,  // 涂晓招
+        // target: `http://10.146.83.42:8081`,  // 涂晓招
         // target: `http://10.222.7.135:8081`,  // 朱老师
         // target: `http://10.161.10.116:8081`,  // 华庚兴
         changeOrigin: true,

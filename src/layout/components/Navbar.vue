@@ -14,12 +14,9 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/user/profile">
-            <el-dropdown-item>个人中心</el-dropdown-item>
+          <router-link to="/selectRole">
+            <el-dropdown-item>切换角色</el-dropdown-item>
           </router-link>
-          <el-dropdown-item @click.native="setting = true">
-            <span>布局设置</span>
-          </el-dropdown-item>
           <el-dropdown-item divided @click.native="logout">
             <span>退出登录</span>
           </el-dropdown-item>
@@ -57,17 +54,7 @@ export default {
       'avatar',
       'device'
     ]),
-    setting: {
-      get() {
-        return this.$store.state.settings.showSettings
-      },
-      set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'showSettings',
-          value: val
-        })
-      }
-    },
+
     topNav: {
       get() {
         return this.$store.state.settings.topNav
@@ -85,7 +72,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$store.dispatch('LogOut').then(() => {
-          location.href = '/index';
+          location.href = ' https://account.ccnu.edu.cn/cas/logout?service=http://ip:port/Cas1/';
         })
       }).catch(() => {});
     }

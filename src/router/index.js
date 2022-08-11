@@ -62,6 +62,11 @@ export const constantRoutes = [
     hidden: true,
   },
   {
+    path: "/selectRole",
+    component: () => import("@/views/homepage/selectRole"),
+    hidden: true,
+  },
+  {
     path: "",
     component: Layout,
     redirect: "index",
@@ -74,15 +79,6 @@ export const constantRoutes = [
         hidden: false,
         meta: { title: "首页", icon: "" },
       },
-      
-      {
-        path: "selectRole",
-        component: () => import("@/views/homepage/selectRole"),
-        name: "selectRole",
-        hidden: false,
-        meta: { title: "角色选择", icon: "" },
-      },
-      
       {
         path: "studentAngle",
         component: () => import("../index.vue"),

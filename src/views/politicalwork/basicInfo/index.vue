@@ -10,8 +10,9 @@
             <el-option label="身份证号" value="3" />
             <el-option label="手机号" value="4" />
           </el-select>
-          <el-button class="searchButton" slot="append" icon="el-icon-search" @click="searchClick">查询</el-button>
+          <el-button slot="append" class="searchButton" icon="el-icon-search" @click="handleSearch">查询</el-button>
         </el-input>
+        <!-- 更多分类按钮 -->
         <div class="more" @click="handleMore">
           <span>更多分类</span>
           <i v-if="!isMore" class="moreIcon chevronDown" />
@@ -19,7 +20,7 @@
         </div>
       </div>
 
-      <!-- 更多选择 -->
+      <!-- 更多分类下拉checkbox -->
       <div v-if="isMore" class="moreSelect">
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">类 别：</el-col>
@@ -61,16 +62,22 @@
         <el-table ref="multipleTable" :data="tableData" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
-          <el-table-column prop="workId" label="工号" sortable />
-          <el-table-column prop="name" label="姓名" sortable />
-          <el-table-column prop="sex" label="性别" sortable />
-          <el-table-column prop="number" label="联系方式" sortable />
-          <el-table-column prop="workPlace" label="工作单位" sortable />
-          <el-table-column prop="degree" label="最高学历" sortable />
-          <el-table-column prop="university" label="最高学历毕业学校" sortable />
-          <el-table-column prop="major" label="专业背景" sortable />
-          <el-table-column prop="duty" label="职务" sortable />
-          <el-table-column prop="attendWorkDate" label="参加工作时间" sortable />
+          <el-table-column prop="gh" label="工号" sortable />
+          <el-table-column prop="xm" label="姓名" sortable />
+          <!-- <el-table-column prop="xbm" label="性别" sortable /> -->
+          <el-table-column prop="xbm" label="性别" sortable>
+            <template slot-scope="scope">
+              <span v-if="scope.row.xbm == 1">男</span>
+              <span v-else>女</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="yddh" label="联系方式" sortable />
+          <el-table-column prop="dwh" label="工作单位" sortable />
+          <el-table-column prop="zgxlm" label="最高学历" sortable />
+          <el-table-column prop="byxxjdw" label="最高学历毕业学校" sortable />
+          <el-table-column prop="xklbm" label="专业背景" sortable />
+          <el-table-column prop="roleid" label="职务" sortable />
+          <el-table-column prop="cjgzrq" label="参加工作时间" sortable />
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="hadleDetail(scope.row,1)">
@@ -84,6 +91,7 @@
         </el-table>
         <pagination
           v-show="total>0"
+          class="pagination"
           :total="total"
           :page.sync="queryParams.pageNum"
           :limit.sync="queryParams.pageSize"
@@ -115,30 +123,9 @@
 
 </template>
 <script>
-import { listPost, getPost, getList, delPost, addPost, updatePost } from '@/api/system/post'
-import { listUser, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus } from '@/api/system/user'
-import { getToken } from '@/utils/auth'
+import { getPoliticalWorkList, getFilterPoliticalWorkList } from '@/api/politicalWork/basicInfo'
 import CheckboxCom from '../../components/checkboxCom'
 
-// todo checkbox选项
-// const categoryOptions = ['辅导员', '导师', '班主任']
-// const sexOptions = ['男', '女']
-// const workPlaceOptions = ['教育学院', '计算机学院', '社会学院', '心理学院', '数学与统计学院', '人工智能教育学部']
-
-// const basicInfoListExample = [
-//   { 'name': 'a', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'a', 'workInfo': 'female' },
-//   { 'name': 'b', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'b', 'workInfo': 'female' },
-//   { 'name': 'c', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'c', 'workInfo': 'female' },
-//   { 'name': 'd', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'd', 'workInfo': 'female' },
-//   { 'name': 'e', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'e', 'workInfo': 'female' },
-//   { 'name': 'f', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'f', 'workInfo': 'female' },
-//   { 'name': 'g', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'g', 'workInfo': 'female' },
-//   { 'name': 'h', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'h', 'workInfo': 'female' },
-//   { 'name': 'i', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'i', 'workInfo': 'female' },
-//   { 'name': 'j', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'j', 'workInfo': 'female' },
-//   { 'name': 'k', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'l', 'workInfo': 'female' },
-//   { 'name': 'l', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'k', 'workInfo': 'female' },
-//   { 'name': 'm', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'm', 'workInfo': 'female' }]
 export default {
   name: 'BasicInfo',
   components: { CheckboxCom },
@@ -195,22 +182,24 @@ export default {
       category: { // 类别
         checkAll: false,
         choose: [],
-        checkBox: [{ label: '辅导员', val: 1 }, { label: '导师', val: 2 }, { label: '班主任', val: 3 }],
+        checkBox: [{ label: '辅导员', val: '辅导员' }, { label: '导师', val: '导师' }, { label: '班主任', val: '班主任' }],
         isIndeterminate: true
       },
       sex: { // 性别
         checkAll: false,
         choose: [],
-        checkBox: [{ label: '男', val: 1 }, { label: '女', val: 2 }],
+        checkBox: [{ label: '男', val: 21 }, { label: '女', val: 22 }],
         isIndeterminate: true
       },
       workPlace: { // 单位
         checkAll: false,
         choose: [],
-        checkBox: [{ label: '软件学院', val: 1 }, { label: '设计学院', val: 2 }, { label: '文学院', val: 3 }, { label: '理学院', val: 4 }],
+        checkBox: [{ label: '软件学院', val: '软件学院' }, { label: '设计学院', val: '设计学院' }, { label: '文学院', val: '文学院' }, { label: '理学院', val: '理学院' }],
         isIndeterminate: true
       },
-      tableData: [{ workId: 1, name: 'abc', sex:'男' },{ workId: 2, name: 'def', sex:'女' }],
+      selectedCheckbox: [],
+      selectedCategory: [],
+      tableData: [],
       multipleSelection: [],
       showExport: false
     }
@@ -219,6 +208,7 @@ export default {
   watch: {},
   created() {
     this.getList()
+    // this.getTest()
     // this.getConfigKey('sys.user.initPassword').then(response => {
     //   this.initPassword = response.msg
     // })
@@ -240,15 +230,21 @@ export default {
         allCheck.push(this.category.checkBox[i].val)
       }
       this.category.choose = val ? allCheck : []
-      console.log(this.category.choose, '全选')
+      this.selectedCheckbox = this.category.choose.concat(this.sex.choose).concat(this.workPlace.choose)
+      console.log(this.selectedCheckbox, '所有勾选集合数组')
       this.category.isIndeterminate = false
+//调用接口
+      getFilterPoliticalWorkList(this.selectedCheckbox).then(response => {
+        
+      })
     },
     // 类别单选
     handleCheckedCategoryChange(value) {
       const checkedCount = value.length
       this.category.checkAll = checkedCount === this.category.checkBox.length
       this.category.isIndeterminate = checkedCount > 0 && checkedCount < this.category.checkBox.length
-      console.log(this.category.choose, '单选')
+      this.selectedCheckbox = this.category.choose.concat(this.sex.choose).concat(this.workPlace.choose)
+      console.log(this.selectedCheckbox, '所有勾选集合数组')
     },
     // 性别全选
     handleCheckAllSexChange(val) {
@@ -257,7 +253,8 @@ export default {
         allCheck.push(this.sex.checkBox[i].val)
       }
       this.sex.choose = val ? allCheck : []
-      console.log(this.sex.choose, '全选')
+      this.selectedCheckbox = this.category.choose.concat(this.sex.choose).concat(this.workPlace.choose)
+      console.log(this.selectedCheckbox, '所有勾选集合数组')
       this.sex.isIndeterminate = false
     },
     // 性别单选
@@ -265,7 +262,8 @@ export default {
       const checkedCount = value.length
       this.sex.checkAll = checkedCount === this.sex.checkBox.length
       this.sex.isIndeterminate = checkedCount > 0 && checkedCount < this.sex.checkBox.length
-      console.log(this.sex.choose, '单选')
+      this.selectedCheckbox = this.category.choose.concat(this.sex.choose).concat(this.workPlace.choose)
+      console.log(this.selectedCheckbox, '所有勾选集合数组')
     },
     // 类别全选
     handleCheckAllWorkPlaceChange(val) {
@@ -274,7 +272,8 @@ export default {
         allCheck.push(this.workPlace.checkBox[i].val)
       }
       this.workPlace.choose = val ? allCheck : []
-      console.log(this.workPlace.choose, '全选')
+      this.selectedCheckbox = this.category.choose.concat(this.sex.choose).concat(this.workPlace.choose)
+      console.log(this.selectedCheckbox, '所有勾选集合数组')
       this.workPlace.isIndeterminate = false
     },
     // 类别单选
@@ -282,7 +281,8 @@ export default {
       const checkedCount = value.length
       this.workPlace.checkAll = checkedCount === this.workPlace.checkBox.length
       this.workPlace.isIndeterminate = checkedCount > 0 && checkedCount < this.workPlace.checkBox.length
-      console.log(this.workPlace.choose, '单选')
+      this.selectedCheckbox = this.category.choose.concat(this.sex.choose).concat(this.workPlace.choose)
+      console.log(this.selectedCheckbox, '所有勾选集合数组')
     },
     // 多选
     handleSelectionChange(val) {
@@ -306,57 +306,109 @@ export default {
       this.$router.push({
         path: '/politicalwork/detailInfo',
         query: {
+          gh: row.gh,
           id: row.date,
           show: flag
         }
       })
+      console.log(this.query.gh)
     },
     // ///////////////////////////////////////////////////////////////
     /** 查询岗位列表 */
     getList() {
-      this.loading = true
-      this.basicInfoList = this.basicInfoExample
-      this.total = 11
+      // this.loading = true
+      // this.basicInfoList = this.basicInfoExample
+      // getPoliticalWorkList().then((response) => {
+      //   console.log(response);
 
+      //   this.noticeList = response.zgjbxxList // 根据状态码接收数据
+      //    this.total = response.total;
+
+      getPoliticalWorkList().then(response => {
+        this.tableData = response.zgjbxxList
+        this.total = 11
+        this.queryParams = {
+          pageNum: response.zgjbxxList[0].pageNum,
+          pageSize: response.zgjbxxList[0].pageSize
+        }
+        // this.total = response.zgjbxxList[0].totalCount
+        console.log(response, 'response')
+        console.log(response.zgjbxxList[0].pageNum, 'pagenum')
+        // this.total = response.total;
+      })
+      //  this.loading = false;
+      // })
+      // this.axios.get('/data.json')
+      //   .then((res) => {
+      //     dataTemp = res.data
+      //     for (var i in dataTemp.workId){
+
+      //     }
+      //     dataTemp.workId = dataTemp.gh
+      //     tableData: [{ workId: 1, name: 'abc', sex: '男' }, { workId: 2, name: 'def', sex: '女' }],
+      //     tableData =dataTemp
+      //     console.log(res.data.flag)
+      //   })
+
+      // var url = '/name.json'
+      // this.axios.get(url).then(response => (this.res = response))
+      //   .catch(function(error) {
+      //     console.log(error)
+      //   })
+      // // get查询
+      // console.log(this.axios, 'resresres')
+      // axios.get(url).then(ret => {
+      //   console.log(ret.data)
+      // })
+      // // get传参
+      // axios.get('abc?id=5').then(ret => {
+      //   // data属性名称是固定的,用于获取后台响应的数据
+      //   console.log(ret.data)
+      // })
+      // axios.get('abc', {
+      //   params: {
+      //     id: 123
+      //   }
+      // }).then(ret => {
+      //   console.log(ret.data)
+      // })
+
+      // // post 添加数据
+      // axios.post('abc', {
+      //   id: 5,
+      //   name: 'zhangsan'
+      // }).then(ret => {
+      //   console.log(ret.data)
+      // })
+      // var param = new URLSearchParams()
+      // param.append(key1, value1)
+      // param.append(key2, value2)
+      // axios.post('/abc', param).then(ret => {
+      // })
+      // // put: 修改数据
+      // axios.put('abc', {
+      //   id: 5,
+      //   name: 'zhangsan'
+      // }).then(ret => {
+      //   console.log(ret.data)
+      // })
+      // // delete:删除数据
+      // axios.delete('abc?id=5').then(ret => {
+      //   console.log(ret.data)
+      // })
+      // axios.delete('abc', {
+      //   params: {
+      //     id: 123
+      //   }
+      // }).then(ret => {
+      //   console.log(ret.data)
+      // })
       // listUser(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
       //     this.userList = response.rows;
       //     this.total = response.total;
       //     this.loading = false;
       //   }
     },
-    //* * checkAllCategory点击事件 */
-
-    // handleCheckAllCategoryChange(val) {
-    //   this.checkedCategory = val ? categoryOptions : []
-    //   this.isIndeterminateCategory = false
-    // },
-    // handleCheckedCategoryChange(value) {
-    //   const checkedCategoryCount = value.length
-    //   this.checkAllCategory = checkedCategoryCount === this.categories.length
-    //   this.isIndeterminateCategory = checkedCategoryCount > 0 && checkedCategoryCount < this.categories.length
-    // },
-    // //* * checkAllSex点击事件 */
-
-    // handleCheckAllSexChange(val) {
-    //   this.checkedSex = val ? sexOptions : []
-    //   this.isIndeterminateSex = false
-    // },
-    // handleCheckedSexChange(value) {
-    //   const checkedSexCount = value.length
-    //   this.checkAllSex = checkedSexCount === this.sexes.length
-    //   this.isIndeterminateSex = checkedSexCount > 0 && checkedSexCount < this.sexes.length
-    // },
-    // //* * checkAllWorkPlace点击事件 */
-
-    // handleCheckAllWorkPlaceChange(val) {
-    //   this.checkedWorkPlace = val ? workPlaceOptions : []
-    //   this.isIndeterminateWorkPlace = false
-    // },
-    // handleCheckedWorkPlaceChange(value) {
-    //   const checkedWorkPlaceCount = value.length
-    //   this.checkAllWorkPlace = checkedWorkPlaceCount === this.workPlaces.length
-    //   this.isIndeterminateWorkPlace = checkedWorkPlaceCount > 0 && checkedWorkPlaceCount < this.workPlaces.length
-    // },
 
     /** 导出按钮操作 */
     handleExport() {
@@ -391,19 +443,19 @@ export default {
       this.$refs.upload.submit()
     },
     /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset()
-      this.open = true
-      const name = row.name || this.ids
-      this.form = row
-      this.title = '修改政工干部基本信息'
-      getUser(name)
+    // handleUpdate(row) {
+    //   this.reset()
+    //   this.open = true
+    //   const name = row.name || this.ids
+    //   this.form = row
+    //   this.title = '修改政工干部基本信息'
+    //   getUser(name)
       // getUser(postId).then(response => {
       //   this.form = response.data
       //   this.open = true
       //   this.title = '修改岗位'
       // })
-    },
+    // },
     /** 提交按钮 */
     submitForm: function() {
       // todo
@@ -448,12 +500,7 @@ export default {
         roleIds: []
       }
       this.resetForm('form')
-    },
-    // id搜索查询按钮
-    idSearchClick() {
-      alert(this.idSearch)
-      getList()
-    },
+    }
     /** 详细信息查询 */
     // handleGet(row) {
     //   const name = row.name || ''
@@ -496,10 +543,10 @@ export default {
           height: 20px;
         }
         .chevronDown{
-          background: url('../../../assets/images/chevronDown.png') no-repeat;
+          background: url('~@/assets/images/chevronDown.png') no-repeat;
         }
         .chevronUp{
-          background: url('../../../assets/images/chevronUp.png') no-repeat;
+          background: url('~@/assets/images/chevronUp.png') no-repeat;
         }
       }
     }
@@ -530,7 +577,7 @@ export default {
           margin-left: 10px;
           width:20px;
           height: 20px;
-          background: url('../../../assets/images/updata.png') no-repeat;
+          background: url('~@/assets/images/updata.png') no-repeat;
         }
       }
       .headerRight{
@@ -573,16 +620,16 @@ export default {
             margin-right: 5px;
           }
           .blueIcon{
-            background: url('../../../assets/images/icon_1.png') no-repeat;
+            background: url('~@/assets/images/icon_1.png') no-repeat;
           }
           .orangeIcon{
-            background: url('../../../assets/images/icon_2.png') no-repeat;
+            background: url('~@/assets/images/icon_2.png') no-repeat;
           }
           .lightIcon{
-            background: url('../../../assets/images/icon_3.png') no-repeat;
+            background: url('~@/assets/images/icon_3.png') no-repeat;
           }
           .greenIcon{
-            background: url('../../../assets/images/export.png');
+            background: url('~@/assets/images/export.png');
           }
         }
       }
@@ -600,10 +647,10 @@ export default {
       line-height: 28px;
     }
     .handledie{
-      background: url('../../../assets/images/details.png');
+      background: url('~@/assets/images/details.png');
     }
     .handleEdit{
-      background: url('../../../assets/images/edit.png');
+      background: url('~@/assets/images/edit.png');
     }
   }
   .searchButton{
@@ -611,6 +658,10 @@ export default {
     color: white;
   }
 }
-
+.pagination {
+  left: 20%;
+  transform: translateX(-50%);
+  text-align: center
+}
 </style>
 

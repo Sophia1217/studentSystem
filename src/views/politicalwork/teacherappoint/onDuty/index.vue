@@ -59,8 +59,10 @@
     <!-- 搜索结果显示表格 -->
     <div class="tableWrap mt15">
       <div class="headerTop">
-        <div class="headerLeft"><span class="title">在岗辅导员列表</span> <i class="Updataicon" /></div>
+        <div class="headerLeft"><span class="title">在岗班主任列表</span> <i class="Updataicon" /></div>
         <div class="headerRight">
+          <div class="btns fullGreen" @click="handleRemove"><i class="icon removeButton" /><span class="title">批量免去</span></div>
+          <div class="btns borderGreen" @click="handleImport"><i class="icon greenIcon" /><span class="title">导入</span></div>
           <div class="btns borderGreen" @click="handleExport"><i class="icon greenIcon" /><span class="title">导出</span></div>
         </div>
       </div>
@@ -88,6 +90,7 @@
         </el-table>
         <pagination
           v-show="total>0"
+          class="pagination"
           :total="total"
           :page.sync="queryParams.pageNum"
           :limit.sync="queryParams.pageSize"
@@ -95,9 +98,10 @@
         />
       </div>
     </div>
+    <!-- 详情对话框 -->
     <el-dialog :visible.sync="open" width="1200px" append-to-body>
       <el-table ref="multipleTable" :data="tableData" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" />
+        <!-- <el-table-column type="selection" width="55" /> -->
         <el-table-column type="index" label="在岗日期" width="50" />
         <el-table-column prop="workId" label="班级编号" sortable />
         <el-table-column prop="name" label="班级名称" sortable />
@@ -114,8 +118,24 @@
         <el-button class="closeButton" @click="cancel">关 闭</el-button>
       </div>
     </el-dialog>
+    <!-- 批量免去对话框 -->
+    <el-dialog
+      :title="title"
+      :visible.sync="showRemove"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <span>确认免去【298312】【张曼莉】辅导员身份？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showRemove = 'false'">取 消</el-button>
+        <el-button
+          type="primary"
+          class="confirm"
+          @click="showRemove = 'false'"
+        >确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
-
 
 </template>
 <script>
@@ -123,27 +143,7 @@ import { listPost, getPost, getList, delPost, addPost, updatePost } from '@/api/
 import { listUser, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus } from '@/api/system/user'
 import { getToken } from '@/utils/auth'
 import CheckboxCom from '../../../components/checkboxCom'
-import EditTable from '../../../tool/gen/editTable.vue'
-import EditTable1 from '../../../tool/gen/editTable.vue'
-// todo checkbox选项
-// const categoryOptions = ['辅导员', '导师', '班主任']
-// const sexOptions = ['男', '女']
-// const workPlaceOptions = ['教育学院', '计算机学院', '社会学院', '心理学院', '数学与统计学院', '人工智能教育学部']
 
-// const basicInfoListExample = [
-//   { 'name': 'a', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'a', 'workInfo': 'female' },
-//   { 'name': 'b', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'b', 'workInfo': 'female' },
-//   { 'name': 'c', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'c', 'workInfo': 'female' },
-//   { 'name': 'd', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'd', 'workInfo': 'female' },
-//   { 'name': 'e', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'e', 'workInfo': 'female' },
-//   { 'name': 'f', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'f', 'workInfo': 'female' },
-//   { 'name': 'g', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'g', 'workInfo': 'female' },
-//   { 'name': 'h', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'h', 'workInfo': 'female' },
-//   { 'name': 'i', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'i', 'workInfo': 'female' },
-//   { 'name': 'j', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'j', 'workInfo': 'female' },
-//   { 'name': 'k', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'l', 'workInfo': 'female' },
-//   { 'name': 'l', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'k', 'workInfo': 'female' },
-//   { 'name': 'm', 'sex': 'female', 'phone': 'female', 'workPlace': 'female', 'university': 'female', 'major': 'female', 'class': 'm', 'workInfo': 'female' }]
 export default {
   name: 'BasicInfo',
   components: { CheckboxCom },
@@ -179,6 +179,8 @@ export default {
 
       // // 弹出层标题
       // title: '',
+      // 免任弹出
+      showRemove: false,
       // // 是否显示弹出层
       open: false,
       // // 查询参数
@@ -190,24 +192,6 @@ export default {
         status: undefined,
         deptId: undefined
       },
-      // // 表单参数
-      // form: {},
-      // idSearch: '',
-      // // category 全选
-      // checkAllCategory: false,
-      // checkedCategory: [],
-      // categories: categoryOptions,
-      // isIndeterminateCategory: true,
-      // // sex 全选
-      // checkAllSex: false,
-      // checkedSex: [],
-      // sexes: sexOptions,
-      // isIndeterminateSex: true,
-      // // workPlace 全选
-      // checkAllWorkPlace: false,
-      // checkedWorkPlace: [],
-      // workPlaces: workPlaceOptions,
-      // isIndeterminateWorkPlace: true
 
       searchVal: '',
       select: '',
@@ -236,7 +220,7 @@ export default {
       status: { // 状态
         checkAll: false,
         choose: [],
-        checkBox: [{ label: '在岗', val: 1 }, { label: '不在岗', val: 2 }],
+        checkBox: [{ label: '在岗', val: 1 }, { label: '非在岗', val: 2 }],
         isIndeterminate: true
       },
       tableData: [{ workId: 1, name: 'abc', sex: '男' }, { workId: 2, name: 'def', sex: '女' }],
@@ -376,6 +360,9 @@ export default {
       this.upload.title = '用户导入'
       this.upload.open = true
     },
+    handleRemove() {
+      this.showRemove = true
+    },
     /** 下载模板操作 */
     importTemplate() {
       this.download('system/user/importTemplate', {
@@ -503,10 +490,10 @@ export default {
           height: 20px;
         }
         .chevronDown{
-          background: url('../../../../assets/images/chevronDown.png') no-repeat;
+          background: url('~@/assets/images/chevronDown.png') no-repeat;
         }
         .chevronUp{
-          background: url('../../../../assets/images/chevronUp.png') no-repeat;
+          background: url('~@/assets/images/chevronUp.png') no-repeat;
         }
       }
     }
@@ -537,7 +524,7 @@ export default {
           margin-left: 10px;
           width:20px;
           height: 20px;
-          background: url('../../../../assets/images/updata.png') no-repeat;
+          background: url('~@/assets/images/updata.png') no-repeat;
         }
       }
       .headerRight{
@@ -562,6 +549,11 @@ export default {
           color:#005657;
           background: #fff;
         }
+        .fullGreen{
+          // border:1px solid #005657;
+          color:#fff;
+          background: #005657;
+        }
         .btns{
           margin-right: 15px;
           padding:5px 10px;
@@ -580,16 +572,19 @@ export default {
             margin-right: 5px;
           }
           .blueIcon{
-            background: url('../../../../assets/images/icon_1.png') no-repeat;
+            background: url('~@/assets/images/icon_1.png') no-repeat;
           }
           .orangeIcon{
-            background: url('../../../../assets/images/icon_2.png') no-repeat;
+            background: url('~@/assets/images/icon_2.png') no-repeat;
           }
           .lightIcon{
-            background: url('../../../../assets/images/icon_3.png') no-repeat;
+            background: url('~@/assets/images/icon_3.png') no-repeat;
           }
           .greenIcon{
-            background: url('../../../../assets/images/export.png');
+            background: url('~@/assets/images/export.png');
+          }
+          .removeButton{
+            background: url('~@/assets/images/icon_remove.png');
           }
         }
       }
@@ -607,10 +602,10 @@ export default {
       line-height: 28px;
     }
     .handledie{
-      background: url('../../../../assets/images/details.png');
+      background: url('~@/assets/images/details.png');
     }
     .handleEdit{
-      background: url('../../../../assets/images/edit.png');
+      background: url('~@/assets/images/edit.png');
     }
   }
   .searchButton{
@@ -622,5 +617,10 @@ export default {
     background: #005657;
     color: white;
   }
-</style>
 
+.pagination {
+  left: 20%;
+  transform: translateX(-50%);
+  text-align: center
+}
+</style>

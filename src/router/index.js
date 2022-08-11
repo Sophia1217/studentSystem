@@ -74,13 +74,7 @@ export const constantRoutes = [
         hidden: false,
         meta: { title: "首页", icon: "" },
       },
-      {
-        path: "sy",
-        component: () => import("@/views/homepage/sy"),
-        name: "sy",
-        hidden: true,
-        meta: { title: "sy", icon: "" },
-      },
+      
       {
         path: "selectRole",
         component: () => import("@/views/homepage/selectRole"),
@@ -88,34 +82,7 @@ export const constantRoutes = [
         hidden: false,
         meta: { title: "角色选择", icon: "" },
       },
-      {
-        path: "selectRole2",
-        component: () => import("@/views/homepage/selectRole2"),
-        name: "selectRole2",
-        hidden: false,
-        meta: { title: "角色选择2", icon: "" },
-      },
-      {
-        path: "selectRole3",
-        component: () => import("@/views/homepage/selectRole3"),
-        name: "selectRole3",
-        hidden: false,
-        meta: { title: "角色选择3", icon: "" },
-      },
-      {
-        path: "selectRole4",
-        component: () => import("@/views/homepage/selectRole4"),
-        name: "selectRole4",
-        hidden: false,
-        meta: { title: "角色选择4", icon: "" },
-      },
-      {
-        path: "selectRoleMore",
-        component: () => import("@/views/homepage/selectRoleMore"),
-        name: "selectRoleMore",
-        hidden: false,
-        meta: { title: "更多角色选择", icon: "" },
-      },
+      
       {
         path: "studentAngle",
         component: () => import("../index.vue"),

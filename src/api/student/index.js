@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询学院专业班级
 export function getManageRegStuInfoSearchSpread(data) {
   return request({
-    url: '/sws/regStuInfo/getManageRegStuInfoSearchSpread',
+    url: '/regStuInfo/getManageRegStuInfoSearchSpread',
     method: 'post',
     data: data
   })
@@ -12,7 +12,7 @@ export function getManageRegStuInfoSearchSpread(data) {
 // 查询学生信息 -可管理学生
 export function getManageRegStuInfoPageList(data) {
   return request({
-    url: '/sws/regStuInfo/getManageRegStuInfoPageList',
+    url: '/regStuInfo/getManageRegStuInfoPageList',
     method: 'post',
     data: data
   })

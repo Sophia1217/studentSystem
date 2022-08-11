@@ -9,45 +9,35 @@
       </el-form-item>
     </el-form>
 
-    <el-form class="elForm mart20" :inline="true" :model="formUser">
-      <el-form-item label="用户角色">
-        <el-select v-model="formName.roleId" class="elFormSelect" multiple collapse-tags size="small" placeholder="请选择">
-          <el-option
-            v-for="item in checkboxWrap"
-            :key="item.roleId"
-            :label="item.roleName"
-            :value="item.roleId">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="数据范围">
-        <el-cascader
-          size="small"
-          ref="elcascader"
-          v-model="formUser.dataAuth"
-          :options="cascaderOptions"
-          :props="{ expandTrigger: 'click',label:'dwmc',value:'dwdm',children:'children', multiple: true, checkStrictly: true  }"
-          @change="handleChange">
-        </el-cascader>
-
-        <!-- <el-cascader
-          size="small" class="marl10"
-          v-model="formUser.classList"
-          :options="classListOps"
-          :props="{ expandTrigger: 'hover',label:'bjmc',value:'bjdm',children:'children' }"
-          @change="handleStuList">
-        </el-cascader>
-
-        <el-cascader
-          size="small" class="marl10"
-          v-model="formUser.studList"
-          :options="stuListOps"
-          :props="{ expandTrigger: 'hover',label:'xm',value:'xh',children:'children' }"
-          >
-        </el-cascader> -->
-
-      </el-form-item>
+    <el-form class="mart20" :inline="true" :model="formUser">
+      <div class="elForm mart20" v-for="(role,index) in roleData" :key="index">
+        <el-form-item label="用户角色">
+          <el-select v-model="role.roleId" class="elFormSelect" size="small" placeholder="请选择">
+            <el-option
+              v-for="item in checkboxWrap"
+              :key="item.roleId"
+              :label="item.roleName"
+              :value="item.roleId">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="数据范围" style="margin-left:20px;">
+          <el-tree style="min-width:200px;"
+            :data="role.cascaderOptions"
+            :ref="index"
+            v-model="role.treeVal"
+            show-checkbox
+            node-key="id"
+            default-expand-all
+            :expand-on-click-node="false">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+              <span @click="() => append(data)">{{ node.label }}</span>
+            </span>
+          </el-tree>
+        </el-form-item>
+      </div>
     </el-form>
+
     <div class="editBottom">
       <div class="btn cancel" @click="handleCencal"><i class="icon noIcon"></i> 取消</div>
       <div class="btn confirm" @click="handleDataAuth">
@@ -74,77 +64,100 @@ export default {
         classList: [], // 班级
         studList:[] // 人
       },
-      classListOps: [], // 班级
-      stuListOps:[], // 学生
       checkboxWrap:[], //用户角色
-      cascaderOptions: [] // 学院数据
+      classListOps: [], // 班级数据
+      stuListOps:[], // 学生数据
+      cascaderOptions: [], // 学院数据
+      defaultProps: {
+        children: 'children',
+        label: 'label'
+      },
+      roleData: []
     }
   },
 
   mounted() {
+    this.getqueryRoleList()
+    this.getQueryDataAuth()
     this.formName = this.$route.query
     if (this.formName.roleId.length > 0) {
       this.formName.roleId = this.formName.roleId.split(',')
+        for (let x = 0; x < this.formName.roleId.length; x++) {
+        this.roleData.push({
+          roleId: this.formName.roleId[x],
+          treeVal: '',
+          cascaderOptions: this.cascaderOptions
+        })
+      }
     }
-    this.getqueryRoleList()
-    this.getQueryDataAuth()
+    console.log(this.roleData)
   },
 
   methods: {
-    getQueryDataAuth() {
-      let data = {
-        "userId": "2005690002",//操作人
-        "roleId": "01"
-      }
-      queryDataAuth(data).then(res => {
-        this.cascaderOptions = res.data.rows
-      }).catch(err => {})
-    },
-    // 获取用户角色
+     // 获取用户角色
     getqueryRoleList() {
       let data = { roleId: '01' }
       queryRoleList(data).then(res => {
         this.checkboxWrap = res.data.rows
       }).catch(res => { })
     },
-    expandChange(val) {
-      console.log(val,'val123')
-    },
-    // 学院下拉框选择班级
-    handleChange(value) {
-      let downNode = this.$refs.elcascader.getCheckedNodes()
-      console.log(downNode)
-      return
-      console.log(downNode, 'down', value)
-      if (downNode.data.visitId == 0) {
-        this.getQueryClassList(downNode.data.dwdm)
+    // 获取学院数据
+    getQueryDataAuth() {
+      let data = {
+        "userId": "2005690002",
+        "roleId": "01"
       }
-     
-      
+      queryDataAuth(data).then(res => {
+      let data = res.data.rows
+      for (let x = 0; x < data.length; x++){
+        data[x].id = data[x].dwdm
+        data[x].label = data[x].dwmc
+      }
+      this.cascaderOptions = data
+      }).catch(err => {})
     },
-    getQueryClassList(value) {
-       let data = { ssdwdm: value }
+
+    //数据范围树添加 
+    append(data) {
+      console.log(data)
+      if (data.visitId == 0) {
+        this.handleClassList(data.id)
+        if (!data.children) {
+          this.$set(data, 'children', []);
+        }
+        data.children = this.classListOps
+      } else if (data.visitId == 1) {
+        this.handleStuList(data.id)
+        if (!data.children) {
+          this.$set(data, 'children', []);
+        }
+        data.children = this.stuListOps
+      }
+    },
+   
+    // 获取班级数据
+    handleClassList(value) {
+      let data = { ssdwdm: value }
       queryClassList(data).then(res => {
-        let resdata = res.BjList
-        for (let x = 0; x < resdata.length; x++){
-          resdata[x].dwmc = resdata[x].bjmc
-          resdata[x].dwdm = resdata[x].bjdm
+        let data = res.BjList
+        for (let x = 0; x < data.length; x++){
+          data[x].id = data[x].bjdm
+          data[x].label = data[x].bjmc
         }
-        for (let i = 0; i < this.cascaderOptions.length; i++){
-          if (this.cascaderOptions[i].dwdm == data.ssdwdm) {
-            this.$set(this.cascaderOptions[i],'children',resdata)
-          }
-        }
+        this.classListOps = res.BjList
       }).catch(err=>{})
     },
-    // 班级下拉选人
+    // 获取学生数据
     handleStuList(value) {
-      let data = {bjdm: value.join(',')}
+      let data = { bjdm: value }
       queryStuList(data).then(res => {
-        this.stuListOps = res.row
-      }).catch(err => {
-        
-      })
+        let data = res.Data
+        for (let x = 0; x < data.length; x++){
+          data[x].id = data[x].xh
+          data[x].label = data[x].xm
+        }
+        this.stuListOps = data
+      }).catch(err => {})
     },
     // 取消
     handleCencal() {
@@ -152,18 +165,35 @@ export default {
         path: '/systems/user'
       })
     },
+    
     // 更新数据权限
-    handleDataAuth() { 
-      let data = {
-        "userId": this.formName.userId,
-        "roleId": this.formName.roleId,
-        "dataList": [
-          { "orginazationCode": "1234", "classNo": "", "stuId": "" },
-          { "orginazationCode": "1235", "classNo": "", "stuId": "" }
-        ]
-      }
+    handleDataAuth() {
+      // let nodes = this.$refs.tree.getCheckedNodes()
+      // let dataList = []
+      // for (let x = 0; x < nodes.length; x++) {
+      //   if (nodes[x].visitId == 0) {
+      //     dataList.push({
+      //       orginazationCode: nodes[x].dwdm
+      //     })
+      //   } else if (nodes[x].visitId == 1) {
+      //     dataList.push({
+      //       classNo: nodes[x].bjdm
+      //     })
+      //   } else if (nodes[x].visitId == 2) {
+      //     dataList.push({
+      //       stuId: nodes[x].xh
+      //     })
+      //   }
+      // }
+      // let data = {
+      //   userId: this.formName.userId,
+      //   roleId: this.formName.roleId,
+      //   dataList: dataList
+      // }
+      console.log(this.roleData)
+      return
       updateDataAuth(data).then(res => {
-        
+        console.log(res)
       }).catch(err=>{})
     }
   }

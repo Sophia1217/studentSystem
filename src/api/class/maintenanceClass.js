@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // /sws/class/queryClassList {ssdwdm-培养单位, pycc-培养层次, ssnj-所属年级, bjdm-班级编号, pageSize, pageNum} POST
 export function classList(query) {
     return request({
-        url: 'sws/class/queryClassList',
+        url: '/class/queryClassList',
         method: 'post',
         data: query
     })
@@ -13,7 +13,7 @@ export function classList(query) {
 // /sws/class/modifyClassName {bjdm-班级编号Y, bjmc-班级名称Y} POST
 export function modifyClassName(query) {
     return request({
-        url: 'sws/class/modifyClassName',
+        url: '/class/modifyClassName',
         method: 'post',
         params: query
     })
@@ -22,7 +22,7 @@ export function modifyClassName(query) {
 // 新建班级
 export function addClass(query) {
     return request({
-        url: 'sws/class/addClass',
+        url: '/class/addClass',
         method: 'post',
         data: query
     })
@@ -31,7 +31,7 @@ export function addClass(query) {
 // 删除空班级
 export function deleteEmptyClass(query) {
     return request({
-        url: 'sws/class/deleteEmptyClass',
+        url: '/class/deleteEmptyClass',
         method: 'post',
         params: query
     })

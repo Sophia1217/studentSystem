@@ -103,14 +103,14 @@
         <el-table-column type="index" label="序号" width="50"></el-table-column>
           <el-table-column prop="xh" label="学号" sortable> </el-table-column>
           <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
-          <el-table-column prop="zzmmm" label="政治面貌" sortable> </el-table-column>
+          <el-table-column prop="zzmm" label="政治面貌" sortable> </el-table-column>
           <el-table-column prop="mzm" label="民族" sortable> </el-table-column>
-          <el-table-column prop="address" label="学院" sortable> </el-table-column>
-          <el-table-column prop="address" label="专业" sortable> </el-table-column>
-          <el-table-column prop="address" label="年级" sortable> </el-table-column>
-          <el-table-column prop="address" label="培养层次" sortable> </el-table-column>
-          <el-table-column prop="address" label="学制" sortable> </el-table-column>
-          <el-table-column prop="address" label="学籍状态" sortable> </el-table-column>
+          <el-table-column prop="dwh" label="学院" sortable> </el-table-column>
+          <el-table-column prop="zydm" label="专业" sortable> </el-table-column>
+          <el-table-column prop="nj" label="年级" sortable> </el-table-column>
+          <el-table-column prop="pyccm" label="培养层次" sortable> </el-table-column>
+          <el-table-column prop="xz" label="学制" sortable> </el-table-column>
+          <el-table-column prop="xjzt" label="学籍状态" sortable> </el-table-column>
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="hadleDetail(scope.row,1,1)">
@@ -125,6 +125,13 @@
       </div>
     </div>
     <exportView v-if="showExport" :showExport="showExport" @handleCancel="handleCancel" @handleConfirm="handleConfirm"></exportView>
+    <pagination
+        v-show="queryParams.total>0"
+        :total="queryParams.total"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="handleSearch"
+      />
   </div>
 </template>
 
@@ -406,7 +413,12 @@ export default {
       },
       tableData: [{ date: 1 }],
       multipleSelection: [],
-      showExport: false
+      showExport: false,
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        total: 0
+      }
     };
   },
   watch: {
@@ -425,7 +437,7 @@ export default {
     // 获取学院专业班级
     getSpread() {
       getManageRegStuInfoSearchSpread().then(res => {
-        // console.log(res)
+        console.log(res)
         this.manageRegOps = res.dwhbj
       }).catch(err=>{})
     },
@@ -444,13 +456,14 @@ export default {
         BJM:"",
         DWH:"",
         ZYDM:"",
-        pageNum:1,
-        pageSize:10,
+        pageNum:this.queryParams.pageNum,
+        pageSize:this.queryParams.pageSize,
         limitSql:""
       }
       getManageRegStuInfoPageList(data).then(res => {
-        console.log(res, 'res')
-        this.tableData = res.data
+        console.log(res.data.data, 'res')
+        this.tableData = res.data.data
+        this.queryParams.total = res.data.total
       }).catch(err=>{})
     },
     // 点击更多

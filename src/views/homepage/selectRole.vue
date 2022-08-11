@@ -2,10 +2,10 @@
   <div class="selectRole">
     <div class="title">用户角色切换</div>
     <div class="roleCard">
-      <div class="cardItem">
+      <div class="cardItem" v-for="(item, index) in user" :key="index">
         <div class="wrap">
           <img src="@/assets/images/role.png" width="60px" alt="" />
-          <div class="content">辅导员</div>
+          <div class="content">{{ item }}</div>
         </div>
       </div>
     </div>
@@ -14,10 +14,12 @@
 
 <script>
 export default {
-  name: "selectRole",
+  name: "selectRole2",
 
   data() {
-    return {};
+    return {
+      user: ["辅导员", "班主任"],
+    };
   },
 
   mounted() {},
@@ -43,12 +45,12 @@ export default {
   .roleCard {
     margin-top: 30px;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     flex-wrap: wrap;
     .cardItem {
       flex: 0 0 200px;
       height: 200px;
-      margin-right: 20px;
+      margin-right: 30px;
       border-radius: 4px;
       background: #ffffff;
       position: relative;
@@ -63,6 +65,7 @@ export default {
           margin-bottom: 20px;
         }
         .content {
+          font-family: PingFangSC-Medium;
           font-weight: 500;
           font-size: 24px;
           color: #1f1f1f;

@@ -1,36 +1,35 @@
 <template>
-  <div class="dicDialog">
+  <div class="modal">
     <el-dialog
-      :title="rowId ? '编辑字典标签' : '新增字典标签'"
-      :visible.sync="dialogVisible"
+      :title="queryParams ? '编辑字典标签' : '新增字典标签'"
+      :visible.sync="dialogVisibleAdd"
       width="30%"
-      :before-close="handleCloseDia"
+      :before-close="handleCloseDia1"
     >
       <el-form
-        :model="rowId"
-        ref="rowId"
+        :model="queryParams"
+        ref="queryParams"
         class="queryForm"
         size="small"
         label-width="68px"
       >
         <el-form-item label="字典名称" prop="codeTableChinese">
           <el-input
-            v-model="rowId.codeTableChinese"
+            v-model="queryParams.codeTableChinese"
             size="small"
-            :disabled="true"
             placeholder="请输入字典名称"
           ></el-input>
         </el-form-item>
         <el-form-item label="字典标签" prop="codeKey">
           <el-input
-            v-model="rowId.codeKey"
+            v-model="queryParams.codeKey"
             size="small"
             placeholder="请输入字典类型"
           ></el-input>
         </el-form-item>
         <el-form-item label="字典状态" prop="state">
           <el-switch
-            v-model="rowId.state"
+            v-model="queryParams.state"
             active-color="#23AD6F"
             inactive-color="#E0E0E0"
           ></el-switch>
@@ -40,13 +39,13 @@
             type="remark"
             :rows="2"
             placeholder="请输入内容"
-            v-model="rowId.remark"
+            v-model="queryParams.remark"
           ></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCloseDia">取 消</el-button>
-        <el-button type="primary" @click="handleCommitDia">确 定</el-button>
+        <el-button @click="handleCloseDia1">取 消</el-button>
+        <el-button type="primary" @click="handleCommitDia1">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -54,7 +53,7 @@
 
 <script>
 export default {
-  name: "dicDialog",
+  name: "modal",
 
   data() {
     return {
@@ -67,30 +66,27 @@ export default {
     };
   },
   props: {
-    dialogVisible: {
+    dialogVisibleAdd: {
       type: Boolean,
       default: false,
     },
-    rowId: {
-      // id存在是编辑否则是新建
-      type: Object,
-      default: () => {},
+    codeTableEnglish: {
+      type: String,
+      default: "",
     },
   },
-  mounted() {},
-
   methods: {
-    handleCloseDia() {
+    handleCloseDia1() {
       this.$emit("handleCloseDia");
     },
-    handleCommitDia() {
-      this.$emit("handleCommitDia", this.rowId);
+    handleCommitDia1() {
+      this.$emit("handleCommitDia", this.queryParams);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.dicDialog {
+.modal {
 }
 </style>

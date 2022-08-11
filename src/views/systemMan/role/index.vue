@@ -25,18 +25,6 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="roleDate">
-        <el-date-picker
-          v-model="queryParams.roleDate"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="起始年月日"
-          end-placeholder="结束年月日"
-          value-format="yyyy-MM-dd"
-          :clearable="false"
-        >
-        </el-date-picker>
-      </el-form-item>
       <el-form-item>
         <el-button
           type="primary"

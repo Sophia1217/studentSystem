@@ -68,6 +68,7 @@ import {
 export default {
   data() {
     return {
+      modId: "",
       roleName: this.isEdit == "1" ? "" : this.$route.query.roleNameEdit,
       // 查询参数
       queryParams: {
@@ -85,7 +86,7 @@ export default {
     };
   },
 
-  mounted() {
+  activated() {
     this.isEdit = this.$route.query.isEdit;
     this.roleId1 = this.$route.query?.UpId;
     this.roleName1 = this.$route.query?.roleNameEdit;
@@ -97,10 +98,12 @@ export default {
       let data = { roleId: this.roleName1 ? this.roleId1 : "01" };
       queryTreeList(data)
         .then((res) => {
+          console.log("res", res);
           this.treeData = res.data;
         })
         .catch((err) => {});
     },
+    //elementUi中自带的方法，可以获取到所有选中的节点
     currentChecked(nodeObj, SelectedObj) {
       var that = this;
       const { checkedNodes } = SelectedObj;

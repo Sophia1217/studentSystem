@@ -29,14 +29,14 @@
           clearable
         >
           <el-option
-            v-for="dict in state1"
+            v-for="dict in options"
             :key="dict.value"
             :label="dict.label"
             :value="dict.value"
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" prop="array">
+      <el-form-item label="修改时间" prop="array">
         <el-date-picker
           v-model="queryParams.array"
           type="daterange"
@@ -105,7 +105,7 @@
         </el-table-column>
         <el-table-column label="备注" align="center" prop="remark" sortable />
         <el-table-column
-          label="创建时间"
+          label="修改时间"
           align="center"
           prop="createTime"
           sortable
@@ -143,14 +143,13 @@
 <script>
 import "@/assets/fonts/repeat/iconfont.css";
 import DicDialog from "./dicDialog.vue";
-import { queryManage } from "@/api/systemMan/dictionary";
+import { queryManage, updateDic } from "@/api/systemMan/dictionary";
 export default {
   name: "dictionary",
   components: { DicDialog },
   data() {
     return {
-      // 查询参数
-      state1: [
+      options: [
         {
           value: "0",
           label: "启用",
@@ -160,6 +159,7 @@ export default {
           label: "禁用",
         },
       ],
+      // 查询参数
       queryParams: {
         codeTableEnglish: "",
         codeTableChinese: "",
@@ -172,13 +172,19 @@ export default {
       noticeList: [],
       multipleSelection: [],
       dialogVisible: false,
-      rowId: "",
+      rowId: {},
+      createTimeStart: "",
+      createTimeEnd: "",
     };
+  },
+  created() {
+    this.handleQuery();
   },
   methods: {
     //搜索按钮操作
     handleQuery() {
       if (this.queryParams.array.length !== 0) {
+        //a.slice(0,a.indexOf("T"))
         //因为后端要的是拆分的字符串，所以要拆分
         this.queryParams.createTimeStart = this.queryParams?.array[0];
         this.queryParams.createTimeEnd = this.queryParams?.array[1];
@@ -197,7 +203,13 @@ export default {
       };
       queryManage(data)
         .then((res) => {
-          console.log("Res", res);
+          res.data.forEach((item) => {
+            (item.createTime = item.createTime.slice(
+              0,
+              item.createTime.indexOf("T")
+            )),
+              item.state == "0" ? (item.state = true) : false;
+          });
           this.noticeList = res.data;
           this.queryParams.total = res.count;
         })
@@ -214,27 +226,33 @@ export default {
     /** 新增 */
     handleAdd(row) {
       if (row && row.id) {
-        this.rowId = row.id;
+        this.rowId = row;
       } else {
         this.rowId = null;
       }
-      console.log(this.rowId);
       this.dialogVisible = true;
     },
     handleCloseDia() {
       this.dialogVisible = false;
     },
-    handleCommitDia(a) {
+    handleCommitDia(cal) {
       this.dialogVisible = false;
-      console.log("a", a);
+      const data = {
+        codeTableEnglish: cal.codeTableEnglish,
+        codeTableChinese: cal.codeTableChinese,
+        state: cal.state ? "0" : "1",
+        remark: cal.remark,
+      };
+      updateDic(data).then((res) => {
+      });
     },
     handleList(row) {
       this.$router.push({
         path: "/systems/dictionaryDetail",
+        query: row,
       });
     },
     handleSelectionChange(val) {
-      console.log(val);
       this.multipleSelection = val;
     },
   },

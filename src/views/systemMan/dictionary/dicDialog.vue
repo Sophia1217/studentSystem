@@ -13,33 +13,36 @@
         size="small"
         label-width="68px"
       >
-        <el-form-item label="字典名称" prop="roleName">
+        <el-form-item label="字典名称" prop="codeTableChinese">
           <el-input
-            v-model="queryParams.codeTableEnglish"
+            v-model="rowId.codeTableChinese"
             size="small"
+            :disabled="true"
             placeholder="请输入字典名称"
           ></el-input>
         </el-form-item>
-        <el-form-item label="字典类型" prop="roleDic">
-          <el-input
-            v-model="queryParams.codeTableChinese"
-            size="small"
-            placeholder="请输入字典类型"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="字典状态" prop="roleState">
+        <el-form-item label="字典状态" prop="state">
           <el-switch
-            v-model="queryParams.state"
+            v-model="rowId.state"
+            :disabled="true"
             active-color="#23AD6F"
             inactive-color="#E0E0E0"
           ></el-switch>
         </el-form-item>
-        <el-form-item label="备注" prop="textarea">
+        <el-form-item label="字典类型" prop=" codeTableEnglish">
+          <el-input
+            v-model="rowId.codeTableEnglish"
+            size="small"
+            :disabled="true"
+            placeholder="请输入字典类型"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="备注" prop="remark">
           <el-input
             type="textarea"
             :rows="2"
             placeholder="请输入内容"
-            v-model="queryParams.remark"
+            v-model="rowId.remark"
           ></el-input>
         </el-form-item>
       </el-form>
@@ -57,6 +60,16 @@ export default {
 
   data() {
     return {
+      state1: [
+        {
+          value: "0",
+          label: "启用",
+        },
+        {
+          value: "1",
+          label: "禁用",
+        },
+      ],
       queryParams: {
         codeTableEnglish: "", //字典类型
         codeTableChinese: "", //字典名称
@@ -72,20 +85,17 @@ export default {
     },
     rowId: {
       // id存在是编辑否则是新建
-      type: String | Number,
-      default: "",
+      type: Object,
+      default: () => {},
     },
   },
-  mounted() {
-    console.log(this.rowId);
-  },
-
+  mounted() {},
   methods: {
     handleCloseDia() {
       this.$emit("handleCloseDia");
     },
     handleCommitDia() {
-      this.$emit("handleCommitDia", this.queryParams);
+      this.$emit("handleCommitDia", this.rowId);
     },
   },
 };

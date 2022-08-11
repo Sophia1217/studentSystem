@@ -4,8 +4,8 @@
       <el-tab-pane label="在岗" name="first">
         <span slot="label"><i class="icon tabsicon_on" />在岗</span>
       </el-tab-pane>
-      <el-tab-pane label="不在岗" name="second">
-        <span slot="label"><i class="icon tabsicon_off" />不在岗</span>
+      <el-tab-pane label="非在岗" name="second">
+        <span slot="label"><i class="icon tabsicon_off" />非在岗</span>
       </el-tab-pane>
     </el-tabs>
     <OnDuty v-if="activeName == 'first'" />

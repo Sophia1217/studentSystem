@@ -177,7 +177,7 @@
                     <el-input
                       v-model="value"
                       size="small"
-                      placeholder="请输入内容"
+                      placeholder="请输入内容 "
                     ></el-input>
                   </div>
                 </div>

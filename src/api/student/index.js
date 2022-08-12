@@ -44,3 +44,30 @@ export function getRegStuInfoDetailPage(data) {
     params: data
   })
 }
+
+// 查询学生信息 -可管理学生更新
+export function updateRegStuInfo(data) {
+  return request({
+    url: '/regStuInfo/updateRegStuInfo',
+    method: 'post',
+    data: data
+  })
+}
+
+// 导出在籍学生信息字段展示
+export function exportQuery(data) {
+  return request({
+    url: '/regStuInfo/exportQuery',
+    method: 'get',
+    params: data
+  })
+}
+
+// 导出在籍学生信息字段展示
+export function exportStu(data) {
+  return request({
+    url: '/regStuInfo/export',
+    method: 'get',
+    params: data
+  })
+}

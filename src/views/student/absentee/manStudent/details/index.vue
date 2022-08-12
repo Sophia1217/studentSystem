@@ -21,10 +21,10 @@
         <div class="tableStyle">
           <div class="imgWrap">
             <div class="photo">
-              <img :src="detailInfo.xsXszpb.bkzp" alt="报考照片">
+              <img :src="detailInfo.xsXszpb?detailInfo.xsXszpb.bkzp:''" alt="报考照片">
             </div>
             <div class="photo" style="margin-top:10px;">
-              <img :src="detailInfo.xsXszpb.byzp" alt="毕业照片">
+              <img :src="detailInfo.xsXszpb?detailInfo.xsXszpb.byzp:''" alt="毕业照片">
             </div>
           </div>
           <div class="information" v-if="schooling==1">
@@ -1309,7 +1309,7 @@
 
         <div class="headline" id="tag_2">
           <div>家庭成员信息</div>
-          <div class="editBtn" v-if="isEdit ==2" @click="addDetailTable"><i class="addIcon"></i> 添加家庭成员信息</div>
+          <div class="editBtn" v-if="isEdit ==2" @click="addDetailTable(1)"><i class="addIcon"></i> 添加家庭成员信息</div>
         </div>
         <div class="tableStyle">
           <el-table :data="detailInfo.xsJtcyxxList" style="width: 100%;">
@@ -1361,19 +1361,19 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="date" label="工作单位">
-              <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.date}}</div>
-                <div v-else>
-                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="cygzdw" label="工作单位地址">
+            <el-table-column prop="cygzdw" label="工作单位">
               <template slot-scope="scope">
                 <div v-if="isEdit ==1">{{scope.row.cygzdw}}</div>
                 <div v-else>
                   <el-input v-model="scope.row.cygzdw" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="cygzdwdz" label="工作单位地址">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.cygzdwdz}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.cygzdwdz" placeholder="请输入"></el-input>
                 </div>
               </template>
             </el-table-column>
@@ -1393,19 +1393,19 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="date" label="职务级别">
-              <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.date}}</div>
-                <div v-else>
-                  <el-input v-model="scope.row.date" placeholder="请输入"></el-input>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="zwjbm" label="移动电话">
+            <el-table-column prop="zwjbm" label="职务级别">
               <template slot-scope="scope">
                 <div v-if="isEdit ==1">{{scope.row.zwjbm}}</div>
                 <div v-else>
                   <el-input v-model="scope.row.zwjbm" placeholder="请输入"></el-input>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="yddh" label="移动电话">
+              <template slot-scope="scope">
+                <div v-if="isEdit ==1">{{scope.row.yddh}}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.yddh" placeholder="请输入"></el-input>
                 </div>
               </template>
             </el-table-column>
@@ -1419,7 +1419,7 @@
             </el-table-column>
             <el-table-column  label="" v-if="isEdit ==2">
               <template slot-scope="scope">
-                <div class="deteleBtn" @click="deteleItem(scope.row,scope.$index)">
+                <div class="deteleBtn" @click="deteleItem(scope.row,scope.$index ,'a')">
                   <i class="el-icon-close"></i>
                 </div>
               </template>
@@ -1429,7 +1429,7 @@
 
         <div class="headline" id="tag_3">
           <div>学习经历</div>
-          <div class="editBtn" v-if="isEdit ==2" @click="addDetailTable"><i class="addIcon"></i> 添加学习经历</div>
+          <div class="editBtn" v-if="isEdit ==2" @click="addDetailTable(2)"><i class="addIcon"></i> 添加学习经历</div>
         </div>
         <div class="tableStyle">
           <el-table :data="detailInfo.xsXxjlList" style="width: 100%;">
@@ -1499,7 +1499,7 @@
             </el-table-column>
             <el-table-column  label="" v-if="isEdit ==2">
               <template slot-scope="scope">
-                <div class="deteleBtn" @click="deteleItem(scope.row,scope.$index)">
+                <div class="deteleBtn" @click="deteleItem(scope.row,scope.$index, 'b')">
                   <i class="el-icon-close"></i>
                 </div>
               </template>
@@ -1509,7 +1509,7 @@
 
         <div class="headline" id="tag_4">
           <div>工作经历</div>
-          <div class="editBtn" v-if="isEdit ==2" @click="addDetailTable"><i class="addIcon"></i> 添加工作经历</div>
+          <div class="editBtn" v-if="isEdit ==2" @click="addDetailTable(3)"><i class="addIcon"></i> 添加工作经历</div>
         </div>
         <div class="tableStyle">
           <el-table :data="detailInfo.xsGzjlList" style="width: 100%;">
@@ -1587,7 +1587,7 @@
             </el-table-column>
             <el-table-column  label="" v-if="isEdit ==2">
               <template slot-scope="scope">
-                <div class="deteleBtn" @click="deteleItem(scope.row,scope.$index)">
+                <div class="deteleBtn" @click="deteleItem(scope.row,scope.$index, 'c')">
                   <i class="el-icon-close"></i>
                 </div>
               </template>
@@ -1598,13 +1598,13 @@
     </div>
     <div class="editBottom" v-if="isEdit == 2">
       <div class="btn cancel" @click="handleCencle">取消</div>
-      <div class="btn confirm">保存</div>
+      <div class="btn confirm" @click="handlUpdata">保存</div>
     </div>
   </div>
 </template>
 
 <script>
-import { getRegStuInfoDetailPage } from "@/api/student/index"
+import { getRegStuInfoDetailPage,updateRegStuInfo } from "@/api/student/index"
 export default {
   name: 'detail',
   beforeRouteEnter(to, from, next) {
@@ -1668,18 +1668,46 @@ export default {
           inline: "nearest",
       });
     },
-    addDetailTable() {
-      this.tableData.push({
-        date:3
-      })
+    // 添加
+    addDetailTable(index) {
+      if (index == 1) {
+        this.detailInfo.xsJtcyxxList.push({})
+      } else if (index == 2) {
+        this.detailInfo.xsXxjlList.push({})
+      } else if (index == 3) {
+        this.detailInfo.xsGzjlList.push({})
+      }
     },
-    deteleItem(row, index) {
-      console.log(index)
-      this.tableData.splice(index, 1)
+    // 删除 
+    deteleItem(row, index, leg) {
+      // console.log(row,index,leg)
+      if (leg == 'a') {
+        this.detailInfo.xsJtcyxxList.splice(index, 1)
+      } else if (leg == 'b') {
+        this.detailInfo.xsXxjlList.splice(index, 1)
+      } else if (leg == 'c') {
+        this.detailInfo.xsGzjlList.splice(index, 1)
+      }
     },
+    // 取消
     handleCencle() {
       this.$router.push({
         path:this.routerFrom
+      })
+    },
+    // 提交
+    handlUpdata() {
+      let data = this.detailInfo
+      updateRegStuInfo(data).then(res => {
+        this.$message({
+          message: res.errmsg,
+          type: 'success'
+        })
+        this.$router.push({
+          path:this.routerFrom
+        })
+      }).catch(err => {
+        this.$message.error(err.errmsg);
       })
     }
   },

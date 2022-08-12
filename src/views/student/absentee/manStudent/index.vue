@@ -138,7 +138,7 @@
 <script>
 import CheckboxCom from '../../../components/checkboxCom'
 import exportView from './exportView/index.vue'
-import { getManageRegStuInfoSearchSpread, getManageRegStuInfoPageList, getRegStuInfoDetailPage } from "@/api/student/index"
+import { getManageRegStuInfoSearchSpread, getManageRegStuInfoPageList,exportQuery } from "@/api/student/index"
 export default {
   name: 'absentee',
   components:{ CheckboxCom, exportView },
@@ -411,7 +411,7 @@ export default {
         checkBox: [{label:'中共党员',val:1},{label: '中共预备',val:2},{label:'共青团员',val:3}],
         isIndeterminate: true
       },
-      tableData: [{ date: 1 }],
+      tableData: [],
       multipleSelection: [],
       showExport: false,
       queryParams: {
@@ -456,7 +456,7 @@ export default {
         zzmmm:"",
         mzm:"",
         bjm:"",
-        dwh:"",
+        dwh:[],
         zydm:"",
         pageNum:this.queryParams.pageNum,
         pageSize:this.queryParams.pageSize,

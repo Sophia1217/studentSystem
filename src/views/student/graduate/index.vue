@@ -702,13 +702,27 @@ export default {
       this.showExport = false;
     },
     hadleDetail(row, flag) {
+      let schooling = '' // 3 4 5 是本科
+      if (row.pyccm == 1 || row.pyccm == 2) { // 1 2 是研究生
+        schooling = 2
+      } else {
+        schooling = 1
+      }
       this.$router.push({
-        path: "/student/graduateDetail",
+        path: '/student/studetails',
         query: {
-          id: row.date,
-          show: flag,
-        },
-      });
+          xh: row.xh,
+          show: flag,  // 1是详情，2是编辑
+          schooling: schooling  
+        }
+      })
+      // this.$router.push({
+      //   path: "/student/graduateDetail",
+      //   query: {
+      //     id: row.date,
+      //     show: flag,
+      //   },
+      // });
     },
   },
 };

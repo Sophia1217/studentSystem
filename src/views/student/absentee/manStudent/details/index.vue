@@ -13,17 +13,18 @@
         <div class="right_top">
           <p class="title">学生信息</p>
           <div class="timeWrap">
-            <span>创建时间：2022-03-23 23:21:34 </span> <span class="updataTime">更新时间：2022-03-23 23:21:34</span>
+            <span>创建时间：{{formatDate(detailInfo.xsJbxx.createTime)}} </span> 
+            <span class="updataTime">更新时间：{{formatDate(detailInfo.xsJbxx.updateTime)}}</span>
           </div>
         </div>
         <div class="headline" id="tag_0">基本信息</div>
         <div class="tableStyle">
           <div class="imgWrap">
             <div class="photo">
-              <img src="" alt="">
+              <img :src="detailInfo.xsXszpb.bkzp" alt="报考照片">
             </div>
             <div class="photo" style="margin-top:10px;">
-              <img src="" alt="">
+              <img :src="detailInfo.xsXszpb.byzp" alt="毕业照片">
             </div>
           </div>
           <div class="information" v-if="schooling==1">
@@ -594,7 +595,7 @@
             <el-row :gutter="20">
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
-                    <div class="title">学号</div>
+                    <div class="title">学号 _研究生</div>
                     <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.xh}}</div>
                     <div v-if="isEdit ==2" class="content">
                       <el-input v-model="detailInfo.xsJbxx.xh" size="small" placeholder="请输入内容"></el-input>
@@ -763,10 +764,10 @@
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">预计毕业时间？？</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.jsxyny}}</div>
+                  <div class="title">预计毕业时间</div>
+                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.yjbysj}}</div>
                   <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.jsxyny" size="small" placeholder="请输入内容"></el-input>
+                    <el-input v-model="detailInfo.xsJbxx.yjbys" size="small" placeholder="请输入内容"></el-input>
                   </div>
                 </div>
               </el-col>
@@ -774,19 +775,19 @@
             <el-row :gutter="20">
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">实际毕业时间？？</div>
-                  <div v-if="isEdit ==1" class="content">3233440</div>
+                  <div class="title">实际毕业时间</div>
+                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.sjbysj}}</div>
                   <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="value" size="small" placeholder="请输入内容"></el-input>
+                    <el-input v-model="detailInfo.xsJbxx.sjbysj" size="small" placeholder="请输入内容"></el-input>
                   </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">结束学业年月？？</div>
-                  <div v-if="isEdit ==1" class="content">3233440</div>
+                  <div class="title">结束学业年月</div>
+                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.jsxyny}}</div>
                   <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="value" size="small" placeholder="请输入内容"></el-input>
+                    <el-input v-model="detailInfo.xsXjxx.jsxyny" size="small" placeholder="请输入内容"></el-input>
                   </div>
                 </div>
               </el-col>
@@ -1628,6 +1629,7 @@ export default {
         xsJtcyxxList: [], // 家庭成员
         xsXxjlList: [], // 学生学习经历
         xsGzjlList: [], // 学生工作经历
+        xsXszpb:{} // 学生信息照片
       }
     };
   },
@@ -1651,6 +1653,8 @@ export default {
         this.$set(this.detailInfo, 'xsJtcyxxList', res.data.xsJtcyxxList)
         this.$set(this.detailInfo, 'xsXxjlList', res.data.xsXxjlList)
         this.$set(this.detailInfo, 'xsGzjlList', res.data.xsGzjlList)
+        this.$set(this.detailInfo, 'xsXszpb', res.data.xsXszpb?res.data.xsXszpb:{})
+        
         
       }).catch(err=>{})
     },

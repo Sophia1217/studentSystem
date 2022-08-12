@@ -13,6 +13,7 @@ import router from "./router";
 import directive from "./directive"; // directive
 import plugins from "./plugins"; // plugins
 import { download } from "@/utils/request";
+import { formatDate } from "@/utils/index";
 
 import "./assets/icons"; // icon
 import "./permission"; // permission control
@@ -46,6 +47,7 @@ import VueMeta from "vue-meta";
 import DictData from "@/components/DictData";
 
 // 全局方法挂载
+Vue.prototype.formatDate = formatDate
 Vue.prototype.getDicts = getDicts;
 Vue.prototype.getConfigKey = getConfigKey;
 Vue.prototype.parseTime = parseTime;

@@ -1,9 +1,9 @@
 <template>
   <div class="studentHomePage">
     <div class="rowTop">
-        <div class="itemTop">
+        <div class="itemTop1">
             <div class="logoImage">
-                <img  src="~@/assets/images/medal.png" alt="">
+                <img  src="~@/assets/images/logo.png" alt="">
             </div>
             <div class="content">
                 <div class="titleTop1"><span class="nameTitle" >华中师范大学学工管理系统</span></div>
@@ -11,6 +11,22 @@
                 <span class="inglishTitle" >CCNU Student Management System</span>
             </div>
             </div>
+        </div>
+        <div class="itemTop2">
+            <div class="iconCenter">
+                <div class="avatarImage">
+                <img  src="~@/assets/images/avatarRight.png" alt="">
+                </div>
+                <div class="exportImage">
+                    <img  src="~@/assets/images/export2.png" alt="">
+                </div>
+                <div class="newsImage">
+                <img  src="~@/assets/images/icon_news.png" alt="">
+                </div>
+            </div>
+            
+            
+            <div class="titleTop3"><span class="welcomeTitle" >林晓曼，欢迎使用华中师范大学学工系统！</span></div>
         </div>
     </div>
     <div class="bg"></div>
@@ -224,20 +240,17 @@ export default {
         width: 132px;
         height: 22px;
 
-        // align-items: stretch;
-        // letter-spacing: 0;
-        // line-height: 22px;
-
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
+        margin-top: 30px;
     }
     .tohead{
         font-weight: 500;
         font-size: 22px;
         color: #005657;
     }
-    .itemTop{
+    .itemTop1{
         flex: 0;
         width: 300px;
         height: 64px;
@@ -247,7 +260,19 @@ export default {
         justify-content: center;
         align-items: center;
 
-        border-radius: 8px;
+    }
+    .itemTop2{
+        flex: 0;
+        width:520px;
+        height: 64px;
+        margin-left: auto;
+        margin-right: 24px;
+                
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-start;
+        align-items: center;
+
     }
     .item{
         flex: 1;
@@ -275,7 +300,7 @@ export default {
         border-radius: 8px;
     }
     .logoImage{
-        width: 48px;
+        width:48px;
         height: 48px;
         vertical-align: middle;
         margin-right: 12px;
@@ -303,14 +328,28 @@ export default {
         width: 210px;
         height: 20px;
     }
+    .titleTop3{
+        width: 360px;
+        height: 24px;
+        
+    }
     .nameTitle{
         font-weight: 600;
         font-size: 17.6px;
         color: #FFFFFF;
+        font-family: PingFangSC-S0pxibold;
     }
     .inglishTitle{
         font-weight: 400; 
         font-size: 12px; 
+        color: #FFFFFF;
+        font-family: PingFangSC-Regular;
+    }
+    .welcomeTitle{
+        font-weight: 600; 
+        font-size: 16px; 
+        font-family: PingFangSC-S0pxibold;
+        text-align: right;
         color: #FFFFFF;
     }
 
@@ -335,5 +374,33 @@ export default {
         color: #999999;
         letter-spacing: 0;
     }
+    
+    
+    .iconCenter{//右侧图标块
+        flex: 0;
+        width:190px;
+        height: 64px;
 
+        display: flex;
+        align-items: center;
+        flex-direction: row-reverse;  //主轴水平，起点右端
+    }
+        .avatarImage{
+            width:40px;
+            height: 40px;
+            vertical-align: middle;
+            margin-left: 20px;
+            
+        }
+        .exportImage{
+            width:20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-left: 20px;
+        }
+        .newsImage{
+            width:20px;
+            height: 20px;
+            vertical-align: middle;
+        }
 </style>

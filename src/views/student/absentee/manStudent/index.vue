@@ -2,12 +2,12 @@
   <div class="manStudent">
     <div class="searchWrap">
       <div class="search">
-        <el-input placeholder="请输入" v-model="searchVal" class="inputSelect">
-          <el-select v-model="select" class="elSelect" slot="prepend" placeholder="查询条件">
-            <el-option label="学号" value="1"></el-option>
-            <el-option label="姓名" value="2"></el-option>
-            <el-option label="身份证号" value="3"></el-option>
-            <el-option label="手机号" value="4"></el-option>
+        <el-input placeholder="请输入" v-model="searchVal" class="inputSelect" clearable>
+          <el-select v-model="select" @change="changeSelect" class="elSelect" slot="prepend" placeholder="查询条件">
+            <el-option label="学号" value="xh"></el-option>
+            <el-option label="姓名" value="xm"></el-option>
+            <el-option label="身份证号" value="sfzjh"></el-option>
+            <el-option label="手机号" value="yddh"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" class="searchBtn" @click="handleSearch">查询</el-button>
         </el-input>
@@ -23,19 +23,19 @@
           <el-col :span="8">
             <span>学 院：</span>
             <el-select v-model="moreIform.manageReg" placeholder="请选择" size="small">
-              <el-option v-for="item in manageRegOps" :key="item.ssdwdm" :label="item.dwwc" :value="item.ssdwdm"></el-option>
+              <el-option v-for="(item,index) in manageRegOps" :key="index" :label="item.dwmc" :value="item.ssdwdm"></el-option>
             </el-select>
           </el-col>
           <el-col :span="8">
             <span>专 业：</span>
             <el-select v-model="moreIform.stuInfo" placeholder="请选择" size="small">
-              <el-option v-for="item in manageRegOps" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              <el-option v-for="(item,index) in manageRegOps" :key="index" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-col>
           <el-col :span="8">
             <span>班 级：</span>
             <el-select v-model="moreIform.pread" multiple collapse-tags placeholder="请选择" size="small">
-              <el-option v-for="item in manageRegOps" :key="item.bjdm" :label="item.bjmc" :value="item.bjdm"></el-option>
+              <el-option v-for="(item,index) in manageRegOps" :key="index" :label="item.bjmc" :value="item.bjdm"></el-option>
             </el-select>
           </el-col>
         </el-row>
@@ -113,10 +113,10 @@
           <el-table-column prop="xjzt" label="学籍状态" sortable> </el-table-column>
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="hadleDetail(scope.row,1,1)">
+              <el-button type="text" size="small" @click="hadleDetail(scope.row,1)">
                 <i class="scopeIncon handledie"></i> <span class="handleName">详情</span>
               </el-button>
-              <el-button type="text" size="small" @click="hadleDetail(scope.row,2,2)">
+              <el-button type="text" size="small" @click="hadleDetail(scope.row,2)">
                 <i class="scopeIncon handleEdit"></i> <span class="handleName">编辑</span>
               </el-button>
             </template>
@@ -126,19 +126,19 @@
     </div>
     <exportView v-if="showExport" :showExport="showExport" @handleCancel="handleCancel" @handleConfirm="handleConfirm"></exportView>
     <pagination
-        v-show="queryParams.total>0"
-        :total="queryParams.total"
-        :page.sync="queryParams.pageNum"
-        :limit.sync="queryParams.pageSize"
-        @pagination="handleSearch"
-      />
+      v-show="queryParams.total>0"
+      :total="queryParams.total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="handleSearch"
+    />
   </div>
 </template>
 
 <script>
 import CheckboxCom from '../../../components/checkboxCom'
 import exportView from './exportView/index.vue'
-import { getManageRegStuInfoSearchSpread, getManageRegStuInfoPageList } from "@/api/student/index"
+import { getManageRegStuInfoSearchSpread, getManageRegStuInfoPageList, getRegStuInfoDetailPage } from "@/api/student/index"
 export default {
   name: 'absentee',
   components:{ CheckboxCom, exportView },
@@ -437,31 +437,32 @@ export default {
     // 获取学院专业班级
     getSpread() {
       getManageRegStuInfoSearchSpread().then(res => {
-        console.log(res)
-        this.manageRegOps = res.dwhbj
+        this.manageRegOps = res.data.dwhbj
       }).catch(err=>{})
+    },
+    changeSelect(val) {
+      this.searchVal = ''
     },
     // 查询
     handleSearch() { 
       let data = {
-        XH:"",
-        XM:"",
-        SFZJH:"",
-        YDDH:"",
-        PYCCM:"",
-        XZ:"",
-        XJZT:"",
-        ZZMMM:"",
-        MZM:"",
-        BJM:"",
-        DWH:"",
-        ZYDM:"",
+        xh:this.select == 'xh'?this.searchVal:'',
+        xm:this.select == 'xm'?this.searchVal:'',
+        sfzjh:this.select == 'sfzjh'?this.searchVal:'',
+        yddh:this.select == 'yddh'?this.searchVal:'',
+        pyccm:"",
+        xz:"",
+        xjzt:"",
+        zzmmm:"",
+        mzm:"",
+        bjm:"",
+        dwh:"",
+        zydm:"",
         pageNum:this.queryParams.pageNum,
         pageSize:this.queryParams.pageSize,
         limitSql:""
       }
       getManageRegStuInfoPageList(data).then(res => {
-        console.log(res.data.data, 'res')
         this.tableData = res.data.data
         this.queryParams.total = res.data.total
       }).catch(err=>{})
@@ -572,13 +573,19 @@ export default {
     handleConfirm() {
       this.showExport = false
     },
-    hadleDetail(row,flag,schooling) {
+    hadleDetail(row, flag) {
+      let schooling = '' // 3 4 5 是本科
+      if (row.pyccm == 1 || row.pyccm == 2) { // 1 2 是研究生
+        schooling = 2
+      } else {
+        schooling = 1
+      }
       this.$router.push({
         path: '/student/studetails',
         query: {
-          id: row.date,
-          show: flag,
-          schooling: schooling
+          xh: row.xh,
+          show: flag,  // 1是详情，2是编辑
+          schooling: schooling  
         }
       })
     }

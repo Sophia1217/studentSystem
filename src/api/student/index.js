@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export function getManageRegStuInfoSearchSpread(data) {
   return request({
     url: '/regStuInfo/getManageRegStuInfoSearchSpread',
-    method: 'post',
+    method: 'get',
     data: data
   })
 }
@@ -13,6 +13,15 @@ export function getManageRegStuInfoSearchSpread(data) {
 export function getManageRegStuInfoPageList(data) {
   return request({
     url: '/regStuInfo/getManageRegStuInfoPageList',
+    method: 'post',
+    data: data
+  })
+}
+
+//毕业学生列表查询
+export function getGraduateStuInfoPageList(data) {
+  return request({
+    url: '/regStuInfo/getGraduateRegStuInfoPageList',
     method: 'post',
     data: data
   })

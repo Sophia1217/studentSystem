@@ -105,7 +105,7 @@
         <el-table-column label="备注" align="center" prop="remark" sortable />
         <el-table-column
           label="创建时间"
-          align="cr"
+          align="center"
           prop="createTime"
           sortable
         />
@@ -212,14 +212,15 @@ export default {
         codeKey: this.info.codeKey,
       };
       listQuery(data).then((res) => {
-        res.data.forEach((item) => {
-          (item.createTime = item.createTime.slice(
+        this.noticeList = res.data;
+        this.info.total = res.count;
+        this.noticeList.forEach((item) => {
+          item.createTime = item.createTime.slice(
             0,
             item.createTime.indexOf("T")
-          )),
-            item.state == "0" ? (item.state = true) : false;
+          );
+          item.state == "0" ? (item.state = true) : (item.state = false);
         });
-        this.noticeList = res.data;
       });
     },
     //重置按钮操作

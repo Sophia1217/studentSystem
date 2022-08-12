@@ -27,6 +27,15 @@ export function getSchoolRegStuInfoPageList(data) {
   })
 }
 
+//毕业学生列表查询
+export function getGraduateStuInfoPageList(data) {
+  return request({
+    url: '/regStuInfo/getGraduateRegStuInfoPageList',
+    method: 'post',
+    data: data
+  })
+}
+
 // 查询学生信息 -可管理学生详情
 export function getRegStuInfoDetailPage(data) {
   return request({

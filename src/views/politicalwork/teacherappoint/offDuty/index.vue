@@ -59,8 +59,10 @@
     <!-- 搜索结果显示表格 -->
     <div class="tableWrap mt15">
       <div class="headerTop">
-        <div class="headerLeft"><span class="title">离岗辅导员列表</span> <i class="Updataicon" /></div>
+        <div class="headerLeft"><span class="title">离岗班主任列表</span> <i class="Updataicon" /></div>
         <div class="headerRight">
+          <div class="btns fullGreen" @click="handleAdd"><i class="icon addIcon" /><span class="title">批量任命</span></div>
+          <div class="btns borderGreen" @click="handleImport"><i class="icon greenIcon" /><span class="title">导入</span></div>
           <div class="btns borderGreen" @click="handleExport"><i class="icon greenIcon" /><span class="title">导出</span></div>
         </div>
       </div>
@@ -88,6 +90,7 @@
         </el-table>
         <pagination
           v-show="total>0"
+          class="pagination"
           :total="total"
           :page.sync="queryParams.pageNum"
           :limit.sync="queryParams.pageSize"
@@ -97,7 +100,7 @@
     </div>
     <el-dialog :visible.sync="open" width="1200px" append-to-body>
       <el-table ref="multipleTable" :data="tableData" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" />
+        <!-- <el-table-column type="selection" width="55" /> -->
         <el-table-column type="index" label="在岗日期" width="50" />
         <el-table-column prop="workId" label="班级编号" sortable />
         <el-table-column prop="name" label="班级名称" sortable />
@@ -116,162 +119,6 @@
     </el-dialog>
   </div>
 
-  <!-- 分页 -->
-  <!-- <el-row :gutter="10">
-
-    <el-col :span="19">
-      <pagination
-        v-show="total>0"
-        :total="total"
-        :page.sync="queryParams.pageNum"
-        :limit.sync="queryParams.pageSize"
-        @pagination="getList"
-      />
-    </el-col> -->
-  <!-- 导入导出按钮 -->
-  <!-- <div class="downloadButton">
-      <el-col :span="2.5">
-        <el-button
-          plain
-          icon="el-icon-upload2"
-          size="mini"
-          @click="handleImport"
-        >导入</el-button>
-      </el-col>
-      <el-col :span="2.5">
-        <el-button
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-        >导出</el-button>
-      </el-col>
-    </div></el-row> -->
-
-
-  <!-- todo 用户导入对话框 -->
-  <!-- <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body>
-    <el-upload
-      ref="upload"
-      :limit="1"
-      accept=".xlsx, .xls"
-      :headers="upload.headers"
-      :action="upload.url + '?updateSupport=' + upload.updateSupport"
-      :disabled="upload.isUploading"
-      :on-progress="handleFileUploadProgress"
-      :on-success="handleFileSuccess"
-      :auto-upload="false"
-      drag
-    >
-      <i class="el-icon-upload" />
-      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-      <div slot="tip" class="el-upload__tip text-center">
-        <div slot="tip" class="el-upload__tip">
-          <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
-        </div>
-        <span>仅允许导入xls、xlsx格式文件。</span>
-        <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate">下载模板</el-link>
-      </div>
-    </el-upload>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="submitFileForm">确 定</el-button>
-      <el-button @click="upload.open = false">取 消</el-button>
-    </div>
-  </el-dialog> -->
-  <!-- </div> -->
-  <!-- todo checkbox搜索 -->
-  <!-- <el-form ref="checkboxForm" :model="queryParams" label-width="80px">
-      <div class="checkbox">
-        <el-row>
-          <el-col :span="2">
-            <el-label>类别</el-label>
-          </el-col>
-          <el-col :span="2">
-            <el-checkbox v-model="checkAllCategory" :indeterminate="isIndeterminateCategory" @change="handleCheckAllCategoryChange">全选</el-checkbox>
-          </el-col>
-          <el-col :span="14">
-            <el-checkbox-group v-model="checkedCategory" size="mini" @change="handleCheckedCategoryChange">
-              <el-checkbox
-                v-for="category in categories"
-                :key="category"
-                :label="category"
-              >{{ category }}</el-checkbox>
-            </el-checkbox-group>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="2">
-            <el-text>性别</el-text>
-          </el-col>
-          <el-col :span="2">
-            <el-checkbox v-model="checkAllSex" :indeterminate="isIndeterminateSex" @change="handleCheckAllSexChange">全选</el-checkbox>
-          </el-col>
-          <el-col :span="14">
-            <el-checkbox-group v-model="checkedSex" size="mini" @change="handleCheckedSexChange">
-              <el-checkbox
-                v-for="sex in sexes"
-                :key="sex"
-                :label="sex"
-              >{{ sex }}</el-checkbox>
-            </el-checkbox-group>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="2">
-            <el-text>单位</el-text>
-          </el-col>
-          <el-col :span="2">
-            <el-checkbox v-model="checkAllWorkPlace" :indeterminate="isIndeterminateWorkPlace" @change="handleCheckAllWorkPlaceChange">全选</el-checkbox>
-          </el-col>
-          <el-col :span="18">
-            <el-checkbox-group v-model="checkedWorkPlace" size="mini" @change="handleCheckedWorkPlaceChange">
-              <el-checkbox
-                v-for="workPlace in workPlaces"
-                :key="workPlace"
-                :label="workPlace"
-              >{{ workPlace }}</el-checkbox>
-            </el-checkbox-group>
-          </el-col>
-        </el-row>
-      </div>
-    </el-form> -->
-
-  <!-- todo 学号职工号搜索栏 -->
-  <!-- <el-row class="searchButton">
-      <el-input v-model="idSearch" placeholder="请输入学号/教职工编号" clearable :style="{width: '15%'}" />
-      <el-button class="searchButton" type="primary" icon="el-icon-search" size="mini" @click="idSearchClick"> 查询 </el-button>
-    </el-row> -->
-  <!-- todo 搜索结果显示表格 -->
-  <!-- <el-table :data="basicInfoList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="姓名" align="center" prop="name" />
-      <el-table-column label="性别" align="center" prop="sex" />
-      <el-table-column label="联系方式" align="center" prop="phone" />
-      <el-table-column label="工作单位" align="center" prop="workPlace" />
-      <el-table-column label="最高学历毕业院校" align="center" prop="university" />
-      <el-table-column label="专业背景" align="center" prop="major" />
-      <el-table-column label="所带班级" align="center" prop="class" />
-      <el-table-column label="参加工作信息" align="center" prop="workInfo" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width"> -->
-  <!-- 操作栏按钮 -->
-  <!-- <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-info"
-            @click="handleGet(scope.row)"
-          >详情</el-button>
-        </template>
-      </el-table-column>
-    </el-table> -->
 </template>
 <script>
 import { listPost, getPost, getList, delPost, addPost, updatePost } from '@/api/system/post'
@@ -354,7 +201,7 @@ export default {
       status: { // 状态
         checkAll: false,
         choose: [],
-        checkBox: [{ label: '在岗', val: 1 }, { label: '不在岗', val: 2 }],
+        checkBox: [{ label: '在岗', val: 1 }, { label: '非在岗', val: 2 }],
         isIndeterminate: true
       },
       tableData: [{ workId: 1, name: 'abc', sex: '男' }, { workId: 2, name: 'def', sex: '女' }],
@@ -494,6 +341,9 @@ export default {
       this.upload.title = '用户导入'
       this.upload.open = true
     },
+    handleAdd() {
+      alert()
+    },
     /** 下载模板操作 */
     importTemplate() {
       this.download('system/user/importTemplate', {
@@ -621,10 +471,10 @@ export default {
           height: 20px;
         }
         .chevronDown{
-          background: url('../../../../assets/images/chevronDown.png') no-repeat;
+          background: url('~@//assets/images/chevronDown.png') no-repeat;
         }
         .chevronUp{
-          background: url('../../../../assets/images/chevronUp.png') no-repeat;
+          background: url('~@//assets/images/chevronUp.png') no-repeat;
         }
       }
     }
@@ -655,7 +505,7 @@ export default {
           margin-left: 10px;
           width:20px;
           height: 20px;
-          background: url('../../../../assets/images/updata.png') no-repeat;
+          background: url('~@//assets/images/updata.png') no-repeat;
         }
       }
       .headerRight{
@@ -680,6 +530,11 @@ export default {
           color:#005657;
           background: #fff;
         }
+        .fullGreen{
+          // border:1px solid #005657;
+          color:#fff;
+          background: #005657;
+        }
         .btns{
           margin-right: 15px;
           padding:5px 10px;
@@ -698,16 +553,19 @@ export default {
             margin-right: 5px;
           }
           .blueIcon{
-            background: url('../../../../assets/images/icon_1.png') no-repeat;
+            background: url('~@/assets/images/icon_1.png') no-repeat;
           }
           .orangeIcon{
-            background: url('../../../../assets/images/icon_2.png') no-repeat;
+            background: url('~@/assets/images/icon_2.png') no-repeat;
           }
           .lightIcon{
-            background: url('../../../../assets/images/icon_3.png') no-repeat;
+            background: url('~@/assets/images/icon_3.png') no-repeat;
           }
           .greenIcon{
-            background: url('../../../../assets/images/export.png');
+            background: url('~@/assets/images/export.png');
+          }
+          .addIcon{
+            background: url('~@/assets/images/icon_add.png');
           }
         }
       }
@@ -725,10 +583,10 @@ export default {
       line-height: 28px;
     }
     .handledie{
-      background: url('../../../../assets/images/details.png');
+      background: url('~@/assets/images/details.png');
     }
     .handleEdit{
-      background: url('../../../../assets/images/edit.png');
+      background: url('~@/assets/images/edit.png');
     }
   }
   .searchButton{
@@ -740,5 +598,10 @@ export default {
     background: #005657;
     color: white;
   }
+  .pagination {
+  left: 20%;
+  transform: translateX(-50%);
+  text-align: center
+}
 </style>
 

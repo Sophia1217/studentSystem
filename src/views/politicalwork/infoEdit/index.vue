@@ -1580,10 +1580,10 @@
 
         <div id="tag_11" class="headline">
           <div>政工科研情况（教学情况）</div>
-<div class="checkButtons">
+        </div>
+        <div class="checkButtons">
           <el-button class="checkButton" @click="allRead(basicInfoForm)">全部只读</el-button>
           <el-button class="checkButton" @click="allMust(basicInfoForm)">全部必填</el-button>
-        </div>
         </div>
         
         <div class="tableStyle">

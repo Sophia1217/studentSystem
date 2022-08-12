@@ -1,4 +1,31 @@
 import request from '@/utils/request'
+
+// 培养单位列表
+// localhost:8081/sws/manager/user/queryAllDwh
+export function getCollege() {
+    return request({
+        url: '/manager/user/queryAllDwh',
+        method: 'post',
+    })
+}
+// 培养层次列表
+// localhost:8081/sws/class/getPycc
+export function getLevel() {
+    return request({
+        url: '/class/getPycc',
+        method: 'post',
+    })
+}
+
+// 年级列表
+// localhost:8081/sws/class/getYears
+export function getGrade() {
+    return request({
+        url: '/class/getYears',
+        method: 'post',
+    })
+}
+
 // 班级列表查询接口 
 // /sws/class/queryClassList {ssdwdm-培养单位, pycc-培养层次, ssnj-所属年级, bjdm-班级编号, pageSize, pageNum} POST
 export function classList(query) {
@@ -15,7 +42,7 @@ export function modifyClassName(query) {
     return request({
         url: '/class/modifyClassName',
         method: 'post',
-        params: query
+        data: query
     })
 }
 
@@ -33,6 +60,6 @@ export function deleteEmptyClass(query) {
     return request({
         url: '/class/deleteEmptyClass',
         method: 'post',
-        params: query
+        data: query
     })
 }

@@ -219,7 +219,7 @@ export default {
             0,
             item.createTime.indexOf("T")
           );
-          item.state == "0" ? (item.state = true) : false;
+          item.state == "0" ? (item.state = true) : (item.state = false);
         });
       });
     },

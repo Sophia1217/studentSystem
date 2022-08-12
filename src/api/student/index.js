@@ -4,8 +4,8 @@ import request from '@/utils/request'
 export function getManageRegStuInfoSearchSpread(data) {
   return request({
     url: '/regStuInfo/getManageRegStuInfoSearchSpread',
-    method: 'post',
-    data: data
+    method: 'get',
+    params: data
   })
 }
 
@@ -15,5 +15,23 @@ export function getManageRegStuInfoPageList(data) {
     url: '/regStuInfo/getManageRegStuInfoPageList',
     method: 'post',
     data: data
+  })
+}
+
+// 查询学生信息 -全校学生
+export function getSchoolRegStuInfoPageList(data) {
+  return request({
+    url: '/regStuInfo/getSchoolRegStuInfoPageList',
+    method: 'post',
+    data: data
+  })
+}
+
+// 查询学生信息 -可管理学生详情
+export function getRegStuInfoDetailPage(data) {
+  return request({
+    url: '/regStuInfo/getRegStuInfoDetailPage',
+    method: 'get',
+    params: data
   })
 }

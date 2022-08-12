@@ -2,10 +2,10 @@
   <div class="manStudent">
     <div class="searchWrap">
       <div class="search">
-        <el-input placeholder="请输入" v-model="searchVal" class="inputSelect">
-          <el-select v-model="select" class="elSelect" slot="prepend" placeholder="查询条件">
-            <el-option label="学号" value="1"></el-option>
-            <el-option label="姓名" value="2"></el-option>
+        <el-input placeholder="请输入" v-model="searchVal" class="inputSelect" clearable>
+          <el-select v-model="select" @change="changeSelect" class="elSelect" slot="prepend" placeholder="查询条件">
+            <el-option label="学号" value="xh"></el-option>
+            <el-option label="姓名" value="xm"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch">查询</el-button>
         </el-input>
@@ -20,8 +20,8 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <span>学 院：</span>
-            <el-select v-model="moreIform.value1" placeholder="请选择" size="small">
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-select v-model="moreIform.manageReg" placeholder="请选择" size="small">
+              <el-option v-for="item in manageRegOps" :key="item.ssdwdm" :label="item.dwmc" :value="item.ssdwdm"></el-option>
             </el-select>
           </el-col>
           <el-col :span="8">
@@ -53,31 +53,6 @@
             </div>
           </el-col>
         </el-row>
-        
-        <!-- <el-row :gutter="20" class="mt15">
-          <el-col :span="3">学 籍：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom :objProp="studentStatus" @training="studentStatusAll" @checkedTraining="studentStatusCheck"></checkboxCom>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">名族：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom :objProp="ethnic" @training="ethnicAll" @checkedTraining="ethnicCheck"></checkboxCom>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">政治面貌：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom :objProp="politica" @training="politicaAll" @checkedTraining="politicaCheck"></checkboxCom>
-            </div>
-          </el-col>
-        </el-row> -->
       </div>
     </div>
     <!-- table -->
@@ -88,20 +63,28 @@
       <div class="mt15">
         <el-table :data="tableData" ref="multipleTable" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}">
         <el-table-column type="index" label="序号" width="50"></el-table-column>
-          <el-table-column prop="date" label="学号" sortable> </el-table-column>
-          <el-table-column prop="name" label="姓名" sortable> </el-table-column>
-          <el-table-column prop="address" label="学院" sortable> </el-table-column>
-          <el-table-column prop="address" label="专业" sortable> </el-table-column>
-          <el-table-column prop="address" label="年级" sortable> </el-table-column>
-          <el-table-column prop="address" label="培养层次" sortable> </el-table-column>
+          <el-table-column prop="xh" label="学号" sortable> </el-table-column>
+          <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
+          <el-table-column prop="dwh" label="学院" sortable> </el-table-column>
+          <el-table-column prop="zydm" label="专业" sortable> </el-table-column>
+          <el-table-column prop="nj" label="年级" sortable> </el-table-column>
+          <el-table-column prop="pyccm" label="培养层次" sortable> </el-table-column>
         </el-table>
       </div>
+      <pagination
+        v-show="queryParams.total>0"
+        :total="queryParams.total"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="handleSearch"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import CheckboxCom from '../../../components/checkboxCom'
+import { getSchoolRegStuInfoPageList,getManageRegStuInfoSearchSpread } from "@/api/student/index"
 export default {
   name: 'manStudent',
   components:{ CheckboxCom },
@@ -126,34 +109,50 @@ export default {
         checkBox: [{label:'2022级',val:1},{label: '2021级',val:2},{label: '2020级',val:3},{label: '2019级',val:4}],
         isIndeterminate: true
       },
-      // studentStatus: { // 学籍
-      //   checkAll: false,
-      //   choose: [],
-      //   checkBox: [{label:'有学籍',val:1},{label: '无学籍',val:2}],
-      //   isIndeterminate: true
-      // },
-      // ethnic:{  // 名族
-      //   checkAll: false,
-      //   choose: [],
-      //   checkBox: [{label:'汉族',val:1},{label: '蒙古族',val:2},{label:'藏族',val:3}],
-      //   isIndeterminate: true
-      // },
-      // politica:{  // 政治面貌：
-      //   checkAll: false,
-      //   choose: [],
-      //   checkBox: [{label:'中共党员',val:1},{label: '中共预备',val:2},{label:'共青团员',val:3}],
-      //   isIndeterminate: true
-      // },
-      tableData: [{ date: 1 }]
+      tableData: [],
+      manageRegOps:[],
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        total: 0
+      }
     };
   },
 
-  mounted() {},
+  mounted() {
+    this.getSpread()
+    this.handleSearch()
+  },
 
   methods: {
+     // 获取学院专业班级
+    getSpread() {
+      getManageRegStuInfoSearchSpread().then(res => {
+        this.manageRegOps = res.data.dwhbj
+      }).catch(err=>{})
+    },
+    changeSelect() {
+      this.searchVal = ''
+    },
     // 查询
-    handleSearch(){ 
-      console.log(this.searchVal,this.select)
+    handleSearch() {
+      let data = {
+        xm: this.select == 'xm'?this.searchVal:'',
+        xh:this.select == 'xh'?this.searchVal:'',
+        dwh:'',
+        zydm:'',
+        nj:'',
+        nj: '',
+        pyccm: '',
+        pageNum: this.queryParams.pageNum,
+        pageSize:this.queryParams.pageSize
+      }
+      getSchoolRegStuInfoPageList(data).then(res => {
+        console.log(res.data.data)
+        this.tableData = res.data.data
+        this.queryParams.total = res.data.total
+      }).catch(err=>{})
+      // console.log(this.searchVal,this.select)
     },
     // 点击更多
     handleMore() {

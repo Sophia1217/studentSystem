@@ -8,34 +8,40 @@
       v-show="showSearch"
       label-width="68px"
     >
-      <el-form-item label="培养单位" prop="noticeType">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="计算机学院"
-          clearable
-        >
+      <el-form-item label="培养单位" prop="ssdwdm">
+        <el-select v-model="queryParams.ssdwdm" placeholder="未选择" clearable>
+          <el-option
+            v-for="(item, index) in collegeOptions"
+            :key="index"
+            :label="item.mc"
+            :value="item.dm"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="培养层次" prop="noticeType">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="本科"
-          clearable
-        >
+      <el-form-item label="培养层次" prop="pycc">
+        <el-select v-model="queryParams.pycc" placeholder="未选择" clearable>
+          <el-option
+            v-for="(value, key, index) in levelOptions"
+            :key="index"
+            :label="value"
+            :value="key"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="年级" prop="noticeType">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="2022"
-          clearable
-        >
+      <el-form-item label="年级" prop="ssnj">
+        <el-select v-model="queryParams.ssnj" placeholder="未选择" clearable>
+          <el-option
+            v-for="(item, index) in gradeOptions"
+            :key="index"
+            :label="item"
+            :value="item"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="班级编号" prop="noticeTitle">
+      <el-form-item label="班级编号" prop="bjdm">
         <el-input
-          v-model="queryParams.noticeTitle"
-          placeholder="请输入班级编号"
+          v-model="queryParams.bjdm"
+          placeholder="未选择"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -63,53 +69,28 @@
     </div>
 
     <!-- 班级列表 -->
-    <el-table
-      v-loading="loading"
-      :data="noticeList"
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column label="序号" align="center" width="100" type="index" />
-      <el-table-column
-        label="班级编号"
-        align="center"
-        prop="classId"
-        width="100"
-        sortable
-      />
+    <el-table :data="noticeList" @selection-change="handleSelectionChange">
+      <el-table-column label="序号" align="center" type="index" />
+      <el-table-column label="班级编号" align="center" prop="bjdm" sortable />
       <el-table-column
         label="班级名称"
         align="center"
-        prop="className"
-        width="300"
-        sortable
-      >
-      </el-table-column>
-      <el-table-column
-        label="培养单位"
-        align="center"
-        prop="college"
-        width="150"
+        width="250px"
+        prop="bjmc"
         sortable
       />
-      <el-table-column
-        label="培养层次"
-        align="center"
-        prop="level"
-        width="100"
-        sortable
-      />
+      <el-table-column label="培养单位" align="center" prop="ssdw" sortable />
+      <el-table-column label="培养层次" align="center" prop="pycc" sortable />
       <el-table-column
         label="班级人数"
         align="center"
-        prop="nums"
-        width="100"
+        prop="stuNumOfClass"
         sortable
       />
       <el-table-column
         label="创建时间"
         align="center"
-        prop="beginTime"
-        width="150"
+        prop="createTime"
         sortable
       />
       <el-table-column
@@ -122,13 +103,19 @@
       <el-table-column
         label="操作"
         align="center"
-        prop="action"
+        sortable
         class-name="small-padding fixed-width"
       >
         <template slot-scope="scope">
           <div @click="action(scope.row)">
             <span class="iconfont allocate_teacher">&#xe638;</span>
-            <span class="leaderAssign" style="color: #005657; margin-left: 5px" @click="leaderAssign"> 班干部任命 </span>
+            <span
+              class="leaderAssign"
+              style="color: #005657; margin-left: 5px"
+              @click="leaderAssign(scope.row.bjdm)"
+            >
+              班干部任命
+            </span>
           </div>
         </template>
       </el-table-column>
@@ -142,86 +129,20 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-
-    <!-- 新增班级对话框 -->
-    <el-dialog
-      :title="title"
-      :visible.sync="open"
-      width="800px"
-      height="243px"
-      append-to-body
-    >
-      <el-form
-        :inline="true"
-        ref="form"
-        :model="form"
-        :rules="rules"
-        label-width="80px"
-      >
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="所属学院" prop="noticeTitle">
-              <el-select
-                v-model="form.noticeType"
-                placeholder="计算机学院"
-              ></el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="培养层次" prop="noticeType">
-              <el-select
-                v-model="form.noticeType"
-                placeholder="本科"
-              ></el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="所属年级">
-              <el-select
-                v-model="form.noticeType"
-                placeholder="2022"
-              ></el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="班级数量">
-              <!-- <editor v-model="form.noticeContent" :min-height="192" /> -->
-              <el-select v-model="form.noticeType" placeholder="10"></el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="submitForm" class="confirm"
-          >确 定</el-button
-        >
-      </div>
-    </el-dialog>
-
-    <el-dialog
-      :title="title"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <span
-        >是否确认删除空班级？<span style="color: #ed5234"
-          >*每次仅支持删除一个班级，且该班级代码编号为最末尾</span
-        ></span
-      >
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="classCancel">取 消</el-button>
-        <el-button type="primary" @click="classConfirm" class="confirm"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import "@/assets/fonts/person/iconfont.css";
+import {
+  classList,
+  modifyClassName,
+  getCollege,
+  getLevel,
+  getGrade,
+  addClass,
+  deleteEmptyClass,
+} from "@/api/class/maintenanceClass";
 export default {
   name: "classleader", //班干部管理
   data() {
@@ -239,35 +160,11 @@ export default {
       // 总条数
       total: 100,
       // 表格数据
-      noticeList: [
-        {
-          classId: 13070025,
-          className: "计算机工程硕士2022级1班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-        },
-        {
-          classId: 13070025,
-          className: "计算机工程硕士2022级1班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-        },
-        {
-          classId: 13070025,
-          className: "计算机工程硕士2022级1班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-        },
-      ],
+      noticeList: [],
+      // 筛选框数据
+      collegeOptions: [],
+      levelOptions: {},
+      gradeOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示新建班级弹出层
@@ -276,11 +173,12 @@ export default {
       dialogVisible: false,
       // 查询参数
       queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        noticeTitle: undefined,
-        createBy: undefined,
-        status: undefined,
+        pageNum: 1, // 默认请求第一页数据
+        pageSize: 10, // 默认一页10条数据
+        ssdwdm: "", // 培养单位
+        pycc: "", // 培养层次
+        ssnj: "", // 年级
+        bjdm: "", // 班级编号
       },
       // 表单参数
       form: {},
@@ -295,11 +193,40 @@ export default {
       },
     };
   },
+  mounted() {
+    this.getList();
+    this.getOptions();
+  },
   methods: {
+    getList(queryParams = {}) {
+      // this.loading = true;
+      classList(queryParams).then((response) => {
+        // 获取班级列表数据
+        this.noticeList = response.data.rows; // 根据状态码接收数据
+        //  this.total = response.total;
+        //  this.loading = false;
+      });
+    },
+    getOptions() {
+      getCollege().then((response) => {
+        // 获取培养单位列表数据
+        this.collegeOptions = response.data.rows;
+        //  this.loading = false;
+      });
+      getLevel().then((response) => {
+        // 获取培养层次列表数据
+        this.levelOptions = response.rows;
+      });
+      getGrade().then((response) => {
+        // 获取年级列表数据
+        this.gradeOptions = response.rows;
+      });
+    },
     // 班干部任命
-    leaderAssign(){
-      this.$router.push('/class/leaderAssign')
-    }
+    leaderAssign(x) {
+      console.log(x);
+      this.$router.push({ path: "/class/leaderAssign", params: { bjdm: x } });
+    },
   },
 };
 </script>
@@ -397,7 +324,7 @@ export default {
 }
 
 /* 班干部任命按钮 */
-.leaderAssign{
+.leaderAssign {
   cursor: pointer;
 }
 </style>

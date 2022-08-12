@@ -8,39 +8,39 @@
       v-show="showSearch"
       label-width="68px"
     >
-      <el-form-item label="培养单位" prop="college">
-        <el-select v-model="queryParams.college" placeholder="未选择" clearable>
-          <!-- <el-option
-            v-for="dict in dict.type.sys_notice_type"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          /> -->
+      <el-form-item label="培养单位" prop="ssdwdm">
+        <el-select v-model="queryParams.ssdwdm" placeholder="未选择" clearable>
+          <el-option
+            v-for="(item, index) in collegeOptions"
+            :key="index"
+            :label="item.mc"
+            :value="item.dm"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="培养层次" prop="level">
-        <el-select v-model="queryParams.level" placeholder="未选择" clearable>
-          <!-- <el-option
-            v-for="dict in dict.type.sys_notice_type"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          /> -->
+      <el-form-item label="培养层次" prop="pycc">
+        <el-select v-model="queryParams.pycc" placeholder="未选择" clearable>
+          <el-option
+            v-for="(value, key, index) in levelOptions"
+            :key="index"
+            :label="value"
+            :value="key"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="年级" prop="grade">
-        <el-select v-model="queryParams.grade" placeholder="未选择" clearable>
-          <!-- <el-option
-            v-for="dict in dict.type.sys_notice_type"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          /> -->
+      <el-form-item label="年级" prop="ssnj">
+        <el-select v-model="queryParams.ssnj" placeholder="未选择" clearable>
+          <el-option
+            v-for="(item, index) in gradeOptions"
+            :key="index"
+            :label="item"
+            :value="item"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="班级编号" prop="classId">
+      <el-form-item label="班级编号" prop="bjdm">
         <el-input
-          v-model="queryParams.classId"
+          v-model="queryParams.bjdm"
           placeholder="未选择"
           clearable
           @keyup.enter.native="handleQuery"
@@ -77,43 +77,12 @@
           >
             新建班级</el-button
           >
-          <!-- <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:notice:add']"
-        >新增</el-button> -->
         </el-col>
-        <!-- <el-col :span="1.5">
-          <el-button class="delete" icon="el-icon-delete" @click="handleDelete"
-            >删除空班级</el-button
-          >
-         <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:notice:edit']"
-        >修改</el-button> 
-        </el-col>-->
         <el-col :span="1.5">
           <el-button class="export">
             <span class="iconfont icon-daochu-06"></span>
             导出班级名单</el-button
           >
-          <!-- <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:notice:remove']"
-        >删除</el-button> -->
         </el-col>
         <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
       </el-row>
@@ -139,7 +108,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="培养单位" align="center" prop="pycc" sortable />
+      <el-table-column label="培养单位" align="center" prop="ssdw" sortable />
       <el-table-column label="年级" align="center" prop="ssnj" sortable />
       <el-table-column label="培养层次" align="center" prop="pycc" sortable />
       <el-table-column
@@ -169,50 +138,12 @@
       >
         <template slot-scope="scope">
           <div>
-            <span
-              @click="handleDelete(scope.row, scope.$index)"
-              class="deleteClass"
+            <span @click="handleDelete(scope.row.bjdm)" class="deleteClass"
               >删除空班级</span
             >
           </div>
         </template>
       </el-table-column>
-
-      <!-- <el-table-column
-        label="公告标题"
-        align="center"
-        prop="noticeTitle"
-        :show-overflow-tooltip="true"
-      /> -->
-      <!-- <el-table-column label="公告类型" align="center" prop="noticeType" width="100">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_notice_type" :value="scope.row.noticeType"/>
-        </template>
-      </el-table-column> -->
-      <!-- <el-table-column label="创建者" align="center" prop="createBy" width="100" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="100">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column> -->
-      <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:notice:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:notice:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column> -->
     </el-table>
 
     <pagination
@@ -244,10 +175,10 @@
             <el-form-item label="所属学院" prop="pydw">
               <el-select v-model="form.pydw" placeholder="未选择">
                 <el-option
-                  v-for="item in collegeOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  v-for="(item, index) in collegeOptions"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
                 ></el-option
               ></el-select>
             </el-form-item>
@@ -256,45 +187,30 @@
             <el-form-item label="培养层次" prop="pycc">
               <el-select v-model="form.pycc" placeholder="请选择">
                 <el-option
-                  v-for="item in levelOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  v-for="(value, key, index) in levelOptions"
+                  :key="index"
+                  :label="value"
+                  :value="key"
                 ></el-option
               ></el-select>
-              <!-- <el-select v-model="form.noticeType" placeholder="请选择公告类型"> -->
-              <!-- <el-option
-                  v-for="dict in dict.type.sys_notice_type"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option> -->
-              <!-- </el-select> -->
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="所属年级" prop="ssnj">
               <el-select v-model="form.ssnj" placeholder="请选择">
                 <el-option
-                  v-for="item in sizeOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  v-for="(item, index) in gradeOptions"
+                  :key="index"
+                  :label="item"
+                  :value="item"
                 ></el-option>
               </el-select>
-              <!-- <el-radio-group v-model="form.status"> -->
-              <!-- <el-radio
-                  v-for="dict in dict.type.sys_notice_status"
-                  :key="dict.value"
-                  :label="dict.value"
-                >{{dict.label}}</el-radio> -->
-              <!-- </el-radio-group> -->
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="班级数量" prop="classNum">
               <!-- <editor v-model="form.noticeContent" :min-height="192" /> -->
-              <el-input v-model="form.classNum" placeholder="1"></el-input>
+              <el-input v-model="form.classNum"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -329,42 +245,23 @@
 
 <script>
 import "@/assets/fonts/repeat/iconfont.css";
-// import { Notification } from "element-ui"; // 引入通知
-// import deleteClassDoubleVue from "./deleteClassDouble.vue";
-import { classList, modifyClassName } from "@/api/class/maintenanceClass"; // 引入班级列表查询、修改班级名称接口
-// import {
-//   listNotice,
-//   getNotice,
-//   delNotice,
-//   addNotice,
-//   updateNotice,
-// } from "@/api/system/notice";
-// import { json } from "stream/consumers";
-import { addClass, deleteEmptyClass } from "@/api/class/maintenanceClass";
+import {
+  classList,
+  modifyClassName,
+  getCollege,
+  getLevel,
+  getGrade,
+  addClass,
+  deleteEmptyClass,
+} from "@/api/class/maintenanceClass"; // 引入班级列表查询、修改班级名称接口
 
 export default {
   name: "maintenanceClass",
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
   data() {
     return {
-      // 1.新建班级用到数据:学院数据;培养层次;所属年级;班级数量
-      collegeOptions: [
-        { value: "计算机学院", label: "计算机学院" },
-        { value: "外国语学院", label: "外国语学院" },
-        { value: "法学院", label: "法学院" },
-      ],
-      levelOptions: [
-        { value: "本科", label: "本科" },
-        { value: "硕士", label: "硕士" },
-        { value: "博士", label: "博士" },
-      ],
-      sizeOptions: [
-        { value: "2020级", label: "2020" },
-        { value: "2021级", label: "2021" },
-        { value: "2022级", label: "2022" },
-      ],
       // 2.删除空班级:当前班级编号
-      currentBjbm: { bjdm: "" },
+      // currentBjbm: { bjdm: "" },
       // 遮罩层
       // loading: true,
       // 选中数组
@@ -377,6 +274,7 @@ export default {
       showSearch: true,
       // 总条数
       total: 100,
+      bjdm: "",
       // 表格数据
       /* 
         {
@@ -389,7 +287,12 @@ export default {
           createTime: "", // 创建时间
         }
       */
+      // 班级列表数据
       noticeList: [],
+      // 筛选框数据
+      collegeOptions: [],
+      levelOptions: {},
+      gradeOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示新建班级弹出层
@@ -400,17 +303,17 @@ export default {
       queryParams: {
         pageNum: 1, // 默认请求第一页数据
         pageSize: 10, // 默认一页10条数据
-        college: "", // 培养单位
-        level: "", // 培养层次
-        grade: "", // 年级
-        classId: "", // 班级编号
+        ssdwdm: "", // 培养单位
+        pycc: "", // 培养层次
+        ssnj: "", // 年级
+        bjdm: "", // 班级编号
       },
       // 新建班级表单参数
       form: {
         pydw: "", // 培养单位
         pycc: "", // 培养层次
         ssnj: "", // 年级
-        classNum: 1, // 新建班级数
+        classNum: 0, // 新建班级数
       },
       // 表单校验
       rules: {
@@ -429,13 +332,11 @@ export default {
       },
     };
   },
-  // created() {
-  //   this.getList({ bjdm: this.queryParams.classId });
-  // },
   // 组件创建完请求数据
   mounted() {
     // this.getList({ bjdm: this.queryParams.classId });  // { pydw, pycc, ssnj, bjdm: this.queryParams.classId, pageNum-Y, pageSize-Y}
     this.getList();
+    this.getOptions();
   },
   methods: {
     // // 查看班级操作记录
@@ -448,10 +349,25 @@ export default {
     getList(queryParams = {}) {
       // this.loading = true;
       classList(queryParams).then((response) => {
-        console.log(response);
-        this.noticeList = response.BjList; // 根据状态码接收数据
+        // 获取班级列表数据
+        this.noticeList = response.data.rows; // 根据状态码接收数据
         //  this.total = response.total;
         //  this.loading = false;
+      });
+    },
+    getOptions() {
+      getCollege().then((response) => {
+        // 获取培养单位列表数据
+        this.collegeOptions = response.data.rows;
+        //  this.loading = false;
+      });
+      getLevel().then((response) => {
+        // 获取培养层次列表数据
+        this.levelOptions = response.rows;
+      });
+      getGrade().then((response) => {
+        // 获取年级列表数据
+        this.gradeOptions = response.rows;
       });
     },
     // 修改班级名称回调
@@ -461,7 +377,19 @@ export default {
       console.log({ bjdm, bjmc });
       modifyClassName({ bjdm, bjmc }).then((response) => {
         //response：{new className: '计算机学院硕士2020级5班'} {"fail to modify className": false}
-        // console.log(response["new className"]);
+        if (response.flag == true) {
+          this.$message({
+            showClose: true,
+            message: "修改班级名称成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            showClose: true,
+            message: "修改班级名称失败",
+            type: "error",
+          });
+        }
         // 根据返回状态码确定是否修改成功——成功则重新请求数据刷新页面后弹出信息提醒；失败也弹出信息提醒
       });
     },
@@ -483,9 +411,7 @@ export default {
     },
     // /** 搜索按钮操作 */
     handleQuery() {
-      // this.queryParams.pageNum = 1;
-      let obj = { bjdm: "070101000501" };
-      this.getList(obj);
+      this.getList(this.queryParams);
     },
     // /** 重置按钮操作 */
     resetQuery() {
@@ -500,48 +426,42 @@ export default {
     },
     /** 新增班级按钮操作 */
     handleAdd() {
+      // 获取筛选框数据
+      this.getOptions();
       this.reset(); //表单清空
       this.open = true; //弹出对话框
       this.title = "新建班级";
     },
     // 删除空班级操作
-    handleDelete(row) {
-      this.currentBjbm.bjdm = row.bjdm;
+    handleDelete(bjdm) {
       // this.reset();
       this.dialogVisible = true;
+      this.bjdm = bjdm; // 待删除的空班级班级编号，先提前存起来
       this.title = "删除空班级";
     },
     // 删除空班级-确认操作
-    deleteConfirm() {
-      console.log(this.currentBjbm);
-      deleteEmptyClass(this.currentBjbm).then((response) => {
-        console.log(response);
-        this.open = false;
+    deleteConfirm(row) {
+      deleteEmptyClass("6860320005").then((response) => {
+        this.dialogVisible = false;
+        if (response.flag == true) {
+          this.$message({
+            showClose: true,
+            message: "删除成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            showClose: true,
+            message: "删除失败",
+            type: "error",
+          });
+        }
         this.getList();
-      });
-      this.dialogVisible = false;
-      // 确认得根据返回消息确定是否删除空班级成功——这里默认错误
-      this.$message({
-        showClose: true,
-        message: "删除成功",
-        type: "success",
       });
     },
     // 删除空班级-取消操作
     classCancel() {
       this.dialogVisible = false;
-      // const h = this.$createElement;
-      // this.$notify({
-      //   type: "error",
-      //   title: "错误",
-      //   customClass: "error",
-      //   message: h(
-      //     "h3",
-      //     { style: "color: #ED5234" },
-      //     "班级代码编号末尾班级目前仍有成员，请删除班级所有成员后重试"
-      //   ),
-      //   duration: 0,
-      // });
     },
 
     // /** 修改按钮操作 */
@@ -554,40 +474,26 @@ export default {
     //     this.title = "修改公告";
     //   });
     // },
-    /** 提交按钮 */
-    submitForm: function () {
-      this.$refs["form"].validate((valid) => {
-        if (valid) {
-          if (this.form.noticeId != undefined) {
-            // updateNotice(this.form).then((response) => {
-            //   this.$modal.msgSuccess("修改成功");
-            //   this.open = false;
-            //   this.getList();
-            // });
-          } else {
-            addClass(this.form).then((response) => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
-          }
+    /** 新建班级确定操作 */
+    submitForm() {
+      addClass(this.form).then((response) => {
+        // 弹出框消失
+        this.open = false;
+        if (response.errcode == "00") {
+          // 显示创建成功消息提醒
+          this.$message({
+            message: "新建班级成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "新建班级失败",
+            type: "error",
+          });
         }
+        this.getList();
       });
     },
-    // /** 删除按钮操作 */
-    // handleDelete(row) {
-    //   const noticeIds = row.noticeId || this.ids;
-    //   this.$modal
-    //     .confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项？')
-    //     .then(function () {
-    //       return delNotice(noticeIds);
-    //     })
-    //     .then(() => {
-    //       this.getList();
-    //       this.$modal.msgSuccess("删除成功");
-    //     })
-    //     .catch(() => {});
-    // },
   },
 };
 </script>

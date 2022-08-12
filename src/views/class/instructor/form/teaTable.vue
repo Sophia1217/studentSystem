@@ -19,22 +19,42 @@
       </div>
       <!-- v-loading="loading" -->
       <el-table :data="noticeList" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="65" align="center"/>
-        <el-table-column label="序号" align="center" prop="id"/>
-        <el-table-column label="班级编号" align="center" prop="classId" sortable />
-        <el-table-column label="班级名称" align="center" prop="className" sortable>
-          <el-input
-            :value="noticeList[0].className"
-            clearable
-            @keyup.enter.native="handleQuery"
-          />
-        </el-table-column>
-        <el-table-column label="培养单位" align="center" prop="college" sortable />
-        <el-table-column label="培养层次" align="center" prop="level" sortable />
-        <el-table-column label="班级人数" align="center" prop="nums" sortable />
-        <el-table-column label="创建时间" align="center" prop="beginTime" sortable />
-        <el-table-column label="更新时间" align="center" prop="updateTime" sortable />
-        <el-table-column label="操作" align="center" width="165">
+        <el-table-column label="序号" align="center" type="index" />
+        <el-table-column label="班级编号" align="center" prop="bjdm" sortable />
+        <el-table-column
+          label="班级名称"
+          align="center"
+          width="250px"
+          prop="bjmc"
+          sortable
+        />
+        <el-table-column label="培养单位" align="center" prop="pycc" sortable />
+        <el-table-column label="培养层次" align="center" prop="pycc" sortable />
+        <el-table-column
+          label="班级人数"
+          align="center"
+          prop="stuNumOfClass"
+          sortable
+        />
+        <el-table-column
+          label="创建时间"
+          align="center"
+          prop="createTime"
+          sortable
+        />
+        <el-table-column
+          label="更新时间"
+          align="center"
+          prop="updateTime"
+          sortable
+          class-name="small-padding fixed-width"
+        />
+        <el-table-column
+          label="操作"
+          align="center"
+          sortable
+          class-name="small-padding fixed-width"
+        >
           <template
             ><!-- slot-scope="scope" -->
             <div @click="operate" class="operate">
@@ -75,52 +95,19 @@ export default {
       // 总条数
       total: 100,
       // 表格数据
-      noticeList: [
-        {
-          id: 1,
-          classId: 13070025,
-          className: "计算机工程硕士2022级1班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-          record: "班级操作记录",
-        },
-        {
-          id: 2,
-          classId: 13070025,
-          className: "计算机工程硕士2022级2班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-          record: "班级操作记录",
-        },
-        {
-          id: 3,
-          classId: 13070025,
-          className: "计算机工程硕士2022级3班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-          record: "班级操作记录",
-        },
-      ],
+      noticeList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
       open: false,
       // 查询参数
       queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        noticeTitle: undefined,
-        createBy: undefined,
-        status: undefined,
+        pageNum: 1, // 默认请求第一页数据
+        pageSize: 10, // 默认一页10条数据
+        college: "", // 培养单位
+        level: "", // 培养层次
+        grade: "", // 年级
+        classId: "", // 班级编号
       },
       // 表单参数
       form: {},

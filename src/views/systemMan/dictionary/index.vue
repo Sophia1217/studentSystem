@@ -129,6 +129,7 @@
         :page.sync="queryParams.pageNum"
         :limit.sync="queryParams.pageSize"
         @pagination="handleQuery"
+        :page-sizes="[10, 20, 30, 40, 50, 100]"
       />
     </div>
     <dicDialog
@@ -203,15 +204,15 @@ export default {
       };
       queryManage(data)
         .then((res) => {
-          res.data.forEach((item) => {
+          this.noticeList = res.data;
+          this.queryParams.total = Number(res.count);
+          this.noticeList.forEach((item) => {
             (item.createTime = item.createTime.slice(
               0,
               item.createTime.indexOf("T")
             )),
               item.state == "0" ? (item.state = true) : false;
           });
-          this.noticeList = res.data;
-          this.queryParams.total = res.count;
         })
         .catch((err) => {});
     },
@@ -243,8 +244,7 @@ export default {
         state: cal.state ? "0" : "1",
         remark: cal.remark,
       };
-      updateDic(data).then((res) => {
-      });
+      updateDic(data).then((res) => {});
     },
     handleList(row) {
       this.$router.push({

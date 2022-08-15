@@ -1697,6 +1697,7 @@ export default {
     },
     // 提交
     handlUpdata() {
+      this.$set(this.detailInfo,'xh',this.$route.query.xh)
       let data = this.detailInfo
       updateRegStuInfo(data).then(res => {
         this.$message({

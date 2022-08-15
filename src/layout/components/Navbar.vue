@@ -72,7 +72,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$store.dispatch('LogOut').then(() => {
-          location.href = ' https://account.ccnu.edu.cn/cas/logout?service=http://ip:port/Cas1/';
+          location.href = 'https://account.ccnu.edu.cn/cas/login?service=' + location.protocol+'//' + location.host + '/';
         })
       }).catch(() => {});
     }

@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <el-dialog title="导出" :visible.sync="showExport" width="50%" :before-close="handleCancel">
+  <div class="exportView">
+    <el-dialog title="导出" :visible.sync="showExport" width="800px" :before-close="handleCancel">
       <div class="dialogBody">
-        <el-transfer v-model="value" :data="data" :titles="titles"></el-transfer>
+        <el-transfer class="transfer" v-model="value" :data="transferData" :titles="titles"></el-transfer>
         <div class="mt20">
           <el-radio-group v-model="radio">
             <el-radio :label="1">EXCEL表格</el-radio>
-            <el-radio :label="2">DBF文件</el-radio>
+            <!-- <el-radio :label="2">DBF文件</el-radio> -->
           </el-radio-group>
         </div>
       </div>
@@ -19,12 +19,13 @@
 </template>
 
 <script>
+import { exportQuery,exportStu } from "@/api/student/index"
 export default {
   name: 'exportView',
 
   data() {
     return {
-      data: [
+      transferData: [
         { key: 1, label: '学号' },
         { key: 2, label: '性别' },
         { key: 3, label: '年级' },
@@ -43,14 +44,24 @@ export default {
   },
 
   mounted() {
-    console.log(this.showExport)
+    this.getExportQuery()
   },
 
   methods: {
+    getExportQuery() {
+      exportQuery().then(res => {
+        console.log(res)
+        this.transferData = res.data
+      }).catch(err=>{})
+    },
     handleCancel() {
       this.$emit('handleCancel')
     },
     handleConfirm() {
+      let data = {}
+      exportStu(data).then(res => {
+        console.log(res)
+      }).catch(err=>{})
       this.$emit('handleConfirm')
     }
   },
@@ -64,5 +75,22 @@ export default {
 }
 .mt20{
   margin-top: 20px;
+}
+.exportView{
+  ::v-deep .el-transfer-panel{
+    width:280px;
+  }
+  .transfer{
+    ::v-deep .el-transfer-panel__list{
+      height: auto;
+      .el-transfer-panel__item{
+        width:96px;
+      }
+    }
+    ::v-deep .el-transfer-panel__list{
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
 }
 </style>

@@ -79,53 +79,29 @@
     </div>
 
     <!-- 班级列表 -->
-    <el-table
-      v-loading="loading"
-      :data="noticeList"
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column label="序号" align="center" width="100" type="index" />
-      <el-table-column
-        label="班级编号"
-        align="center"
-        prop="classId"
-        width="100"
-        sortable
-      />
+    <el-table :data="noticeList" @selection-change="handleSelectionChange">
+      <el-table-column label="序号" align="center" type="index" />
+      <el-table-column label="班级编号" align="center" prop="bjdm" sortable />
       <el-table-column
         label="班级名称"
         align="center"
-        prop="className"
-        width="300"
-        sortable
-      >
-      </el-table-column>
-      <el-table-column
-        label="培养单位"
-        align="center"
-        prop="college"
-        width="150"
+        width="250px"
+        prop="bjmc"
         sortable
       />
-      <el-table-column
-        label="培养层次"
-        align="center"
-        prop="level"
-        width="100"
-        sortable
-      />
+      <el-table-column label="培养单位" align="center" prop="pycc" sortable />
+      <el-table-column label="培养层次" align="center" prop="pycc" sortable />
+      <el-table-column label="年级" align="center" prop="ssnj" sortable />
       <el-table-column
         label="班级人数"
         align="center"
-        prop="nums"
-        width="100"
+        prop="stuNumOfClass"
         sortable
       />
       <el-table-column
         label="创建时间"
         align="center"
-        prop="beginTime"
-        width="100"
+        prop="createTime"
         sortable
       />
       <el-table-column
@@ -138,7 +114,7 @@
       <el-table-column
         label="操作"
         align="center"
-        prop="action"
+        sortable
         class-name="small-padding fixed-width"
       >
         <template slot-scope="scope">
@@ -271,35 +247,7 @@ export default {
       // 总条数
       total: 100,
       // 表格数据
-      noticeList: [
-        {
-          classId: 13070025,
-          className: "计算机工程硕士2022级1班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-        },
-        {
-          classId: 13070025,
-          className: "计算机工程硕士2022级1班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-        },
-        {
-          classId: 13070025,
-          className: "计算机工程硕士2022级1班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-        },
-      ],
+      noticeList: [],
       // 弹出层标题
       title: "",
       // 是否显示新建班级弹出层
@@ -308,11 +256,12 @@ export default {
       dialogVisible: false,
       // 查询参数
       queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        noticeTitle: undefined,
-        createBy: undefined,
-        status: undefined,
+        pageNum: 1, // 默认请求第一页数据
+        pageSize: 10, // 默认一页10条数据
+        college: "", // 培养单位
+        level: "", // 培养层次
+        grade: "", // 年级
+        classId: "", // 班级编号
       },
       // 表单参数
       form: {},

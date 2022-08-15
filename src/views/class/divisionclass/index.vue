@@ -75,7 +75,6 @@
         >
       </el-form-item>
     </el-form>
-
     <div class="table-content">
       <div class="title" icon="el-icon-refresh">
         <span class="title-item">班级列表</span>
@@ -83,48 +82,37 @@
       </div>
       <!-- v-loading="loading" -->
       <el-table :data="noticeList" @selection-change="handleSelectionChange">
-        <el-table-column label="序号" align="center" prop="id" />
+        <el-table-column label="序号" align="center" type="index" />
+        <el-table-column label="班级编号" align="center" prop="bjdm" sortable />
         <el-table-column
-          label="班级编号"
+          label="班级名称"
           align="center"
-          prop="classId"
-          sortable
-        />
-        <el-table-column
-          label="班级姓名"
-          align="center"
-          prop="className"
-          width="320"
+          width="250px"
+          prop="bjmc"
           sortable
         >
-          <el-input
-            :value="noticeList[0].className"
-            clearable
-            @keyup.enter.native="handleQuery"
-          />
+          <template slot-scope="{ row }">
+            <el-input
+              v-model="row.bjmc"
+              clearable
+              width="200px"
+              @keyup.enter.native="alterClassName(row)"
+            />
+          </template>
         </el-table-column>
-        <el-table-column
-          label="学院"
-          align="center"
-          prop="college"
-          sortable
-        />
-        <el-table-column
-          label="培养层次"
-          align="center"
-          prop="level"
-          sortable
-        />
+        <el-table-column label="培养单位" align="center" prop="pycc" sortable />
+        <el-table-column label="培养层次" align="center" prop="pycc" sortable />
+        <el-table-column label="年级" align="center" prop="ssnj" sortable />
         <el-table-column
           label="班级人数"
           align="center"
-          prop="nums"
+          prop="stuNumOfClass"
           sortable
         />
         <el-table-column
           label="创建时间"
           align="center"
-          prop="beginTime"
+          prop="createTime"
           sortable
         />
         <el-table-column
@@ -132,51 +120,22 @@
           align="center"
           prop="updateTime"
           sortable
+          class-name="small-padding fixed-width"
         />
-        <el-table-column label="操作" align="center">
-          <template
-            ><!-- slot-scope="scope" -->
+        <el-table-column
+          label="操作"
+          align="center"
+          sortable
+          class-name="small-padding fixed-width"
+        >
+          <template slot-scope="scope">
             <div @click="operate" class="operate">
               <span class="operateSpan">分班管理</span>
             </div>
           </template>
         </el-table-column>
-        <!-- <el-table-column
-        label="公告标题"
-        align="center"
-        prop="noticeTitle"
-        :show-overflow-tooltip="true"
-      /> -->
-        <!-- <el-table-column label="公告类型" align="center" prop="noticeType" width="100">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_notice_type" :value="scope.row.noticeType"/>
-        </template>
-      </el-table-column> -->
-        <!-- <el-table-column label="创建者" align="center" prop="createBy" width="100" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="100">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column> -->
-        <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:notice:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:notice:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column> -->
       </el-table>
+
       <pagination
         id="pagenation"
         v-show="total > 0"
@@ -186,54 +145,6 @@
         @pagination="getList"
       />
     </div>
-
-    <!-- 添加或修改公告对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="780px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="公告标题" prop="noticeTitle">
-              <el-input
-                v-model="form.noticeTitle"
-                placeholder="请输入公告标题"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="公告类型" prop="noticeType">
-              <el-select v-model="form.noticeType" placeholder="请选择公告类型">
-                <!-- <el-option
-                  v-for="dict in dict.type.sys_notice_type"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option> -->
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="状态">
-              <el-radio-group v-model="form.status">
-                <!-- <el-radio
-                  v-for="dict in dict.type.sys_notice_status"
-                  :key="dict.value"
-                  :label="dict.value"
-                >{{dict.label}}</el-radio> -->
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="内容">
-              <editor v-model="form.noticeContent" :min-height="192" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -267,52 +178,19 @@ export default {
       // 总条数
       total: 100,
       // 表格数据
-      noticeList: [
-        {
-          id: 1,
-          classId: 13070025,
-          className: "计算机工程硕士2022级1班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-          record: "班级操作记录",
-        },
-        {
-          id: 2,
-          classId: 13070025,
-          className: "计算机工程硕士2022级2班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-          record: "班级操作记录",
-        },
-        {
-          id: 3,
-          classId: 13070025,
-          className: "计算机工程硕士2022级3班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-          record: "班级操作记录",
-        },
-      ],
+      noticeList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
       open: false,
       // 查询参数
       queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        noticeTitle: undefined,
-        createBy: undefined,
-        status: undefined,
+        pageNum: 1, // 默认请求第一页数据
+        pageSize: 10, // 默认一页10条数据
+        college: "", // 培养单位
+        level: "", // 培养层次
+        grade: "", // 年级
+        classId: "", // 班级编号
       },
       // 表单参数
       form: {},

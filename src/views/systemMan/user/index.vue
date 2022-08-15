@@ -51,9 +51,7 @@
       <div class="headerTop">
         <div class="headerLeft"><span class="title">用户列表</span> <i class="Updataicon"></i></div>
         <div class="headerRight">
-          <div class="btns borderBlue"><i class="icon blueIcon"></i><span class="title">导入用户</span></div>
-          <div class="btns borderOrange"><i class="icon orangeIcon"></i><span class="title">数据权限</span></div>
-          <el-dropdown split-button type="primary" @command="handleCommand">
+          <el-dropdown split-button @command="handleCommand">
             <span class="el-dropdown-link"> 用户状态控制 </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="open">批量启用</el-dropdown-item>
@@ -71,11 +69,13 @@
           <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
           <el-table-column prop="dwmc" label="单位" sortable> </el-table-column>
           <el-table-column prop="roleNames" label="角色" sortable> </el-table-column>
+          <el-table-column prop="roleState" label="用户状态" sortable>
+            <template slot-scope="scope">
+              <el-switch v-model="scope.row.roleState" active-color="#23AD6F" inactive-color="#E0E0E0"></el-switch>
+            </template>
+          </el-table-column>
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="handleOpenEdit(scope.row, scope.$index)">
-                <i class="scopeIncon handledie"></i> <span class="handleName">编辑</span>
-              </el-button>
               <el-button type="text" size="small" @click="handlePermiss(scope.row)">
                 <i class="scopeIncon handleEdit"></i> <span class="handleName">数据权限</span>
               </el-button>
@@ -91,50 +91,12 @@
         @pagination="handleSearch"
       />
     </div>
-
-    <el-dialog title="编辑" :visible.sync="dialogFormVisible">
-      <div>
-        <el-row :gutter="20">
-          <el-col :span="4" :offset="3">用 户 名</el-col>
-          <el-col :span="10">
-            <el-input v-model="editForm.xm" :disabled="true" size="small" placeholder="请输入"></el-input>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="4" :offset="3">学 工 号</el-col>
-          <el-col :span="10">
-            <el-input v-model="editForm.userId" :disabled="true" size="small" placeholder="请输入"></el-input>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="4" :offset="3" class="greentColor">当前角色：</el-col>
-          <el-col :span="10">
-            <div class="greentColor">{{ editForm.roleNames }}</div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="4" :offset="3">用户角色:</el-col>
-          <el-col :span="10">
-            <div class="checkboxItem">
-              <el-checkbox-group v-model="editForm.checkList">
-                <el-checkbox v-for="item in checkboxWrap" :label="item.roleId" :key="item.roleId">{{ item.roleName }}
-                </el-checkbox>
-              </el-checkbox-group>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleCommitDialog">确 定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import CheckboxCom from '../../components/checkboxCom'
-import { queryUserPageList, updateUserRole } from "@/api/systemMan/user"
+import { queryUserPageList } from "@/api/systemMan/user"
 import { queryRoleList } from "@/api/systemMan/role"
 export default {
   name: 'user',
@@ -181,13 +143,6 @@ export default {
         isIndeterminate: true
       },
       tableData: [],
-      dialogFormVisible: false,
-      editForm: {
-        xm: '',
-        userId: '',
-        roleNames: '',
-        checkList: []
-      },
       multipleSelection: [],
       checkboxWrap: [],
       queryParams: {
@@ -300,37 +255,6 @@ export default {
           xm: row.xm,
         }
       })
-    },
-    // 打开编辑
-    handleOpenEdit(row, index) {
-      let checkList = row.roleIds?row.roleIds.split(','):[]
-      this.editForm = row
-      this.$set(row, "checkList", checkList)
-      console.log(this.editForm)
-      this.getqueryRoleList()
-      this.dialogFormVisible = true
-    },
-    // 编辑确认
-    handleCommitDialog() {
-      let data = {
-        "userId": this.editForm.userId, // 当行id
-        "oldRoleIds": this.editForm.roleIds,
-        "newRoleIds": this.editForm.checkList,
-        "operateRoleId": '01', //操作人，登录人
-      }
-      updateUserRole(data).then(res => {
-        if (res.errcode == '00') {
-          this.dialogFormVisible = false
-          this.$message({
-            message: res.errmsg,
-            type: 'success'
-          });
-          this.handleSearch()
-        } else {
-          this.$message(res.errmsg)
-        }
-        console.log(res)
-      }).catch(err => { })
     }
   },
 };

@@ -108,7 +108,6 @@ export default {
         for (let x = 0; x < this.formName.roleId.length; x++) {
           this.roleData.push({
             roleId: this.formName.roleId[x],
-            // cascaderOptions: [{ id: 1, label: '计算机学院', visitId: 0 }, { id: 2, label: '计算机学院2', visitId: 0 }]
             cascaderOptions: data
           })
         }
@@ -122,8 +121,6 @@ export default {
     // 获取学院数据
     getQueryDataAuth() {
       let data = { userId: "2005690002", roleId: "01" };
-      // let newData = [{ dwdm: 1, dwmc: '计算机学院', visitId: 0 }, { dwdm: 2, dwmc: '计算机学院2', visitId: 0 }]
-      // this.initData(newData)
       queryDataAuth(data)
         .then((res) => {
           let data = res.data.rows;
@@ -138,59 +135,61 @@ export default {
     },
 
     //数据范围树添加
-    async append(data, index) {
+    append(data, index) {
+      // console.log(data)
       if (data.visitId == 0) {
-        await this.handleClassList(data.dwdm)
-        if (!data.children) {
-          this.$set(data, "children", []);
-        }
-        if (this.classListOps.length > 0) {
-          console.log(this.classListOps,'this.classListOps')
-          let newChildren = []
-          for (const item of this.classListOps) {
-            newChildren.push({...item, id: 'c-'+index+'-0-'+item.bjdm})
-          }
-          console.log(newChildren,'newChildren')
-          data.children = newChildren;
-        }
-        
+        this.handleClassList(data.dwdm,data, index)
       } else if (data.visitId == 1) {
-        this.handleStuList(data.xh)
-        if (!data.children) {
-          this.$set(data, "children", []);
-        }
-        let newChildren = []
-        for (const item of this.stuListOps) {
-          newChildren.push({...item, id: 's-'+index+'-1-'+item.xh})
-        }
-        data.children = newChildren;
+        this.handleStuList(data.bjdm,data, index)
+        
       }
     },
 
     // 获取班级数据
-    handleClassList(value) {
+    handleClassList(value,nodeData,index) {
       let data = { ssdwdm: value };
       queryClassList(data)
         .then((res) => {
-          let rowData = res.rows;
+          let rowData = res.data.rows;
           for (let x = 0; x < rowData.length; x++) {
             rowData[x].label = rowData[x].bjmc;
           }
           this.classListOps = rowData
+          // 下面是树添加子节点
+          if (!nodeData.children) {
+            this.$set(nodeData, "children", []);
+          }
+          // console.log(this.classListOps,'this.classListOps')
+          if (this.classListOps.length > 0) {
+            let newChildren = []
+            for (const item of this.classListOps) {
+              newChildren.push({...item, id: 'c-'+index+'-0-'+item.bjdm})
+            }
+            nodeData.children = newChildren;
+          }
         })
         .catch((err) => { });
     },
     // 获取学生数据
-    handleStuList(value) {
+    handleStuList(value,nodeData,index) {
       let data = { bjdm: value };
       queryStuList(data)
         .then((res) => {
           let data = res.Data;
           for (let x = 0; x < data.length; x++) {
-            // data[x].id = data[x].xh;
             data[x].label = data[x].xm;
           }
           this.stuListOps = data;
+
+          // 下面是树添加子节点
+          if (!nodeData.children) {
+            this.$set(nodeData, "children", []);
+          }
+          let newChildren = []
+          for (const item of this.stuListOps) {
+            newChildren.push({...item, id: 's-'+index+'-1-'+item.xh})
+          }
+          nodeData.children = newChildren;
         })
         .catch((err) => { });
     },
@@ -207,8 +206,15 @@ export default {
     // 更新数据权限
     handleDataAuth() {
       console.log(this.roleData)
+      let data = {
+        userId: this.formName.userId,
+        roleId: "01",
+        dataList: [
+          { orginazationCode: 1234, classNo: "", stuId: "" },
+          { orginazationCode: 1235, classNo: "", stuId: "" }
+        ]
+      }
       return;
-      let data = []
       updateDataAuth(data)
         .then((res) => {
           console.log(res);
@@ -231,7 +237,7 @@ export default {
     margin-top: 20px;
     padding: 20px;
     display: flex;
-
+    align-items: center;
     .roleStyle {
       display: flex;
       flex-direction: row;
@@ -248,7 +254,7 @@ export default {
       }
     }
     .deleIcon{
-      margin-left: 20px;
+      margin-left: 30px;
       cursor:pointer;
       i{
         display: inline-block;

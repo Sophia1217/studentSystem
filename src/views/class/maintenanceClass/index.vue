@@ -21,10 +21,10 @@
       <el-form-item label="培养层次" prop="pycc">
         <el-select v-model="queryParams.pycc" placeholder="未选择" clearable>
           <el-option
-            v-for="(value, key, index) in levelOptions"
+            v-for="(item, index) in levelOptions"
             :key="index"
-            :label="value"
-            :value="key"
+            :label="item.mc"
+            :value="item.dm"
           />
         </el-select>
       </el-form-item>
@@ -187,12 +187,13 @@
             <el-form-item label="培养层次" prop="pycc">
               <el-select v-model="form.pycc" placeholder="请选择">
                 <el-option
-                  v-for="(value, key, index) in levelOptions"
+                  v-for="(item, index) in levelOptions"
                   :key="index"
-                  :label="value"
-                  :value="key"
-                ></el-option
-              ></el-select>
+                  :label="item.mc"
+                  :value="item.dm"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -273,7 +274,7 @@ export default {
       // 显示搜索条件
       showSearch: true,
       // 总条数
-      total: 100,
+      total: 0,
       bjdm: "",
       // 表格数据
       /* 
@@ -291,7 +292,7 @@ export default {
       noticeList: [],
       // 筛选框数据
       collegeOptions: [],
-      levelOptions: {},
+      levelOptions: [],
       gradeOptions: [],
       // 弹出层标题
       title: "",
@@ -335,7 +336,7 @@ export default {
   // 组件创建完请求数据
   mounted() {
     // this.getList({ bjdm: this.queryParams.classId });  // { pydw, pycc, ssnj, bjdm: this.queryParams.classId, pageNum-Y, pageSize-Y}
-    this.getList();
+    this.getList(this.queryParams);
     this.getOptions();
   },
   methods: {
@@ -346,28 +347,41 @@ export default {
     //   this.$router.push("/class/record");
     // },
     /** 根据培养单位college、培养层次level、年级grade、班级编号classId、查询班级列表、页码pageNum、每页条数pageSize*/
-    getList(queryParams = {}) {
+    getList(queryParams) {
       // this.loading = true;
+      // debugger;
+      Object.assign(queryParams, this.queryParams);
       classList(queryParams).then((response) => {
+        // debugger;
         // 获取班级列表数据
-        this.noticeList = response.data.rows; // 根据状态码接收数据
-        //  this.total = response.total;
-        //  this.loading = false;
+        if (response.errcode == "00") {
+          this.noticeList = response.data.rows; // 根据状态码接收数据
+          this.total = response.data.total; //总条数
+          //  this.loading = false;
+        }
       });
     },
     getOptions() {
+      this.collegeOptions = [];
+      this.levelOptions = [];
+      this.gradeOptions = [];
       getCollege().then((response) => {
         // 获取培养单位列表数据
-        this.collegeOptions = response.data.rows;
-        //  this.loading = false;
+        if (response.errcode == "00") {
+          this.collegeOptions = response.data.rows;
+        }
       });
       getLevel().then((response) => {
         // 获取培养层次列表数据
-        this.levelOptions = response.rows;
+        if (response.errcode == "00") {
+          this.levelOptions = response.data.rows;
+        }
       });
       getGrade().then((response) => {
         // 获取年级列表数据
-        this.gradeOptions = response.rows;
+        if (response.errcode == "00") {
+          this.gradeOptions = response.data.rows;
+        }
       });
     },
     // 修改班级名称回调
@@ -409,14 +423,18 @@ export default {
       };
       this.resetForm("form");
     },
+    // 筛选框表单重置
+    resetForm() {
+      this.queryParams = {};
+    },
     // /** 搜索按钮操作 */
     handleQuery() {
       this.getList(this.queryParams);
     },
     // /** 重置按钮操作 */
     resetQuery() {
-      // this.resetForm("queryForm");
-      // this.handleQuery();
+      this.resetForm("queryForm");
+      this.handleQuery();
     },
     // // 多选框选中数据
     handleSelectionChange(selection) {
@@ -426,9 +444,9 @@ export default {
     },
     /** 新增班级按钮操作 */
     handleAdd() {
+      this.reset(); //表单清空
       // 获取筛选框数据
       this.getOptions();
-      this.reset(); //表单清空
       this.open = true; //弹出对话框
       this.title = "新建班级";
     },
@@ -441,7 +459,7 @@ export default {
     },
     // 删除空班级-确认操作
     deleteConfirm(row) {
-      deleteEmptyClass("6860320005").then((response) => {
+      deleteEmptyClass({ bjdm: this.bjdm }).then((response) => {
         this.dialogVisible = false;
         if (response.flag == true) {
           this.$message({
@@ -452,7 +470,7 @@ export default {
         } else {
           this.$message({
             showClose: true,
-            message: "删除失败",
+            message: "班级代码编号末尾班级目前仍有成员，请调出所有成员后重试",
             type: "error",
           });
         }

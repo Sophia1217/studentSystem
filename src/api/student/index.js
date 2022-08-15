@@ -67,8 +67,8 @@ export function exportQuery(data) {
 export function exportStu(data) {
   return request({
     url: '/regStuInfo/export',
-    method: 'get',
-    params: data
+    method: 'post',
+    data: data
   })
 }
 

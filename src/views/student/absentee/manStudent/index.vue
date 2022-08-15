@@ -124,7 +124,8 @@
         </el-table>
       </div>
     </div>
-    <exportView v-if="showExport" :showExport="showExport" @handleCancel="handleCancel" @handleConfirm="handleConfirm"></exportView>
+    <exportView v-if="showExport" :showExport="showExport" :multipleSelection="multipleSelection"
+      @handleCancel="handleCancel" @handleConfirm="handleConfirm"></exportView>
     <pagination
       v-show="queryParams.total>0"
       :total="queryParams.total"
@@ -559,11 +560,16 @@ export default {
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      console.log(this.multipleSelection)
+      // console.log(this.multipleSelection)
     },
     // 打开导出弹窗
     handleExport() {
-      this.showExport = true
+      // console.log(this.multipleSelection)
+      if (this.multipleSelection.length > 0) {
+        this.showExport = true
+      } else {
+        this.$message('请选择学生信息列表')
+      }
     },
     // 导出取消
     handleCancel() {

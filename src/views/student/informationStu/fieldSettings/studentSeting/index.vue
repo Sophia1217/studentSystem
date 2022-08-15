@@ -215,6 +215,7 @@
 </template>
 
 <script>
+import { loadStuColumns } from '@/api/student/fieldSettings' 
 export default {
   name: 'studentSeting',
 
@@ -233,7 +234,7 @@ export default {
   created() {
   },
   mounted() {
-    
+    this.getloadStuColumns()
   },
 
   methods: {
@@ -241,32 +242,11 @@ export default {
     handleList(index) {
       this.current = index
     },
-    // 打开退回弹窗
-    handleBack() {
-      this.dialogVisible = true
-      this.textarea = ''
-    },
-    // 退回取消
-    handleClose() {
-      this.dialogVisible = false
-      this.textarea = ''
-    },
-    // 退回确认
-    handleConfirm() {
-      this.dialogVisible = false
-      this.textarea = ''
-    },
-    // 通过确定
-    handleConThrou() {
-      this.throughDialogV = false
-      this.$router.push({
-        path:'/student/informationStu/auditStu'
-      })
-    },
-    // 通过弹窗
-    handleThrough() {
-      this.throughDialogV = true
-      
+    getloadStuColumns() {
+      let data = {}
+      loadStuColumns(data).then(res => {
+        console.log(res)
+      }).catch(err=>{})
     }
   },
 };

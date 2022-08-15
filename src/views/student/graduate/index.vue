@@ -10,10 +10,10 @@
             placeholder="查询条件"
             @change="clear"
           >
-            <el-option label="学号" value="XH"></el-option>
-            <el-option label="姓名" value="XM"></el-option>
-            <el-option label="身份证号" value="SFZJH"></el-option>
-            <el-option label="手机号" value="YDDH"></el-option>
+            <el-option label="学号" value="xh"></el-option>
+            <el-option label="姓名" value="xm"></el-option>
+            <el-option label="身份证号" value="sfzjh"></el-option>
+            <el-option label="手机号" value="yddh"></el-option>
           </el-select>
           <el-button
             slot="append"
@@ -193,9 +193,9 @@
           <el-table-column prop="pyccm" label="培养层次" sortable>
           </el-table-column>
           <el-table-column prop="xz" label="学制" sortable> </el-table-column>
-          <el-table-column prop="address" label="学习形式" sortable>
+          <el-table-column prop="xjxs" label="学习形式" sortable>
           </el-table-column>
-          <el-table-column prop="address" label="无学籍原因" sortable>
+          <el-table-column prop="uxjyy" label="无学籍原因" sortable>
           </el-table-column>
           <el-table-column prop="xjzt" label="学籍状态" sortable>
           </el-table-column>
@@ -569,10 +569,10 @@ export default {
     // 查询
     handleSearch() {
       let data = {
-        XH: "",
-        XM: "",
-        SFZJH: "",
-        YDDH: "",
+        xh: this.select == "xh" ? this.searchVal : "",
+        xm: this.select == "xm" ? this.searchVal : "",
+        SFZJH: this.select == "sfzjh" ? this.searchVal : "",
+        YDDH: this.select == "yddh" ? this.searchVal : "",
         PYCCM: "",
         XZ: "",
         XJZT: "",
@@ -702,20 +702,21 @@ export default {
       this.showExport = false;
     },
     hadleDetail(row, flag) {
-      let schooling = '' // 3 4 5 是本科
-      if (row.pyccm == 1 || row.pyccm == 2) { // 1 2 是研究生
-        schooling = 2
+      let schooling = ""; // 3 4 5 是本科
+      if (row.pyccm == 1 || row.pyccm == 2) {
+        // 1 2 是研究生
+        schooling = 2;
       } else {
-        schooling = 1
+        schooling = 1;
       }
       this.$router.push({
-        path: '/student/studetails',
+        path: "/student/studetails",
         query: {
           xh: row.xh,
-          show: flag,  // 1是详情，2是编辑
-          schooling: schooling  
-        }
-      })
+          show: flag, // 1是详情，2是编辑
+          schooling: schooling,
+        },
+      });
       // this.$router.push({
       //   path: "/student/graduateDetail",
       //   query: {

@@ -72,12 +72,7 @@
           prop="roleName"
           sortable
         />
-        <el-table-column
-          label="权限描述"
-          align="center"
-          prop="className"
-          sortable
-        />
+        <el-table-column label="权限描述" align="center" prop="rem" sortable />
         <el-table-column
           label="创建时间"
           align="center"
@@ -108,6 +103,14 @@
           </template>
         </el-table-column>
       </el-table>
+      <pagination
+        v-show="queryParams.total > 0"
+        :total="queryParams.total"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="handleQuery"
+        :page-sizes="[10, 20, 30, 40, 50, 100]"
+      />
     </div>
   </div>
 </template>
@@ -124,6 +127,9 @@ export default {
         roleName: "",
         roleState: "",
         roleDate: "",
+        total: 0,
+        pageNum: 1,
+        pageSize: 10,
       },
       roleNameOps: [],
       noticeList: [],
@@ -142,6 +148,7 @@ export default {
       queryRoleList(data)
         .then((res) => {
           this.noticeList = res.data.rows;
+          this.queryParams.total = res.data.totalCount;
         })
         .catch((err) => {});
     },
@@ -151,6 +158,7 @@ export default {
     },
     /** 新增 */
     handleAdd(index, msg) {
+      console.log("asdasdsa");
       if (index === 1) {
         this.query = { isEdit: index };
       } else {

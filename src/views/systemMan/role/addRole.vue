@@ -17,9 +17,9 @@
             placeholder="请输入角色名称"
           ></el-input>
         </el-form-item>
-        <el-form-item label="权限描述" prop="roleDic">
+        <el-form-item label="权限描述" prop="roleRem">
           <el-input
-            v-model="queryParams.roleDic"
+            v-model="queryParams.roleRem"
             size="small"
             :disabled="isEdit == 2"
             placeholder="请输入权限描述"
@@ -73,7 +73,7 @@ export default {
       // 查询参数
       queryParams: {
         roleState: "",
-        roleDic: "",
+        roleRem: "",
       },
       treeData: [],
       defaultProps: {
@@ -86,10 +86,15 @@ export default {
     };
   },
 
+  created() {
+    this.handleTree();
+  },
   activated() {
+    console.log("this.$route.query", this.$route.query);
     this.isEdit = this.$route.query.isEdit;
     this.roleId1 = this.$route.query?.UpId;
     this.roleName1 = this.$route.query?.roleNameEdit;
+    debugger;
     this.handleTree();
   },
 
@@ -117,6 +122,7 @@ export default {
           menuList: this.savaData,
           roleName: this.roleName,
           loginRoleId: "01",
+          roleRem: this.queryParams.roleRem,
         };
         savaTreeList(data)
           .then(() => {
@@ -131,6 +137,7 @@ export default {
           menuList: this.savaData,
           roleName: this.isEdit === "1" ? this.roleName : this.roleName1,
           roleId: this.roleId1,
+          roleRem: this.queryParams.roleRem,
         };
         savaEditList(data)
           .then(() => {

@@ -71,3 +71,68 @@ export function exportStu(data) {
     params: data
   })
 }
+
+//  强制修改学生名单列表分页查询
+export function forceList(data) {
+  console.log("datadasd",data);
+  return request({
+    url: '/forceUpdate/getStuPageList',
+    method: 'post',
+    data: data
+  })
+}
+
+//学籍异动列表
+export function getStuChangeInfoPageList(data) {
+  return request({
+    url: '/StuStatusChange/getStuStatusChangePageList',
+    method: 'post',
+    data: data
+  })
+} 
+
+//添加强制修改学生数据
+export function forceAdd(data) {
+  return request({
+    url: '/forceUpdate/addManageRegStuInfo',
+    method: 'post',
+    data: data
+  })
+}
+
+//强制修改名单列表分页查询
+export function forceUpdateList(data) {
+  return request({
+    url: '/forceUpdate/getForceInfoPageList',
+    method: 'post',
+    data: data
+  })
+}
+
+//删除修改名单强制学生
+export function DelForceStu(data) {
+  return request({
+    url: '/forceUpdate/deleteForceInfoPageList',
+    method: 'post',
+    data: data
+  })
+}
+
+//待处理分页
+export function FlowPageList(data) {
+  return request({
+    url: '/StuInfoFlow/stuInfoFlowPageList',
+    method: 'post',
+    data: data
+  })
+}
+
+
+//已处理分页
+export function completedPageList(data) {
+  return request({
+    url: '/StuInfoFlow/stuInfoFlowCompletedPageList',
+    method: 'post',
+    data: data
+  })
+}

@@ -8,20 +8,16 @@
       v-show="showSearch"
       label-width="68px"
     >
-      <el-form-item label="学工号" prop="noticeTitle">
+      <el-form-item label="学工号" prop="xgh">
         <el-input
-          v-model="queryParams.noticeTitle"
-          placeholder="请输入"
+          v-model="queryParams.xgh"
+          placeholder="请输入学工号"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="工作单位" prop="noticeType">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="计算机学院"
-          clearable
-        >
+      <el-form-item label="工作单位" prop="xy">
+        <el-select v-model="queryParams.xy" placeholder="未选择" clearable>
         </el-select>
       </el-form-item>
       <div style="float: right">
@@ -44,7 +40,8 @@
     </el-form>
     <div>
       <h3 class="title-item">
-        22电子信息1班<span class="iconfont repeat_icon">&#xe7b1; </span>
+        {{ $route.query.bjmc
+        }}<span class="iconfont repeat_icon">&#xe7b1; </span>
       </h3>
       <el-row :gutter="10" class="mb8" style="float: right; margin-top: 15px">
         <!-- <el-col :span="1.5" style="float: left"> 班级列表 </el-col> -->
@@ -74,21 +71,21 @@
     <el-table
       v-loading="loading"
       :data="noticeList"
-      @selection-change="handleSelectionChange"
+      @selection-change="distributeClassConfirm"
     >
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="序号" align="center" width="100" type="index" />
       <el-table-column
         label="学工号"
         align="center"
-        prop="classId"
+        prop="gh"
         width="100"
         sortable
       />
       <el-table-column
         label="姓名"
         align="center"
-        prop="name"
+        prop="xm"
         width="300"
         sortable
       >
@@ -96,7 +93,7 @@
       <el-table-column
         label="性别"
         align="center"
-        prop="sex"
+        prop="xb"
         width="300"
         sortable
       >
@@ -104,14 +101,14 @@
       <el-table-column
         label="工作单位"
         align="center"
-        prop="department"
+        prop="dwmc"
         width="150"
         sortable
       />
       <el-table-column
         label="已任职班级数量"
         align="center"
-        prop="nums"
+        prop="sl"
         width="150"
         sortable
       />
@@ -161,14 +158,16 @@
     <!-- :before-close="handleClose" -->
     <el-dialog title="分配班级" :visible.sync="teacherClass" width="30%">
       <span
-        >确认将【78788(学工号)】【张曼丽】任命为【22电子信息1班】班主任？</span
+        >确认将【{{ show.gh }}】【{{ show.xm }}】任命为【{{
+          $route.query.bjmc
+        }}】班主任？</span
       >
       <span slot="footer" class="dialog-footer">
         <el-button @click="teacherClass = false">取 消</el-button>
         <!-- distributeClassConfirm(row) -->
         <el-button
           type="primary"
-          @click="distributeClassConfirm(row)"
+          @click="distributeClassConfirm()"
           class="confirm"
           >确 定</el-button
         >
@@ -223,6 +222,7 @@
 <script>
 import "@/assets/fonts/person/iconfont.css";
 import { Message } from "element-ui";
+import { getHeaderTeacher, assignTeacher } from "@/api/class/headerTeacher";
 export default {
   name: "classTeacher",
   data() {
@@ -238,31 +238,11 @@ export default {
       // 显示搜索条件
       showSearch: true,
       // 总条数
-      total: 100,
-      // 表格数据
-      noticeList: [
-        {
-          classId: 13070025,
-          name: "张三",
-          sex: "男",
-          department: "计算机工程学院",
-          nums: 2,
-        },
-        {
-          classId: 13070025,
-          name: "张三",
-          sex: "男",
-          department: "计算机工程学院",
-          nums: 2,
-        },
-        {
-          classId: 13070025,
-          name: "张三",
-          sex: "男",
-          department: "计算机工程学院",
-          nums: 2,
-        },
-      ],
+      total: 0,
+      // 是否点击批量选择按钮
+      some: false,
+      // 班主任列表数据
+      noticeList: [],
       // 弹出层标题
       title: "",
       // 分配班级弹出层
@@ -275,12 +255,13 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        noticeTitle: undefined,
-        createBy: undefined,
-        status: undefined,
+        xgh: "", // 学工号
+        xy: "", // 学院代码
       },
-      // 表单参数
-      form: {},
+      // 要展示的一个班主任的信息
+      show: {},
+      // 分配多个班主任：批量的班主任学工号列表
+      form: [],
       // 表单校验
       rules: {
         noticeTitle: [
@@ -292,10 +273,19 @@ export default {
       },
     };
   },
-  created() {
-    // this.getList();
+  mounted() {
+    this.getTeacherList(this.queryParams);
   },
   methods: {
+    // 获取班主任列表
+    getTeacherList(queryParams) {
+      Object.assign(queryParams, this.queryParams);
+      getHeaderTeacher(queryParams).then((response) => {
+        // 获取班级列表数据
+        this.noticeList = response.items; // 根据状态码接收数据
+        this.total = response.total; //总条数
+      });
+    },
     // 新建班级-取消按钮
     cancel() {
       this.open = false;
@@ -315,18 +305,34 @@ export default {
     // 班级对班主任一对一分配（点击分配班级时根据row获取信息）、一对多分配（点击批量分配时根据list判断列表中有几个勾选）
     allocateClass(row) {
       this.teacherClass = true;
+      this.show = row;
     },
     // 班主任对班级一对一取消分配班级
     allocateNone(row) {
       this.cancelAllocate = true;
     },
     // 分配班级-确认操作
-    distributeClassConfirm(row) {
+    distributeClassConfirm(teacherList) {
       this.teacherClass = false;
-      this.$message({
-        message: "分配班级成功",
-        type: "success",
+      // 整理参数
+      const q = {};
+      q.bjdm = this.$route.query.bjdm;
+      q.newTeacherList = [];
+      teacherList.forEach((item, index) => {
+        q.newTeacherList.push(item.gh);
       });
+      q.rmrgh = "2005690002";
+      // q.rmsj = "";
+      // 判断是否点击批量分配按钮
+      if (this.some == true) {
+        assignTeacher(q).then((response) => {
+          console.log(response);
+        });
+      }
+      // this.$message({
+      //   message: "分配班级成功",
+      //   type: "success",
+      // });
     },
     // 取消分配-确认操作
     cancelAllocateConfirm() {
@@ -347,6 +353,7 @@ export default {
     distributeSomeClass() {
       // 拿到勾选的那几个班主任信息，后弹出分配班级弹出框
       this.teacherClass = true;
+      this.some = true;
     },
     // 批量取消分配班级
     cancelDistributeSomeClass() {
@@ -373,27 +380,7 @@ export default {
         }
       });
     },
-    // /** 删除按钮操作 */
-    // handleDelete(row) {
-    //   const noticeIds = row.noticeId || this.ids;
-    //   this.$modal
-    //     .confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项？')
-    //     .then(function () {
-    //       return delNotice(noticeIds);
-    //     })
-    //     .then(() => {
-    //       this.getList();
-    //       this.$modal.msgSuccess("删除成功");
-    //     })
-    //     .catch(() => {});
-    // },
   },
-  //取消分配-确定按钮
-  // qd() {
-  //   console.log("1");
-  //   this.cancelAllocate = false;
-  //   // this.doublecheck = true;
-  // },
 };
 </script>
 
@@ -472,7 +459,6 @@ export default {
     } */
 .title-item {
   display: inline-block;
-  width: 200px;
   height: 28px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;

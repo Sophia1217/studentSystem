@@ -174,23 +174,18 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="date" label="学号" sortable> </el-table-column>
-          <el-table-column prop="name" label="姓名" sortable> </el-table-column>
-          <el-table-column prop="address" label="政治面貌" sortable>
+          <el-table-column prop="xh" label="学号" sortable> </el-table-column>
+          <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
+          <el-table-column prop="zzmmm" label="政治面貌" sortable>
           </el-table-column>
-          <el-table-column prop="address" label="民族" sortable>
+          <el-table-column prop="mzm" label="民族" sortable> </el-table-column>
+          <el-table-column prop="dwh" label="学院" sortable> </el-table-column>
+          <el-table-column prop="zydm" label="专业" sortable> </el-table-column>
+          <el-table-column prop="nj" label="年级" sortable> </el-table-column>
+          <el-table-column prop="pyccm" label="培养层次" sortable>
           </el-table-column>
-          <el-table-column prop="address" label="学院" sortable>
-          </el-table-column>
-          <el-table-column prop="address" label="专业" sortable>
-          </el-table-column>
-          <el-table-column prop="address" label="年级" sortable>
-          </el-table-column>
-          <el-table-column prop="address" label="培养层次" sortable>
-          </el-table-column>
-          <el-table-column prop="address" label="学制" sortable>
-          </el-table-column>
-          <el-table-column prop="address" label="学籍状态" sortable>
+          <el-table-column prop="xz" label="学制" sortable> </el-table-column>
+          <el-table-column prop="xjzt" label="学籍状态" sortable>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
@@ -205,6 +200,13 @@
             </template>
           </el-table-column>
         </el-table>
+        <pagination
+          v-show="queryParams.total > 0"
+          :total="queryParams.total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="handleSearch"
+        />
       </div>
       <div class="noData" v-else>
         <img
@@ -296,7 +298,7 @@ export default {
         ],
         isIndeterminate: true,
       },
-      tableData: [{ date: 1 }],
+      tableData: [],
       multipleSelection: [],
       showExport: false,
     };
@@ -311,7 +313,6 @@ export default {
     getSpread() {
       getManageRegStuInfoSearchSpread()
         .then((res) => {
-          console.log(res);
           this.manageRegOps = res.data.dwhbj;
         })
         .catch((err) => {});
@@ -323,23 +324,22 @@ export default {
         xm: this.select == "xm" ? this.searchVal : "",
         sfzjh: this.select == "sfzjh" ? this.searchVal : "",
         yddh: this.select == "yddh" ? this.searchVal : "",
-        pyccm: "123",
-        xz: "13",
-        xjzt: "13",
-        zzmmm: "123",
-        mzm: "123",
-        bjm: "123",
-        dwh: "123",
-        zydm: "123",
+        pyccm: [],
+        xz: [],
+        xjzt: [],
+        zzmmm: [],
+        mzm: [],
+        bjm: [],
+        dwh: [],
+        zydm: [],
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         limitSql: "",
       };
-      console.log("data", data);
       forceList(data)
         .then((res) => {
-          // this.tableData = res.data.data;
-          // this.queryParams.total = res.data.total;
+          this.tableData = res.data;
+          this.queryParams.total = res.total;
         })
         .catch((err) => {});
     },
@@ -357,7 +357,6 @@ export default {
         allCheck.push(this.training.checkBox[i].val);
       }
       this.training.choose = val ? allCheck : [];
-      console.log(this.training.choose, "全选");
       this.training.isIndeterminate = false;
     },
     // 培养层次单选
@@ -366,7 +365,6 @@ export default {
       this.training.checkAll = checkedCount === this.training.checkBox.length;
       this.training.isIndeterminate =
         checkedCount > 0 && checkedCount < this.training.checkBox.length;
-      console.log(this.training.choose, "单选");
     },
     // 学制全选
     learnHeAll(val) {
@@ -375,7 +373,6 @@ export default {
         allCheck.push(this.learnHe.checkBox[i].val);
       }
       this.learnHe.choose = val ? allCheck : [];
-      console.log(this.learnHe.choose, "全选");
       this.learnHe.isIndeterminate = false;
     },
     // 学制单选
@@ -384,7 +381,6 @@ export default {
       this.learnHe.checkAll = checkedCount === this.learnHe.checkBox.length;
       this.learnHe.isIndeterminate =
         checkedCount > 0 && checkedCount < this.learnHe.checkBox.length;
-      console.log(this.learnHe.choose, "单选");
     },
     // 学籍全选
     studentStatusAll(val) {
@@ -393,7 +389,6 @@ export default {
         allCheck.push(this.studentStatus.checkBox[i].val);
       }
       this.studentStatus.choose = val ? allCheck : [];
-      console.log(this.studentStatus.choose, "全选");
       this.studentStatus.isIndeterminate = false;
     },
     // 学籍单选
@@ -403,7 +398,6 @@ export default {
         checkedCount === this.studentStatus.checkBox.length;
       this.studentStatus.isIndeterminate =
         checkedCount > 0 && checkedCount < this.studentStatus.checkBox.length;
-      console.log(this.studentStatus.choose, "单选");
     },
     // 名族全选
     ethnicAll(val) {
@@ -412,7 +406,6 @@ export default {
         allCheck.push(this.ethnic.checkBox[i].val);
       }
       this.ethnic.choose = val ? allCheck : [];
-      console.log(this.ethnic.choose, "全选");
       this.ethnic.isIndeterminate = false;
     },
     // 名族单选
@@ -421,7 +414,6 @@ export default {
       this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
       this.ethnic.isIndeterminate =
         checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
-      console.log(this.ethnic.choose, "单选");
     },
     // 政治面貌：全选
     politicaAll(val) {
@@ -430,7 +422,6 @@ export default {
         allCheck.push(this.politica.checkBox[i].val);
       }
       this.politica.choose = val ? allCheck : [];
-      console.log(this.politica.choose, "全选");
       this.politica.isIndeterminate = false;
     },
     // 政治面貌：单选
@@ -439,15 +430,17 @@ export default {
       this.politica.checkAll = checkedCount === this.politica.checkBox.length;
       this.politica.isIndeterminate =
         checkedCount > 0 && checkedCount < this.politica.checkBox.length;
-      console.log(this.politica.choose, "单选");
     },
-    // 多选
+    // 多选，获取所有的学号添加强制修改名单
     handleSelectionChange(val) {
-      this.multipleSelection = val;
-      console.log(this.multipleSelection);
+      this.multipleSelection = val.map((item) => {
+        return item.xh;
+      });
     },
-    // 打开导出弹窗
+    // 添加强制修改名单
     handleExport() {
+      var data = this.multipleSelection;
+      forceAdd(data).then((res) => console.log(res));
       this.$emit("changeActiveName");
     },
 

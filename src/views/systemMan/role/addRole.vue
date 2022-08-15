@@ -87,20 +87,15 @@ export default {
   },
 
   created() {
-    this.handleTree();
-  },
-  activated() {
-    console.log("this.$route.query", this.$route.query);
     this.isEdit = this.$route.query.isEdit;
     this.roleId1 = this.$route.query?.UpId;
     this.roleName1 = this.$route.query?.roleNameEdit;
-    debugger;
     this.handleTree();
   },
 
   methods: {
     handleTree() {
-      let data = { roleId: this.roleName1 ? this.roleId1 : "01" };
+      let data = { roleId: this.roleId1 ? this.roleId1 : "01" };
       queryTreeList(data)
         .then((res) => {
           console.log("res", res);

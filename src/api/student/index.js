@@ -74,7 +74,6 @@ export function exportStu(data) {
 
 //  强制修改学生名单列表分页查询
 export function forceList(data) {
-  console.log("datadasd",data);
   return request({
     url: '/forceUpdate/getStuPageList',
     method: 'post',
@@ -134,5 +133,23 @@ export function completedPageList(data) {
     url: '/StuInfoFlow/stuInfoFlowCompletedPageList',
     method: 'post',
     data: data
+  })
+}
+
+//通過学生信息流程
+export function passFlow(data) {
+  return request({
+    url: '/StuInfoFlow/passStuInfoFlow',
+    method: 'post',
+    data: data
+  })
+}
+
+//打回学生信息流程
+export function backFlow(data) {
+  return request({
+    url: '/StuInfoFlow/backStuInfoFlow',
+    method: 'get',
+    params: data
   })
 }

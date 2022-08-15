@@ -72,8 +72,8 @@
               size="small"
             >
               <el-option
-                v-for="item in manageRegOps"
-                :key="item.bjmc"
+                v-for="(item, index) in manageRegOps"
+                :key="index"
                 :label="item.bjmc"
                 :value="item.bjmc"
               ></el-option>
@@ -163,14 +163,15 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="date" label="学号" sortable> </el-table-column>
-          <el-table-column prop="name" label="姓名" sortable> </el-table-column>
-          <el-table-column prop="name" label="学院" sortable> </el-table-column>
-          <el-table-column prop="name" label="专业" sortable> </el-table-column>
-          <el-table-column prop="name" label="班级" sortable> </el-table-column>
-          <el-table-column prop="name" label="培养层次" sortable>
+          <el-table-column prop="tableColumnValue" label="学号" sortable>
           </el-table-column>
-          <el-table-column prop="name" label="修改时间" sortable>
+          <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
+          <el-table-column prop="dwh" label="学院" sortable> </el-table-column>
+          <el-table-column prop="zydm" label="专业" sortable> </el-table-column>
+          <el-table-column prop="njm" label="班级" sortable> </el-table-column>
+          <el-table-column prop="pyccm" label="培养层次" sortable>
+          </el-table-column>
+          <el-table-column prop="approveTime" label="修改时间" sortable>
           </el-table-column>
           <el-table-column prop="name" label="审核状态" sortable>
             <template slot-scope="scope">
@@ -186,11 +187,18 @@
                 @click="hadleDetail(scope.row)"
               >
                 <i class="scopeIncon handledie"></i>
-                <span class="handleName">审核</span>
+                <span class="handleName">详情</span>
               </el-button>
             </template>
           </el-table-column>
         </el-table>
+        <pagination
+          v-show="queryParams.total > 0"
+          :total="queryParams.total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="handleSearch"
+        />
       </div>
     </div>
   </div>
@@ -218,10 +226,6 @@ export default {
         pageSize: 10,
         total: 0,
       },
-      options: [
-        { value: "选项2", label: "双皮奶" },
-        { value: "选项3", label: "蚵仔煎" },
-      ],
       training: {
         // 培养层次
         checkAll: false,
@@ -276,7 +280,7 @@ export default {
         ],
         isIndeterminate: true,
       },
-      tableData: [{ date: 1 }],
+      tableData: [],
       multipleSelection: [],
       showExport: false,
     };
@@ -291,7 +295,6 @@ export default {
     getSpread() {
       getManageRegStuInfoSearchSpread()
         .then((res) => {
-          console.log(res);
           this.manageRegOps = res.data.dwhbj;
         })
         .catch((err) => {});
@@ -301,24 +304,24 @@ export default {
       let data = {
         xh: this.select == "xh" ? this.searchVal : "",
         xm: this.select == "xm" ? this.searchVal : "",
-        SFZJH: this.select == "sfzjh" ? this.searchVal : "",
-        YDDH: this.select == "yddh" ? this.searchVal : "",
-        PYCCM: "",
-        XZ: "",
-        XJZT: "",
-        ZZMMM: "",
-        MZM: "",
-        BJM: "",
-        DWH: "",
-        ZYDM: "",
+        sfzjh: this.select == "sfzjh" ? this.searchVal : "",
+        yddh: this.select == "yddh" ? this.searchVal : "",
+        pyccm: [],
+        xz: [],
+        xjzt: [],
+        zzmmm: [],
+        mzm: [],
+        bjm: [],
+        dwh: [],
+        zydm: [],
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         limitSql: "",
       };
       completedPageList(data)
         .then((res) => {
-          // this.tableData = res.data.data;
-          // this.queryParams.total = res.data.total;
+          this.tableData = res.data.data;
+          this.queryParams.total = res.data.total;
         })
         .catch((err) => {});
     },

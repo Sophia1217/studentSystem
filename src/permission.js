@@ -66,7 +66,12 @@ router.beforeEach((to, from, next) => {
             }
         } else {
             location.href = 'https://account.ccnu.edu.cn/cas/login?service=http://10.222.7.139:8081/sws/checkLogin'
-            // next({ path: '/login' })
+            // if (to.path === '/login') {
+            //     next()
+            // }else {
+            //     next({ path: '/login' })
+            // }
+            
             NProgress.done()
         }
   }

@@ -14,9 +14,9 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/selectRole">
-            <el-dropdown-item>切换角色</el-dropdown-item>
-          </router-link>
+          <!-- <router-link to="/selectRole"> -->
+            <el-dropdown-item @click.native="change">切换角色</el-dropdown-item>
+          <!-- </router-link> -->
           <el-dropdown-item divided @click.native="logout">
             <span>退出登录</span>
           </el-dropdown-item>
@@ -75,7 +75,11 @@ export default {
           location.href = 'https://account.ccnu.edu.cn/cas/login?service=' + location.protocol+'//' + location.host + '/';
         })
       }).catch(() => {});
-    }
+    },
+
+    change () {
+        location.reload()
+    },
   }
 }
 </script>

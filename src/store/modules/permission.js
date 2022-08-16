@@ -50,9 +50,6 @@ const permission = {
             const sidebarRoutes = filterAsyncRouter(sdata)
             const rewriteRoutes = filterAsyncRouter(rdata, false, true)
             rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true })
-            if (cacheRoutes.addRoutes.length  > 0) {
-                router.removeRoutes(cacheRoutes.addRoutes)
-            }
             router.addRoutes(sidebarRoutes);
             commit('SET_ROUTES', rewriteRoutes)
             commit('SET_SIDEBAR_ROUTERS', constantRoutes.concat(sidebarRoutes))

@@ -51,7 +51,7 @@ const user = {
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
             getInfo().then(res => {
-                console.log('获取用户信息返回值',res)
+                // console.log('获取用户信息返回值',res)
                 const avatar = require("@/assets/images/avatar.png")
                 var roles = res.row || []
                 if (roles.length > 0) { // 验证返回的roles是否是一个非空数组
@@ -67,7 +67,7 @@ const user = {
                 commit('SET_AVATAR', avatar)
                 resolve(res)
               }).catch(error => {
-                console.log('用户信息错误',error)
+                // console.log('用户信息错误',error)
                 reject(error)
               })
       })

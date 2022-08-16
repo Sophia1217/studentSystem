@@ -42,15 +42,12 @@ export default {
     };
   },
   mounted() {
-    console.log("页面挂载");
     store
       .dispatch("GetInfo")
       .then((res) => {
-        console.log("返回", res);
         var roles = res.row || [];
         if (roles.length > 1) {
           // 多个角色
-          console.log("多个角色", roles);
           this.user = roles;
           if (roles.length > 4) {
             this.move = 460;
@@ -60,7 +57,6 @@ export default {
         }
       })
       .catch((err) => {
-        console.log("请求失败");
         store.dispatch("LogOut").then(() => {
           Message.error(err);
           this.$router.push("/");

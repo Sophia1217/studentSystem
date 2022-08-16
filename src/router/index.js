@@ -127,7 +127,7 @@ export const constantRoutes = [
 //         name: "informationStu",
 //         hidden: false,
 //         meta: { title: "学生信息修改", icon: "" },
-//         component: () => import('../index.vue'),
+//         component: ParentView,//() => import('../index.vue'),
 //         children: [
 //           {
 //             path: "forcedEdit",

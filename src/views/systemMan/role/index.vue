@@ -11,9 +11,9 @@
       <el-form-item label="角色名称" prop="roleName">
         <el-input v-model="queryParams.roleName"></el-input>
       </el-form-item>
-      <el-form-item label="角色状态" prop="roleState">
+      <el-form-item label="角色状态" prop="isUse">
         <el-select
-          v-model="queryParams.roleState"
+          v-model="queryParams.isUse"
           placeholder="请选择角色"
           clearable
         >
@@ -73,12 +73,12 @@
           sortable
         />
         <el-table-column label="权限描述" align="center" prop="rem" sortable />
-        <el-table-column
+        <!-- <el-table-column
           label="创建时间"
           align="center"
           prop="modTime"
           sortable
-        />
+        /> -->
         <el-table-column label="角色状态" align="center" prop="isUse" sortable>
           <template slot-scope="scope">
             <div>
@@ -86,6 +86,7 @@
                 v-model="scope.row.isUse"
                 active-color="#23AD6F"
                 inactive-color="#E0E0E0"
+                @change="openOrClose(scope.row)"
               ></el-switch>
             </div>
           </template>
@@ -117,7 +118,7 @@
 
 <script>
 import "@/assets/fonts/repeat/iconfont.css";
-import { queryRoleList, deleteList } from "@/api/systemMan/role";
+import { queryRoleList, deleteList, cancel } from "@/api/systemMan/role";
 export default {
   name: "role",
   data() {
@@ -125,14 +126,19 @@ export default {
       // 查询参数
       queryParams: {
         roleName: "",
-        roleState: "",
+        isUse: "",
         roleDate: "",
         total: 0,
         pageNum: 1,
         pageSize: 10,
       },
-      roleNameOps: [],
+      roleNameOps: [
+        { label: "所有", value: "" },
+        { label: "启用", value: "0" },
+        { label: "禁用", value: "1" },
+      ],
       noticeList: [],
+      state: false,
     };
   },
   created() {
@@ -144,10 +150,17 @@ export default {
   methods: {
     //搜索按钮操作
     handleQuery() {
-      let data = { roleId: "01" };
+      let data = {
+        roleId: "01",
+        roleName: this.queryParams.roleName,
+        isUse: this.queryParams.isUse,
+      };
       queryRoleList(data)
         .then((res) => {
           this.noticeList = res.data.rows;
+          this.noticeList.forEach((item) => {
+            item.isUse == "0" ? (item.isUse = true) : (item.isUse = false);
+          });
           this.queryParams.total = res.data.totalCount;
         })
         .catch((err) => {});
@@ -158,7 +171,6 @@ export default {
     },
     /** 新增 */
     handleAdd(index, msg) {
-      console.log("asdasdsa");
       if (index === 1) {
         this.query = { isEdit: index };
       } else {
@@ -166,6 +178,7 @@ export default {
           isEdit: index,
           UpId: msg.roleId, //编辑操作所需要的请求menuList的roleId
           roleNameEdit: index === 2 ? msg.roleName : "",
+          rem: msg.rem,
         };
       }
       this.$router.push({
@@ -189,6 +202,16 @@ export default {
           });
         });
     },
+    openOrClose(inf) {
+      var data = {
+        userId: "1234",
+        roleId: inf.roleId,
+        isUse: inf.roleId ? "1" : "0",
+      };
+      cancel(data).then((res) => {
+        console.log("状态改变成功");
+      });
+    },
     delete(id) {
       let data = { userId: "1234", roleId: id };
       deleteList(data)
@@ -200,6 +223,7 @@ export default {
               duration: 500,
             });
           }
+          this.handleQuery();
         })
         .catch((error) => {
           this.$message({

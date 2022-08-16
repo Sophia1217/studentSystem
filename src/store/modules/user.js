@@ -1,10 +1,11 @@
-import { login, logout, getInfo } from '@/api/login'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { login, getInfo } from '@/api/login'
+import { getToken, setToken, removeToken} from '@/utils/auth'
 
 const user = {
   state: {
     token: getToken(),
     name: '',
+    userId:'',
     avatar: '',
     roles: [],
     permissions: []
@@ -49,36 +50,41 @@ const user = {
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getInfo().then(res => {
-          const user = res.user
-          const avatar = (user.avatar == "" || user.avatar == null) ? require("@/assets/images/profile.jpg") : process.env.VUE_APP_BASE_API + user.avatar;
-          if (res.roles && res.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', res.roles)
-            commit('SET_PERMISSIONS', res.permissions)
-          } else {
-            commit('SET_ROLES', ['ROLE_DEFAULT'])
-          }
-          commit('SET_NAME', user.userName)
-          commit('SET_AVATAR', avatar)
-          resolve(res)
-        }).catch(error => {
-          reject(error)
-        })
+            getInfo().then(res => {
+                // console.log('获取用户信息返回值',res)
+                const avatar = require("@/assets/images/avatar.png")
+                var roles = res.row || []
+                if (roles.length > 0) { // 验证返回的roles是否是一个非空数组
+                  commit('SET_ROLES', roles)
+                //   commit('SET_PERMISSIONS', res.permissions)
+                } else {
+                //     console.log('默认角色')
+                //   commit('SET_ROLES', ['ROLE_DEFAULT'])
+                    reject()
+                }
+              
+                commit('SET_NAME', res.user.xm)
+                commit('SET_AVATAR', avatar)
+                resolve(res)
+              }).catch(error => {
+                // console.log('用户信息错误',error)
+                reject(error)
+              })
       })
     },
 
     // 退出系统
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
+        // logout(state.token).then(() => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           commit('SET_PERMISSIONS', [])
           removeToken()
           resolve()
-        }).catch(error => {
-          reject(error)
-        })
+        // }).catch(error => {
+        //   reject(error)
+        // })
       })
     },
 

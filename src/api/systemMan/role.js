@@ -45,3 +45,12 @@ export function savaEditList(data) {
     data: data
   })
 }
+
+//取消状态
+export function cancel(data) {
+  return request({
+    url: '/manager/role/cancelRole',
+    method: 'post',
+    data: data
+  })
+}

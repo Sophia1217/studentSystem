@@ -5,7 +5,7 @@
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
     <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
 
-    <div class="right-menu">
+    <!-- <div class="right-menu">
      
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
@@ -15,14 +15,14 @@
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/selectRole">
-            <el-dropdown-item>切换角色</el-dropdown-item>
+            <el-dropdown-item @click.native="change" v-if="canChange">切换角色</el-dropdown-item>
           </router-link>
-          <el-dropdown-item divided @click.native="logout">
+          <el-dropdown-item  @click.native="logout">
             <span>退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -59,6 +59,11 @@ export default {
       get() {
         return this.$store.state.settings.topNav
       }
+    },
+    canChange: {
+        get() {
+            return this.$store.getters.roles.length > 0
+        }
     }
   },
   methods: {
@@ -72,10 +77,14 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$store.dispatch('LogOut').then(() => {
-          location.href = ' https://account.ccnu.edu.cn/cas/logout?service=http://ip:port/Cas1/';
+          location.href = 'https://account.ccnu.edu.cn/cas/login?service=http://10.222.7.139:8081/sws/checkLogin';
         })
       }).catch(() => {});
-    }
+    },
+
+    change () {
+        location.reload()
+    },
   }
 }
 </script>

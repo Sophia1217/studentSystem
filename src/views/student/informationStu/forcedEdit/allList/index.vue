@@ -200,13 +200,6 @@
             </template>
           </el-table-column>
         </el-table>
-        <pagination
-          v-show="queryParams.total > 0"
-          :total="queryParams.total"
-          :page.sync="queryParams.pageNum"
-          :limit.sync="queryParams.pageSize"
-          @pagination="handleSearch"
-        />
       </div>
       <div class="noData" v-else>
         <img
@@ -218,6 +211,13 @@
         <p class="describe">尚未导入强制修改名单</p>
       </div>
     </div>
+    <pagination
+      v-show="queryParams.total > 0"
+      :total="queryParams.total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="handleSearch"
+    />
   </div>
 </template>
 
@@ -338,8 +338,8 @@ export default {
       };
       forceList(data)
         .then((res) => {
-          this.tableData = res.data;
-          this.queryParams.total = res.total;
+          this.tableData = res.data.data;
+          this.queryParams.total = res.data.total;
         })
         .catch((err) => {});
     },
@@ -440,8 +440,12 @@ export default {
     // 添加强制修改名单
     handleExport() {
       var data = this.multipleSelection;
-      forceAdd(data).then((res) => console.log(res));
-      this.$emit("changeActiveName");
+      if (this.multipleSelection.length > 1) {
+        forceAdd(data).then(() => this.$message("已成功添加强制修改名单"));
+        this.$emit("changeActiveName");
+      } else {
+        this.$message.error("请先勾选一条信息");
+      }
     },
 
     hadleDetail(row, flag, schooling) {

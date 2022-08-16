@@ -211,6 +211,22 @@
         />
       </div>
     </div>
+    <el-dialog
+      title="拒绝理由"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <el-form v-model="form">
+        <el-form-item class="width:200px">
+          <el-input type="textarea" v-model="form.rollbackReason"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleOk">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -227,6 +243,7 @@ export default {
   components: { CheckboxCom },
   data() {
     return {
+      form: { rollbackReason: "" },
       searchVal: "",
       select: "",
       isMore: false,
@@ -249,6 +266,7 @@ export default {
         ],
         isIndeterminate: true,
       },
+      dialogVisible: false,
       learnHe: {
         //学 制：
         checkAll: false,
@@ -351,7 +369,6 @@ export default {
         allCheck.push(this.training.checkBox[i].val);
       }
       this.training.choose = val ? allCheck : [];
-      console.log(this.training.choose, "全选");
       this.training.isIndeterminate = false;
     },
     // 培养层次单选
@@ -360,7 +377,6 @@ export default {
       this.training.checkAll = checkedCount === this.training.checkBox.length;
       this.training.isIndeterminate =
         checkedCount > 0 && checkedCount < this.training.checkBox.length;
-      console.log(this.training.choose, "单选");
     },
     // 学制全选
     learnHeAll(val) {
@@ -369,7 +385,6 @@ export default {
         allCheck.push(this.learnHe.checkBox[i].val);
       }
       this.learnHe.choose = val ? allCheck : [];
-      console.log(this.learnHe.choose, "全选");
       this.learnHe.isIndeterminate = false;
     },
     // 学制单选
@@ -378,7 +393,6 @@ export default {
       this.learnHe.checkAll = checkedCount === this.learnHe.checkBox.length;
       this.learnHe.isIndeterminate =
         checkedCount > 0 && checkedCount < this.learnHe.checkBox.length;
-      console.log(this.learnHe.choose, "单选");
     },
     // 学籍全选
     studentStatusAll(val) {
@@ -387,7 +401,6 @@ export default {
         allCheck.push(this.studentStatus.checkBox[i].val);
       }
       this.studentStatus.choose = val ? allCheck : [];
-      console.log(this.studentStatus.choose, "全选");
       this.studentStatus.isIndeterminate = false;
     },
     // 学籍单选
@@ -397,7 +410,6 @@ export default {
         checkedCount === this.studentStatus.checkBox.length;
       this.studentStatus.isIndeterminate =
         checkedCount > 0 && checkedCount < this.studentStatus.checkBox.length;
-      console.log(this.studentStatus.choose, "单选");
     },
     // 名族全选
     ethnicAll(val) {
@@ -406,7 +418,6 @@ export default {
         allCheck.push(this.ethnic.checkBox[i].val);
       }
       this.ethnic.choose = val ? allCheck : [];
-      console.log(this.ethnic.choose, "全选");
       this.ethnic.isIndeterminate = false;
     },
     // 名族单选
@@ -415,7 +426,6 @@ export default {
       this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
       this.ethnic.isIndeterminate =
         checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
-      console.log(this.ethnic.choose, "单选");
     },
     // 政治面貌：全选
     politicaAll(val) {
@@ -424,7 +434,6 @@ export default {
         allCheck.push(this.politica.checkBox[i].val);
       }
       this.politica.choose = val ? allCheck : [];
-      console.log(this.politica.choose, "全选");
       this.politica.isIndeterminate = false;
     },
     // 政治面貌：单选
@@ -433,7 +442,6 @@ export default {
       this.politica.checkAll = checkedCount === this.politica.checkBox.length;
       this.politica.isIndeterminate =
         checkedCount > 0 && checkedCount < this.politica.checkBox.length;
-      console.log(this.politica.choose, "单选");
     },
     // 多选
     handleSelectionChange(val) {
@@ -447,14 +455,31 @@ export default {
     },
     pass() {
       var data = this.multipleSelection;
-      passFlow(data).then((res) => {
-        console.log("res");
-      });
+      if (this.multipleSelection.length > 1) {
+        passFlow(data).then(() => {
+          this.$message("已成功通过");
+        });
+      } else {
+        this.$message.error("请先勾选一条信息");
+      }
     },
     bacK() {
-      var data = { id: this.multipleSelection[0], rollbackReason: "ceyice" };
-
-      backFlow(data).then(() => console.log("res"));
+      this.form.rollbackReason = "";
+      if (this.multipleSelection.length > 1) {
+        this.dialogVisible = true;
+      } else {
+        this.$message.error("请先勾选一条信息");
+      }
+    },
+    handleClose() {
+      this.dialogVisible = false;
+    },
+    handleOk() {
+      var data = {
+        id: this.multipleSelection[0],
+        rollbackReason: this.form.rollbackReason,
+      };
+      backFlow(data).then(() => this.$message("已成功拒绝"));
     },
     // 导出取消
     handleCancel() {

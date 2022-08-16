@@ -107,7 +107,7 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="scope">
-          <div @click="action(scope.row)">
+          <div>
             <span class="iconfont allocate_teacher">&#xe638;</span>
             <span
               class="leaderAssign"
@@ -143,6 +143,7 @@ import {
   addClass,
   deleteEmptyClass,
 } from "@/api/class/maintenanceClass";
+
 export default {
   name: "classleader", //班干部管理
   data() {
@@ -161,6 +162,8 @@ export default {
       total: 100,
       // 表格数据
       noticeList: [],
+      // 班干部列表
+      queryBgbList: [],
       // 筛选框数据
       collegeOptions: [],
       levelOptions: {},
@@ -224,8 +227,8 @@ export default {
     },
     // 班干部任命
     leaderAssign(x) {
-      console.log(x);
-      this.$router.push({ path: "/class/leaderAssign", params: { bjdm: x } });
+      console.log("班干部任命", x);
+      this.$router.push({ path: "/class/leaderAssign", query: { bjdm: "1004001000"}});
     },
   },
 };

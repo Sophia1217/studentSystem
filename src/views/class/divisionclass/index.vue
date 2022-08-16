@@ -128,7 +128,8 @@
           sortable
           class-name="small-padding fixed-width"
         >
-          <template slot-scope="scope">
+          <template>
+            <!-- slot-scope="scope" -->
             <div @click="operate" class="operate">
               <span class="operateSpan">分班管理</span>
             </div>
@@ -152,14 +153,17 @@
 import "@/assets/fonts/export/iconfont.css";
 import AppLink from "@/layout/components/Sidebar/Link.vue";
 import "@/assets/fonts/refresh/iconfont.css";
-import {
-  listNotice,
-  getNotice,
-  delNotice,
-  addNotice,
-  updateNotice,
-} from "@/api/system/notice";
 
+import {
+  classList,
+  modifyClassName,
+  getCollege,
+  getLevel,
+  getGrade,
+  addClass,
+  deleteEmptyClass,
+} from "@/api/class/maintenanceClass"; // 引入班级列表查询、修改班级名称接口
+import { getQueryStuList } from "@/api/class/divisionClass";
 export default {
   name: "divisionClass", //分班管理
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
@@ -208,22 +212,41 @@ export default {
   created() {
     // this.getList();
   },
+  mounted() {
+    this.getList();
+    this.getOptions();
+  },
   methods: {
+    getList(queryParams = {}) {
+      // this.loading = true;
+      classList(queryParams).then((response) => {
+        // 获取班级列表数据
+        this.noticeList = response.data.rows; // 根据状态码接收数据
+        //  this.total = response.total;
+        //  this.loading = false;
+      });
+    },
+    getOptions() {
+      getCollege().then((response) => {
+        // 获取培养单位列表数据
+        this.collegeOptions = response.data.rows;
+        //  this.loading = false;
+      });
+      getLevel().then((response) => {
+        // 获取培养层次列表数据
+        this.levelOptions = response.rows;
+      });
+      getGrade().then((response) => {
+        // 获取年级列表数据
+        this.gradeOptions = response.rows;
+      });
+    },
     // 分班管理
     operate() {
       console.log(123);
       this.$router.push({
         path: "/class/operateClass",
       });
-    },
-    /** 查询公告列表 */
-    getList() {
-      // this.loading = true;
-      // listNotice(this.queryParams).then((response) => {
-      //   this.noticeList = response.rows;
-      //   this.total = response.total;
-      //   this.loading = false;
-      // });
     },
     // 取消按钮
     cancel() {

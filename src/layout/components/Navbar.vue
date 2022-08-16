@@ -5,7 +5,7 @@
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
     <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
 
-    <div class="right-menu">
+    <!-- <div class="right-menu">
      
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
@@ -14,15 +14,15 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <!-- <router-link to="/selectRole"> -->
+          <router-link to="/selectRole">
             <el-dropdown-item @click.native="change" v-if="canChange">切换角色</el-dropdown-item>
-          <!-- </router-link> -->
+          </router-link>
           <el-dropdown-item  @click.native="logout">
             <span>退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-    </div>
+    </div> -->
   </div>
 </template>
 

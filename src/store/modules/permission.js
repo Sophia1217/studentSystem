@@ -1,9 +1,14 @@
 import auth from '@/plugins/auth'
+// import store from '@/store'
 import router, { constantRoutes, dynamicRoutes } from '@/router'
 import { getRouters } from '@/api/menu'
 import Layout from '@/layout/index'
 import ParentView from '@/components/ParentView'
 import InnerLink from '@/layout/components/InnerLink'
+
+const cacheRoutes= {
+    addRoutes : []
+}
 
 const permission = {
   state: {
@@ -16,6 +21,7 @@ const permission = {
   mutations: {
     SET_ROUTES: (state, routes) => {
       state.addRoutes = routes
+      cacheRoutes.addRoutes = routes || []
       state.routes = constantRoutes.concat(routes)
     },
     SET_DEFAULT_ROUTES: (state, routes) => {
@@ -30,28 +36,51 @@ const permission = {
   },
   actions: {
     // 生成路由
-    GenerateRoutes({ commit }) {
+    GenerateRoutes({ commit },roleId) {
       return new Promise(resolve => {
-        commit('SET_ROUTES', constantRoutes)
-        commit('SET_SIDEBAR_ROUTERS', constantRoutes)
-        commit('SET_DEFAULT_ROUTES', constantRoutes)
-        commit('SET_TOPBAR_ROUTES', constantRoutes)
-        return
-        // 向后端请求路由数据
-        getRouters().then(res => {
-          const sdata = JSON.parse(JSON.stringify(res.data))
-          const rdata = JSON.parse(JSON.stringify(res.data))
-          const sidebarRoutes = filterAsyncRouter(sdata)
-          const rewriteRoutes = filterAsyncRouter(rdata, false, true)
-          const asyncRoutes = filterDynamicRoutes(dynamicRoutes);
-          rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true })
-          router.addRoutes(asyncRoutes);
-          commit('SET_ROUTES', rewriteRoutes)
-          commit('SET_SIDEBAR_ROUTERS', constantRoutes.concat(sidebarRoutes))
-          commit('SET_DEFAULT_ROUTES', sidebarRoutes)
-          commit('SET_TOPBAR_ROUTES', sidebarRoutes)
-          resolve(rewriteRoutes)
+        // console.log('开始请求路由')
+        var params = {
+            roleId : roleId || ''
+        }
+        getRouters(params).then(res => {
+            // console.log('获取用户菜单列表返回数据',res)
+            
+            const sdata = JSON.parse(JSON.stringify(res.data))
+            const rdata = JSON.parse(JSON.stringify(res.data))
+            const sidebarRoutes = filterAsyncRouter(sdata)
+            const rewriteRoutes = filterAsyncRouter(rdata, false, true)
+            rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true })
+            if (cacheRoutes.addRoutes.length  > 0) {
+                router.removeRoutes(cacheRoutes.addRoutes)
+            }
+            router.addRoutes(sidebarRoutes);
+            commit('SET_ROUTES', rewriteRoutes)
+            commit('SET_SIDEBAR_ROUTERS', constantRoutes.concat(sidebarRoutes))
+            commit('SET_DEFAULT_ROUTES', sidebarRoutes)
+            commit('SET_TOPBAR_ROUTES', sidebarRoutes)
+            resolve(rewriteRoutes)
         })
+        // commit('SET_ROUTES', constantRoutes)
+        // commit('SET_SIDEBAR_ROUTERS', constantRoutes)
+        // commit('SET_DEFAULT_ROUTES', constantRoutes)
+        // commit('SET_TOPBAR_ROUTES', constantRoutes)
+        // resolve()
+        // return
+        // 向后端请求路由数据
+        // getRouters().then(res => {
+        //   const sdata = JSON.parse(JSON.stringify(res.data))
+        //   const rdata = JSON.parse(JSON.stringify(res.data))
+        //   const sidebarRoutes = filterAsyncRouter(sdata)
+        //   const rewriteRoutes = filterAsyncRouter(rdata, false, true)
+        //   const asyncRoutes = filterDynamicRoutes(dynamicRoutes);
+        //   rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true })
+        //   router.addRoutes(asyncRoutes);
+        //   commit('SET_ROUTES', rewriteRoutes)
+        //   commit('SET_SIDEBAR_ROUTERS', constantRoutes.concat(sidebarRoutes))
+        //   commit('SET_DEFAULT_ROUTES', sidebarRoutes)
+        //   commit('SET_TOPBAR_ROUTES', sidebarRoutes)
+        //   resolve(rewriteRoutes)
+        // })
       })
     }
   }
@@ -127,6 +156,7 @@ export function filterDynamicRoutes(routes) {
 }
 
 export const loadView = (view) => {
+    view = view.replace('/views/','')
   if (process.env.NODE_ENV === 'development') {
     return (resolve) => require([`@/views/${view}`], resolve)
   } else {

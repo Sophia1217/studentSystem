@@ -32,7 +32,7 @@
           <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
-      <!-- <el-form-item prop="code" v-if="captchaEnabled">
+       <el-form-item prop="code" v-if="captchaEnabled">
         <el-input
           v-model="loginForm.code"
           auto-complete="off"
@@ -72,9 +72,8 @@
 </template>
 
 <script>
-import { getCodeImg } from "@/api/login";
-import Cookies from "js-cookie";
-import { encrypt, decrypt } from "@/utils/jsencrypt";
+import { weaklogin } from "@/api/login";
+import { getToken, setToken, removeToken } from "@/utils/auth";
 
 export default {
   name: "Login",
@@ -82,7 +81,7 @@ export default {
     return {
       codeUrl: "",
       loginForm: {
-        username: "admin",
+        username: "",
         //password: "admin123",
         //rememberMe: false,
         code: "",
@@ -119,16 +118,16 @@ export default {
     // this.getCode();
   },
   methods: {
-    getCode() {
-      getCodeImg().then((res) => {
-        this.captchaEnabled =
-          res.captchaEnabled === undefined ? true : res.captchaEnabled;
-        if (this.captchaEnabled) {
-          this.codeUrl = "data:image/gif;base64," + res.img;
-          this.loginForm.uuid = res.uuid;
-        }
-      });
-    },
+    // getCode() {
+    //   getCodeImg().then((res) => {
+    //     this.captchaEnabled =
+    //       res.captchaEnabled === undefined ? true : res.captchaEnabled;
+    //     if (this.captchaEnabled) {
+    //       this.codeUrl = "data:image/gif;base64," + res.img;
+    //       this.loginForm.uuid = res.uuid;
+    //     }
+    //   });
+    // },
 
     // getCookie() {
     //   const username = Cookies.get("username");
@@ -144,6 +143,15 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
+          weaklogin(this.loginForm.username)
+            .then((res) => {
+              var token = res.accessToken;
+              setToken(token);
+              this.$router.push("/");
+            })
+            .catch((err) => {
+              // console.log("登录返回错误", err);
+            });
           // if (this.loginForm.rememberMe) {
           //   Cookies.set("username", this.loginForm.username, { expires: 30 });
           //   Cookies.set("password", encrypt(this.loginForm.password), { expires: 30 });
@@ -153,17 +161,17 @@ export default {
           //   Cookies.remove("password");
           //   Cookies.remove('rememberMe');
           // }
-          this.$store
-            .dispatch("Login", this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || "/" }).catch(() => {});
-            })
-            .catch(() => {
-              this.loading = false;
-              if (this.captchaEnabled) {
-                this.getCode();
-              }
-            });
+          // this.$store
+          //   .dispatch("Login", this.loginForm)
+          //   .then(() => {
+          //     this.$router.push({ path: this.redirect || "/" }).catch(() => {});
+          //   })
+          //   .catch(() => {
+          //     this.loading = false;
+          //     if (this.captchaEnabled) {
+          //       this.getCode();
+          //     }
+          //   });
         }
       });
     },

@@ -62,3 +62,13 @@ export function getCodeImg() {
     timeout: 20000
   })
 }
+export function weaklogin(userId){
+  const data = {
+    userId:userId
+  }
+  return request({
+    url: '/weakLogin',
+    method: 'post',
+    data: data
+  })
+}

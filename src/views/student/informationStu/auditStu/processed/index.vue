@@ -157,10 +157,10 @@
           <div class="btns borderGreen" @click="handleExport">
             <i class="icon greenIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns deteBtn">
+          <div class="btns deteBtn" @click="pass">
             <i class="icon deteIcon"></i><span class="title">通过</span>
           </div>
-          <div class="btns deteBtn">
+          <div class="btns deteBtn" @click="bacK">
             <i class="icon deteIcon2"></i><span class="title">拒绝</span>
           </div>
         </div>
@@ -179,14 +179,15 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="date" label="学号" sortable> </el-table-column>
-          <el-table-column prop="name" label="姓名" sortable> </el-table-column>
-          <el-table-column prop="name" label="学院" sortable> </el-table-column>
-          <el-table-column prop="name" label="专业" sortable> </el-table-column>
-          <el-table-column prop="name" label="班级" sortable> </el-table-column>
-          <el-table-column prop="name" label="培养层次" sortable>
+          <el-table-column prop="tableColumnValue" label="学号" sortable>
           </el-table-column>
-          <el-table-column prop="name" label="修改时间" sortable>
+          <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
+          <el-table-column prop="dwh" label="学院" sortable> </el-table-column>
+          <el-table-column prop="zydm" label="专业" sortable> </el-table-column>
+          <el-table-column prop="njm" label="班级" sortable> </el-table-column>
+          <el-table-column prop="pyccm" label="培养层次" sortable>
+          </el-table-column>
+          <el-table-column prop="approveTime" label="修改时间" sortable>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
@@ -201,6 +202,13 @@
             </template>
           </el-table-column>
         </el-table>
+        <pagination
+          v-show="queryParams.total > 0"
+          :total="queryParams.total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="handleSearch"
+        />
       </div>
     </div>
   </div>
@@ -211,6 +219,8 @@ import CheckboxCom from "../../../../components/checkboxCom";
 import {
   getManageRegStuInfoSearchSpread,
   FlowPageList,
+  passFlow,
+  backFlow,
 } from "@/api/student/index";
 export default {
   name: "manStudent",
@@ -297,7 +307,6 @@ export default {
     getSpread() {
       getManageRegStuInfoSearchSpread()
         .then((res) => {
-          console.log(res);
           this.manageRegOps = res.data.dwhbj;
         })
         .catch((err) => {});
@@ -309,22 +318,22 @@ export default {
         xm: this.select == "xm" ? this.searchVal : "",
         sfzjh: this.select == "sfzjh" ? this.searchVal : "",
         yddh: this.select == "yddh" ? this.searchVal : "",
-        pyccm: "",
-        xz: "",
-        xjzt: "",
-        zzmmm: "",
-        mzm: "",
-        bjm: "",
-        dwh: "",
-        zydm: "",
+        pyccm: [],
+        xz: [],
+        xjzt: [],
+        zzmmm: [],
+        mzm: [],
+        bjm: [],
+        dwh: [],
+        zydm: [],
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         limitSql: "",
       };
       FlowPageList(data)
         .then((res) => {
-          // this.tableData = res.data.data;
-          // this.queryParams.total = res.data.total;
+          this.tableData = res.data.data;
+          this.queryParams.total = res.data.total;
         })
         .catch((err) => {});
     },
@@ -428,12 +437,24 @@ export default {
     },
     // 多选
     handleSelectionChange(val) {
-      this.multipleSelection = val;
-      console.log(this.multipleSelection);
+      this.multipleSelection = val.map((item) => {
+        return item.id;
+      });
     },
     // 打开导出弹窗
     handleExport() {
       this.showExport = true;
+    },
+    pass() {
+      var data = this.multipleSelection;
+      passFlow(data).then((res) => {
+        console.log("res");
+      });
+    },
+    bacK() {
+      var data = { id: this.multipleSelection[0], rollbackReason: "ceyice" };
+
+      backFlow(data).then(() => console.log("res"));
     },
     // 导出取消
     handleCancel() {

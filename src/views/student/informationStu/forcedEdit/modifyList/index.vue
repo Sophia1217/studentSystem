@@ -157,7 +157,7 @@
           <div class="btns borderGreen" @click="handleExport">
             <i class="icon greenIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns deteBtn">
+          <div class="btns deteBtn" @click="del">
             <i class="icon deteIcon"></i><span class="title">删除</span>
           </div>
         </div>
@@ -176,16 +176,23 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="date" label="学号" sortable> </el-table-column>
-          <el-table-column prop="name" label="姓名" sortable> </el-table-column>
-          <el-table-column prop="name" label="学院" sortable> </el-table-column>
-          <el-table-column prop="name" label="专业" sortable> </el-table-column>
-          <el-table-column prop="name" label="班级" sortable> </el-table-column>
-          <el-table-column prop="name" label="学生类别" sortable>
+          <el-table-column prop="xh" label="学号" sortable> </el-table-column>
+          <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
+          <el-table-column prop="dwh" label="学院" sortable> </el-table-column>
+          <el-table-column prop="zydm" label="专业" sortable> </el-table-column>
+          <el-table-column prop="bjm" label="班级" sortable> </el-table-column>
+          <el-table-column prop="xslbm" label="学生类别" sortable>
           </el-table-column>
-          <el-table-column prop="name" label="修改时间" sortable>
+          <el-table-column prop="updateTime" label="修改时间" sortable>
           </el-table-column>
         </el-table>
+        <pagination
+          v-show="queryParams.total > 0"
+          :total="queryParams.total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="handleSearch"
+        />
       </div>
       <div class="noData" v-else>
         <img
@@ -277,7 +284,7 @@ export default {
         ],
         isIndeterminate: true,
       },
-      tableData: [{ date: 1 }],
+      tableData: [],
       multipleSelection: [],
       showExport: false,
     };
@@ -301,24 +308,31 @@ export default {
       let data = {
         xh: this.select == "xh" ? this.searchVal : "",
         xm: this.select == "xm" ? this.searchVal : "",
-        SFZJH: this.select == "sfzjh" ? this.searchVal : "",
-        YDDH: this.select == "yddh" ? this.searchVal : "",
-        PYCCM: "",
-        XZ: "",
-        XJZT: "",
-        ZZMMM: "",
-        MZM: "",
-        BJM: "",
-        DWH: "",
-        ZYDM: "",
+        sfzjh: this.select == "sfzjh" ? this.searchVal : "",
+        yddh: this.select == "yddh" ? this.searchVal : "",
+        pyccm: [],
+        xz: [],
+        xjzt: [],
+        zzmmm: [],
+        mzm: [],
+        bjm: [],
+        dwh: [],
+        zydm: [],
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         limitSql: "",
       };
       forceUpdateList(data)
         .then((res) => {
-          // this.tableData = res.data.data;
-          // this.queryParams.total = res.data.total;
+          this.tableData = res.data;
+          // this.tableData.forEach((item) => {
+          //   item.updateTime = item.updateTime.slice(
+          //     0,
+          //     item.createTime.indexOf("T")
+          //   );
+          // });
+          // console.log("tableData", this.tableData);
+          this.queryParams.total = res.total;
         })
         .catch((err) => {});
     },
@@ -412,6 +426,11 @@ export default {
       console.log(this.politica.choose, "全选");
       this.politica.isIndeterminate = false;
     },
+    del() {
+      var data = this.multipleSelection;
+      DelForceStu(data).then((res) => this.handleSearch());
+    },
+
     // 政治面貌：单选
     politicaCheck(value) {
       console.log("value", value);
@@ -423,8 +442,9 @@ export default {
     },
     // 多选
     handleSelectionChange(val) {
-      this.multipleSelection = val;
-      console.log(this.multipleSelection);
+      this.multipleSelection = val.map((item) => {
+        return item.xh;
+      });
     },
     // 打开导出弹窗
     handleExport() {

@@ -150,7 +150,7 @@ export default {
       let data = { ssdwdm: value };
       queryClassList(data)
         .then((res) => {
-          let rowData = res.data.rows;
+          let rowData = res.rows;
           for (let x = 0; x < rowData.length; x++) {
             rowData[x].label = rowData[x].bjmc;
           }

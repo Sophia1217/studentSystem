@@ -8,6 +8,15 @@ export function loadStuColumns(data) {
   })
 }
 
+// 更新信息修改字段设置
+export function updateStuColumns(data) {
+  return request({
+    url: '/StuInfoColumn/updateStuColumns',
+    method: 'post',
+    data: data
+  })
+}
+
 // 学生信息修改参数
 export function stuInfoModifyParamService(data) {
   return request({

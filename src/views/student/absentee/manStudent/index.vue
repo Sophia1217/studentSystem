@@ -91,7 +91,7 @@
       <div class="headerTop">
         <div class="headerLeft"><span class="title">学生信息列表</span> <i class="Updataicon"></i></div>
         <div class="headerRight">
-          <div class="btns borderBlue"><i class="icon blueIcon"></i><span class="title">毕业生登记表</span></div>
+          <div class="btns borderBlue" @click="getStuCardExport"><i class="icon blueIcon"></i><span class="title">毕业生登记表</span></div>
           <div class="btns borderOrange"><i class="icon orangeIcon"></i><span class="title">学生登记表</span></div>
           <div class="btns borderLight"><i class="icon lightIcon"></i><span class="title">学生卡片</span></div>
           <div class="btns borderGreen" @click="handleExport"><i class="icon greenIcon"></i><span class="title">导出</span></div>
@@ -139,7 +139,7 @@
 <script>
 import CheckboxCom from '../../../components/checkboxCom'
 import exportView from './exportView/index.vue'
-import { getManageRegStuInfoSearchSpread, getManageRegStuInfoPageList,exportQuery } from "@/api/student/index"
+import { getManageRegStuInfoSearchSpread, getManageRegStuInfoPageList,stuCardExport } from "@/api/student/index"
 export default {
   name: 'absentee',
   components:{ CheckboxCom, exportView },
@@ -594,6 +594,21 @@ export default {
           schooling: schooling  
         }
       })
+    },
+    // 毕业生登记表
+    getStuCardExport() {
+      let xhs = []
+      this.multipleSelection.forEach(item => {
+        xhs.push(item.xh)
+      });
+      if (xhs.length <= 0) {
+        this.$message('请选择')
+        return
+      }
+      let data = {xhs:xhs}
+      this.download('export/stuCard', {
+        ...data
+      },'毕业生登记表.xlsx')
     }
   },
 };

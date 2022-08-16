@@ -376,7 +376,7 @@ export default {
         isIndeterminate: true,
       },
       datePicker: "",
-      tableData: [{ date: 1 }],
+      tableData: [],
       multipleSelection: [],
     };
   },
@@ -422,8 +422,8 @@ export default {
       getStuChangeInfoPageList(data)
         .then((res) => {
           console.log("ress", res);
-          // this.tableData = res.data.data;
-          // this.queryParams.total = res.data.total;
+          this.tableData = res.data.data;
+          this.queryParams.total = res.data.total;
         })
         .catch((err) => {});
       console.log(this.searchVal, this.select);
@@ -599,7 +599,7 @@ export default {
       this.$router.push({
         path: "/student/stuChangeDetail",
         query: {
-          id: row.date,
+          id: row.xh,
         },
       });
     },

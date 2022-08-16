@@ -153,3 +153,12 @@ export function backFlow(data) {
     params: data
   })
 }
+
+//学籍异动详情
+export function showStuStatusChangeInfoRes(data) {
+  return request({
+    url: '/StuStatusChange/showStuStatusChangeInfoRes',
+    method: 'get',
+    params: data
+  })
+}

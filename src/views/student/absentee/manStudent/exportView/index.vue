@@ -77,14 +77,16 @@ export default {
         return
       }
       let data = {
-        hxList: hxList.length>0?hxList.join(','):'',
+        hxList: hxList,
         columnInfoList: columnInfoList,
         esportStyle:'EXCEL'
       }
-      exportStu(data).then(res => {
-        console.log(res)
-      }).catch(err=>{})
-      // this.$emit('handleConfirm')
+      // exportStu(data).then(res => {
+      //   console.log(res)
+      // })
+      this.download('/regStuInfo/export', {
+        ...data
+      },'导出.xlsx')
     }
   },
 };

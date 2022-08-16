@@ -2,7 +2,7 @@
   <div class="exportView">
     <el-dialog title="导出" :visible.sync="showExport" width="800px" :before-close="handleCancel">
       <div class="dialogBody">
-        <el-transfer class="transfer" v-model="value" :data="transferData" :titles="titles"></el-transfer>
+        <el-transfer class="transfer" v-model="transferVal" :props="{key:'id', label:'dicCloumnChinese'}" :data="transferData" :titles="titles"></el-transfer>
         <div class="mt20">
           <el-radio-group v-model="radio">
             <el-radio :label="1">EXCEL表格</el-radio>
@@ -26,13 +26,10 @@ export default {
   data() {
     return {
       transferData: [
-        { key: 1, label: '学号' },
-        { key: 2, label: '性别' },
-        { key: 3, label: '年级' },
-        { key: 4, label: '学院代码' },
+        // { key: 1, label: '学号' }
       ],
       titles:['待选择字段', '已选择字段'],
-      value: [1],
+      transferVal: [],
       radio:1
     };
   },
@@ -40,6 +37,10 @@ export default {
     showExport: {
       type: Boolean,
       default:false
+    },
+    multipleSelection: {
+      type: Array,
+      default:()=>[]
     }
   },
 
@@ -50,7 +51,7 @@ export default {
   methods: {
     getExportQuery() {
       exportQuery().then(res => {
-        console.log(res)
+        // console.log(res)
         this.transferData = res.data
       }).catch(err=>{})
     },
@@ -58,11 +59,32 @@ export default {
       this.$emit('handleCancel')
     },
     handleConfirm() {
-      let data = {}
+      let hxList = []
+      let columnInfoList = []
+      for (let x = 0; x < this.multipleSelection.length; x++){
+        hxList.push(this.multipleSelection[x].xh)
+      }
+      if (this.transferVal.length > 0) {
+        for (let i = 0; i < this.transferData.length; i++) {
+          for (let y = 0; y < this.transferVal.length; y++) {
+            if (this.transferVal[y] == this.transferData[i].id) {
+              columnInfoList.push(this.transferData[i])
+            }
+          }
+        }
+      } else {
+        this.$message('请选择导出字段')
+        return
+      }
+      let data = {
+        hxList: hxList.length>0?hxList.join(','):'',
+        columnInfoList: columnInfoList,
+        esportStyle:'EXCEL'
+      }
       exportStu(data).then(res => {
         console.log(res)
       }).catch(err=>{})
-      this.$emit('handleConfirm')
+      // this.$emit('handleConfirm')
     }
   },
 };

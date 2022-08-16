@@ -403,7 +403,7 @@ export default {
         SFZJH: this.select == "sfzjh" ? this.searchVal : "",
         YDDH: this.select == "yddh" ? this.searchVal : "",
         PYCCM: "",
-        XZ: "0",
+        XZ: "",
         XJZT: "",
         ZZMMM: "",
         MZM: "",

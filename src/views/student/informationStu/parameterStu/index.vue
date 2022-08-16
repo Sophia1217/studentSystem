@@ -2,34 +2,36 @@
   <div class="parameterStu">
     <div class="formWrap">
       <el-form ref="ruleForm" :model="form" :rules="rules" label-width="120px">
-        <el-form-item label="申请开放" prop="apply">
-          <el-switch v-model="form.apply" active-color="#23AD6F" inactive-color="#E0E0E0"></el-switch>
+        <el-form-item label="申请开放" prop="sqkg">
+          <el-switch v-model="form.sqkg" active-color="#23AD6F" inactive-color="#E0E0E0"
+           active-value="1" inactive-value="0"></el-switch>
         </el-form-item>
         <el-form-item label="申请开放时间">
           <el-date-picker 
             v-model="form.applyDate" 
-            type="daterange" 
+            type="datetimerange" 
             range-separator="至" 
             start-placeholder="起始年月日" 
             end-placeholder="结束年月日" 
-            value-format="yyyy-MM-dd" 
+            value-format="yyyy-MM-dd HH:mm:ss" 
             :clearable="false">
           </el-date-picker>
         </el-form-item>
 
         <div class="line"></div>
 
-        <el-form-item label="审核开放" prop="audit">
-          <el-switch v-model="form.audit" active-color="#23AD6F" inactive-color="#E0E0E0"></el-switch>
+        <el-form-item label="审核开放" prop="shkg">
+          <el-switch v-model="form.shkg" active-color="#23AD6F" inactive-color="#E0E0E0"
+           active-value="1" inactive-value="0"></el-switch>
         </el-form-item>
         <el-form-item label="审核开放时间">
           <el-date-picker 
             v-model="form.auditApplyDate" 
-            type="daterange" 
+            type="datetimerange" 
             range-separator="至" 
             start-placeholder="起始年月日" 
             end-placeholder="结束年月日" 
-            value-format="yyyy-MM-dd" 
+            value-format="yyyy-MM-dd HH:mm:ss" 
             :clearable="false">
           </el-date-picker>
         </el-form-item>
@@ -43,22 +45,23 @@
 </template>
 
 <script>
+import { stuInfoModifyParamService } from '@/api/student/fieldSettings' 
 export default {
   name: 'parameterStu',
 
   data() {
     return {
       form: {
-        apply: true,
-        applyDate: [],
-        audit: false,
-        auditApplyDate:[]
+        sqkg: '1',
+        applyDate: [], // 申请开放时间
+        shkg: '1',
+        auditApplyDate:[] //审核开放时间
       },
       rules: {
-        apply: [
+        sqkg: [
           { required: true, message: '请选择', trigger: 'blur' },
         ],
-        audit: [
+        shkg: [
           { required: true, message: '请选择', trigger: 'blur' },
         ]
       }
@@ -73,12 +76,33 @@ export default {
     onSubmit() {
       let start = this.form.applyDate&&this.form.applyDate[1]?this.form.applyDate[1]:''
       let end = this.form.auditApplyDate && this.form.auditApplyDate[1] ? this.form.auditApplyDate[1] : ''
-      console.log(start, end)
       if (start > end) {
         this.$message.error('审核开放结束时间需要晚于申请开放结束时间！');
         return
       }
+      let sqkfsj, sqjssj, shkfsj, shjssj = ''
       
+      // 申请开放时间
+      if (this.form.applyDate && this.form.applyDate.length>0) {
+        sqkfsj = this.form.applyDate[0]
+        sqjssj = this.form.applyDate[1]
+      }
+      if (this.form.auditApplyDate && this.form.auditApplyDate.length > 0) {
+        shkfsj = this.form.auditApplyDate[0]
+        shjssj = this.form.auditApplyDate[1]
+      }
+
+      let data = {
+        shkg:this.form.shkg,
+        shkfsj:shkfsj,
+        shjssj:shjssj,
+        sqkg:this.form.sqkg,
+        sqkfsj:sqkfsj,
+        sqjssj:sqjssj
+      }
+      stuInfoModifyParamService(data).then(res => {
+        this.$message(res.errmsg)
+      }).catch(err=>{})
     }
   },
 };

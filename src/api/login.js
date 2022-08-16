@@ -33,8 +33,13 @@ export function register(data) {
 // 获取用户详细信息
 export function getInfo() {
   return request({
-    url: '/getInfo',
-    method: 'get'
+    url: '/getUserRoles',
+    method: 'post',
+    // headers: {
+    //     ticket: params.ticket || '',
+    //     clientId: 123
+    // },
+    // data : params
   })
 }
 

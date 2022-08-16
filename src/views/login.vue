@@ -32,7 +32,7 @@
           <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
-      <el-form-item prop="code" v-if="captchaEnabled">
+      <!-- <el-form-item prop="code" v-if="captchaEnabled">
         <el-input
           v-model="loginForm.code"
           auto-complete="off"
@@ -45,8 +45,9 @@
         <div class="login-code">
           <img :src="codeUrl" @click="getCode" class="login-code-img"/>
         </div>
-      </el-form-item> -->
-      <!-- <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox> -->
+
+      </el-form-item>
+      <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox> -->
       <el-form-item style="width: 100%">
         <el-button
           :loading="loading"
@@ -64,9 +65,9 @@
       </el-form-item>
     </el-form>
     <!--  底部  -->
-    <div class="el-login-footer">
+    <!-- <div class="el-login-footer">
       <span>Copyright © 2018-2022 ruoyi.vip All Rights Reserved.</span>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -94,6 +95,7 @@ export default {
         // password: [
         //   { required: true, trigger: "blur", message: "请输入您的密码" }
         // ],
+
         // code: [{ required: true, trigger: "change", message: "请输入验证码" }]
       },
       loading: false,
@@ -113,8 +115,8 @@ export default {
     },
   },
   created() {
-    this.getCode();
     //this.getCookie();
+    // this.getCode();
   },
   methods: {
     getCode() {
@@ -127,16 +129,17 @@ export default {
         }
       });
     },
-    getCookie() {
-      const username = Cookies.get("username");
-      // const password = Cookies.get("password");
-      //const rememberMe = Cookies.get('rememberMe')
-      this.loginForm = {
-        username: username === undefined ? this.loginForm.username : username,
-        //password: password === undefined ? this.loginForm.password : decrypt(password),
-        //rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
-      };
-    },
+
+    // getCookie() {
+    //   const username = Cookies.get("username");
+    //   const password = Cookies.get("password");
+    //   const rememberMe = Cookies.get('rememberMe')
+    //   this.loginForm = {
+    //     username: username === undefined ? this.loginForm.username : username,
+    //     password: password === undefined ? this.loginForm.password : decrypt(password),
+    //     rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
+    //   };
+    // },
     handleLogin() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {

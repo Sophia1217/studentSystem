@@ -4,7 +4,7 @@ import request from "@/utils/request";
 export function listNotice(query) {
   return request({
     // url: '/system/notice/list',
-    url: "/sws/class/queryClassList",
+    url: "/class/queryClassList",
     method: "post",
     data: query,
   });

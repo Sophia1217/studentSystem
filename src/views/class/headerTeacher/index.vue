@@ -8,33 +8,39 @@
       v-show="showSearch"
       label-width="68px"
     >
-      <el-form-item label="培养单位" prop="noticeType">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="计算机学院"
-          clearable
-        >
+      <el-form-item label="培养单位" prop="ssdwdm">
+        <el-select v-model="queryParams.ssdwdm" placeholder="未选择" clearable>
+          <el-option
+            v-for="(item, index) in collegeOptions"
+            :key="index"
+            :label="item.mc"
+            :value="item.dm"
+          ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="培养层次" prop="noticeType">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="本科"
-          clearable
-        >
+      <el-form-item label="培养层次" prop="pycc">
+        <el-select v-model="queryParams.pycc" placeholder="未选择" clearable>
+          <el-option
+            v-for="(item, index) in levelOptions"
+            :key="index"
+            :label="item.mc"
+            :value="item.dm"
+          ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="年级" prop="noticeType">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="2022"
-          clearable
-        >
+      <el-form-item label="年级" prop="ssnj">
+        <el-select v-model="queryParams.ssnj" placeholder="未选择" clearable>
+          <el-option
+            v-for="(item, index) in gradeOptions"
+            :key="index"
+            :label="item"
+            :value="item"
+          ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="班级编号" prop="noticeTitle">
+      <el-form-item label="班级编号" prop="bjdm">
         <el-input
-          v-model="queryParams.noticeTitle"
+          v-model="queryParams.bjdm"
           placeholder="请输入班级编号"
           clearable
           @keyup.enter.native="handleQuery"
@@ -60,22 +66,6 @@
       <h3 class="title-item">
         班级列表<span class="iconfont repeat_icon">&#xe7b1; </span>
       </h3>
-      <el-row :gutter="10" class="mb8" style="float: right; margin-top: 15px">
-        <!-- <el-col :span="1.5" style="float: left"> 班级列表 </el-col> -->
-        <el-col :span="1.5">
-          <el-button class="onrecord">
-            <span class="iconfont record_icon">&#xe694;</span>
-            任职记录</el-button
-          >
-        </el-col>
-        <el-col :span="1.5">
-          <el-button class="allocate" @click="handleDelete">
-            <span class="iconfont allocate_icon">&#xe638;</span>
-            批量分配</el-button
-          >
-        </el-col>
-        <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
-      </el-row>
     </div>
 
     <!-- 班级列表 -->
@@ -206,30 +196,18 @@
         >
       </div>
     </el-dialog>
-
-    <el-dialog
-      :title="title"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <span
-        >是否确认删除空班级？<span style="color: #ed5234"
-          >*每次仅支持删除一个班级，且该班级代码编号为最末尾</span
-        ></span
-      >
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="classCancel">取 消</el-button>
-        <el-button type="primary" @click="classConfirm" class="confirm"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import "@/assets/fonts/person/iconfont.css";
+import {
+  classList,
+  getCollege,
+  getLevel,
+  getGrade,
+} from "@/api/class/maintenanceClass"; // 引入班级列表查询、修改班级名称接口
+import { getHeaderTeacher } from "@/api/class/headerTeacher";
 export default {
   name: "headerTeacher", //班主任
   data() {
@@ -245,9 +223,13 @@ export default {
       // 显示搜索条件
       showSearch: true,
       // 总条数
-      total: 100,
+      total: 0,
       // 表格数据
       noticeList: [],
+      // 筛选框数据
+      collegeOptions: [],
+      levelOptions: [],
+      gradeOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示新建班级弹出层
@@ -258,10 +240,10 @@ export default {
       queryParams: {
         pageNum: 1, // 默认请求第一页数据
         pageSize: 10, // 默认一页10条数据
-        college: "", // 培养单位
-        level: "", // 培养层次
-        grade: "", // 年级
-        classId: "", // 班级编号
+        ssdwdm: "", // 培养单位
+        pycc: "", // 培养层次
+        ssnj: "", // 年级
+        bjdm: "", // 班级编号
       },
       // 表单参数
       form: {},
@@ -276,10 +258,63 @@ export default {
       },
     };
   },
-  created() {
-    // this.getList();
+  mounted() {
+    this.getList(this.queryParams);
+    this.getOptions();
   },
   methods: {
+    // 查询班级列表
+    getList(queryParams) {
+      // this.loading = true;
+      // debugger;
+      Object.assign(queryParams, this.queryParams);
+      classList(queryParams).then((response) => {
+        // debugger;
+        // 获取班级列表数据
+        if (response.errcode == "00") {
+          this.noticeList = response.data.rows; // 根据状态码接收数据
+          this.total = response.data.total; //总条数
+          //  this.loading = false;
+        }
+      });
+    },
+    // 获取筛选框数据
+    getOptions() {
+      this.collegeOptions = [];
+      this.levelOptions = [];
+      this.gradeOptions = [];
+      getCollege().then((response) => {
+        // 获取培养单位列表数据
+        if (response.errcode == "00") {
+          this.collegeOptions = response.data.rows;
+        }
+      });
+      getLevel().then((response) => {
+        // 获取培养层次列表数据
+        if (response.errcode == "00") {
+          this.levelOptions = response.data.rows;
+        }
+      });
+      getGrade().then((response) => {
+        // 获取年级列表数据
+        if (response.errcode == "00") {
+          this.gradeOptions = response.data.rows;
+        }
+      });
+    },
+    // 筛选框表单重置
+    resetForm() {
+      this.queryParams = {};
+    },
+    // 查询按钮操作
+    handleQuery() {
+      this.getList(this.queryParams);
+    },
+    // /** 重置按钮操作 */
+    resetQuery() {
+      this.resetForm("queryForm");
+      this.handleQuery();
+    },
     // 新建班级-取消按钮
     cancel() {
       this.open = false;
@@ -298,7 +333,10 @@ export default {
     },
     // 分配班主任
     action(row) {
-      this.$router.push("/class/classTeacher");
+      this.$router.push({
+        path: "/class/classTeacher",
+        query: { bjmc: row.bjmc, bjdm: row.bjdm },
+      });
     },
     /** 新增班级按钮操作 */
     handleAdd() {

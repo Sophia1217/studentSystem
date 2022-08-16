@@ -34,7 +34,7 @@
             <span class="tohead">常用功能</span>
         </div>
     <div class="row">
-        <div class="item">
+        <div class="item stuInfoClick" @click="stuInfoClick">
             <div class="medalImage">
                 <img  src="~@/assets/images/medal.png" alt="">
             </div>
@@ -208,13 +208,20 @@
 </template>
 
 <script>
+import { Row } from 'element-ui'
 export default {
   name: 'studentHomePage', // 学生视角首页内容
 
   data() {
     return{}
+
   },
+
   methods: {
+    //首页基本信息跳转
+    stuInfoClick(){
+        this.$router.push("/studentAngle/lookAngle")
+    }
 }
 }
 </script>
@@ -226,10 +233,11 @@ export default {
         background-color: #005657;
     }
     .bg{
-        width: 1920px;
+        width: 100%;
         height: 277px;
         background: url("~@/assets/images/WechatIMG85.png") no-repeat;
         background-size: 100% 100%;
+        margin-bottom: 30px;
     }
     .row{
         display: flex;
@@ -243,7 +251,6 @@ export default {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
-        margin-top: 30px;
     }
     .tohead{
         font-weight: 500;
@@ -403,4 +410,9 @@ export default {
             height: 20px;
             vertical-align: middle;
         }
+
+    // 在校学生信息
+    .stuInfoClick{
+        cursor: pointer;
+    }
 </style>

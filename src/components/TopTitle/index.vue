@@ -4,7 +4,7 @@
             <div class="logoImage">
                 <img  src="~@/assets/images/logo.png" alt="">
             </div>
-            <div class="content">
+            <div class="tt-content">
                 <div class="titleTop1"><span class="nameTitle" >华中师范大学学工管理系统</span></div>
             <div class="titleTop2">
                 <span class="inglishTitle" >CCNU Student Management System</span>
@@ -211,11 +211,11 @@ export default {
         margin-right: 12px;
     }
 
-    .content{
+    .tt-content{
         display: flex;
         flex-direction: column;
         justify-content: center;
-        background-color: #005657;
+        // background-color: #005657;
     }
     .titleTop1{
         width: 212px;

@@ -33,7 +33,6 @@ export default {
   data() {
     return {
       user: [1, 2, 3, 4, 5, 6, 7, 8],
-      //user: [1, 2, 3],
       isActived: "",
       move: 460,
       dataNavListRealWidth: 0,

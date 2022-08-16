@@ -23,52 +23,33 @@
 
     <!-- 班干部任职记录 -->
     <el-table
-      v-loading="loading"
-      :data="noticeList"
+      :data="queryBgbRmjList"
+      row-key="id"
+      :tree-props="{ children: 'children', hasChildren: 'children.length' }"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" width="55"> </el-table-column>
+      <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="序号" align="center" type="index" />
-      <el-table-column
-        label="班级职位"
-        align="center"
-        prop="position"
-        sortable
-      />
-      <el-table-column label="姓名" align="center" prop="name" sortable>
+      <el-table-column label="班级职位" align="center" prop="mc" sortable />
+      <el-table-column label="姓名" align="center" prop="xm" sortable>
       </el-table-column>
-      <el-table-column label="学号" align="center" prop="studentId" sortable />
       <el-table-column
-        label="任命人"
+        label="学号"
         align="center"
-        prop="orderName"
+        prop="xh"
         sortable
       />
-      <el-table-column
-        label="任命年度"
-        align="center"
-        prop="orderYear"
-        sortable
-      />
-      <el-table-column
-        label="任命学期"
-        align="center"
-        prop="orderSemi"
-        sortable
-      />
+      <el-table-column label="任命人" align="center" prop="rmrgh" sortable />
+      <el-table-column label="任命年度" align="center" prop="rmsj" sortable />
+      <el-table-column label="任命学期" align="center" prop="rmsj" sortable />
       <el-table-column
         label="任命时间"
         align="center"
-        prop="actionTime"
+        prop="rmsj"
         sortable
       />
       <el-table-column label="撤任人" align="center" prop="offName" sortable />
-      <el-table-column
-        label="撤任时间"
-        align="center"
-        prop="offTime"
-        sortable
-      />
+      <el-table-column label="撤任时间" align="center" prop="cxsj" sortable />
       <el-table-column
         label="任职状态"
         align="center"
@@ -76,11 +57,12 @@
         class-name="small-padding fixed-width"
         sortable
       >
-        <template slot-scope="scope">
+        <template>
+          <!-- slot-scope="scope" -->
           <div>
             <span class="iconfont allocate_teacher">&#xe604;</span>
             <span style="color: #005657">
-              {{ noticeList[0].orderState }}
+              <!-- {{ noticeList[0].orderState }} -->
             </span>
           </div>
         </template>
@@ -175,6 +157,7 @@
 
 <script>
 import "@/assets/fonts/circle/iconfont.css";
+import { getQueryBgbRmjl } from "@/api/class/classLeader";
 export default {
   name: "LeadRecord",
   data() {
@@ -191,45 +174,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 100,
-      // 表格数据
-      noticeList: [
-        {
-          position: "班长",
-          name: "张三",
-          studentId: "13070025",
-          orderName: "张五",
-          orderYear: "2022年",
-          orderSemi: "秋季学期",
-          actionTime: "2022-07-07 23:33:33",
-          offName: "张四",
-          offTime: "2022-07-07 23:33:33",
-          orderState: "在岗",
-        },
-        {
-          position: "班长",
-          name: "张三",
-          studentId: "13070025",
-          orderName: "张五",
-          orderYear: "2022年",
-          orderSemi: "秋季学期",
-          actionTime: "2022-07-07 23:33:33",
-          offName: "张四",
-          offTime: "2022-07-07 23:33:33",
-          orderState: "在岗",
-        },
-        {
-          position: "班长",
-          name: "张三",
-          studentId: "13070025",
-          orderName: "张五",
-          orderYear: "2022年",
-          orderSemi: "秋季学期",
-          actionTime: "2022-07-07 23:33:33",
-          offName: "张四",
-          offTime: "2022-07-07 23:33:33",
-          orderState: "在岗",
-        },
-      ],
+      // 班干部任命记录数据
+      queryBgbRmjList: [],
       // 弹出层标题
       title: "",
       // 是否显示新建班级弹出层
@@ -258,7 +204,22 @@ export default {
       },
     };
   },
+  mounted() {
+    console.log("guazai");
+    this.getList({
+      bjdm: "1004001000",
+      sfqy: 0,
+      pageNum: 1,
+      pageSize: 10,
+    });
+  },
   methods: {
+    getList(x) {
+      getQueryBgbRmjl(x).then((res) => {
+        this.queryBgbRmjList = res.datas;
+        console.log("test:", this.queryBgbRmjList);
+      });
+    },
     // 删除记录
     deleteRecord(row) {
       console.log("删除记录");

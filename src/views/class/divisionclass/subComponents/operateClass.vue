@@ -393,12 +393,8 @@
 import "@/assets/fonts/export/iconfont.css";
 import "@/assets/fonts/refresh/iconfont.css";
 import {
-  listNotice,
-  getNotice,
-  delNotice,
-  addNotice,
-  updateNotice,
-} from "@/api/system/notice";
+getQueryStuList
+} from "@/api/class/divisionClass";
 
 export default {
   name: "divisionClass", //分班管理
@@ -485,7 +481,17 @@ export default {
   created() {
     // this.getList();
   },
+  mounted(){
+    console.log("分班管理操作挂在");
+    this.getList({bjdm:"6860320004"})
+  },
   methods: {
+    // 查询某班级学生列表
+    getList(x){
+      getQueryStuList(x).then(res=>{
+        console.log(res);
+      })
+    },
     // 分班管理路由跳转
     operate() {
       console.log(123);
@@ -498,14 +504,14 @@ export default {
       this.currentIndex = index;
     },
     /** 查询公告列表 */
-    getList() {
+    // getList() {
       // this.loading = true;
       // listNotice(this.queryParams).then((response) => {
       //   this.noticeList = response.rows;
       //   this.total = response.total;
       //   this.loading = false;
       // });
-    },
+    // },
     // 取消按钮
     cancel() {
       // this.open = false;

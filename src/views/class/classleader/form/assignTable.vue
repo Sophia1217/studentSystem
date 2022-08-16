@@ -16,7 +16,7 @@
       <div class="table-content">
         <div class="classLeader" v-show="currentIndex == 0">
           <div class="title" icon="el-icon-refresh">
-            <span class="title-item">22电子信息1班</span>
+            <span class="title-item">{{ table_title }}</span>
             <span class="iconfont">&#xe631;</span>
             <el-row :gutter="10" class="mb8" style="float: right">
               <el-col :span="1.5">
@@ -24,7 +24,7 @@
                   class="stuRecord"
                   type="primary"
                   icon="el-icon-search"
-                  @click="studentRecord"
+                  @click="studentRecord1"
                 >
                   任职记录</el-button
                 >
@@ -41,7 +41,7 @@
           </div>
           <!-- v-loading="loading" -->
           <el-table
-            :data="noticeList"
+            :data="table_content"
             @selection-change="handleSelectionChange"
           >
             <el-table-column type="selection" align="center" />
@@ -50,17 +50,13 @@
               align="center"
               prop="id"
               width="60px"
+              type="index"
             />
-            <el-table-column label="学号" align="center" prop="classId" />
-            <el-table-column label="姓名" align="center" prop="className">
-              <el-input
-                :value="noticeList[0].className"
-                clearable
-                @keyup.enter.native="handleQuery"
-              />
+            <el-table-column label="学号" align="center" prop="xh" />
+            <el-table-column label="姓名" align="center" prop="xm">
             </el-table-column>
-            <el-table-column label="性别" align="center" prop="college" />
-            <el-table-column label="班级职位" align="center" prop="level" />
+            <el-table-column label="性别" align="center" prop="sex" />
+            <el-table-column label="班级职位" align="center" prop="zwdm" />
             <el-table-column label="操作" align="center" prop="level">
               <template slot-scope="scope">
                 <span
@@ -96,7 +92,7 @@
                   class="stuRecord"
                   type="primary"
                   icon="el-icon-search"
-                  @click="studentRecord"
+                  @click="studentRecord1"
                 >
                   任职记录</el-button
                 >
@@ -223,9 +219,23 @@
 
 <script>
 import "@/assets/fonts/circle/iconfont.css";
+// import {
+  
+// } from "@/api/class/classLeader";
 export default {
   name: "assignTable", //班干部任命表格
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
+  // 子组件(assignTable)属性,其父组件为leaderAssign
+  props: {
+    table_title: {
+      type: String,
+      default: "test_title",
+    },
+    table_content: {
+      type: Object,
+      default: [],
+    },
+  },
   data() {
     return {
       // tab栏切换
@@ -279,6 +289,10 @@ export default {
           record: "班级操作记录",
         },
       ],
+      // 班干部列表
+      queryBgbList: [],
+      // 全班学生列表
+      allClassList: [],
       // 弹出层标题
       title: "",
       // 是否显示分配班级弹框
@@ -314,13 +328,15 @@ export default {
   },
   methods: {
     // 班干部任职记录
-    studentRecord() {
+    studentRecord1() {
+      console.log("点击班干部任职记录按钮");
       this.$router.push({
         path: "/class/leadRecord",
       });
     },
     // 班干部批量撤任操作
     deleteSome() {
+      console.log(111);
       this.cancelAllocate = "true";
     },
     // 批量取消分配-确认操作

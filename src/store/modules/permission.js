@@ -153,7 +153,7 @@ export function filterDynamicRoutes(routes) {
 }
 
 export const loadView = (view) => {
-    view = view.replace('/views/','')
+    // view = view.replace('/views/','')
   if (process.env.NODE_ENV === 'development') {
     return (resolve) => require([`@/views/${view}`], resolve)
   } else {

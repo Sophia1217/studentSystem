@@ -154,13 +154,13 @@
           <span class="title">毕业学生信息列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderBlue">
+          <div class="btns borderBlue" @click="getGraStu">
             <i class="icon blueIcon"></i><span class="title">毕业生登记表</span>
           </div>
-          <div class="btns borderOrange">
+          <div class="btns borderOrange" @click="getStuReg">
             <i class="icon orangeIcon"></i><span class="title">学生登记表</span>
           </div>
-          <div class="btns borderLight">
+          <div class="btns borderLight" @click="getStu">
             <i class="icon lightIcon"></i><span class="title">学生卡片</span>
           </div>
           <div class="btns borderGreen" @click="handleExport">
@@ -244,6 +244,9 @@ import exportView from "../absentee/manStudent/exportView/index.vue";
 import {
   getManageRegStuInfoSearchSpread,
   getGraduateStuInfoPageList,
+  gradStu,
+  stuCard,
+  stuReg,
 } from "@/api/student/index";
 export default {
   name: "manStudent",
@@ -700,6 +703,45 @@ export default {
     // 导出确认
     handleConfirm() {
       this.showExport = false;
+    },
+    // 毕业生登记表
+    getGraStu() {
+      let xhs = [];
+      this.multipleSelection.forEach((item) => {
+        xhs.push(item.xh);
+      });
+      if (xhs.length <= 0) {
+        this.$message("请选择");
+        return;
+      }
+      let data = { xh: this.multipleSelection[0].xh };
+      gradStu(data).then((res) => this.downloadFn(res, "毕业生登记表", "docx"));
+    },
+    //学生登记
+    getStuReg() {
+      let xhs = [];
+      this.multipleSelection.forEach((item) => {
+        xhs.push(item.xh);
+      });
+      if (xhs.length <= 0) {
+        this.$message("请选择");
+        return;
+      }
+      let data = { xh: this.multipleSelection[0].xh };
+      stuReg(data).then((res) => this.downloadFn(res, "学生登记表", "docx"));
+    },
+    //学生卡片
+    getStu() {
+      let xhs = [];
+      this.multipleSelection.forEach((item) => {
+        xhs.push(item.xh);
+      });
+      if (xhs.length <= 0) {
+        this.$message("请选择");
+        return;
+      }
+      let data = { xh: this.multipleSelection[0].xh };
+      stuCard(data).then((res) => this.downloadFn(res, "学生卡片", "docx"));
     },
     hadleDetail(row, flag) {
       let schooling = ""; // 3 4 5 是本科

@@ -181,3 +181,33 @@ export function getStuInfoFlowUpdatePage(data) {
     params: data
   })
 }
+
+//毕业生等登记表
+export function gradStu(data) {
+  return request({
+    url: '/export/gradStu',
+    method: 'get',
+    responseType: 'blob',
+    params: data
+  })
+}
+
+//学生卡片
+export function stuCard(data) {
+  return request({
+    url: '/export/stuCard',
+    method: 'get',
+    responseType: 'blob',
+    params: data
+  })
+}
+
+//学生登记表
+export function stuReg(data) {
+  return request({
+    url: '/export/regStuInfo',
+    method: 'get',
+    responseType: 'blob',
+    params: data
+  })
+}

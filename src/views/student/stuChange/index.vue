@@ -252,7 +252,7 @@
           </el-table-column>
         </el-table>
         <pagination
-          v-show="queryParams.total>0"
+          v-show="queryParams.total > 0"
           :total="queryParams.total"
           :page.sync="queryParams.pageNum"
           :limit.sync="queryParams.pageSize"
@@ -268,7 +268,7 @@ import CheckboxCom from "../../components/checkboxCom";
 import {
   getStuChangeInfoPageList,
   getManageRegStuInfoSearchSpread,
-  excelTest
+  excelTest,
 } from "@/api/student/index";
 export default {
   name: "manStudent",
@@ -390,8 +390,8 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        total: 0
-      }
+        total: 0,
+      },
     };
   },
 
@@ -433,7 +433,7 @@ export default {
         pageSize: this.queryParams.pageSize,
         limitSql: "",
       };
-      this.exportParams = data
+      this.exportParams = data;
       getStuChangeInfoPageList(data)
         .then((res) => {
           // console.log("ress", res);
@@ -608,12 +608,14 @@ export default {
     },
     // 导出
     handleCommand(command) {
-      let that = this
-      if (command == 'EXCEL') {
-        this.exportParams.pageNum = 0
-        excelTest(this.exportParams).then(res => {
-          that.downloadFn(res, "学籍异动学生表.xlsx");
-        }).catch(err=>{})
+      let that = this;
+      if (command == "EXCEL") {
+        this.exportParams.pageNum = 0;
+        excelTest(this.exportParams)
+          .then((res) => {
+            that.downloadFn(res, "学籍异动学生表.docx", "xlsx");
+          })
+          .catch((err) => {});
       }
     },
     hadleDetail(row) {

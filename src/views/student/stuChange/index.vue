@@ -404,7 +404,7 @@ export default {
     getSpread() {
       getManageRegStuInfoSearchSpread()
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           this.manageRegOps = res.data.dwhbj;
         })
         .catch((err) => {});
@@ -612,7 +612,7 @@ export default {
       if (command == 'EXCEL') {
         this.exportParams.pageNum = 0
         excelTest(this.exportParams).then(res => {
-          that.downloadFn(res, "导出");
+          that.downloadFn(res, "学籍异动学生表.xlsx");
         }).catch(err=>{})
       }
     },

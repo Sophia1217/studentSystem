@@ -168,6 +168,7 @@ export function excelTest(data) {
   return request({
     url: '/StuStatusChange/excelTest',
     method: 'post',
+    responseType: 'blob',
     data: data
   })
 }

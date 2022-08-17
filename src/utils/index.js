@@ -390,7 +390,6 @@ export function isNumberStr(str) {
 
 // 下载表格
 export function downloadFn(data, filename) {
-  console.log(data,'data',filename)
   if (!data) {
     return
   }
@@ -398,7 +397,7 @@ export function downloadFn(data, filename) {
   let link = document.createElement('a')
   link.style.display = 'none'
   link.href = url
-  link.setAttribute('download', data.fileName)
+  link.setAttribute('download', filename)
   document.body.appendChild(link)
   link.click()
 }

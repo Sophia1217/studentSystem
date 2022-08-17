@@ -111,6 +111,7 @@ export default {
       }
     },
     setkeys() {
+      console.log("this.arr", this.arr);
       this.$refs.tree.setCheckedKeys(this.arr);
     },
     getData(data) {
@@ -132,6 +133,7 @@ export default {
     },
     sava() {
       if (this.isEdit === "1") {
+        console.log("新增");
         let data = {
           userId: "1234",
           menuList: this.savaData,
@@ -149,7 +151,7 @@ export default {
       } else {
         let data = {
           userId: "412341234",
-          menuList: this.savaData,
+          menuList: this.savaData.length > 0 ? this.savaData : this.arr, //如果用户进来没编辑，默认前一次筛选出来的树
           roleName: this.isEdit === "1" ? this.roleName : this.roleName1,
           roleId: this.roleId1,
           roleRem: this.queryParams.roleRem,

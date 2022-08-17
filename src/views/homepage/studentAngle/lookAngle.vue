@@ -1,5 +1,5 @@
 <template>
-  <div class="lookAngle">
+  <div class="detail">
     <div class="wrap">
       <div class="detail_left">
         <div v-for="(item,index) in dtailsList" :key="index">
@@ -1016,7 +1016,7 @@
 
 <script>
 export default {
-  name: 'lookAngle', // 学生视角查看
+  name: 'detail',
 
   data() {
     return {

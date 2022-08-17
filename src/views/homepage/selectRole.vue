@@ -16,9 +16,9 @@
           @mouseenter="mouseOver(index)"
           @mouseleave="mouseLeave"
         >
-          <div class="wrap">
+          <div class="wrap" @click="handleClick(item)">
             <img src="@/assets/images/role.png" width="60px" alt="" />
-            <div class="content">{{ item }}</div>
+            <div class="content">{{ item.roleName }}</div>
           </div>
         </div>
       </div>
@@ -29,25 +29,66 @@
   </div>
 </template>
 <script>
+import store from "@/store";
 export default {
   data() {
     return {
-      user: [1, 2, 3, 4, 5, 6, 7, 8],
+      user: [],
       //user: [1, 2, 3],
       isActived: "",
-      move: 460,
+      move: 0,
       dataNavListRealWidth: 0,
       dataNavListViewWidth: 0,
     };
   },
-  mounted() {},
+  mounted() {
+    store
+      .dispatch("GetInfo")
+      .then((res) => {
+        var roles = res.row || [];
+        if (roles.length > 1) {
+          // 多个角色
+          this.user = roles;
+          if (roles.length > 4) {
+            this.move = 460;
+          }
+        } else {
+          this.$router.push("/");
+        }
+      })
+      .catch((err) => {
+        store.dispatch("LogOut").then(() => {
+          Message.error(err);
+          this.$router.push("/");
+        });
+      });
+  },
   methods: {
+    handleClick(item) {
+        store.dispatch('SaveRole',item)
+      if (item.roleType == 2) {
+        // 管理员
+        store.dispatch("GenerateRoutes", item.roleId).then(() => {
+          this.$router.push({ path: "/", replace: true });
+        });
+      } else if (item.roleType == 1) {
+        // 学生
+        store.dispatch("GenerateRoutes", item.roleId).then(() => {
+          this.$router.push({ path: "/studentHomePage", replace: true });
+        });
+      } else {
+        // 普通老师 item.roleType == 0
+        store.dispatch("GenerateRoutes", item.roleId).then(() => {
+          this.$router.push({ path: "/", replace: true });
+        });
+      }
+    },
     mouseOver: function (index) {
-      console.log(index);
+      //   console.log(index);
       this.isActived = index;
     },
     mouseLeave: function () {
-      console.log("NULL");
+      //   console.log("NULL");
       this.isActived = "";
     },
 

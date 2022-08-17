@@ -67,8 +67,8 @@ export function exportQuery(data) {
 export function exportStu(data) {
   return request({
     url: '/regStuInfo/export',
-    method: 'get',
-    params: data
+    method: 'post',
+    data: data
   })
 }
 
@@ -151,5 +151,23 @@ export function backFlow(data) {
     url: '/StuInfoFlow/backStuInfoFlow',
     method: 'get',
     params: data
+  })
+}
+
+//学籍异动详情
+export function showStuStatusChangeInfoRes(data) {
+  return request({
+    url: '/StuStatusChange/showStuStatusChangeInfoRes',
+    method: 'get',
+    params: data
+  })
+}
+
+//学生异动导出excel
+export function excelTest(data) {
+  return request({
+    url: '/StuStatusChange/excelTest',
+    method: 'post',
+    data: data
   })
 }

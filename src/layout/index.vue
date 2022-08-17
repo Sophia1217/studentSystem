@@ -1,6 +1,7 @@
 <template>
   <div :class="classObj" class="app-wrapper" :style="{'--current-color': theme}">
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
+    <TopTitle />
     <sidebar v-if="!sidebar.hide" class="sidebar-container" />
     <div :class="{hasTagsView:needTagsView,sidebarHide:sidebar.hide}" class="main-container">
       <div :class="{'fixed-header':fixedHeader}">
@@ -18,6 +19,7 @@
 <script>
 import RightPanel from '@/components/RightPanel'
 import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
+import TopTitle from '@/components/TopTitle/index.vue'
 import ResizeMixin from './mixin/ResizeHandler'
 import { mapState } from 'vuex'
 import variables from '@/assets/styles/variables.scss'
@@ -27,6 +29,7 @@ export default {
   components: {
     AppMain,
     Navbar,
+    TopTitle,
     RightPanel,
     Settings,
     Sidebar,

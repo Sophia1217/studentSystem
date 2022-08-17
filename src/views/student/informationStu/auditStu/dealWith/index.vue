@@ -173,10 +173,11 @@
           </el-table-column>
           <el-table-column prop="approveTime" label="修改时间" sortable>
           </el-table-column>
-          <el-table-column prop="name" label="审核状态" sortable>
+          <el-table-column prop="approveState" label="审核状态" sortable>
             <template slot-scope="scope">
-              <div><span class="dotGreen"></span> 通过</div>
-              <div><span class="dotRed"></span> 退回</div>
+              <div v-if="scope.row.approveState ==1"> 已审批</div>
+              <div v-if="scope.row.approveState ==2"> 未审批</div>
+              <div v-else> 退回</div>
             </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="180">

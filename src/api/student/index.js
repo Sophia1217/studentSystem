@@ -172,3 +172,12 @@ export function excelTest(data) {
     data: data
   })
 }
+
+//学籍审核页面
+export function getStuInfoFlowUpdatePage(data) {
+  return request({
+    url: '/StuInfoFlow/getStuInfoFlowUpdatePage',
+    method: 'get',
+    params: data
+  })
+}

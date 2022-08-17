@@ -194,7 +194,7 @@
               <el-button
                 type="text"
                 size="small"
-                @click="hadleDetail(scope.row, 1, 1)"
+                @click="hadleDetail(scope.row)"
               >
                 <i class="scopeIncon handledie"></i>
                 <span class="handleName">审核</span>
@@ -465,8 +465,10 @@ export default {
     },
     bacK() {
       this.form.rollbackReason = "";
-      if (this.multipleSelection.length > 1) {
+      if (this.multipleSelection.length == 1) {
         this.dialogVisible = true;
+      } else if (this.multipleSelection.length > 1) {
+        this.$message.error("只能勾选一条信息");
       } else {
         this.$message.error("请先勾选一条信息");
       }
@@ -490,9 +492,20 @@ export default {
       this.showExport = false;
     },
     hadleDetail(row) {
-      console.log(row);
+      let schooling = '' // 3 4 5 是本科
+      if (row.pyccm == 1 || row.pyccm == 2) { // 1 2 是研究生
+        schooling = 2
+      } else {
+        schooling = 1
+      }
+      // console.log(row);
       this.$router.push({
         path: "/student/informationStu/auditSteps",
+        query: {
+          xh: row.tableColumnValue,
+          schooling: schooling,
+          id:row.id
+        }
       });
     },
   },

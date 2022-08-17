@@ -72,9 +72,9 @@ service.interceptors.request.use(config => {
 // 响应拦截器
 service.interceptors.response.use(res => {
   // 未设置状态码则默认成功状态
-  const code = res.data.errcode || 200;
+  const code = res.data.errcode || '00';
   // 获取错误信息
-  const msg = errorCode[code] || res.data.msg || errorCode['default']
+  const msg =  res.data.errmsg || errorCode[code] || errorCode['default']
   // 二进制数据则直接返回
   if (res.request.responseType === 'blob' || res.request.responseType === 'arraybuffer') {
     return res.data
@@ -155,15 +155,15 @@ service.interceptors.response.use(res => {
     //   Notification.error({
     //     title: msg
     //   })
-    Message({
-        message: msg,
-        type: 'error',
-        duration: 5 * 1000
-    })
-    return Promise.reject(new Error(msg))
+        Message({
+            message: msg,
+            type: 'error',
+            duration: 5 * 1000
+        })
+        return Promise.reject(new Error(msg))
     //   return Promise.reject('error')
     } else {
-    return res.data
+        return res.data
     }
 },
   error => {

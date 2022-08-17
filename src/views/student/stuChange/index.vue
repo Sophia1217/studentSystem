@@ -205,7 +205,7 @@
             <span class="el-dropdown-link"> 导出 </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="EXCEL">EXCEL</el-dropdown-item>
-              <el-dropdown-item command="TXT">TXT</el-dropdown-item>
+              <!-- <el-dropdown-item command="TXT">TXT</el-dropdown-item> -->
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -251,6 +251,13 @@
             </template>
           </el-table-column>
         </el-table>
+        <pagination
+          v-show="queryParams.total>0"
+          :total="queryParams.total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="handleSearch"
+        />
       </div>
     </div>
   </div>
@@ -261,6 +268,7 @@ import CheckboxCom from "../../components/checkboxCom";
 import {
   getStuChangeInfoPageList,
   getManageRegStuInfoSearchSpread,
+  excelTest
 } from "@/api/student/index";
 export default {
   name: "manStudent",
@@ -378,6 +386,12 @@ export default {
       datePicker: "",
       tableData: [],
       multipleSelection: [],
+      exportParams: {},
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        total: 0
+      }
     };
   },
 
@@ -415,18 +429,19 @@ export default {
         SPWH: "",
         YDRQ: "",
         YDCZRGH: "",
-        pageNum: 1,
-        pageSize: 10,
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
         limitSql: "",
       };
+      this.exportParams = data
       getStuChangeInfoPageList(data)
         .then((res) => {
-          console.log("ress", res);
+          // console.log("ress", res);
           this.tableData = res.data.data;
           this.queryParams.total = res.data.total;
         })
         .catch((err) => {});
-      console.log(this.searchVal, this.select);
+      // console.log(this.searchVal, this.select);
     },
     // 点击更多
     handleMore() {
@@ -561,7 +576,7 @@ export default {
       this.changWhy.checkAll = checkedCount === this.changWhy.checkBox.length;
       this.changWhy.isIndeterminate =
         checkedCount > 0 && checkedCount < this.changWhy.checkBox.length;
-      console.log(this.changWhy.choose, "单选");
+      // console.log(this.changWhy.choose, "单选");
     },
     //异动文号全选
     changTitanicAll(val) {
@@ -593,7 +608,13 @@ export default {
     },
     // 导出
     handleCommand(command) {
-      this.$message("click on item " + command);
+      let that = this
+      if (command == 'EXCEL') {
+        this.exportParams.pageNum = 0
+        excelTest(this.exportParams).then(res => {
+          that.downloadFn(res, "导出");
+        }).catch(err=>{})
+      }
     },
     hadleDetail(row) {
       this.$router.push({

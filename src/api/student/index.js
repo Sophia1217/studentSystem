@@ -162,3 +162,12 @@ export function showStuStatusChangeInfoRes(data) {
     params: data
   })
 }
+
+//学生异动导出excel
+export function excelTest(data) {
+  return request({
+    url: '/StuStatusChange/excelTest',
+    method: 'post',
+    data: data
+  })
+}

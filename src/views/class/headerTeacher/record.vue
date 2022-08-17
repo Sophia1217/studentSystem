@@ -282,6 +282,7 @@ export default {
 .title-item {
   display: inline-block;
   height: 28px;
+  width: 1000px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;
   font-size: 20px;

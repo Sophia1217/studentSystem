@@ -449,7 +449,7 @@ export default {
         if (response.errcode == "00") {
           this.doubleCheck = true; // 弹出撤任二次确认框
         }
-        if (response.errcode !== "200") {
+        if (response.errcode !== "00") {
           this.$message({
             message: "撤任班主任失败",
             type: "error",

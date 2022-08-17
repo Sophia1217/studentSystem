@@ -51,10 +51,8 @@
           :data="role.cascaderOptions"
           @check-change="handleCheckChange"
           ref="tree"
-          :id="index"
           show-checkbox
           node-key="id"
-          :expand-on-click-node="false"
         >
           <span class="custom-tree-node" slot-scope="{ node, data }">
             <span @click="() => append(data, index)">{{ node.label }}</span>
@@ -106,9 +104,11 @@ export default {
     };
   },
 
-  mounted() {
+  created() {
     this.formName = this.$route.query;
-    console.log("formName", this.formName);
+  },
+
+  mounted() {
     this.getqueryRoleList();
     this.getQueryDataAuth();
   },
@@ -116,10 +116,9 @@ export default {
   methods: {
     // 获取用户角色
     getqueryRoleList() {
-      let data = { roleId: "01" };
-      queryRoleList(data)
+      queryRoleList({ roleId: "01" })
         .then((res) => {
-          this.checkboxWrap = res.data.rows;
+          this.checkboxWrap = res.data.rows; //用户角色的下拉框数据
         })
         .catch((res) => {});
     },
@@ -137,7 +136,6 @@ export default {
     // 初始化进入
     initData(data) {
       if (this.formName.roleId && this.formName.roleId.length > 0) {
-        console.log(1);
         this.formName.roleId = this.formName.roleId.split(",");
         for (let x = 0; x < this.formName.roleId.length; x++) {
           this.roleData.push({
@@ -152,6 +150,8 @@ export default {
         });
       }
     },
+    //  默认调用三个接口  学院班级学生 去拼接成一个 tree的结构
+
     // 获取学院数据
     getQueryDataAuth() {
       let data = { userId: "2005690002", roleId: "01" };
@@ -162,28 +162,17 @@ export default {
             data[x].id = data[x].dwdm;
             data[x].label = data[x].dwmc;
           }
-          this.cascaderOptions = data;
+          this.cascaderOptions = data; //第一层学院数据
           this.initData(this.cascaderOptions);
         })
         .catch((err) => {});
     },
-
-    //数据范围树添加
-    append(data, index) {
-      // console.log(data)
-      if (data.visitId == 0) {
-        this.handleClassList(data.dwdm, data, index);
-      } else if (data.visitId == 1) {
-        this.handleStuList(data.bjdm, data, index);
-      }
-    },
-
     // 获取班级数据
     handleClassList(value, nodeData, index) {
       let data = { ssdwdm: value };
       queryClassList(data)
         .then((res) => {
-          let rowData = res.rows;
+          let rowData = res.data.rows;
           for (let x = 0; x < rowData.length; x++) {
             rowData[x].label = rowData[x].bjmc;
           }
@@ -192,48 +181,61 @@ export default {
           if (!nodeData.children) {
             this.$set(nodeData, "children", []);
           }
-          // console.log(this.classListOps,'this.classListOps')
           if (this.classListOps.length > 0) {
             let newChildren = [];
             for (const item of this.classListOps) {
               newChildren.push({
                 ...item,
-                id: "c-" + index + "-0-" + item.bjdm,
+                id: item.bjdm,
               });
             }
-            nodeData.children = newChildren;
+            nodeData.children = newChildren; //node-key统一设置为id
+            console.log("班级nodeData", nodeData);
           }
         })
         .catch((err) => {});
+    },
+    //添加学院
+    append(data, index) {
+      if (data.visitId == 0) {
+        //请求班级
+        this.handleClassList(data.dwdm, data, index);
+      } else if (data.visitId == 1) {
+        //请求学生列表数据
+        this.handleStuList(data.bjdm, data, index);
+      }
     },
     // 获取学生数据
     handleStuList(value, nodeData, index) {
       let data = { bjdm: value };
       queryStuList(data)
         .then((res) => {
-          let data = res.Data;
+          let data = res.data.rows;
           for (let x = 0; x < data.length; x++) {
             data[x].label = data[x].xm;
           }
           this.stuListOps = data;
-
           // 下面是树添加子节点
           if (!nodeData.children) {
             this.$set(nodeData, "children", []);
           }
           let newChildren = [];
           for (const item of this.stuListOps) {
-            newChildren.push({ ...item, id: "s-" + index + "-1-" + item.xh });
+            newChildren.push({ ...item, id: item.xh });
           }
           nodeData.children = newChildren;
+          console.log("学生nodeData", nodeData);
         })
         .catch((err) => {});
     },
     // 取消
     handleCencal() {
-      this.$router.push({
-        path: "/systems/user",
-      });
+      console.log("thisssss", this.$refs.tree);
+      this.$refs.tree.setCheckedKeys(["6860"]);
+      // "6860320002", "6860320003"
+      // this.$router.push({
+      //   path: "/systems/user",
+      // });
     },
     handleCheckChange(data, checked) {
       console.log(data, checked);
@@ -241,7 +243,7 @@ export default {
 
     // 更新数据权限
     handleDataAuth() {
-      console.log(this.roleData);
+      console.log("this.roleData", this.roleData);
       let data = {
         userId: this.formName.userId,
         roleId: "01",

@@ -20,11 +20,7 @@
     </div>
 
     <!-- 班主任任职记录 问题：数据字段仍需仔细核对-->
-    <el-table
-      v-loading="loading"
-      :data="noticeList"
-      @selection-change="handleSelectionChange"
-    >
+    <el-table :data="noticeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column label="序号" align="center" type="index" />
       <el-table-column label="学工号" align="center" prop="gh" sortable />
@@ -47,81 +43,6 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-
-    <!-- 新增班级对话框 -->
-    <el-dialog
-      :title="title"
-      :visible.sync="open"
-      width="800px"
-      height="243px"
-      append-to-body
-    >
-      <el-form
-        :inline="true"
-        ref="form"
-        :model="form"
-        :rules="rules"
-        label-width="80px"
-      >
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="所属学院" prop="noticeTitle">
-              <el-select
-                v-model="form.noticeType"
-                placeholder="计算机学院"
-              ></el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="培养层次" prop="noticeType">
-              <el-select
-                v-model="form.noticeType"
-                placeholder="本科"
-              ></el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="所属年级">
-              <el-select
-                v-model="form.noticeType"
-                placeholder="2022"
-              ></el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="班级数量">
-              <!-- <editor v-model="form.noticeContent" :min-height="192" /> -->
-              <el-select v-model="form.noticeType" placeholder="10"></el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="submitForm" class="confirm"
-          >确 定</el-button
-        >
-      </div>
-    </el-dialog>
-
-    <el-dialog
-      :title="title"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <span
-        >是否确认删除空班级？<span style="color: #ed5234"
-          >*每次仅支持删除一个班级，且该班级代码编号为最末尾</span
-        ></span
-      >
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="classCancel">取 消</el-button>
-        <el-button type="primary" @click="classConfirm" class="confirm"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -282,6 +203,7 @@ export default {
 .title-item {
   display: inline-block;
   height: 28px;
+  width: 1000px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;
   font-size: 20px;

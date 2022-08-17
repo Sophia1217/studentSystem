@@ -28,25 +28,43 @@
             <el-form-item label="专业" prop="noticeType" class="header-item">
               <el-select
                 v-model="queryParams.noticeType"
-                placeholder="未选择"
+                placeholder="信息安全"
                 clearable
               >
+                <!-- <el-option
+            v-for="dict in dict.type.sys_notice_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          /> -->
               </el-select>
             </el-form-item>
             <el-form-item label="生源地" prop="noticeType" class="header-item">
               <el-select
                 v-model="queryParams.noticeType"
-                placeholder="未选择"
+                placeholder="湖北省"
                 clearable
               >
+                <!-- <el-option
+            v-for="dict in dict.type.sys_notice_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          /> -->
               </el-select>
             </el-form-item>
             <el-form-item label="性别" prop="noticeType" class="header-item">
               <el-select
                 v-model="queryParams.noticeType"
-                placeholder="未选择"
+                placeholder="男"
                 clearable
               >
+                <!-- <el-option
+            v-for="dict in dict.type.sys_notice_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          /> -->
               </el-select>
             </el-form-item>
             <el-form-item label="学号" prop="noticeTitle" class="header-item">
@@ -76,7 +94,7 @@
 
           <div class="table-content">
             <div class="title" icon="el-icon-refresh">
-              <span class="title-item">{{ $route.query.bjmc }}学生列表</span>
+              <span class="title-item">22电子信息1班学生列表</span>
               <span class="iconfont">&#xe631;</span>
               <el-row :gutter="10" class="mb8" style="float: right">
                 <el-col :span="1.5">
@@ -94,17 +112,35 @@
                     <span class="iconfont icon-daochu-06"></span>
                     导入</el-button
                   >
+                  <!-- <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+          v-hasPermi="['system:notice:remove']"
+        >删除</el-button> -->
                 </el-col>
                 <el-col :span="1.5">
                   <el-button class="export">
                     <span class="iconfont icon-daochu-06"></span>
                     导出</el-button
                   >
+                  <!-- <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+          v-hasPermi="['system:notice:remove']"
+        >删除</el-button> -->
                 </el-col>
+                <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
               </el-row>
             </div>
             <!-- v-loading="loading" -->
-            <!-- 学生列表数据 -->
             <el-table
               :data="noticeList"
               @selection-change="handleSelectionChange"
@@ -178,7 +214,7 @@
             <el-form-item label="专业" prop="noticeType" class="header-item">
               <el-select
                 v-model="queryParams.noticeType"
-                placeholder="未选择"
+                placeholder="信息安全"
                 clearable
               >
                 <!-- <el-option
@@ -192,7 +228,7 @@
             <el-form-item label="生源地" prop="noticeType" class="header-item">
               <el-select
                 v-model="queryParams.noticeType"
-                placeholder="未选择"
+                placeholder="湖北省"
                 clearable
               >
                 <!-- <el-option
@@ -206,7 +242,7 @@
             <el-form-item label="性别" prop="noticeType" class="header-item">
               <el-select
                 v-model="queryParams.noticeType"
-                placeholder="未选择"
+                placeholder="男"
                 clearable
               >
                 <!-- <el-option
@@ -371,7 +407,7 @@ export default {
   data() {
     return {
       // tab栏切换
-      tab_title: [this.$route.query.bjmc, "未分配学生名单"],
+      tab_title: ["22级电子信息1班", "未分配学生名单"],
       currentIndex: 0,
       // 遮罩层
       // loading: true,
@@ -446,12 +482,13 @@ export default {
       },
     };
   },
-  mounted() {
+  created() {
     // this.getList();
   },
   methods: {
     // 分班管理路由跳转
     operate() {
+      console.log(123);
       this.$router.push({
         path: "/class/operateClass",
       });
@@ -515,6 +552,26 @@ export default {
       //   this.form = response.data;
       //   this.open = true;
       //   this.title = "修改公告";
+      // });
+    },
+    /** 提交按钮 */
+    submitForm: function () {
+      // this.$refs["form"].validate((valid) => {
+      //   if (valid) {
+      //     if (this.form.noticeId != undefined) {
+      //       updateNotice(this.form).then((response) => {
+      //         this.$modal.msgSuccess("修改成功");
+      //         this.open = false;
+      //         this.getList();
+      //       });
+      //     } else {
+      //       addNotice(this.form).then((response) => {
+      //         this.$modal.msgSuccess("新增成功");
+      //         this.open = false;
+      //         this.getList();
+      //       });
+      //     }
+      //   }
       // });
     },
     /** 删除按钮操作 */

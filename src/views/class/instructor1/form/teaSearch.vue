@@ -9,39 +9,29 @@
       label-width="68px"
       class="table-header"
     >
-      <el-form-item label="工作单位" prop="ssdwdm" class="header-item">
-        <el-select v-model="queryParams.ssdwdm" placeholder="未选择" clearable>
-          <el-option
-            v-for="(item, index) in collegeOptions"
-            :key="index"
-            :label="item.mc"
-            :value="item.dm"
-          />
+      <el-form-item label="工作单位" prop="noticeType" class="header-item">
+        <el-select
+          v-model="queryParams.noticeType"
+          placeholder="计算机学院"
+          clearable
+        >
         </el-select>
       </el-form-item>
-      <el-form-item label="培养层次" prop="pycc" class="header-item">
-        <el-select v-model="queryParams.pycc" placeholder="未选择" clearable>
-          <el-option
-            v-for="(item, index) in levelOptions"
-            :key="index"
-            :label="item.mc"
-            :value="item.dm"
-          />
+      <el-form-item label="培养层次" prop="noticeType" class="header-item">
+        <el-select
+          v-model="queryParams.noticeType"
+          placeholder="本科"
+          clearable
+        >
         </el-select>
       </el-form-item>
-      <el-form-item label="年级" prop="ssnj" class="header-item">
-        <el-select v-model="queryParams.ssnj" placeholder="未选择" clearable>
-          <el-option
-            v-for="(item, index) in gradeOptions"
-            :key="index"
-            :label="item"
-            :value="item"
-          />
+      <el-form-item label="年级" prop="noticeType" class="header-item">
+        <el-select v-model="queryParams.noticeType" placeholder="2022" clearable>
         </el-select>
       </el-form-item>
-      <el-form-item label="班级编号" prop="bjdm" class="header-item">
+      <el-form-item label="班级编号" prop="noticeTitle" class="header-item">
         <el-input
-          v-model="queryParams.bjdm"
+          v-model="queryParams.noticeTitle"
           placeholder="请输入班级编号"
           clearable
           @keyup.enter.native="handleQuery"
@@ -122,10 +112,6 @@ export default {
           record: "班级操作记录",
         },
       ],
-      // 筛选框数据
-      collegeOptions: [],
-      levelOptions: [],
-      gradeOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层

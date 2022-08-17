@@ -9,66 +9,48 @@
       label-width="68px"
       class="table-header"
     >
-      <el-form-item label="工作单位" prop="ssdwdm" class="header-item">
-        <el-select v-model="queryParams.ssdwdm" placeholder="未选择" clearable>
-          <el-option
-            v-for="(item, index) in collegeOptions"
-            :key="index"
-            :label="item.mc"
-            :value="item.dm"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="培养层次" prop="pycc" class="header-item">
-        <el-select v-model="queryParams.pycc" placeholder="未选择" clearable>
-          <el-option
-            v-for="(item, index) in levelOptions"
-            :key="index"
-            :label="item.mc"
-            :value="item.dm"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="年级" prop="ssnj" class="header-item">
-        <el-select v-model="queryParams.ssnj" placeholder="未选择" clearable>
-          <el-option
-            v-for="(item, index) in gradeOptions"
-            :key="index"
-            :label="item"
-            :value="item"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="班级编号" prop="bjdm" class="header-item">
-        <el-input
-          v-model="queryParams.bjdm"
-          placeholder="请输入班级编号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item class="header-item">
-        <el-button
-          type="primary"
-          size="mini"
-          icon="el-icon-search"
-          class="search"
-          @click="handleQuery"
-          >查询</el-button
-        >
-        <el-button size="mini" @click="resetQuery" class="reset">
-          <span class="iconfont reset_icon">&#xe614;</span>
-
-          重置</el-button
-        >
-      </el-form-item>
+      <div class="assignInput">
+        <el-form-item label="工号" prop="noticeType" class="header-item">
+          <el-select
+            v-model="queryParams.noticeType"
+            placeholder="计算机学院"
+            clearable
+          >
+          </el-select>
+        </el-form-item>
+        <el-form-item label="工作单位" prop="noticeType" class="header-item">
+          <el-select
+            v-model="queryParams.noticeType"
+            placeholder="本科"
+            clearable
+          >
+          </el-select>
+        </el-form-item>
+      </div>
+      <div class="assignBtn">
+        <el-form-item class="header-item">
+          <el-button
+            type="primary"
+            size="mini"
+            icon="el-icon-search"
+            class="search"
+            @click="handleQuery"
+            >查询</el-button
+          >
+          <el-button size="mini" @click="resetQuery" class="reset">
+            <span class="iconfont reset_icon">&#xe614;</span>
+            重置</el-button
+          >
+        </el-form-item>
+      </div>
     </el-form>
   </div>
 </template>
 
 <script>
+import "@/assets/fonts/refresh/iconfont.css";
 export default {
-  name: "teaSearch", // 辅导员查找
+  name: "assignSearch",
   data() {
     return {
       // tab栏切换
@@ -87,11 +69,41 @@ export default {
       // 总条数
       total: 100,
       // 表格数据
-      noticeList: [],
-      // 筛选框数据
-      collegeOptions: [],
-      levelOptions: [],
-      gradeOptions: [],
+      noticeList: [
+        {
+          id: 1,
+          classId: 13070025,
+          className: "计算机工程硕士2022级1班",
+          college: "计算机工程学院",
+          level: "本科",
+          nums: 34,
+          beginTime: "2022-07-07",
+          updateTime: "2022-07-07",
+          record: "班级操作记录",
+        },
+        {
+          id: 2,
+          classId: 13070025,
+          className: "计算机工程硕士2022级2班",
+          college: "计算机工程学院",
+          level: "本科",
+          nums: 34,
+          beginTime: "2022-07-07",
+          updateTime: "2022-07-07",
+          record: "班级操作记录",
+        },
+        {
+          id: 3,
+          classId: 13070025,
+          className: "计算机工程硕士2022级3班",
+          college: "计算机工程学院",
+          level: "本科",
+          nums: 34,
+          beginTime: "2022-07-07",
+          updateTime: "2022-07-07",
+          record: "班级操作记录",
+        },
+      ],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -235,12 +247,18 @@ export default {
   background-color: #ffffff;
   height: 128px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 15px;
   margin-top: 10px;
 }
-
+.assignInput {
+  display: flex;
+  justify-content: center;
+}
+.assignInput .header-item:nth-child(1) {
+  margin-right: 90px;
+}
 .header-item {
   display: flex;
   justify-content: center;

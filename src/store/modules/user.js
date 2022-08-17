@@ -6,6 +6,8 @@ const user = {
     token: getToken(),
     name: '',
     userId:'',
+    roleId : '',
+    roleType : '',
     avatar: '',
     roles: [],
     permissions: []
@@ -17,6 +19,12 @@ const user = {
     },
     SET_NAME: (state, name) => {
       state.name = name
+    },
+    SET_ROLEID: (state, roleId) => {
+        state.roleId = roleId
+    },
+    SET_ROLETYPE: (state, roleType) => {
+        state.roleType = roleType
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
@@ -56,6 +64,14 @@ const user = {
                 var roles = res.row || []
                 if (roles.length > 0) { // 验证返回的roles是否是一个非空数组
                   commit('SET_ROLES', roles)
+                    if (roles.length == 1){
+                        var role = roles[0];
+                        commit('SET_ROLEID',role.roleId)
+                        commit('SET_ROLETYPE',role.roleType)
+                        
+                    }
+                    
+
                 //   commit('SET_PERMISSIONS', res.permissions)
                 } else {
                 //     console.log('默认角色')
@@ -65,12 +81,22 @@ const user = {
               
                 commit('SET_NAME', res.user.xm)
                 commit('SET_AVATAR', avatar)
+
                 resolve(res)
               }).catch(error => {
                 // console.log('用户信息错误',error)
                 reject(error)
               })
       })
+    },
+
+    SaveRole({commit},role){
+        return new Promise((resolve, reject) => {
+            
+            commit('SET_ROLEID',role.roleId)
+            commit('SET_ROLETYPE',role.roleType)
+            resolve()
+        })
     },
 
     // 退出系统

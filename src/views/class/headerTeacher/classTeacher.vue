@@ -16,8 +16,22 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="姓名" prop="xm">
+        <el-input
+          v-model="queryParams.xm"
+          placeholder="请输入姓名"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="工作单位" prop="xy">
         <el-select v-model="queryParams.xy" placeholder="未选择" clearable>
+          <el-option
+            v-for="(item, index) in collegeOptions"
+            :key="index"
+            :label="item.mc"
+            :value="item.dm"
+          />
         </el-select>
       </el-form-item>
       <div style="float: right">
@@ -68,11 +82,7 @@
     </div>
 
     <!-- 班主任列表 -->
-    <el-table
-      v-loading="loading"
-      :data="noticeList"
-      @selection-change="distributeClassConfirm"
-    >
+    <el-table :data="noticeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="序号" align="center" width="100" type="index" />
       <el-table-column
@@ -121,22 +131,34 @@
         <template slot-scope="scope">
           <div>
             <span
-              class="iconfont allocate_class"
+              class="iconfont"
+              :class="
+                scope.row.sffp == '0' ? 'allocate_none' : 'allocate_class'
+              "
               @click="allocateClass(scope.row)"
               >&#xe638;</span
             >
             <span
-              style="color: #005657; margin-left: 5px; margin-right: 10px"
+              style="margin-left: 5px; margin-right: 10px"
+              :class="
+                scope.row.sffp == '0' ? 'allocate_none' : 'allocate_class'
+              "
               @click="allocateClass(scope.row)"
               >分配班级</span
             >
             <span
-              class="iconfont allocate_none"
+              class="iconfont"
+              :class="
+                scope.row.sffp == '1' ? 'allocate_none' : 'allocate_class'
+              "
               @click="allocateNone(scope.row)"
               >&#xe638;</span
             >
             <span
-              style="color: #005657; margin-left: 5px"
+              style="margin-left: 5px"
+              :class="
+                scope.row.sffp == '1' ? 'allocate_none' : 'allocate_class'
+              "
               @click="allocateNone(scope.row)"
               >取消分配</span
             >
@@ -149,19 +171,38 @@
       id="test"
       v-show="total > 0"
       :total="total"
+      center
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
-      @pagination="getList"
+      @pagination="getTeacherList"
     />
 
     <!-- 给班主任分配班级操作：teacherClass-->
     <!-- :before-close="handleClose" -->
     <el-dialog title="分配班级" :visible.sync="teacherClass" width="30%">
-      <span
-        >确认将【{{ show.gh }}】【{{ show.xm }}】任命为【{{
-          $route.query.bjmc
-        }}】班主任？</span
-      >
+      <el-form :model="form">
+        <el-form-item label="任命日期">
+          <el-date-picker
+            type="date"
+            style="width: 30%"
+            placeholder="选择任命日期"
+            value-format="yyyy-MM-dd hh:mm:ss"
+            v-model="form.rmsj"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="任命信息">
+          <span v-if="flag == false"
+            >确认将【{{ show.gh }}】【{{ show.xm }}】任命为【{{
+              $route.query.bjmc
+            }}】班主任？</span
+          >
+          <span v-else>
+            确认将<span v-for="(item, index) in teacherList" :key="index"
+              >【{{ item.gh }}】【{{ item.xm }}】</span
+            >任命为【{{ $route.query.bjmc }}】班主任？
+          </span>
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="teacherClass = false">取 消</el-button>
         <!-- distributeClassConfirm(row) -->
@@ -178,18 +219,20 @@
     <el-dialog title="取消分配" :visible.sync="cancelAllocate" width="50%">
       <el-form :model="form">
         <el-form-item label="撤任理由" prop="reason">
-          <el-select v-model="form.reason" placeholder="休学">
-            <!-- <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option> -->
-          </el-select>
-        </el-form-item>
-        <el-form-item label="撤任详情" prop="detail">
           <el-input
-            v-model="form.detail"
+            v-model="form.reason"
             autocomplete="off"
             type="textarea"
-            :autosize="{ minRows: 2, maxRows: 4 }"
           ></el-input>
+        </el-form-item>
+        <el-form-item label="撤任日期">
+          <el-date-picker
+            type="date"
+            style="width: 30%"
+            placeholder="选择撤任日期"
+            v-model="form.offDate"
+            value-format="yyyy-MM-dd hh:mm:ss"
+          ></el-date-picker>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -202,9 +245,16 @@
 
     <!-- 给班主任取消分配班级操作——二次确定：checkDouble -->
     <el-dialog title="取消分配" :visible.sync="doubleCheck" width="50%">
-      <span
-        >确认取消【78788(学工号)】【张曼丽】对【计算机硕士22级1班】【计算机硕士22级1班】班主任任命？</span
+      <span v-if="flag1 == false"
+        >确认取消【{{ show.gh }}】【{{ show.xm }}】对【{{
+          $route.query.bjmc
+        }}】班主任任命？</span
       >
+      <span v-else>
+        确认取消<span v-for="(item, index) in teacherList" :key="index"
+          >【{{ item.gh }}】【{{ item.xm }}】</span
+        >对【{{ $route.query.bjmc }}】班主任任命？
+      </span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="doubleCheck = false">取 消</el-button>
         <!-- distributeClassConfirm(row) -->
@@ -221,8 +271,12 @@
 
 <script>
 import "@/assets/fonts/person/iconfont.css";
-import { Message } from "element-ui";
-import { getHeaderTeacher, assignTeacher } from "@/api/class/headerTeacher";
+import { getCollege } from "@/api/class/maintenanceClass";
+import {
+  getHeaderTeacher,
+  assignTeacher,
+  removeAssignTeacher,
+} from "@/api/class/headerTeacher";
 export default {
   name: "classTeacher",
   data() {
@@ -238,9 +292,8 @@ export default {
       // 显示搜索条件
       showSearch: true,
       // 总条数
-      total: 0,
-      // 是否点击批量选择按钮
-      some: false,
+      total: 1,
+      collegeOptions: [],
       // 班主任列表数据
       noticeList: [],
       // 弹出层标题
@@ -256,12 +309,18 @@ export default {
         pageNum: 1,
         pageSize: 10,
         xgh: "", // 学工号
+        xm: "", // 姓名 新增字段查询
         xy: "", // 学院代码
+        bjdm: this.$route.query.bjdm, // 班级代码
       },
+      // 是给一个班级任命一个还是多个班主任
+      flag: false,
+      flag1: false, // 给一个班级撤任一个还是多个班主任
       // 要展示的一个班主任的信息
       show: {},
-      // 分配多个班主任：批量的班主任学工号列表
-      form: [],
+      // 要展示的多个班主任的信息：包括多个班主任的工号、姓名
+      teacherList: [],
+      form: {},
       // 表单校验
       rules: {
         noticeTitle: [
@@ -275,8 +334,34 @@ export default {
   },
   mounted() {
     this.getTeacherList(this.queryParams);
+    this.getGradeOptions();
+  },
+  // 组件激活时清除筛选框 重新发送请求
+  activated() {
+    this.queryParams.xgh = "";
+    this.queryParams.xy = "";
+    this.getTeacherList(this.queryParams);
   },
   methods: {
+    // 搜索按钮
+    handleQuery() {
+      this.getTeacherList(this.queryParams);
+    },
+    // 重置按钮
+    resetQuery() {
+      this.queryParams.xgh = "";
+      this.queryParams.xy = "";
+      this.handleQuery();
+    },
+    // 获取工作单位列表
+    getGradeOptions() {
+      getCollege().then((response) => {
+        // 获取培养单位列表数据
+        if (response.errcode == "00") {
+          this.collegeOptions = response.data.rows;
+        }
+      });
+    },
     // 获取班主任列表
     getTeacherList(queryParams) {
       Object.assign(queryParams, this.queryParams);
@@ -286,60 +371,91 @@ export default {
         this.total = response.total; //总条数
       });
     },
-    // 新建班级-取消按钮
-    cancel() {
-      this.open = false;
-      this.reset();
-    },
-    // 表单重置
-    reset() {
-      this.form = {
-        noticeId: undefined,
-        noticeTitle: undefined,
-        noticeType: undefined,
-        noticeContent: undefined,
-        status: "0",
-      };
-      this.resetForm("form");
+    // 多选勾选触发函数并存储勾选的班主任信息（包括工号、姓名）
+    handleSelectionChange(arr) {
+      // 存储勾选的表格数据中班主任的工号、姓名
+      this.teacherList = [];
+      arr.forEach((item, index) => {
+        this.teacherList[index] = {};
+        this.teacherList[index].gh = item.gh;
+        this.teacherList[index].xm = item.xm;
+      });
     },
     // 班级对班主任一对一分配（点击分配班级时根据row获取信息）、一对多分配（点击批量分配时根据list判断列表中有几个勾选）
     allocateClass(row) {
       this.teacherClass = true;
-      this.show = row;
+      this.show = row; // 存储单条班主任数据
     },
     // 班主任对班级一对一取消分配班级
     allocateNone(row) {
       this.cancelAllocate = true;
+      this.show = row; // 存储单条班主任数据
     },
     // 分配班级-确认操作
-    distributeClassConfirm(teacherList) {
+    distributeClassConfirm() {
       this.teacherClass = false;
       // 整理参数
       const q = {};
-      q.bjdm = this.$route.query.bjdm;
-      q.newTeacherList = [];
-      teacherList.forEach((item, index) => {
-        q.newTeacherList.push(item.gh);
-      });
-      q.rmrgh = "2005690002";
-      // q.rmsj = "";
-      // 判断是否点击批量分配按钮
-      if (this.some == true) {
-        assignTeacher(q).then((response) => {
-          console.log(response);
+      q.bjdm = this.$route.query.bjdm; // 班级代码
+      q.teacherList = []; // 整理多个班主任的工号信息
+      q.rmsj = this.form.rmsj;
+      if (this.flag == true) {
+        // 一对多分配
+        this.teacherList.forEach((item) => {
+          q.teacherList.push(item.gh);
         });
+      } else {
+        // 一对一分配
+        q.teacherList.push(this.show.gh);
       }
-      // this.$message({
-      //   message: "分配班级成功",
-      //   type: "success",
-      // });
+      q.rmrgh = "2005690002"; // 任命人的工号
+      // q.rmsj = ""; // 任命时间
+      // 给一对一或一对多任命请求——若操作成功
+      assignTeacher(q).then((response) => {
+        if (response.errmsg == "操作成功！") {
+          this.$message({
+            message: "分配班级成功",
+            type: "success",
+          });
+          this.getTeacherList(this.queryParams); // 重新发送请求获取班主任列表数据
+        }
+        if (response.errcode == "-200") {
+          this.$message({
+            message: "分配班级失败",
+            type: "error",
+          });
+        }
+      });
     },
     // 取消分配-确认操作
     cancelAllocateConfirm() {
       this.cancelAllocate = false;
-      setTimeout(() => {
-        this.doubleCheck = true;
-      }, 500);
+      const q = {};
+      q.cxrGh = "2005690002"; // 撤销人的工号
+      q.bjdm = this.$route.query.bjdm; // 班级代码
+      q.crly = this.form.reason; // 撤任理由
+      q.cxsj = this.form.offDate; // 撤任时间
+      q.teacherList = [];
+      if (this.flag1 == true) {
+        // 一对多撤任
+        this.teacherList.forEach((item) => {
+          q.teacherList.push(item.gh);
+        });
+      } else {
+        // 一对一撤任
+        q.teacherList.push(this.show.gh);
+      }
+      removeAssignTeacher(q).then((response) => {
+        if (response.errcode == "00") {
+          this.doubleCheck = true; // 弹出撤任二次确认框
+        }
+        if (response.errcode !== "200") {
+          this.$message({
+            message: "撤任班主任失败",
+            type: "error",
+          });
+        }
+      });
     },
     // 取消分配-二次确认按钮
     doubleCheckConfirm() {
@@ -348,43 +464,29 @@ export default {
         message: "取消分配班级操作成功",
         type: "success",
       });
+      this.getTeacherList(this.queryParams); // 重新发送请求获取班主任列表数据
     },
-    // 批量分配班级——1个班主任对应多个班级
+    // 批量分配班主任——多个班主任分配一个班级
     distributeSomeClass() {
       // 拿到勾选的那几个班主任信息，后弹出分配班级弹出框
       this.teacherClass = true;
-      this.some = true;
+      // 判断勾选了多少班主任， 请求分配班主任接口数据
+      if (this.teacherList.length > 0) {
+        this.flag = true; // 表明勾选了多个班主任
+      }
     },
     // 批量取消分配班级
     cancelDistributeSomeClass() {
       this.cancelAllocate = true;
-    },
-
-    /** 提交按钮 */
-    submitForm: function () {
-      this.$refs["form"].validate((valid) => {
-        if (valid) {
-          if (this.form.noticeId != undefined) {
-            updateNotice(this.form).then((response) => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
-            addNotice(this.form).then((response) => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
-          }
-        }
-      });
+      if (this.teacherList.length > 0) {
+        this.flag1 = true; // 表明勾选了多个班主任
+      }
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .app-container {
   height: 100vh;
   background-color: white;
@@ -459,15 +561,15 @@ export default {
     } */
 .title-item {
   display: inline-block;
-  height: 28px;
   font-family: "PingFangSC-Semibold";
+  width: 1000px;
   font-weight: 600;
   font-size: 20px;
   color: #1f1f1f;
 }
 #test {
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-80%);
   text-align: center;
 }
 .ack {
@@ -483,6 +585,6 @@ export default {
   height: 100%;
 }
 .el-pagination {
-  margin-top: 20px;
+  margin-top: 50px;
 }
 </style>

@@ -10,7 +10,7 @@
           <el-button
             icon="el-icon-delete"
             style="color: #eb3842; border-color: #eb3842"
-            @click="deleteRecord(row)"
+            @click="deleteRecord()"
           >
             删除</el-button
           >
@@ -19,7 +19,7 @@
       </el-row>
     </div>
 
-    <!-- 班主任任职记录 -->
+    <!-- 班主任任职记录 问题：数据字段仍需仔细核对-->
     <el-table
       v-loading="loading"
       :data="noticeList"
@@ -27,74 +27,16 @@
     >
       <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column label="序号" align="center" type="index" />
-      <el-table-column label="学工号" align="center" prop="classId" sortable />
-      <el-table-column label="姓名" align="center" prop="name" sortable>
+      <el-table-column label="学工号" align="center" prop="gh" sortable />
+      <el-table-column label="姓名" align="center" prop="xm" sortable>
       </el-table-column>
-      <el-table-column label="性别" align="center" prop="sex" sortable />
-      <el-table-column
-        label="工作单位"
-        align="center"
-        prop="department"
-        sortable
-      />
-      <el-table-column
-        label="任职班级"
-        align="center"
-        prop="onBanji"
-        sortable
-      />
-      <el-table-column
-        label="任命人"
-        align="center"
-        prop="orderName"
-        sortable
-      />
-      <el-table-column
-        label="任命年度"
-        align="center"
-        prop="orderYear"
-        sortable
-      />
-      <el-table-column
-        label="任命学期"
-        align="center"
-        prop="orderSemi"
-        sortable
-      />
-      <el-table-column
-        label="操作类型"
-        align="center"
-        prop="actionType"
-        sortable
-      />
-      <el-table-column
-        label="操作人"
-        align="center"
-        prop="actionName"
-        sortable
-      />
-      <el-table-column
-        label="操作时间"
-        align="center"
-        prop="actionType"
-        sortable
-      />
-      <el-table-column
-        label="任职状态"
-        align="center"
-        prop="orderState"
-        class-name="small-padding fixed-width"
-        sortable
-      >
-        <template slot-scope="scope">
-          <div>
-            <span class="iconfont allocate_teacher">&#xe604;</span>
-            <span style="color: #005657">
-              {{ noticeList[0].orderState }}
-            </span>
-          </div>
-        </template>
-      </el-table-column>
+      <el-table-column label="性别" align="center" prop="xb" sortable />
+      <el-table-column label="工作单位" align="center" prop="dwmc" sortable />
+      <el-table-column label="任职班级" align="center" prop="rzbj" sortable />
+      <el-table-column label="任命人" align="center" prop="rmr" sortable />
+      <el-table-column label="任命时间" align="center" prop="rmsj" sortable />
+      <el-table-column label="撤任人" align="center" prop="cxr" sortable />
+      <el-table-column label="撤任时间" align="center" prop="cxsj" sortable />
     </el-table>
 
     <pagination
@@ -185,6 +127,7 @@
 
 <script>
 import "@/assets/fonts/circle/iconfont.css";
+import { queryRecords, deleteRecords } from "@/api/class/headerTeacher";
 export default {
   name: "record",
   data() {
@@ -200,52 +143,10 @@ export default {
       // 显示搜索条件
       showSearch: true,
       // 总条数
-      total: 100,
+      total: 0,
       // 表格数据
-      noticeList: [
-        {
-          classId: 13070025,
-          name: "张三",
-          sex: "男",
-          department: "计算机工程学院",
-          onBanji: "计算机工程硕士2022级1班",
-          orderName: "张五",
-          orderYear: "2022年",
-          orderSemi: "秋季学期",
-          actionType: "任命",
-          actionName: "张四",
-          actionTime: "2022-07-07 23:33:33",
-          orderState: "在岗",
-        },
-        {
-          classId: 13070025,
-          name: "张三",
-          sex: "男",
-          department: "计算机工程学院",
-          onBanji: "计算机工程硕士2022级1班",
-          orderName: "张五",
-          orderYear: "2022年",
-          orderSemi: "秋季学期",
-          actionType: "任命",
-          actionName: "张四",
-          actionTime: "2022-07-07 23:33:33",
-          orderState: "在岗",
-        },
-        {
-          classId: 13070025,
-          name: "张三",
-          sex: "男",
-          department: "计算机工程学院",
-          onBanji: "计算机工程硕士2022级1班",
-          orderName: "张五",
-          orderYear: "2022年",
-          orderSemi: "秋季学期",
-          actionType: "任命",
-          actionName: "张四",
-          actionTime: "2022-07-07 23:33:33",
-          orderState: "在岗",
-        },
-      ],
+      noticeList: [],
+      recordsList: [],
       // 弹出层标题
       title: "",
       // 是否显示新建班级弹出层
@@ -254,12 +155,9 @@ export default {
       dialogVisible: false,
       // 查询参数
       queryParams: {
-        // pageNum: 1,
-        // pageSize: 10,
-        college: undefined,
-        level: undefined,
-        grade: undefined,
-        classId: undefined,
+        pageNum: 1,
+        pageSize: 10,
+        bjdm: this.$route.query.bjdm,
       },
       // 表单参数
       form: {},
@@ -274,10 +172,42 @@ export default {
       },
     };
   },
+  mounted() {
+    this.getList(this.queryParams);
+  },
+  activated() {
+    this.getList(this.queryParams);
+  },
   methods: {
-    // 删除记录
-    deleteRecord(row) {
-      console.log("删除记录");
+    // 班主任任职记录查询
+    getList(queryParams) {
+      queryRecords(queryParams).then((response) => {
+        if (response.errcode == "00") {
+          this.noticeList = response.items;
+        }
+      });
+    },
+    // 收集勾选的表格数据
+    handleSelectionChange(arr) {
+      this.recordsList = arr;
+    },
+    // 删除任职记录——一次性一条或多条
+    deleteRecord() {
+      deleteRecords({ recordsList: this.recordsList }).then((response) => {
+        console.log(response);
+        if (response.errcode == "00") {
+          this.$message({
+            message: "删除班主任任职记录操作成功",
+            type: "success",
+          });
+          this.getList(this.queryParams);
+        } else {
+          this.$message({
+            message: "删除班主任任职记录操作失败",
+            type: "error",
+          });
+        }
+      });
     },
   },
 };
@@ -351,7 +281,6 @@ export default {
 } */
 .title-item {
   display: inline-block;
-  width: 200px;
   height: 28px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;

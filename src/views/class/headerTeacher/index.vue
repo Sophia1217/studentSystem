@@ -57,7 +57,6 @@
         >
         <el-button size="mini" @click="resetQuery" class="reset">
           <span class="iconfont reset_icon">&#xe614;</span>
-
           重置</el-button
         >
       </el-form-item>
@@ -69,7 +68,7 @@
     </div>
 
     <!-- 班级列表 -->
-    <el-table :data="noticeList" @selection-change="handleSelectionChange">
+    <el-table :data="noticeList">
       <el-table-column label="序号" align="center" type="index" />
       <el-table-column label="班级编号" align="center" prop="bjdm" sortable />
       <el-table-column
@@ -191,9 +190,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="submitForm" class="confirm"
-          >确 定</el-button
-        >
+        <el-button type="primary" class="confirm">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -207,7 +204,7 @@ import {
   getLevel,
   getGrade,
 } from "@/api/class/maintenanceClass"; // 引入班级列表查询、修改班级名称接口
-import { getHeaderTeacher } from "@/api/class/headerTeacher";
+import { getHeaderTeacher, queryRecords } from "@/api/class/headerTeacher";
 export default {
   name: "headerTeacher", //班主任
   data() {
@@ -223,7 +220,7 @@ export default {
       // 显示搜索条件
       showSearch: true,
       // 总条数
-      total: 0,
+      total: 1,
       // 表格数据
       noticeList: [],
       // 筛选框数据
@@ -322,13 +319,7 @@ export default {
     },
     // 表单重置
     reset() {
-      this.form = {
-        noticeId: undefined,
-        noticeTitle: undefined,
-        noticeType: undefined,
-        noticeContent: undefined,
-        status: "0",
-      };
+      this.form = {};
       this.resetForm("form");
     },
     // 分配班主任
@@ -350,73 +341,13 @@ export default {
       this.dialogVisible = true;
       this.title = "删除空班级";
     },
-    // 删除空班级-取消操作
-    classCancel() {
-      this.dialogVisible = false;
-      // const h = this.$createElement;
-      // this.$notify({
-      //   type: "error",
-      //   title: "错误",
-      //   customClass: "error",
-      //   message: h(
-      //     "h3",
-      //     { style: "color: #ED5234" },
-      //     "班级代码编号末尾班级目前仍有成员，请删除班级所有成员后重试"
-      //   ),
-      //   duration: 0,
-      // });
-    },
-    // 删除空班级-确认操作
-    classConfirm() {
-      this.dialogVisible = false;
-      this.$notify({
-        type: "success",
-        title: "成功",
-        customClass: "success",
-        message: "空班级【计算机工程硕士2022级21班】删除成功！",
-        duration: 0,
-      });
-    },
     // 任职记录表
     record(row) {
       this.$router.push({
         path: "./record",
+        query: { bjdm: row.bjdm },
       });
     },
-    /** 提交按钮 */
-    submitForm: function () {
-      this.$refs["form"].validate((valid) => {
-        if (valid) {
-          if (this.form.noticeId != undefined) {
-            updateNotice(this.form).then((response) => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
-            addNotice(this.form).then((response) => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
-          }
-        }
-      });
-    },
-    // /** 删除按钮操作 */
-    // handleDelete(row) {
-    //   const noticeIds = row.noticeId || this.ids;
-    //   this.$modal
-    //     .confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项？')
-    //     .then(function () {
-    //       return delNotice(noticeIds);
-    //     })
-    //     .then(() => {
-    //       this.getList();
-    //       this.$modal.msgSuccess("删除成功");
-    //     })
-    //     .catch(() => {});
-    // },
   },
 };
 </script>
@@ -486,14 +417,13 @@ export default {
 
 .el-notification.right {
   left: 30%;
-  transform: translateX(50%);
+  transform: translateX(-80%);
 }
 /* .el-notification__title {
       color: #ed5234;
     } */
 .title-item {
   display: inline-block;
-  width: 120px;
   height: 28px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;

@@ -68,6 +68,7 @@ export function exportStu(data) {
   return request({
     url: '/regStuInfo/export',
     method: 'post',
+    responseType: 'blob',
     data: data
   })
 }

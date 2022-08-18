@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 新增工作简历
 export function addWorkBrife(query) {
   return request({
-    url: '/sws/gzjl/insert',
+    url: '/gzjl/insert',
     method: 'post',
     data: query
   })
@@ -12,7 +12,7 @@ export function addWorkBrife(query) {
 // 修改工作简历
 export function modifyWorkBrife(query) {
   return request({
-    url: '/sws/gzjl/update',
+    url: '/gzjl/update',
     method: 'post',
     data: query
   })
@@ -21,7 +21,7 @@ export function modifyWorkBrife(query) {
 // 删除工作简历
 export function deleteWorkBrife(query) {
   return request({
-    url: '/sws/gzjl/delete',
+    url: '/gzjl/delete',
     method: 'post',
     params: query
   })
@@ -30,7 +30,7 @@ export function deleteWorkBrife(query) {
 // 新增专业技术职务
 export function addTechnical(query) {
   return request({
-    url: '/sws/zyjszw/insert',
+    url: '/zyjszw/insert',
     method: 'post',
     data: query
   })
@@ -39,7 +39,7 @@ export function addTechnical(query) {
 // 修改专业技术职务
 export function modifyTechnical(query) {
   return request({
-    url: '/sws/zyjszw/update',
+    url: '/zyjszw/update',
     method: 'post',
     data: query
   })
@@ -48,7 +48,7 @@ export function modifyTechnical(query) {
 // 删除专业技术职务
 export function deleteTechnical(query) {
   return request({
-    url: '/sws/zyjszw/delete',
+    url: '/zyjszw/delete',
     method: 'post',
     params: query
   })
@@ -57,7 +57,7 @@ export function deleteTechnical(query) {
 // 新增学习培训
 export function addTrain(query) {
   return request({
-    url: '/sws/xxpx/insert',
+    url: '/xxpx/insert',
     method: 'post',
     data: query
   })
@@ -66,7 +66,7 @@ export function addTrain(query) {
 // 修改学习培训
 export function modifyTrain(query) {
   return request({
-    url: '/sws/xxpx/update',
+    url: '/xxpx/update',
     method: 'post',
     data: query
   })
@@ -75,7 +75,7 @@ export function modifyTrain(query) {
 // 删除学习培训
 export function deleteTrain(query) {
   return request({
-    url: '/sws/xxpx/delete',
+    url: '/xxpx/delete',
     method: 'post',
     params: query
   })
@@ -84,7 +84,7 @@ export function deleteTrain(query) {
 // 新增年度考核
 export function addExam(query) {
   return request({
-    url: '/sws/xxpx/insert',
+    url: '/xxpx/insert',
     method: 'post',
     data: query
   })
@@ -93,7 +93,7 @@ export function addExam(query) {
 // 修改年度考核
 export function modifyExam(query) {
   return request({
-    url: '/sws/xxpx/update',
+    url: '/xxpx/update',
     method: 'post',
     data: query
   })
@@ -102,7 +102,7 @@ export function modifyExam(query) {
 // 删除年度考核
 export function deleteExam(query) {
   return request({
-    url: '/sws/xxpx/delete',
+    url: '/xxpx/delete',
     method: 'post',
     params: query
   })
@@ -111,7 +111,7 @@ export function deleteExam(query) {
 // 新增奖励表彰
 export function addReward(query) {
   return request({
-    url: '/sws/jlbz/insert',
+    url: '/jlbz/insert',
     method: 'post',
     data: query
   })
@@ -120,7 +120,7 @@ export function addReward(query) {
 // 修改奖励表彰
 export function modifyReward(query) {
   return request({
-    url: '/sws/jlbz/update',
+    url: '/jlbz/update',
     method: 'post',
     data: query
   })
@@ -129,7 +129,7 @@ export function modifyReward(query) {
 // 删除奖励表彰
 export function deleteReward(query) {
   return request({
-    url: '/sws/jlbz/delete',
+    url: '/jlbz/delete',
     method: 'post',
     params: query
   })
@@ -138,7 +138,7 @@ export function deleteReward(query) {
 // 新增项目科研情况
 export function addProject(query) {
   return request({
-    url: '/sws/xmkyqk/insert',
+    url: '/xmkyqk/insert',
     method: 'post',
     data: query
   })
@@ -147,7 +147,7 @@ export function addProject(query) {
 // 修改项目科研情况
 export function modifyProject(query) {
   return request({
-    url: '/sws/xmkyqk/update',
+    url: '/xmkyqk/update',
     method: 'post',
     data: query
   })
@@ -156,7 +156,7 @@ export function modifyProject(query) {
 // 删除项目科研情况
 export function deleteProject(query) {
   return request({
-    url: '/sws/xmkyqk/delete',
+    url: '/xmkyqk/delete',
     method: 'post',
     params: query
   })
@@ -165,7 +165,7 @@ export function deleteProject(query) {
 // 新增论文科研情况
 export function addThesis(query) {
   return request({
-    url: '/sws/lwkyqk/insert',
+    url: '/lwkyqk/insert',
     method: 'post',
     data: query
   })
@@ -174,7 +174,7 @@ export function addThesis(query) {
 // 修改论文科研情况
 export function modifyThesis(query) {
   return request({
-    url: '/sws/lwkyqk/update',
+    url: '/lwkyqk/update',
     method: 'post',
     data: query
   })
@@ -183,7 +183,7 @@ export function modifyThesis(query) {
 // 删除论文科研情况
 export function deleteThesis(query) {
   return request({
-    url: '/sws/lwkyqk/delete',
+    url: '/lwkyqk/delete',
     method: 'post',
     params: query
   })
@@ -192,7 +192,7 @@ export function deleteThesis(query) {
 // 新增著作科研情况
 export function addWriting(query) {
   return request({
-    url: '/sws/zzkyqk/insert',
+    url: '/zzkyqk/insert',
     method: 'post',
     data: query
   })
@@ -201,7 +201,7 @@ export function addWriting(query) {
 // 修改著作科研情况
 export function modifyWriting(query) {
   return request({
-    url: '/sws/zzkyqk/update',
+    url: '/zzkyqk/update',
     method: 'post',
     data: query
   })
@@ -210,7 +210,7 @@ export function modifyWriting(query) {
 // 删除著作科研情况
 export function deleteWriting(query) {
   return request({
-    url: '/sws/zzkyqk/delete',
+    url: '/zzkyqk/delete',
     method: 'post',
     params: query
   })
@@ -219,7 +219,7 @@ export function deleteWriting(query) {
 // 新增教学情况科研情况
 export function addTeaching(query) {
   return request({
-    url: '/sws/jxkyqk/insert',
+    url: '/jxkyqk/insert',
     method: 'post',
     data: query
   })
@@ -228,7 +228,7 @@ export function addTeaching(query) {
 // 修改教学情况科研情况
 export function modifyTeaching(query) {
   return request({
-    url: '/sws/jxkyqk/update',
+    url: '/jxkyqk/update',
     method: 'post',
     data: query
   })
@@ -237,7 +237,7 @@ export function modifyTeaching(query) {
 // 删除教学情况科研情况
 export function deleteTeaching(query) {
   return request({
-    url: '/sws/jxkyqk/delete',
+    url: '/jxkyqk/delete',
     method: 'post',
     params: query
   })

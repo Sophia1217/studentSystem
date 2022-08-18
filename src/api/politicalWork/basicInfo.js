@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 列表分页查询接口
 export function getPoliticalWorkList(params) {
   return request({
-    url: '/sws/zg/list',
+    url: '/zg/list',
     method: 'get',
     params: params
   })
@@ -12,7 +12,7 @@ export function getPoliticalWorkList(params) {
 // 筛选框查询
 export function getFilterPoliticalWorkList(data) {
   return request({
-    url: '/sws/zg/list',
+    url: '/zg/list',
     method: 'post',
     data: data
   })
@@ -22,7 +22,7 @@ export function getFilterPoliticalWorkList(data) {
 
 export function getConditionPoliticalWorkList(data) {
   return request({
-    url: '/sws/zg/search',
+    url: '/zg/search',
     method: 'post',
     data: data
   })
@@ -32,7 +32,7 @@ export function getConditionPoliticalWorkList(data) {
 
 export function getDetailQueryPoliticalWorkList(data) {
   return request({
-    url: '/sws/zgjbxx/zgDetailQuery',
+    url: '/zgjbxx/zgDetailQuery',
     method: 'get',
     params: data
   })
@@ -41,7 +41,7 @@ export function getDetailQueryPoliticalWorkList(data) {
 // 政工干部信息修改
 export function updateDetailQueryPoliticalWorkList(query) {
   return request({
-    url: '/sws/zg/update',
+    url: '/zg/update',
     method: 'post',
     data: query
   })

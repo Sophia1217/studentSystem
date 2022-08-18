@@ -6,7 +6,7 @@
           <el-switch v-model="form.sqkg" active-color="#23AD6F" inactive-color="#E0E0E0"
            active-value="1" inactive-value="0"></el-switch>
         </el-form-item>
-        <el-form-item label="申请开放时间">
+        <el-form-item label="申请开放时间" prop="applyDate">
           <el-date-picker 
             v-model="form.applyDate" 
             type="datetimerange" 
@@ -24,7 +24,7 @@
           <el-switch v-model="form.shkg" active-color="#23AD6F" inactive-color="#E0E0E0"
            active-value="1" inactive-value="0"></el-switch>
         </el-form-item>
-        <el-form-item label="审核开放时间">
+        <el-form-item label="审核开放时间" prop="auditApplyDate">
           <el-date-picker 
             v-model="form.auditApplyDate" 
             type="datetimerange" 
@@ -37,7 +37,7 @@
         </el-form-item>
         <el-form-item>
           <el-button size="small" type="primary" @click="onSubmit">立即创建</el-button>
-          <el-button size="small">取消</el-button>
+          <el-button size="small" @click="handleCel('ruleForm')">取消</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -103,6 +103,9 @@ export default {
       stuInfoModifyParamService(data).then(res => {
         this.$message(res.errmsg)
       }).catch(err=>{})
+    },
+    handleCel(formName) {
+      this.$refs[formName].resetFields();
     }
   },
 };

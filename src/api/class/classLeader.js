@@ -18,6 +18,14 @@ export function getQueryBgbRmjl(query) {
         data: query
     })
 }
+//班干部批量任命
+export function getAssignBgb(query){
+    return request({
+        url:'/class/assignBgb',
+        method:'post',
+        data:query
+    })
+}
 
 
 

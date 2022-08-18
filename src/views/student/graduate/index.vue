@@ -759,13 +759,6 @@ export default {
           schooling: schooling,
         },
       });
-      // this.$router.push({
-      //   path: "/student/graduateDetail",
-      //   query: {
-      //     id: row.date,
-      //     show: flag,
-      //   },
-      // });
     },
   },
 };

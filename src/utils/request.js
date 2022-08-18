@@ -7,6 +7,19 @@ import { tansParams, blobValidate } from "@/utils/ruoyi";
 import cache from '@/plugins/cache'
 import { saveAs } from 'file-saver'
 
+let loading
+var startLoading = function () {
+  loading = Loading.service({
+    lock: true,
+    text: '加载中……',
+    background: 'rgba(0, 0, 0, 0.7)'
+  })
+}
+
+var endLoading = function () { 
+  loading && loading.close()
+}
+
 let downloadLoadingInstance;
 // 是否显示重新登录
 export let isRelogin = { show: false };
@@ -63,9 +76,11 @@ service.interceptors.request.use(config => {
       }
     }
   }
+  startLoading()
   return config
 }, error => {
-  console.log(error)
+  // console.log(error)
+  endLoading()
   Promise.reject(error)
 })
 
@@ -79,6 +94,7 @@ service.interceptors.response.use(res => {
   if (res.request.responseType === 'blob' || res.request.responseType === 'arraybuffer') {
     return res.data
   }
+  endLoading()
 //   if (code === 401) {
 //     if (!isRelogin.show) {
 //       isRelogin.show = true;
@@ -167,6 +183,7 @@ service.interceptors.response.use(res => {
     }
 },
   error => {
+    endLoading()
     console.log('err' + error)
     console.log("错误代码:",error.code)
 

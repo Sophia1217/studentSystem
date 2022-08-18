@@ -18,3 +18,22 @@ export function removeTeacher(data) {
   })
 }
 
+// 班主任查看详情
+
+export function getTeacherDetail(data) {
+  return request({
+    url: '/sws/bzrrm/detail',
+    method: 'post',
+    data: data
+  })
+}
+
+//4. 班主任列表详情
+
+export function getTeacherDetailList(data) {
+  return request({
+    url: '/sws/bzrrm/queryList',
+    method: 'post',
+    data: data
+  })
+}

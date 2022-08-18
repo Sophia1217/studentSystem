@@ -89,7 +89,8 @@ export default {
       default: () => {},
     },
   },
-  mounted() {},
+  mounted() {
+  },
   methods: {
     handleCloseDia() {
       this.$emit("handleCloseDia");

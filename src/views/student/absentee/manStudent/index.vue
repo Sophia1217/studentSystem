@@ -107,7 +107,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">学 制???：</el-col>
+          <el-col :span="3">学 制：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -281,11 +281,7 @@ export default {
         //学 制：
         checkAll: false,
         choose: [],
-        checkBox: [
-          { mc: "2年", dm: 1 },
-          { mc: "3年", dm: 2 },
-          { mc: "3年", dm: 3 },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
       studentStatus: {
@@ -324,9 +320,10 @@ export default {
   mounted() {
     this.getSpread();
     this.getCode('dmpyccm') // 培养层次
-    this.getCode('dmxjztm') // 培养层次
-    this.getCode('dmmzm') // 培养层次
+    this.getCode('dmxjztm') // 学籍
+    this.getCode('dmmzm') // 名族
     this.getCode('dmzzmmm') // 政治面貌
+    this.getCode('dmxz') // 学 制
     this.handleSearch();
   },
   activated() {
@@ -353,6 +350,9 @@ export default {
             break;
           case 'dmzzmmm':
             this.$set(this.politica, 'checkBox', res.data);
+            break
+          case 'dmxz':
+            this.$set(this.learnHe, 'checkBox', res.data);
             break
         }
       }).catch(err=>{})

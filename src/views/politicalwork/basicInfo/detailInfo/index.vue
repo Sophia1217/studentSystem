@@ -25,7 +25,7 @@
         <div class="tableStyle">
           <div class="imgWrap">
             <div class="photo">
-              <img :src="detailInfoData.zgZgjbxxes" alt="照片"> </img>
+              <img :src="detailInfoData.zgZgjbxxes" alt="照片"/>
               <img src="" alt="">
             </div>
           </div>

@@ -38,7 +38,7 @@
           </el-col> -->
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">年 级??：</el-col>
+          <el-col :span="3">年 级：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom :objProp="learnHe" @training="learnHeAll" @checkedTraining="learnHeCheck"></checkboxCom>
@@ -84,7 +84,8 @@
 
 <script>
 import CheckboxCom from '../../../components/checkboxCom'
-import { getSchoolRegStuInfoPageList,getManageRegStuInfoSearchSpread } from "@/api/student/index"
+import { getSchoolRegStuInfoPageList, getManageRegStuInfoSearchSpread } from "@/api/student/index"
+import { getCodeInfoByEnglish } from '@/api/student/fieldSettings'
 export default {
   name: 'manStudent',
   components:{ CheckboxCom },
@@ -148,6 +149,12 @@ export default {
       getManageRegStuInfoSearchSpread().then(res => {
         this.manageRegOps = res.data.dwhbj
         this.zymOps = res.data.zym
+        let data = res.data.nj
+        let nj = []
+        for (let x = 0; x < data.length; x++){
+          nj.push({dm:data[x],mc:data[x]})
+        }
+        this.$set(this.learnHe, 'checkBox', nj);
       }).catch(err=>{})
     },
     changeSelect() {
@@ -160,8 +167,8 @@ export default {
         xh:this.select == 'xh'?this.searchVal:'',
         dwh:this.moreIform.xydm,
         zydm:this.moreIform.zydm,
-        nj:this.training.choose,
-        pyccm: this.learnHe.choose,
+        nj:[], // ????????????????????
+        pyccm: this.training.choose,
         pageNum: this.queryParams.pageNum,
         pageSize:this.queryParams.pageSize
       }

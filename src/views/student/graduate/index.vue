@@ -221,20 +221,23 @@
           </el-table-column>
         </el-table>
       </div>
+      <pagination
+        v-show="queryParams.total > 0"
+        :total="queryParams.total"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="handleSearch"
+      />
     </div>
     <exportView
       v-if="showExport"
+      :tag="2"
       :showExport="showExport"
+      :multipleSelection="multipleSelection"
       @handleCancel="handleCancel"
       @handleConfirm="handleConfirm"
     ></exportView>
-    <pagination
-      v-show="queryParams.total > 0"
-      :total="queryParams.total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="handleSearch"
-    />
+    
   </div>
 </template>
 

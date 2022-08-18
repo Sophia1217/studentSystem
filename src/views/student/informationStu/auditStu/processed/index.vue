@@ -179,7 +179,7 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="tableColumnValue" label="学号" sortable>
+          <el-table-column prop="userId" label="学号" sortable>
           </el-table-column>
           <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
           <el-table-column prop="dwh" label="学院" sortable> </el-table-column>
@@ -310,7 +310,7 @@ export default {
         ],
         isIndeterminate: true,
       },
-      tableData: [{ date: 1 }],
+      tableData: [],
       multipleSelection: [],
       showExport: false,
     };
@@ -502,7 +502,7 @@ export default {
       this.$router.push({
         path: "/student/informationStu/auditSteps",
         query: {
-          xh: row.tableColumnValue,
+          xh: row.userId,
           schooling: schooling,
           id:row.id
         }

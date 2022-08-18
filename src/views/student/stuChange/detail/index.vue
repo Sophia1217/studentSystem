@@ -277,9 +277,11 @@ export default {
   },
   created() {
     this.id = this.$route.query.id
+    
+  },
+  mounted() {
     this.getshowStuStatusChangeInfoRes()
   },
-  mounted() {},
 
   methods: {
     handleList(index) {
@@ -288,8 +290,9 @@ export default {
     getshowStuStatusChangeInfoRes() {
       let data = { XH:this.id }
       showStuStatusChangeInfoRes(data).then(res => {
-        console.log(res)
         this.infoRes = res.result
+        // this.$set(this.infoRes, 'stuStatusChangeInfoJbxxRes',res.result.stuStatusChangeInfoJbxxRes )
+        // this.$set(this.infoRes, 'xsXjyd',res.result.xsXjyd )
       }).catch(err=>{})
     }
   },

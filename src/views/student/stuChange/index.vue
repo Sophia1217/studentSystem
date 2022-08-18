@@ -613,7 +613,7 @@ export default {
         this.exportParams.pageNum = 0;
         excelTest(this.exportParams)
           .then((res) => {
-            that.downloadFn(res, "学籍异动学生表.docx", "xlsx");
+            that.downloadFn(res, "学籍异动学生表.xlsx", "xlsx");
           })
           .catch((err) => {});
       }

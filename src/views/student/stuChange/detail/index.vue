@@ -29,13 +29,13 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">学号</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.stuStatusChangeInfoJbxxRes.xh}}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">姓名</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.stuStatusChangeInfoJbxxRes.xm}}</div>
                   </div>
                 </el-col>
             </el-row>
@@ -43,13 +43,13 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">培养层次</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.stuStatusChangeInfoJbxxRes.pyccm}}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
-                    <div class="title">学院</div>
-                    <div class="content">3233440</div>
+                    <div class="title">学院??</div>
+                    <div class="content">{{infoRes.stuStatusChangeInfoJbxxRes.pyccm}}</div>
                   </div>
                 </el-col>
             </el-row>
@@ -57,13 +57,13 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">专业</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.stuStatusChangeInfoJbxxRes.zydm}}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">班级</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.stuStatusChangeInfoJbxxRes.bjm}}</div>
                   </div>
                 </el-col>
             </el-row>
@@ -71,13 +71,13 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">异动类别</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.stuStatusChangeInfoJbxxRes.ydlbm}}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">异动日期</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.stuStatusChangeInfoJbxxRes.ydrq}}</div>
                   </div>
                 </el-col>
             </el-row>
@@ -85,7 +85,7 @@
                 <el-col :span="24" class="rowStyle">
                   <div class="wrap">
                     <div class="title">异动说明</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.stuStatusChangeInfoJbxxRes.ydsm}}</div>
                   </div>
                 </el-col>
             </el-row>
@@ -99,13 +99,13 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">异动来源学校</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.xsXjyd.ydlyxx}}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">异动去向学校</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.xsXjyd.ydqxxx}}</div>
                   </div>
                 </el-col>
             </el-row>
@@ -113,13 +113,13 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">原单位号</div>
-                    <div class="content changColor">3233440</div>
+                    <div class="content changColor">{{infoRes.xsXjyd.ydwh}}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">现单位号</div>
-                    <div class="content changColor">3233440</div>
+                    <div class="content changColor">{{infoRes.xsXjyd.xdwh}}</div>
                   </div>
                 </el-col>
             </el-row>
@@ -127,13 +127,13 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">原单位名称</div>
-                    <div class="content changColor">3233440</div>
+                    <div class="content changColor">{{infoRes.xsXjyd.ydwmc}}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">现单位名称</div>
-                    <div class="content changColor">3233440</div>
+                    <div class="content changColor">{{infoRes.xsXjyd.xdwmc}}</div>
                   </div>
                 </el-col>
             </el-row>
@@ -141,13 +141,13 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">原专业代码</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.xsXjyd.yzydm}}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
-                    <div class="title">现单位号</div>
-                    <div class="content">3233440</div>
+                    <div class="title">现专业代码</div>
+                    <div class="content">{{infoRes.xsXjyd.xzydm}}</div>
                   </div>
                 </el-col>
             </el-row>
@@ -155,13 +155,13 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">原专业名称</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.xsXjyd.yzymc}}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">现专业名称</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.xsXjyd.xzymc}}</div>
                   </div>
                 </el-col>
             </el-row>
@@ -169,13 +169,13 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">原年级</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.xsXjyd.ynj}}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">现年级</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.xsXjyd.xnj}}</div>
                   </div>
                 </el-col>
             </el-row>
@@ -183,13 +183,13 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">原导师号</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.xsXjyd.ydsh}}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">现导师号</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.xsXjyd.xdsh}}</div>
                   </div>
                 </el-col>
             </el-row>
@@ -197,13 +197,13 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">原导师姓名</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.xsXjyd.ydsxm}}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">现导师姓名</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.xsXjyd.xdsxm}}</div>
                   </div>
                 </el-col>
             </el-row>
@@ -211,13 +211,13 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">原培养类别</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.xsXjyd.ypylb}}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">现培养类别</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.xsXjyd.xpylb}}</div>
                   </div>
                 </el-col>
             </el-row>
@@ -231,13 +231,13 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">操作人</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.xsXjyd.ydczrgh}}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">审批日期</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.xsXjyd.sprq}}</div>
                   </div>
                 </el-col>
             </el-row>
@@ -245,13 +245,13 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">审批状态</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.xsXjyd.spztm}}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">审批文号</div>
-                    <div class="content">3233440</div>
+                    <div class="content">{{infoRes.xsXjyd.spwh}}</div>
                   </div>
                 </el-col>
             </el-row>
@@ -263,6 +263,7 @@
 </template>
 
 <script>
+import {showStuStatusChangeInfoRes} from '@/api/student/index'
 export default {
   name: 'detail',
 
@@ -270,23 +271,26 @@ export default {
     return {
       dtailsList: ['基本信息', '学籍异动信息', '审核信息'],
       current: 0,
-      tableData: [],
-      isEdit: false,
-      schooling:'',
-      value:''
+      infoRes: {},
+      id:''
     };
   },
   created() {
-    this.isEdit = this.$route.query.show
-    this.schooling = this.$route.query.schooling
+    this.id = this.$route.query.id
+    this.getshowStuStatusChangeInfoRes()
   },
-  mounted() {
-    
-  },
+  mounted() {},
 
   methods: {
     handleList(index) {
       this.current = index
+    },
+    getshowStuStatusChangeInfoRes() {
+      let data = { XH:this.id }
+      showStuStatusChangeInfoRes(data).then(res => {
+        console.log(res)
+        this.infoRes = res.result
+      }).catch(err=>{})
     }
   },
 };

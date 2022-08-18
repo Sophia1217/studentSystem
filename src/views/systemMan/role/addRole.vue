@@ -13,7 +13,6 @@
           <el-input
             v-model="roleName"
             size="small"
-            :disabled="isEdit == 2"
             placeholder="请输入角色名称"
           ></el-input>
         </el-form-item>
@@ -21,17 +20,8 @@
           <el-input
             v-model="queryParams.roleRem"
             size="small"
-            :disabled="isEdit == 2"
             placeholder="请输入权限描述"
           ></el-input>
-        </el-form-item>
-        <el-form-item label="角色状态" prop="roleState">
-          <el-switch
-            v-model="queryParams.roleState"
-            active-color="#23AD6F"
-            inactive-color="#E0E0E0"
-            :disabled="isEdit == 2"
-          ></el-switch>
         </el-form-item>
       </el-form>
     </div>
@@ -41,9 +31,7 @@
         ref="tree"
         :data="treeData"
         show-checkbox
-        :node-key="modId"
-        :default-expanded-keys="[]"
-        :default-checked-keys="[]"
+        node-key="modId"
         :props="defaultProps"
         @check="currentChecked"
       >
@@ -69,7 +57,7 @@ export default {
   data() {
     return {
       modId: "",
-      roleName: this.isEdit == "1" ? "" : this.$route.query.roleNameEdit,
+      roleName: this.isEdit == "1" ? "" : this.$route.query.roleNameEdit, // 编辑是2
       // 查询参数
       queryParams: {
         roleState: "",
@@ -82,36 +70,70 @@ export default {
       },
       isEdit: "",
       savaData: [], //新增提交所需要的menuList
-      roleId1: "", ////编辑请求的id
+      roleId1: "", ////编辑请求的id,
+      arr: [],
+      arr1: ["01"],
     };
   },
 
-  created() {
+  async mounted() {
     this.isEdit = this.$route.query.isEdit;
     this.roleId1 = this.$route.query?.UpId;
     this.roleName1 = this.$route.query?.roleNameEdit;
-    this.handleTree();
+    this.queryParams.roleRem = this.$route.query?.rem;
+    await this.handleTree();
   },
 
   methods: {
     handleTree() {
-      let data = { roleId: this.roleId1 ? this.roleId1 : "01" };
-      queryTreeList(data)
-        .then((res) => {
-          console.log("res", res);
-          this.treeData = res.data;
-        })
-        .catch((err) => {});
+      if (this.isEdit == 2) {
+        let data = { roleId: this.roleId1 };
+        let dataALL = { roleId: "01" };
+        queryTreeList(data)
+          .then((res) => {
+            var result = res.data;
+            this.getData(result); //
+          })
+          .catch((err) => {});
+        queryTreeList(dataALL)
+          .then((res) => {
+            this.treeData = res.data;
+            this.setkeys();
+          })
+          .catch((err) => {});
+      } else {
+        let data = { roleId: "01" };
+        queryTreeList(data)
+          .then((res) => {
+            this.treeData = res.data;
+          })
+          .catch((err) => {});
+      }
+    },
+    setkeys() {
+      console.log("this.arr", this.arr);
+      this.$refs.tree.setCheckedKeys(this.arr);
+    },
+    getData(data) {
+      for (var i in data) {
+        this.arr.push(data[i].modId); //将第一层的那么保存出来，
+        if (data[i].children) {
+          this.getData(data[i].children);
+        }
+      }
+      return this.arr;
     },
     //elementUi中自带的方法，可以获取到所有选中的节点
     currentChecked(nodeObj, SelectedObj) {
       var that = this;
       const { checkedNodes } = SelectedObj;
+      console.log("adsasd", checkedNodes);
       var menuList = checkedNodes.map((item) => item.modId);
       that.savaData = menuList;
     },
     sava() {
       if (this.isEdit === "1") {
+        console.log("新增");
         let data = {
           userId: "1234",
           menuList: this.savaData,
@@ -129,7 +151,7 @@ export default {
       } else {
         let data = {
           userId: "412341234",
-          menuList: this.savaData,
+          menuList: this.savaData.length > 0 ? this.savaData : this.arr, //如果用户进来没编辑，默认前一次筛选出来的树
           roleName: this.isEdit === "1" ? this.roleName : this.roleName1,
           roleId: this.roleId1,
           roleRem: this.queryParams.roleRem,

@@ -65,6 +65,7 @@ export default {
   },
   methods: {
     handleClick(item) {
+        store.dispatch('SaveRole',item)
       if (item.roleType == 2) {
         // 管理员
         store.dispatch("GenerateRoutes", item.roleId).then(() => {

@@ -22,7 +22,7 @@
           placeholder="请输入字典名称"
         ></el-input>
       </el-form-item>
-      <el-form-item label="字典状态" prop="state">
+      <!-- <el-form-item label="字典状态" prop="state">
         <el-select
           v-model="queryParams.state"
           placeholder="请选择角色"
@@ -35,8 +35,8 @@
             :value="dict.value"
           />
         </el-select>
-      </el-form-item>
-      <el-form-item label="修改时间" prop="array">
+      </el-form-item> -->
+      <!-- <el-form-item label="修改时间" prop="array">
         <el-date-picker
           v-model="queryParams.array"
           type="daterange"
@@ -47,7 +47,7 @@
           :clearable="false"
         >
         </el-date-picker>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item>
         <el-button
           type="primary"
@@ -92,7 +92,7 @@
           prop="codeTableChinese"
           sortable
         />
-        <el-table-column label="字典状态" align="center" prop="state" sortable>
+        <!-- <el-table-column label="字典状态" align="center" prop="state" sortable>
           <template slot-scope="scope">
             <div>
               <el-switch
@@ -102,14 +102,14 @@
               ></el-switch>
             </div>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="备注" align="center" prop="remark" sortable />
-        <el-table-column
+        <!-- <el-table-column
           label="修改时间"
           align="center"
           prop="createTime"
           sortable
-        />
+        /> -->
         <el-table-column label="操作" width="200" sortable>
           <template slot-scope="scope">
             <div class="operation">

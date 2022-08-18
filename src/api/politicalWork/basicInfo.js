@@ -1,10 +1,11 @@
 import request from '@/utils/request'
 
 // 列表分页查询接口
-export function getPoliticalWorkList() {
+export function getPoliticalWorkList(params) {
   return request({
     url: '/sws/zg/list',
-    method: 'get'
+    method: 'get',
+    params: params
   })
 }
 
@@ -34,5 +35,14 @@ export function getDetailQueryPoliticalWorkList(data) {
     url: '/sws/zgjbxx/zgDetailQuery',
     method: 'get',
     params: data
+  })
+}
+
+// 政工干部信息修改
+export function updateDetailQueryPoliticalWorkList(query) {
+  return request({
+    url: '/sws/zg/update',
+    method: 'post',
+    data: query
   })
 }

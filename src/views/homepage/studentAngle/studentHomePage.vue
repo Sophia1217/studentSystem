@@ -1,6 +1,8 @@
 <template>
   <div class="studentHomePage">
-    <div class="rowTop">
+    <TopTitle  class="top-title"/>
+    <div class="bg"></div>
+    <!-- <div class="rowTop">
         <div class="itemTop1">
             <div class="logoImage">
                 <img  src="~@/assets/images/logo.png" alt="">
@@ -17,19 +19,15 @@
                 <div class="avatarImage">
                 <img  src="~@/assets/images/avatarRight.png" alt="">
                 </div>
-                <div class="exportImage">
-                    <img  src="~@/assets/images/export2.png" alt="">
-                </div>
-                <div class="newsImage">
-                <img  src="~@/assets/images/icon_news.png" alt="">
-                </div>
             </div>
-            
             
             <div class="titleTop3"><span class="welcomeTitle" >林晓曼，欢迎使用华中师范大学学工系统！</span></div>
         </div>
-    </div>
-    <div class="bg"></div>
+    </div> -->
+
+    <!-- 图片 -->
+
+    <!-- <div class="bg"></div>  -->
     <div class="headline">
             <span class="tohead">常用功能</span>
         </div>
@@ -208,10 +206,12 @@
 </template>
 
 <script>
-import { Row } from 'element-ui'
+import TopTitle from '@/components/TopTitle/index.vue'
 export default {
   name: 'studentHomePage', // 学生视角首页内容
-
+    components : {
+        TopTitle
+    },
   data() {
     return{}
 
@@ -227,6 +227,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .top-title {
+        position: relative;
+    }
 
     .rowTop{
         display: flex;
@@ -251,6 +254,7 @@ export default {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
+        margin-left: 20px;
     }
     .tohead{
         font-weight: 500;

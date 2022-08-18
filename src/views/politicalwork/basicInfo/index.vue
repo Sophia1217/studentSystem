@@ -5,10 +5,13 @@
       <div class="search">
         <el-input v-model="searchVal" placeholder="可输入多个查询条件，以半角空格区分" class="inputSelect">
           <el-select slot="prepend" v-model="select" class="elSelect" placeholder="查询条件">
-            <el-option label="工号" value="1" />
-            <el-option label="姓名" value="2" />
-            <el-option label="身份证号" value="3" />
-            <el-option label="手机号" value="4" />
+            <el-option label="工号" value="gh" />
+            <el-option label="姓名" value="xm" />
+            <el-option label="身份证号" value="sfzh" />
+            <el-option label="籍贯" value="jg" />
+            <el-option label="家庭住址" value="jtzz" />
+            <el-option label="毕业院校" value="byyx" />
+            <el-option label="家庭背景" value="jtbj" />
           </el-select>
           <el-button slot="append" class="searchButton" icon="el-icon-search" @click="handleSearch">查询</el-button>
         </el-input>
@@ -120,10 +123,9 @@
         >导出</el-button>
       </el-col>
     </div></el-row> -->
-
 </template>
 <script>
-import { getPoliticalWorkList, getFilterPoliticalWorkList } from '@/api/politicalWork/basicInfo'
+import { getPoliticalWorkList, getFilterPoliticalWorkList, getConditionPoliticalWorkList } from '@/api/politicalWork/basicInfo'
 import CheckboxCom from '../../components/checkboxCom'
 
 export default {
@@ -153,7 +155,7 @@ export default {
       // // 显示搜索条件
       // showSearch: true,
       // // 总条数
-      // total: 1,
+      total: 0,
       // // TODO: 测试数据
       // // 岗位表格数据
       // // basicInfoList: [],
@@ -166,11 +168,7 @@ export default {
       // // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 10,
-        name: undefined,
-        phone: undefined,
-        status: undefined,
-        deptId: undefined
+        pageSize: 10
       },
 
       searchVal: '',
@@ -188,7 +186,7 @@ export default {
       sex: { // 性别
         checkAll: false,
         choose: [],
-        checkBox: [{ label: '男', val: 21 }, { label: '女', val: 22 }],
+        checkBox: [{ label: '男', val: 1 }, { label: '女', val: 2 }],
         isIndeterminate: true
       },
       workPlace: { // 单位
@@ -197,10 +195,12 @@ export default {
         checkBox: [{ label: '软件学院', val: '软件学院' }, { label: '设计学院', val: '设计学院' }, { label: '文学院', val: '文学院' }, { label: '理学院', val: '理学院' }],
         isIndeterminate: true
       },
+      keyword: {},
       selectedCheckbox: [],
       selectedCategory: [],
       tableData: [],
       multipleSelection: [],
+      sexNum: [],
       showExport: false
     }
   },
@@ -217,12 +217,26 @@ export default {
   methods: {
     // 查询
     handleSearch() {
-      console.log(this.searchVal, this.select)
+      // const searchWord = {}
+      this.$set(this.keyword, this.select, this.searchVal)
+      getConditionPoliticalWorkList(this.keyword).then(response => {
+        console.log(this.keyword, 'keyword')
+        console.log(response, 'res')
+        this.tableData = response.zgZgjbxxList
+        // this.queryParams = {
+        //   pageNum: response.zgZgjbxxList[0].pageNum,
+        //   pageSize: response.pageSize
+        // }
+        // this.total = response.zgZgjbxxList[0].totalCount
+      }).catch(err => {})
+      this.keyword = {}
     },
     // 点击更多
     handleMore() {
       this.isMore = !this.isMore
     },
+
+
     // 类别全选
     handleCheckAllCategoryChange(val) {
       const allCheck = []
@@ -231,11 +245,19 @@ export default {
       }
       this.category.choose = val ? allCheck : []
       this.selectedCheckbox = this.category.choose.concat(this.sex.choose).concat(this.workPlace.choose)
+      // this.sexTransfer(this.selectedCheckbox)
       console.log(this.selectedCheckbox, '所有勾选集合数组')
       this.category.isIndeterminate = false
-//调用接口
+      // 调用接口
       getFilterPoliticalWorkList(this.selectedCheckbox).then(response => {
-        
+        console.log(response.errcode, 'console.log(response.errcode)')
+        console.log(response, 'res')
+        // this.tableData = response.zgjbxxList
+        // this.queryParams = {
+        //   pageNum: response.zgjbxxList[0].pageNum,
+        //   pageSize: response.pageSize
+        // }
+        // this.total = response.Total
       })
     },
     // 类别单选
@@ -244,7 +266,16 @@ export default {
       this.category.checkAll = checkedCount === this.category.checkBox.length
       this.category.isIndeterminate = checkedCount > 0 && checkedCount < this.category.checkBox.length
       this.selectedCheckbox = this.category.choose.concat(this.sex.choose).concat(this.workPlace.choose)
+      // this.sexTransfer(this.selectedCheckbox)
       console.log(this.selectedCheckbox, '所有勾选集合数组')
+      getFilterPoliticalWorkList(this.selectedCheckbox).then(response => {
+        this.tableData = response.zgjbxxList
+        this.queryParams = {
+          pageNum: response.zgjbxxList[0].pageNum,
+          pageSize: response.pageSize
+        }
+        this.total = response.Total
+      })
     },
     // 性别全选
     handleCheckAllSexChange(val) {
@@ -254,6 +285,7 @@ export default {
       }
       this.sex.choose = val ? allCheck : []
       this.selectedCheckbox = this.category.choose.concat(this.sex.choose).concat(this.workPlace.choose)
+      // this.sexTransfer(this.selectedCheckbox)
       console.log(this.selectedCheckbox, '所有勾选集合数组')
       this.sex.isIndeterminate = false
     },
@@ -263,6 +295,7 @@ export default {
       this.sex.checkAll = checkedCount === this.sex.checkBox.length
       this.sex.isIndeterminate = checkedCount > 0 && checkedCount < this.sex.checkBox.length
       this.selectedCheckbox = this.category.choose.concat(this.sex.choose).concat(this.workPlace.choose)
+      // this.sexTransfer(this.selectedCheckbox)
       console.log(this.selectedCheckbox, '所有勾选集合数组')
     },
     // 类别全选
@@ -273,6 +306,7 @@ export default {
       }
       this.workPlace.choose = val ? allCheck : []
       this.selectedCheckbox = this.category.choose.concat(this.sex.choose).concat(this.workPlace.choose)
+      // this.sexTransfer(this.selectedCheckbox)
       console.log(this.selectedCheckbox, '所有勾选集合数组')
       this.workPlace.isIndeterminate = false
     },
@@ -282,6 +316,7 @@ export default {
       this.workPlace.checkAll = checkedCount === this.workPlace.checkBox.length
       this.workPlace.isIndeterminate = checkedCount > 0 && checkedCount < this.workPlace.checkBox.length
       this.selectedCheckbox = this.category.choose.concat(this.sex.choose).concat(this.workPlace.choose)
+      // this.sexTransfer(this.selectedCheckbox)
       console.log(this.selectedCheckbox, '所有勾选集合数组')
     },
     // 多选
@@ -316,6 +351,10 @@ export default {
     // ///////////////////////////////////////////////////////////////
     /** 查询岗位列表 */
     getList() {
+      const data = {
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize
+      }
       // this.loading = true
       // this.basicInfoList = this.basicInfoExample
       // getPoliticalWorkList().then((response) => {
@@ -324,90 +363,18 @@ export default {
       //   this.noticeList = response.zgjbxxList // 根据状态码接收数据
       //    this.total = response.total;
 
-      getPoliticalWorkList().then(response => {
+      getPoliticalWorkList(data).then(response => {
         this.tableData = response.zgjbxxList
-        this.total = 11
-        this.queryParams = {
-          pageNum: response.zgjbxxList[0].pageNum,
-          pageSize: response.zgjbxxList[0].pageSize
-        }
-        // this.total = response.zgjbxxList[0].totalCount
+        // this.total = 11
+        // this.queryParams = {
+        //   pageNum: response.zgjbxxList[0].pageNum,
+        //   pageSize: response.pageSize
+        // }
+        this.total = response.Total
         console.log(response, 'response')
         console.log(response.zgjbxxList[0].pageNum, 'pagenum')
         // this.total = response.total;
       })
-      //  this.loading = false;
-      // })
-      // this.axios.get('/data.json')
-      //   .then((res) => {
-      //     dataTemp = res.data
-      //     for (var i in dataTemp.workId){
-
-      //     }
-      //     dataTemp.workId = dataTemp.gh
-      //     tableData: [{ workId: 1, name: 'abc', sex: '男' }, { workId: 2, name: 'def', sex: '女' }],
-      //     tableData =dataTemp
-      //     console.log(res.data.flag)
-      //   })
-
-      // var url = '/name.json'
-      // this.axios.get(url).then(response => (this.res = response))
-      //   .catch(function(error) {
-      //     console.log(error)
-      //   })
-      // // get查询
-      // console.log(this.axios, 'resresres')
-      // axios.get(url).then(ret => {
-      //   console.log(ret.data)
-      // })
-      // // get传参
-      // axios.get('abc?id=5').then(ret => {
-      //   // data属性名称是固定的,用于获取后台响应的数据
-      //   console.log(ret.data)
-      // })
-      // axios.get('abc', {
-      //   params: {
-      //     id: 123
-      //   }
-      // }).then(ret => {
-      //   console.log(ret.data)
-      // })
-
-      // // post 添加数据
-      // axios.post('abc', {
-      //   id: 5,
-      //   name: 'zhangsan'
-      // }).then(ret => {
-      //   console.log(ret.data)
-      // })
-      // var param = new URLSearchParams()
-      // param.append(key1, value1)
-      // param.append(key2, value2)
-      // axios.post('/abc', param).then(ret => {
-      // })
-      // // put: 修改数据
-      // axios.put('abc', {
-      //   id: 5,
-      //   name: 'zhangsan'
-      // }).then(ret => {
-      //   console.log(ret.data)
-      // })
-      // // delete:删除数据
-      // axios.delete('abc?id=5').then(ret => {
-      //   console.log(ret.data)
-      // })
-      // axios.delete('abc', {
-      //   params: {
-      //     id: 123
-      //   }
-      // }).then(ret => {
-      //   console.log(ret.data)
-      // })
-      // listUser(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
-      //     this.userList = response.rows;
-      //     this.total = response.total;
-      //     this.loading = false;
-      //   }
     },
 
     /** 导出按钮操作 */
@@ -450,11 +417,11 @@ export default {
     //   this.form = row
     //   this.title = '修改政工干部基本信息'
     //   getUser(name)
-      // getUser(postId).then(response => {
-      //   this.form = response.data
-      //   this.open = true
-      //   this.title = '修改岗位'
-      // })
+    // getUser(postId).then(response => {
+    //   this.form = response.data
+    //   this.open = true
+    //   this.title = '修改岗位'
+    // })
     // },
     /** 提交按钮 */
     submitForm: function() {

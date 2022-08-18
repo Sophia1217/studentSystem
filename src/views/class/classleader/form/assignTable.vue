@@ -98,7 +98,7 @@
                 >
               </el-col>
               <el-col :span="1.5">
-                <el-button class="allocate" @click="action()">
+                <el-button class="allocate" @click="actionAssignBgb">
                   <span class="iconfont allocate_icon">&#xe638;</span>
                   批量任命</el-button
                 >
@@ -114,20 +114,15 @@
             <el-table-column
               label="序号"
               align="center"
-              prop="id"
+              type="index"
               width="60px"
             />
-            <el-table-column label="学号" align="center" prop="classId" />
-            <el-table-column label="姓名" align="center" prop="className">
-              <el-input
-                :value="noticeList[0].className"
-                clearable
-                @keyup.enter.native="handleQuery"
-              />
+            <el-table-column label="学号" align="center" prop="xh" />
+            <el-table-column label="姓名" align="center" prop="xm">
             </el-table-column>
-            <el-table-column label="性别" align="center" prop="college" />
-            <el-table-column label="班级职位" align="center" prop="level" />
-            <el-table-column label="操作" align="center" prop="level">
+            <el-table-column label="性别" align="center" prop="xb" />
+            <el-table-column label="班级职位" align="center" prop="bjzw" />
+            <!-- <el-table-column label="操作" align="center" prop="level">
               <template slot-scope="scope">
                 <span
                   class="iconfont allocate_teacher"
@@ -141,7 +136,7 @@
                   分配班干部
                 </span>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
           <pagination
             id="pagenation"
@@ -214,14 +209,49 @@
         >
       </span>
     </el-dialog>
+    <!-- 批量任命对话框 -->
+    <el-dialog
+      :title="title"
+      :visible.sync="openAssignBgb"
+      width="800px"
+      height="243px"
+      append-to-body
+    >
+      <el-form
+        :inline="true"
+        ref="form"
+        :model="form"
+        :rules="rules"
+        label-width="150px"
+      >
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="班干部职位代码" prop="bgbList">
+              <el-input v-model="form.bgbid"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="人工号" prop="rmrgh">
+              <el-input v-model="form.rmrgh"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancelAssignBgb">取 消</el-button>
+        <el-button type="primary" @click="assignBgbConfirm" class="confirm"
+          >确定</el-button
+        >
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import "@/assets/fonts/circle/iconfont.css";
-// import {
-  
-// } from "@/api/class/classLeader";
+import {
+  getAssignBgb,
+} from "@/api/class/classLeader";
 export default {
   name: "assignTable", //班干部任命表格
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
@@ -229,6 +259,10 @@ export default {
   props: ["table_title", "table_content"],
   data() {
     return {
+      // 当前行数据
+      currentRow:[],
+      // 当前班级代码
+      currentBjdm:"",
       // tab栏切换
       tab_list: ["班干部", "全班同学"],
       currentIndex: 0,
@@ -247,38 +281,30 @@ export default {
       // 表格数据
       noticeList: [
         {
-          id: 1,
-          classId: 13070025,
-          className: "计算机工程硕士2022级1班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-          record: "班级操作记录",
+          xh:"123456",
+          xm:"王一",
+          xb:"女",
+          bjzw:"班长", //班级职位
+          bjdm:"1004001000",
+          rgh:"001" // 人工号
         },
         {
-          id: 2,
-          classId: 13070025,
-          className: "计算机工程硕士2022级2班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-          record: "班级操作记录",
+          xh:"123457",
+          xm:"王二",
+          xb:"女",
+          bjzw:"无", //班级职位
+          bjdm:"1004001000",
+          rgh:"002"
         },
         {
-          id: 3,
-          classId: 13070025,
-          className: "计算机工程硕士2022级3班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-          record: "班级操作记录",
+          xh:"123458",
+          xm:"王三",
+          xb:"男",
+          bjzw:"无", //班级职位
+          bjdm:"1004001000",
+          rgh:"003"
         },
+
       ],
       // 班干部列表
       queryBgbList: [],
@@ -286,6 +312,8 @@ export default {
       allClassList: [],
       // 弹出层标题
       title: "",
+      //是否显示批量任命弹窗
+      openAssignBgb: false,
       // 是否显示分配班级弹框
       openAssignClass: false,
       // 是否显示批量取消分配班干部弹框
@@ -301,8 +329,11 @@ export default {
         createBy: undefined,
         status: undefined,
       },
-      // 表单参数
-      form: {},
+      // 批量任命表单参数
+      form: {
+        bgbid:"",
+        rmrgh:""
+      },
       // 表单校验
       rules: {
         noticeTitle: [
@@ -345,12 +376,34 @@ export default {
         type: "success",
       });
     },
-    // 批量分配
-    action(row) {
-      this.teacherClass = true;
+    // 批量任命
+    actionAssignBgb(row) {
+      console.log("批量任命操作！");
+      this.openAssignBgb = true;
+      this.title = "批量任命班干部";
     },
-    // 分配班干部-确认操作
-    distributeClassConfirm(row) {
+    // 批量任命班干部-确认操作
+    assignBgbConfirm() {
+      console.log("批量任命确认操作");
+      this.currentBjdm = this.$route.query.bjdm
+      // console.log("currentRow:",this.currentRow);
+      // console.log(this.form);
+      let stuList = []
+      let bgbList = []
+      let classList = []
+      let rgh = "222222222"
+
+      for(let item_row of this.currentRow){
+        stuList.push(item_row.xh)
+        bgbList.push(this.form.bgbid)
+        classList.push(this.currentBjdm)
+        // rgh.push(this.form.rmrgh)
+      }
+  
+      getAssignBgb({stuList, bgbList, classList, rgh}).then(res=>{
+        console.log(res);
+      })
+      
       this.teacherClass = false;
       this.$message({
         message: "分配班干部成功",
@@ -415,10 +468,10 @@ export default {
       //   this.loading = false;
       // });
     },
-    // 取消按钮
-    cancel() {
-      // this.open = false;
-      // this.reset();
+    // 批量任命取消按钮
+    cancelAssignBgb() {
+      this.openAssignBgb = false;
+      this.reset();
     },
     // 表单重置
     reset() {
@@ -442,10 +495,13 @@ export default {
       // this.handleQuery();
     },
     // 多选框选中数据
-    handleSelectionChange(selection) {
+    handleSelectionChange(row) {
       // this.ids = selection.map((item) => item.noticeId);
       // this.single = selection.length != 1;
       // this.multiple = !selection.length;
+      console.log(row);
+      // 选中的行数据
+      this.currentRow = row
     },
     /** 新增按钮操作 */
     handleAdd() {

@@ -13,7 +13,7 @@ import router from "./router";
 import directive from "./directive"; // directive
 import plugins from "./plugins"; // plugins
 import { download } from "@/utils/request";
-import { formatDate } from "@/utils/index";
+import { formatDate, downloadFn } from "@/utils/index";
 
 import "./assets/icons"; // icon
 import "./permission"; // permission control
@@ -48,6 +48,7 @@ import DictData from "@/components/DictData";
 
 // 全局方法挂载
 Vue.prototype.formatDate = formatDate
+Vue.prototype.downloadFn = downloadFn
 Vue.prototype.getDicts = getDicts;
 Vue.prototype.getConfigKey = getConfigKey;
 Vue.prototype.parseTime = parseTime;
@@ -57,6 +58,7 @@ Vue.prototype.selectDictLabel = selectDictLabel;
 Vue.prototype.selectDictLabels = selectDictLabels;
 Vue.prototype.download = download;
 Vue.prototype.handleTree = handleTree;
+
 
 // 全局组件挂载
 Vue.component("DictTag", DictTag);

@@ -37,6 +37,24 @@ export function getDeleteBgbRm(query) {
 }
 
 
+// 请求班干部职位代码对应名称筛选
+export function getZwdm(query) {
+    return request({
+        url: '/class/getZwdm',
+        method: 'post',
+        data: query
+    })
+}
+
+// 班干部撤销理由筛选
+export function getCxly(query) {
+    return request({
+        url: '/class/getCxly',
+        method: 'post',
+        data: query
+    })
+}
+
 
 
 

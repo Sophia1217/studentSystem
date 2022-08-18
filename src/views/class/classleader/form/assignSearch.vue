@@ -10,20 +10,18 @@
       class="table-header"
     >
       <div class="assignInput">
-        <el-form-item label="学号" prop="noticeType" class="header-item">
-          <el-select
-            v-model="queryParams.noticeType"
-            placeholder="请输入"
-            clearable
-          >
-          </el-select>
+        <el-form-item label="学号" prop="xh" class="header-item">
+          <el-input v-model="queryParams.xh" placeholder="未填写" clearable />
+          <!--             @keyup.enter.native="handleQuery" -->
         </el-form-item>
-        <el-form-item label="职位状态" prop="noticeType" class="header-item">
-          <el-select
-            v-model="queryParams.noticeType"
-            placeholder="在职"
-            clearable
-          >
+        <el-form-item label="职位状态" prop="zwzt" class="header-item">
+          <el-select v-model="queryParams.zwzt" placeholder="未选择" clearable>
+            <el-option
+              v-for="(item, index) in bjzwOptions"
+              :key="index"
+              :label="item.mc"
+              :value="item.dm"
+            />
           </el-select>
         </el-form-item>
       </div>
@@ -49,6 +47,7 @@
 
 <script>
 import "@/assets/fonts/refresh/iconfont.css";
+import { getZwdm } from "@/api/class/classLeader";
 export default {
   name: "assignSearch", // 把干部任命搜索框
   data() {
@@ -56,6 +55,9 @@ export default {
       // tab栏切换
       tab_title: ["22级电子信息1班", "未分配学生名单"],
       currentIndex: 0,
+      // 筛选框数据
+      bjzwOptions: [], // 班级职位
+      // xh:"", //学号
       // 遮罩层
       // loading: true,
       // 选中数组
@@ -112,6 +114,8 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        xh: "",
+        zwzt: "",
         noticeTitle: undefined,
         createBy: undefined,
         status: undefined,
@@ -131,6 +135,15 @@ export default {
   },
   created() {
     // this.getList();
+  },
+  mounted() {
+    // 班干部职位筛选
+    getZwdm().then((res) => {
+      console.log(res);
+      if (res.errcode == "00") {
+        this.bjzwOptions = res.data.rows;
+      }
+    });
   },
   methods: {
     // 分班管理路由跳转

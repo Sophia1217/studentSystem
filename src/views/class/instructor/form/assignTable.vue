@@ -360,6 +360,7 @@ export default {
 }
 
 #pagenation {
+  height: 100px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;

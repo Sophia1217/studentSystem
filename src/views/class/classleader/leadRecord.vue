@@ -49,7 +49,7 @@
             <span style="color: #005657" v-show="scope.row.sfqy == '0'">
               在岗
             </span>
-            <span style="color: #ED5234" v-show="scope.row.sfqy == '1'">
+            <span style="color: #ed5234" v-show="scope.row.sfqy == '1'">
               离岗
             </span>
           </div>
@@ -59,7 +59,7 @@
 
     <pagination
       id="test"
-      v-show="total > 0"
+      v-show="total >= 0"
       :total="total"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
@@ -81,10 +81,13 @@ export default {
       currentRow_ids: [],
       // 任职记录errcode
       errcode: "-200",
+      // 当前班级代码
+      bjdm:"",
       // 遮罩层
       // loading: true,
       // 选中数组
-      ids: "",
+      xhs: "",
+      zws: "",
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -92,7 +95,7 @@ export default {
       // 显示搜索条件
       showSearch: true,
       // 总条数
-      total: 100,
+      total: 0,
       // 班干部任命记录数据
       queryBgbRmjList: [],
       // 弹出层标题
@@ -103,12 +106,9 @@ export default {
       dialogVisible: false,
       // 查询参数
       queryParams: {
-        // pageNum: 1,
-        // pageSize: 10,
-        college: undefined,
-        level: undefined,
-        grade: undefined,
-        classId: undefined,
+        bjdm:"1004001000",
+        pageNum: 1,
+        pageSize: 10,
       },
       // 表单参数
       form: {},
@@ -125,29 +125,35 @@ export default {
   },
   mounted() {
     console.log("guazai");
-    this.getList({
-      bjdm: "1004001000",
-      pageNum: 1,
-      pageSize: 10,
-    });
+    this.getList(this.queryParams);
   },
   methods: {
     getList(x) {
+      Object.assign(x, this.queryParams)
       getQueryBgbRmjl(x).then((res) => {
+        var current_total = 0
+        console.log("res.datas:",res.datas);
         this.queryBgbRmjList = res.datas;
-        console.log("test:", this.queryBgbRmjList);
+        console.log("this.queryBgbRmjList:", this.queryBgbRmjList);
+        for(let index in this.queryBgbRmjList){
+           current_total += this.queryBgbRmjList[index].children.length
+        }
+        this.total = current_total==0?this.total:current_total
       });
     },
     // 删除记录
     deleteRecord() {
       console.log("删除记录");
-      // console.log("this.currentRow:",this.currentRow);
+      console.log("this.currentRow:", this.currentRow);
       for (let item of this.currentRow) {
-        this.ids += item.id + ",";
+        this.xhs += item.xh + ",";
+        this.zws += item.zwdm + ",";
       }
-      this.ids = this.ids.substring(0, this.ids.length - 1);
-      console.log(this.ids);
-      getDeleteBgbRm({ ids: this.ids }).then((res) => {
+      this.xhs = this.xhs.substring(0, this.xhs.length - 1);
+      this.zws = this.zws.substring(0, this.zws.length - 1);
+      console.log("this.xhs:", this.xhs);
+      console.log("this.zws:", this.zws);
+      getDeleteBgbRm({ xhs: this.xhs, zws: this.zws }).then((res) => {
         console.log(res);
         this.errcode = res.errcode;
         console.log("this.errcode:", this.errcode);
@@ -161,7 +167,8 @@ export default {
           pageSize: 10,
         });
       }
-      this.ids = "";
+      this.xhs = "";
+      this.zws = "";
       this.errcode = "-200";
     },
     // 班干部记录删除

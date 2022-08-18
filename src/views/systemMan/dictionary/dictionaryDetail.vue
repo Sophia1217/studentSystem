@@ -93,7 +93,7 @@
         />
         <el-table-column label="字典状态" align="center" prop="state" sortable>
           <template slot-scope="scope">
-            <div>
+            <div @click="handleAdd2(scope.row)">
               <el-switch
                 v-model="scope.row.state"
                 active-color="#23AD6F"
@@ -135,7 +135,7 @@
     ></dicDialog>
     <dialogVisibleAdd
       :dialogVisibleAdd="dialogVisibleAdd"
-      :codeTableEnglish="info.codeTableEnglish"
+      :codeTableChinese="info.codeTableChinese"
       @handleCloseDia="handleCloseDia1"
       @handleCommitDia="handleCommitDia1"
     ></dialogVisibleAdd>
@@ -150,7 +150,9 @@ import {
   listQuery,
   updateDicList,
   addDicList,
+  checkKey,
 } from "@/api/systemMan/dictionary";
+import { Message } from "element-ui";
 export default {
   name: "dictionary",
   components: { DicDialog, dialogVisibleAdd },
@@ -251,8 +253,32 @@ export default {
         remark: cal.remark,
         codeKey: cal.codeKey,
       };
+      const data1 = {
+        codeTableEnglish: this.info.codeTableEnglish,
+        codeKey: cal.codeKey,
+      };
+      checkKey(data1).then((res) => {
+        if (res.data) {
+          addDicList(data).then((res) => {
+            this.handleQuery();
+          });
+        } else {
+          this.$message.error("请不要提交重复字典便签名");
+        }
+      });
+    },
+    handleAdd2(val) {
+      const data = {
+        codeTableEnglish: val.codeTableEnglish,
+        codeTableChinese: val.codeTableChinese,
+        state: val.state ? "0" : "1",
+        remark: val.remark,
+        codeKey: val.codeKey,
+        id: val.id,
+      };
+
       updateDicList(data).then((res) => {
-        console.log(res);
+        this.handleQuery();
       });
     },
     handleCommitDia(cal) {
@@ -265,8 +291,18 @@ export default {
         codeKey: cal.codeKey,
         id: cal.id,
       };
-      addDicList(data).then((res) => {
-        console.log("sdsad");
+      const data1 = {
+        codeTableEnglish: cal.codeTableEnglish,
+        codeKey: cal.codeKey,
+      };
+      checkKey(data1).then((res) => {
+        if (res.data) {
+          updateDicList(data).then((res) => {
+            this.handleQuery();
+          });
+        } else {
+          this.$message.error("请不要提交重复字典便签名");
+        }
       });
     },
     handleAdd1() {

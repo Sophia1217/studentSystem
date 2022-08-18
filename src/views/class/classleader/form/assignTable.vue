@@ -170,10 +170,10 @@
     <!-- 批量撤任对话框：cancelAllocate-->
     <el-dialog title="取消分配" :visible.sync="cancelAllocate" width="50%">
       <el-form :model="form">
-        <el-form-item label="撤任理由" prop="reason">
-          <el-select v-model="form.reason" placeholder="休学">
-            <!-- <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option> -->
+        <el-form-item label="撤任理由" prop="cxly">
+          <el-select v-model="form.cxly" placeholder="请选择">
+            <!-- <el-option label="cxlyOptions.mc" value="cxlyOptions.dm"></el-option> -->
+           <el-option v-for="item in cxlyOptions" :key="item.dm" :label="item.mc" :value="item.dm"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="撤任详情" prop="detail">
@@ -238,7 +238,7 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cancelAssignBgb">取 消</el-button>
+        <el-button @click="cancelAssignBgb">取消</el-button>
         <el-button type="primary" @click="assignBgbConfirm" class="confirm"
           >确定</el-button
         >
@@ -249,6 +249,7 @@
 
 <script>
 import "@/assets/fonts/circle/iconfont.css";
+import {getCxly, getQueryBgbList} from "@/api/class/classLeader"
 import {
   getAssignBgb,
 } from "@/api/class/classLeader";
@@ -266,6 +267,8 @@ export default {
       // tab栏切换
       tab_list: ["班干部", "全班同学"],
       currentIndex: 0,
+      // 撤任理由数据
+      cxlyOptions:[],
       // 遮罩层
       // loading: true,
       // 选中数组
@@ -325,9 +328,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        noticeTitle: undefined,
-        createBy: undefined,
-        status: undefined,
+        cxly:"",
       },
       // 批量任命表单参数
       form: {
@@ -348,17 +349,30 @@ export default {
   created() {
     // this.getList();
   },
+  mounted(){
+    console.log("班干部列表挂在");
+  },
   methods: {
+    // // 班干部查询列表
+    // getList(x){
+    //   console.log("getList1!");
+    //   getQueryBgbList(x).then(res=>{
+    //     console.log("该班班干部查询结果：",res);
+    //   })
+    // },
     // 班干部任职记录
     studentRecord1() {
-      console.log("点击班干部任职记录按钮");
       this.$router.push({
         path: "/class/leadRecord",
       });
     },
     // 班干部批量撤任操作
     deleteSome() {
-      console.log(111);
+      getCxly().then(res=>{
+        console.log(res);
+        this.cxlyOptions = res.data.rows
+        console.log("crlyOptions:",this.cxlyOptions);
+      })
       this.cancelAllocate = "true";
     },
     // 批量取消分配-确认操作

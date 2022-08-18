@@ -20,6 +20,9 @@ const user = {
     SET_NAME: (state, name) => {
       state.name = name
     },
+    SET_USERID: (state, userId) => {
+        state.userId = userId
+    },
     SET_ROLEID: (state, roleId) => {
         state.roleId = roleId
     },
@@ -64,8 +67,10 @@ const user = {
                 var roles = res.row || []
                 if (roles.length > 0) { // 验证返回的roles是否是一个非空数组
                   commit('SET_ROLES', roles)
+                  
                     if (roles.length == 1){
                         var role = roles[0];
+                        commit('SET_USERID',role.userId)
                         commit('SET_ROLEID',role.roleId)
                         commit('SET_ROLETYPE',role.roleType)
                         
@@ -92,7 +97,7 @@ const user = {
 
     SaveRole({commit},role){
         return new Promise((resolve, reject) => {
-            
+            commit('SET_USERID',role.userId)
             commit('SET_ROLEID',role.roleId)
             commit('SET_ROLETYPE',role.roleType)
             resolve()

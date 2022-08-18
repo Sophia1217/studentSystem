@@ -25,7 +25,7 @@ export default {
     teaTable,
   },
   mounted() {
-    this.getList(this.queryParams);
+    this.getList();
     this.getOptions();
   },
   data() {
@@ -43,10 +43,10 @@ export default {
     };
   },
   methods: {
-    getList(queryParams = {}) {
+    getList(data = {}) {
       // this.loading = true;
-      Object.assign(queryParams, this.queryParams);
-      classList(queryParams).then((response) => {
+      var data = this.queryParams
+      classList(data).then((response) => {
         // 获取班级列表数据
         if (response.errcode == "00") {
           this.noticeList = response.data.rows; // 根据状态码接收数据

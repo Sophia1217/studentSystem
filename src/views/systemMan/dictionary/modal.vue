@@ -15,9 +15,10 @@
       >
         <el-form-item label="字典名称" prop="codeTableChinese">
           <el-input
-            v-model="queryParams.codeTableChinese"
+            v-model="codeTableChinese"
             size="small"
             placeholder="请输入字典名称"
+            :disabled="true"
           ></el-input>
         </el-form-item>
         <el-form-item label="字典标签" prop="codeKey">
@@ -58,7 +59,6 @@ export default {
   data() {
     return {
       queryParams: {
-        codeTableChinese: "",
         state: "",
         codeKey: "",
         remark: "",
@@ -70,17 +70,23 @@ export default {
       type: Boolean,
       default: false,
     },
-    codeTableEnglish: {
+    codeTableChinese: {
       type: String,
       default: "",
     },
   },
   methods: {
     handleCloseDia1() {
+      this.queryParams = {}; //重置表格对象
       this.$emit("handleCloseDia");
     },
     handleCommitDia1() {
-      this.$emit("handleCommitDia", this.queryParams);
+      var data = {
+        ...this.queryParams,
+        codeTableChinese: this.codeTableChinese,
+      };
+      this.$emit("handleCommitDia", data);
+      this.queryParams = {};
     },
   },
 };

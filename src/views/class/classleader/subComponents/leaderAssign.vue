@@ -21,18 +21,22 @@ export default {
     return {
       // 班干部列表需要显示的标题
       table_title: "",
-      queryBgbList:[]
+      queryBgbList:[],
+      // 当前班级代码
+      currentBjdm:""
     };
   },
   mounted() {
-    console.log("班干部列表查询");
     let self = this;
+    self.currentBjdm = this.$route.query.bjdm
     self.getQuery();
+    // 想要动态的，将"1004001000"换为self.currentBjdm
     self.getList({bjdm:"1004001000"});
   },
   methods: {
     // 班干部列表
     getList(x) {
+      console.log("getList2!");
       getQueryBgbList(x).then((res) => {
         console.log(res);
         let data = res.rows;
@@ -41,7 +45,7 @@ export default {
       });
     },
     getQuery() {
-      this.table_title = this.$route.query.bjdm;
+      this.table_title = this.$route.query.bjmc;
     },
   },
 };

@@ -19,6 +19,15 @@ export function getQueryBgbRmjl(query) {
     })
 }
 
+// 班干部任命记录删除
+export function getDeleteBgbRm(query) {
+    return request({
+        url: '/class/deleteBgbRm',
+        method: 'post',
+        data: query
+    })
+}
+
 
 
 

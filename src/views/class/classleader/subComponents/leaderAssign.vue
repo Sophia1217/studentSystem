@@ -9,7 +9,7 @@
 import assignSearch from "../form/assignSearch";
 import assignTable from "../form/assignTable";
 import {
-  getQueryBgbList,
+  getQueryBgbList, //班干部列表查询
 } from "@/api/class/classLeader";
 export default {
   name: "leaderAssign", // 班干部任命
@@ -25,18 +25,17 @@ export default {
     };
   },
   mounted() {
-    console.log(111);
+    console.log("班干部列表查询");
     let self = this;
     self.getQuery();
-    self.getList("1004001000");
+    self.getList({bjdm:"1004001000"});
   },
   methods: {
     // 班干部列表
     getList(x) {
-      console.log(1);
       getQueryBgbList(x).then((res) => {
         console.log(res);
-        let data = res.Data;
+        let data = res.rows;
         this.queryBgbList = data;
         console.log("test:", this.queryBgbList);
       });

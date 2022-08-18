@@ -256,16 +256,7 @@ export default {
   name: "assignTable", //班干部任命表格
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
   // 子组件(assignTable)属性,其父组件为leaderAssign
-  props: {
-    table_title: {
-      type: String,
-      default: "test_title",
-    },
-    table_content: {
-      type: Object,
-      default: [],
-    },
-  },
+  props: ["table_title", "table_content"],
   data() {
     return {
       // 当前行数据

@@ -66,12 +66,12 @@ router.beforeEach((to, from, next) => {
                 next()
             }
         } else {
-            location.href = 'https://account.ccnu.edu.cn/cas/login?service=http://10.222.7.139:8081/sws/checkLogin'
-            // if (to.path === '/login') {
-            //     next()
-            // }else {
-            //     next({ path: '/login' })
-            // }
+            // location.href = 'https://account.ccnu.edu.cn/cas/login?service=http://10.222.7.139:8081/sws/checkLogin'
+            if (to.path === '/login') {
+                next()
+            }else {
+                next({ path: '/login' })
+            }
             
             NProgress.done()
         }

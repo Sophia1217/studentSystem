@@ -7,17 +7,15 @@
         </span>
       </h3>
       <el-row :gutter="10" class="mb8" style="float: right; margin-top: 15px">
-        <!-- <el-col :span="1.5" style="float: left"> 班级列表 </el-col> -->
         <el-col :span="1.5">
           <el-button
             icon="el-icon-delete"
             style="color: #eb3842; border-color: #eb3842"
-            @click="deleteRecord(row)"
+            @click="deleteRecord"
           >
             删除</el-button
           >
         </el-col>
-        <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
       </el-row>
     </div>
 
@@ -28,41 +26,31 @@
       :tree-props="{ children: 'children', hasChildren: 'children.length' }"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column label="序号" align="center" type="index" />
       <el-table-column label="班级职位" align="center" prop="mc" sortable />
       <el-table-column label="姓名" align="center" prop="xm" sortable>
       </el-table-column>
-      <el-table-column
-        label="学号"
-        align="center"
-        prop="xh"
-        sortable
-      />
+      <el-table-column label="学号" align="center" prop="xh" sortable />
       <el-table-column label="任命人" align="center" prop="rmrgh" sortable />
-      <el-table-column label="任命年度" align="center" prop="rmsj" sortable />
-      <el-table-column label="任命学期" align="center" prop="rmsj" sortable />
-      <el-table-column
-        label="任命时间"
-        align="center"
-        prop="rmsj"
-        sortable
-      />
-      <el-table-column label="撤任人" align="center" prop="offName" sortable />
+      <el-table-column label="任命时间" align="center" prop="rmsj" sortable />
+      <el-table-column label="撤任人" align="center" prop="cxrgh" sortable />
       <el-table-column label="撤任时间" align="center" prop="cxsj" sortable />
       <el-table-column
         label="任职状态"
         align="center"
-        prop="orderState"
+        prop="sfqy"
         class-name="small-padding fixed-width"
         sortable
       >
-        <template>
-          <!-- slot-scope="scope" -->
+        <template slot-scope="scope">
           <div>
             <span class="iconfont allocate_teacher">&#xe604;</span>
-            <span style="color: #005657">
-              <!-- {{ noticeList[0].orderState }} -->
+            <span style="color: #005657" v-show="scope.row.sfqy == '0'">
+              在岗
+            </span>
+            <span style="color: #ED5234" v-show="scope.row.sfqy == '1'">
+              离岗
             </span>
           </div>
         </template>
@@ -77,95 +65,26 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-
-    <!-- 新增班级对话框 -->
-    <el-dialog
-      :title="title"
-      :visible.sync="open"
-      width="800px"
-      height="243px"
-      append-to-body
-    >
-      <el-form
-        :inline="true"
-        ref="form"
-        :model="form"
-        :rules="rules"
-        label-width="80px"
-      >
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="所属学院" prop="noticeTitle">
-              <el-select
-                v-model="form.noticeType"
-                placeholder="计算机学院"
-              ></el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="培养层次" prop="noticeType">
-              <el-select
-                v-model="form.noticeType"
-                placeholder="本科"
-              ></el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="所属年级">
-              <el-select
-                v-model="form.noticeType"
-                placeholder="2022"
-              ></el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="班级数量">
-              <!-- <editor v-model="form.noticeContent" :min-height="192" /> -->
-              <el-select v-model="form.noticeType" placeholder="10"></el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="submitForm" class="confirm"
-          >确 定</el-button
-        >
-      </div>
-    </el-dialog>
-
-    <el-dialog
-      :title="title"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <span
-        >是否确认删除空班级？<span style="color: #ed5234"
-          >*每次仅支持删除一个班级，且该班级代码编号为最末尾</span
-        ></span
-      >
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="classCancel">取 消</el-button>
-        <el-button type="primary" @click="classConfirm" class="confirm"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import "@/assets/fonts/circle/iconfont.css";
-import { getQueryBgbRmjl } from "@/api/class/classLeader";
+import { getQueryBgbRmjl, getDeleteBgbRm } from "@/api/class/classLeader";
 export default {
   name: "LeadRecord",
   data() {
     return {
+      // 任职记录当前行数据
+      currentRow: [],
+      // 任职记录勾选框收集ids
+      currentRow_ids: [],
+      // 任职记录errcode
+      errcode: "-200",
       // 遮罩层
       // loading: true,
       // 选中数组
-      ids: [],
+      ids: "",
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -208,7 +127,6 @@ export default {
     console.log("guazai");
     this.getList({
       bjdm: "1004001000",
-      sfqy: 0,
       pageNum: 1,
       pageSize: 10,
     });
@@ -221,8 +139,34 @@ export default {
       });
     },
     // 删除记录
-    deleteRecord(row) {
+    deleteRecord() {
       console.log("删除记录");
+      // console.log("this.currentRow:",this.currentRow);
+      for (let item of this.currentRow) {
+        this.ids += item.id + ",";
+      }
+      this.ids = this.ids.substring(0, this.ids.length - 1);
+      console.log(this.ids);
+      getDeleteBgbRm({ ids: this.ids }).then((res) => {
+        console.log(res);
+        this.errcode = res.errcode;
+        console.log("this.errcode:", this.errcode);
+      });
+      // 重新请求数据
+      if (this.errcode == "00") {
+        console.log("刷新操作！");
+        this.getList({
+          bjdm: "1004001000",
+          pageNum: 1,
+          pageSize: 10,
+        });
+      }
+      this.ids = "";
+      this.errcode = "-200";
+    },
+    // 班干部记录删除
+    handleSelectionChange(row) {
+      this.currentRow = row;
     },
   },
 };

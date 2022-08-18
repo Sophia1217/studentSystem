@@ -1267,7 +1267,7 @@
       </div>
 
     </div>
-    <div class="editBottom">
+    <div class="editBottom" v-show="active=='2'">
       <div class="btn cancel" @click="handleBack">
         <i class="icon backIcon"></i> 退回
       </div>
@@ -1313,7 +1313,7 @@ export default {
         // { name: '工作经历', num: '' }
       ],
       current: 0,
-      tableData: [{date:1}],
+      tableData: [],
       isEdit: false,
       dialogVisible: false,
       textarea: '', // 退回原因
@@ -1329,6 +1329,12 @@ export default {
         dtailsList:[]
       }
     };
+  },
+  props: {
+    active: {
+      type: String | Number,
+      default:''
+    }
   },
   created() {
     this.schooling = this.$route.query.schooling

@@ -8,10 +8,10 @@
     </el-steps>
     <div v-if="active == 1">提交修改</div>
     <div v-if="active == 2">
-      <detail :xh="xh" @parendFn="parendFn"></detail>
+      <detail :xh="xh" @parendFn="parendFn" :active="active"></detail>
     </div>
     <div v-if="active == 3">
-      <detail :xh="xh" @parendFn="parendFn"></detail>
+      <detail :xh="xh" @parendFn="parendFn" :active="active"></detail>
     </div>
   </div>
 </template>
@@ -31,6 +31,17 @@ export default {
 
   mounted() {
     this.xh = this.$route.query.xh
+    let approveState = this.$route.query.approveState
+    if (approveState == 1) {
+      this.active = 3
+      this.flag = 'tg'
+    } else if (approveState == 2) {
+      this.active = 2
+      this.flag = 'tg'
+    } else {
+      this.active = 3
+      this.flag = 'th' // 退回
+    }
   },
 
   methods: {

@@ -504,9 +504,10 @@ export default {
         query: {
           xh: row.userId,
           schooling: schooling,
-          id:row.id
+          id: row.id,
+          approveState:2
         }
-      });
+      })
     },
   },
 };

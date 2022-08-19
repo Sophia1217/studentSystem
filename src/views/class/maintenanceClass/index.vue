@@ -276,18 +276,6 @@ export default {
       // 总条数
       total: 0,
       bjdm: "",
-      // 表格数据
-      /* 
-        {
-          bjdm: '', // 班级编号
-          bjmc: "", // 班级名称
-          pydw: "计算机工程学院", // 培养单位-目前这一列缺失
-          ssnj: "", // 年级
-          pycc: "", // 培养层次
-          stuNumOfClass: 0, // 班级数量
-          createTime: "", // 创建时间
-        }
-      */
       // 班级列表数据
       noticeList: [],
       // 筛选框数据
@@ -592,6 +580,7 @@ export default {
   color: #1f1f1f;
 }
 #test {
+  height: 100px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;

@@ -3,7 +3,7 @@
     <div class="wrap">
       <div class="detail_left">
         <div v-for="(item,index) in dtailsList" :key="index">
-          <div class="list" :class="index==current?'active':''" @click="handleList(index)">
+          <div class="list" :class="index==current?'active':''" @click="handleList(index,'tag')">
             <div>{{item}}</div>
             <i :class="index==current?'el-icon-arrow-right':''"></i>
           </div>
@@ -11,199 +11,110 @@
       </div>
       <div class="detail_right">
         <div class="right_top">
-          <p class="title">审核人员信息修改字段设置</p>
-          <div class="saveBtn"> <i class="icon"></i> 保存</div>
+          <p class="title">学生信息修改字段设置</p>
+          <div class="saveBtn" @click="getUpdateStuColumns"> <i class="icon"></i> 保存</div>
         </div>
         <!-- 基本信息 -->
-        <div class="headline">
+        <div class="headline" id="tag_0">
           <div>基本信息</div>
           <div class="boxSelect">
-             <el-checkbox v-model="basicCheckBox.readOnly">全部只读</el-checkbox>
-             <el-checkbox v-model="basicCheckBox.writeOnly">全部必填</el-checkbox>
+             <el-checkbox v-model="basicCheckBox.jbxxzd" @change="(val) => {xsjbxxReader(val,1,columns.xs_jbxx,1)}">全部只读</el-checkbox>
+             <el-checkbox v-model="basicCheckBox.jbxxbt" @change="(val) => {xsjbxxReader(val,2,columns.xs_jbxx,1)}">全部必填</el-checkbox>
           </div>
         </div>
         <div class="information">
           <el-row :gutter="20">
-              <el-col :span="8" class="rowStyle">
+              <el-col :span="8" class="rowStyle" v-for="item in columns.xs_jbxx" :key="item.id">
                 <div class="wrap">
-                  <div class="title">学号</div>
-                  <div class="content">
-                    <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="8" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">姓名</div>
-                  <div class="content">
-                    <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="8" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">姓名</div>
-                  <div class="content">
-                    <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
+                  <div class="title">{{item.dicCloumnChinese}}</div>
+                  <div class="content"> 
+                    <el-radio v-model="item.columnAuth" label="2">只读</el-radio>
+                    <el-radio v-model="item.columnAuth" label="0">必填</el-radio>
+                    <!-- <el-radio  v-model="item.columnAuth" label="2">隐藏</el-radio> -->
                   </div>
                 </div>
               </el-col>
           </el-row>
         </div>
         <!-- 联系方式 -->
-        <div class="headline">
+        <div class="headline" id="tag_1">
           <div>联系方式</div>
           <div class="boxSelect">
-             <el-checkbox v-model="basicCheckBox.readOnly">全部只读</el-checkbox>
-             <el-checkbox v-model="basicCheckBox.writeOnly">全部必填</el-checkbox>
+             <el-checkbox v-model="basicCheckBox.lxfsreader" @change="(val) => {xsjbxxReader(val,1,columns.xs_txxx,2)}">全部只读</el-checkbox>
+             <el-checkbox v-model="basicCheckBox.lxfsbt" @change="(val) => {xsjbxxReader(val,2,columns.xs_txxx,2)}">全部必填</el-checkbox>
           </div>
         </div>
         <div class="information">
           <el-row :gutter="20">
-              <el-col :span="8" class="rowStyle">
+              <el-col :span="8" class="rowStyle" v-for="item in columns.xs_txxx" :key="item.id">
                 <div class="wrap">
-                  <div class="title">学号</div>
+                  <div class="title">{{item.dicCloumnChinese}}</div>
                   <div class="content">
-                    <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="8" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">姓名</div>
-                  <div class="content">
-                    <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="8" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">姓名</div>
-                  <div class="content">
-                    <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
+                    <el-radio v-model="item.columnAuth" label="2">只读</el-radio>
+                    <el-radio v-model="item.columnAuth" label="0">必填</el-radio>
                   </div>
                 </div>
               </el-col>
           </el-row>
         </div>
         <!-- 家庭成员信息 -->
-        <div class="headline">
+        <div class="headline" id="tag_2">
           <div>家庭成员信息</div>
           <div class="boxSelect">
-             <el-checkbox v-model="basicCheckBox.readOnly">全部只读</el-checkbox>
-             <el-checkbox v-model="basicCheckBox.writeOnly">全部必填</el-checkbox>
+             <el-checkbox v-model="basicCheckBox.jtcyxxReader" @change="(val) => {xsjbxxReader(val,1,columns.xs_jtcyxx,3)}">全部只读</el-checkbox>
+             <el-checkbox v-model="basicCheckBox.jtcyxxBt" @change="(val) => {xsjbxxReader(val,2,columns.xs_jtcyxx,3)}">全部必填</el-checkbox>
           </div>
         </div>
         <div class="information">
           <el-row :gutter="20">
-              <el-col :span="8" class="rowStyle">
+              <el-col :span="8" class="rowStyle" v-for="item in  columns.xs_jtcyxx" :key="item.id">
                 <div class="wrap">
-                  <div class="title">学号</div>
+                  <div class="title">{{item.dicCloumnChinese}}</div>
                   <div class="content">
-                    <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="8" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">姓名</div>
-                  <div class="content">
-                    <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="8" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">姓名</div>
-                  <div class="content">
-                    <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
+                    <el-radio v-model="item.columnAuth" label="2">只读</el-radio>
+                    <el-radio v-model="item.columnAuth" label="0">必填</el-radio>
                   </div>
                 </div>
               </el-col>
           </el-row>
         </div>
         <!-- 学习经历 -->
-        <div class="headline">
+        <div class="headline" id="tag_3">
           <div>学习经历</div>
           <div class="boxSelect">
-             <el-checkbox v-model="basicCheckBox.readOnly">全部只读</el-checkbox>
-             <el-checkbox v-model="basicCheckBox.writeOnly">全部必填</el-checkbox>
+             <el-checkbox v-model="basicCheckBox.xxjlReader" @change="(val) => {xsjbxxReader(val,1,columns.xs_xxjl,4)}">全部只读</el-checkbox>
+             <el-checkbox v-model="basicCheckBox.xxjlBt" @change="(val) => {xsjbxxReader(val,2,columns.xs_xxjl,4)}">全部必填</el-checkbox>
           </div>
         </div>
         <div class="information">
           <el-row :gutter="20">
-              <el-col :span="8" class="rowStyle">
+              <el-col :span="8" class="rowStyle" v-for="item in  columns.xs_xxjl" :key="item.id">
                 <div class="wrap">
-                  <div class="title">学号</div>
+                  <div class="title">{{item.dicCloumnChinese}}</div>
                   <div class="content">
-                    <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="8" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">姓名</div>
-                  <div class="content">
-                    <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="8" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">姓名</div>
-                  <div class="content">
-                    <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
+                    <el-radio v-model="item.columnAuth" label="2">只读</el-radio>
+                    <el-radio v-model="item.columnAuth" label="0">必填</el-radio>
                   </div>
                 </div>
               </el-col>
           </el-row>
         </div>
         <!-- 工作经历 -->
-        <div class="headline">
+        <div class="headline" id="tag_4">
           <div>工作经历</div>
           <div class="boxSelect">
-             <el-checkbox v-model="basicCheckBox.readOnly">全部只读</el-checkbox>
-             <el-checkbox v-model="basicCheckBox.writeOnly">全部必填</el-checkbox>
+             <el-checkbox v-model="basicCheckBox.gzjlReader" @change="(val) => {xsjbxxReader(val,1,columns.xs_gzjl,5)}">全部只读</el-checkbox>
+             <el-checkbox v-model="basicCheckBox.gzjlBt" @change="(val) => {xsjbxxReader(val,2,columns.xs_gzjl,5)}">全部必填</el-checkbox>
           </div>
         </div>
         <div class="information">
           <el-row :gutter="20">
-              <el-col :span="8" class="rowStyle">
+              <el-col :span="8" class="rowStyle" v-for="item in  columns.xs_gzjl" :key="item.id">
                 <div class="wrap">
-                  <div class="title">学号</div>
+                  <div class="title">{{item.dicCloumnChinese}}</div>
                   <div class="content">
-                    <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="8" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">姓名</div>
-                  <div class="content">
-                    <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="8" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">姓名</div>
-                  <div class="content">
-                    <el-checkbox v-model="basicCheckBox.checked1">只读</el-checkbox>
-                    <el-checkbox v-model="basicCheckBox.checked2">必填</el-checkbox>
+                    <el-radio v-model="item.columnAuth" label="2">只读</el-radio>
+                    <el-radio v-model="item.columnAuth" label="0">必填</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -215,6 +126,7 @@
 </template>
 
 <script>
+import { loadStuColumns, updateStuColumns } from '@/api/student/fieldSettings' 
 export default {
   name: 'studentSeting',
 
@@ -222,51 +134,128 @@ export default {
     return {
       dtailsList: ['基本信息', '联系方式', '家庭成员信息', '学习经历', '工作经历'],
       current: 0,
-      basicCheckBox: {
-        readOnly: false,
-        writeOnly: false,
-        checked1:false,
-        checked2:false,
+      basicCheckBox: {},
+      columns: {
+        xs_jtcyxx:[],
+        xs_txxx:[],
+        xs_xxjl:[],
+        xs_gzjl:[],
+        xs_jbxx:[],
       }
     };
   },
   created() {
   },
   mounted() {
-    
+    this.getloadStuColumns()
   },
 
   methods: {
     // 左侧list
-    handleList(index) {
+    handleList(index,tag) {
       this.current = index
+      var id = "#" + tag + '_' + index;
+      // console.log(id)
+      document.querySelector(id).scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "nearest",
+      });
     },
-    // 打开退回弹窗
-    handleBack() {
-      this.dialogVisible = true
-      this.textarea = ''
-    },
-    // 退回取消
-    handleClose() {
-      this.dialogVisible = false
-      this.textarea = ''
-    },
-    // 退回确认
-    handleConfirm() {
-      this.dialogVisible = false
-      this.textarea = ''
-    },
-    // 通过确定
-    handleConThrou() {
-      this.throughDialogV = false
-      this.$router.push({
-        path:'/student/informationStu/auditStu'
-      })
-    },
-    // 通过弹窗
-    handleThrough() {
-      this.throughDialogV = true
+    getloadStuColumns() {
+      let data = {}
+      loadStuColumns(data).then(res => {
+        let data = res.data
+        let columns = {
+          xs_jbxx:[],
+          xs_jtcyxx:[],
+          xs_txxx:[],
+          xs_xxjl:[],
+          xs_gzjl:[],
+        }
+        for (let x = 0; x < data.length; x++){
+          if (data[x].dicEnglish == 'xs_jbxx') {
+            columns.xs_jbxx.push(data[x])
+          } else if (data[x].dicEnglish == 'xs_jtcyxx') {
+            columns.xs_jtcyxx.push(data[x])
+          } else if (data[x].dicEnglish == 'xs_txxx') {
+            columns.xs_txxx.push(data[x])
+          } else if (data[x].dicEnglish == 'xs_xxjl') {
+            columns.xs_xxjl.push(data[x])
+          } else if (data[x].dicEnglish == 'xs_gzjl') {
+            columns.xs_gzjl.push(data[x])
+          }
+        }
+        this.columns = columns
       
+      }).catch(err=>{})
+    },
+    // 基本信息全部只读
+    xsjbxxReader(val, index, data, xm) { // val 选中 ，index 0必填 1可写 2可读
+      // console.log(val, index, data,xm)
+      let jbxxData = data
+      if (!val) {
+        for (let x = 0; x < jbxxData.length; x++){
+          jbxxData[x].columnAuth = '1'
+        }
+      }
+      if (index == 1) {
+        if (val) {
+          for (let x = 0; x < jbxxData.length; x++){
+            jbxxData[x].columnAuth = '2'
+          }
+        }
+        switch(xm)
+        {
+          case 1:
+            this.basicCheckBox.jbxxbt = false
+            break;
+          case 2:
+            this.basicCheckBox.lxfsbt = false
+          break;
+            case 3:
+            this.basicCheckBox.jtcyxxBt = false
+          break;
+            case 4:
+            this.basicCheckBox.xxjlBt = false
+          break;
+            case 5:
+            this.basicCheckBox.gzjlBt = false
+          break;
+        }
+      } else {
+        if (val) {
+          for (let x = 0; x < jbxxData.length; x++){
+            jbxxData[x].columnAuth = '0'
+          }
+        }
+        switch(xm)
+        {
+          case 1:
+            this.basicCheckBox.jbxxzd = false
+            break;
+          case 2:
+            this.basicCheckBox.lxfsreader = false
+          break;
+            case 3:
+            this.basicCheckBox.jtcyxxReader = false
+          break;
+            case 4:
+            this.basicCheckBox.xxjlReader = false
+          break;
+            case 5:
+            this.basicCheckBox.gzjlReader = false
+          break;
+        }
+      }
+    },
+    getUpdateStuColumns() {
+      let newData = []
+      newData = newData.concat(this.columns.xs_gzjl,this.columns.xs_jbxx,this.columns.xs_jtcyxx,this.columns.xs_txxx,this.columns.xs_xxjl)
+      updateStuColumns(JSON.stringify(newData)).then(res => {
+        console.log(res)
+        this.$message(res.errmsg)
+      }).catch(err=>{})
     }
   },
 };

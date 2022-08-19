@@ -11,7 +11,10 @@
       </div>
       <div class="detail_right">
         <div class="right_top">
-          <p class="title">信息修改字段设置<el-button class="saveButton" type="primary" @click="onSubmit">保存</el-button></p>
+          <p class="title">信息修改字段设置
+            <el-button class="saveButton" type="primary" @click="onSubmit">保存</el-button>
+            </p>
+          <!-- <div class="saveBtn"> <i class="icon"></i> 保存</div> -->
         </div>
         <div id="tag_0" class="headline">基本信息</div>
         <div class="checkButtons">
@@ -30,7 +33,7 @@
           <div class="information">
             <el-form :model="basicInfoForm" label-width="80px">
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">工号</div>
                     <el-form-item label="">
@@ -41,7 +44,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">姓名</div>
                     <el-form-item label="">
@@ -52,10 +55,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">曾用名</div>
                     <el-form-item label="">
@@ -66,7 +66,11 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+              </el-row>
+
+              <el-row :gutter="20">
+                
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">性别</div>
                     <el-form-item>
@@ -77,9 +81,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                 <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">单位</div>
                     <el-form-item>
@@ -90,7 +92,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">出生日期</div>
                     <el-form-item label="">
@@ -102,8 +104,9 @@
                   </div>
                 </el-col>
               </el-row>
+
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">籍贯</div>
                     <el-form-item label="">
@@ -114,7 +117,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">民族</div>
                     <el-form-item label="">
@@ -125,9 +128,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">政治面貌</div>
                     <el-form-item label="">
@@ -138,7 +139,10 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+              </el-row>
+
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">国籍/地区</div>
                     <el-form-item label="">
@@ -149,9 +153,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">身份证件类型</div>
                     <el-form-item label="">
@@ -162,7 +164,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">身份证件号</div>
                     <el-form-item label="">
@@ -175,7 +177,7 @@
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">婚姻状况</div>
                     <el-form-item label="">
@@ -186,7 +188,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">最高学历码</div>
                     <el-form-item label="">
@@ -197,9 +199,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">教职工人员类别</div>
                     <el-form-item label="">
@@ -210,7 +210,10 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+              </el-row>
+
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">人员总分类</div>
                     <el-form-item label="">
@@ -221,9 +224,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">人员岗位状态</div>
                     <el-form-item label="">
@@ -234,7 +235,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">学科类别</div>
                     <el-form-item label="">
@@ -247,7 +248,7 @@
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">一级学科</div>
                     <el-form-item label="">
@@ -258,7 +259,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">二级学科</div>
                     <el-form-item label="">
@@ -268,9 +269,7 @@
                       </el-checkbox-group>
                     </el-form-item>
                   </div></el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                  <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">学缘</div>
                     <el-form-item label="">
@@ -281,7 +280,10 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+              </el-row>
+
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">毕业学校及单位</div>
                     <el-form-item label="">
@@ -292,9 +294,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">参加工作日期</div>
                     <el-form-item label="">
@@ -305,7 +305,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">来校日期</div>
                     <el-form-item label="">
@@ -318,7 +318,7 @@
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">参保类型</div>
                     <el-form-item label="">
@@ -329,7 +329,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">社保号</div>
                     <el-form-item label="">
@@ -340,9 +340,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">办公电话</div>
                     <el-form-item label="">
@@ -353,7 +351,10 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+              </el-row>
+
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">移动电话</div>
                     <el-form-item label="">
@@ -364,9 +365,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="24" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">电子邮箱</div>
                     <el-form-item label="">
@@ -377,9 +376,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">离校审批通过时间</div>
                     <el-form-item label="">
@@ -390,7 +387,12 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+              </el-row>
+
+                
+                
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">办理离校手续时间</div>
                     <el-form-item label="">
@@ -401,9 +403,8 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">工资停发时间</div>
                     <el-form-item label="">
@@ -414,7 +415,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">调往单位</div>
                     <el-form-item label="">
@@ -442,7 +443,7 @@
           <div class="information">
             <el-form :model="basicInfoForm" label-width="80px">
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">起始时间</div>
                     <el-form-item label="">
@@ -453,7 +454,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">终止时间</div>
                     <el-form-item label="">
@@ -464,10 +465,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">工作单位</div>
                     <el-form-item label="">
@@ -478,7 +476,10 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">工作内容</div>
                     <el-form-item>
@@ -489,9 +490,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">职位</div>
                     <el-form-item>
@@ -502,7 +501,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">曾任党政职务</div>
                     <el-form-item label="">
@@ -515,7 +514,7 @@
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">曾任专业技术职务</div>
                     <el-form-item label="">
@@ -526,7 +525,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">工作证明人</div>
                     <el-form-item label="">
@@ -537,8 +536,6 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">备注</div>
@@ -564,7 +561,7 @@
           <div class="information">
             <el-form :model="basicInfoForm" label-width="80px">
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">成果编号</div>
                     <el-form-item label="">
@@ -575,7 +572,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">证书编号</div>
                     <el-form-item label="">
@@ -586,10 +583,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">文理科类别</div>
                     <el-form-item label="">
@@ -600,7 +594,10 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">成果名称</div>
                     <el-form-item>
@@ -611,9 +608,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">成果形式</div>
                     <el-form-item>
@@ -624,7 +619,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">完成人</div>
                     <el-form-item label="">
@@ -637,7 +632,7 @@
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">完成人工号</div>
                     <el-form-item label="">
@@ -648,7 +643,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">所属单位</div>
                     <el-form-item label="">
@@ -659,9 +654,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">所学专业</div>
                     <el-form-item label="">
@@ -672,205 +665,13 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">所学专业</div>
                     <el-form-item label="">
                       <el-checkbox-group v-model="basicInfoForm.ethnic">
-                        <el-checkbox label="只读" />
-                        <el-checkbox label="必填" />
-                      </el-checkbox-group>
-                    </el-form-item>
-                  </div>
-                </el-col>
-              </el-row>
-            </el-form>
-          </div>
-        </div>
-
-        <div id="tag_3" class="headline">科研成果记录表</div>
-        <div class="checkButtons">
-          <el-button class="checkButton" @click="allRead(basicInfoForm)">全部只读</el-button>
-          <el-button class="checkButton" @click="allMust(basicInfoForm)">全部必填</el-button>
-        </div>
-        <div class="tableStyle">
-          <div class="information">
-            <el-form :model="basicInfoForm" label-width="80px">
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">成果编号</div>
-                    <el-form-item label="">
-                      <el-checkbox-group v-model="basicInfoForm.workId">
-                        <el-checkbox label="只读" />
-                        <el-checkbox label="必填" />
-                      </el-checkbox-group>
-                    </el-form-item>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">证书编号</div>
-                    <el-form-item label="">
-                      <el-checkbox-group v-model="basicInfoForm.name">
-                        <el-checkbox label="只读" />
-                        <el-checkbox label="必填" />
-                      </el-checkbox-group>
-                    </el-form-item>
-                  </div>
-                </el-col>
-              </el-row>
-
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">文理科类别</div>
-                    <el-form-item label="">
-                      <el-checkbox-group v-model="basicInfoForm.usedName">
-                        <el-checkbox label="只读" />
-                        <el-checkbox label="必填" />
-                      </el-checkbox-group>
-                    </el-form-item>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">成果名称</div>
-                    <el-form-item>
-                      <el-checkbox-group v-model="basicInfoForm.sex">
-                        <el-checkbox label="只读" />
-                        <el-checkbox label="必填" />
-                      </el-checkbox-group>
-                    </el-form-item>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">成果形式</div>
-                    <el-form-item>
-                      <el-checkbox-group v-model="basicInfoForm.workPlace">
-                        <el-checkbox label="只读" />
-                        <el-checkbox label="必填" />
-                      </el-checkbox-group>
-                    </el-form-item>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">完成人</div>
-                    <el-form-item label="">
-                      <el-checkbox-group v-model="basicInfoForm.birth">
-                        <el-checkbox label="只读" />
-                        <el-checkbox label="必填" />
-                      </el-checkbox-group>
-                    </el-form-item>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">完成人工号</div>
-                    <el-form-item label="">
-                      <el-checkbox-group v-model="basicInfoForm.origin">
-                        <el-checkbox label="只读" />
-                        <el-checkbox label="必填" />
-                      </el-checkbox-group>
-                    </el-form-item>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">所属单位</div>
-                    <el-form-item label="">
-                      <el-checkbox-group v-model="basicInfoForm.ethnic">
-                        <el-checkbox label="只读" />
-                        <el-checkbox label="必填" />
-                      </el-checkbox-group>
-                    </el-form-item>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">华师是否第一单位</div>
-                    <el-form-item label="">
-                      <el-checkbox-group v-model="basicInfoForm.political">
-                        <el-checkbox label="只读" />
-                        <el-checkbox label="必填" />
-                      </el-checkbox-group>
-                    </el-form-item>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">奖励类别</div>
-                    <el-form-item label="">
-                      <el-checkbox-group v-model="basicInfoForm.ethnic">
-                        <el-checkbox label="只读" />
-                        <el-checkbox label="必填" />
-                      </el-checkbox-group>
-                    </el-form-item>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">奖种</div>
-                    <el-form-item label="">
-                      <el-checkbox-group v-model="basicInfoForm.political">
-                        <el-checkbox label="只读" />
-                        <el-checkbox label="必填" />
-                      </el-checkbox-group>
-                    </el-form-item>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">奖励等级</div>
-                    <el-form-item label="">
-                      <el-checkbox-group v-model="basicInfoForm.ethnic">
-                        <el-checkbox label="只读" />
-                        <el-checkbox label="必填" />
-                      </el-checkbox-group>
-                    </el-form-item>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">获奖年份</div>
-                    <el-form-item label="">
-                      <el-checkbox-group v-model="basicInfoForm.political">
-                        <el-checkbox label="只读" />
-                        <el-checkbox label="必填" />
-                      </el-checkbox-group>
-                    </el-form-item>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">证书颁发日期</div>
-                    <el-form-item label="">
-                      <el-checkbox-group v-model="basicInfoForm.ethnic">
-                        <el-checkbox label="只读" />
-                        <el-checkbox label="必填" />
-                      </el-checkbox-group>
-                    </el-form-item>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">备注</div>
-                    <el-form-item label="">
-                      <el-checkbox-group v-model="basicInfoForm.political">
                         <el-checkbox label="只读" />
                         <el-checkbox label="必填" />
                       </el-checkbox-group>
@@ -884,7 +685,6 @@
 
         <div id="tag_4" class="headline">
           <div>专业技术职务</div>
-
         </div>
         <div class="checkButtons">
           <el-button class="checkButton" @click="allRead(basicInfoForm)">全部只读</el-button>
@@ -894,7 +694,7 @@
           <div class="information">
             <el-form :model="basicInfoForm" label-width="80px">
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">专技职称代码</div>
                     <el-form-item label="">
@@ -905,7 +705,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">专技职称时间</div>
                     <el-form-item label="">
@@ -916,9 +716,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">聘任岗位系列</div>
                     <el-form-item label="">
@@ -929,7 +727,10 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">聘任岗位等级</div>
                     <el-form-item>
@@ -940,9 +741,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">聘任日期</div>
                     <el-form-item>
@@ -953,7 +752,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">聘任文号</div>
                     <el-form-item label="">
@@ -966,7 +765,7 @@
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">岗位等级</div>
                     <el-form-item label="">
@@ -977,7 +776,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">专技等级</div>
                     <el-form-item label="">
@@ -1006,7 +805,7 @@
           <div class="information">
             <el-form :model="basicInfoForm" label-width="80px">
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">培训名称</div>
                     <el-form-item label="">
@@ -1017,7 +816,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">组织单位</div>
                     <el-form-item label="">
@@ -1028,9 +827,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">培训地点</div>
                     <el-form-item label="">
@@ -1041,7 +838,10 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">起始时间</div>
                     <el-form-item>
@@ -1052,9 +852,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">结束时间</div>
                     <el-form-item>
@@ -1065,7 +863,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">培训性质</div>
                     <el-form-item label="">
@@ -1078,7 +876,7 @@
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">培训级别</div>
                     <el-form-item label="">
@@ -1094,18 +892,8 @@
           </div>
         </div>
 
-        <!-- <div class="headline">年度考核</div>
-        <div class="tableStyle">
-          <el-table :data="tableData" style="width: 100%;">
-            <el-table-column prop="date" label="考核年度" />
-            <el-table-column prop="date" label="考核日期" />
-            <el-table-column prop="date" label="考核结果" />
-          </el-table>
-        </div> -->
-
         <div id="tag_6" class="headline">
           <div>年度考核</div>
-
         </div>
         <div class="checkButtons">
           <el-button class="checkButton" @click="allRead(basicInfoForm)">全部只读</el-button>
@@ -1115,7 +903,7 @@
           <div class="information">
             <el-form :model="basicInfoForm" label-width="80px">
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">考核年度</div>
                     <el-form-item label="">
@@ -1126,7 +914,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">考核日期</div>
                     <el-form-item label="">
@@ -1137,9 +925,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">考核结果</div>
                     <el-form-item label="">
@@ -1157,7 +943,6 @@
 
         <div id="tag_7" class="headline">
           <div>奖励表彰信息</div>
-
         </div>
         <div class="checkButtons">
           <el-button class="checkButton" @click="allRead(basicInfoForm)">全部只读</el-button>
@@ -1167,7 +952,7 @@
           <div class="information">
             <el-form :model="basicInfoForm" label-width="80px">
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">证书号</div>
                     <el-form-item label="">
@@ -1178,7 +963,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">获奖类型</div>
                     <el-form-item label="">
@@ -1189,9 +974,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">奖项名称</div>
                     <el-form-item label="">
@@ -1202,7 +985,10 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">获奖成果名称</div>
                     <el-form-item label="">
@@ -1213,9 +999,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">奖项级别</div>
                     <el-form-item label="">
@@ -1226,7 +1010,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">获奖时间</div>
                     <el-form-item label="">
@@ -1239,7 +1023,7 @@
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">本人位次</div>
                     <el-form-item label="">
@@ -1250,7 +1034,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">表彰部门</div>
                     <el-form-item label="">
@@ -1266,20 +1050,6 @@
           </div>
         </div>
 
-        <!-- <div class="headline">政工科研情况（项目）</div>
-        <div class="tableStyle">
-          <el-table :data="tableData" style="width: 100%;">
-            <el-table-column prop="date" label="项目名称" />
-            <el-table-column prop="date" label="项目级别" />
-            <el-table-column prop="date" label="项目编号" />
-            <el-table-column prop="date" label="起始时间" />
-            <el-table-column prop="date" label="结束时间" />
-            <el-table-column prop="date" label="实到经费" />
-            <el-table-column prop="date" label="本人位次" />
-            <el-table-column prop="date" label="批准部门" />
-          </el-table>
-        </div> -->
-
         <div id="tag_8" class="headline">
           <div>政工科研情况（项目）</div>
 
@@ -1292,7 +1062,7 @@
           <div class="information">
             <el-form :model="basicInfoForm" label-width="80px">
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">项目名称</div>
                     <el-form-item label="">
@@ -1303,7 +1073,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">项目级别</div>
                     <el-form-item label="">
@@ -1314,9 +1084,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">项目编号</div>
                     <el-form-item label="">
@@ -1327,7 +1095,10 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">起始时间</div>
                     <el-form-item label="">
@@ -1338,9 +1109,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">结束时间</div>
                     <el-form-item label="">
@@ -1351,7 +1120,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">实到经费</div>
                     <el-form-item label="">
@@ -1364,7 +1133,7 @@
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">本人位次</div>
                     <el-form-item label="">
@@ -1375,7 +1144,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">批准部门</div>
                     <el-form-item label="">
@@ -1403,7 +1172,7 @@
           <div class="information">
             <el-form :model="basicInfoForm" label-width="80px">
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">论文名称</div>
                     <el-form-item label="">
@@ -1414,7 +1183,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">期刊名称</div>
                     <el-form-item label="">
@@ -1425,9 +1194,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">期刊国内标准编号</div>
                     <el-form-item label="">
@@ -1438,7 +1205,10 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">期刊类型</div>
                     <el-form-item label="">
@@ -1449,9 +1219,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">发表时间</div>
                     <el-form-item label="">
@@ -1462,7 +1230,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">本人位次</div>
                     <el-form-item label="">
@@ -1490,7 +1258,7 @@
           <div class="information">
             <el-form :model="basicInfoForm" label-width="80px">
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">著作名称</div>
                     <el-form-item label="">
@@ -1501,7 +1269,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">著作类型</div>
                     <el-form-item label="">
@@ -1512,9 +1280,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">成果所属单位</div>
                     <el-form-item label="">
@@ -1525,7 +1291,10 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">ISBN号</div>
                     <el-form-item label="">
@@ -1536,9 +1305,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">出版社</div>
                     <el-form-item label="">
@@ -1549,7 +1316,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">出版时间</div>
                     <el-form-item label="">
@@ -1562,7 +1329,7 @@
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">本人位次</div>
                     <el-form-item label="">
@@ -1585,12 +1352,11 @@
           <el-button class="checkButton" @click="allRead(basicInfoForm)">全部只读</el-button>
           <el-button class="checkButton" @click="allMust(basicInfoForm)">全部必填</el-button>
         </div>
-        
         <div class="tableStyle">
           <div class="information">
             <el-form :model="basicInfoForm" label-width="80px">
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">课程名称</div>
                     <el-form-item label="">
@@ -1601,7 +1367,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">课程类型</div>
                     <el-form-item label="">
@@ -1612,9 +1378,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">课程性质</div>
                     <el-form-item label="">
@@ -1625,7 +1389,10 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">课时量</div>
                     <el-form-item label="">
@@ -1636,9 +1403,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">授课人数</div>
                     <el-form-item label="">
@@ -1649,7 +1414,7 @@
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">起始时间</div>
                     <el-form-item label="">
@@ -1662,7 +1427,7 @@
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
+                <el-col :span="8" class="rowStyle">
                   <div class="wrap">
                     <div class="title">结束时间</div>
                     <el-form-item label="">
@@ -1690,7 +1455,7 @@ export default {
     return {
       readFlag: false,
       mustFlag: false,
-      dtailsList: ['基本信息', '工作简历', '学历学位信息', '科研成果记录', '专业技术职务', '学习培训', '年度考核', '奖励表彰信息', '科研情况（项目）', '科研情况（论文）', '科研情况（著作）', '科研情况（教学情况）'],
+      dtailsList: ['基本信息', '工作简历', '学历学位信息', '专业技术职务', '学习培训', '年度考核', '奖励表彰信息', '科研情况（项目）', '科研情况（论文）', '科研情况（著作）', '科研情况（教学情况）'],
       current: 0,
       tableData: [],
       isEdit: false,
@@ -2003,7 +1768,10 @@ export default {
   .checkButtons{
     position: relative;
     left: 2015px;
+    // // left: 87%;
     top: -25px;
+    // position: absolute;
+    // right:100px
 
   }
   .checkButton{
@@ -2012,4 +1780,120 @@ export default {
 
   }
 }
+// .detail{
+//   padding:20px 0;
+//   box-sizing: border-box;
+//   .wrap{
+//     display: flex;
+//     flex-direction: row;
+//     // overflow: hidden;
+//     .detail_left{
+//       flex:0 0 198px;
+//       margin-right: 24px;
+//       background: #fff;
+//       // height: calc(100vh - 170px);
+//       padding:20px;
+//       box-sizing: border-box;
+//       .list{
+//         display: flex;
+//         flex-direction: row;
+//         justify-content: space-between;
+//         align-items: center;
+//         height: 36px;
+//         line-height: 36px;
+//         font-size: 14px;
+//         color: #1F1F1F;
+//         cursor: pointer;
+//         padding:0 10px;
+//         box-sizing: border-box;
+//       }
+//       .item {
+//         ::v-deep.el-badge__content.is-fixed{
+//           top: 20px;
+//           right: -16px;
+//         }
+//       }
+//       .active{
+//         background: #F0F0F0;
+//         border-radius: 2px;
+//       }
+//     }
+//     .detail_right{
+//       flex:1;
+//       background: #fff;
+//       .right_top{
+//         position: relative;
+//         border-bottom: 1px solid #D8D8D8;
+//         .title{
+//           text-align: center;
+//           font-weight: 500;
+//           font-size: 24px;
+//           color: #005657;
+//           line-height: 24px
+//         }
+//         .saveBtn{
+//           position: absolute;
+//           top:0;
+//           right: 20px;
+//           width: 84px;
+//           line-height: 36px;
+//           text-align: center;
+//           background: #005657;
+//           border-radius: 2px;
+//           color:#fff;
+//           cursor: pointer;
+//         }
+//         .icon{
+//           display: inline-block;
+//           width:20px;
+//           height: 20px;
+//           background: url('~@/assets/images/saveIcon.png');
+//           vertical-align: middle;
+//         }
+//       }
+//       .information{
+//           padding:0 20px;
+//           margin-top: 15px;
+//           .rowStyle{
+//             padding:0 !important;
+//             margin:0;
+//             border-bottom:1px solid #cccccc;
+//           }
+//           .wrap{
+//             display: flex;
+//             align-items: center;
+//             .title{
+//               flex: 0 0 160px;
+//               line-height: 48px;
+//               background: #E0E0E0;
+//               text-align: right;
+//               padding-right: 5px;
+//             }
+//             .content{
+//               font-weight: 400;
+//               font-size: 14px;
+//               color: #1F1F1F;
+//               line-height: 22px;
+//               margin-left: 16px;
+//             }
+//           }
+//         }
+//       .headline{
+//         margin-top: 20px;
+//         padding-left: 20px;
+//         box-sizing: border-box;
+//         font-weight: 600;
+//         font-size: 20px;
+//         color: #1F1F1F;
+//         line-height: 28px;
+//         display: flex;
+//         justify-content: space-between;
+//         align-items: center;
+//         .boxSelect{
+//           padding-right: 20px;
+//         }
+//       }
+//     }
+//   }
+// }
 </style>

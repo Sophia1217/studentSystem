@@ -41,6 +41,10 @@ export default {
     multipleSelection: {
       type: Array,
       default:()=>[]
+    },
+    tag: {
+      type: String | Number,
+      default:''
     }
   },
 
@@ -77,14 +81,18 @@ export default {
         return
       }
       let data = {
-        hxList: hxList.length>0?hxList.join(','):'',
+        hxList: hxList,
         columnInfoList: columnInfoList,
-        esportStyle:'EXCEL'
+        exportStyle:'EXCEL'
       }
       exportStu(data).then(res => {
-        console.log(res)
-      }).catch(err=>{})
-      // this.$emit('handleConfirm')
+        if (this.tag == 1) {
+          this.downloadFn(res, "在籍学生信息导出", "xlsx");
+        } else {
+          this.downloadFn(res, "毕业学生信息导出", "xlsx");
+        }
+        
+      })
     }
   },
 };

@@ -18,7 +18,7 @@
         </el-row>
       </div>
       <!-- v-loading="loading" -->
-      <el-table :data="noticeList" @selection-change="handleSelectionChange">
+      <el-table :data="table_content" @selection-change="handleSelectionChange">
         <el-table-column label="序号" align="center" type="index" />
         <el-table-column label="班级编号" align="center" prop="bjdm" sortable />
         <el-table-column
@@ -80,6 +80,11 @@ import "@/assets/fonts/refresh/iconfont.css";
 export default {
   name: "teaTable", //辅导员管理
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
+  props: {
+    table_content: {
+      type: Object,
+    },
+  },
   data() {
     return {
       // 遮罩层
@@ -237,6 +242,7 @@ export default {
   background-color: #ffffff;
 }
 #pagenation {
+  height: 100px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;

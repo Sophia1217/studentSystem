@@ -15,7 +15,6 @@ router.beforeEach((to, from, next) => {
     // return;
   NProgress.start()
     
-//   console.log(to.path,next(),to)
   var token = to.query.token || ''
   //console.log('获取token1',token)
   if (token.length > 0) {
@@ -48,11 +47,13 @@ router.beforeEach((to, from, next) => {
                         var role = roles[0];
                         if (role.roleType == 1) { // 学生
                             store.dispatch('GenerateRoutes',role.roleId).then(() => {
-                                
+                                next({ path: '/studentHomePage' })
                             })
-                            next({ path: '/studentHomePage' })
                         } else { // 老师
-                            next({ path: '/' })
+                            store.dispatch('GenerateRoutes',role.roleId).then(() => {
+                                next({ path: '/' })
+                            })
+                            
                         }
                     }else {
                         Message.error('获取用户角色失败！')
@@ -76,8 +77,6 @@ router.beforeEach((to, from, next) => {
             }else {
                 next({ path: '/login',replace: true })
             }
-            
-
             NProgress.done()
         }
   }

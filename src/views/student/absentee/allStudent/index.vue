@@ -20,19 +20,19 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <span>学 院：</span>
-            <el-select v-model="moreIform.manageReg" placeholder="请选择" size="small">
+            <el-select v-model="moreIform.xydm" multiple collapse-tags placeholder="请选择" size="small">
               <el-option v-for="item in manageRegOps" :key="item.ssdwdm" :label="item.dwmc" :value="item.ssdwdm"></el-option>
             </el-select>
           </el-col>
           <el-col :span="8">
             <span>专 业：</span>
-            <el-select v-model="moreIform.value2" placeholder="请选择" size="small">
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-select v-model="moreIform.zydam" multiple collapse-tags placeholder="请选择" size="small">
+              <el-option v-for="item in zymOps" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-col>
           <!-- <el-col :span="8">
             <span>班 级：</span>
-            <el-select v-model="moreIform.value3" multiple collapse-tags placeholder="请选择" size="small">
+            <el-select v-model="moreIform.bjdm" multiple collapse-tags placeholder="请选择" size="small">
               <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-col> -->
@@ -84,7 +84,8 @@
 
 <script>
 import CheckboxCom from '../../../components/checkboxCom'
-import { getSchoolRegStuInfoPageList,getManageRegStuInfoSearchSpread } from "@/api/student/index"
+import { getSchoolRegStuInfoPageList, getManageRegStuInfoSearchSpread } from "@/api/student/index"
+import { getCodeInfoByEnglish } from '@/api/student/fieldSettings'
 export default {
   name: 'manStudent',
   components:{ CheckboxCom },
@@ -94,23 +95,26 @@ export default {
       select: '',
       isMore: false,
       moreIform: {
-        value1:''
+        xydm: [],
+        zydm: [],
+        bjdm:[]
       },
       options: [{ value: '选项2', label: '双皮奶' }, { value: '选项3', label: '蚵仔煎' }],
       training: {  // 培养层次
         checkAll: false,
         choose: [],
-        checkBox: [{label:'大学本科',val:1},{label: '硕士研究生',val:2},{label: '博士研究生',val:3}],
+        checkBox: [],
         isIndeterminate: true
       },
       learnHe: {  //年级：
         checkAll: false,
         choose: [],
-        checkBox: [{label:'2022级',val:1},{label: '2021级',val:2},{label: '2020级',val:3},{label: '2019级',val:4}],
+        checkBox: [],
         isIndeterminate: true
       },
       tableData: [],
-      manageRegOps:[],
+      manageRegOps: [],
+      zymOps:[],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -121,14 +125,36 @@ export default {
 
   mounted() {
     this.getSpread()
+    this.getCode('dmpyccm') // 培养层次
     this.handleSearch()
   },
 
   methods: {
+    getCode(data) {
+      this.getCodeInfoByEnglish(data)
+    },
+    getCodeInfoByEnglish(paramsData) {
+      let data = { codeTableEnglish: paramsData}
+      getCodeInfoByEnglish(data).then(res => {
+        switch (paramsData) 
+        { 
+          case 'dmpyccm':
+            this.$set(this.training, 'checkBox', res.data);
+            break;
+        }
+      }).catch(err=>{})
+    },
      // 获取学院专业班级
     getSpread() {
       getManageRegStuInfoSearchSpread().then(res => {
         this.manageRegOps = res.data.dwhbj
+        this.zymOps = res.data.zym
+        let data = res.data.nj
+        let nj = []
+        for (let x = 0; x < data.length; x++){
+          nj.push({dm:data[x],mc:data[x]})
+        }
+        this.$set(this.learnHe, 'checkBox', nj);
       }).catch(err=>{})
     },
     changeSelect() {
@@ -139,11 +165,10 @@ export default {
       let data = {
         xm: this.select == 'xm'?this.searchVal:'',
         xh:this.select == 'xh'?this.searchVal:'',
-        dwh:'',
-        zydm:'',
-        nj:'',
-        nj: '',
-        pyccm: '',
+        dwh:this.moreIform.xydm,
+        zydm:this.moreIform.zydm,
+        nj:[], // ????????????????????
+        pyccm: this.training.choose,
         pageNum: this.queryParams.pageNum,
         pageSize:this.queryParams.pageSize
       }
@@ -152,7 +177,6 @@ export default {
         this.tableData = res.data.data
         this.queryParams.total = res.data.total
       }).catch(err=>{})
-      // console.log(this.searchVal,this.select)
     },
     // 点击更多
     handleMore() {
@@ -162,7 +186,7 @@ export default {
     handleCheckAllChangeTraining(val) {
       let allCheck = []
       for (let i in this.training.checkBox) {
-        allCheck.push(this.training.checkBox[i].val)
+        allCheck.push(this.training.checkBox[i].dm)
       }
       this.training.choose = val ? allCheck : [];
       console.log(this.training.choose,'全选')
@@ -179,7 +203,7 @@ export default {
     learnHeAll(val) {
       let allCheck = []
       for (let i in this.learnHe.checkBox) {
-        allCheck.push(this.learnHe.checkBox[i].val)
+        allCheck.push(this.learnHe.checkBox[i].dm)
       }
       this.learnHe.choose = val ? allCheck : [];
       console.log(this.learnHe.choose,'全选')

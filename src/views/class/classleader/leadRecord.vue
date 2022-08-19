@@ -7,80 +7,50 @@
         </span>
       </h3>
       <el-row :gutter="10" class="mb8" style="float: right; margin-top: 15px">
-        <!-- <el-col :span="1.5" style="float: left"> 班级列表 </el-col> -->
         <el-col :span="1.5">
           <el-button
             icon="el-icon-delete"
             style="color: #eb3842; border-color: #eb3842"
-            @click="deleteRecord(row)"
+            @click="deleteRecord"
           >
             删除</el-button
           >
         </el-col>
-        <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
       </el-row>
     </div>
 
     <!-- 班干部任职记录 -->
     <el-table
-      v-loading="loading"
-      :data="noticeList"
+      :data="queryBgbRmjList"
+      row-key="id"
+      :tree-props="{ children: 'children', hasChildren: 'children.length' }"
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column label="序号" align="center" type="index" />
-      <el-table-column
-        label="班级职位"
-        align="center"
-        prop="position"
-        sortable
-      />
-      <el-table-column label="姓名" align="center" prop="name" sortable>
+      <el-table-column label="班级职位" align="center" prop="mc" sortable />
+      <el-table-column label="姓名" align="center" prop="xm" sortable>
       </el-table-column>
-      <el-table-column label="学号" align="center" prop="studentId" sortable />
-      <el-table-column
-        label="任命人"
-        align="center"
-        prop="orderName"
-        sortable
-      />
-      <el-table-column
-        label="任命年度"
-        align="center"
-        prop="orderYear"
-        sortable
-      />
-      <el-table-column
-        label="任命学期"
-        align="center"
-        prop="orderSemi"
-        sortable
-      />
-      <el-table-column
-        label="任命时间"
-        align="center"
-        prop="actionTime"
-        sortable
-      />
-      <el-table-column label="撤任人" align="center" prop="offName" sortable />
-      <el-table-column
-        label="撤任时间"
-        align="center"
-        prop="offTime"
-        sortable
-      />
+      <el-table-column label="学号" align="center" prop="xh" sortable />
+      <el-table-column label="任命人" align="center" prop="rmrgh" sortable />
+      <el-table-column label="任命时间" align="center" prop="rmsj" sortable />
+      <el-table-column label="撤任人" align="center" prop="cxrgh" sortable />
+      <el-table-column label="撤任时间" align="center" prop="cxsj" sortable />
       <el-table-column
         label="任职状态"
         align="center"
-        prop="orderState"
+        prop="sfqy"
         class-name="small-padding fixed-width"
         sortable
       >
         <template slot-scope="scope">
           <div>
             <span class="iconfont allocate_teacher">&#xe604;</span>
-            <span style="color: #005657">
-              {{ noticeList[0].orderState }}
+            <span style="color: #005657" v-show="scope.row.sfqy == '0'">
+              在岗
+            </span>
+            <span style="color: #ed5234" v-show="scope.row.sfqy == '1'">
+              离岗
             </span>
           </div>
         </template>
@@ -89,100 +59,35 @@
 
     <pagination
       id="test"
-      v-show="total > 0"
+      v-show="total >= 0"
       :total="total"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-
-    <!-- 新增班级对话框 -->
-    <el-dialog
-      :title="title"
-      :visible.sync="open"
-      width="800px"
-      height="243px"
-      append-to-body
-    >
-      <el-form
-        :inline="true"
-        ref="form"
-        :model="form"
-        :rules="rules"
-        label-width="80px"
-      >
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="所属学院" prop="noticeTitle">
-              <el-select
-                v-model="form.noticeType"
-                placeholder="计算机学院"
-              ></el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="培养层次" prop="noticeType">
-              <el-select
-                v-model="form.noticeType"
-                placeholder="本科"
-              ></el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="所属年级">
-              <el-select
-                v-model="form.noticeType"
-                placeholder="2022"
-              ></el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="班级数量">
-              <!-- <editor v-model="form.noticeContent" :min-height="192" /> -->
-              <el-select v-model="form.noticeType" placeholder="10"></el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="cancel">取 消</el-button>
-        <el-button type="primary" @click="submitForm" class="confirm"
-          >确 定</el-button
-        >
-      </div>
-    </el-dialog>
-
-    <el-dialog
-      :title="title"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <span
-        >是否确认删除空班级？<span style="color: #ed5234"
-          >*每次仅支持删除一个班级，且该班级代码编号为最末尾</span
-        ></span
-      >
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="classCancel">取 消</el-button>
-        <el-button type="primary" @click="classConfirm" class="confirm"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import "@/assets/fonts/circle/iconfont.css";
+import { getQueryBgbRmjl, getDeleteBgbRm } from "@/api/class/classLeader";
 export default {
   name: "LeadRecord",
   data() {
     return {
+      // 任职记录当前行数据
+      currentRow: [],
+      // 任职记录勾选框收集ids
+      currentRow_ids: [],
+      // 任职记录errcode
+      errcode: "-200",
+      // 当前班级代码
+      bjdm:"",
       // 遮罩层
       // loading: true,
       // 选中数组
-      ids: [],
+      xhs: "",
+      zws: "",
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -190,46 +95,9 @@ export default {
       // 显示搜索条件
       showSearch: true,
       // 总条数
-      total: 100,
-      // 表格数据
-      noticeList: [
-        {
-          position: "班长",
-          name: "张三",
-          studentId: "13070025",
-          orderName: "张五",
-          orderYear: "2022年",
-          orderSemi: "秋季学期",
-          actionTime: "2022-07-07 23:33:33",
-          offName: "张四",
-          offTime: "2022-07-07 23:33:33",
-          orderState: "在岗",
-        },
-        {
-          position: "班长",
-          name: "张三",
-          studentId: "13070025",
-          orderName: "张五",
-          orderYear: "2022年",
-          orderSemi: "秋季学期",
-          actionTime: "2022-07-07 23:33:33",
-          offName: "张四",
-          offTime: "2022-07-07 23:33:33",
-          orderState: "在岗",
-        },
-        {
-          position: "班长",
-          name: "张三",
-          studentId: "13070025",
-          orderName: "张五",
-          orderYear: "2022年",
-          orderSemi: "秋季学期",
-          actionTime: "2022-07-07 23:33:33",
-          offName: "张四",
-          offTime: "2022-07-07 23:33:33",
-          orderState: "在岗",
-        },
-      ],
+      total: 0,
+      // 班干部任命记录数据
+      queryBgbRmjList: [],
       // 弹出层标题
       title: "",
       // 是否显示新建班级弹出层
@@ -238,12 +106,9 @@ export default {
       dialogVisible: false,
       // 查询参数
       queryParams: {
-        // pageNum: 1,
-        // pageSize: 10,
-        college: undefined,
-        level: undefined,
-        grade: undefined,
-        classId: undefined,
+        bjdm:"1004001000",
+        pageNum: 1,
+        pageSize: 10,
       },
       // 表单参数
       form: {},
@@ -258,10 +123,57 @@ export default {
       },
     };
   },
+  mounted() {
+    console.log("guazai");
+    this.getList(this.queryParams);
+  },
   methods: {
+    getList(x) {
+      Object.assign(x, this.queryParams)
+      getQueryBgbRmjl(x).then((res) => {
+        var current_total = 0
+        console.log("res.datas:",res.datas);
+        this.queryBgbRmjList = res.datas;
+        console.log("this.queryBgbRmjList:", this.queryBgbRmjList);
+        for(let index in this.queryBgbRmjList){
+           current_total += this.queryBgbRmjList[index].children.length
+        }
+        this.total = current_total==0?this.total:current_total
+      });
+    },
     // 删除记录
-    deleteRecord(row) {
+    deleteRecord() {
       console.log("删除记录");
+      console.log("this.currentRow:", this.currentRow);
+      for (let item of this.currentRow) {
+        this.xhs += item.xh + ",";
+        this.zws += item.zwdm + ",";
+      }
+      this.xhs = this.xhs.substring(0, this.xhs.length - 1);
+      this.zws = this.zws.substring(0, this.zws.length - 1);
+      console.log("this.xhs:", this.xhs);
+      console.log("this.zws:", this.zws);
+      getDeleteBgbRm({ xhs: this.xhs, zws: this.zws }).then((res) => {
+        console.log(res);
+        this.errcode = res.errcode;
+        console.log("this.errcode:", this.errcode);
+      });
+      // 重新请求数据
+      if (this.errcode == "00") {
+        console.log("刷新操作！");
+        this.getList({
+          bjdm: "1004001000",
+          pageNum: 1,
+          pageSize: 10,
+        });
+      }
+      this.xhs = "";
+      this.zws = "";
+      this.errcode = "-200";
+    },
+    // 班干部记录删除
+    handleSelectionChange(row) {
+      this.currentRow = row;
     },
   },
 };

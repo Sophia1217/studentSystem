@@ -17,7 +17,7 @@
         <el-form-item label="职位状态" prop="zwzt" class="header-item">
           <el-select v-model="queryParams.zwzt" placeholder="未选择" clearable>
             <el-option
-              v-for="(item, index) in bjzwOptions"
+              v-for="(item, index) in zwztOptions"
               :key="index"
               :label="item.mc"
               :value="item.dm"
@@ -55,8 +55,17 @@ export default {
       // tab栏切换
       tab_title: ["22级电子信息1班", "未分配学生名单"],
       currentIndex: 0,
-      // 筛选框数据
-      bjzwOptions: [], // 班级职位
+      // assignSearch职位状态筛选框数据
+      zwztOptions: [
+        {
+          mc: "在职",
+          dm: "0",
+        },
+        {
+          mc: "无",
+          dm: "1",
+        },
+      ], // 职位状态
       // xh:"", //学号
       // 遮罩层
       // loading: true,
@@ -138,12 +147,6 @@ export default {
   },
   mounted() {
     // 班干部职位筛选
-    getZwdm().then((res) => {
-      console.log(res);
-      if (res.errcode == "00") {
-        this.bjzwOptions = res.data.rows;
-      }
-    });
   },
   methods: {
     // 分班管理路由跳转

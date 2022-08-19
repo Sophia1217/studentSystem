@@ -331,6 +331,7 @@ export default {
                 type : node.level,
             };
             param.bjdm = node.data.bjdm
+            param.dwdm = node.data.dwdm
             // console.log('学生节点',node)
             queryDataAuth(param)
                 .then((res) => {

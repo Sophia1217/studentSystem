@@ -10,6 +10,16 @@ export function getQueryBgbList(query) {
     })
 }
 
+// /class/queryAllstuList
+// 全班同学列表查询接口
+export function getQueryAllstuList(query) {
+    return request({
+        url: '/class/queryAllstuList',
+        method: 'post',
+        data: query
+    })
+}
+
 // 班干部任命记录查询
 export function getQueryBgbRmjl(query) {
     return request({

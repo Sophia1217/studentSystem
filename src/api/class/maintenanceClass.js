@@ -36,6 +36,16 @@ export function classList(query) {
     })
 }
 
+// 班级列表导出
+// localhost:8081/sws/class/exportClassList POST {ssdwdm-Y, pycc, ssnj, bjdm, pageNum, pageSize}
+export function exportClassList(query) {
+    return request({
+        url: '/class/exportClassList',
+        method: 'post',
+        data: query
+    })
+}
+
 // 修改班级名称接口
 // /sws/class/modifyClassName {bjdm-班级编号Y, bjmc-班级名称Y} POST
 export function modifyClassName(query) {

@@ -668,8 +668,10 @@ export default {
       //       console.log(str);
       if (this.select == "1") {
         gonghao = this.searchVal;
+        name = "";
       } else if (this.select == "2") {
         name = this.searchVal;
+        gonghao = "";
       } else {
         name = "";
         gonghao = "";
@@ -680,7 +682,7 @@ export default {
         dwmcList: this.workPlace.choose,
         lbList: this.category.choose,
         genderList: this.sex.choose,
-        sfdb: this.status.choose,
+        sfdbList: this.status.choose,
         xm: name,
         gh: gonghao,
       };

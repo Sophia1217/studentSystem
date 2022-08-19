@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="assign-search">
     <el-form
       :model="queryParams"
       ref="queryForm"

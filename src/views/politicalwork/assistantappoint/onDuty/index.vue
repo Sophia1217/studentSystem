@@ -253,6 +253,7 @@ import {
   removeMoreAssistant,
   addOneAssistant,
   lookDetail,
+  outAssistant,
 } from "@/api/politicalWork/assistantappoint";
 export default {
   name: "BasicInfo",
@@ -482,6 +483,11 @@ export default {
     // 导出确认
     handleConfirm() {
       this.showExport = false;
+      outAssistant().then((res) => {
+        if (res.errcode == "00") {
+          console.log(res);
+        }
+      });
     },
     //批量移除
     rmAssistant() {
@@ -663,9 +669,9 @@ export default {
         dwmcList: this.workPlace.choose,
         lbList: this.category.choose,
         genderList: this.sex.choose,
-        //sfdb:this.status.choose,
-        xm: name,
-        gh: gonghao,
+        sfdbList: this.status.choose,
+        //xm: name,
+        //gh: gonghao,
         //sfdb: dbzt,
       };
       //console.log(queryParams);

@@ -122,7 +122,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">名族：</el-col>
+          <el-col :span="3">民族：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -223,6 +223,7 @@
 
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
+import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import {
   getManageRegStuInfoSearchSpread,
   forceList,
@@ -248,54 +249,35 @@ export default {
         // 培养层次
         checkAll: false,
         choose: [],
-        checkBox: [
-          { label: "大学本科", val: 1 },
-          { label: "硕士研究生", val: 2 },
-          { label: "博士研究生", val: 3 },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
       learnHe: {
         //学 制：
         checkAll: false,
         choose: [],
-        checkBox: [
-          { label: "2年", val: 1 },
-          { label: "3年", val: 2 },
-          { label: "3年", val: 3 },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
       studentStatus: {
         // 学籍
         checkAll: false,
         choose: [],
-        checkBox: [
-          { label: "有学籍", val: 1 },
-          { label: "无学籍", val: 2 },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
       ethnic: {
         // 名族
         checkAll: false,
         choose: [],
-        checkBox: [
-          { label: "汉族", val: 1 },
-          { label: "蒙古族", val: 2 },
-          { label: "藏族", val: 3 },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
       politica: {
         // 政治面貌：
         checkAll: false,
         choose: [],
-        checkBox: [
-          { label: "中共党员", val: 1 },
-          { label: "中共预备", val: 2 },
-          { label: "共青团员", val: 3 },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
       tableData: [],
@@ -305,8 +287,13 @@ export default {
   },
 
   mounted() {
-    this.handleSearch();
     this.getSpread();
+    this.getCode("dmpyccm"); // 培养层次
+    this.getCode("dmxjztm"); // 学籍
+    this.getCode("dmmzm"); // 名族
+    this.getCode("dmzzmmm"); // 政治面貌
+    this.getCode("dmxz"); // 学 制
+    this.handleSearch();
   },
 
   methods: {
@@ -317,6 +304,33 @@ export default {
         })
         .catch((err) => {});
     },
+    getCode(data) {
+      this.getCodeInfoByEnglish(data);
+    },
+    getCodeInfoByEnglish(paramsData) {
+      let data = { codeTableEnglish: paramsData };
+      getCodeInfoByEnglish(data)
+        .then((res) => {
+          switch (paramsData) {
+            case "dmpyccm":
+              this.$set(this.training, "checkBox", res.data);
+              break;
+            case "dmxjztm":
+              this.$set(this.studentStatus, "checkBox", res.data);
+              break;
+            case "dmmzm":
+              this.$set(this.ethnic, "checkBox", res.data);
+              break;
+            case "dmzzmmm":
+              this.$set(this.politica, "checkBox", res.data);
+              break;
+            case "dmxz":
+              this.$set(this.learnHe, "checkBox", res.data);
+              break;
+          }
+        })
+        .catch((err) => {});
+    },
     // 查询
     handleSearch() {
       let data = {
@@ -324,11 +338,11 @@ export default {
         xm: this.select == "xm" ? this.searchVal : "",
         sfzjh: this.select == "sfzjh" ? this.searchVal : "",
         yddh: this.select == "yddh" ? this.searchVal : "",
-        pyccm: [],
-        xz: [],
-        xjzt: [],
-        zzmmm: [],
-        mzm: [],
+        pyccm: this.training.choose,
+        xz: this.learnHe.choose,
+        xjzt: this.studentStatus.choose,
+        zzmmm: this.politica.choose,
+        mzm: this.ethnic.choose,
         bjm: [],
         dwh: [],
         zydm: [],
@@ -354,7 +368,7 @@ export default {
     handleCheckAllChangeTraining(val) {
       let allCheck = [];
       for (let i in this.training.checkBox) {
-        allCheck.push(this.training.checkBox[i].val);
+        allCheck.push(this.training.checkBox[i].dm);
       }
       this.training.choose = val ? allCheck : [];
       this.training.isIndeterminate = false;
@@ -370,7 +384,7 @@ export default {
     learnHeAll(val) {
       let allCheck = [];
       for (let i in this.learnHe.checkBox) {
-        allCheck.push(this.learnHe.checkBox[i].val);
+        allCheck.push(this.learnHe.checkBox[i].dm);
       }
       this.learnHe.choose = val ? allCheck : [];
       this.learnHe.isIndeterminate = false;
@@ -386,7 +400,7 @@ export default {
     studentStatusAll(val) {
       let allCheck = [];
       for (let i in this.studentStatus.checkBox) {
-        allCheck.push(this.studentStatus.checkBox[i].val);
+        allCheck.push(this.studentStatus.checkBox[i].dm);
       }
       this.studentStatus.choose = val ? allCheck : [];
       this.studentStatus.isIndeterminate = false;
@@ -403,7 +417,7 @@ export default {
     ethnicAll(val) {
       let allCheck = [];
       for (let i in this.ethnic.checkBox) {
-        allCheck.push(this.ethnic.checkBox[i].val);
+        allCheck.push(this.ethnic.checkBox[i].dm);
       }
       this.ethnic.choose = val ? allCheck : [];
       this.ethnic.isIndeterminate = false;
@@ -419,7 +433,7 @@ export default {
     politicaAll(val) {
       let allCheck = [];
       for (let i in this.politica.checkBox) {
-        allCheck.push(this.politica.checkBox[i].val);
+        allCheck.push(this.politica.checkBox[i].dm);
       }
       this.politica.choose = val ? allCheck : [];
       this.politica.isIndeterminate = false;

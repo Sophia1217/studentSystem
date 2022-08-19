@@ -37,11 +37,13 @@ module.exports = {
       [process.env.VUE_APP_BASE_API]: {
         // target: `http://10.161.11.70:8080`,
         // target: `http://10.161.23.133:8081`,//黄聪
-        target: `http://10.161.7.39:8082`, // 郑浩
-        // target: `http://10.146.83.42:8081`,  // 涂晓招
+       target:`http://10.161.3.70:8081`,//林卓成
+      // target:`http://10.161.15.35:8081`,
+        //  target: `http://10.161.7.39:8082`, // 郑浩
+         //target: `http://10.146.83.42:8081`,  // 涂晓招
         // target: `http://10.222.7.135:8081`,  // 朱老师
         // target: `http://10.161.10.116:8081`,  // 华庚兴
-        target: `http://10.222.7.139:8081`,//测试服务器
+        //target: `http://10.222.7.139:8081`,//测试服务器
         changeOrigin: true,
         pathRewrite: {
           // ["^" + process.env.VUE_APP_BASE_API]: "",

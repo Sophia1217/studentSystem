@@ -17,6 +17,7 @@ router.beforeEach((to, from, next) => {
     
 //   console.log(to.path,next(),to)
   var token = to.query.token || ''
+  //console.log('获取token1',token)
   if (token.length > 0) {
         if (token == '-1') {
             Message.error('获取用户失败！')
@@ -32,7 +33,9 @@ router.beforeEach((to, from, next) => {
   }else {
         // 尝试获取token
         token = getToken() || ''
+        //console.log('获取token2',token)
         if (token.length > 0) {
+            //console.log('获取token有值',token)
             if (store.getters.roles.length === 0) {
                 // 判断当前用户是否已拉取完user_info信息
                 store.dispatch('GetInfo').then((res) => {
@@ -62,11 +65,19 @@ router.beforeEach((to, from, next) => {
                     })
                 })
             } else {
+                console.log('没有角色')
                 next()
             }
         } else {
-            location.href = 'https://account.ccnu.edu.cn/cas/login?service=http://10.222.7.139:8081/sws/checkLogin'
-            // next({ path: '/login' })
+            console.log('跳转登录')
+            // location.href = 'https://account.ccnu.edu.cn/cas/login?service=http://10.222.7.139:8081/sws/checkLogin'
+            if (to.path == '/login') {
+                next()
+            }else {
+                next({ path: '/login',replace: true })
+            }
+            
+
             NProgress.done()
         }
   }

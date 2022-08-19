@@ -21,10 +21,10 @@
       <el-form-item label="培养层次" prop="pycc">
         <el-select v-model="queryParams.pycc" placeholder="未选择" clearable>
           <el-option
-            v-for="(value, key, index) in levelOptions"
+            v-for="(item, index) in levelOptions"
             :key="index"
-            :label="value"
-            :value="key"
+            :label="item.mc"
+            :value="item.dm"
           />
         </el-select>
       </el-form-item>
@@ -34,7 +34,7 @@
             v-for="(item, index) in gradeOptions"
             :key="index"
             :label="item"
-            :value="item"
+            :value="index"
           />
         </el-select>
       </el-form-item>
@@ -49,10 +49,12 @@
           icon="el-icon-search"
           class="search"
           @click="handleQuery"
-          >查询</el-button>
+          >查询</el-button
+        >
         <el-button size="mini" @click="resetQuery" class="reset">
           <span class="iconfont reset_icon">&#xe614;</span>
-          重置</el-button>
+          重置</el-button
+        >
       </el-form-item>
     </el-form>
     <div>
@@ -211,11 +213,14 @@ export default {
       });
       getLevel().then((response) => {
         // 获取培养层次列表数据
-        this.levelOptions = response.rows;
+        console.log(response);
+        this.levelOptions = response.data.rows;
       });
       getGrade().then((response) => {
         // 获取年级列表数据
-        this.gradeOptions = response.rows;
+        console.log(response);
+        this.gradeOptions = response.data.rows;
+        console.log("年级",this.gradeOptions);
       });
     },
     // 查询按钮
@@ -240,7 +245,7 @@ export default {
     leaderAssign(row) {
       this.$router.push({
         path: "/class/leaderAssign",
-        query: {bjdm:row.bjdm, bjmc: row.bjmc },
+        query: { bjdm: row.bjdm, bjmc: row.bjmc },
       });
     },
   },

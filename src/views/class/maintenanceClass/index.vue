@@ -249,6 +249,7 @@ import "@/assets/fonts/repeat/iconfont.css";
 import {
   classList,
   modifyClassName,
+  exportClassList,
   getCollege,
   getLevel,
   getGrade,
@@ -326,6 +327,9 @@ export default {
     // this.getList({ bjdm: this.queryParams.classId });  // { pydw, pycc, ssnj, bjdm: this.queryParams.classId, pageNum-Y, pageSize-Y}
     this.getList(this.queryParams);
     this.getOptions();
+    // exportClassList({}).then((res) => {
+    //   console.log(res);
+    // });
   },
   methods: {
     // // 查看班级操作记录
@@ -462,24 +466,13 @@ export default {
             type: "error",
           });
         }
-        this.getList();
+        this.getList(this.queryParams);
       });
     },
     // 删除空班级-取消操作
     classCancel() {
       this.dialogVisible = false;
     },
-
-    // /** 修改按钮操作 */
-    // handleUpdate(row) {
-    //   this.reset();
-    //   const noticeId = row.noticeId || this.ids;
-    //   getNotice(noticeId).then((response) => {
-    //     this.form = response.data;
-    //     this.open = true;
-    //     this.title = "修改公告";
-    //   });
-    // },
     /** 新建班级确定操作 */
     submitForm() {
       addClass(this.form).then((response) => {
@@ -497,7 +490,7 @@ export default {
             type: "error",
           });
         }
-        this.getList();
+        this.getList(this.queryParams);
       });
     },
   },
@@ -505,7 +498,6 @@ export default {
 </script>
 <style>
 .app-container {
-  height: 100vh;
   background-color: white;
 }
 .search {
@@ -587,7 +579,7 @@ export default {
 }
 .pagination-container {
   margin-top: 0px;
-  height: 100%;
+  height: 100px;
 }
 .el-pagination {
   margin-top: 20px;

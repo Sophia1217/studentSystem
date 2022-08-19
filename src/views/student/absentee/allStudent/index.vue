@@ -167,7 +167,7 @@ export default {
         xh:this.select == 'xh'?this.searchVal:'',
         dwh:this.moreIform.xydm,
         zydm:this.moreIform.zydm,
-        nj:[], // ????????????????????
+        nj: this.learnHe.choose,
         pyccm: this.training.choose,
         pageNum: this.queryParams.pageNum,
         pageSize:this.queryParams.pageSize

@@ -253,8 +253,12 @@ export default {
       let newData = []
       newData = newData.concat(this.columns.xs_gzjl,this.columns.xs_jbxx,this.columns.xs_jtcyxx,this.columns.xs_txxx,this.columns.xs_xxjl)
       updateStuColumns(JSON.stringify(newData)).then(res => {
-        console.log(res)
-        this.$message(res.errmsg)
+        if (res.errcode == '00') {
+          this.$message({
+            message: res.errmsg,
+            type: 'success'
+          })
+        }
       }).catch(err=>{})
     }
   },

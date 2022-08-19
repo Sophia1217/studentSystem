@@ -2,7 +2,7 @@
   <div class="manStudent">
     <div class="searchWrap">
       <div class="search">
-        <el-input placeholder="请输入" v-model="searchVal" class="inputSelect">
+        <el-input placeholder="请输入" v-model="searchVal" clearable class="inputSelect">
           <el-select
             v-model="select"
             class="elSelect"
@@ -192,7 +192,7 @@
               <el-button
                 type="text"
                 size="small"
-                @click="hadleDetail(scope.row, 1, 1)"
+                @click="hadleDetail(scope.row, 1)"
               >
                 <i class="scopeIncon handledie"></i>
                 <span class="handleName">详情</span>
@@ -440,6 +440,7 @@ export default {
     // 添加强制修改名单
     handleExport() {
       var data = this.multipleSelection;
+      console.log(this.multipleSelection,'multipleSelection')
       if (this.multipleSelection.length > 1) {
         forceAdd(data).then(() => this.$message("已成功添加强制修改名单"));
         this.$emit("changeActiveName");
@@ -448,12 +449,19 @@ export default {
       }
     },
 
-    hadleDetail(row, flag, schooling) {
+    hadleDetail(row, flag) {
+      let schooling = ""; // 3 4 5 是本科
+      if (row.pyccm == 1 || row.pyccm == 2) {
+        // 1 2 是研究生
+        schooling = 2;
+      } else {
+        schooling = 1;
+      }
       this.$router.push({
         path: "/student/studetails",
         query: {
-          id: row.date,
-          show: flag,
+          xh: row.xh,
+          show: flag, // 1是详情，2是编辑
           schooling: schooling,
         },
       });

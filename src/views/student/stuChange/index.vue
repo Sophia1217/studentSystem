@@ -425,7 +425,6 @@ export default {
         YDYY: this.changWhy.choose,
         SPWH: this.changTitanic.choose,
         YDRQ: this.datePicker,
-        YDCZRGH: "",
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         limitSql: "",
@@ -619,7 +618,8 @@ export default {
       this.$router.push({
         path: "/student/stuChangeDetail",
         query: {
-          id: row.xh,
+          xh: row.xh,
+          id:row.id
         },
       });
     },

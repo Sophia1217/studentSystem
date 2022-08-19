@@ -101,7 +101,13 @@ export default {
         sqjssj:sqjssj
       }
       stuInfoModifyParamService(data).then(res => {
-        this.$message(res.errmsg)
+        if (res.errcode == '00') {
+          this.$message({
+            message: res.errmsg,
+            type: 'success'
+          })
+          this.handleCel('ruleForm')
+        }
       }).catch(err=>{})
     },
     handleCel(formName) {

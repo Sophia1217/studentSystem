@@ -2,7 +2,7 @@
   <div class="manStudent">
     <div class="searchWrap">
       <div class="search">
-        <el-input placeholder="请输入" v-model="searchVal" class="inputSelect">
+        <el-input placeholder="请输入" v-model="searchVal" clearable class="inputSelect">
           <el-select
             v-model="select"
             class="elSelect"
@@ -518,7 +518,7 @@ export default {
         return;
       }
       let data = { xh: this.multipleSelection[0].xh };
-      stuReg(data).then((res) => this.downloadFn(res, "学生登记表", "docx"));
+      stuReg(data).then((res) => this.downloadFn(res, "毕业学生登记表", "docx"));
     },
     //学生卡片
     getStu() {
@@ -531,7 +531,7 @@ export default {
         return;
       }
       let data = { xh: this.multipleSelection[0].xh };
-      stuCard(data).then((res) => this.downloadFn(res, "学生卡片", "docx"));
+      stuCard(data).then((res) => this.downloadFn(res, "毕业学生卡片", "docx"));
     },
     hadleDetail(row, flag) {
       let schooling = ""; // 3 4 5 是本科

@@ -154,10 +154,10 @@ export default {
             .then((res) => {
                 // console.log('被操作人返回用户角色',res);
                 var roleIdStr = res.rows[0].roleIds || '';
-                console.log(roleIdStr,'1111')
+                // console.log(roleIdStr,'1111')
                 var roleIdArr = roleIdStr.split(',') || []
                 const roleData = []
-                 console.log(roleIdStr,'1111',roleIdArr)
+                //  console.log(roleIdStr,'1111',roleIdArr)
                 for (let index = 0; index < roleIdArr.length; index++) {
                     var roleId = roleIdArr[index] || ''
                     if (roleId.length == 0) {

@@ -1662,13 +1662,14 @@ export default {
 
   methods: {
     getDetail() {
+      // 学历学位;
       const data = { gh: this.$route.query.gh };
       getDetailQueryPoliticalWorkList(data)
         .then((res) => {
           this.$set(
             this.detailInfoData,
             "zgZgjbxxes",
-            res.zgZgjbxxes[0] ? res.zgZgjbxxes[0] : [] //基本信息
+            res.zgZgjbxxes[0] ? res.zgZgjbxxes[0] : {} //基本信息  如果接受不到第一个对象，那么就给他一个空对象
           );
           this.$set(
             this.detailInfoData,
@@ -1678,7 +1679,7 @@ export default {
           this.$set(
             this.detailInfoData,
             "zgXlxws",
-            res.zgXlxws[0] ? res.zgXlxws[0] : [] //学历学位
+            res.zgXlxws[0] ? res.zgXlxws[0] : {} //学历学位
           );
           this.$set(
             this.detailInfoData,
@@ -1812,8 +1813,7 @@ export default {
     },
     // 提交
     handlUpdata() {
-      const data = this.detailInfoData;
-      console.log(data);
+      var data = this.detailInfoData;
       updateDetailQueryPoliticalWorkList(data)
         .then((res) => {
           this.$message({

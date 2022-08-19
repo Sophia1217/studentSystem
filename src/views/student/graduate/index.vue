@@ -2,7 +2,12 @@
   <div class="manStudent">
     <div class="searchWrap">
       <div class="search">
-        <el-input placeholder="请输入" v-model="searchVal" clearable class="inputSelect">
+        <el-input
+          placeholder="请输入"
+          v-model="searchVal"
+          clearable
+          class="inputSelect"
+        >
           <el-select
             v-model="select"
             class="elSelect"
@@ -122,7 +127,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">名族：</el-col>
+          <el-col :span="3">民 族：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -237,7 +242,6 @@
       @handleCancel="handleCancel"
       @handleConfirm="handleConfirm"
     ></exportView>
-    
   </div>
 </template>
 
@@ -251,7 +255,7 @@ import {
   stuCard,
   stuReg,
 } from "@/api/student/index";
-import { getCodeInfoByEnglish } from '@/api/student/fieldSettings'
+import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
   name: "manStudent",
   components: { CheckboxCom, exportView },
@@ -288,7 +292,7 @@ export default {
         isIndeterminate: true,
       },
       ethnic: {
-        // 名族
+        // 民 族
         checkAll: false,
         choose: [],
         checkBox: [],
@@ -314,11 +318,11 @@ export default {
 
   mounted() {
     this.getSpread();
-    this.getCode('dmpyccm') // 培养层次
-    this.getCode('dmxjztm') // 培养层次
-    this.getCode('dmmzm') // 培养层次
-    this.getCode('dmzzmmm') // 政治面貌
-    this.getCode('dmxz') // 学 制
+    this.getCode("dmpyccm"); // 培养层次
+    this.getCode("dmxjztm"); // 培养层次
+    this.getCode("dmmzm"); // 培养层次
+    this.getCode("dmzzmmm"); // 政治面貌
+    this.getCode("dmxz"); // 学 制
     this.handleSearch();
   },
   activated() {
@@ -326,30 +330,31 @@ export default {
   },
   methods: {
     getCode(data) {
-      this.getCodeInfoByEnglish(data)
+      this.getCodeInfoByEnglish(data);
     },
     getCodeInfoByEnglish(paramsData) {
-      let data = { codeTableEnglish: paramsData}
-      getCodeInfoByEnglish(data).then(res => {
-        switch (paramsData) 
-        { 
-          case 'dmpyccm':
-            this.$set(this.training, 'checkBox', res.data);
-            break;
-          case 'dmxjztm':
-            this.$set(this.studentStatus, 'checkBox', res.data);
-            break;
-          case 'dmmzm':
-            this.$set(this.ethnic, 'checkBox', res.data);
-            break;
-          case 'dmzzmmm':
-            this.$set(this.politica, 'checkBox', res.data);
-            break
-          case 'dmxz':
-            this.$set(this.learnHe, 'checkBox', res.data);
-            break
-        }
-      }).catch(err=>{})
+      let data = { codeTableEnglish: paramsData };
+      getCodeInfoByEnglish(data)
+        .then((res) => {
+          switch (paramsData) {
+            case "dmpyccm":
+              this.$set(this.training, "checkBox", res.data);
+              break;
+            case "dmxjztm":
+              this.$set(this.studentStatus, "checkBox", res.data);
+              break;
+            case "dmmzm":
+              this.$set(this.ethnic, "checkBox", res.data);
+              break;
+            case "dmzzmmm":
+              this.$set(this.politica, "checkBox", res.data);
+              break;
+            case "dmxz":
+              this.$set(this.learnHe, "checkBox", res.data);
+              break;
+          }
+        })
+        .catch((err) => {});
     },
     getSpread() {
       getManageRegStuInfoSearchSpread()
@@ -445,7 +450,7 @@ export default {
       this.studentStatus.isIndeterminate =
         checkedCount > 0 && checkedCount < this.studentStatus.checkBox.length;
     },
-    // 名族全选
+    // 民 族全选
     ethnicAll(val) {
       let allCheck = [];
       for (let i in this.ethnic.checkBox) {
@@ -454,7 +459,7 @@ export default {
       this.ethnic.choose = val ? allCheck : [];
       this.ethnic.isIndeterminate = false;
     },
-    // 名族单选
+    // 民 族单选
     ethnicCheck(value) {
       let checkedCount = value.length;
       this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
@@ -518,7 +523,9 @@ export default {
         return;
       }
       let data = { xh: this.multipleSelection[0].xh };
-      stuReg(data).then((res) => this.downloadFn(res, "毕业学生登记表", "docx"));
+      stuReg(data).then((res) =>
+        this.downloadFn(res, "毕业学生登记表", "docx")
+      );
     },
     //学生卡片
     getStu() {

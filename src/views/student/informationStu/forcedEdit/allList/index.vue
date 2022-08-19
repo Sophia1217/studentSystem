@@ -2,7 +2,12 @@
   <div class="manStudent">
     <div class="searchWrap">
       <div class="search">
-        <el-input placeholder="请输入" v-model="searchVal" clearable class="inputSelect">
+        <el-input
+          placeholder="请输入"
+          v-model="searchVal"
+          clearable
+          class="inputSelect"
+        >
           <el-select
             v-model="select"
             class="elSelect"
@@ -122,7 +127,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">民族：</el-col>
+          <el-col :span="3">民 族：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -178,7 +183,7 @@
           <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
           <el-table-column prop="zzmmm" label="政治面貌" sortable>
           </el-table-column>
-          <el-table-column prop="mzm" label="民族" sortable> </el-table-column>
+          <el-table-column prop="mzm" label="民 族" sortable> </el-table-column>
           <el-table-column prop="dwh" label="学院" sortable> </el-table-column>
           <el-table-column prop="zydm" label="专业" sortable> </el-table-column>
           <el-table-column prop="nj" label="年级" sortable> </el-table-column>
@@ -267,7 +272,7 @@ export default {
         isIndeterminate: true,
       },
       ethnic: {
-        // 名族
+        // 民 族
         checkAll: false,
         choose: [],
         checkBox: [],
@@ -290,7 +295,7 @@ export default {
     this.getSpread();
     this.getCode("dmpyccm"); // 培养层次
     this.getCode("dmxjztm"); // 学籍
-    this.getCode("dmmzm"); // 名族
+    this.getCode("dmmzm"); // 民 族
     this.getCode("dmzzmmm"); // 政治面貌
     this.getCode("dmxz"); // 学 制
     this.handleSearch();
@@ -413,7 +418,7 @@ export default {
       this.studentStatus.isIndeterminate =
         checkedCount > 0 && checkedCount < this.studentStatus.checkBox.length;
     },
-    // 名族全选
+    // 民 族全选
     ethnicAll(val) {
       let allCheck = [];
       for (let i in this.ethnic.checkBox) {
@@ -422,7 +427,7 @@ export default {
       this.ethnic.choose = val ? allCheck : [];
       this.ethnic.isIndeterminate = false;
     },
-    // 名族单选
+    // 民 族单选
     ethnicCheck(value) {
       let checkedCount = value.length;
       this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
@@ -454,7 +459,7 @@ export default {
     // 添加强制修改名单
     handleExport() {
       var data = this.multipleSelection;
-      console.log(this.multipleSelection,'multipleSelection')
+      console.log(this.multipleSelection, "multipleSelection");
       if (this.multipleSelection.length > 1) {
         forceAdd(data).then(() => this.$message("已成功添加强制修改名单"));
         this.$emit("changeActiveName");

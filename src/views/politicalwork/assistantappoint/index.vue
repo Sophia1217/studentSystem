@@ -137,14 +137,14 @@
             </template>
           </el-table-column>
         </el-table>
-        <!-- <pagination
-          v-s how="total > 0"
+        <pagination
+          v-show="total > 0"
           class="pagination"
           :total="total"
           :page.sync="queryParams.pageNum"
           :limit.sync="queryParams.pageSize"
           @pagination="getList"
-        /> -->
+        />
       </div>
     </div>
     <!-- 导入对话框 -->
@@ -198,6 +198,7 @@
         >
       </span>
     </el-dialog>
+    <!-- 导出确认对话框 -->
     <el-dialog :title="title" :visible.sync="showExport" width="30%">
       <span>确认导出？</span>
       <span slot="footer" class="dialog-footer">
@@ -235,7 +236,11 @@
     </el-dialog>
     <!-- 批量免去对话框 -->
     <el-dialog :title="title" :visible.sync="showRemove" width="30%">
-      <span>确认免去【】【】辅导员身份？</span>
+      <template v-for="item in multipleSelection">
+        <div :key="item.gh">
+          <span>确认免去【{{ item.gh }}】【{{ item.xm }}】辅导员身份？</span>
+        </div>
+      </template>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="rmAssistant"

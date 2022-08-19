@@ -68,6 +68,7 @@ export function exportStu(data) {
   return request({
     url: '/regStuInfo/export',
     method: 'post',
+    responseType: 'blob',
     data: data
   })
 }
@@ -170,5 +171,44 @@ export function excelTest(data) {
     method: 'post',
     responseType: 'blob',
     data: data
+  })
+}
+
+//学籍审核页面
+export function getStuInfoFlowUpdatePage(data) {
+  return request({
+    url: '/StuInfoFlow/getStuInfoFlowUpdatePage',
+    method: 'get',
+    params: data
+  })
+}
+
+//毕业生等登记表
+export function gradStu(data) {
+  return request({
+    url: '/export/gradStu',
+    method: 'get',
+    responseType: 'blob',
+    params: data
+  })
+}
+
+//学生卡片
+export function stuCard(data) {
+  return request({
+    url: '/export/stuCard',
+    method: 'get',
+    responseType: 'blob',
+    params: data
+  })
+}
+
+//学生登记表
+export function stuReg(data) {
+  return request({
+    url: '/export/regStuInfo',
+    method: 'get',
+    responseType: 'blob',
+    params: data
   })
 }

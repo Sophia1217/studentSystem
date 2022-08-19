@@ -339,6 +339,7 @@ export default {
   background-color: #ffffff;
 }
 #pagenation {
+  height: 100px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;

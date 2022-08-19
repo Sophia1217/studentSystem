@@ -572,6 +572,7 @@ export default {
   color: #1f1f1f;
 }
 #test {
+  height: 100px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;

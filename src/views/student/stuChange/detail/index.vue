@@ -272,23 +272,25 @@ export default {
       dtailsList: ['基本信息', '学籍异动信息', '审核信息'],
       current: 0,
       infoRes: {},
-      id:''
+      xh:''
     };
   },
   created() {
+    this.xh = this.$route.query.xh
     this.id = this.$route.query.id
+    
+  },
+  mounted() {
     this.getshowStuStatusChangeInfoRes()
   },
-  mounted() {},
 
   methods: {
     handleList(index) {
       this.current = index
     },
     getshowStuStatusChangeInfoRes() {
-      let data = { XH:this.id }
+      let data = { XH:this.xh,ID:this.id }
       showStuStatusChangeInfoRes(data).then(res => {
-        console.log(res)
         this.infoRes = res.result
       }).catch(err=>{})
     }

@@ -5,12 +5,12 @@
         v-model="objProp.checkAll" @change="handleCheckAllChange">全选</el-checkbox>
       <el-checkbox-group v-model="objProp.choose" @change="handleCheckedCitiesChange">
         <!-- <el-checkbox v-for="item in objProp.checkBox" :label="item.val" :key="item.val">{{item.label}}</el-checkbox> -->
-        <el-col :span="4" v-for="item in objProp.checkBox" :key="item.val">
-          <el-checkbox :label="item.val">
-          <el-tooltip class="item" v-if="item.label&&item.label.length>7" effect="dark" :content="item.label" placement="top-start">
-            <div class="ellipsis">{{ item.label }}</div>
+        <el-col :span="4" v-for="item in objProp.checkBox" :key="item.dm">
+          <el-checkbox :label="item.dm">
+          <el-tooltip class="item" v-if="item.mc&&item.mc.length>7" effect="dark" :content="item.mc" placement="top-start">
+            <div class="ellipsis">{{ item.mc }}</div>
           </el-tooltip>
-           <div v-else class="ellipsis">{{ item.label }}</div>
+           <div v-else class="ellipsis">{{ item.mc }}</div>
             </el-checkbox>
         </el-col>
         <!-- </el-checkbox> -->

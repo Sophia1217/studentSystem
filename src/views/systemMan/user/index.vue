@@ -3,13 +3,24 @@
     <div class="searchWrap">
       <div class="search">
         <el-input placeholder="请输入" v-model="searchVal" class="inputSelect">
-          <el-select v-model="select" class="elSelect" slot="prepend" placeholder="查询条件">
+          <el-select
+            v-model="select"
+            class="elSelect"
+            slot="prepend"
+            placeholder="查询条件"
+          >
             <el-option label="学号" value="1"></el-option>
             <el-option label="姓名" value="2"></el-option>
             <el-option label="身份证号" value="3"></el-option>
             <el-option label="手机号" value="4"></el-option>
           </el-select>
-          <el-button slot="append" icon="el-icon-search" class="searchBtn" @click="handleSearch">查询</el-button>
+          <el-button
+            slot="append"
+            icon="el-icon-search"
+            class="searchBtn"
+            @click="handleSearch"
+            >查询</el-button
+          >
         </el-input>
         <div class="more" @click="handleMore">
           <span> {{ !isMore ? "更多分类" : "收起分类" }}</span>
@@ -23,7 +34,11 @@
           <el-col :span="2">单 位：</el-col>
           <el-col :span="20">
             <div class="checkbox">
-              <checkboxCom :objProp="learnHe" @training="learnHeAll" @checkedTraining="learnHeCheck"></checkboxCom>
+              <checkboxCom
+                :objProp="learnHe"
+                @training="learnHeAll"
+                @checkedTraining="learnHeCheck"
+              ></checkboxCom>
             </div>
           </el-col>
         </el-row>
@@ -31,7 +46,11 @@
           <el-col :span="2">角 色：</el-col>
           <el-col :span="20">
             <div class="checkbox">
-              <checkboxCom :objProp="studentStatus" @training="studentStatusAll" @checkedTraining="studentStatusCheck">
+              <checkboxCom
+                :objProp="studentStatus"
+                @training="studentStatusAll"
+                @checkedTraining="studentStatusCheck"
+              >
               </checkboxCom>
             </div>
           </el-col>
@@ -40,7 +59,11 @@
           <el-col :span="2">性 别：</el-col>
           <el-col :span="20">
             <div class="checkbox">
-              <checkboxCom :objProp="ethnic" @training="ethnicAll" @checkedTraining="ethnicCheck"></checkboxCom>
+              <checkboxCom
+                :objProp="ethnic"
+                @training="ethnicAll"
+                @checkedTraining="ethnicCheck"
+              ></checkboxCom>
             </div>
           </el-col>
         </el-row>
@@ -49,7 +72,9 @@
     <!-- table -->
     <div class="tableWrap mt15">
       <div class="headerTop">
-        <div class="headerLeft"><span class="title">用户列表</span> <i class="Updataicon"></i></div>
+        <div class="headerLeft">
+          <span class="title">用户列表</span> <i class="Updataicon"></i>
+        </div>
         <div class="headerRight">
           <el-dropdown split-button @command="handleCommand">
             <span class="el-dropdown-link"> 用户状态控制 </span>
@@ -61,30 +86,50 @@
         </div>
       </div>
       <div class="mt15">
-        <el-table :data="tableData" ref="multipleTable" @selection-change="handleSelectionChange" style="width: 100%"
-          :default-sort="{ prop: 'date', order: 'descending' }">
+        <el-table
+          :data="tableData"
+          ref="multipleTable"
+          @selection-change="handleSelectionChange"
+          style="width: 100%"
+          :default-sort="{ prop: 'date', order: 'descending' }"
+        >
           <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column type="index" label="序号" width="50"></el-table-column>
-          <el-table-column prop="userId" label="学工号" sortable> </el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            width="50"
+          ></el-table-column>
+          <el-table-column prop="userId" label="学工号" sortable>
+          </el-table-column>
           <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
           <el-table-column prop="dwmc" label="单位" sortable> </el-table-column>
-          <el-table-column prop="roleNames" label="角色" sortable> </el-table-column>
+          <el-table-column prop="roleNames" label="角色" sortable>
+          </el-table-column>
           <el-table-column prop="roleState" label="用户状态" sortable>
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.roleState" active-color="#23AD6F" inactive-color="#E0E0E0"></el-switch>
+              <el-switch
+                v-model="scope.row.roleState"
+                active-color="#23AD6F"
+                inactive-color="#E0E0E0"
+              ></el-switch>
             </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="handlePermiss(scope.row)">
-                <i class="scopeIncon handleEdit"></i> <span class="handleName">数据权限</span>
+              <el-button
+                type="text"
+                size="small"
+                @click="handlePermiss(scope.row)"
+              >
+                <i class="scopeIncon handleEdit"></i>
+                <span class="handleName">数据权限</span>
               </el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
       <pagination
-        v-show="queryParams.total>0"
+        v-show="queryParams.total > 0"
         :total="queryParams.total"
         :page.sync="queryParams.pageNum"
         :limit.sync="queryParams.pageSize"
@@ -95,52 +140,58 @@
 </template>
 
 <script>
-import CheckboxCom from '../../components/checkboxCom'
-import { queryUserPageList } from "@/api/systemMan/user"
-import { queryRoleList } from "@/api/systemMan/role"
+import CheckboxCom from "../../components/checkboxCom";
+import { queryUserPageList } from "@/api/systemMan/user";
+import { queryRoleList } from "@/api/systemMan/role";
 export default {
-  name: 'user',
+  name: "user",
   components: { CheckboxCom },
   data() {
     return {
-      searchVal: '',
-      select: '',
+      searchVal: "",
+      select: "",
       isMore: false,
-      learnHe: {  //单位：：
+      learnHe: {
+        //单位：：
         checkAll: false,
         choose: [],
         checkBox: [
-          { label: '软件学院', val: 1 },
-          { label: '设计学院', val: 2 },
-          { label: '文学院', val: 3 },
-          { label: '理学院', val: 4 },
-          { label: '工业设计', val: 5 },
-          { label: '通信工程', val: 6 },
-          { label: '电子信息', val: 7 },
-          { label: '建筑工程', val: 8 },
-          { label: '统计学', val: 9 },
-          { label: '工业设计', val: 10 },
-          { label: '统计学', val: 11 },
+          { label: "软件学院", val: 1 },
+          { label: "设计学院", val: 2 },
+          { label: "文学院", val: 3 },
+          { label: "理学院", val: 4 },
+          { label: "工业设计", val: 5 },
+          { label: "通信工程", val: 6 },
+          { label: "电子信息", val: 7 },
+          { label: "建筑工程", val: 8 },
+          { label: "统计学", val: 9 },
+          { label: "工业设计", val: 10 },
+          { label: "统计学", val: 11 },
         ],
-        isIndeterminate: true
+        isIndeterminate: true,
       },
-      studentStatus: { // 角色：
+      studentStatus: {
+        // 角色：
         checkAll: false,
         choose: [],
         checkBox: [
-          { label: '校级领导用户', val: 1 },
-          { label: '业务部门人员', val: 2 },
-          { label: '培养单位负责人', val: 3 },
-          { label: '培养单位本研学生工作负责人', val: 4 },
-          { label: '辅导员', val: 5 },
+          { label: "校级领导用户", val: 1 },
+          { label: "业务部门人员", val: 2 },
+          { label: "培养单位负责人", val: 3 },
+          { label: "培养单位本研学生工作负责人", val: 4 },
+          { label: "辅导员", val: 5 },
         ],
-        isIndeterminate: true
+        isIndeterminate: true,
       },
-      ethnic: {  // 姓别
+      ethnic: {
+        // 姓别
         checkAll: false,
         choose: [],
-        checkBox: [{ label: '男', val: 1 }, { label: '女', val: 2 }],
-        isIndeterminate: true
+        checkBox: [
+          { label: "男", val: 1 },
+          { label: "女", val: 2 },
+        ],
+        isIndeterminate: true,
       },
       tableData: [],
       multipleSelection: [],
@@ -148,114 +199,134 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        total: 0
-      }
+        total: 0,
+      },
     };
   },
 
   created() {
-    this.handleSearch()
-
+    this.handleSearch();
   },
   activated() {
-    this.handleSearch()
+    this.handleSearch();
   },
   methods: {
     // 获取用户角色
     getqueryRoleList() {
-      let data = { roleId: '01' }
-      queryRoleList(data).then(res => {
-        this.checkboxWrap = res.data.rows
-      }).catch(res => { })
+      let data = { roleId: "01" };
+      queryRoleList(data)
+        .then((res) => {
+          this.checkboxWrap = res.data.rows;
+        })
+        .catch((res) => {});
     },
     // 查询
     handleSearch() {
-      let data = {
-        userId: "2005690002",// 用户Id
-        roleId: "01", //当前人
+
+      var data = {
+        // userId: "2005690002", // 用户Id
+        userId:this.$store.getters.userId, // 用户Id
+        // roleId: "01", //当前人
+        roleId: this.$store.getters.roleId, //当前人
         pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize
-      }
-      queryUserPageList(data).then(res => {
-        this.tableData = res.rows
-        this.queryParams.total = res.totalCount
-      }).catch(err => { })
+        pageSize: this.queryParams.pageSize,
+      };
+        if (this.select == 1) { // 学号
+            data.gh = this.searchVal
+        }else if (this.select == 2) { // 姓名
+            data.xm = this.searchVal
+        } else if (this.select == 3){ // 身份证号
+            data.sfzjh = this.searchVal
+        }else if (this.select == 4){ // 手机号
+            data.yddh = this.searchVal
+        }
+
+      queryUserPageList(data)
+        .then((res) => {
+          this.tableData = res.rows;
+          this.queryParams.total = res.totalCount;
+        })
+        .catch((err) => {});
     },
     // 点击更多
     handleMore() {
-      this.isMore = !this.isMore
+      this.isMore = !this.isMore;
     },
     // 单 位：全选
     learnHeAll(val) {
-      let allCheck = []
+      let allCheck = [];
       for (let i in this.learnHe.checkBox) {
-        allCheck.push(this.learnHe.checkBox[i].val)
+        allCheck.push(this.learnHe.checkBox[i].val);
       }
       this.learnHe.choose = val ? allCheck : [];
-      console.log(this.learnHe.choose, '全选')
+      console.log(this.learnHe.choose, "全选");
       this.learnHe.isIndeterminate = false;
     },
     // 单 位：单选
     learnHeCheck(value) {
       let checkedCount = value.length;
       this.learnHe.checkAll = checkedCount === this.learnHe.checkBox.length;
-      this.learnHe.isIndeterminate = checkedCount > 0 && checkedCount < this.learnHe.checkBox.length;
-      console.log(this.learnHe.choose, '单选')
+      this.learnHe.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.learnHe.checkBox.length;
+      console.log(this.learnHe.choose, "单选");
     },
     // 角 色全选
     studentStatusAll(val) {
-      let allCheck = []
+      let allCheck = [];
       for (let i in this.studentStatus.checkBox) {
-        allCheck.push(this.studentStatus.checkBox[i].val)
+        allCheck.push(this.studentStatus.checkBox[i].val);
       }
       this.studentStatus.choose = val ? allCheck : [];
-      console.log(this.studentStatus.choose, '全选')
+      console.log(this.studentStatus.choose, "全选");
       this.studentStatus.isIndeterminate = false;
     },
     // 角 色单选
     studentStatusCheck(value) {
       let checkedCount = value.length;
-      this.studentStatus.checkAll = checkedCount === this.studentStatus.checkBox.length;
-      this.studentStatus.isIndeterminate = checkedCount > 0 && checkedCount < this.studentStatus.checkBox.length;
-      console.log(this.studentStatus.choose, '单选')
+      this.studentStatus.checkAll =
+        checkedCount === this.studentStatus.checkBox.length;
+      this.studentStatus.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.studentStatus.checkBox.length;
+      console.log(this.studentStatus.choose, "单选");
     },
     // 性 别全选
     ethnicAll(val) {
-      let allCheck = []
+      let allCheck = [];
       for (let i in this.ethnic.checkBox) {
-        allCheck.push(this.ethnic.checkBox[i].val)
+        allCheck.push(this.ethnic.checkBox[i].val);
       }
       this.ethnic.choose = val ? allCheck : [];
-      console.log(this.ethnic.choose, '全选')
+      console.log(this.ethnic.choose, "全选");
       this.ethnic.isIndeterminate = false;
     },
     // 性 别单选
     ethnicCheck(value) {
       let checkedCount = value.length;
       this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
-      this.ethnic.isIndeterminate = checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
-      console.log(this.ethnic.choose, '单选')
+      this.ethnic.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
+      console.log(this.ethnic.choose, "单选");
     },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      console.log(this.multipleSelection)
+      console.log(this.multipleSelection);
     },
 
     handleCommand(command) {
-      this.$message('click on item ' + command);
+      this.$message("click on item " + command);
     },
     // 数据权限
     handlePermiss(row) {
       this.$router.push({
-        path: '/systems/dataPermis',
+        path: "/systems/dataPermis",
         query: {
           roleId: row.roleIds,
           userId: row.userId,
           xm: row.xm,
-        }
-      })
-    }
+        },
+      });
+    },
   },
 };
 </script>
@@ -280,7 +351,8 @@ export default {
       align-items: center;
       background: #fff;
 
-      .searchBtn {}
+      .searchBtn {
+      }
 
       .elSelect {
         width: 110px;
@@ -306,11 +378,11 @@ export default {
         }
 
         .chevronDown {
-          background: url('~@/assets/images/chevronDown.png') no-repeat;
+          background: url("~@/assets/images/chevronDown.png") no-repeat;
         }
 
         .chevronUp {
-          background: url('~@/assets/images/chevronUp.png') no-repeat;
+          background: url("~@/assets/images/chevronUp.png") no-repeat;
         }
       }
     }
@@ -318,7 +390,7 @@ export default {
     .moreSelect {
       margin-top: 20px;
       padding: 20px;
-      background: #FAFAFA;
+      background: #fafafa;
     }
   }
 
@@ -336,7 +408,7 @@ export default {
         .title {
           font-weight: 600;
           font-size: 20px;
-          color: #1F1F1F;
+          color: #1f1f1f;
           line-height: 28px;
         }
 
@@ -346,7 +418,7 @@ export default {
           margin-left: 10px;
           width: 20px;
           height: 20px;
-          background: url('~@/assets/images/updata.png') no-repeat;
+          background: url("~@/assets/images/updata.png") no-repeat;
         }
       }
 
@@ -386,11 +458,11 @@ export default {
           }
 
           .blueIcon {
-            background: url('~@/assets/images/export2.png') no-repeat;
+            background: url("~@/assets/images/export2.png") no-repeat;
           }
 
           .orangeIcon {
-            background: url('~@/assets/images/dataN.png') no-repeat;
+            background: url("~@/assets/images/dataN.png") no-repeat;
           }
         }
       }
@@ -411,11 +483,11 @@ export default {
     }
 
     .handledie {
-      background: url('~@/assets/images/details.png');
+      background: url("~@/assets/images/details.png");
     }
 
     .handleEdit {
-      background: url('~@/assets/images/edit.png');
+      background: url("~@/assets/images/edit.png");
     }
   }
 

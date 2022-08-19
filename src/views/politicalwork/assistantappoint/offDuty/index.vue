@@ -3,14 +3,29 @@
     <div class="searchWrap">
       <!-- 搜索 -->
       <div class="search">
-        <el-input v-model="searchVal" placeholder="可输入多个查询条件，以半角空格区分" class="inputSelect">
-          <el-select slot="prepend" v-model="select" class="elSelect" placeholder="查询条件">
+        <el-input
+          v-model="searchVal"
+          placeholder="可输入多个查询条件，以半角空格区分"
+          class="inputSelect"
+        >
+          <el-select
+            slot="prepend"
+            v-model="select"
+            class="elSelect"
+            placeholder="查询条件"
+          >
             <el-option label="工号" value="1" />
             <el-option label="姓名" value="2" />
             <el-option label="身份证号" value="3" />
             <el-option label="手机号" value="4" />
           </el-select>
-          <el-button slot="append" class="searchButton" icon="el-icon-search" @click="searchClick">查询</el-button>
+          <el-button
+            slot="append"
+            class="searchButton"
+            icon="el-icon-search"
+            @click="searchClick"
+            >查询</el-button
+          >
         </el-input>
         <div class="more" @click="handleMore">
           <span>更多分类</span>
@@ -25,7 +40,11 @@
           <el-col :span="3">工作单位：</el-col>
           <el-col :span="20">
             <div class="checkbox">
-              <checkboxCom :obj-prop="workPlace" @training="handleCheckAllWorkPlaceChange" @checkedTraining="handleCheckedWorkPlaceChange" />
+              <checkboxCom
+                :obj-prop="workPlace"
+                @training="handleCheckAllWorkPlaceChange"
+                @checkedTraining="handleCheckedWorkPlaceChange"
+              />
             </div>
           </el-col>
         </el-row>
@@ -33,7 +52,11 @@
           <el-col :span="3">类 别：</el-col>
           <el-col :span="20">
             <div class="checkbox">
-              <checkboxCom :obj-prop="category" @training="handleCheckAllCategoryChange" @checkedTraining="handleCheckedCategoryChange" />
+              <checkboxCom
+                :obj-prop="category"
+                @training="handleCheckAllCategoryChange"
+                @checkedTraining="handleCheckedCategoryChange"
+              />
             </div>
           </el-col>
         </el-row>
@@ -41,7 +64,11 @@
           <el-col :span="3">性 别：</el-col>
           <el-col :span="20">
             <div class="checkbox">
-              <checkboxCom :obj-prop="sex" @training="handleCheckAllSexChange" @checkedTraining="handleCheckedSexChange" />
+              <checkboxCom
+                :obj-prop="sex"
+                @training="handleCheckAllSexChange"
+                @checkedTraining="handleCheckedSexChange"
+              />
             </div>
           </el-col>
         </el-row>
@@ -49,7 +76,11 @@
           <el-col :span="3">状 态：</el-col>
           <el-col :span="20">
             <div class="checkbox">
-              <checkboxCom :obj-prop="status" @training="handleCheckAllStatusChange" @checkedTraining="handleCheckedStatusChange" />
+              <checkboxCom
+                :obj-prop="status"
+                @training="handleCheckAllStatusChange"
+                @checkedTraining="handleCheckedStatusChange"
+              />
             </div>
           </el-col>
         </el-row>
@@ -59,28 +90,47 @@
     <!-- 搜索结果显示表格 -->
     <div class="tableWrap mt15">
       <div class="headerTop">
-        <div class="headerLeft"><span class="title">离岗辅导员列表</span> <i class="Updataicon" /></div>
+        <div class="headerLeft">
+          <span class="title">离岗辅导员列表</span> <i class="Updataicon" />
+        </div>
         <div class="headerRight">
-          <div class="btns fullGreen" @click="handleAdd"><i class="icon addIcon" /><span class="title">批量任命</span></div>
-          <div class="btns borderGreen" @click="handleImport"><i class="icon greenIcon" /><span class="title">导入</span></div>
-          <div class="btns borderGreen" @click="handleExport"><i class="icon greenIcon" /><span class="title">导出</span></div>
+          <div class="btns fullGreen" @click="handleAdd">
+            <i class="icon addIcon" /><span class="title">批量任命</span>
+          </div>
+          <div class="btns borderGreen" @click="handleImport">
+            <i class="icon greenIcon" /><span class="title">导入</span>
+          </div>
+          <div class="btns borderGreen" @click="handleExport">
+            <i class="icon greenIcon" /><span class="title">导出</span>
+          </div>
         </div>
       </div>
       <div class="mt15">
-        <el-table ref="multipleTable" :data="tableData" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}" @selection-change="handleSelectionChange">
+        <el-table
+          ref="multipleTable"
+          :data="basicInfoList"
+          style="width: 100%"
+          :default-sort="{ prop: 'date', order: 'descending' }"
+          @selection-change="handleSelectionChange"
+        >
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
-          <el-table-column prop="workId" label="工号" sortable />
-          <el-table-column prop="name" label="姓名" sortable />
-          <el-table-column prop="name" label="类别" sortable />
-          <el-table-column prop="sex" label="性别" sortable />
-          <el-table-column prop="sex" label="工作单位" sortable />
-          <el-table-column prop="number" label="任职班级" sortable />
-          <el-table-column prop="workPlace" label="在岗日期" sortable />
+          <el-table-column prop="gh" label="工号" sortable />
+          <el-table-column prop="xm" label="姓名" sortable />
+          <el-table-column prop="lb" label="类别" sortable />
+          <el-table-column prop="xb" label="性别" sortable />
+          <el-table-column prop="gzdw" label="工作单位" sortable />
+          <el-table-column prop="dbzt" label="任职班级" sortable />
+          <el-table-column prop="dutyDate" label="在岗日期" sortable />
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="hadleDetail(scope.row,1)">
-                <i class="scopeIncon handledie" /> <span class="handleName">详情</span>
+              <el-button
+                type="text"
+                size="small"
+                @click="hadleDetail(scope.row, 1)"
+              >
+                <i class="scopeIncon handledie" />
+                <span class="handleName">详情</span>
               </el-button>
               <!-- <el-button type="text" size="small" @click="hadleDetail(scope.row,2)">
                 <i class="scopeIncon handleEdit" /> <span class="handleName">编辑</span>
@@ -89,8 +139,8 @@
           </el-table-column>
         </el-table>
         <pagination
-        class="pagination"
-          v-show="total>0"
+          class="pagination"
+          v-show="total > 0"
           :total="total"
           :page.sync="queryParams.pageNum"
           :limit.sync="queryParams.pageSize"
@@ -99,36 +149,61 @@
       </div>
     </div>
     <el-dialog :visible.sync="open" width="1200px" append-to-body>
-      <el-table ref="multipleTable" :data="tableData" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}" @selection-change="handleSelectionChange">
+      <el-table
+        ref="multipleTable"
+        :data="tableData"
+        style="width: 100%"
+        :default-sort="{ prop: 'date', order: 'descending' }"
+        @selection-change="handleSelectionChange"
+      >
         <!-- <el-table-column type="selection" width="55" /> -->
         <el-table-column type="index" label="在岗日期" width="50" />
-        <el-table-column prop="workId" label="班级编号" sortable />
-        <el-table-column prop="name" label="班级名称" sortable />
-        <el-table-column prop="sex" label="培养层次" sortable />
-        <el-table-column prop="number" label="培养单位" sortable />
-        <el-table-column prop="workPlace" label="年级" sortable />
-        <el-table-column prop="workPlace" label="任职状态" sortable />
-        <el-table-column prop="workPlace" label="任命人" sortable />
-        <el-table-column prop="workPlace" label="任命时间" sortable />
-        <el-table-column prop="workPlace" label="免去人" sortable />
-        <el-table-column prop="workPlace" label="撤任时间" sortable />
+        <el-table-column prop="bjbh" label="班级编号" sortable />
+        <el-table-column prop="bjmc" label="班级名称" sortable />
+        <el-table-column prop="pycc" label="培养层次" sortable />
+        <el-table-column prop="pydw" label="培养单位" sortable />
+        <el-table-column prop="nj" label="年级" sortable />
+        <el-table-column prop="sfqy" label="任职状态" sortable />
+        <el-table-column prop="rmrxm" label="任命人" sortable />
+        <el-table-column prop="rmsj" label="任命时间" sortable />
+        <el-table-column prop="cxrxm" label="免去人" sortable />
+        <el-table-column prop="cxsj" label="撤任时间" sortable />
       </el-table>
       <div slot="footer" class="dialog-footer">
         <el-button class="closeButton" @click="cancel">关 闭</el-button>
       </div>
     </el-dialog>
   </div>
-
 </template>
 <script>
-import { listPost, getPost, getList, delPost, addPost, updatePost } from '@/api/system/post'
-import { listUser, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus } from '@/api/system/user'
-import { getToken } from '@/utils/auth'
-import CheckboxCom from '../../../components/checkboxCom'
-import EditTable from '../../../tool/gen/editTable.vue'
-import EditTable1 from '../../../tool/gen/editTable.vue'
+import {
+  listPost,
+  getPost,
+  getList,
+  delPost,
+  addPost,
+  updatePost,
+} from "@/api/system/post";
+import {
+  listUser,
+  getUser,
+  delUser,
+  addUser,
+  updateUser,
+  resetUserPwd,
+  changeUserStatus,
+} from "@/api/system/user";
+import { getToken } from "@/utils/auth";
+import CheckboxCom from "../../../components/checkboxCom";
+import EditTable from "../../../tool/gen/editTable.vue";
+import EditTable1 from "../../../tool/gen/editTable.vue";
+import {
+  fdyList,
+  removeMoreAssistant,
+  lookDetail,
+} from "@/api/politicalWork/assistantappoint";
 export default {
-  name: 'BasicInfo',
+  name: "BasicInfo",
   components: { CheckboxCom },
   props: [],
   data() {
@@ -141,7 +216,7 @@ export default {
       //   // 是否显示弹出层（用户导入）
       //   open: false,
       //   // 弹出层标题（用户导入）
-      //   title: '',
+      title: "",
       //   // 是否禁用上传
       //   isUploading: false,
       //   // 是否更新已经存在的用户数据
@@ -154,10 +229,10 @@ export default {
       // // 显示搜索条件
       // showSearch: true,
       // // 总条数
-      // total: 1,
+      total: 0,
       // // TODO: 测试数据
       // // 岗位表格数据
-      // // basicInfoList: [],
+      basicInfoList: [],
       // basicInfoList: basicInfoListExample,
 
       // // 弹出层标题
@@ -168,211 +243,254 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        name: undefined,
-        phone: undefined,
-        status: undefined,
-        deptId: undefined
       },
 
-      searchVal: '',
-      select: '',
+      searchVal: "",
+      select: "",
       isMore: false,
       moreIform: {
-        value1: ''
+        value1: "",
       },
-      category: { // 类别
+      category: {
+        // 类别
         checkAll: false,
         choose: [],
-        checkBox: [{ label: '教职工', val: 1 }, { label: '学生', val: 2 }],
-        isIndeterminate: true
+        checkBox: [
+          { label: "兼职", val: 1 },
+          { label: "专职", val: 0 },
+        ],
+        isIndeterminate: true,
       },
-      sex: { // 性别
+      sex: {
+        // 性别
         checkAll: false,
         choose: [],
-        checkBox: [{ label: '男', val: 1 }, { label: '女', val: 2 }],
-        isIndeterminate: true
+        checkBox: [
+          { label: "男", val: 1 },
+          { label: "女", val: 2 },
+        ],
+        isIndeterminate: true,
       },
-      workPlace: { // 单位
+      workPlace: {
+        // 单位
         checkAll: false,
         choose: [],
-        checkBox: [{ label: '软件学院', val: 1 }, { label: '设计学院', val: 2 }, { label: '文学院', val: 3 }, { label: '理学院', val: 4 }, { label: '工业设计', val: 5 }, { label: '通信工程', val: 6 }, { label: '电子信息', val: 7 }, { label: '建筑工程', val: 8 }, { label: '统计学', val: 9 }],
-        isIndeterminate: true
+        checkBox: [
+          { label: "社会学院", val: "社会学院" },
+          { label: "设计学院", val: "设计学院" },
+          { label: "文学院", val: "文学院" },
+          { label: "理学院", val: "理学院" },
+          { label: "工业设计", val: "工业设计" },
+          { label: "通信工程", val: "通信工程" },
+          { label: "电子信息", val: "电子信息" },
+          { label: "建筑工程", val: "建筑工程" },
+          { label: "统计学", val: "统计学" },
+        ],
+        isIndeterminate: true,
       },
-      status: { // 状态
+      status: {
+        // 状态
         checkAll: false,
         choose: [],
-        checkBox: [{ label: '在岗', val: 1 }, { label: '非在岗', val: 2 }],
-        isIndeterminate: true
+        checkBox: [
+          { label: "在岗", val: 1 },
+          { label: "非在岗", val: 2 },
+        ],
+        isIndeterminate: true,
       },
-      tableData: [{ workId: 1, name: 'abc', sex: '男' }, { workId: 2, name: 'def', sex: '女' }],
+      tableData: [],
       multipleSelection: [],
-      showExport: false
-    }
+      showExport: false,
+    };
   },
   computed: {},
   watch: {},
-  created() {
-    this.getList()
-    // this.getConfigKey('sys.user.initPassword').then(response => {
-    //   this.initPassword = response.msg
-    // })
+  created() {},
+  mounted() {
+    this.getList(this.queryParams);
   },
-  mounted() {},
   methods: {
     // 查询
-    handleSearch() {
-      console.log(this.searchVal, this.select)
-    },
+    // handleSearch() {
+    //   console.log(this.searchVal, this.select);
+    // },
     // 点击更多
     handleMore() {
-      this.isMore = !this.isMore
+      this.isMore = !this.isMore;
     },
     // 类别全选
     handleCheckAllCategoryChange(val) {
-      const allCheck = []
+      const allCheck = [];
       for (const i in this.category.checkBox) {
-        allCheck.push(this.category.checkBox[i].val)
+        allCheck.push(this.category.checkBox[i].val);
       }
-      this.category.choose = val ? allCheck : []
-      console.log(this.category.choose, '全选')
-      this.category.isIndeterminate = false
+      this.category.choose = val ? allCheck : [];
+      console.log(this.category.choose, "全选");
+      this.category.isIndeterminate = false;
     },
     // 类别单选
     handleCheckedCategoryChange(value) {
-      const checkedCount = value.length
-      this.category.checkAll = checkedCount === this.category.checkBox.length
-      this.category.isIndeterminate = checkedCount > 0 && checkedCount < this.category.checkBox.length
-      console.log(this.category.choose, '单选')
+      const checkedCount = value.length;
+      this.category.checkAll = checkedCount === this.category.checkBox.length;
+      this.category.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.category.checkBox.length;
+      console.log(this.category.choose, "单选");
     },
     // 性别全选
     handleCheckAllSexChange(val) {
-      const allCheck = []
+      const allCheck = [];
       for (const i in this.sex.checkBox) {
-        allCheck.push(this.sex.checkBox[i].val)
+        allCheck.push(this.sex.checkBox[i].val);
       }
-      this.sex.choose = val ? allCheck : []
-      console.log(this.sex.choose, '全选')
-      this.sex.isIndeterminate = false
+      this.sex.choose = val ? allCheck : [];
+      console.log(this.sex.choose, "全选");
+      this.sex.isIndeterminate = false;
     },
     // 性别单选
     handleCheckedSexChange(value) {
-      const checkedCount = value.length
-      this.sex.checkAll = checkedCount === this.sex.checkBox.length
-      this.sex.isIndeterminate = checkedCount > 0 && checkedCount < this.sex.checkBox.length
-      console.log(this.sex.choose, '单选')
+      const checkedCount = value.length;
+      this.sex.checkAll = checkedCount === this.sex.checkBox.length;
+      this.sex.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.sex.checkBox.length;
+      console.log(this.sex.choose, "单选");
     },
     // 类别全选
     handleCheckAllWorkPlaceChange(val) {
-      const allCheck = []
+      const allCheck = [];
       for (const i in this.workPlace.checkBox) {
-        allCheck.push(this.workPlace.checkBox[i].val)
+        allCheck.push(this.workPlace.checkBox[i].val);
       }
-      this.workPlace.choose = val ? allCheck : []
-      console.log(this.workPlace.choose, '全选')
-      this.workPlace.isIndeterminate = false
+      this.workPlace.choose = val ? allCheck : [];
+      console.log(this.workPlace.choose, "全选");
+      this.workPlace.isIndeterminate = false;
     },
     // 类别单选
     handleCheckedWorkPlaceChange(value) {
-      const checkedCount = value.length
-      this.workPlace.checkAll = checkedCount === this.workPlace.checkBox.length
-      this.workPlace.isIndeterminate = checkedCount > 0 && checkedCount < this.workPlace.checkBox.length
-      console.log(this.workPlace.choose, '单选')
+      const checkedCount = value.length;
+      this.workPlace.checkAll = checkedCount === this.workPlace.checkBox.length;
+      this.workPlace.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.workPlace.checkBox.length;
+      console.log(this.workPlace.choose, "单选");
     },
     // 多选
     handleSelectionChange(val) {
-      this.multipleSelection = val
-      console.log(this.multipleSelection)
+      this.multipleSelection = val;
+      console.log(this.multipleSelection);
     },
     // 状态全选
     handleCheckAllStatusChange(val) {
-      const allCheck = []
+      const allCheck = [];
       for (const i in this.status.checkBox) {
-        allCheck.push(this.status.checkBox[i].val)
+        allCheck.push(this.status.checkBox[i].val);
       }
-      this.status.choose = val ? allCheck : []
-      console.log(this.status.choose, '全选')
-      this.status.isIndeterminate = false
+      this.status.choose = val ? allCheck : [];
+      console.log(this.status.choose, "全选");
+      this.status.isIndeterminate = false;
     },
     // 状态单选
     handleCheckedStatusChange(value) {
-      const checkedCount = value.length
-      this.status.checkAll = checkedCount === this.status.checkBox.length
-      this.status.isIndeterminate = checkedCount > 0 && checkedCount < this.status.checkBox.length
-      console.log(this.status.choose, '单选')
+      const checkedCount = value.length;
+      this.status.checkAll = checkedCount === this.status.checkBox.length;
+      this.status.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.status.checkBox.length;
+      console.log(this.status.choose, "单选");
     },
     // 打开导出弹窗
     handleExport() {
-      this.showExport = true
+      this.showExport = true;
     },
     // 导出取消
     handleCancel() {
-      this.showExport = false
+      this.showExport = false;
     },
     // 导出确认
     handleConfirm() {
-      this.showExport = false
+      this.showExport = false;
     },
 
     hadleDetail(row, flag) {
-      this.open = true
+      this.open = true;
+      let ghdata = {
+        gh: row.gh,
+      };
+      lookDetail(ghdata).then((res) => {
+        if (res.errcode == "00") {
+          //this.moreIform.classNum = res.assistantDetailRes[0].bjbh;
+          console.log(res);
+          this.tableData = res.assistantDetailRes;
+        }
+      });
     },
     // ///////////////////////////////////////////////////////////////
     /** 查询岗位列表 */
-    getList() {
-      this.loading = true
-      this.basicInfoList = this.basicInfoExample
-      this.total = 11
 
-      // listUser(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
-      //     this.userList = response.rows;
-      //     this.total = response.total;
-      //     this.loading = false;
-      //   }
+    getList(queryParams) {
+      //Object.assign(queryParams, this.queryParams);
+      fdyList(queryParams).then((response) => {
+        //console.log(response);
+        if (response.errcode == "00") {
+          this.basicInfoList = response.resList; // 根据状态码接收数据
+          this.total = response.count; //总条数
+        }
+      });
     },
 
     /** 导出按钮操作 */
     handleExport() {
-      this.download('system/user/export', {
-        ...this.queryParams
-      }, `user_${new Date().getTime()}.xlsx`)
+      this.download(
+        "system/user/export",
+        {
+          ...this.queryParams,
+        },
+        `user_${new Date().getTime()}.xlsx`
+      );
     },
     /** 导入按钮操作 */
     handleImport() {
-      this.upload.title = '用户导入'
-      this.upload.open = true
+      this.upload.title = "用户导入";
+      this.upload.open = true;
     },
     handleAdd() {
-      alert()
+      alert();
     },
     /** 下载模板操作 */
     importTemplate() {
-      this.download('system/user/importTemplate', {
-      }, `user_template_${new Date().getTime()}.xlsx`)
+      this.download(
+        "system/user/importTemplate",
+        {},
+        `user_template_${new Date().getTime()}.xlsx`
+      );
     },
     // 文件上传中处理
     handleFileUploadProgress(event, file, fileList) {
-      this.upload.isUploading = true
+      this.upload.isUploading = true;
     },
     // 文件上传成功处理
     handleFileSuccess(response, file, fileList) {
-      this.upload.open = false
-      this.upload.isUploading = false
-      this.$refs.upload.clearFiles()
-      this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + '</div>', '导入结果', { dangerouslyUseHTMLString: true })
-      this.getList()
+      this.upload.open = false;
+      this.upload.isUploading = false;
+      this.$refs.upload.clearFiles();
+      this.$alert(
+        "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
+          response.msg +
+          "</div>",
+        "导入结果",
+        { dangerouslyUseHTMLString: true }
+      );
+      this.getList();
     },
     // 提交上传文件
     submitFileForm() {
-      this.$refs.upload.submit()
+      this.$refs.upload.submit();
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.reset()
-      this.open = true
-      const name = row.name || this.ids
-      this.form = row
-      this.title = '修改政工干部基本信息'
-      getUser(name)
+      this.reset();
+      this.open = true;
+      const name = row.name || this.ids;
+      this.form = row;
+      this.title = "修改政工干部基本信息";
+      getUser(name);
       // getUser(postId).then(response => {
       //   this.form = response.data
       //   this.open = true
@@ -380,31 +498,31 @@ export default {
       // })
     },
     /** 提交按钮 */
-    submitForm: function() {
+    submitForm: function () {
       // todo
-      this.open = false
-      this.$refs['form'].validate(valid => {
+      this.open = false;
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.userId != undefined) {
-            updateUser(this.form).then(response => {
-              this.$modal.msgSuccess('修改成功')
-              this.open = false
-              this.getList()
-            })
+            updateUser(this.form).then((response) => {
+              this.$modal.msgSuccess("修改成功");
+              this.open = false;
+              this.getList();
+            });
           } else {
-            addUser(this.form).then(response => {
-              this.$modal.msgSuccess('新增成功')
-              this.open = false
-              this.getList()
-            })
+            addUser(this.form).then((response) => {
+              this.$modal.msgSuccess("新增成功");
+              this.open = false;
+              this.getList();
+            });
           }
         }
-      })
+      });
     },
     // 取消按钮
     cancel() {
-      this.open = false
-      this.reset()
+      this.open = false;
+      this.reset();
     },
     // 表单重置
     reset() {
@@ -417,191 +535,197 @@ export default {
         phonenumber: undefined,
         email: undefined,
         sex: undefined,
-        status: '0',
+        status: "0",
         remark: undefined,
         postIds: [],
-        roleIds: []
-      }
-      this.resetForm('form')
+        roleIds: [],
+      };
+      this.resetForm("form");
     },
-    // id搜索查询按钮
-    idSearchClick() {
-      alert(this.idSearch)
-      getList()
-    }
+    //
+    searchClick() {
+      let queryParams = {
+        pageNum: 1,
+        pageSize: 10,
+        dwmcList: this.workPlace.choose,
+        lbList: this.category.choose,
+        genderList: this.sex.choose,
+      };
+      console.log(queryParams);
+      this.getList(queryParams);
+    },
     /** 详细信息查询 */
     // handleGet(row) {
     //   const name = row.name || ''
     //   this.$router.push({ path: '/basicInfo/detailInfo/index', query: { name: name }})
     // }
-  }
-}
-
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-.basicInfo{
-  .mt15{
+.basicInfo {
+  .mt15 {
     margin-top: 15px;
   }
-  .searchWrap{
+  .searchWrap {
     background: #fff;
-    padding:20px;
-    .search{
+    padding: 20px;
+    .search {
       display: flex;
       flex-direction: row;
       align-items: center;
-      .elSelect{
-        width:110px;
+      .elSelect {
+        width: 110px;
       }
-      .inputSelect{
-        width:50%;
+      .inputSelect {
+        width: 50%;
       }
-      .more{
+      .more {
         flex: 0 0 100px;
         margin-left: 20px;
         display: flex;
         flex-direction: row;
         align-items: center;
         color: #005657;
-        cursor:pointer;
-        .moreIcon{
+        cursor: pointer;
+        .moreIcon {
           display: block;
-          width:20px;
+          width: 20px;
           height: 20px;
         }
-        .chevronDown{
-          background: url('~@//assets/images/chevronDown.png') no-repeat;
+        .chevronDown {
+          background: url("~@//assets/images/chevronDown.png") no-repeat;
         }
-        .chevronUp{
-          background: url('~@//assets/images/chevronUp.png') no-repeat;
+        .chevronUp {
+          background: url("~@//assets/images/chevronUp.png") no-repeat;
         }
       }
     }
-    .moreSelect{
+    .moreSelect {
       margin-top: 20px;
-      padding:20px;
-      background: #FAFAFA;
+      padding: 20px;
+      background: #fafafa;
     }
   }
-  .tableWrap{
+  .tableWrap {
     background: #fff;
-    padding:20px;
-    .headerTop{
+    padding: 20px;
+    .headerTop {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      .headerLeft{
-        .title{
+      .headerLeft {
+        .title {
           font-weight: 600;
           font-size: 20px;
-          color: #1F1F1F;
+          color: #1f1f1f;
           line-height: 28px;
         }
-        .Updataicon{
+        .Updataicon {
           display: inline-block;
           vertical-align: middle;
           margin-left: 10px;
-          width:20px;
+          width: 20px;
           height: 20px;
-          background: url('~@//assets/images/updata.png') no-repeat;
+          background: url("~@//assets/images/updata.png") no-repeat;
         }
       }
-      .headerRight{
+      .headerRight {
         display: flex;
-        .borderBlue{
-          border:1px solid #0D84E0;
-          color:#0D84E0;
+        .borderBlue {
+          border: 1px solid #0d84e0;
+          color: #0d84e0;
           background: #ebfafd;
         }
-        .borderOrange{
-          border:1px solid #CC3014;
-          color:#CC3014;
+        .borderOrange {
+          border: 1px solid #cc3014;
+          color: #cc3014;
           background: #fdf6f3;
         }
-        .borderLight{
-          border:1px solid #0090A1;
-          color:#0090A1;
+        .borderLight {
+          border: 1px solid #0090a1;
+          color: #0090a1;
           background: #e7fcfc;
         }
-        .borderGreen{
-          border:1px solid #005657;
-          color:#005657;
+        .borderGreen {
+          border: 1px solid #005657;
+          color: #005657;
           background: #fff;
         }
-        .fullGreen{
+        .fullGreen {
           // border:1px solid #005657;
-          color:#fff;
+          color: #fff;
           background: #005657;
         }
-        .btns{
+        .btns {
           margin-right: 15px;
-          padding:5px 10px;
-          cursor:pointer;
-          .title{
+          padding: 5px 10px;
+          cursor: pointer;
+          .title {
             font-size: 14px;
             text-align: center;
             line-height: 22px;
             // vertical-align: middle;
           }
-          .icon{
+          .icon {
             display: inline-block;
-            width:20px;
+            width: 20px;
             height: 20px;
             vertical-align: top;
             margin-right: 5px;
           }
-          .blueIcon{
-            background: url('~@/assets/images/icon_1.png') no-repeat;
+          .blueIcon {
+            background: url("~@/assets/images/icon_1.png") no-repeat;
           }
-          .orangeIcon{
-            background: url('~@/assets/images/icon_2.png') no-repeat;
+          .orangeIcon {
+            background: url("~@/assets/images/icon_2.png") no-repeat;
           }
-          .lightIcon{
-            background: url('~@/assets/images/icon_3.png') no-repeat;
+          .lightIcon {
+            background: url("~@/assets/images/icon_3.png") no-repeat;
           }
-          .greenIcon{
-            background: url('~@/assets/images/export.png');
+          .greenIcon {
+            background: url("~@/assets/images/export.png");
           }
-          .addIcon{
-            background: url('~@/assets/images/icon_add.png');
+          .addIcon {
+            background: url("~@/assets/images/icon_add.png");
           }
         }
       }
     }
-    .scopeIncon{
+    .scopeIncon {
       display: inline-block;
-      width:20px;
+      width: 20px;
       height: 20px;
       vertical-align: middle;
     }
-    .handleName{
+    .handleName {
       font-weight: 400;
       font-size: 14px;
       color: #005657;
       line-height: 28px;
     }
-    .handledie{
-      background: url('~@/assets/images/details.png');
+    .handledie {
+      background: url("~@/assets/images/details.png");
     }
-    .handleEdit{
-      background: url('~@/assets/images/edit.png');
+    .handleEdit {
+      background: url("~@/assets/images/edit.png");
     }
   }
-  .searchButton{
+  .searchButton {
     background: #005657;
     color: white;
   }
 }
-.closeButton{
-    background: #005657;
-    color: white;
-  }
-  .pagination {
+.closeButton {
+  background: #005657;
+  color: white;
+}
+.pagination {
   left: 20%;
   transform: translateX(-50%);
-  text-align: center
+  text-align: center;
 }
 </style>
 

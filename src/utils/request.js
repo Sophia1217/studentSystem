@@ -7,6 +7,19 @@ import { tansParams, blobValidate } from "@/utils/ruoyi";
 import cache from '@/plugins/cache'
 import { saveAs } from 'file-saver'
 
+let loading
+var startLoading = function () {
+  loading = Loading.service({
+    lock: true,
+    text: '加载中……',
+    background: 'rgba(0, 0, 0, 0.7)'
+  })
+}
+
+var endLoading = function () { 
+  loading && loading.close()
+}
+
 let downloadLoadingInstance;
 // 是否显示重新登录
 export let isRelogin = { show: false };
@@ -63,14 +76,17 @@ service.interceptors.request.use(config => {
       }
     }
   }
+  startLoading()
   return config
 }, error => {
-  console.log(error)
+  // console.log(error)
+  endLoading()
   Promise.reject(error)
 })
 
 // 响应拦截器
 service.interceptors.response.use(res => {
+  endLoading()
   // 未设置状态码则默认成功状态
   const code = res.data.errcode || '00';
   // 获取错误信息
@@ -79,6 +95,7 @@ service.interceptors.response.use(res => {
   if (res.request.responseType === 'blob' || res.request.responseType === 'arraybuffer') {
     return res.data
   }
+  
 //   if (code === 401) {
 //     if (!isRelogin.show) {
 //       isRelogin.show = true;
@@ -137,7 +154,11 @@ service.interceptors.response.use(res => {
                 // console.log('接口调用失败，执行登出')
                 location.href = 'https://account.ccnu.edu.cn/cas/logout?service=' + location.protocol+'//' + location.host ;
             });
-            }).catch(() => {});
+            }).catch(() => {
+                store.dispatch('LogOut').then(() => {
+                    // location.href = 'https://account.ccnu.edu.cn/cas/login?service=http://10.222.7.139:8081/sws/checkLogin';
+                })
+            });
         }
         return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
     } else if (code === 'EC-000302') { // 
@@ -167,8 +188,9 @@ service.interceptors.response.use(res => {
     }
 },
   error => {
-    console.log('err' + error)
-    console.log("错误代码:",error.code)
+    endLoading()
+    // console.log('err' + error)
+    // console.log("错误代码:",error.code)
 
     let { message ,code} = error;
     if (code == 302) {

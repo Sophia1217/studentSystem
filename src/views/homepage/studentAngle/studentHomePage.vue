@@ -2,6 +2,32 @@
   <div class="studentHomePage">
     <TopTitle  class="top-title"/>
     <div class="bg"></div>
+    <!-- <div class="rowTop">
+        <div class="itemTop1">
+            <div class="logoImage">
+                <img  src="~@/assets/images/logo.png" alt="">
+            </div>
+            <div class="content">
+                <div class="titleTop1"><span class="nameTitle" >华中师范大学学工管理系统</span></div>
+            <div class="titleTop2">
+                <span class="inglishTitle" >CCNU Student Management System</span>
+            </div>
+            </div>
+        </div>
+        <div class="itemTop2">
+            <div class="iconCenter">
+                <div class="avatarImage">
+                <img  src="~@/assets/images/avatarRight.png" alt="">
+                </div>
+            </div>
+            
+            <div class="titleTop3"><span class="welcomeTitle" >林晓曼，欢迎使用华中师范大学学工系统！</span></div>
+        </div>
+    </div> -->
+
+    <!-- 图片 -->
+
+    <!-- <div class="bg"></div>  -->
     <div class="headline">
             <span class="tohead">常用功能</span>
         </div>
@@ -228,6 +254,7 @@ export default {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
+        margin-left: 20px;
     }
     .tohead{
         font-weight: 500;

@@ -21,10 +21,10 @@
       <el-form-item label="培养层次" prop="pycc">
         <el-select v-model="queryParams.pycc" placeholder="未选择" clearable>
           <el-option
-            v-for="(value, key, index) in levelOptions"
+            v-for="(item, index) in levelOptions"
             :key="index"
-            :label="value"
-            :value="key"
+            :label="item.mc"
+            :value="item.dm"
           />
         </el-select>
       </el-form-item>
@@ -34,17 +34,13 @@
             v-for="(item, index) in gradeOptions"
             :key="index"
             :label="item"
-            :value="item"
+            :value="index"
           />
         </el-select>
       </el-form-item>
       <el-form-item label="班级编号" prop="bjdm">
-        <el-input
-          v-model="queryParams.bjdm"
-          placeholder="未选择"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.bjdm" placeholder="未选择" clearable />
+        <!--           @keyup.enter.native="handleQuery" -->
       </el-form-item>
       <el-form-item>
         <el-button
@@ -57,7 +53,6 @@
         >
         <el-button size="mini" @click="resetQuery" class="reset">
           <span class="iconfont reset_icon">&#xe614;</span>
-
           重置</el-button
         >
       </el-form-item>
@@ -112,7 +107,7 @@
             <span
               class="leaderAssign"
               style="color: #005657; margin-left: 5px"
-              @click="leaderAssign(scope.row.bjdm)"
+              @click="leaderAssign(scope.row)"
             >
               班干部任命
             </span>
@@ -135,7 +130,7 @@
 <script>
 import "@/assets/fonts/person/iconfont.css";
 import {
-  classList,
+  classList, //班级列表查询接口
   modifyClassName,
   getCollege,
   getLevel,
@@ -159,7 +154,7 @@ export default {
       // 显示搜索条件
       showSearch: true,
       // 总条数
-      total: 100,
+      total: 0,
       // 表格数据
       noticeList: [],
       // 班干部列表
@@ -201,12 +196,12 @@ export default {
     this.getOptions();
   },
   methods: {
-    getList(queryParams = {}) {
-      // this.loading = true;
-      classList(queryParams).then((response) => {
+    getList(data = {}) {
+      var data = this.queryParams;
+      classList(data).then((response) => {
         // 获取班级列表数据
         this.noticeList = response.data.rows; // 根据状态码接收数据
-        //  this.total = response.total;
+        this.total = response.data.total;
         //  this.loading = false;
       });
     },
@@ -218,17 +213,40 @@ export default {
       });
       getLevel().then((response) => {
         // 获取培养层次列表数据
-        this.levelOptions = response.rows;
+        console.log(response);
+        this.levelOptions = response.data.rows;
       });
       getGrade().then((response) => {
         // 获取年级列表数据
-        this.gradeOptions = response.rows;
+        console.log(response);
+        this.gradeOptions = response.data.rows;
+        console.log("年级",this.gradeOptions);
       });
     },
+    // 查询按钮
+    handleQuery() {
+      console.log("查询按钮");
+      this.getList(this.queryParams);
+      // getQueryBgbList({bjdm:this.queryParams.bjdm,pageNum: 1, pageSize: 10}).then(res=>{
+      //   console.log(res);
+      // })
+    },
+    // 重置按钮
+    resetQuery() {
+      console.log("重置按钮执行");
+    },
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      // this.ids = selection.map((item) => item.noticeId);
+      // this.single = selection.length != 1;
+      // this.multiple = !selection.length;
+    },
     // 班干部任命
-    leaderAssign(x) {
-      console.log("班干部任命", x);
-      this.$router.push({ path: "/class/leaderAssign", query: { bjdm: "1004001000"}});
+    leaderAssign(row) {
+      this.$router.push({
+        path: "/class/leaderAssign",
+        query: { bjdm: row.bjdm, bjmc: row.bjmc },
+      });
     },
   },
 };
@@ -310,6 +328,7 @@ export default {
   color: #1f1f1f;
 }
 #test {
+  height: 100px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;

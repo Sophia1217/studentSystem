@@ -208,7 +208,6 @@ export default {
       classList(queryParams).then((response) => {
         // 获取班级列表数据
         this.noticeList = response.data.rows; // 根据状态码接收数据
-        console.log("ads", response.data);
         this.total = response.data.total;
         //  this.loading = false;
       });

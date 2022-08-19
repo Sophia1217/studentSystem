@@ -225,12 +225,7 @@ export default {
           }
           this.handleQuery();
         })
-        .catch((error) => {
-          this.$message({
-            message: "删除失败",
-            type: "error",
-          });
-        });
+        .catch((error) => {});
     },
   },
 };

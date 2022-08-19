@@ -45,3 +45,12 @@ export function queryManage(data) {
       data: data
     })
   }
+
+  // 检查是否名字重复
+  export function checkKey(data) {
+    return request({
+      url:'/codeTable/checKey',
+      method: 'post',
+      data: data
+    })
+  }

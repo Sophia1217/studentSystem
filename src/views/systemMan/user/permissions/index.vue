@@ -127,18 +127,6 @@ export default {
     this.getqueryRoleList();
     // this.getQueryDataAuth();
   },
-  activated (){
-    // setTimeout(() => {
-                        // console.log('树',this.$refs.tree,'角色',this.roleData)
-                        // for (let index = 0; index < this.roleData.length; index++) {
-                        //     var role = this.roleData[index];
-                        //     var tree = this.$refs.tree[index]
-                        //     console.log('树',tree,'角色',role,index)
-                        //     tree.setCheckedKeys(role.checksedKeys)
-                            
-                        // }
-                    // }, 100);
-  },
 
   methods: {
     // 获取用户角色
@@ -166,14 +154,19 @@ export default {
             .then((res) => {
                 // console.log('被操作人返回用户角色',res);
                 var roleIdStr = res.rows[0].roleIds || '';
-                // console.log(roleIdStr,'1111')
+                console.log(roleIdStr,'1111')
                 var roleIdArr = roleIdStr.split(',') || []
                 const roleData = []
-                 
+                 console.log(roleIdStr,'1111',roleIdArr)
                 for (let index = 0; index < roleIdArr.length; index++) {
+                    var roleId = roleIdArr[index] || ''
+                    if (roleId.length == 0) {
+                        continue
+                    }
                     const element = {
-                        roleId : roleIdArr[index],
+                        roleId : roleId,
                     };
+                    
                     element.oldRoleId = element.roleId
                     element.checksedKeys = []
                     roleData.push(element)
@@ -242,23 +235,6 @@ export default {
 
       
     },
-    // 初始化进入
-    // initData() {
-    //   if (this.formName.roleId && this.formName.roleId.length > 0) {
-    //     this.formName.roleId = this.formName.roleId.split(",");
-    //     for (let x = 0; x < this.formName.roleId.length; x++) {
-    //       this.roleData.push({
-    //         roleId: this.formName.roleId[x],
-    //         // cascaderOptions: data,
-    //       });
-    //     }
-    //   } else {
-    //     this.roleData.push({
-    //       roleId: "",
-    //     //   cascaderOptions: data,
-    //     });
-    //   }
-    // },
 
     // 获取节点数据
     loadNode (node, resolve){
@@ -404,40 +380,13 @@ export default {
 
     },
 
-    // 取消
-    // handleCencal() {
-    //   let arr = ["20041520"]
-    //       console.log('树控件',this.$refs.tree);
-    //       this.$refs.tree[0].setCheckedKeys(arr)
-    //   // "6860320002", "6860320003"
-    //   // this.$router.push({
-    //   //   path: "/systems/user",
-    //   // });
-    // },
     handleCheckChange(data, checked) {
-    //     var roleId = ''
-    //     var nodeIndex = -1
-    //     for (let index = 0; index < this.roleData.length; index++) {
-    //         console.log('1111000',node);
-    //         // var tree = this.$refs.tree[index];
-            
-    //         var indexNode = this.$refs.tree[index].getNode(node)
-    //         console.log('1111',indexNode);
-    //         if (indexNode == node) {
-    //             nodeIndex = this.$refs.tree[index].id
-    //             roleId = this.roleData[nodeIndex].roleId || ''
-    //             console.log('找到相同节点',roleId,nodeIndex);
-    //             break
-    //         }
-    //     }
-
       // console.log(data, checked);
       for (let index = 0; index < this.roleData.length; index++) {
             var role = this.roleData[index];
             var tree = this.$refs.tree[index]
             role.checksedKeys = tree.getCheckedKeys()
         }
-    //   checked ? this.checksedKeys.push(data.nodeId) : this.checksedKeys.splice(this.checksedKeys.indexOf(data.nodeId), 1)
     },
 
     // 更新数据权限
@@ -464,7 +413,7 @@ export default {
         var dataArr = [];
         // console.log('开始筛选权限数据',nodes);
         for (let index = 0; index < nodes.length; index++) {
-            const element = nodes[index];
+            var  element = nodes[index];
             if (element.visitId == '2') { // 学生，查询是否已经被包含在班级
                 var flag = false
                 for (let x = 0; x < nodes.length; x++) {
@@ -501,7 +450,7 @@ export default {
         // 包装数据
         var dataList = [];
         for (let s = 0; s < dataArr.length; s++) {
-            const node = dataArr[s];
+            var node = dataArr[s];
             var data = {};
             if (node.visitId == '0') {
                 data.orginazationCode = node.dwdm

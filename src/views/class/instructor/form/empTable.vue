@@ -14,49 +14,47 @@
       <el-table :data="noticeList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="65" align="center" />
         <el-table-column
-          label="序号"
-          align="center"
-          prop="id"
-          width="100"
-          sortable
-        />
+            type="index"
+            label="序号"
+            width="50"
+          ></el-table-column>
         <el-table-column
           label="学工号"
           align="center"
-          prop="classId"
+          prop="gh"
           width="100"
         />
         <el-table-column
           label="姓名"
           align="center"
-          prop="className"
+          prop="xm"
           width="100"
           sortable
         >
-          <el-input
+          <!-- <el-input
             :value="noticeList[0].className"
             clearable
             @keyup.enter.native="handleQuery"
-          />
+          /> -->
         </el-table-column>
-        <el-table-column label="性别" align="center" prop="college" sortable />
+        <el-table-column label="性别" align="center" prop="xb" sortable />
         <el-table-column
           label="工作单位"
           align="center"
-          prop="level"
+          prop="dwmc"
           sortable
         />
-        <el-table-column label="任职班级" align="center" prop="nums" sortable />
+        <el-table-column label="任职班级" align="center" prop="bjdm" sortable />
         <el-table-column
           label="创建时间"
           align="center"
-          prop="beginTime"
+          prop="rmsj"
           sortable
         />
         <el-table-column
           label="任命人"
           align="center"
-          prop="updateTime"
+          prop="rmr"
           sortable
         />
         <el-table-column
@@ -80,13 +78,13 @@
         <el-table-column
           label="撤任人"
           align="center"
-          prop="updateTime"
+          prop="cxr"
           sortable
         />
         <el-table-column
           label="撤任时间"
           align="center"
-          prop="updateTime"
+          prop="cxsj"
           sortable
         />
         <el-table-column
@@ -145,6 +143,7 @@
 
 <script>
 import "@/assets/fonts/refresh/iconfont.css";
+import {getDeleteFdyRecords, getQueryRecords} from '@/api/class/instructor'
 export default {
   name: "empTable", //辅导员任职记录
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
@@ -161,7 +160,7 @@ export default {
       // 显示搜索条件
       showSearch: true,
       // 总条数
-      total: 100,
+      total: 0,
       // 表格数据
       noticeList: [
         {
@@ -206,25 +205,13 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        noticeTitle: undefined,
-        createBy: undefined,
-        status: undefined,
-      },
-      // 表单参数
-      form: {},
-      // 表单校验
-      rules: {
-        noticeTitle: [
-          { required: true, message: "公告标题不能为空", trigger: "blur" },
-        ],
-        noticeType: [
-          { required: true, message: "公告类型不能为空", trigger: "change" },
-        ],
-      },
+        bjdm: this.$route.query.bjdm,
+      },      
     };
   },
   created() {
-    // this.getList();
+    this.getList();
+    console.log('111111')
   },
   methods: {
     // 辅导员任命
@@ -240,12 +227,12 @@ export default {
     },
     /** 查询公告列表 */
     getList() {
-      // this.loading = true;
-      // listNotice(this.queryParams).then((response) => {
-      //   this.noticeList = response.rows;
-      //   this.total = response.total;
-      //   this.loading = false;
-      // });
+      this.loading = true;
+      getQueryRecords(this.queryParams).then((response) => {
+        this.noticeList = response.items;
+        this.total = response.total;
+        this.loading = false;
+      });
     },
     // 取消按钮
     cancel() {
@@ -275,9 +262,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      // this.ids = selection.map((item) => item.noticeId);
-      // this.single = selection.length != 1;
-      // this.multiple = !selection.length;
+      this.ids = selection
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -316,18 +301,33 @@ export default {
       // });
     },
     /** 删除按钮操作 */
-    handleDelete(row) {
-      // const noticeIds = row.noticeId || this.ids;
-      // this.$modal
-      //   .confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项？')
-      //   .then(function () {
-      //     return delNotice(noticeIds);
-      //   })
-      //   .then(() => {
-      //     this.getList();
-      //     this.$modal.msgSuccess("删除成功");
-      //   })
-      //   .catch(() => {});
+    handleDelete() {
+        var selectedArr = this.ids || []
+        if (selectedArr.length == 0) {
+            this.$message({
+                message : '请至少选择一条记录',
+                type: 'warning'
+            })
+            return
+        }
+      let param = {
+        recordsList : selectedArr
+      }
+      var names = []
+      for (let index = 0; index < selectedArr.length; index++) {
+        const element = selectedArr[index];
+        names.push(element.xm)
+      }
+      this.$modal
+        .confirm('是否确认删除姓名为"' + names + '"的数据项？')
+        .then(function () {
+          return getDeleteFdyRecords(param);
+        })
+        .then(() => {
+          this.getList();
+          this.$modal.msgSuccess("删除成功");
+        })
+        .catch(() => {});
     },
   },
 };

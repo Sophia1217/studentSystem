@@ -2,7 +2,7 @@
   <div class="assign-table">
     <div class="table-content">
       <div class="title" icon="el-icon-refresh">
-        <span class="title-item">22电子信息1班</span>
+        <span class="title-item">{{this.$route.query.bjmc}}</span>
         <span class="iconfont">&#xe631;</span>
         <el-row :gutter="10" class="mb8" style="float: right">
           <el-col :span="1.5">

@@ -175,9 +175,9 @@
           </el-table-column>
           <el-table-column prop="approveState" label="审核状态" sortable>
             <template slot-scope="scope">
-              <div v-if="scope.row.approveState == 1">已审批</div>
-              <div v-if="scope.row.approveState == 2">未审批</div>
-              <div v-else>退回</div>
+              <div v-if="scope.row.approveState == 1"> 已审批</div>
+              <div v-else-if="scope.row.approveState == 2"> 未审批</div>
+              <div v-else> 退回</div>
             </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="180">

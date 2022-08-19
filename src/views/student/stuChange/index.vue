@@ -409,8 +409,8 @@ export default {
     // 查询
     handleSearch() {
       let data = {
-        XH: this.select == "xh" ? this.searchVal : "",
-        XM: this.select == "xm" ? this.searchVal : "",
+        xh: this.select == "xh" ? this.searchVal : "",
+        xm: this.select == "xm" ? this.searchVal : "",
         SFZJH: this.select == "sfzjh" ? this.searchVal : "",
         YDDH: this.select == "yddh" ? this.searchVal : "",
         PYCCM: this.training.choose,
@@ -423,7 +423,7 @@ export default {
         ZYDM: this.moreIform.stuInfo, // 专业
         YDLBM: this.changType.choose,
         YDYY: this.changWhy.choose,
-        SPWH: this.changTitanic.choose,
+        spwh: this.changTitanic.choose,
         YDRQ: this.datePicker,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,

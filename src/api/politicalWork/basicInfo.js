@@ -35,3 +35,21 @@ export function updateDetailQueryPoliticalWorkList(query) {
     data: query
   })
 }
+
+// 信息修改字段设置展示
+export function loadStaffColumns(data) {
+  return request({
+    url: '/staffInfoColumn/loadStaffColumns',
+    method: 'get',
+    params: data
+  })
+}
+
+// 更新信息修改字段设置
+export function updateStuColumns(data) {
+  return request({
+    url: '/staffInfoColumn/updateStuColumns',
+    method: 'post',
+    data: data
+  })
+}

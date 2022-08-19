@@ -466,7 +466,7 @@ export default {
             type: "error",
           });
         }
-        this.getList();
+        this.getList(this.queryParams);
       });
     },
     // 删除空班级-取消操作
@@ -490,7 +490,7 @@ export default {
             type: "error",
           });
         }
-        this.getList();
+        this.getList(this.queryParams);
       });
     },
   },

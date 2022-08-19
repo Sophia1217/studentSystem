@@ -43,7 +43,7 @@
           <!-- 班干部列表 -->
           <el-table
             :data="bgb_content"
-            @selection-change="handleSelectionChange"
+            @selection-change="handleSelectionChangeBgb"
 
           >
             <el-table-column type="selection" align="center" />
@@ -86,7 +86,7 @@
         </div>
         <div class="allClassmates" v-show="currentIndex == 1">
           <div class="title" icon="el-icon-refresh">
-            <span class="title-item">22电子信息1班</span>
+            <span class="title-item">{{table_title}}</span>
             <span class="iconfont">&#xe631;</span>
             <el-row :gutter="10" class="mb8" style="float: right">
               <el-col :span="1.5">
@@ -159,7 +159,6 @@
       <!-- <el-form :model="form">
         <el-form-item label="撤任理由" prop="cxly">
           <el-select v-model="form.cxly" placeholder="请选择">
-<<<<<<< HEAD
            <el-option v-for="item in cxlyOptions" :key="item.dm" :label="item.mc" :value="item.dm"></el-option> -->
 
       <el-form :model="formDismission">
@@ -167,8 +166,6 @@
           <el-select v-model="formDismission.reason" placeholder="休学">
             <!-- <el-option label="区域一" value="shanghai"></el-option>
             <el-option label="区域二" value="beijing"></el-option> -->
-
-=======
             <!-- <el-option label="cxlyOptions.mc" value="cxlyOptions.dm"></el-option> -->
             <el-option
               v-for="item in cxlyOptions"
@@ -176,7 +173,6 @@
               :label="item.mc"
               :value="item.dm"
             ></el-option>
->>>>>>> 65a9256dc008aa2c12a5b62aa7f20d9a494b97d3
           </el-select>
         </el-form-item>
         <el-form-item label="撤任详情" prop="detail">
@@ -200,7 +196,7 @@
     <el-dialog title="取消分配确定" :visible.sync="doubleCheck" width="50%">
       <template v-for="item in currentRowBgb">
         <div :key="item.xh">
-          <span>确认取消【{{item.xh}}(学工号)】【{{item.xm}}】对【计算机硕士22级1班】【计算机硕士22级1班】班干部任命？</span>
+          <span>确认取消【{{item.xh}}(学工号)】【{{item.xm}}】对【{{table_title}}】的班干部任命？</span>
         </div>
       </template>
 
@@ -235,7 +231,7 @@
             <el-form-item label="班干部职位" prop="bgbList">
               <!-- <el-input v-model="form.bgbid"></el-input> -->
               <el-select
-                v-model="queryParams.bjzw"
+                v-model="form.bgbid"
                 placeholder="未选择"
                 clearable
               >
@@ -264,10 +260,13 @@
       </div>
     </el-dialog>
     <!-- 批量任命二次确定：doubleCheckAssign-->
-    <el-dialog title="批量任命班干部确认" :visible.sync="doubleAssign" width="30%">
-      <span
-        >确认将【78788(学工号)】【张曼丽】任命为【22电子信息1班】班主任？</span
-      >
+    <el-dialog title="批量任命班干部确认" :visible.sync="doubleAssign" width="50%">
+      <template v-for="item in currentRow">
+        <div :key="item.xh">
+          <span>确认任命【{{item.xh}}(学工号)】【{{item.xm}}】为{{table_title}}的班干部？</span>
+        </div>
+      </template>
+      
       <span slot="footer" class="dialog-footer">
         <el-button @click="doubleAssign = false">取 消</el-button>
         <!-- distributeClassConfirm(row) -->
@@ -404,7 +403,7 @@ export default {
     // this.getList();
   },
   mounted() {
-    console.log("班干部列表挂在");
+    console.log("班干部列表挂载");
     console.log("allStu_content:", this.$props.allStu_content);
     // 班干部职位筛选
     getZwdm().then((res) => {
@@ -428,7 +427,7 @@ export default {
         path: "/class/leadRecord",
       });
     },
-    // //班干部列表刷新
+    // //班干部列表刷新?
     // getListBgb(x) {
     //   getQueryBgbList(x).then((res) => {
     //     console.log(res);
@@ -460,6 +459,7 @@ export default {
       let xhList = []
       let cxlyList = []
       let cxrgh = "22222222"
+      console.log(this.currentRowBgb);
 
       for(let item_row of this.currentRowBgb){
         xhList.push(item_row.xh)
@@ -469,12 +469,11 @@ export default {
       getBgbdismission({xhList, cxlyList, cxrgh}).then(response=>{
         console.log(response);
 
-        if(response.errdode = "00"){
+        if(res.errcode == "00"){
           //刷新班干部表格
-          // this.getListBgb({bjdm:"1004001000"});
+          // this.getList();
           console.log(1);
         }
-    
       })
 
       this.$message({
@@ -490,6 +489,7 @@ export default {
     },
     // 班干部批量任命-确定操作
     assignBgbConfirm() {
+      console.log("批量任命确认操作");
       this.openAssignBgb = false;
       setTimeout(() => {
         this.doubleAssign = true;
@@ -498,10 +498,7 @@ export default {
     //班干部批量任命————二次确定操作
     doubleAssignConfirm(){
       console.log("批量任命二次确认操作！");
-      console.log("批量任命确认操作");
       this.currentBjdm = this.$route.query.bjdm;
-      // console.log("currentRow:",this.currentRow);
-      // console.log(this.form);
       let stuList = [];
       let bgbList = [];
       let classList = [];
@@ -516,24 +513,14 @@ export default {
 
       getAssignBgb({ stuList, bgbList, classList, rgh }).then((res) => {
         console.log(res);
+
+        if(res.errcode == "00"){
+          // console.log(1);
+          //刷新全班同学表格
+          this.getList(this.queryParams)
+        }
       });
-        // if(response.errdode = "00"){
-        //   //刷新全班同学表格
-        //   console.log(1);
-
-        // }
-      // })
       this.doubleAssign = false;
-
-
-        // if(response.errdode = "00"){
-        //   //刷新全班同学表格
-
-        // }
-
-      // })
-      
-      this.teacherClass = false;
       // this.$message({
       //   message: "分配班干部成功",
       //   type: "success",

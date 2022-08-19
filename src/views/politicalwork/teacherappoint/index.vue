@@ -7,11 +7,11 @@
           <el-select slot="prepend" v-model="select" class="elSelect" placeholder="查询条件">
             <el-option label="工号" value="gh" />
             <el-option label="姓名" value="xm" />
-            <el-option label="身份证号" value="sfzh" />
+            <!-- <el-option label="身份证号" value="sfzh" />
             <el-option label="籍贯" value="jg" />
             <el-option label="家庭住址" value="jtzz" />
             <el-option label="毕业院校" value="byyx" />
-            <el-option label="家庭背景" value="jtbj" />
+            <el-option label="家庭背景" value="jtbj" /> -->
           </el-select>
           <el-button slot="append" class="searchButton" icon="el-icon-search" @click="handleSearch">查询</el-button>
         </el-input>
@@ -84,9 +84,6 @@
               <el-button type="text" size="small" @click="hadleDetail(scope.row,1)">
                 <i class="scopeIncon handledie" /> <span class="handleName">详情</span>
               </el-button>
-              <!-- <el-button type="text" size="small" @click="hadleDetail(scope.row,2)">
-                <i class="scopeIncon handleEdit" /> <span class="handleName">编辑</span>
-              </el-button> -->
             </template>
           </el-table-column>
         </el-table>
@@ -104,17 +101,28 @@
     <el-dialog :visible.sync="open" width="1200px" append-to-body>
       <el-table ref="multipleTable" :data="tableDataDetail" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}" @selection-change="handleSelectionChange">
         <!-- <el-table-column type="selection" width="55" /> -->
-        <el-table-column type="index" label="在岗日期" width="50" />
-        <el-table-column prop="workId" label="班级编号" sortable />
-        <el-table-column prop="name" label="班级名称" sortable />
-        <el-table-column prop="sex" label="培养层次" sortable />
-        <el-table-column prop="number" label="培养单位" sortable />
-        <el-table-column prop="workPlace" label="年级" sortable />
-        <el-table-column prop="workPlace" label="任职状态" sortable />
-        <el-table-column prop="workPlace" label="任命人" sortable />
-        <el-table-column prop="workPlace" label="任命时间" sortable />
-        <el-table-column prop="workPlace" label="免去人" sortable />
-        <el-table-column prop="workPlace" label="撤任时间" sortable />
+        <el-table-column label="在岗日期" width="180">
+          <template slot-scope="scope">
+            <div v-if="tableDataDetail[0].cxsj != null">
+              <span>{{ tableDataDetail[0].rmsj }} 至 {{ tableDataDetail[0].cxsj }}</span>
+            </div>
+            <div v-if="tableDataDetail[0].cxsj == null && tableDataDetail[0].rmsj != null">
+              <span>{{ tableDataDetail[0].rmsj }} 至今</span>
+            </div>
+
+          </template>
+        </el-table-column>
+        <el-table-column prop="bjbh" label="班级编号" sortable />
+        <el-table-column prop="bjmc" label="班级名称" sortable />
+        <el-table-column prop="pycc" label="培养层次" sortable />
+        <el-table-column prop="pydw" label="培养单位" sortable />
+        <el-table-column prop="nj" label="年级" sortable />
+        <el-table-column prop="sfqy" label="是否启用" sortable />
+        <el-table-column prop="rmztm" label="任职状态" sortable />
+        <el-table-column prop="rmrxm" label="任命人姓名" sortable />
+        <el-table-column prop="rmsj" label="任命时间" sortable />
+        <el-table-column prop="cxrxm" label="撤销人姓名" sortable />
+        <el-table-column prop="cxsj" label="撤任时间" sortable />
       </el-table>
       <div slot="footer" class="dialog-footer">
         <el-button class="closeButton" @click="cancel">关 闭</el-button>
@@ -127,13 +135,59 @@
       width="30%"
       :before-close="handleClose"
     >
-      <span>确认免去【298312】【张曼莉】辅导员身份？</span>
+      <template v-for="item in multipleSelection">
+        <div :key="item.xh">
+          <span>确认免去【{{ item.gh }}】【{{ item.xm }}】班主任身份？</span>
+        </div>
+      </template>
+
       <span slot="footer" class="dialog-footer">
-        <el-button @click="showRemove = 'false'">取 消</el-button>
+        <el-button @click="cancleRemove">取 消</el-button>
         <el-button
           type="primary"
           class="confirm"
-          @click="showRemove = 'false'"
+          @click="confirmRemove"
+        >确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 导入对话框 -->
+    <el-dialog
+      :visible.sync="showImport"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <el-form label-position="left" label-width="100px" :model="importForm">
+        <el-form-item label="学工号" prop="gh">
+          <el-input v-model="importForm.gh" />
+        </el-form-item>
+        <el-form-item label="姓名" prop="xm">
+          <el-input v-model="importForm.xm" />
+        </el-form-item>
+      </el-form>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancelImport">取 消</el-button>
+        <el-button
+          type="primary"
+          class="confirm"
+          @click="submitImport"
+        >确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 导入确认对话框 -->
+    <el-dialog
+      :title="title"
+      :visible.sync="showConfirmImport"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <span>确认任命【{{ importForm.gh }}】【{{ importForm.xm }}】班主任身份？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancelConfirmImport">取 消</el-button>
+        <el-button
+          type="primary"
+          class="confirm"
+          @click="confirmImport"
         >确 定</el-button>
       </span>
     </el-dialog>
@@ -141,8 +195,7 @@
 
 </template>
 <script>
-import { getTeacherDetailList, getTeacherDetail } from '@/api/politicalWork/teacherappoint'
-import { listUser, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus } from '@/api/system/user'
+import { getTeacherDetailList, getTeacherDetail, addTeacher, removeTeacher } from '@/api/politicalWork/teacherappoint'
 import CheckboxCom from '@/views/components/checkboxCom'
 
 export default {
@@ -151,38 +204,22 @@ export default {
   props: [],
   data() {
     return {
-      // dicts: ['sys_normal_disable'],
-      // // 遮罩层
-      // // loading: true,
       // // 用户导入参数
-      // upload: {
-      //   // 是否显示弹出层（用户导入）
-      //   open: false,
-      //   // 弹出层标题（用户导入）
-      //   title: '',
-      //   // 是否禁用上传
-      //   isUploading: false,
-      //   // 是否更新已经存在的用户数据
-      //   updateSupport: 0,
-      //   // 设置上传的请求头部
-      //   headers: { Authorization: 'Bearer ' + getToken() },
-      //   // 上传的地址
-      //   url: process.env.VUE_APP_BASE_API + '/system/user/importData'
-      // },
-      // // 显示搜索条件
-      // showSearch: true,
+      showImport: false,
+      importForm: {
+        'gh': '',
+        'xm': ''
+      },
+      // 确认导入弹出
+      showConfirmImport: false,
+      // 显示导出
+      showExport: false,
       // // 总条数
       total: 0,
-      // // TODO: 测试数据
-      // // 岗位表格数据
-      // // basicInfoList: [],
-      // basicInfoList: basicInfoListExample,
-
-      // // 弹出层标题
-      // title: '',
       // 免任弹出
       showRemove: false,
-      // // 是否显示弹出层
+
+      // // 详情弹出层
       open: false,
       // // 查询参数
       queryParams: {
@@ -191,14 +228,8 @@ export default {
         dwmcList: [],
         genderList: [],
         lbList: [],
-        keyword: {}
-        // gh: '',
-        // xm: '',
-        // sfzh: '',
-        // jg: '',
-        // jtzz: '',
-        // byyx: '',
-        // jtbj: ''
+        gh: '',
+        xm: ''
       },
 
       searchVal: '',
@@ -228,7 +259,9 @@ export default {
       tableData: [],
       tableDataDetail: [],
       multipleSelection: [],
-      showExport: false
+      removeGh: {
+        ghList: []
+      }
     }
   },
   computed: {},
@@ -244,9 +277,14 @@ export default {
     // 查询
     handleSearch() {
       console.log(this.queryParams.keyword)
-      this.$set(this.queryParams.keyword, this.select, this.searchVal)
+      if (this.select == 'xm') {
+        this.queryParams.xm = this.searchVal
+      } else if (this.select == 'gh') {
+        this.queryParams.gh = this.searchVal
+      }
       this.getList()
-      this.queryParams.keyword = {}
+      this.queryParams.xm = ''
+      this.queryParams.gh = ''
     },
     // 点击更多
     handleMore() {
@@ -350,16 +388,16 @@ export default {
     handleConfirm() {
       this.showExport = false
     },
-
+    // 点击详情
     hadleDetail(row, flag) {
       // getTeacherDetail()
-      console.log(row.gh, 'scoup.row')
-      
-      getTeacherDetail(row.gh).then(response => {
-        this.tableDataDetail = response
+      var data = { 'gh': row.gh }
+      getTeacherDetail(data).then(response => {
+        this.tableDataDetail = response.teacherDetailRes
         console.log(response, 'response')
       })
-      console.log(this.response, 'response')
+
+      console.log(this.tableDataDetail.rmsj, 'this.tableDataDetail.rmsj')
 
       this.open = true
     },
@@ -372,78 +410,57 @@ export default {
       }).catch(err => {})
     },
 
-    /** 导出按钮操作 */
-    // handleExport() {
-    //   this.download('system/user/export', {
-    //     ...this.queryParams
-    //   }, `user_${new Date().getTime()}.xlsx`)
-    // },
     /** 导入按钮操作 */
     handleImport() {
-      this.upload.title = '用户导入'
-      this.upload.open = true
+      this.showImport = true
     },
-    handleRemove() {
-      this.showRemove = true
-    },
-    /** 下载模板操作 */
-    importTemplate() {
-      this.download('system/user/importTemplate', {
-      }, `user_template_${new Date().getTime()}.xlsx`)
-    },
-    // 文件上传中处理
-    handleFileUploadProgress(event, file, fileList) {
-      this.upload.isUploading = true
-    },
-    // 文件上传成功处理
-    handleFileSuccess(response, file, fileList) {
-      this.upload.open = false
-      this.upload.isUploading = false
-      this.$refs.upload.clearFiles()
-      this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + '</div>', '导入结果', { dangerouslyUseHTMLString: true })
-      this.getList()
-    },
-    // 提交上传文件
-    submitFileForm() {
-      this.$refs.upload.submit()
-    },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset()
-      this.open = true
-      const name = row.name || this.ids
-      this.form = row
-      this.title = '修改政工干部基本信息'
-      getUser(name)
-      // getUser(postId).then(response => {
-      //   this.form = response.data
-      //   this.open = true
-      //   this.title = '修改岗位'
-      // })
-    },
-    /** 提交按钮 */
-    submitForm: function() {
+
+    // /** 导入提交按钮 */
+    submitImport: function() {
       // todo
-      this.open = false
-      this.$refs['form'].validate(valid => {
-        if (valid) {
-          if (this.form.userId != undefined) {
-            updateUser(this.form).then(response => {
-              this.$modal.msgSuccess('修改成功')
-              this.open = false
-              this.getList()
-            })
-          } else {
-            addUser(this.form).then(response => {
-              this.$modal.msgSuccess('新增成功')
-              this.open = false
-              this.getList()
-            })
-          }
-        }
+      this.showImport = false
+      this.showConfirmImport = true
+    },
+    // 取消导入提交按钮
+    cancelImport() {
+      this.showImport = false
+    },
+
+    // 确认导入按钮
+    confirmImport() {
+      this.showConfirmImport = false
+      addTeacher({ 'ghList': [this.importForm.gh] }).then(res => {
+        console.log(res.flag)
+        this.getList()
       })
     },
-    // 取消按钮
+    // 取消导入按钮
+    cancelConfirmImport() {
+      this.showConfirmImport = false
+    },
+    // 点击批量免去
+    handleRemove() {
+      this.showRemove = true
+      console.log(this.multipleSelection)
+    },
+    // 确认批量免去
+    confirmRemove() {
+      for (var i in this.multipleSelection) {
+        this.removeGh.ghList.push(this.multipleSelection[i].gh)
+        console.log(this.removeGh, 'removeGh')
+      }
+      removeTeacher(this.removeGh).then(res => {
+        this.getList()
+        console.log(res.flag)
+      })
+      this.showRemove = false
+    },
+    // 取消免任
+    cancleRemove() {
+      this.showRemove = false
+    },
+
+    // 详情取消按钮
     cancel() {
       this.open = false
       this.reset()

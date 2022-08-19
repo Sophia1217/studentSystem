@@ -28,8 +28,8 @@
                 <div class="wrap">
                   <div class="title">{{item.dicCloumnChinese}}</div>
                   <div class="content"> 
-                    <el-radio v-model="item.columnAuth" label="2">只读</el-radio>
-                    <el-radio v-model="item.columnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
                     <!-- <el-radio  v-model="item.columnAuth" label="2">隐藏</el-radio> -->
                   </div>
                 </div>
@@ -50,8 +50,8 @@
                 <div class="wrap">
                   <div class="title">{{item.dicCloumnChinese}}</div>
                   <div class="content">
-                    <el-radio v-model="item.columnAuth" label="2">只读</el-radio>
-                    <el-radio v-model="item.columnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -71,8 +71,8 @@
                 <div class="wrap">
                   <div class="title">{{item.dicCloumnChinese}}</div>
                   <div class="content">
-                    <el-radio v-model="item.columnAuth" label="2">只读</el-radio>
-                    <el-radio v-model="item.columnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -92,8 +92,8 @@
                 <div class="wrap">
                   <div class="title">{{item.dicCloumnChinese}}</div>
                   <div class="content">
-                    <el-radio v-model="item.columnAuth" label="2">只读</el-radio>
-                    <el-radio v-model="item.columnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -113,8 +113,8 @@
                 <div class="wrap">
                   <div class="title">{{item.dicCloumnChinese}}</div>
                   <div class="content">
-                    <el-radio v-model="item.columnAuth" label="2">只读</el-radio>
-                    <el-radio v-model="item.columnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -196,13 +196,13 @@ export default {
       let jbxxData = data
       if (!val) {
         for (let x = 0; x < jbxxData.length; x++){
-          jbxxData[x].columnAuth = '1'
+          jbxxData[x].stuColumnAuth = '1'
         }
       }
       if (index == 1) {
         if (val) {
           for (let x = 0; x < jbxxData.length; x++){
-            jbxxData[x].columnAuth = '2'
+            jbxxData[x].stuColumnAuth = '2'
           }
         }
         switch(xm)
@@ -226,7 +226,7 @@ export default {
       } else {
         if (val) {
           for (let x = 0; x < jbxxData.length; x++){
-            jbxxData[x].columnAuth = '0'
+            jbxxData[x].stuColumnAuth = '0'
           }
         }
         switch(xm)
@@ -253,8 +253,12 @@ export default {
       let newData = []
       newData = newData.concat(this.columns.xs_gzjl,this.columns.xs_jbxx,this.columns.xs_jtcyxx,this.columns.xs_txxx,this.columns.xs_xxjl)
       updateStuColumns(JSON.stringify(newData)).then(res => {
-        console.log(res)
-        this.$message(res.errmsg)
+        if (res.errcode == '00') {
+          this.$message({
+            message: res.errmsg,
+            type: 'success'
+          })
+        }
       }).catch(err=>{})
     }
   },

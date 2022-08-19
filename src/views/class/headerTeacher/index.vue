@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="banji">
     <el-form
       :model="queryParams"
       ref="queryForm"
@@ -353,8 +353,9 @@ export default {
 </script>
 
 <style>
-.app-container {
-  height: 100vh;
+.banji {
+  max-width: 100%;
+  height: 100%;
   background-color: white;
 }
 .search {
@@ -431,13 +432,14 @@ export default {
   color: #1f1f1f;
 }
 #test {
+  height: 100px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
 }
 .pagination-container {
   margin-top: 0px;
-  height: 100%;
+  height: auto;
 }
 .el-pagination {
   margin-top: 20px;

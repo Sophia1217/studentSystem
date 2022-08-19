@@ -430,6 +430,38 @@ export default {
     // 取消分配-确认操作
     cancelAllocateConfirm() {
       this.cancelAllocate = false;
+      setTimeout(() => {
+        this.doubleCheck = true;
+      }, 200);
+      // const q = {};
+      // q.cxrGh = "2005690002"; // 撤销人的工号
+      // q.bjdm = this.$route.query.bjdm; // 班级代码
+      // q.crly = this.form.reason; // 撤任理由
+      // q.cxsj = this.form.offDate; // 撤任时间
+      // q.teacherList = [];
+      // if (this.flag1 == true) {
+      //   // 一对多撤任
+      //   this.teacherList.forEach((item) => {
+      //     q.teacherList.push(item.gh);
+      //   });
+      // } else {
+      //   // 一对一撤任
+      //   q.teacherList.push(this.show.gh);
+      // }
+      // removeAssignTeacher(q).then((response) => {
+      //   if (response.errcode == "00") {
+      //     this.doubleCheck = true; // 弹出撤任二次确认框
+      //   }
+      //   if (response.errcode !== "00") {
+      //     this.$message({
+      //       message: "撤任班主任失败",
+      //       type: "error",
+      //     });
+      //   }
+      // });
+    },
+    // 取消分配-二次确认按钮
+    doubleCheckConfirm() {
       const q = {};
       q.cxrGh = "2005690002"; // 撤销人的工号
       q.bjdm = this.$route.query.bjdm; // 班级代码
@@ -446,25 +478,25 @@ export default {
         q.teacherList.push(this.show.gh);
       }
       removeAssignTeacher(q).then((response) => {
+        this.doubleCheck = false;
         if (response.errcode == "00") {
-          this.doubleCheck = true; // 弹出撤任二次确认框
+          this.$message({
+            message: "取消分配班级操作成功",
+            type: "success",
+          });
+          this.getTeacherList(this.queryParams); // 重新发送请求获取班主任列表数据
         }
         if (response.errcode !== "00") {
           this.$message({
-            message: "撤任班主任失败",
+            message: "取消分配班级操作失败",
             type: "error",
           });
         }
       });
-    },
-    // 取消分配-二次确认按钮
-    doubleCheckConfirm() {
-      this.doubleCheck = false;
-      this.$message({
-        message: "取消分配班级操作成功",
-        type: "success",
-      });
-      this.getTeacherList(this.queryParams); // 重新发送请求获取班主任列表数据
+      // this.$message({
+      //   message: "取消分配班级操作成功",
+      //   type: "success",
+      // });
     },
     // 批量分配班主任——多个班主任分配一个班级
     distributeSomeClass() {

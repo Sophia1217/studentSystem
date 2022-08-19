@@ -40,11 +40,10 @@
             </el-row>
           </div>
           <!-- v-loading="loading" -->
-          <!-- 班干部列表 -->
           <el-table
-            :data="bgb_content"
-            @selection-change="handleSelectionChangeBgb"
 
+            :data="table_content"
+            @selection-change="handleSelectionChangeBgb"
           >
             <el-table-column type="selection" align="center" />
             <el-table-column
@@ -77,8 +76,8 @@
           </el-table>
           <pagination
             id="pagenation"
-            v-show="bgb_total > 0"
-            :total="bgb_total"
+            v-show="total > 0"
+            :total="total"
             :page.sync="queryParams.pageNum"
             :limit.sync="queryParams.pageSize"
             @pagination="getList"
@@ -108,9 +107,8 @@
             </el-row>
           </div>
           <!-- v-loading="loading" -->
-          <!-- 全班同学列表 -->
           <el-table
-            :data="allStu_content"
+            :data="noticeList"
             @selection-change="handleSelectionChange"
           >
             <el-table-column type="selection" align="center" />
@@ -123,8 +121,8 @@
             <el-table-column label="学号" align="center" prop="xh" />
             <el-table-column label="姓名" align="center" prop="xm">
             </el-table-column>
-            <el-table-column label="性别" align="center" prop="sex" />
-            <el-table-column label="班级职位" align="center" prop="zwdm" />
+            <el-table-column label="性别" align="center" prop="xb" />
+            <el-table-column label="班级职位" align="center" prop="bjzw" />
             <!-- <el-table-column label="操作" align="center" prop="level">
               <template slot-scope="scope">
                 <span
@@ -143,8 +141,8 @@
           </el-table>
           <pagination
             id="pagenation"
-            v-show="allStu_total > 0"
-            :total="allStu_total"
+            v-show="total > 0"
+            :total="total"
             :page.sync="queryParams.pageNum"
             :limit.sync="queryParams.pageSize"
             @pagination="getList"
@@ -152,27 +150,51 @@
         </div>
       </div>
     </div>
+    <!-- 分配班干部操作：teacherClass-->
+    <!-- :before-close="handleClose" -->
+    <el-dialog title="分配班干部" :visible.sync="teacherClass" width="30%">
+      <span
+        >确认将【78788(学工号)】【张曼丽】任命为【22电子信息1班】班主任？</span
+      >
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="teacherClass = false">取 消</el-button>
+        <!-- distributeClassConfirm(row) -->
+        <el-button
+          type="primary"
+          @click="distributeClassConfirm(row)"
+          class="confirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
 
     <!-- 批量撤任对话框：cancelAllocate-->
     <el-dialog title="取消分配" :visible.sync="cancelAllocate" width="50%">
-
       <!-- <el-form :model="form">
         <el-form-item label="撤任理由" prop="cxly">
           <el-select v-model="form.cxly" placeholder="请选择">
+<<<<<<< HEAD
            <el-option v-for="item in cxlyOptions" :key="item.dm" :label="item.mc" :value="item.dm"></el-option> -->
+=======
+             <el-option label="cxlyOptions.mc" value="cxlyOptions.dm"></el-option> -->
+      <!-- <el-option v-for="item in cxlyOptions" :key="item.dm" :label="item.mc" :value="item.dm"></el-option> -->
+>>>>>>> e8df39a71f01a91f7563d861d7733c745ef8a699
 
       <el-form :model="formDismission">
         <el-form-item label="撤任理由" prop="reason">
           <el-select v-model="formDismission.reason" placeholder="休学">
             <!-- <el-option label="区域一" value="shanghai"></el-option>
             <el-option label="区域二" value="beijing"></el-option> -->
-            <!-- <el-option label="cxlyOptions.mc" value="cxlyOptions.dm"></el-option> -->
+
             <el-option
               v-for="item in cxlyOptions"
               :key="item.dm"
               :label="item.mc"
               :value="item.dm"
             ></el-option>
+=======
+            -->
+>>>>>>> e8df39a71f01a91f7563d861d7733c745ef8a699
           </el-select>
         </el-form-item>
         <el-form-item label="撤任详情" prop="detail">
@@ -193,10 +215,11 @@
     </el-dialog>
 
     <!-- 批量撤任——二次确定：checkDouble -->
-    <el-dialog title="取消分配确定" :visible.sync="doubleCheck" width="50%">
+    <el-dialog title="取消分配" :visible.sync="doubleCheck" width="50%">
       <template v-for="item in currentRowBgb">
         <div :key="item.xh">
           <span>确认取消【{{item.xh}}(学工号)】【{{item.xm}}】对【{{table_title}}】的班干部任命？</span>
+
         </div>
       </template>
 
@@ -228,20 +251,21 @@
       >
         <el-row>
           <el-col :span="12">
-            <el-form-item label="班干部职位" prop="bgbList">
+            <el-form-item label="班干部职位代码" prop="bgbList">
               <!-- <el-input v-model="form.bgbid"></el-input> -->
               <el-select
                 v-model="form.bgbid"
                 placeholder="未选择"
                 clearable
               >
+              <!-- <el-select v-model="form.bgbid" pllaceholder="2" clearable> -->
+                <!-- 班干部职位筛选框 -->
                 <el-option
-                  v-for="(item, index) in bjzwOptions"
+                v-for="(item, index) in bjzwOptions"
                   :key="index"
                   :label="item.mc"
                   :value="item.dm"
                 />
-
               </el-select>
             </el-form-item>
           </el-col>
@@ -259,6 +283,7 @@
         >
       </div>
     </el-dialog>
+
     <!-- 批量任命二次确定：doubleCheckAssign-->
     <el-dialog title="批量任命班干部确认" :visible.sync="doubleAssign" width="50%">
       <template v-for="item in currentRow">
@@ -284,23 +309,18 @@
 <script>
 import "@/assets/fonts/circle/iconfont.css";
 import { getCxly, getQueryBgbList } from "@/api/class/classLeader";
-import {
-  getAssignBgb,
-  getZwdm,
-  getQueryAllstuList,
-  getBgbdismission,
-} from "@/api/class/classLeader";
+import { getAssignBgb, getBgbdismission } from "@/api/class/classLeader";
 export default {
   name: "assignTable", //班干部任命表格
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
   // 子组件(assignTable)属性,其父组件为leaderAssign
-  props: ["table_title", "bgb_content", "bgb_total"],
+  props: ["table_title", "table_content"],
   data() {
     return {
       // 全班同学当前行数据
-      currentRow:[],
+      currentRow: [],
       //班干部当前行数据
-      currentRowBgb:[],
+      currentRowBgb: [],
       // 当前班级代码
       currentBjdm: "",
       // tab栏切换
@@ -308,10 +328,6 @@ export default {
       currentIndex: 0,
       // 撤任理由数据
       cxlyOptions: [],
-      // 班级职位数据
-      bjzwOptions: [], // 班级职位
-      // 全班同学数据
-      allStu_content: [],
       // 遮罩层
       // loading: true,
       // 选中数组
@@ -322,8 +338,8 @@ export default {
       multiple: true,
       // 显示搜索条件
       showSearch: true,
-      // 全班同学总条数
-      allStu_total:0,
+      // 总条数
+      total: 100,
       // 表格数据
       noticeList: [
         {
@@ -352,7 +368,7 @@ export default {
         },
       ],
       //班干部列表查询
-      // getListBgb: [],
+      getListBgb: [],
       // 班干部列表
       queryBgbList: [],
       // 全班学生列表
@@ -367,16 +383,13 @@ export default {
       cancelAllocate: false,
       // 批量取消分配二次确定
       doubleCheck: false,
-      //批量任命二次确定
-      doubleAssign: false,
-      
+      teacherClass: false,
+
       // 查询参数
       queryParams: {
-        bjdm:"070201000501",
         pageNum: 1,
         pageSize: 10,
-        cxly: "", // 撤任理由
-        bjzw: "", // 任命对话框班干部职位
+        cxly: "",
       },
       // 批量任命表单参数
       form: {
@@ -385,7 +398,7 @@ export default {
       },
       //批量撤任表单参数
       formDismission: {
-        reason:"",
+        reason: "",
         detail: "",
       },
       // 表单校验
@@ -412,15 +425,16 @@ export default {
         this.bjzwOptions = res.data.rows;
       }
     });
+
   },
   methods: {
-    // 班干部查询列表
-    getList(x){
-      console.log("getList1!");
-      getQueryBgbList(x).then(res=>{
-        console.log("该班班干部查询结果：",res);
-      })
-    },
+    // // 班干部查询列表
+    // getList(x){
+    //   console.log("getList1!");
+    //   getQueryBgbList(x).then(res=>{
+    //     console.log("该班班干部查询结果：",res);
+    //   })
+    // },
     // 班干部任职记录
     studentRecord1() {
       this.$router.push({
@@ -436,6 +450,15 @@ export default {
     //     console.log("test:", this.queryBgbList);
     //   });
     // },
+    //班干部列表
+    getListBgb(x) {
+      getQueryBgbList(x).then((res) => {
+        console.log(res);
+        let data = res.rows;
+        this.queryBgbList = data;
+        console.log("test:", this.queryBgbList);
+      });
+    },
     // 班干部批量撤任操作
     deleteSome() {
       getCxly().then((res) => {
@@ -461,20 +484,23 @@ export default {
       let cxrgh = "22222222"
       console.log(this.currentRowBgb);
 
-      for(let item_row of this.currentRowBgb){
-        xhList.push(item_row.xh)
-        cxlyList.push(this.formDismission.reason)
+
+      for (let item_row of this.currentRowBgb) {
+        xhList.push(item_row.xh);
+        cxlyList.push(this.formDismission.reason);
       }
-      
-      getBgbdismission({xhList, cxlyList, cxrgh}).then(response=>{
+
+      getBgbdismission({ xhList, cxlyList, cxrgh }).then((response) => {
         console.log(response);
 
         if(res.errcode == "00"){
+
           //刷新班干部表格
           // this.getList();
           console.log(1);
         }
-      })
+
+      });
 
       this.$message({
         message: "批量撤任班干部操作成功",
@@ -487,7 +513,7 @@ export default {
       this.openAssignBgb = true;
       this.title = "批量任命班干部";
     },
-    // 班干部批量任命-确定操作
+    // 批量任命班干部-确认操作
     assignBgbConfirm() {
       console.log("批量任命确认操作");
       this.openAssignBgb = false;
@@ -574,32 +600,16 @@ export default {
     // tab栏切换
     tabClick(index) {
       this.currentIndex = index;
-      if (index == 1) {
-        console.log("切换开始！");
-        this.getList(this.queryParams)
-      }
-    },
-    // 全班同学列表
-    getList(queryParams){
-      // { bjdm: "070201000501" }
-      Object.assign(queryParams, this.queryParams)
-        getQueryAllstuList(queryParams).then((res) => {
-          let data = res.rows;
-          this.allStu_content = data
-          this.allStu_total = res.total
-          console.log("this.allStu_content:", this.allStu_content);
-          console.log("allStu_total", this.allStu_total);
-        }); // 获取任职记录列表-全班同学列表
     },
     /** 查询公告列表 */
-    // getList() {
+    getList() {
       // this.loading = true;
       // listNotice(this.queryParams).then((response) => {
       //   this.noticeList = response.rows;
       //   this.total = response.total;
       //   this.loading = false;
       // });
-    // },
+    },
     // 批量任命取消按钮
     cancelAssignBgb() {
       this.openAssignBgb = false;
@@ -636,10 +646,9 @@ export default {
       this.currentRow = row;
     },
     //班干部多选框选中数据
-    handleSelectionChangeBgb(row){
+    handleSelectionChangeBgb(row) {
       console.log(row);
-      this.currentRowBgb = row
-
+      this.currentRowBgb = row;
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -702,7 +711,6 @@ export default {
 }
 
 #pagenation {
-  height: 100px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;

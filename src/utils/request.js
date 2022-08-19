@@ -86,6 +86,7 @@ service.interceptors.request.use(config => {
 
 // 响应拦截器
 service.interceptors.response.use(res => {
+  endLoading()
   // 未设置状态码则默认成功状态
   const code = res.data.errcode || '00';
   // 获取错误信息
@@ -94,7 +95,7 @@ service.interceptors.response.use(res => {
   if (res.request.responseType === 'blob' || res.request.responseType === 'arraybuffer') {
     return res.data
   }
-  endLoading()
+  
 //   if (code === 401) {
 //     if (!isRelogin.show) {
 //       isRelogin.show = true;
@@ -188,8 +189,8 @@ service.interceptors.response.use(res => {
 },
   error => {
     endLoading()
-    console.log('err' + error)
-    console.log("错误代码:",error.code)
+    // console.log('err' + error)
+    // console.log("错误代码:",error.code)
 
     let { message ,code} = error;
     if (code == 302) {

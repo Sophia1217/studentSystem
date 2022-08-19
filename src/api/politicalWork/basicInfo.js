@@ -3,23 +3,13 @@ import request from '@/utils/request'
 // 列表分页查询接口
 export function getPoliticalWorkList(params) {
   return request({
-    url: '/zg/list',
-    method: 'get',
-    params: params
-  })
-}
-
-// 筛选框查询
-export function getFilterPoliticalWorkList(data) {
-  return request({
-    url: '/zg/list',
+    url: '/zg/queryList',
     method: 'post',
-    data: data
+    data: params
   })
 }
 
 // 按条件搜索
-
 export function getConditionPoliticalWorkList(data) {
   return request({
     url: '/zg/search',
@@ -29,12 +19,11 @@ export function getConditionPoliticalWorkList(data) {
 }
 
 // 政工干部详情查询
-
 export function getDetailQueryPoliticalWorkList(data) {
   return request({
     url: '/zgjbxx/zgDetailQuery',
-    method: 'get',
-    params: data
+    method: 'post',
+    data: data
   })
 }
 

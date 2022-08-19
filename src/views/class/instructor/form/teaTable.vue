@@ -80,10 +80,10 @@ import "@/assets/fonts/refresh/iconfont.css";
 export default {
   name: "teaTable", //辅导员管理
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
-  props:{
-    table_content:{
-      type:Object
-    }
+  props: {
+    table_content: {
+      type: Object,
+    },
   },
   data() {
     return {
@@ -242,6 +242,7 @@ export default {
   background-color: #ffffff;
 }
 #pagenation {
+  height: 100px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;

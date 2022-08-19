@@ -265,6 +265,7 @@
 
 <script>
 import CheckboxCom from "../../components/checkboxCom";
+import { getCodeInfoByEnglish } from '@/api/student/fieldSettings'
 import {
   getStuChangeInfoPageList,
   getManageRegStuInfoSearchSpread,
@@ -281,106 +282,60 @@ export default {
       moreIform: {
         value1: "",
       },
-      options: [
-        { value: "选项2", label: "双皮奶" },
-        { value: "选项3", label: "蚵仔煎" },
-      ],
       training: {
         // 培养层次
         checkAll: false,
         choose: [],
-        checkBox: [
-          { label: "大学本科", val: 1 },
-          { label: "硕士研究生", val: 2 },
-          { label: "博士研究生", val: 3 },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
       learnHe: {
         //学 制：
         checkAll: false,
         choose: [],
-        checkBox: [
-          { label: "2年", val: 1 },
-          { label: "3年", val: 2 },
-          { label: "3年", val: 3 },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
       studentStatus: {
         // 学籍
         checkAll: false,
         choose: [],
-        checkBox: [
-          { label: "有学籍", val: 1 },
-          { label: "无学籍", val: 2 },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
       ethnic: {
         // 名族
         checkAll: false,
         choose: [],
-        checkBox: [
-          { label: "汉族", val: 1 },
-          { label: "蒙古族", val: 2 },
-          { label: "藏族", val: 3 },
-          { label: "满族", val: 4 },
-          { label: "苗族", val: 5 },
-          { label: "彝族", val: 6 },
-          { label: "维吾尔族", val: 7 },
-          { label: "土家族", val: 8 },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
       politica: {
         // 政治面貌：
         checkAll: false,
         choose: [],
-        checkBox: [
-          { label: "中共党员", val: 1 },
-          { label: "中共预备", val: 2 },
-          { label: "共青团员", val: 3 },
-          { label: "群众", val: 4 },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
       changType: {
         //异动类别：
         checkAll: false,
         choose: [],
-        checkBox: [
-          { label: "休学", val: 1 },
-          { label: "自动退学", val: 2 },
-          { label: "转专业", val: 3 },
-          { label: "毕业", val: 4 },
-          { label: "肄业", val: 5 },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
       changWhy: {
         //异动原因：
         checkAll: false,
         choose: [],
-        checkBox: [
-          { label: "成绩优秀", val: 1 },
-          { label: "精神疾病", val: 2 },
-          { label: "传染疾病", val: 3 },
-          { label: "自动退学", val: 4 },
-          { label: "其他疾病", val: 5 },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
       changTitanic: {
         //异动文号：
         checkAll: false,
         choose: [],
-        checkBox: [
-          { label: "【2022】1号", val: 1 },
-          { label: "【2022】2号", val: 2 },
-          { label: "XXXX", val: 3 },
-          { label: "XXXX", val: 4 },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
       datePicker: "",
@@ -397,10 +352,52 @@ export default {
 
   mounted() {
     this.getSpread();
+    this.getCode('dmpyccm') // 培养层次
+    this.getCode('dmxz') // 学 制
+    this.getCode('dmxjztm') // 学籍
+    this.getCode('dmmzm') // 名族
+     this.getCode('dmzzmmm') // 政治面貌
+     this.getCode('dmxjydlbm') // 异动类别
+     this.getCode('dmxjydyym') // 异动原因
     this.handleSearch();
   },
 
   methods: {
+    getCode(data) {
+      this.getCodeInfoByEnglish(data)
+    },
+    getCodeInfoByEnglish(paramsData) {
+      let data = { codeTableEnglish: paramsData}
+      getCodeInfoByEnglish(data).then(res => {
+        switch (paramsData) 
+        { 
+          case 'dmpyccm':
+            this.$set(this.training, 'checkBox', res.data);
+            break;
+          case 'dmxz':
+            this.$set(this.learnHe, 'checkBox', res.data);
+            break;
+          case 'dmxjztm':
+            this.$set(this.studentStatus, 'checkBox', res.data);
+            break;
+          case 'dmmzm':
+            this.$set(this.ethnic, 'checkBox', res.data);
+            break;
+          case 'dmzzmmm':
+            this.$set(this.politica, 'checkBox', res.data);
+            break;
+          case 'dmxjydlbm':
+            this.$set(this.changType, 'checkBox', res.data);
+            break;
+          case 'dmxjydyym':
+            this.$set(this.changWhy, 'checkBox', res.data);
+            break;
+          case '一代文豪':
+            this.$set(this.changWhy, 'checkBox', res.data);
+            break;
+        }
+      }).catch(err=>{})
+    },
     getSpread() {
       getManageRegStuInfoSearchSpread()
         .then((res) => {
@@ -416,18 +413,18 @@ export default {
         XM: this.select == "xm" ? this.searchVal : "",
         SFZJH: this.select == "sfzjh" ? this.searchVal : "",
         YDDH: this.select == "yddh" ? this.searchVal : "",
-        PYCCM: "",
-        XZ: "",
-        XJZT: "",
-        ZZMMM: "",
-        MZM: "",
-        BJM: "",
-        DWH: "",
-        ZYDM: "",
-        YDLBM: "",
-        YDYY: "",
-        SPWH: "",
-        YDRQ: "",
+        PYCCM: this.training.choose,
+        XZ: this.learnHe.choose,
+        XJZT: this.studentStatus.choose,
+        ZZMMM: this.politica.choose,
+        MZM: this.ethnic.choose,
+        BJM: this.moreIform.pread,
+        DWH: this.moreIform.manageReg,
+        ZYDM: this.moreIform.stuInfo, // 专业
+        YDLBM: this.changType.choose,
+        YDYY: this.changWhy.choose,
+        SPWH: this.changTitanic.choose,
+        YDRQ: this.datePicker,
         YDCZRGH: "",
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
@@ -454,7 +451,7 @@ export default {
     handleCheckAllChangeTraining(val) {
       let allCheck = [];
       for (let i in this.training.checkBox) {
-        allCheck.push(this.training.checkBox[i].val);
+        allCheck.push(this.training.checkBox[i].dm);
       }
       this.training.choose = val ? allCheck : [];
       console.log(this.training.choose, "全选");
@@ -472,7 +469,7 @@ export default {
     learnHeAll(val) {
       let allCheck = [];
       for (let i in this.learnHe.checkBox) {
-        allCheck.push(this.learnHe.checkBox[i].val);
+        allCheck.push(this.learnHe.checkBox[i].dm);
       }
       this.learnHe.choose = val ? allCheck : [];
       console.log(this.learnHe.choose, "全选");
@@ -490,7 +487,7 @@ export default {
     studentStatusAll(val) {
       let allCheck = [];
       for (let i in this.studentStatus.checkBox) {
-        allCheck.push(this.studentStatus.checkBox[i].val);
+        allCheck.push(this.studentStatus.checkBox[i].dm);
       }
       this.studentStatus.choose = val ? allCheck : [];
       console.log(this.studentStatus.choose, "全选");
@@ -509,7 +506,7 @@ export default {
     ethnicAll(val) {
       let allCheck = [];
       for (let i in this.ethnic.checkBox) {
-        allCheck.push(this.ethnic.checkBox[i].val);
+        allCheck.push(this.ethnic.checkBox[i].dm);
       }
       this.ethnic.choose = val ? allCheck : [];
       console.log(this.ethnic.choose, "全选");
@@ -527,7 +524,7 @@ export default {
     politicaAll(val) {
       let allCheck = [];
       for (let i in this.politica.checkBox) {
-        allCheck.push(this.politica.checkBox[i].val);
+        allCheck.push(this.politica.checkBox[i].dm);
       }
       this.politica.choose = val ? allCheck : [];
       console.log(this.politica.choose, "全选");
@@ -546,7 +543,7 @@ export default {
     changTypeAll(val) {
       let allCheck = [];
       for (let i in this.changType.checkBox) {
-        allCheck.push(this.changType.checkBox[i].val);
+        allCheck.push(this.changType.checkBox[i].dm);
       }
       this.changType.choose = val ? allCheck : [];
       console.log(this.changType.choose, "全选");
@@ -564,7 +561,7 @@ export default {
     changWhyAll(val) {
       let allCheck = [];
       for (let i in this.changWhy.checkBox) {
-        allCheck.push(this.changWhy.checkBox[i].val);
+        allCheck.push(this.changWhy.checkBox[i].dm);
       }
       this.changWhy.choose = val ? allCheck : [];
       console.log(this.changWhy.choose, "全选");
@@ -582,7 +579,7 @@ export default {
     changTitanicAll(val) {
       let allCheck = [];
       for (let i in this.changTitanic.checkBox) {
-        allCheck.push(this.changTitanic.checkBox[i].val);
+        allCheck.push(this.changTitanic.checkBox[i].dm);
       }
       this.changTitanic.choose = val ? allCheck : [];
       console.log(this.changTitanic.choose, "全选");
@@ -613,7 +610,7 @@ export default {
         this.exportParams.pageNum = 0;
         excelTest(this.exportParams)
           .then((res) => {
-            that.downloadFn(res, "学籍异动学生表.docx", "xlsx");
+            that.downloadFn(res, "学籍异动学生表.xlsx", "xlsx");
           })
           .catch((err) => {});
       }

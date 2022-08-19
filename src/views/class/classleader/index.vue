@@ -105,7 +105,7 @@
             <span
               class="leaderAssign"
               style="color: #005657; margin-left: 5px"
-              @click="leaderAssign(scope.row.bjdm)"
+              @click="leaderAssign(scope.row)"
             >
               班干部任命
             </span>
@@ -237,11 +237,10 @@ export default {
       // this.multiple = !selection.length;
     },
     // 班干部任命
-    leaderAssign(x) {
-      console.log("班干部任命", x);
+    leaderAssign(row) {
       this.$router.push({
         path: "/class/leaderAssign",
-        query: { bjdm: "1004001000" },
+        query: {bjdm:row.bjdm, bjmc: row.bjmc },
       });
     },
   },
@@ -324,6 +323,7 @@ export default {
   color: #1f1f1f;
 }
 #test {
+  height: 100px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;

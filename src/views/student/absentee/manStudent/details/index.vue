@@ -1687,7 +1687,7 @@ export default {
         this.detailInfo.xsXxjlList.splice(index, 1)
       } else if (leg == 'c') {
         this.detailInfo.xsGzjlList.splice(index, 1)
-      }
+      }detailInfo
     },
     // 取消
     handleCencle() {

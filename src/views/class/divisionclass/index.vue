@@ -222,7 +222,7 @@ export default {
       classList(queryParams).then((response) => {
         // 获取班级列表数据
         this.noticeList = response.data.rows; // 根据状态码接收数据
-        //  this.total = response.total;
+         this.total = response.total;
         //  this.loading = false;
       });
     },
@@ -378,6 +378,7 @@ export default {
   border-color: #005657;
 }
 #pagenation {
+  height: 100px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;

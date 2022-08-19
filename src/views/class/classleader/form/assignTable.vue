@@ -42,7 +42,7 @@
           <!-- v-loading="loading" -->
           <el-table
             :data="table_content"
-            @selection-change="handleSelectionChange"
+            @selection-change="handleSelectionChangeBgb"
           >
             <el-table-column type="selection" align="center" />
             <el-table-column
@@ -169,16 +169,24 @@
 
     <!-- 批量撤任对话框：cancelAllocate-->
     <el-dialog title="取消分配" :visible.sync="cancelAllocate" width="50%">
+<<<<<<< Updated upstream
       <el-form :model="form">
         <el-form-item label="撤任理由" prop="cxly">
           <el-select v-model="form.cxly" placeholder="请选择">
             <!-- <el-option label="cxlyOptions.mc" value="cxlyOptions.dm"></el-option> -->
            <el-option v-for="item in cxlyOptions" :key="item.dm" :label="item.mc" :value="item.dm"></el-option>
+=======
+      <el-form :model="formDismission">
+        <el-form-item label="撤任理由" prop="reason">
+          <el-select v-model="formDismission.reason" placeholder="休学">
+            <!-- <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option> -->
+>>>>>>> Stashed changes
           </el-select>
         </el-form-item>
         <el-form-item label="撤任详情" prop="detail">
           <el-input
-            v-model="form.detail"
+            v-model="formDismission.detail"
             autocomplete="off"
             type="textarea"
             :autosize="{ minRows: 2, maxRows: 4 }"
@@ -195,9 +203,12 @@
 
     <!-- 批量撤任——二次确定：checkDouble -->
     <el-dialog title="取消分配" :visible.sync="doubleCheck" width="50%">
-      <span
-        >确认取消【78788(学工号)】【张曼丽】对【计算机硕士22级1班】【计算机硕士22级1班】班干部任命？</span
-      >
+      <template v-for="item in currentRowBgb">
+        <div :key="item.xh">
+          <span>确认取消【{{item.xh}}(学工号)】【{{item.xm}}】对【计算机硕士22级1班】【计算机硕士22级1班】班干部任命？</span>
+        </div>
+      </template>
+
       <span slot="footer" class="dialog-footer">
         <el-button @click="doubleCheck = false">取 消</el-button>
         <!-- distributeClassConfirm(row) -->
@@ -227,7 +238,20 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="班干部职位代码" prop="bgbList">
-              <el-input v-model="form.bgbid"></el-input>
+              <!-- <el-input v-model="form.bgbid"></el-input> -->
+              <el-select 
+                v-model= "form.bgbid" 
+                pllaceholder= "2"
+                clearable
+                >
+                <!-- 班干部职位筛选框 -->
+                <!-- <el-option
+                  v-for="(item, index) in collegeOptions"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                /> -->
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -252,6 +276,8 @@ import "@/assets/fonts/circle/iconfont.css";
 import {getCxly, getQueryBgbList} from "@/api/class/classLeader"
 import {
   getAssignBgb,
+  getBgbdismission,
+  getQueryBgbList,
 } from "@/api/class/classLeader";
 export default {
   name: "assignTable", //班干部任命表格
@@ -260,8 +286,10 @@ export default {
   props: ["table_title", "table_content"],
   data() {
     return {
-      // 当前行数据
+      // 全班同学当前行数据
       currentRow:[],
+      //班干部当前行数据
+      currentRowBgb:[],
       // 当前班级代码
       currentBjdm:"",
       // tab栏切换
@@ -309,6 +337,8 @@ export default {
         },
 
       ],
+      //班干部列表查询
+      getListBgb: [],
       // 班干部列表
       queryBgbList: [],
       // 全班学生列表
@@ -322,8 +352,9 @@ export default {
       // 是否显示批量取消分配班干部弹框
       cancelAllocate: false,
       // 批量取消分配二次确定
-      teacherClass: false,
       doubleCheck: false,
+      teacherClass: false,
+      
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -334,6 +365,11 @@ export default {
       form: {
         bgbid:"",
         rmrgh:""
+      },
+      //批量撤任表单参数
+      formDismission: {
+        reason:"",
+        detail: "",
       },
       // 表单校验
       rules: {
@@ -366,6 +402,15 @@ export default {
         path: "/class/leadRecord",
       });
     },
+    //班干部列表
+    getListBgb(x) {
+      getQueryBgbList(x).then((res) => {
+        console.log(res);
+        let data = res.rows;
+        this.queryBgbList = data;
+        console.log("test:", this.queryBgbList);
+      });
+    },
     // 班干部批量撤任操作
     deleteSome() {
       getCxly().then(res=>{
@@ -382,15 +427,36 @@ export default {
         this.doubleCheck = true;
       }, 500);
     },
-    // 取消分配-二次确认按钮
+    // 批量撤任-二次确认按钮
     doubleCheckConfirm() {
       this.doubleCheck = false;
+      console.log("批量撤任二次确认操作！");
+      let xhList = []
+      let cxlyList = []
+      let cxrgh = "22222222"
+
+      for(let item_row of this.currentRowBgb){
+        xhList.push(item_row.xh)
+        cxlyList.push(this.formDismission.reason)
+      }
+      
+      getBgbdismission({xhList, cxlyList, cxrgh}).then(response=>{
+        console.log(response);
+
+        if(response.errdode = "00"){
+          //刷新班干部表格
+          // this.getListBgb({bjdm:"1004001000"});
+          console.log(1);
+        }
+    
+      })
+
       this.$message({
         message: "批量撤任班干部操作成功",
         type: "success",
       });
     },
-    // 批量任命
+    // 班干部批量任命
     actionAssignBgb(row) {
       console.log("批量任命操作！");
       this.openAssignBgb = true;
@@ -416,13 +482,19 @@ export default {
   
       getAssignBgb({stuList, bgbList, classList, rgh}).then(res=>{
         console.log(res);
+
+        if(response.errdode = "00"){
+          //刷新全班同学表格
+
+        }
+
       })
       
       this.teacherClass = false;
-      this.$message({
-        message: "分配班干部成功",
-        type: "success",
-      });
+      // this.$message({
+      //   message: "分配班干部成功",
+      //   type: "success",
+      // });
     },
     // 辅导员任命
     operate() {
@@ -508,7 +580,7 @@ export default {
       // this.resetForm("queryForm");
       // this.handleQuery();
     },
-    // 多选框选中数据
+    // 全班同学多选框选中数据
     handleSelectionChange(row) {
       // this.ids = selection.map((item) => item.noticeId);
       // this.single = selection.length != 1;
@@ -516,6 +588,12 @@ export default {
       console.log(row);
       // 选中的行数据
       this.currentRow = row
+    },
+    //班干部多选框选中数据
+    handleSelectionChangeBgb(row){
+      console.log(row);
+      this.currentRowBgb = row
+
     },
     /** 新增按钮操作 */
     handleAdd() {

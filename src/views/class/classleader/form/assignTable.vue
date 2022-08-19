@@ -169,19 +169,19 @@
 
     <!-- 批量撤任对话框：cancelAllocate-->
     <el-dialog title="取消分配" :visible.sync="cancelAllocate" width="50%">
-<<<<<<< Updated upstream
+
       <el-form :model="form">
         <el-form-item label="撤任理由" prop="cxly">
           <el-select v-model="form.cxly" placeholder="请选择">
             <!-- <el-option label="cxlyOptions.mc" value="cxlyOptions.dm"></el-option> -->
            <el-option v-for="item in cxlyOptions" :key="item.dm" :label="item.mc" :value="item.dm"></el-option>
-=======
+
       <el-form :model="formDismission">
         <el-form-item label="撤任理由" prop="reason">
           <el-select v-model="formDismission.reason" placeholder="休学">
             <!-- <el-option label="区域一" value="shanghai"></el-option>
             <el-option label="区域二" value="beijing"></el-option> -->
->>>>>>> Stashed changes
+
           </el-select>
         </el-form-item>
         <el-form-item label="撤任详情" prop="detail">
@@ -277,7 +277,6 @@ import {getCxly, getQueryBgbList} from "@/api/class/classLeader"
 import {
   getAssignBgb,
   getBgbdismission,
-  getQueryBgbList,
 } from "@/api/class/classLeader";
 export default {
   name: "assignTable", //班干部任命表格

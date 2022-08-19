@@ -153,7 +153,11 @@ service.interceptors.response.use(res => {
                 // console.log('接口调用失败，执行登出')
                 location.href = 'https://account.ccnu.edu.cn/cas/logout?service=' + location.protocol+'//' + location.host ;
             });
-            }).catch(() => {});
+            }).catch(() => {
+                store.dispatch('LogOut').then(() => {
+                    // location.href = 'https://account.ccnu.edu.cn/cas/login?service=http://10.222.7.139:8081/sws/checkLogin';
+                })
+            });
         }
         return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
     } else if (code === 'EC-000302') { // 

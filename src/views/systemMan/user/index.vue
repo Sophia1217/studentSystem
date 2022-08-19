@@ -222,12 +222,25 @@ export default {
     },
     // 查询
     handleSearch() {
-      let data = {
-        userId: "2005690002", // 用户Id
-        roleId: "01", //当前人
+
+      var data = {
+        // userId: "2005690002", // 用户Id
+        userId:this.$store.getters.userId, // 用户Id
+        // roleId: "01", //当前人
+        roleId: this.$store.getters.roleId, //当前人
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
       };
+        if (this.select == 1) { // 学号
+            data.gh = this.searchVal
+        }else if (this.select == 2) { // 姓名
+            data.xm = this.searchVal
+        } else if (this.select == 3){ // 身份证号
+            data.sfzjh = this.searchVal
+        }else if (this.select == 4){ // 手机号
+            data.yddh = this.searchVal
+        }
+
       queryUserPageList(data)
         .then((res) => {
           this.tableData = res.rows;

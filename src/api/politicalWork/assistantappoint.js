@@ -34,3 +34,12 @@ export function lookDetail(data) {
     data: data
   })
 }
+//导出
+
+export function outAssistant(data) {
+  return request({
+    url: '/assistant/excelTest',
+    method: 'post',
+    data: data
+  })
+}

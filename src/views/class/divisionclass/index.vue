@@ -9,51 +9,39 @@
       label-width="68px"
       class="table-header"
     >
-      <el-form-item label="培养单位" prop="noticeType" class="header-item">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="计算机学院"
-          clearable
-        >
-          <!-- <el-option
-            v-for="dict in dict.type.sys_notice_type"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          /> -->
+      <el-form-item label="培养单位" prop="ssdwdm" class="header-item">
+        <el-select v-model="queryParams.ssdwdm" placeholder="未选择" clearable>
+          <el-option
+            v-for="(item, index) in collegeOptions"
+            :key="index"
+            :label="item.mc"
+            :value="item.dm"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="培养层次" prop="noticeType" class="header-item">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="本科"
-          clearable
-        >
-          <!-- <el-option
-            v-for="dict in dict.type.sys_notice_type"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          /> -->
+      <el-form-item label="培养层次" prop="pycc" class="header-item">
+        <el-select v-model="queryParams.pycc" placeholder="未选择" clearable>
+          <el-option
+            v-for="(item, index) in levelOptions"
+            :key="index"
+            :label="item.mc"
+            :value="item.dm"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="年级" prop="noticeType" class="header-item">
-        <el-select
-          v-model="queryParams.noticeType"
-          placeholder="2022"
-          clearable
-        >
-          <!-- <el-option
-            v-for="dict in dict.type.sys_notice_type"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          /> -->
+      <el-form-item label="年级" prop="ssnj" class="header-item">
+        <el-select v-model="queryParams.ssnj" placeholder="未选择" clearable>
+          <el-option
+            v-for="(item, index) in gradeOptions"
+            :key="index"
+            :label="item"
+            :value="item"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="班级编号" prop="noticeTitle" class="header-item">
+      <el-form-item label="班级编号" prop="bjdm" class="header-item">
         <el-input
-          v-model="queryParams.noticeTitle"
+          v-model="queryParams.bjdm"
           placeholder="请输入班级编号"
           clearable
           @keyup.enter.native="handleQuery"
@@ -81,7 +69,7 @@
         <span class="iconfont">&#xe631;</span>
       </div>
       <!-- v-loading="loading" -->
-      <el-table :data="noticeList" @selection-change="handleSelectionChange">
+      <el-table :data="noticeList">
         <el-table-column label="序号" align="center" type="index" />
         <el-table-column label="班级编号" align="center" prop="bjdm" sortable />
         <el-table-column
@@ -100,7 +88,8 @@
             />
           </template>
         </el-table-column>
-        <el-table-column label="培养单位" align="center" prop="pycc" sortable />
+        <el-table-column label="培养单位" align="center" prop="ssdwmc" sortable>
+        </el-table-column>
         <el-table-column label="培养层次" align="center" prop="pycc" sortable />
         <el-table-column label="年级" align="center" prop="ssnj" sortable />
         <el-table-column
@@ -128,9 +117,8 @@
           sortable
           class-name="small-padding fixed-width"
         >
-          <template>
-            <!-- slot-scope="scope" -->
-            <div @click="operate" class="operate">
+          <template slot-scope="scope">
+            <div @click="operate(scope.row)" class="operate">
               <span class="operateSpan">分班管理</span>
             </div>
           </template>
@@ -156,12 +144,9 @@ import "@/assets/fonts/refresh/iconfont.css";
 
 import {
   classList,
-  modifyClassName,
   getCollege,
   getLevel,
   getGrade,
-  addClass,
-  deleteEmptyClass,
 } from "@/api/class/maintenanceClass"; // 引入班级列表查询、修改班级名称接口
 import { getQueryStuList } from "@/api/class/divisionClass";
 export default {
@@ -183,6 +168,10 @@ export default {
       total: 100,
       // 表格数据
       noticeList: [],
+      // 筛选框数据
+      collegeOptions: [],
+      levelOptions: [],
+      gradeOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -191,10 +180,10 @@ export default {
       queryParams: {
         pageNum: 1, // 默认请求第一页数据
         pageSize: 10, // 默认一页10条数据
-        college: "", // 培养单位
-        level: "", // 培养层次
-        grade: "", // 年级
-        classId: "", // 班级编号
+        ssdwdm: "", // 培养单位
+        pycc: "", // 培养层次
+        ssnj: "", // 年级
+        bjdm: "", // 班级编号
       },
       // 表单参数
       form: {},
@@ -209,20 +198,17 @@ export default {
       },
     };
   },
-  created() {
-    // this.getList();
-  },
   mounted() {
-    this.getList();
+    this.getList(this.queryParams);
     this.getOptions();
   },
   methods: {
-    getList(queryParams = {}) {
+    getList(queryParams) {
       // this.loading = true;
       classList(queryParams).then((response) => {
         // 获取班级列表数据
         this.noticeList = response.data.rows; // 根据状态码接收数据
-         this.total = response.total;
+        this.total = response.data.total;
         //  this.loading = false;
       });
     },
@@ -234,101 +220,36 @@ export default {
       });
       getLevel().then((response) => {
         // 获取培养层次列表数据
-        this.levelOptions = response.rows;
+        this.levelOptions = response.data.rows;
       });
       getGrade().then((response) => {
         // 获取年级列表数据
-        this.gradeOptions = response.rows;
+        this.gradeOptions = response.data.rows;
       });
+    },
+    // 查询按钮
+    handleQuery() {
+      this.getList(this.queryParams);
+    },
+    // /** 重置按钮操作 */
+    resetQuery() {
+      this.queryParams = {};
+      this.handleQuery();
     },
     // 分班管理
-    operate() {
-      console.log(123);
+    operate(row) {
       this.$router.push({
         path: "/class/operateClass",
+        query: {
+          bjmc: row.bjmc,
+          bjdm: row.bjdm,
+          pydw: this.queryParams.ssdwdm || row.ssdw, // 培养单位代码
+          pydwmc: row.ssdwmc, // 培养单位名称
+          pyccName: this.queryParams.pycc || row.pyccName, // 培养层次名字
+          pycc: row.pycc, // 培养层次码
+          ssnj: this.queryParams.ssnj || row.ssnj, // 年级
+        },
       });
-    },
-    // 取消按钮
-    cancel() {
-      // this.open = false;
-      // this.reset();
-    },
-    // 表单重置
-    reset() {
-      // this.form = {
-      //   noticeId: undefined,
-      //   noticeTitle: undefined,
-      //   noticeType: undefined,
-      //   noticeContent: undefined,
-      //   status: "0",
-      // };
-      // this.resetForm("form");
-    },
-    /** 搜索按钮操作 */
-    handleQuery() {
-      // this.queryParams.pageNum = 1;
-      // this.getList();
-    },
-    /** 重置按钮操作 */
-    resetQuery() {
-      // this.resetForm("queryForm");
-      // this.handleQuery();
-    },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      // this.ids = selection.map((item) => item.noticeId);
-      // this.single = selection.length != 1;
-      // this.multiple = !selection.length;
-    },
-    /** 新增按钮操作 */
-    handleAdd() {
-      // this.reset();
-      // this.open = true;
-      // this.title = "添加公告";
-    },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      // this.reset();
-      // const noticeId = row.noticeId || this.ids;
-      // getNotice(noticeId).then((response) => {
-      //   this.form = response.data;
-      //   this.open = true;
-      //   this.title = "修改公告";
-      // });
-    },
-    /** 提交按钮 */
-    submitForm: function () {
-      // this.$refs["form"].validate((valid) => {
-      //   if (valid) {
-      //     if (this.form.noticeId != undefined) {
-      //       updateNotice(this.form).then((response) => {
-      //         this.$modal.msgSuccess("修改成功");
-      //         this.open = false;
-      //         this.getList();
-      //       });
-      //     } else {
-      //       addNotice(this.form).then((response) => {
-      //         this.$modal.msgSuccess("新增成功");
-      //         this.open = false;
-      //         this.getList();
-      //       });
-      //     }
-      //   }
-      // });
-    },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      // const noticeIds = row.noticeId || this.ids;
-      // this.$modal
-      //   .confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项？')
-      //   .then(function () {
-      //     return delNotice(noticeIds);
-      //   })
-      //   .then(() => {
-      //     this.getList();
-      //     this.$modal.msgSuccess("删除成功");
-      //   })
-      //   .catch(() => {});
     },
   },
 };
@@ -336,7 +257,6 @@ export default {
 <style>
 .division-class {
   background-color: #f0f0f0;
-  height: 100vh;
   margin-top: 10px;
 }
 

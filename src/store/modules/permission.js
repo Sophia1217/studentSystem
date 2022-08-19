@@ -5,6 +5,7 @@ import { getRouters } from '@/api/menu'
 import Layout from '@/layout/index'
 import ParentView from '@/components/ParentView'
 import InnerLink from '@/layout/components/InnerLink'
+import { getToken, setToken, removeToken} from '@/utils/auth'
 
 const cacheRoutes= {
     addRoutes : []
@@ -44,9 +45,10 @@ const permission = {
         }
         getRouters(params).then(res => {
             // console.log('获取用户菜单列表返回数据',res)
-            
-            const sdata = JSON.parse(JSON.stringify(res.data))
-            const rdata = JSON.parse(JSON.stringify(res.data))
+            var token = res.accessToken || ''
+            setToken(token)
+            const sdata = JSON.parse(JSON.stringify(res.menuRows))
+            const rdata = JSON.parse(JSON.stringify(res.menuRows))
             const sidebarRoutes = filterAsyncRouter(sdata)
             const rewriteRoutes = filterAsyncRouter(rdata, false, true)
             rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true })

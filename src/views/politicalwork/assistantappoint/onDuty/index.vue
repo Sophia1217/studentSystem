@@ -37,7 +37,7 @@
       <!-- 更多选择 -->
       <div v-if="isMore" class="moreSelect">
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">工作单位：</el-col>
+          <!-- <el-col :span="3">工作单位：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -46,6 +46,21 @@
                 @checkedTraining="handleCheckedWorkPlaceChange"
               />
             </div>
+          </el-col> -->
+          <el-col :span="8">
+            <span>学 院：</span>
+            <el-select
+              v-model="moreIform.manageReg"
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="(item, index) in manageRegOps"
+                :key="index"
+                :label="item.dwmc"
+                :value="item.dwmc"
+              ></el-option>
+            </el-select>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
@@ -246,6 +261,7 @@ import {
   resetUserPwd,
   changeUserStatus,
 } from "@/api/system/user";
+import { getManageRegStuInfoSearchSpread } from "@/api/student/index";
 import { getToken } from "@/utils/auth";
 import CheckboxCom from "../../../components/checkboxCom";
 import {
@@ -358,6 +374,7 @@ export default {
       basicInfoList: [],
       tableData: [],
       multipleSelection: [],
+      manageRegOps: ["jsjxy", "hxxxy"], //工作单位列表
       showExport: false,
       queryParams: {
         pageNum: 1,
@@ -371,7 +388,18 @@ export default {
   mounted() {
     this.getList(this.queryParams);
   },
+  activated() {
+    this.getSpread();
+  },
   methods: {
+    getSpread() {
+      getManageRegStuInfoSearchSpread()
+        .then((res) => {
+          console.log(res);
+          this.manageRegOps = res.data.dwhbj;
+        })
+        .catch((err) => {});
+    },
     //批量免去对话框关闭
     dialogCancel() {
       this.showRemove = false;

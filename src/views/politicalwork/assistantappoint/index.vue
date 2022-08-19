@@ -37,7 +37,7 @@
       <!-- 更多选择 -->
       <div v-if="isMore" class="moreSelect">
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">工作单位：</el-col>
+          <!-- <el-col :span="3">工作单位：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -46,6 +46,17 @@
                 @checkedTraining="handleCheckedWorkPlaceChange"
               />
             </div>
+          </el-col> -->
+          <el-col :span="20">
+            <span>工作单位：</span>
+            <el-select v-model="workPlace" placeholder="请选择" size="small">
+              <el-option
+                v-for="(item, index) in manageRegOps"
+                :key="index"
+                :label="item.name"
+                :value="item.code"
+              ></el-option>
+            </el-select>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
@@ -269,6 +280,7 @@ import {
   lookDetail,
   outAssistant,
 } from "@/api/politicalWork/assistantappoint";
+import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
   name: "BasicInfo",
   components: { CheckboxCom },
@@ -310,14 +322,24 @@ export default {
       searchVal: "",
       select: "",
       isMore: false,
-
+      manageRegOps: [
+        {
+          name: "jsjxy",
+          code: "1111",
+        },
+        {
+          name: "2222",
+          code: "1111",
+        },
+        
+      ],
       category: {
         // 类别
         checkAll: false,
         choose: [],
         checkBox: [
-          { label: "兼职", val: 1 },
-          { label: "专职", val: 0 },
+          { mc: "兼职", dm: 1 },
+          { mc: "专职", dm: 0 },
         ],
         isIndeterminate: true,
       },
@@ -336,17 +358,16 @@ export default {
         checkAll: false,
         choose: [],
         checkBox: [
-          { label: "社会学院", val: "社会学院" },
-          { label: "设计学院", val: "设计学院" },
-          { label: "文学院", val: "文学院" },
-          { label: "理学院", val: "理学院" },
-          { label: "工业设计", val: "工业设计" },
-          { label: "通信工程", val: "通信工程" },
-          { label: "电子信息", val: "电子信息" },
-          { label: "建筑工程", val: "建筑工程" },
-          { label: "统计学", val: "统计学" },
+          { mc: "社会学院", dm: "社会学院" },
+          { mc: "设计学院", dm: "设计学院" },
+          { mc: "文学院", dm: "文学院" },
+          { mc: "理学院", dm: "理学院" },
+          { mc: "工业设计", dm: "工业设计" },
+          { mc: "通信工程", dm: "通信工程" },
+          { mc: "电子信息", dm: "电子信息" },
+          { mc: "建筑工程", dm: "建筑工程" },
+          { mc: "统计学", dm: "统计学" },
         ],
-
         isIndeterminate: true,
       },
       status: {
@@ -354,8 +375,8 @@ export default {
         checkAll: false,
         choose: [],
         checkBox: [
-          { label: "是", val: 0 },
-          { label: "否", val: 1 },
+          { mc: "是", dm: 0 },
+          { mc: "否", dm: 1 },
         ],
         isIndeterminate: true,
       },
@@ -385,8 +406,25 @@ export default {
   created() {},
   mounted() {
     this.getList(this.queryParams);
+    this.getCode("dmxbm");
   },
+
   methods: {
+    getCode(data) {
+      this.getCodeInfoByEnglish(data);
+    },
+    getCodeInfoByEnglish(paramsData) {
+      let data = { codeTableEnglish: paramsData };
+      getCodeInfoByEnglish(data)
+        .then((res) => {
+          switch (paramsData) {
+            case "dmxbm":
+              this.$set(this.sex, "checkBox", res.data);
+              break;
+          }
+        })
+        .catch((err) => {});
+    },
     //批量免去对话框关闭
     dialogCancel() {
       this.showRemove = false;
@@ -676,10 +714,12 @@ export default {
         name = "";
         gonghao = "";
       }
+      let gzdw = [];
+      gzdw.push(this.workPlace);
       let queryParams = {
         pageNum: 1,
         pageSize: 10,
-        dwmcList: this.workPlace.choose,
+        dwmcList: gzdw,
         lbList: this.category.choose,
         genderList: this.sex.choose,
         sfdbList: this.status.choose,

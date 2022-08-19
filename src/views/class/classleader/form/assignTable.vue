@@ -149,32 +149,14 @@
         </div>
       </div>
     </div>
-    <!-- 分配班干部操作：teacherClass-->
-    <!-- :before-close="handleClose" -->
-    <el-dialog title="分配班干部" :visible.sync="teacherClass" width="30%">
-      <span
-        >确认将【78788(学工号)】【张曼丽】任命为【22电子信息1班】班主任？</span
-      >
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="teacherClass = false">取 消</el-button>
-        <!-- distributeClassConfirm(row) -->
-        <el-button
-          type="primary"
-          @click="distributeClassConfirm(row)"
-          class="confirm"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
 
     <!-- 批量撤任对话框：cancelAllocate-->
     <el-dialog title="取消分配" :visible.sync="cancelAllocate" width="50%">
 
-      <el-form :model="form">
+      <!-- <el-form :model="form">
         <el-form-item label="撤任理由" prop="cxly">
           <el-select v-model="form.cxly" placeholder="请选择">
-            <!-- <el-option label="cxlyOptions.mc" value="cxlyOptions.dm"></el-option> -->
-           <el-option v-for="item in cxlyOptions" :key="item.dm" :label="item.mc" :value="item.dm"></el-option>
+           <el-option v-for="item in cxlyOptions" :key="item.dm" :label="item.mc" :value="item.dm"></el-option> -->
 
       <el-form :model="formDismission">
         <el-form-item label="撤任理由" prop="reason">
@@ -202,7 +184,7 @@
     </el-dialog>
 
     <!-- 批量撤任——二次确定：checkDouble -->
-    <el-dialog title="取消分配" :visible.sync="doubleCheck" width="50%">
+    <el-dialog title="取消分配确定" :visible.sync="doubleCheck" width="50%">
       <template v-for="item in currentRowBgb">
         <div :key="item.xh">
           <span>确认取消【{{item.xh}}(学工号)】【{{item.xm}}】对【计算机硕士22级1班】【计算机硕士22级1班】班干部任命？</span>
@@ -241,7 +223,7 @@
               <!-- <el-input v-model="form.bgbid"></el-input> -->
               <el-select 
                 v-model= "form.bgbid" 
-                pllaceholder= "2"
+                pllaceholder= "学习委员"
                 clearable
                 >
                 <!-- 班干部职位筛选框 -->
@@ -267,6 +249,22 @@
           >确定</el-button
         >
       </div>
+    </el-dialog>
+    <!-- 批量任命二次确定：doubleCheckAssign-->
+    <el-dialog title="批量任命班干部确认" :visible.sync="doubleAssign" width="30%">
+      <span
+        >确认将【78788(学工号)】【张曼丽】任命为【22电子信息1班】班主任？</span
+      >
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="doubleAssign = false">取 消</el-button>
+        <!-- distributeClassConfirm(row) -->
+        <el-button
+          type="primary"
+          @click="doubleAssignConfirm(row)"
+          class="confirm"
+          >确 定</el-button
+        >
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -337,7 +335,7 @@ export default {
 
       ],
       //班干部列表查询
-      getListBgb: [],
+      // getListBgb: [],
       // 班干部列表
       queryBgbList: [],
       // 全班学生列表
@@ -352,7 +350,8 @@ export default {
       cancelAllocate: false,
       // 批量取消分配二次确定
       doubleCheck: false,
-      teacherClass: false,
+      //批量任命二次确定
+      doubleAssign: false,
       
       // 查询参数
       queryParams: {
@@ -388,28 +387,28 @@ export default {
     console.log("班干部列表挂在");
   },
   methods: {
-    // // 班干部查询列表
-    // getList(x){
-    //   console.log("getList1!");
-    //   getQueryBgbList(x).then(res=>{
-    //     console.log("该班班干部查询结果：",res);
-    //   })
-    // },
+    // 班干部查询列表
+    getList(x){
+      console.log("getList1!");
+      getQueryBgbList(x).then(res=>{
+        console.log("该班班干部查询结果：",res);
+      })
+    },
     // 班干部任职记录
     studentRecord1() {
       this.$router.push({
         path: "/class/leadRecord",
       });
     },
-    //班干部列表
-    getListBgb(x) {
-      getQueryBgbList(x).then((res) => {
-        console.log(res);
-        let data = res.rows;
-        this.queryBgbList = data;
-        console.log("test:", this.queryBgbList);
-      });
-    },
+    // //班干部列表刷新
+    // getListBgb(x) {
+    //   getQueryBgbList(x).then((res) => {
+    //     console.log(res);
+    //     let data = res.rows;
+    //     this.queryBgbList = data;
+    //     console.log("test:", this.queryBgbList);
+    //   });
+    // },
     // 班干部批量撤任操作
     deleteSome() {
       getCxly().then(res=>{
@@ -461,9 +460,17 @@ export default {
       this.openAssignBgb = true;
       this.title = "批量任命班干部";
     },
-    // 批量任命班干部-确认操作
+    // 班干部批量任命-确定操作
     assignBgbConfirm() {
-      console.log("批量任命确认操作");
+      this.openAssignBgb = false;
+      setTimeout(() => {
+        this.doubleAssign = true;
+      }, 500);
+    },
+    //班干部批量任命————二次确定操作
+    doubleAssignConfirm(){
+      console.log("批量任命二次确认操作！");
+
       this.currentBjdm = this.$route.query.bjdm
       // console.log("currentRow:",this.currentRow);
       // console.log(this.form);
@@ -484,12 +491,11 @@ export default {
 
         if(response.errdode = "00"){
           //刷新全班同学表格
+          console.log(1);
 
         }
-
       })
-      
-      this.teacherClass = false;
+      this.doubleAssign = false;
       // this.$message({
       //   message: "分配班干部成功",
       //   type: "success",

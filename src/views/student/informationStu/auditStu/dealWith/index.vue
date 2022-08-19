@@ -441,7 +441,24 @@ export default {
     handleConfirm() {
       this.showExport = false;
     },
-    hadleDetail(row) {},
+    hadleDetail(row) {
+       let schooling = '' // 3 4 5 是本科
+      if (row.pyccm == 1 || row.pyccm == 2) { // 1 2 是研究生
+        schooling = 2
+      } else {
+        schooling = 1
+      }
+      // console.log(row);
+      this.$router.push({
+        path: "/student/informationStu/auditSteps",
+        query: {
+          xh: row.userId,
+          schooling: schooling,
+          id: row.id,
+          approveState:row.approveState
+        }
+      })
+    },
   },
 };
 </script>

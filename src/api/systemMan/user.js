@@ -54,3 +54,12 @@ export function updateDataAuth(data) {
     data: data
   })
 }
+
+// 删除用户角色
+export function deleteRole(data) {
+    return request({
+      url: '/manager/user/deleteUserRole',
+      method: 'post',
+      data: data
+    })
+  }

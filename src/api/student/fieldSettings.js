@@ -25,3 +25,12 @@ export function stuInfoModifyParamService(data) {
     data: data
   })
 }
+
+// 学生信息修改参数
+export function getCodeInfoByEnglish(data) {
+  return request({
+    url: '/codeTable/getCodeInfoByEnglish',
+    method: 'post',
+    data: data
+  })
+}

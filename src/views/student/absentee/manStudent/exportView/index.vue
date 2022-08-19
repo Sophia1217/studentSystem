@@ -41,6 +41,10 @@ export default {
     multipleSelection: {
       type: Array,
       default:()=>[]
+    },
+    tag: {
+      type: String | Number,
+      default:''
     }
   },
 
@@ -79,14 +83,16 @@ export default {
       let data = {
         hxList: hxList,
         columnInfoList: columnInfoList,
-        esportStyle:'EXCEL'
+        exportStyle:'EXCEL'
       }
-      // exportStu(data).then(res => {
-      //   console.log(res)
-      // })
-      this.download('/regStuInfo/export', {
-        ...data
-      },'导出.xlsx')
+      exportStu(data).then(res => {
+        if (this.tag == 1) {
+          this.downloadFn(res, "在籍学生信息导出", "xlsx");
+        } else {
+          this.downloadFn(res, "毕业学生信息导出", "xlsx");
+        }
+        
+      })
     }
   },
 };

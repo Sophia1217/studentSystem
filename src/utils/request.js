@@ -86,6 +86,7 @@ service.interceptors.request.use(config => {
 
 // 响应拦截器
 service.interceptors.response.use(res => {
+  endLoading()
   // 未设置状态码则默认成功状态
   const code = res.data.errcode || '00';
   // 获取错误信息
@@ -94,7 +95,7 @@ service.interceptors.response.use(res => {
   if (res.request.responseType === 'blob' || res.request.responseType === 'arraybuffer') {
     return res.data
   }
-  endLoading()
+  
 //   if (code === 401) {
 //     if (!isRelogin.show) {
 //       isRelogin.show = true;
@@ -153,7 +154,11 @@ service.interceptors.response.use(res => {
                 // console.log('接口调用失败，执行登出')
                 location.href = 'https://account.ccnu.edu.cn/cas/logout?service=' + location.protocol+'//' + location.host ;
             });
-            }).catch(() => {});
+            }).catch(() => {
+                store.dispatch('LogOut').then(() => {
+                    // location.href = 'https://account.ccnu.edu.cn/cas/login?service=http://10.222.7.139:8081/sws/checkLogin';
+                })
+            });
         }
         return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
     } else if (code === 'EC-000302') { // 
@@ -184,8 +189,8 @@ service.interceptors.response.use(res => {
 },
   error => {
     endLoading()
-    console.log('err' + error)
-    console.log("错误代码:",error.code)
+    // console.log('err' + error)
+    // console.log("错误代码:",error.code)
 
     let { message ,code} = error;
     if (code == 302) {

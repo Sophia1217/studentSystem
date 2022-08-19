@@ -45,7 +45,14 @@ export function getDeleteBgbRm(query) {
         data: query
     })
 }
-
+//班干部批量撤任
+export function getBgbdismission(query){
+    return request({
+        url: '/class/Bgbdismission',
+        method: 'post',
+        data: query
+    })
+}
 
 // 请求班干部职位代码对应名称筛选
 export function getZwdm(query) {

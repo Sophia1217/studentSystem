@@ -89,7 +89,7 @@
                 <div class="wrap">
                   <div class="title">性别</div>
                   <div class="content" v-if="isEdit == 1">
-                    {{ detailInfoData.zgZgjbxxes.xbm ? "男" : "女" }}
+                    {{ detailInfoData.zgZgjbxxes.xbm == "0" ? "男" : "女" }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
@@ -990,7 +990,7 @@
           </div>
         </div>
 
-        <div id="tag_4" class="headline">
+        <div id="tag_3" class="headline">
           <div>专业技术职务</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(2)">
             <i class="addIcon" /> 添加
@@ -1075,7 +1075,7 @@
           </el-table>
         </div>
 
-        <div id="tag_5" class="headline">
+        <div id="tag_4" class="headline">
           <div>学习培训</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(3)">
             <i class="addIcon" /> 添加
@@ -1152,7 +1152,7 @@
           </el-table>
         </div>
 
-        <div id="tag_6" class="headline">
+        <div id="tag_5" class="headline">
           <div>年度考核</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(4)">
             <i class="addIcon" /> 添加
@@ -1196,7 +1196,7 @@
             </el-table-column>
           </el-table>
         </div>
-        <div id="tag_7" class="headline">
+        <div id="tag_6" class="headline">
           <div>奖励表彰信息</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(5)">
             <i class="addIcon" /> 添加
@@ -1281,7 +1281,7 @@
           </el-table>
         </div>
         <!-- TODO：批准部门字段缺失 -->
-        <div id="tag_8" class="headline">
+        <div id="tag_7" class="headline">
           <div>政工科研情况（项目）</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(6)">
             <i class="addIcon" /> 添加
@@ -1366,7 +1366,7 @@
           </el-table>
         </div>
 
-        <div id="tag_9" class="headline">
+        <div id="tag_8" class="headline">
           <div>政工科研情况（论文）</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(7)">
             <i class="addIcon" /> 添加
@@ -1435,7 +1435,7 @@
           </el-table>
         </div>
 
-        <div id="tag_10" class="headline">
+        <div id="tag_9" class="headline">
           <div>政工科研情况（著作）</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(8)">
             <i class="addIcon" /> 添加
@@ -1512,7 +1512,7 @@
           </el-table>
         </div>
 
-        <div id="tag_11" class="headline">
+        <div id="tag_10" class="headline">
           <div>政工科研情况（教学情况）</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(9)">
             <i class="addIcon" /> 添加

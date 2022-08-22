@@ -26,6 +26,7 @@
             v-model="rowId.codeKey"
             size="small"
             placeholder="请输入字典类型"
+            :disabled="true"
           ></el-input>
         </el-form-item>
         <el-form-item label="字典状态" prop="state">

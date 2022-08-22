@@ -126,12 +126,12 @@
       </el-table>
 
       <pagination
-        id="pagenation"
         v-show="total > 0"
         :total="total"
         :page.sync="queryParams.pageNum"
         :limit.sync="queryParams.pageSize"
         @pagination="getList"
+        :page-sizes="[10, 20, 30, 40, 50, 100]"
       />
     </div>
   </div>
@@ -199,13 +199,13 @@ export default {
     };
   },
   mounted() {
-    this.getList(this.queryParams);
+    this.getList();
     this.getOptions();
   },
   methods: {
-    getList(queryParams) {
-      // this.loading = true;
-      classList(queryParams).then((response) => {
+    getList() {
+      var data = this.queryParams;
+      classList(data).then((response) => {
         // 获取班级列表数据
         this.noticeList = response.data.rows; // 根据状态码接收数据
         this.total = response.data.total;

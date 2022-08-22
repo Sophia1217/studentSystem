@@ -125,7 +125,10 @@
   </div>
 </template>
 <script>
-import { getPoliticalWorkList } from "@/api/politicalWork/basicInfo";
+import {
+  getPoliticalWorkList,
+  getCodeInfoByEnglish,
+} from "@/api/politicalWork/basicInfo";
 import CheckboxCom from "../../components/checkboxCom";
 
 export default {
@@ -152,16 +155,43 @@ export default {
     };
   },
   mounted() {
+    this.getCode("dmxbm"); // 性别
+    this.getCode("dmmzm"); // 民 族
+    this.getCode("dmzzmmm"); // 政治面貌
+    // this.getCode("dmdwmc"); // 工作单位  上面三个字段是用码表给的返回值，工作单位是用的公共的调学院的接口
+    // this.getCode("dmgw"); //角色列表  岗位去调用查询角色列表的接口
     this.handleSearch();
   },
   methods: {
+    getCode(data) {
+      this.getCodeInfoByEnglish(data);
+    },
+    getCodeInfoByEnglish(paramsData) {
+      let data = { codeTableEnglish: paramsData };
+      getCodeInfoByEnglish(data)
+        .then((res) => {
+          console.log("res", res);
+          switch (paramsData) {
+            case "dmmzm":
+              this.$set(this.ethnic, "checkBox", res.data);
+              break;
+            case "dmzzmmm":
+              this.$set(this.politica, "checkBox", res.data);
+              break;
+            // case "dmxbm":
+            //   this.$set(this.changType, "checkBox", res.data);
+            //   break;
+          }
+        })
+        .catch((err) => {});
+    },
     // 查询
     handleSearch() {
       let data = {
         xm: this.select == "xm" ? this.searchVal : "",
-        gh: this.select == "xh" ? this.searchVal : "",
-        sfzjh: this.select == "xh" ? this.searchVal : "",
-        yddh: this.select == "xh" ? this.searchVal : "",
+        gh: this.select == "gh" ? this.searchVal : "",
+        sfzjh: this.select == "sfzjh" ? this.searchVal : "",
+        yddh: this.select == "yddh" ? this.searchVal : "",
         jg: this.queryParams.jg,
         byyx: this.queryParams.byyx,
         zybj: this.queryParams.zybj,

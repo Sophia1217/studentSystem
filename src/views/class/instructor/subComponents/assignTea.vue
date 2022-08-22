@@ -156,7 +156,7 @@
         append-to-body
       >
         <span class="assignTips"
-          >确认将【学工号】【张曼莉】任命为【22电子信息1班】辅导员</span
+          >确认将【{{this.fdyList}}】【{{this.xm}}】任命为【{{this.$route.query.bjmc}}】辅导员</span
         >
         <div slot="footer" class="dialog-footer">
           <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
@@ -215,7 +215,7 @@
         append-to-body
       >
         <span class="cancelTips"
-          >确认将取消【学工号】【张曼莉】【22电子信息1班】辅导员任命？</span
+          >确认将取消【{{this.fdyList}}】【{{this.xm}}】【{{this.$route.query.bjmc}}】辅导员任命？</span
         >
 
         <div slot="footer" classt="dialog-footer">
@@ -360,12 +360,14 @@ export default {
       this.bjdm = this.$route.query.bjdm;
       this.fdyList.push(row.gh);
       this.rmrgh = "2005690002";
+      this.xm = row.xm;
+      console.log(this.bjdm);
       this.rmsj = "2020-09-09 00:00:00";
     },
     // 分配班级tips点击“确定”按钮
     submitTips() {
       console.log("分配班级确认！");
-      getAssignFdy({ cxrGh:this.cxrGh, bjdm:this.bjdm, FdyList:this.FdyList, crly:this.crly, cxsj:this.cxsj }).then((res) => {
+      getAssignFdy({ bjdm:this.bjdm, fdyList:this.fdyList, rmrgh:this.rmrgh, rmsj:this.rmsj }).then((res) => {
         console.log(res);
       });
       this.$message({
@@ -381,18 +383,18 @@ export default {
       this.openSecondCancelAssign = false;
     },
 
-    // 撤销辅导员第一个对话框
-    // 撤销辅导员
+    // 取消分配辅导员
     allocateNone(row) {
-      // this.openCancelAssignClass = true;
-      this.title = "分配班级";
-      console.log("分配班级信息：", row);
+      this.openCancelAssignClass = true;
+      this.title = "取消分配";
+      console.log("取消分配信息：", row);
       this.bjdm = this.$route.query.bjdm;
       this.fdyList.push(row.gh);
-      this.rmrgh = "2005690002";
-      this.rmsj = "2020-09-09 00:00:00";
+      this.xm = row.xm;
+      this.cxrGh = "2005690002";
+      this.cxsj = "2020-09-09 00:00:00";
     },
-    // 第二个对话框
+    // 第一个对话框
     // 取消分配tips
     cancelAssignClass() {
       this.openCancelAssignClass = true;
@@ -402,13 +404,15 @@ export default {
       this.openCancelAssignClass = false;
       this.openSecondCancelAssign = true;
     },
-    // 第三个对话框,撤销二次确认
+    // 第二个对话框,撤销二次确认操作
     submitOut2() {
       this.openSecondCancelAssign = false;
-      this.title = "取消分配";
+      this.title = "取消分配确认";
 
       console.log("取消分配二次确认！");
-      getRemoveAssignFdy({ bjdm:this.bjdm, fdyList:this.fdyList, rmrgh:this.rmrgh, rmsj:this.rmsj }).then((res) => {
+      let crly = []
+      crly.push(this.form.noticeTitle)
+      getRemoveAssignFdy({cxrGh:this.cxrGh, bjdm:this.bjdm, FdyList:this.FdyList, crly:this.crly, cxsj:this.cxsj}).then((res) => {
         console.log(res);
       });
 

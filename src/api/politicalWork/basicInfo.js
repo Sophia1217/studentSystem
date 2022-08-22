@@ -53,3 +53,12 @@ export function updateStuColumns(data) {
     data: data
   })
 }
+
+// 码表
+export function getCodeInfoByEnglish(data) {
+  return request({
+    url: '/codeTable/getCodeInfoByEnglish',
+    method: 'post',
+    data: data
+  })
+}

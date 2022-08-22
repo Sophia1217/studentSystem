@@ -40,6 +40,15 @@ export function outAssistant(data) {
   return request({
     url: '/assistant/excelTest',
     method: 'post',
+    responseType: 'blob',
+    data: data
+  })
+}
+
+export function getGzdw(data) {
+  return request({
+    url: '/assistant/getdwmc',
+    method: 'post',
     data: data
   })
 }

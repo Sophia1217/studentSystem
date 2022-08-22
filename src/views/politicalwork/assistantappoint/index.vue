@@ -37,24 +37,14 @@
       <!-- 更多选择 -->
       <div v-if="isMore" class="moreSelect">
         <el-row :gutter="20" class="mt15">
-          <!-- <el-col :span="3">工作单位：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :obj-prop="workPlace"
-                @training="handleCheckAllWorkPlaceChange"
-                @checkedTraining="handleCheckedWorkPlaceChange"
-              />
-            </div>
-          </el-col> -->
           <el-col :span="20">
             <span>工作单位：</span>
-            <el-select v-model="workPlace" placeholder="请选择" size="small">
+            <el-select v-model="workPlace" multiple placeholder="请选择">
               <el-option
-                v-for="(item, index) in manageRegOps"
+                v-for="(item, index) in gzdwOptions"
                 :key="index"
-                :label="item.name"
-                :value="item.code"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option>
             </el-select>
           </el-col>
@@ -185,8 +175,8 @@
               <el-option
                 v-for="(item, index) in this.category.checkBox"
                 :key="index"
-                :label="item.label"
-                :value="item.val"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option
             ></el-select>
           </el-form-item>
@@ -279,6 +269,7 @@ import {
   addOneAssistant,
   lookDetail,
   outAssistant,
+  getGzdw,
 } from "@/api/politicalWork/assistantappoint";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
@@ -322,17 +313,7 @@ export default {
       searchVal: "",
       select: "",
       isMore: false,
-      manageRegOps: [
-        {
-          name: "jsjxy",
-          code: "1111",
-        },
-        {
-          name: "2222",
-          code: "1111",
-        },
-        
-      ],
+      gzdwOptions: [],
       category: {
         // 类别
         checkAll: false,
@@ -347,36 +328,17 @@ export default {
         // 性别
         checkAll: false,
         choose: [],
-        checkBox: [
-          { label: "男", val: 1 },
-          { label: "女", val: 2 },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
-      workPlace: {
-        // 单位
-        checkAll: false,
-        choose: [],
-        checkBox: [
-          { mc: "社会学院", dm: "社会学院" },
-          { mc: "设计学院", dm: "设计学院" },
-          { mc: "文学院", dm: "文学院" },
-          { mc: "理学院", dm: "理学院" },
-          { mc: "工业设计", dm: "工业设计" },
-          { mc: "通信工程", dm: "通信工程" },
-          { mc: "电子信息", dm: "电子信息" },
-          { mc: "建筑工程", dm: "建筑工程" },
-          { mc: "统计学", dm: "统计学" },
-        ],
-        isIndeterminate: true,
-      },
+      workPlace: [],
       status: {
         // 状态
         checkAll: false,
         choose: [],
         checkBox: [
-          { mc: "是", dm: 0 },
-          { mc: "否", dm: 1 },
+          { mc: "否", dm: 0 },
+          { mc: "是", dm: 1 },
         ],
         isIndeterminate: true,
       },
@@ -390,7 +352,6 @@ export default {
           { required: true, message: "工号不能为空", trigger: "blur" },
         ],
       },
-
       basicInfoList: [],
       tableData: [],
       multipleSelection: [],
@@ -398,6 +359,10 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        dwmcList: [],
+        genderList: [],
+        lbList: [],
+        sfdbList: [],
       },
     };
   },
@@ -407,6 +372,7 @@ export default {
   mounted() {
     this.getList(this.queryParams);
     this.getCode("dmxbm");
+    this.getOption();
   },
 
   methods: {
@@ -425,6 +391,15 @@ export default {
         })
         .catch((err) => {});
     },
+    getOption() {
+      this.gzdwOptions = [];
+      getGzdw().then((res) => {
+        if (res.errcode == "00") {
+          this.gzdwOptions = res.data.rows;
+        }
+        console.log(res);
+      });
+    },
     //批量免去对话框关闭
     dialogCancel() {
       this.showRemove = false;
@@ -434,6 +409,7 @@ export default {
       this.openInput = false;
       this.reset();
     },
+    //任命确认框关闭
     dialog3Cancel() {
       this.openInputSure = false;
     },
@@ -441,8 +417,10 @@ export default {
     cancel() {
       this.open = false;
     },
+    //任命辅导员
     inputAssistant() {
       this.openInputSure = true;
+      this.title = "任命";
     },
     // 点击更多
     handleMore() {
@@ -484,24 +462,7 @@ export default {
         checkedCount > 0 && checkedCount < this.sex.checkBox.length;
       console.log(this.sex.choose, "单选");
     },
-    // 类别全选
-    handleCheckAllWorkPlaceChange(val) {
-      const allCheck = [];
-      for (const i in this.workPlace.checkBox) {
-        allCheck.push(this.workPlace.checkBox[i].val);
-      }
-      this.workPlace.choose = val ? allCheck : [];
-      console.log(this.workPlace.choose, "全选");
-      this.workPlace.isIndeterminate = false;
-    },
-    // 类别单选
-    handleCheckedWorkPlaceChange(value) {
-      const checkedCount = value.length;
-      this.workPlace.checkAll = checkedCount === this.workPlace.checkBox.length;
-      this.workPlace.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.workPlace.checkBox.length;
-      console.log(this.workPlace.choose, "单选");
-    },
+
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -528,6 +489,7 @@ export default {
     // 打开导出弹窗
     handleExport() {
       this.showExport = true;
+      this.title = "导出";
     },
     // 导出取消
     handleCancel() {
@@ -538,8 +500,8 @@ export default {
       this.showExport = false;
       let data = {
         pageNum: 1,
-        pageSize: 10,
-        dwmcList: this.workPlace.choose,
+        pageSize: 0,
+        dwmcList: this.workPlace,
         lbList: this.category.choose,
         genderList: this.sex.choose,
         sfdbList: this.status.choose,
@@ -550,7 +512,6 @@ export default {
         this.downloadFn(res, "辅导员任命导出", "xlsx");
         //}
       });
-      console.log(1);
     },
     //批量移除
     rmAssistant() {
@@ -568,6 +529,7 @@ export default {
           console.log(res);
         }
       });
+      this.getList(this.queryParams);
     },
     //导入信息
     addAssistant() {
@@ -586,22 +548,23 @@ export default {
         }
       });
       this.reset();
+      this.getList(this.queryParams);
     },
     //点击详情
     hadleDetail(row, flag) {
       this.open = true;
+      this.title = "详情";
       let ghdata = {
         gh: row.gh,
       };
       lookDetail(ghdata).then((res) => {
         if (res.errcode == "00") {
-          //this.moreIform.classNum = res.assistantDetailRes[0].bjbh;
-          console.log(res);
+          //console.log(res);
           this.tableData = res.assistantDetailRes;
         }
       });
     },
-
+    //获取数据列表
     getList(queryParams) {
       //Object.assign(queryParams, this.queryParams);
       fdyList(queryParams).then((response) => {
@@ -615,12 +578,13 @@ export default {
 
     /** 导入按钮操作 */
     handleImport() {
-      // this.upload.title = "用户导入";
-      // this.upload.open = true;
       this.openInput = true;
+      this.title = "导入辅导员";
     },
+    /**批量免去按钮*/
     handleRemove() {
       this.showRemove = true;
+      this.title = "免去";
     },
     /** 下载模板操作 */
     importTemplate() {
@@ -652,20 +616,7 @@ export default {
     submitFileForm() {
       this.$refs.upload.submit();
     },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset();
-      this.open = true;
-      const name = row.name || this.ids;
-      this.form = row;
-      this.title = "修改政工干部基本信息";
-      getUser(name);
-      // getUser(postId).then(response => {
-      //   this.form = response.data
-      //   this.open = true
-      //   this.title = '修改岗位'
-      // })
-    },
+
     /** 提交按钮 */
     submitForm: function () {
       // todo
@@ -703,7 +654,6 @@ export default {
       console.log(this.select);
       let str = [];
       let name, gonghao;
-      //       console.log(str);
       if (this.select == "1") {
         gonghao = this.searchVal;
         name = "";
@@ -714,12 +664,10 @@ export default {
         name = "";
         gonghao = "";
       }
-      let gzdw = [];
-      gzdw.push(this.workPlace);
-      let queryParams = {
+      this.queryParams = {
         pageNum: 1,
         pageSize: 10,
-        dwmcList: gzdw,
+        dwmcList: this.workPlace,
         lbList: this.category.choose,
         genderList: this.sex.choose,
         sfdbList: this.status.choose,
@@ -727,7 +675,7 @@ export default {
         gh: gonghao,
       };
       //console.log(queryParams);
-      this.getList(queryParams);
+      this.getList(this.queryParams);
     },
   },
 };

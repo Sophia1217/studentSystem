@@ -18,6 +18,25 @@ export function getManageRegStuInfoPageList(data) {
   })
 }
 
+// 学院找专业
+export function getZY(data) {
+  return request({
+    url: '/regStuInfo/getZY',
+    method: 'post',
+    data: data
+  })
+}
+
+// 学院找班级 getBJ
+// 学院找专业
+export function getBJ(data) {
+  return request({
+    url: '/regStuInfo/getBJ',
+    method: 'post',
+    data: data
+  })
+}
+
 // 查询学生信息 -全校学生
 export function getSchoolRegStuInfoPageList(data) {
   return request({

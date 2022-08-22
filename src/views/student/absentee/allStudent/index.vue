@@ -35,16 +35,17 @@
             <span>学 院：</span>
             <el-select
               v-model="moreIform.xydm"
+              @change="changeXY"
               multiple
               collapse-tags
               placeholder="请选择"
               size="small"
             >
               <el-option
-                v-for="item in manageRegOps"
-                :key="item.ssdwdm"
-                :label="item.dwmc"
-                :value="item.ssdwdm"
+                v-for="item in allDwh"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option>
             </el-select>
           </el-col>
@@ -58,19 +59,13 @@
               size="small"
             >
               <el-option
-                v-for="item in zymOps"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                v-for="item in zyOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option>
             </el-select>
           </el-col>
-          <!-- <el-col :span="8">
-            <span>班 级：</span>
-            <el-select v-model="moreIform.bjdm" multiple collapse-tags placeholder="请选择" size="small">
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-          </el-col> -->
         </el-row>
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">年 级：</el-col>
@@ -144,6 +139,8 @@ import {
   getManageRegStuInfoSearchSpread,
 } from "@/api/student/index";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
+import { getZY,getBJ } from "@/api/student/index";
+import { getCollege } from "@/api/class/maintenanceClass";
 export default {
   name: "manStudent",
   components: { CheckboxCom },
@@ -161,6 +158,9 @@ export default {
         { value: "选项2", label: "双皮奶" },
         { value: "选项3", label: "蚵仔煎" },
       ],
+      allDwh: [], // 学院下拉框
+      zyOps: [], // 专业下拉
+      bjOps:[], // 班级下拉
       training: {
         // 培养层次
         checkAll: false,
@@ -188,11 +188,28 @@ export default {
 
   mounted() {
     this.getSpread();
+    this.getAllCollege()
     this.getCode("dmpyccm"); // 培养层次
     this.handleSearch();
   },
 
   methods: {
+     // 查询学院
+    getAllCollege() {
+      getCollege().then(res => {
+        this.allDwh = res.data.rows
+      }).catch(err=>{})
+    },
+    changeXY(val) {
+      this.getZY(val)
+    },
+    // 学院找专业 
+    getZY(val) {
+      let data = { DWH: val }
+      getZY(data).then(res => {
+        this.zyOps = res.data
+      }).catch(err=>{})
+    },
     getCode(data) {
       this.getCodeInfoByEnglish(data);
     },

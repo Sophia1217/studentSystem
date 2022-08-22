@@ -17,8 +17,8 @@
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
-            <el-option label="身份证号" value="sfzjh"></el-option>
-            <el-option label="手机号" value="yddh"></el-option>
+            <!-- <el-option label="身份证号" value="sfzjh"></el-option>
+            <el-option label="手机号" value="yddh"></el-option> -->
           </el-select>
           <el-button
             slot="append"
@@ -41,14 +41,15 @@
             <span>学 院：</span>
             <el-select
               v-model="moreIform.manageReg"
+              @change="changeXY"
               placeholder="请选择"
               size="small"
             >
               <el-option
-                v-for="(item, index) in manageRegOps"
+                v-for="(item, index) in allDwh"
                 :key="index"
-                :label="item.dwmc"
-                :value="item.dwmc"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option>
             </el-select>
           </el-col>
@@ -60,10 +61,10 @@
               size="small"
             >
               <el-option
-                v-for="(item, index) in manageRegOps"
+                v-for="(item, index) in zyOps"
                 :key="index"
-                :label="item.label"
-                :value="item.value"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option>
             </el-select>
           </el-col>
@@ -77,14 +78,15 @@
               size="small"
             >
               <el-option
-                v-for="item in manageRegOps"
-                :key="item.bjmc"
-                :label="item.bjmc"
-                :value="item.bjmc"
+                v-for="item in bjOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option>
             </el-select>
           </el-col>
         </el-row>
+
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">培养层次：</el-col>
           <el-col :span="20">
@@ -93,59 +95,6 @@
                 :objProp="training"
                 @training="handleCheckAllChangeTraining"
                 @checkedTraining="handleCheckedCitiesChangeTraining"
-              ></checkboxCom>
-              <!-- <el-checkbox class="elcheckbox" :indeterminate="training.isIndeterminate" 
-                v-model="training.checkAll" @change="handleCheckAllChangeTraining">全选</el-checkbox>
-              <el-checkbox-group v-model="training.choose" @change="handleCheckedCitiesChangeTraining">
-                <el-checkbox v-for="item in training.checkBox" :label="item.val" :key="item.val">{{item.label}}</el-checkbox>
-              </el-checkbox-group> -->
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">学 制：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :objProp="learnHe"
-                @training="learnHeAll"
-                @checkedTraining="learnHeCheck"
-              ></checkboxCom>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">学 籍：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :objProp="studentStatus"
-                @training="studentStatusAll"
-                @checkedTraining="studentStatusCheck"
-              ></checkboxCom>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">民 族：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :objProp="ethnic"
-                @training="ethnicAll"
-                @checkedTraining="ethnicCheck"
-              ></checkboxCom>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">政治面貌：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :objProp="politica"
-                @training="politicaAll"
-                @checkedTraining="politicaCheck"
               ></checkboxCom>
             </div>
           </el-col>
@@ -191,6 +140,13 @@
           <el-table-column prop="updateTime" label="修改时间" sortable>
           </el-table-column>
         </el-table>
+        <pagination
+          v-show="queryParams.total > 0"
+          :total="queryParams.total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="handleSearch"
+        />
       </div>
       <div class="noData" v-else>
         <img
@@ -202,19 +158,15 @@
         <p class="describe">尚未导入强制修改名单</p>
       </div>
     </div>
-    <pagination
-      v-show="queryParams.total > 0"
-      :total="queryParams.total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="handleSearch"
-    />
+    
   </div>
 </template>
 
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
+import { getZY,getBJ } from "@/api/student/index";
+import { getCollege } from "@/api/class/maintenanceClass";
 import {
   getManageRegStuInfoSearchSpread,
   forceUpdateList,
@@ -233,6 +185,10 @@ export default {
       searchVal: "",
       select: "",
       isMore: false,
+      datePicker: [],
+      allDwh: [], // 学院下拉框
+      zyOps: [], // 专业下拉
+      bjOps:[], // 班级下拉
       moreIform: {
         value1: "",
       },
@@ -279,6 +235,7 @@ export default {
 
   mounted() {
     this.handleSearch();
+    this.getAllCollege()
     this.getCode("dmpyccm"); // 培养层次
     this.getCode("dmxjztm"); // 学籍
     this.getCode("dmmzm"); // 民 族
@@ -288,6 +245,29 @@ export default {
   },
 
   methods: {
+    // 查询学院
+    getAllCollege() {
+      getCollege().then(res => {
+        this.allDwh = res.data.rows
+      }).catch(err=>{})
+    },
+    changeXY(val) {
+      this.getZY(val)
+      this.getBJ(val)
+    },
+    // 学院找专业 
+    getZY(val) {
+      let data = { DWH: val }
+      getZY(data).then(res => {
+        this.zyOps = res.data
+      }).catch(err=>{})
+    },
+    getBJ(val) { 
+      let data = { DWH: val }
+      getBJ(data).then(res => {
+        this.bjOps = res.data
+      }).catch(err=>{})
+    },
     getSpread() {
       getManageRegStuInfoSearchSpread()
         .then((res) => {

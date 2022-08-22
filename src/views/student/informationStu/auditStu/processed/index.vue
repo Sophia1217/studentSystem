@@ -2,7 +2,7 @@
   <div class="manStudent">
     <div class="searchWrap">
       <div class="search">
-        <el-input placeholder="请输入" v-model="searchVal" class="inputSelect">
+        <el-input placeholder="请输入" v-model="searchVal" clearable class="inputSelect">
           <el-select
             v-model="select"
             class="elSelect"
@@ -36,14 +36,15 @@
             <span>学 院：</span>
             <el-select
               v-model="moreIform.manageReg"
+              @change="changeXY"
               placeholder="请选择"
               size="small"
             >
               <el-option
-                v-for="(item, index) in manageRegOps"
+                v-for="(item, index) in allDwh"
                 :key="index"
-                :label="item.dwmc"
-                :value="item.dwmc"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option>
             </el-select>
           </el-col>
@@ -55,10 +56,10 @@
               size="small"
             >
               <el-option
-                v-for="(item, index) in manageRegOps"
+                v-for="(item, index) in zyOps"
                 :key="index"
-                :label="item.label"
-                :value="item.value"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option>
             </el-select>
           </el-col>
@@ -72,10 +73,10 @@
               size="small"
             >
               <el-option
-                v-for="item in manageRegOps"
-                :key="item.bjmc"
-                :label="item.bjmc"
-                :value="item.bjmc"
+                v-for="item in bjOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option>
             </el-select>
           </el-col>
@@ -89,11 +90,6 @@
                 @training="handleCheckAllChangeTraining"
                 @checkedTraining="handleCheckedCitiesChangeTraining"
               ></checkboxCom>
-              <!-- <el-checkbox class="elcheckbox" :indeterminate="training.isIndeterminate" 
-                v-model="training.checkAll" @change="handleCheckAllChangeTraining">全选</el-checkbox>
-              <el-checkbox-group v-model="training.choose" @change="handleCheckedCitiesChangeTraining">
-                <el-checkbox v-for="item in training.checkBox" :label="item.val" :key="item.val">{{item.label}}</el-checkbox>
-              </el-checkbox-group> -->
             </div>
           </el-col>
         </el-row>
@@ -233,6 +229,8 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
+import { getZY,getBJ } from "@/api/student/index";
+import { getCollege } from "@/api/class/maintenanceClass";
 import {
   getManageRegStuInfoSearchSpread,
   FlowPageList,
@@ -251,6 +249,9 @@ export default {
       moreIform: {
         value1: "",
       },
+      allDwh: [], // 学院下拉框
+      zyOps: [], // 专业下拉
+      bjOps:[], // 班级下拉
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -300,6 +301,7 @@ export default {
 
   mounted() {
     this.handleSearch();
+    this.getAllCollege()
     this.getCode("dmpyccm"); // 培养层次
     this.getCode("dmxjztm"); // 学籍
     this.getCode("dmmzm"); // 民 族
@@ -309,6 +311,29 @@ export default {
   },
 
   methods: {
+    // 查询学院
+    getAllCollege() {
+      getCollege().then(res => {
+        this.allDwh = res.data.rows
+      }).catch(err=>{})
+    },
+    changeXY(val) {
+      this.getZY(val)
+      this.getBJ(val)
+    },
+    // 学院找专业 
+    getZY(val) {
+      let data = { DWH: val }
+      getZY(data).then(res => {
+        this.zyOps = res.data
+      }).catch(err=>{})
+    },
+    getBJ(val) { 
+      let data = { DWH: val }
+      getBJ(data).then(res => {
+        this.bjOps = res.data
+      }).catch(err=>{})
+    },
     getSpread() {
       getManageRegStuInfoSearchSpread()
         .then((res) => {

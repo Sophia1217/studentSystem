@@ -19,6 +19,9 @@
             <el-option label="姓名" value="xm"></el-option>
             <el-option label="身份证号" value="sfzjh"></el-option>
             <el-option label="手机号" value="yddh"></el-option>
+            <el-option label="籍贯" value="jg"></el-option>
+            <el-option label="出生地" value="csdm"></el-option>
+            <el-option label="户口所在地" value="gjdqm"></el-option>
           </el-select>
           <el-button
             slot="append"
@@ -41,16 +44,17 @@
             <span>学 院：</span>
             <el-select
               v-model="moreIform.manageReg"
+              @change="changeXY"
               multiple
               collapse-tags
               placeholder="请选择"
               size="small"
             >
               <el-option
-                v-for="(item, index) in manageRegOps"
+                v-for="(item, index) in allDwh"
                 :key="index"
-                :label="item.dwmc"
-                :value="item.ssdwdm"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option>
             </el-select>
           </el-col>
@@ -64,10 +68,10 @@
               size="small"
             >
               <el-option
-                v-for="(item, index) in manageRegOps"
+                v-for="(item, index) in zyOps"
                 :key="index"
-                :label="item.label"
-                :value="item.value"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option>
             </el-select>
           </el-col>
@@ -81,14 +85,15 @@
               size="small"
             >
               <el-option
-                v-for="(item, index) in manageRegOps"
+                v-for="(item, index) in bjOps"
                 :key="index"
-                :label="item.bjmc"
-                :value="item.bjdm"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option>
             </el-select>
           </el-col>
         </el-row>
+
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">培养层次：</el-col>
           <el-col :span="20">
@@ -98,26 +103,10 @@
                 @training="handleCheckAllChangeTraining"
                 @checkedTraining="handleCheckedCitiesChangeTraining"
               ></checkboxCom>
-              <!-- <el-checkbox class="elcheckbox" :indeterminate="training.isIndeterminate" 
-                v-model="training.checkAll" @change="handleCheckAllChangeTraining">全选</el-checkbox>
-              <el-checkbox-group v-model="training.choose" @change="handleCheckedCitiesChangeTraining">
-                <el-checkbox v-for="item in training.checkBox" :label="item.val" :key="item.val">{{item.label}}</el-checkbox>
-              </el-checkbox-group> -->
             </div>
           </el-col>
         </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">学 制：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :objProp="learnHe"
-                @training="learnHeAll"
-                @checkedTraining="learnHeCheck"
-              ></checkboxCom>
-            </div>
-          </el-col>
-        </el-row>
+
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">学 籍：</el-col>
           <el-col :span="20">
@@ -130,6 +119,34 @@
             </div>
           </el-col>
         </el-row>
+
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="3">性别：</el-col>
+          <el-col :span="20">
+            <div class="checkbox">
+              <checkboxCom
+                :objProp="dmxbmOPs"
+                @training="dmxbmAll"
+                @checkedTraining="dmxbmCheck"
+              ></checkboxCom>
+            </div>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="3">学 制：</el-col>
+          <el-col :span="20">
+            <div class="checkbox">
+              <checkboxCom
+                :objProp="learnHe"
+                @training="learnHeAll"
+                @checkedTraining="learnHeCheck"
+              ></checkboxCom>
+            </div>
+          </el-col>
+        </el-row>
+
+        
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">民 族：</el-col>
           <el-col :span="20">
@@ -151,6 +168,23 @@
                 @training="politicaAll"
                 @checkedTraining="politicaCheck"
               ></checkboxCom>
+            </div>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="3">出生日期：</el-col>
+          <el-col :span="20">
+            <div class="checkbox">
+              <el-date-picker
+                v-model="datePicker"
+                type="daterange"
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期">
+              </el-date-picker>
             </div>
           </el-col>
         </el-row>
@@ -249,6 +283,8 @@
 import CheckboxCom from "../../../components/checkboxCom";
 import exportView from "./exportView/index.vue";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
+import { getZY,getBJ } from "@/api/student/index";
+import { getCollege } from "@/api/class/maintenanceClass";
 import {
   getManageRegStuInfoSearchSpread,
   getManageRegStuInfoPageList,
@@ -269,7 +305,11 @@ export default {
         stuInfo: [], // 专业
         pread: [], // 班级
       },
-      manageRegOps: [], // 学院下拉框
+      allDwh: [], // 学院下拉框
+      zyOps: [], // 专业下拉
+      bjOps:[], // 班级下拉
+      datePicker:[],
+      manageRegOps: [], // 
       training: {
         // 培养层次
         checkAll: false,
@@ -305,6 +345,13 @@ export default {
         checkBox: [],
         isIndeterminate: true,
       },
+      dmxbmOPs: {
+        // 性别：
+        checkAll: false,
+        choose: [],
+        checkBox: [],
+        isIndeterminate: true,
+      },
       tableData: [],
       multipleSelection: [],
       showExport: false,
@@ -319,11 +366,13 @@ export default {
 
   mounted() {
     this.getSpread();
+    this.getAllCollege()
     this.getCode("dmpyccm"); // 培养层次
     this.getCode("dmxjztm"); // 学籍
     this.getCode("dmmzm"); // 民 族
     this.getCode("dmzzmmm"); // 政治面貌
     this.getCode("dmxz"); // 学 制
+    this.getCode("dmxbm"); // 性别码
     this.handleSearch();
   },
   activated() {
@@ -331,6 +380,29 @@ export default {
   },
 
   methods: {
+    // 查询学院
+    getAllCollege() {
+      getCollege().then(res => {
+        this.allDwh = res.data.rows
+      }).catch(err=>{})
+    },
+    changeXY(val) {
+      this.getZY(val)
+      this.getBJ(val)
+    },
+    // 学院找专业 
+    getZY(val) {
+      let data = { DWH: val }
+      getZY(data).then(res => {
+        this.zyOps = res.data
+      }).catch(err=>{})
+    },
+    getBJ(val) { 
+      let data = { DWH: val }
+      getBJ(data).then(res => {
+        this.bjOps = res.data
+      }).catch(err=>{})
+    },
     getCode(data) {
       this.getCodeInfoByEnglish(data);
     },
@@ -354,6 +426,8 @@ export default {
             case "dmxz":
               this.$set(this.learnHe, "checkBox", res.data);
               break;
+            case 'dmxbm':
+              this.$set(this.dmxbmOPs, "checkBox", res.data);
           }
         })
         .catch((err) => {});
@@ -369,13 +443,27 @@ export default {
     changeSelect(val) {
       this.searchVal = "";
     },
+    handleDatePicker(val) {
+      console.log(val)
+    },
     // 查询
     handleSearch() {
+      let csrqs, csrqe = ''
+      if (this.datePicker && this.datePicker.length > 0) {
+        csrqs = this.datePicker[0]
+        csrqe = this.datePicker[1]
+      }
       let data = {
         xh: this.select == "xh" ? this.searchVal : "",
         xm: this.select == "xm" ? this.searchVal : "",
         sfzjh: this.select == "sfzjh" ? this.searchVal : "",
         yddh: this.select == "yddh" ? this.searchVal : "",
+        jg: this.select == 'jg' ? this.searchVal : "",
+        csdm: this.select == 'csdm' ? this.searchVal : "",
+        gjdqm: this.select == 'gjdqm' ? this.searchVal : "",
+        xbm: this.dmxbmOPs.choose,
+        csrqs: csrqs,
+        csrqe:csrqe,
         pyccm: this.training.choose,
         xz: this.learnHe.choose,
         xjzt: this.studentStatus.choose,
@@ -488,7 +576,26 @@ export default {
       this.politica.checkAll = checkedCount === this.politica.checkBox.length;
       this.politica.isIndeterminate =
         checkedCount > 0 && checkedCount < this.politica.checkBox.length;
-      console.log(this.politica.choose, "单选");
+      // console.log(this.politica.choose, "单选");
+    },
+
+    // 性别：全选
+    dmxbmAll(val) {
+      let allCheck = [];
+      for (let i in this.dmxbmOPs.checkBox) {
+        allCheck.push(this.dmxbmOPs.checkBox[i].dm);
+      }
+      this.dmxbmOPs.choose = val ? allCheck : [];
+      console.log(this.dmxbmOPs.choose, "全选");
+      this.dmxbmOPs.isIndeterminate = false;
+    },
+    // 性别：单选
+    dmxbmCheck(value) {
+      let checkedCount = value.length;
+      this.dmxbmOPs.checkAll = checkedCount === this.dmxbmOPs.checkBox.length;
+      this.dmxbmOPs.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.dmxbmOPs.checkBox.length;
+      // console.log(this.dmxbmOPs.choose, "单选");
     },
     // 多选
     handleSelectionChange(val) {
@@ -539,7 +646,7 @@ export default {
         this.$message("请选择");
         return;
       }
-      let data = { xh: this.multipleSelection[0].xh };
+      let data = { xh: xhs };
       gradStu(data).then((res) => this.downloadFn(res, "毕业生登记表", "docx"));
     },
     //学生登记

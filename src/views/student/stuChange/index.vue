@@ -2,7 +2,7 @@
   <div class="manStudent">
     <div class="searchWrap">
       <div class="search">
-        <el-input placeholder="请输入" v-model="searchVal" class="inputSelect">
+        <el-input placeholder="请输入" v-model="searchVal" clearable class="inputSelect">
           <el-select
             v-model="select"
             class="elSelect"
@@ -12,8 +12,7 @@
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
-            <el-option label="身份证号" value="sfzjh"></el-option>
-            <el-option label="手机号" value="yddh"></el-option>
+            <el-option label="审批文号" value="spwh"></el-option>
           </el-select>
           <el-button
             slot="append"
@@ -36,14 +35,15 @@
             <span>学 院：</span>
             <el-select
               v-model="moreIform.manageReg"
+              @change="changeXY"
               placeholder="请选择"
               size="small"
             >
               <el-option
-                v-for="(item, index) in manageRegOps"
+                v-for="(item, index) in allDwh"
                 :key="index"
-                :label="item.dwmc"
-                :value="item.dwmc"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option>
             </el-select>
           </el-col>
@@ -55,10 +55,10 @@
               size="small"
             >
               <el-option
-                v-for="(item, index) in manageRegOps"
+                v-for="(item, index) in zyOps"
                 :key="index"
-                :label="item.label"
-                :value="item.value"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option>
             </el-select>
           </el-col>
@@ -72,34 +72,58 @@
               size="small"
             >
               <el-option
-                v-for="item in manageRegOps"
-                :key="item.bjmc"
-                :label="item.bjmc"
-                :value="item.bjmc"
+                v-for="item in bjOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option>
             </el-select>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">培养层次：</el-col>
+          <el-col :span="3">原培养单位???：</el-col>
           <el-col :span="20">
             <div class="checkbox">
-              <checkboxCom
-                :objProp="training"
-                @training="handleCheckAllChangeTraining"
-                @checkedTraining="handleCheckedCitiesChangeTraining"
-              ></checkboxCom>
+            </div>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="3">原专业???：</el-col>
+          <el-col :span="20">
+            <div class="checkbox">
             </div>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">学 制：</el-col>
+          <el-col :span="3">原班级???：</el-col>
+          <el-col :span="20">
+            <div class="checkbox">
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="3">原年级???：</el-col>
+          <el-col :span="20">
+            <div class="checkbox">
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="3">性别???：</el-col>
+          <el-col :span="20">
+            <div class="checkbox">
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="3">异动类别：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
-                :objProp="learnHe"
-                @training="learnHeAll"
-                @checkedTraining="learnHeCheck"
+                :objProp="changType"
+                @training="changTypeAll"
+                @checkedTraining="changTypeCheck"
               ></checkboxCom>
             </div>
           </el-col>
@@ -117,78 +141,18 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">民 族：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :objProp="ethnic"
-                @training="ethnicAll"
-                @checkedTraining="ethnicCheck"
-              ></checkboxCom>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">政治面貌：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :objProp="politica"
-                @training="politicaAll"
-                @checkedTraining="politicaCheck"
-              ></checkboxCom>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">异动类别：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :objProp="changType"
-                @training="changTypeAll"
-                @checkedTraining="changTypeCheck"
-              ></checkboxCom>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">异动原因：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :objProp="changWhy"
-                @training="changWhyAll"
-                @checkedTraining="changWhyCheck"
-              ></checkboxCom>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">异动文号：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :objProp="changTitanic"
-                @training="changTitanicAll"
-                @checkedTraining="changTitanicCheck"
-              ></checkboxCom>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
           <el-col :span="3">异动日期：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <el-date-picker
                 v-model="datePicker"
+                type="daterange"
                 format="yyyy 年 MM 月 dd 日"
                 value-format="yyyy-MM-dd"
-                type="date"
-                placeholder="选择日期"
-                @change="handleDatePicker"
-                size="small"
-              ></el-date-picker>
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期">
+              </el-date-picker>
             </div>
           </el-col>
         </el-row>
@@ -266,6 +230,8 @@
 <script>
 import CheckboxCom from "../../components/checkboxCom";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
+import { getZY,getBJ } from "@/api/student/index";
+import { getCollege } from "@/api/class/maintenanceClass";
 import {
   getStuChangeInfoPageList,
   getManageRegStuInfoSearchSpread,
@@ -282,6 +248,9 @@ export default {
       moreIform: {
         value1: "",
       },
+      allDwh: [], // 学院下拉框
+      zyOps: [], // 专业下拉
+      bjOps:[], // 班级下拉
       training: {
         // 培养层次
         checkAll: false,
@@ -331,13 +300,13 @@ export default {
         checkBox: [],
         isIndeterminate: true,
       },
-      changTitanic: {
-        //异动文号：
-        checkAll: false,
-        choose: [],
-        checkBox: [],
-        isIndeterminate: true,
-      },
+      // changTitanic: {
+      //   //异动文号：
+      //   checkAll: false,
+      //   choose: [],
+      //   checkBox: [],
+      //   isIndeterminate: true,
+      // },
       datePicker: "",
       tableData: [],
       multipleSelection: [],
@@ -352,6 +321,7 @@ export default {
 
   mounted() {
     this.getSpread();
+    this.getAllCollege()
     this.getCode("dmpyccm"); // 培养层次
     this.getCode("dmxz"); // 学 制
     this.getCode("dmxjztm"); // 学籍
@@ -363,6 +333,29 @@ export default {
   },
 
   methods: {
+    // 查询学院
+    getAllCollege() {
+      getCollege().then(res => {
+        this.allDwh = res.data.rows
+      }).catch(err=>{})
+    },
+    changeXY(val) {
+      this.getZY(val)
+      this.getBJ(val)
+    },
+    // 学院找专业 
+    getZY(val) {
+      let data = { DWH: val }
+      getZY(data).then(res => {
+        this.zyOps = res.data
+      }).catch(err=>{})
+    },
+    getBJ(val) { 
+      let data = { DWH: val }
+      getBJ(data).then(res => {
+        this.bjOps = res.data
+      }).catch(err=>{})
+    },
     getCode(data) {
       this.getCodeInfoByEnglish(data);
     },
@@ -424,7 +417,7 @@ export default {
         ZYDM: this.moreIform.stuInfo, // 专业
         YDLBM: this.changType.choose,
         YDYY: this.changWhy.choose,
-        spwh: this.changTitanic.choose,
+        spwh: this.select == 'spwh'?this.searchVal:'',
         YDRQ: this.datePicker,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
@@ -576,24 +569,24 @@ export default {
       // console.log(this.changWhy.choose, "单选");
     },
     //异动文号全选
-    changTitanicAll(val) {
-      let allCheck = [];
-      for (let i in this.changTitanic.checkBox) {
-        allCheck.push(this.changTitanic.checkBox[i].dm);
-      }
-      this.changTitanic.choose = val ? allCheck : [];
-      console.log(this.changTitanic.choose, "全选");
-      this.changTitanic.isIndeterminate = false;
-    },
-    // 异动文号：单选
-    changTitanicCheck(value) {
-      let checkedCount = value.length;
-      this.changTitanic.checkAll =
-        checkedCount === this.changTitanic.checkBox.length;
-      this.changTitanic.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.changTitanic.checkBox.length;
-      console.log(this.changTitanic.choose, "单选");
-    },
+    // changTitanicAll(val) {
+    //   let allCheck = [];
+    //   for (let i in this.changTitanic.checkBox) {
+    //     allCheck.push(this.changTitanic.checkBox[i].dm);
+    //   }
+    //   this.changTitanic.choose = val ? allCheck : [];
+    //   console.log(this.changTitanic.choose, "全选");
+    //   this.changTitanic.isIndeterminate = false;
+    // },
+    // // 异动文号：单选
+    // changTitanicCheck(value) {
+    //   let checkedCount = value.length;
+    //   this.changTitanic.checkAll =
+    //     checkedCount === this.changTitanic.checkBox.length;
+    //   this.changTitanic.isIndeterminate =
+    //     checkedCount > 0 && checkedCount < this.changTitanic.checkBox.length;
+    //   console.log(this.changTitanic.choose, "单选");
+    // },
     // 异动日期
     handleDatePicker(val) {
       console.log(val);
@@ -601,7 +594,7 @@ export default {
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      console.log(this.multipleSelection);
+      // console.log(this.multipleSelection);
     },
     // 导出
     handleCommand(command) {

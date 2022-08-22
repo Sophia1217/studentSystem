@@ -5,6 +5,7 @@
         <el-input placeholder="请输入" v-model="searchVal" class="inputSelect">
           <el-select
             v-model="select"
+            @change="changeSelect"
             class="elSelect"
             slot="prepend"
             placeholder="查询条件"
@@ -266,6 +267,9 @@ export default {
           this.$set(this.studentStatus, "checkBox", res.data.rows);
         })
         .catch((res) => {});
+    },
+    changeSelect() {
+      this.searchVal = "";
     },
     // 查询
     handleSearch() {

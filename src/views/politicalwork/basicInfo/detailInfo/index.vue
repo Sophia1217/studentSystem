@@ -1807,9 +1807,11 @@ export default {
     },
     // 取消
     handleCancle() {
-      this.$router.push({
-        path: this.routerFrom,
-      });
+      // this.$router.push({
+      //   path: this.routerFrom,
+      // });
+      this.isEdit = 1
+      this.getDetail()
     },
     // 提交
     handlUpdata() {

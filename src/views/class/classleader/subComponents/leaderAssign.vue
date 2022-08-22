@@ -12,9 +12,6 @@
 <script>
 import assignSearch from "../form/assignSearch";
 import assignTable from "../form/assignTable";
-import {
-  getQueryBgbList, //班干部列表查询
-} from "@/api/class/classLeader";
 export default {
   name: "leaderAssign", // 班干部任命
   components: {
@@ -37,18 +34,19 @@ export default {
     self.currentBjdm = this.$route.query.bjdm;
     self.getQuery();
     // 想要动态的，将"1004001000"换为self.currentBjdm
-    self.getList({ bjdm: "1004001000" }); // 获取任职记录列表-班干部
+
+    // self.getList({ bjdm: "1004001000" }); // 获取任职记录列表-班干部
   },
   methods: {
     // 获取任职记录列表-班干部
-    getList(x) {
-      getQueryBgbList(x).then((res) => {
-        let data = res.rows;
-        this.queryBgbList = data;
-        this.bgb_total = res.total;
-        console.log("bgb_total:", this.bgb_total);
-      });
-    },
+    // getList(x) {
+    //   getQueryBgbList(x).then((res) => {
+    //     let data = res.rows;
+    //     this.queryBgbList = data;
+    //     this.bgb_total = res.total;
+    //     console.log("bgb_total:", this.bgb_total);
+    //   });
+    // },
     getQuery() {
       this.table_title = this.$route.query.bjmc;
     },

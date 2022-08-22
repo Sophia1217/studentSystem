@@ -42,7 +42,7 @@
           <!-- v-loading="loading" -->
           <el-table
 
-            :data="table_content"
+            :data="queryBgbList"
             @selection-change="handleSelectionChangeBgb"
           >
             <el-table-column type="selection" align="center" />
@@ -62,12 +62,12 @@
               <template slot-scope="scope">
                 <span
                   class="iconfont allocate_teacher"
-                  @click="action(scope.row)"
+                  @click="handleCancel(scope.row)"
                   >&#xe638;</span
                 >
                 <span
                   style="color: #005657; margin-left: 5px; margin-right: 5px"
-                  @click="action(scope.row)"
+                  @click="handleCancel(scope.row)"
                 >
                   撤任班干部
                 </span>
@@ -108,7 +108,7 @@
           </div>
           <!-- v-loading="loading" -->
           <el-table
-            :data="noticeList"
+            :data="stuList"
             @selection-change="handleSelectionChange"
           >
             <el-table-column type="selection" align="center" />
@@ -121,23 +121,23 @@
             <el-table-column label="学号" align="center" prop="xh" />
             <el-table-column label="姓名" align="center" prop="xm">
             </el-table-column>
-            <el-table-column label="性别" align="center" prop="xb" />
-            <el-table-column label="班级职位" align="center" prop="bjzw" />
-            <!-- <el-table-column label="操作" align="center" prop="level">
+            <el-table-column label="性别" align="center" prop="sex" />
+            <el-table-column label="班级职位" align="center" prop="zwdm" />
+            <el-table-column label="操作" align="center" prop="level">
               <template slot-scope="scope">
                 <span
                   class="iconfont allocate_teacher"
-                  @click="action(scope.row)"
+                  @click="appointHandle(scope.row)"
                   >&#xe638;</span
                 >
                 <span
                   style="color: #005657; margin-left: 5px; margin-right: 5px"
-                  @click="action(scope.row)"
+                  @click="appointHandle(scope.row)"
                 >
                   分配班干部
                 </span>
               </template>
-            </el-table-column> -->
+            </el-table-column>
           </el-table>
           <pagination
             id="pagenation"
@@ -150,41 +150,14 @@
         </div>
       </div>
     </div>
-    <!-- 分配班干部操作：teacherClass-->
-    <!-- :before-close="handleClose" -->
-    <el-dialog title="分配班干部" :visible.sync="teacherClass" width="30%">
-      <span
-        >确认将【78788(学工号)】【张曼丽】任命为【22电子信息1班】班主任？</span
-      >
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="teacherClass = false">取 消</el-button>
-        <!-- distributeClassConfirm(row) -->
-        <el-button
-          type="primary"
-          @click="distributeClassConfirm(row)"
-          class="confirm"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
 
     <!-- 批量撤任对话框：cancelAllocate-->
     <el-dialog title="取消分配" :visible.sync="cancelAllocate" width="50%">
-      <!-- <el-form :model="form">
-        <el-form-item label="撤任理由" prop="cxly">
-          <el-select v-model="form.cxly" placeholder="请选择">
-<<<<<<< HEAD
-           <el-option v-for="item in cxlyOptions" :key="item.dm" :label="item.mc" :value="item.dm"></el-option> -->
-=======
-             <el-option label="cxlyOptions.mc" value="cxlyOptions.dm"></el-option> -->
-      <!-- <el-option v-for="item in cxlyOptions" :key="item.dm" :label="item.mc" :value="item.dm"></el-option> -->
->>>>>>> e8df39a71f01a91f7563d861d7733c745ef8a699
+   
 
       <el-form :model="formDismission">
-        <el-form-item label="撤任理由" prop="reason">
-          <el-select v-model="formDismission.reason" placeholder="休学">
-            <!-- <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option> -->
+        <el-form-item label="撤任理由" >
+          <el-select v-model="formDismission.reason" placeholder="请选择">
 
             <el-option
               v-for="item in cxlyOptions"
@@ -192,9 +165,7 @@
               :label="item.mc"
               :value="item.dm"
             ></el-option>
-=======
-            -->
->>>>>>> e8df39a71f01a91f7563d861d7733c745ef8a699
+
           </el-select>
         </el-form-item>
         <el-form-item label="撤任详情" prop="detail">
@@ -218,7 +189,7 @@
     <el-dialog title="取消分配" :visible.sync="doubleCheck" width="50%">
       <template v-for="item in currentRowBgb">
         <div :key="item.xh">
-          <span>确认取消【{{item.xh}}(学工号)】【{{item.xm}}】对【{{table_title}}】的班干部任命？</span>
+          <span>确认取消【{{item.xh}}(学工号)】【{{item.xm}}】对【{{table_title}}】的【{{item.zwdm}}】任命？</span>
 
         </div>
       </template>
@@ -258,7 +229,6 @@
                 placeholder="未选择"
                 clearable
               >
-              <!-- <el-select v-model="form.bgbid" pllaceholder="2" clearable> -->
                 <!-- 班干部职位筛选框 -->
                 <el-option
                 v-for="(item, index) in bjzwOptions"
@@ -308,13 +278,13 @@
 
 <script>
 import "@/assets/fonts/circle/iconfont.css";
-import { getCxly, getQueryBgbList } from "@/api/class/classLeader";
-import { getAssignBgb, getBgbdismission } from "@/api/class/classLeader";
+import { getCxly, getQueryBgbList,getQueryAllstuList } from "@/api/class/classLeader";
+import { getAssignBgb, getBgbdismission ,getZwdm} from "@/api/class/classLeader";
 export default {
   name: "assignTable", //班干部任命表格
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
   // 子组件(assignTable)属性,其父组件为leaderAssign
-  props: ["table_title", "table_content"],
+  props: [ "table_content"],
   data() {
     return {
       // 全班同学当前行数据
@@ -323,6 +293,8 @@ export default {
       currentRowBgb: [],
       // 当前班级代码
       currentBjdm: "",
+      // 当前班级名称
+      table_title :'',
       // tab栏切换
       tab_list: ["班干部", "全班同学"],
       currentIndex: 0,
@@ -340,32 +312,11 @@ export default {
       showSearch: true,
       // 总条数
       total: 100,
+      bjzwOptions :[],
+      doubleAssign : false,
       // 表格数据
-      noticeList: [
-        {
-          xh: "123456",
-          xm: "王一",
-          xb: "女",
-          bjzw: "班长", //班级职位
-          bjdm: "1004001000",
-          rgh: "001", // 人工号
-        },
-        {
-          xh: "123457",
-          xm: "王二",
-          xb: "女",
-          bjzw: "无", //班级职位
-          bjdm: "1004001000",
-          rgh: "002",
-        },
-        {
-          xh: "123458",
-          xm: "王三",
-          xb: "男",
-          bjzw: "无", //班级职位
-          bjdm: "1004001000",
-          rgh: "003",
-        },
+      stuList: [
+        // 
       ],
       //班干部列表查询
       getListBgb: [],
@@ -389,7 +340,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        cxly: "",
+        bjdm: "",
       },
       // 批量任命表单参数
       form: {
@@ -412,10 +363,12 @@ export default {
       },
     };
   },
-  created() {
-    // this.getList();
-  },
+//   created() {
+    
+//   },
   mounted() {
+    this.queryParams.bjdm = this.$route.query.bjdm;
+    this.table_title = this.$route.query.bjmc;
     console.log("班干部列表挂载");
     console.log("allStu_content:", this.$props.allStu_content);
     // 班干部职位筛选
@@ -425,15 +378,19 @@ export default {
         this.bjzwOptions = res.data.rows;
       }
     });
+    this.getList();
+    // this.getBgbListData()
 
   },
   methods: {
     // // 班干部查询列表
-    getList(x){
+    getList(){
       console.log("getList1!");
-      getQueryBgbList(x).then(res=>{
-        console.log("该班班干部查询结果：",res);
-      })
+      if (this.currentIndex == 0) {
+        this.getBgbListData()
+      }else if (this.currentIndex == 1) {
+        this.getStuList()
+      }
     },
     // 班干部任职记录
     studentRecord1() {
@@ -441,24 +398,59 @@ export default {
         path: "/class/leadRecord",
       });
     },
-    // //班干部列表刷新?
-    // getListBgb(x) {
-    //   getQueryBgbList(x).then((res) => {
-    //     console.log(res);
-    //     let data = res.rows;
-    //     this.queryBgbList = data;
-    //     console.log("test:", this.queryBgbList);
-    //   });
-    // },
-    //班干部列表
-    // getListBgb(x) {
-    //   getQueryBgbList(x).then((res) => {
-    //     console.log(res);
-    //     let data = res.rows;
-    //     this.queryBgbList = data;
-    //     console.log("test:", this.queryBgbList);
-    //   });
-    // },
+    // //班干部列表
+    getBgbListData() {
+
+      getQueryBgbList(this.queryParams).then((res) => {
+        console.log("该班班干部查询结果：",res);
+        let data = res.rows || [];
+        this.queryBgbList = data;
+        this.total = res.total
+        
+        console.log("test:", this.queryBgbList);
+      }).catch((err)=> {
+        console.log("该班班干部查询结果错误：",err)
+      });
+    },
+
+    // 获取全班学生数据
+    getStuList (){
+        getQueryAllstuList(this.queryParams).then((res) => {
+        console.log("该班学生查询结果：",res);
+        let data = res.rows || [];
+        this.stuList = data;
+        this.total = res.total
+        
+        // console.log("test:", this.stuList);
+      }).catch((err)=> {
+        console.log("该班学生查询结果错误：",err)
+      });
+    },
+
+    // 撤任班干部
+    handleCancel(item){
+        this.getCxlyData()
+        this.currentRowBgb = [item]
+        this.cancelAllocate = true
+    },
+
+    // 任命班干部
+    appointHandle(item){
+        this.currentRow = [item]
+        this.doubleAssign = true
+    },
+
+    // 获取撤任理由
+    getCxlyData (){
+        if (this.cxlyOptions.length == 0) {
+            getCxly().then((res) => {
+                console.log(res);
+                this.cxlyOptions = res.data.rows || [];
+                console.log("crlyOptions:", this.cxlyOptions);
+            });
+        }
+    },
+
     // 班干部批量撤任操作
     deleteSome() {
       getCxly().then((res) => {
@@ -466,7 +458,7 @@ export default {
         this.cxlyOptions = res.data.rows;
         console.log("crlyOptions:", this.cxlyOptions);
       });
-      this.cancelAllocate = "true";
+      this.cancelAllocate = true;
     },
     // 批量取消分配-确认操作
     cancelAllocateConfirm() {
@@ -477,11 +469,11 @@ export default {
     },
     // 批量撤任-二次确认按钮
     doubleCheckConfirm() {
-      this.doubleCheck = false;
+      
       console.log("批量撤任二次确认操作！");
       let xhList = []
       let cxlyList = []
-      let cxrgh = "22222222"
+      let cxrgh = this.$store.getters.userId
       console.log(this.currentRowBgb);
 
 
@@ -491,21 +483,19 @@ export default {
       }
 
       getBgbdismission({ xhList, cxlyList, cxrgh }).then((response) => {
-        console.log(response);
+        // console.log(response);
 
-        if(res.errcode == "00"){
-
-          //刷新班干部表格
-          // this.getList();
-          console.log(1);
-        }
+        this.$message({
+            message: "操作成功",
+            type: "success",
+        });
+        this.doubleCheck = false;
+        this.queryParams.pageNum = 1
+        this.getList()
 
       });
 
-      this.$message({
-        message: "批量撤任班干部操作成功",
-        type: "success",
-      });
+      
     },
     // 班干部批量任命
     actionAssignBgb(row) {
@@ -528,119 +518,44 @@ export default {
       let stuList = [];
       let bgbList = [];
       let classList = [];
-      let rgh = "222222222";
+      let rgh = his.$store.getters.userId;
 
       for (let item_row of this.currentRow) {
         stuList.push(item_row.xh);
         bgbList.push(this.form.bgbid);
         classList.push(this.currentBjdm);
-        // rgh.push(this.form.rmrgh)
       }
 
       getAssignBgb({ stuList, bgbList, classList, rgh }).then((res) => {
         console.log(res);
+            this.$message({
+                message: "任命成功",
+                type: "success",
+            });
+            this.doubleCheck = false;
+            this.queryParams.pageNum = 1
+            this.getList()
+      });
+      
+    },
 
-        if(res.errcode == "00"){
-          // console.log(1);
-          //刷新全班同学表格
-          this.getList(this.queryParams)
-        }
-      });
-      this.doubleAssign = false;
-      // this.$message({
-      //   message: "分配班干部成功",
-      //   type: "success",
-      // });
-    },
-    // 辅导员任命
-    operate() {
-      this.$router.push({
-        path: "/class/assignTea",
-      });
-    },
-    // 第一个对话框
-    // 分配班级
-    assignClass() {
-      this.openAssignClass = true;
-      this.title = "分配班级";
-    },
-    // 分配班级tips点击“确定”按钮
-    submitTips() {
-      this.$message({
-        message: "分配成功",
-        type: "success",
-      });
-      this.openAssignClass = false;
-    },
-    // 取消按钮关闭窗口
-    cancelTips() {
-      this.openAssignClass = false;
-      this.openCancelAssignClass = false;
-      this.openSecondCancelAssign = false;
-    },
-    // 第二个对话框
-    // 取消分配tips
-    cancelAssignClass() {
-      this.openCancelAssignClass = true;
-      this.title = "取消分配";
-    },
-    submitOut() {
-      this.openCancelAssignClass = false;
-      this.openSecondCancelAssign = true;
-    },
-    // 第三个对话框
-    submitOut2() {
-      this.openSecondCancelAssign = false;
-      this.title = "取消分配";
-      this.$message({
-        message: "取消分配成功",
-        type: "success",
-      });
-    },
+    
     // tab栏切换
     tabClick(index) {
       this.currentIndex = index;
+      this.queryParams.pageNum = 1
+
+      this.getList()
     },
-    /** 查询公告列表 */
-    getList() {
-      // this.loading = true;
-      // listNotice(this.queryParams).then((response) => {
-      //   this.noticeList = response.rows;
-      //   this.total = response.total;
-      //   this.loading = false;
-      // });
-    },
+
     // 批量任命取消按钮
     cancelAssignBgb() {
       this.openAssignBgb = false;
-      this.reset();
     },
-    // 表单重置
-    reset() {
-      // this.form = {
-      //   noticeId: undefined,
-      //   noticeTitle: undefined,
-      //   noticeType: undefined,
-      //   noticeContent: undefined,
-      //   status: "0",
-      // };
-      // this.resetForm("form");
-    },
-    /** 搜索按钮操作 */
-    handleQuery() {
-      // this.queryParams.pageNum = 1;
-      // this.getList();
-    },
-    /** 重置按钮操作 */
-    resetQuery() {
-      // this.resetForm("queryForm");
-      // this.handleQuery();
-    },
+
+ 
     // 全班同学多选框选中数据
     handleSelectionChange(row) {
-      // this.ids = selection.map((item) => item.noticeId);
-      // this.single = selection.length != 1;
-      // this.multiple = !selection.length;
       console.log(row);
       // 选中的行数据
       this.currentRow = row;
@@ -650,63 +565,16 @@ export default {
       console.log(row);
       this.currentRowBgb = row;
     },
-    /** 新增按钮操作 */
-    handleAdd() {
-      // this.reset();
-      // this.open = true;
-      // this.title = "添加公告";
-    },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      // this.reset();
-      // const noticeId = row.noticeId || this.ids;
-      // getNotice(noticeId).then((response) => {
-      //   this.form = response.data;
-      //   this.open = true;
-      //   this.title = "修改公告";
-      // });
-    },
-    /** 提交按钮 */
-    submitForm: function () {
-      // this.$refs["form"].validate((valid) => {
-      //   if (valid) {
-      //     if (this.form.noticeId != undefined) {
-      //       updateNotice(this.form).then((response) => {
-      //         this.$modal.msgSuccess("修改成功");
-      //         this.open = false;
-      //         this.getList();
-      //       });
-      //     } else {
-      //       addNotice(this.form).then((response) => {
-      //         this.$modal.msgSuccess("新增成功");
-      //         this.open = false;
-      //         this.getList();
-      //       });
-      //     }
-      //   }
-      // });
-    },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      // const noticeIds = row.noticeId || this.ids;
-      // this.$modal
-      //   .confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项？')
-      //   .then(function () {
-      //     return delNotice(noticeIds);
-      //   })
-      //   .then(() => {
-      //     this.getList();
-      //     this.$modal.msgSuccess("删除成功");
-      //   })
-      //   .catch(() => {});
-    },
+
+
+
+    
   },
 };
 </script>
 
 <style scoped>
 .assign-table {
-  height: 100vh;
   background-color: #ffffff;
 }
 

@@ -111,7 +111,7 @@
                   >
                 </el-col>
                 <el-col :span="1.5">
-                  <el-button class="export">
+                  <el-button class="export" @click="handleExport">
                     <span class="iconfont icon-daochu-06"></span>
                     导出</el-button
                   >
@@ -382,6 +382,7 @@ import {
   getSyd,
   getMajors,
   getSex,
+  expStu,
 } from "@/api/class/divisionClass";
 
 export default {
@@ -458,6 +459,10 @@ export default {
           this.total = res.data.total;
         }
       });
+    },
+    handleExport() {
+      const data = this.queryParams;
+      expStu(data).then((res) => this.downloadFn(res, "分班管理名单", "xlsx"));
     },
     // 查询未分配学生列表数据
     getList1(queryParams) {

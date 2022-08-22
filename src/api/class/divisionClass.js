@@ -89,3 +89,13 @@ export function transformStuFromEmptyClass(query) {
         data: query
     })
 }
+
+ // 分班管理列表导出
+ export function expStu(data) {
+    return request({
+      url: '/class/excelTestStu',
+      method: 'post',
+      responseType: 'blob',
+      data: data
+    })
+  }

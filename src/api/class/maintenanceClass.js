@@ -73,3 +73,14 @@ export function deleteEmptyClass(query) {
         data: query
     })
 }
+// 班级管理列表导出
+export function expClass(data) {
+    return request({
+      url: '/class/excelTest',
+      method: 'post',
+      responseType: 'blob',
+      data: data
+    })
+  }
+
+ 

@@ -258,7 +258,7 @@
     <el-dialog title="批量任命班干部确认" :visible.sync="doubleAssign" width="50%">
       <template v-for="item in currentRow">
         <div :key="item.xh">
-          <span>确认任命【{{item.xh}}(学工号)】【{{item.xm}}】为{{table_title}}的班干部？</span>
+          <span>确认任命【{{item.xh}}(学工号)】【{{item.xm}}】为【{{table_title}}】的【{{item.bgbmc}}】？</span>
         </div>
       </template>
       
@@ -507,6 +507,19 @@ export default {
     assignBgbConfirm() {
       console.log("批量任命确认操作");
       this.openAssignBgb = false;
+      var bgbmc = ''
+      for (let index = 0; index < this.bjzwOptions.length; index++) {
+        const element = this.bjzwOptions[index];
+        if (this.form.bgbid == element.dm) {
+            bgbmc = element.mc
+            break
+        }
+      }
+         for (let x = 0; x < this.currentRow.length; x++) {
+            const item = this.currentRow[x];
+            item.bgbmc = bgbmc
+         }
+
       setTimeout(() => {
         this.doubleAssign = true;
       }, 500);

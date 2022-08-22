@@ -207,7 +207,7 @@
     </el-dialog>
     <!-- 批量任命对话框 -->
     <el-dialog
-      :title="title"
+      title="班干部任命"
       :visible.sync="openAssignBgb"
       width="800px"
       height="243px"
@@ -239,11 +239,11 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <!-- <el-col :span="12">
             <el-form-item label="人工号" prop="rmrgh">
               <el-input v-model="form.rmrgh"></el-input>
             </el-form-item>
-          </el-col>
+          </el-col> -->
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -267,7 +267,7 @@
         <!-- distributeClassConfirm(row) -->
         <el-button
           type="primary"
-          @click="doubleAssignConfirm(row)"
+          @click="doubleAssignConfirm()"
           class="confirm"
           >确 定</el-button
         >
@@ -437,7 +437,7 @@ export default {
     // 任命班干部
     appointHandle(item){
         this.currentRow = [item]
-        this.doubleAssign = true
+        this.openAssignBgb = true
     },
 
     // 获取撤任理由
@@ -518,7 +518,7 @@ export default {
       let stuList = [];
       let bgbList = [];
       let classList = [];
-      let rgh = his.$store.getters.userId;
+      let rgh = this.$store.getters.userId;
 
       for (let item_row of this.currentRow) {
         stuList.push(item_row.xh);
@@ -532,7 +532,7 @@ export default {
                 message: "任命成功",
                 type: "success",
             });
-            this.doubleCheck = false;
+            this.doubleAssign = false;
             this.queryParams.pageNum = 1
             this.getList()
       });

@@ -16,11 +16,6 @@
           >
             <el-option label="工号" value="gh" />
             <el-option label="姓名" value="xm" />
-            <!-- <el-option label="身份证号" value="sfzh" />
-            <el-option label="籍贯" value="jg" />
-            <el-option label="家庭住址" value="jtzz" />
-            <el-option label="毕业院校" value="byyx" />
-            <el-option label="家庭背景" value="jtbj" /> -->
           </el-select>
           <el-button
             slot="append"
@@ -38,17 +33,18 @@
       </div>
 
       <!-- 更多选择 -->
-      <div v-if="isMore" class="moreSelect">
+      <div v-show="isMore" class="moreSelect">
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">工作单位：</el-col>
           <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :obj-prop="workPlace"
-                @training="handleCheckAllWorkPlaceChange"
-                @checkedTraining="handleCheckedWorkPlaceChange"
-              />
-            </div>
+            <span>工作单位：</span>
+            <el-select v-model="workPlace" multiple placeholder="请选择">
+              <el-option
+                v-for="(item, index) in manageRegOps"
+                :key="index"
+                :label="item.name"
+                :value="item.code"
+              ></el-option>
+            </el-select>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
@@ -292,7 +288,24 @@ export default {
         gh: "",
         xm: "",
       },
-
+      manageRegOps: [
+        {
+          name: "jsjxy",
+          code: "1",
+        },
+        {
+          name: "2222",
+          code: "2",
+        },
+        {
+          name: "333",
+          code: "3",
+        },
+        {
+          name: "2244",
+          code: "4",
+        },
+      ],
       searchVal: "",
       select: "",
       isMore: false,
@@ -319,20 +332,7 @@ export default {
         ],
         isIndeterminate: true,
       },
-      workPlace: {
-        // 单位
-        checkAll: false,
-        choose: [],
-        checkBox: [
-          { mc: "软件学院", dm: "软件学院" },
-          { mc: "设计学院", dm: "设计学院" },
-          { mc: "文学院", dm: "文学院" },
-          { mc: "理学院", dm: "理学院" },
-          { mc: "工业设计", dm: "工业设计" },
-          { mc: "通信工程", dm: "通信工程" },
-        ],
-        isIndeterminate: true,
-      },
+      workPlace: [],
       tableData: [],
       tableDataDetail: [],
       multipleSelection: [],

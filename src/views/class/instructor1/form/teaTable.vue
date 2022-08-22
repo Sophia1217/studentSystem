@@ -79,6 +79,8 @@
 
 <script>
 import "@/assets/fonts/refresh/iconfont.css";
+import {getDeleteFdyRecords, getQueryRecords} from '@/api/class/instructor'
+
 export default {
   name: "teaTable", //辅导员管理
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
@@ -140,9 +142,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        noticeTitle: undefined,
-        createBy: undefined,
-        status: undefined,
+        bjdm: '',
       },
       // 表单参数
       form: {},
@@ -158,7 +158,7 @@ export default {
     };
   },
   created() {
-    // this.getList();
+    this.getList();
   },
   methods: {
     // 辅导员任命
@@ -169,12 +169,12 @@ export default {
     },
     /** 查询公告列表 */
     getList() {
-      // this.loading = true;
-      // listNotice(this.queryParams).then((response) => {
-      //   this.noticeList = response.rows;
-      //   this.total = response.total;
-      //   this.loading = false;
-      // });
+      this.loading = true;
+      getQueryRecords(this.queryParams).then((response) => {
+        this.noticeList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
     },
     // 取消按钮
     cancel() {
@@ -246,17 +246,17 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      // const noticeIds = row.noticeId || this.ids;
-      // this.$modal
-      //   .confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项？')
-      //   .then(function () {
-      //     return delNotice(noticeIds);
-      //   })
-      //   .then(() => {
-      //     this.getList();
-      //     this.$modal.msgSuccess("删除成功");
-      //   })
-      //   .catch(() => {});
+      const noticeIds = row.noticeId || this.ids;
+      this.$modal
+        .confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项？')
+        .then(function () {
+          return getDeleteFdyRecords(noticeIds);
+        })
+        .then(() => {
+          this.getList();
+          this.$modal.msgSuccess("删除成功");
+        })
+        .catch(() => {});
     },
   },
 };

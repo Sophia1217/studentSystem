@@ -233,7 +233,7 @@ import "@/assets/fonts/person/iconfont.css";
 import assignSearch from "../form/assignSearch.vue";
 import assignTable from "../form/assignTable.vue";
 
-import { getPlacementPageList, getAssignFdy } from "@/api/class/instructor";
+import { getPlacementPageList, getAssignFdy, getRemoveAssignFdy} from "@/api/class/instructor";
 export default {
   name: "assignTea", //分配辅导员
   components: {
@@ -365,7 +365,7 @@ export default {
     // 分配班级tips点击“确定”按钮
     submitTips() {
       console.log("分配班级确认！");
-      getAssignFdy({ bjdm:this.bjdm, fdyList:this.fdyList, rmrgh:this.rmrgh, rmsj:this.rmsj }).then((res) => {
+      getAssignFdy({ cxrGh:this.cxrGh, bjdm:this.bjdm, FdyList:this.FdyList, crly:this.crly, cxsj:this.cxsj }).then((res) => {
         console.log(res);
       });
       this.$message({
@@ -380,6 +380,18 @@ export default {
       this.openCancelAssignClass = false;
       this.openSecondCancelAssign = false;
     },
+
+    // 撤销辅导员第一个对话框
+    // 撤销辅导员
+    allocateNone(row) {
+      // this.openCancelAssignClass = true;
+      this.title = "分配班级";
+      console.log("分配班级信息：", row);
+      this.bjdm = this.$route.query.bjdm;
+      this.fdyList.push(row.gh);
+      this.rmrgh = "2005690002";
+      this.rmsj = "2020-09-09 00:00:00";
+    },
     // 第二个对话框
     // 取消分配tips
     cancelAssignClass() {
@@ -390,10 +402,16 @@ export default {
       this.openCancelAssignClass = false;
       this.openSecondCancelAssign = true;
     },
-    // 第三个对话框
+    // 第三个对话框,撤销二次确认
     submitOut2() {
       this.openSecondCancelAssign = false;
       this.title = "取消分配";
+
+      console.log("取消分配二次确认！");
+      getRemoveAssignFdy({ bjdm:this.bjdm, fdyList:this.fdyList, rmrgh:this.rmrgh, rmsj:this.rmsj }).then((res) => {
+        console.log(res);
+      });
+
       this.$message({
         message: "取消分配成功",
         type: "success",

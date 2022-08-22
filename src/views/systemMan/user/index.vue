@@ -47,6 +47,8 @@
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
+              label='roleId'
+              name='roleName'
                 :objProp="studentStatus"
                 @training="studentStatusAll"
                 @checkedTraining="studentStatusCheck"
@@ -108,9 +110,10 @@
           <el-table-column prop="roleState" label="用户状态" sortable>
             <template slot-scope="scope">
               <el-switch
-                v-model="scope.row.roleState"
+                v-model="scope.row.isUse"
                 active-color="#23AD6F"
                 inactive-color="#E0E0E0"
+                @change='onSwitchChange(scope.row)'
               ></el-switch>
             </template>
           </el-table-column>
@@ -141,8 +144,9 @@
 
 <script>
 import CheckboxCom from "../../components/checkboxCom";
-import { queryUserPageList } from "@/api/systemMan/user";
+import {queryDataAuth, queryUserPageList ,disableUser} from "@/api/systemMan/user";
 import { queryRoleList } from "@/api/systemMan/role";
+import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
   name: "user",
   components: { CheckboxCom },
@@ -156,17 +160,17 @@ export default {
         checkAll: false,
         choose: [],
         checkBox: [
-          { label: "软件学院", val: 1 },
-          { label: "设计学院", val: 2 },
-          { label: "文学院", val: 3 },
-          { label: "理学院", val: 4 },
-          { label: "工业设计", val: 5 },
-          { label: "通信工程", val: 6 },
-          { label: "电子信息", val: 7 },
-          { label: "建筑工程", val: 8 },
-          { label: "统计学", val: 9 },
-          { label: "工业设计", val: 10 },
-          { label: "统计学", val: 11 },
+        //   { label: "软件学院", val: 1 },
+        //   { label: "设计学院", val: 2 },
+        //   { label: "文学院", val: 3 },
+        //   { label: "理学院", val: 4 },
+        //   { label: "工业设计", val: 5 },
+        //   { label: "通信工程", val: 6 },
+        //   { label: "电子信息", val: 7 },
+        //   { label: "建筑工程", val: 8 },
+        //   { label: "统计学", val: 9 },
+        //   { label: "工业设计", val: 10 },
+        //   { label: "统计学", val: 11 },
         ],
         isIndeterminate: true,
       },
@@ -175,11 +179,11 @@ export default {
         checkAll: false,
         choose: [],
         checkBox: [
-          { label: "校级领导用户", val: 1 },
-          { label: "业务部门人员", val: 2 },
-          { label: "培养单位负责人", val: 3 },
-          { label: "培养单位本研学生工作负责人", val: 4 },
-          { label: "辅导员", val: 5 },
+        //   { label: "校级领导用户", val: 1 },
+        //   { label: "业务部门人员", val: 2 },
+        //   { label: "培养单位负责人", val: 3 },
+        //   { label: "培养单位本研学生工作负责人", val: 4 },
+        //   { label: "辅导员", val: 5 },
         ],
         isIndeterminate: true,
       },
@@ -187,10 +191,7 @@ export default {
         // 姓别
         checkAll: false,
         choose: [],
-        checkBox: [
-          { label: "男", val: 1 },
-          { label: "女", val: 2 },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
       tableData: [],
@@ -204,19 +205,65 @@ export default {
     };
   },
 
-  created() {
-    this.handleSearch();
-  },
+    mounted (){
+        // this.handleSearch();
+        this.getCode('dmxbm') // 获取性别
+        this.getqueryRoleList() // 获取角色
+        this.getOrg() // 获取单位
+    },
+
   activated() {
     this.handleSearch();
   },
   methods: {
+
+    // 获取单位
+    getOrg (){
+        let data = { 
+            userId: this.$store.getters.userId, 
+            roleId: this.$store.getters.roleId ,
+            type : '0',
+        };
+        queryDataAuth(data) 
+            .then((res) => {
+                // console.log('操作人返回学院列表',res);
+                var  resData = res.data.rows || [];
+                for (let x = 0; x < resData.length; x++) {
+                    resData[x].dm = resData[x].dwdm;
+                    resData[x].mc = resData[x].dwmc;
+                } 
+                this.$set(this.learnHe, "checkBox", resData);
+            })
+            .catch((err) => {
+                // console.log('操作人返回学院列表失败',err,data);
+            });
+    },
+    // 查询性别代码
+    getCode(paramsData) {
+      let data = { codeTableEnglish: paramsData };
+      getCodeInfoByEnglish(data)
+        .then((res) => {
+          switch (paramsData) {
+            case "dmxbm":
+              this.$set(this.ethnic, "checkBox", res.data);
+              break;
+            
+          }
+        })
+        .catch((err) => {});
+    },
     // 获取用户角色
     getqueryRoleList() {
-      let data = { roleId: "01" };
+      let data = { roleId: this.$store.getters.roleId};
       queryRoleList(data)
         .then((res) => {
-          this.checkboxWrap = res.data.rows;
+          var checkboxWrap = res.data.rows || [];
+            for (let index = 0; index < checkboxWrap.length; index++) {
+                const element = checkboxWrap[index];
+                element.dm = element.roleId
+                element.mc = element.roleName
+            }
+          this.$set(this.studentStatus, "checkBox", res.data.rows);
         })
         .catch((res) => {});
     },
@@ -241,9 +288,24 @@ export default {
             data.yddh = this.searchVal
         }
 
+        var xbsz = this.ethnic.choose || []
+        data.sexTypes = xbsz.join(',')
+
+        var jssz = this.studentStatus.choose || []
+        data.childRoleIds = jssz.join(',')
+
+        var dwsz = this.learnHe.choose || []
+        data.organizationCodes = dwsz.join(',')
+
       queryUserPageList(data)
         .then((res) => {
-          this.tableData = res.rows;
+            var rows = res.rows || []
+            for (let index = 0; index < rows.length; index++) {
+            const element = rows[index];
+            element.isUse = element.isUse == '0' ? true : false
+            element.roleNames ?  ()=>{} : element.roleNames = '校友'
+          }
+          this.tableData = rows;
           this.queryParams.total = res.totalCount;
         })
         .catch((err) => {});
@@ -310,11 +372,52 @@ export default {
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      console.log(this.multipleSelection);
+    //   console.log(this.multipleSelection);
     },
 
     handleCommand(command) {
-      this.$message("click on item " + command);
+    //   this.$message("click on item " + command);
+      console.log(command);
+      var selectedArr = this.multipleSelection || []
+      if (selectedArr.length == 0) {
+            this.$message({
+                message : '请至少选择一个用户',
+                type: 'warning'
+            })
+            return
+      }
+        var userArr = []
+        for (let index = 0; index < selectedArr.length; index++) {
+            const element = selectedArr[index];
+            userArr.push(element.userId)
+        }
+
+      let param = {
+            userIdList:userArr,
+            isUse : command == open ? '0':'1'
+        };
+      disableUser(param).then((res)=>{
+        for (let i = 0; i < selectedArr.length; i++) {
+            const item = selectedArr[index];
+            item.isUse = command == open ? true: false
+        }
+      }).catch(()=>{
+
+      })
+    },
+
+    // 用户状态改变
+    onSwitchChange (user){
+        console.log('用户状态改变',user,user.isUse)
+        let param = {
+            userIdList:[user.userId],
+            isUse : user.isUse ? '0':'1'
+        };
+        disableUser(param).then((res)=>{
+            console.log('用户状态接口',res)
+        }).catch(()=>{
+            user.isUse = !user.isUse
+        })
     },
     // 数据权限
     handlePermiss(row) {
@@ -333,6 +436,7 @@ export default {
 
 <style lang="scss" scoped>
 .manUser {
+    background-color: #fff;
   .mt15 {
     margin-top: 15px;
   }
@@ -395,7 +499,7 @@ export default {
   }
 
   .tableWrap {
-    background: #fff;
+    // background: red;
     padding: 20px;
 
     .headerTop {

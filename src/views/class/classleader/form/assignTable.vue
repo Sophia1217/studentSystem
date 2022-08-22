@@ -429,12 +429,12 @@ export default {
   },
   methods: {
     // // 班干部查询列表
-    // getList(x){
-    //   console.log("getList1!");
-    //   getQueryBgbList(x).then(res=>{
-    //     console.log("该班班干部查询结果：",res);
-    //   })
-    // },
+    getList(x){
+      console.log("getList1!");
+      getQueryBgbList(x).then(res=>{
+        console.log("该班班干部查询结果：",res);
+      })
+    },
     // 班干部任职记录
     studentRecord1() {
       this.$router.push({
@@ -451,14 +451,14 @@ export default {
     //   });
     // },
     //班干部列表
-    getListBgb(x) {
-      getQueryBgbList(x).then((res) => {
-        console.log(res);
-        let data = res.rows;
-        this.queryBgbList = data;
-        console.log("test:", this.queryBgbList);
-      });
-    },
+    // getListBgb(x) {
+    //   getQueryBgbList(x).then((res) => {
+    //     console.log(res);
+    //     let data = res.rows;
+    //     this.queryBgbList = data;
+    //     console.log("test:", this.queryBgbList);
+    //   });
+    // },
     // 班干部批量撤任操作
     deleteSome() {
       getCxly().then((res) => {

@@ -79,7 +79,7 @@
           >
         </el-col>
         <el-col :span="1.5">
-          <el-button class="export">
+          <el-button class="export" @click="handleExport">
             <span class="iconfont icon-daochu-06"></span>
             导出班级名单</el-button
           >
@@ -255,6 +255,7 @@ import {
   getGrade,
   addClass,
   deleteEmptyClass,
+  expClass,
 } from "@/api/class/maintenanceClass"; // 引入班级列表查询、修改班级名称接口
 
 export default {
@@ -353,6 +354,10 @@ export default {
         }
       });
     },
+    handleExport() {
+      const data = this.queryParams;
+      expClass(data).then((res) => this.downloadFn(res, "班级名单", "xlsx"));
+    },
     getOptions() {
       this.collegeOptions = [];
       this.levelOptions = [];
@@ -404,6 +409,7 @@ export default {
       this.open = false;
       this.reset();
     },
+
     // 表单重置
     reset() {
       this.form = {

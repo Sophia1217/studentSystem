@@ -55,6 +55,15 @@ export function updateDataAuth(data) {
   })
 }
 
+// 停用用户
+export function disableUser(data) {
+    return request({
+      url: '/manager/user/cancer',
+      method: 'post',
+      data: data
+    })
+}
+
 // 删除用户角色
 export function deleteRole(data) {
     return request({
@@ -62,4 +71,4 @@ export function deleteRole(data) {
       method: 'post',
       data: data
     })
-  }
+}

@@ -75,7 +75,7 @@
         <div class="title" icon="el-icon-refresh">
           <span class="title-item">班级列表</span>
           <span class="iconfont">&#xe631;</span>
-          <el-row :gutter="10" class="mb8" style="float: right">
+          <!-- <el-row :gutter="10" class="mb8" style="float: right">
             <el-col :span="1.5">
               <el-button
                 @click="empRecordClick"
@@ -86,7 +86,7 @@
                 任职记录</el-button
               >
             </el-col>
-          </el-row>
+          </el-row> -->
         </div>
         <!-- v-loading="loading" -->
         <el-table :data="noticeList" @selection-change="handleSelectionChange">
@@ -135,9 +135,28 @@
             class-name="small-padding fixed-width"
           >
             <template slot-scope="scope">
-              <div @click="assignTea(scope.row)" class="operate">
-                <span class="assignTea">分配辅导员</span>
+              <div >
+                <!-- @click="assignTea(scope.row)" class="operate" -->
+                <!-- <span class="assignTea">分配辅导员</span> -->
+                <span class="iconfont allocate_teacher" @click="assignTea(scope.row)"
+              >&#xe638;</span
+            >
+            <span
+              style="color: #005657; margin-left: 5px; margin-right: 5px"
+              @click="assignTea(scope.row)"
+            >
+              分配辅导员
+            </span>
               </div>
+              <span
+              class="iconfont record_icon"
+              style="margin-left: 5px"
+              @click="empRecordClick(scope.row)"
+              >&#xe694;</span
+            >
+            <span style="color: #005657" @click="empRecordClick(scope.row)">
+              任职记录
+            </span>
             </template>
           </el-table-column>
         </el-table>
@@ -156,6 +175,7 @@
 </template>
 
 <script>
+import "@/assets/fonts/person/iconfont.css";
 import {
   classList,
   modifyClassName,
@@ -255,7 +275,11 @@ export default {
     },
     // 任职记录
     empRecordClick() {
-      this.$router.push("/class/empRecord");
+      this.$router.push(
+      {
+        path: "/class/empRecord",
+        query: { bjdm: row.bjdm },
+    });
     },
     /** 查询公告列表 */
     // getList() {

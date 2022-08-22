@@ -189,9 +189,9 @@ export default {
     handleSearch() {
       let data = {
         xm: this.select == "xm" ? this.searchVal : "",
-        gh: this.select == "xh" ? this.searchVal : "",
-        sfzjh: this.select == "xh" ? this.searchVal : "",
-        yddh: this.select == "xh" ? this.searchVal : "",
+        gh: this.select == "gh" ? this.searchVal : "",
+        sfzjh: this.select == "sfzjh" ? this.searchVal : "",
+        yddh: this.select == "yddh" ? this.searchVal : "",
         jg: this.queryParams.jg,
         byyx: this.queryParams.byyx,
         zybj: this.queryParams.zybj,

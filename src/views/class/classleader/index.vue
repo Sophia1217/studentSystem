@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form
       :model="queryParams"
-      ref="queryForm"
+      ref="queryParams"
       size="small"
       :inline="true"
       v-show="showSearch"
@@ -34,7 +34,7 @@
             v-for="(item, index) in gradeOptions"
             :key="index"
             :label="item"
-            :value="index"
+            :value="item"
           />
         </el-select>
       </el-form-item>
@@ -51,7 +51,7 @@
           @click="handleQuery"
           >查询</el-button
         >
-        <el-button size="mini" @click="resetQuery" class="reset">
+        <el-button size="mini" @click="resetQuery('queryParams')" class="reset">
           <span class="iconfont reset_icon">&#xe614;</span>
           重置</el-button
         >
@@ -198,49 +198,37 @@ export default {
   methods: {
     getList(data = {}) {
       var data = this.queryParams;
+      console.log("data", data);
       classList(data).then((response) => {
         // 获取班级列表数据
         this.noticeList = response.data.rows; // 根据状态码接收数据
         this.total = response.data.total;
-        //  this.loading = false;
       });
     },
     getOptions() {
       getCollege().then((response) => {
         // 获取培养单位列表数据
         this.collegeOptions = response.data.rows;
-        //  this.loading = false;
       });
       getLevel().then((response) => {
         // 获取培养层次列表数据
-        console.log(response);
         this.levelOptions = response.data.rows;
       });
       getGrade().then((response) => {
         // 获取年级列表数据
-        console.log(response);
         this.gradeOptions = response.data.rows;
-        console.log("年级",this.gradeOptions);
       });
     },
     // 查询按钮
     handleQuery() {
-      console.log("查询按钮");
       this.getList(this.queryParams);
-      // getQueryBgbList({bjdm:this.queryParams.bjdm,pageNum: 1, pageSize: 10}).then(res=>{
-      //   console.log(res);
-      // })
     },
     // 重置按钮
-    resetQuery() {
-      console.log("重置按钮执行");
+    resetQuery(queryForm) {
+      this.$refs[queryForm].resetFields();
     },
     // 多选框选中数据
-    handleSelectionChange(selection) {
-      // this.ids = selection.map((item) => item.noticeId);
-      // this.single = selection.length != 1;
-      // this.multiple = !selection.length;
-    },
+    handleSelectionChange(selection) {},
     // 班干部任命
     leaderAssign(row) {
       this.$router.push({

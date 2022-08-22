@@ -36,11 +36,11 @@ module.exports = {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
         // target: `http://10.161.11.70:8080`,
-<<<<<<< HEAD
+
         //target: `http://10.161.26.133:8081`, //杨瑞
-=======
+
         // target: `http://10.161.26.133:8081`, //杨瑞
->>>>>>> 467bdfc47f3e81f6e7c53a69e43b24e122df68a7
+
         // target: `http://10.161.9.97:8081`, //凯文
         // target: `http://10.161.17.174:8081`, //芦晨
         // target: `http://10.161.23.133:8081`, // 黄聪

@@ -316,23 +316,31 @@
       <el-form ref="form" :model="form" label-width="80px">
         <el-row class="change_row">
           <el-col :span="10">
-            <el-form-item label="当前班级">
-              <el-input :placeholder="$route.query.bjmc" disabled />
+            <el-form-item label="当前学院">
+              <el-input :placeholder="$route.query.pydwmc" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="班级编号">
-              <el-input :placeholder="$route.query.bjdm" disabled> </el-input>
+            <el-form-item label="培养层次">
+              <el-input :placeholder="$route.query.pyccName" disabled>
+              </el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row class="change_row">
           <el-col :span="10">
-            <el-form-item label="当前学院">
-              <el-input :placeholder="$route.query.pydwmc" disabled />
+            <el-form-item label="班级编号">
+              <el-input :placeholder="$route.query.bjdm" disabled> </el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="10" class="in_class" prop="inClass">
+          <el-col :span="10">
+            <el-form-item label="当前班级">
+              <el-input :placeholder="$route.query.bjmc" disabled />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row class="change_row">
+          <el-col :span="22" class="in_class" prop="inClass">
             <el-form-item label="转入班级">
               <el-select v-model="form.inClass" placeholder="未选择">
                 <el-option
@@ -350,22 +358,6 @@
         <el-button class="cancel_btn" @click="open = false">取消</el-button>
         <el-button class="submit_btn" @click="outClass">确认</el-button>
       </div>
-    </el-dialog>
-
-    <!-- 转入班级对话框 -->
-    <el-dialog title="调入班级" :visible.sync="visible" width="30%">
-      <!--  :before-close="handleClose" -->
-      <span
-        >是否确认从空班级调入？该生的调入班级为【{{
-          $route.query.pyccName
-        }}】【{{ $route.query.bjdm }}】 {{ $route.query.bjmc }}</span
-      >
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="visible = false">取消</el-button>
-        <el-button type="primary" @click="deleteConfirm" class="confirm"
-          >确定</el-button
-        >
-      </span>
     </el-dialog>
   </div>
 </template>
@@ -538,7 +530,7 @@ export default {
       }
     },
     // 多选框选中数据
-    handleSelectionChange(arr) {
+    handleSelectionChange(arr, index) {
       this.list = [...arr]; // 存储已被勾选的数据
     },
     /** 调整班级操作 */
@@ -562,40 +554,34 @@ export default {
       }
       // 从空班级调入
       else {
-        // 弹出调出空班级弹出框
-        this.dialogVisible = true;
-      }
-
-      this.title = "调整班级";
-    },
-    // 从空班级调出确定按钮操作
-    deleteConfirm() {
-      // 调整参数
-      const arr = [];
-      this.list.forEach((item) => {
-        arr.push(item.xh);
-      });
-      transformStuFromEmptyClass({
-        stuXhList: arr,
-        bjdm: this.$route.query.bjdm,
-      }).then((response) => {
-        // 调入成功
-        this.visible = false;
-        if (response.flag == true) {
-          this.$message({
-            message: "调入班级成功",
-            type: "success",
+        if (this.list.length > 0) {
+          var arr = [];
+          this.list.forEach((item) => {
+            arr.push(item.xh);
           });
-          // 重新请求未分配学生列表数据
-          this.getList1(this.queryParams1);
+          var data = {
+            stuXhList: arr,
+            bjdm: this.$route.query.bjdm,
+          };
+          transformStuFromEmptyClass(data).then((res) => {
+            if (res.flag) {
+              this.$message({
+                message: "调入班级成功",
+                type: "success",
+              });
+              this.getList1(this.queryParams1);
+            } else {
+              this.$message({
+                message: "调入班级失败",
+                type: "error",
+              });
+            }
+          });
         } else {
-          this.$message({
-            message: "调入班级失败",
-            type: "error",
-          });
+          this.$message.error("至少勾选一条数据");
         }
-      });
-      this.list = []; // 重新置空多选框选中的数据
+      }
+      this.title = "调整班级";
     },
     // 将页签1的学生转入某一班级——确认操作
     outClass() {

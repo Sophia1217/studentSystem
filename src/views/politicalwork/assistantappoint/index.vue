@@ -16,7 +16,6 @@
           >
             <el-option label="工号" value="1" />
             <el-option label="姓名" value="2" />
-            <!-- <el-option label="带班状态" value="3" /> -->
           </el-select>
           <el-button
             slot="append"
@@ -132,9 +131,6 @@
                 <i class="scopeIncon handledie" />
                 <span class="handleName">详情</span>
               </el-button>
-              <!-- <el-button type="text" size="small" @click="hadleDetail(scope.row,2)">
-                <i class="scopeIncon handleEdit" /> <span class="handleName">编辑</span>
-              </el-button> -->
             </template>
           </el-table-column>
         </el-table>
@@ -191,7 +187,8 @@
     </el-dialog>
     <!-- 导入确认对话框 -->
     <el-dialog :title="title" :visible.sync="openInputSure" width="30%">
-      <span>确认任命辅导员身份？</span>
+      <span>确认任命【{{ form.gh }}】【{{ form.name }}】辅导员身份？</span>
+
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialog3Cancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="addAssistant"
@@ -393,12 +390,31 @@ export default {
     },
     getOption() {
       this.gzdwOptions = [];
-      getGzdw().then((res) => {
-        if (res.errcode == "00") {
-          this.gzdwOptions = res.data.rows;
-        }
-        console.log(res);
-      });
+      getGzdw()
+        .then((res) => {
+          if (res.errcode == "00") {
+            this.gzdwOptions = res.data.rows;
+          }
+          console.log(res);
+        })
+        .catch((err) => {
+          //this.$message.error(err.errmsg);
+        });
+    },
+    //获取数据列表
+    getList(queryParams) {
+      //Object.assign(queryParams, this.queryParams);
+      fdyList(queryParams)
+        .then((response) => {
+          //console.log(response);
+          if (response.errcode == "00") {
+            this.basicInfoList = response.resList; // 根据状态码接收数据
+            this.total = response.count; //总条数
+          }
+        })
+        .catch((err) => {
+          // this.$message.error(err.errmsg);
+        });
     },
     //批量免去对话框关闭
     dialogCancel() {
@@ -430,7 +446,7 @@ export default {
     handleCheckAllCategoryChange(val) {
       const allCheck = [];
       for (const i in this.category.checkBox) {
-        allCheck.push(this.category.checkBox[i].val);
+        allCheck.push(this.category.checkBox[i].dm);
       }
       this.category.choose = val ? allCheck : [];
       console.log(this.category.choose, "全选");
@@ -448,7 +464,7 @@ export default {
     handleCheckAllSexChange(val) {
       const allCheck = [];
       for (const i in this.sex.checkBox) {
-        allCheck.push(this.sex.checkBox[i].val);
+        allCheck.push(this.sex.checkBox[i].dm);
       }
       this.sex.choose = val ? allCheck : [];
       console.log(this.sex.choose, "全选");
@@ -472,7 +488,7 @@ export default {
     handleCheckAllStatusChange(val) {
       const allCheck = [];
       for (const i in this.status.checkBox) {
-        allCheck.push(this.status.checkBox[i].val);
+        allCheck.push(this.status.checkBox[i].dm);
       }
       this.status.choose = val ? allCheck : [];
       console.log(this.status.choose, "全选");
@@ -506,12 +522,16 @@ export default {
         genderList: this.sex.choose,
         sfdbList: this.status.choose,
       };
-      outAssistant(data).then((res) => {
-        // if (res.errcode == "00") {
-        //console.log(res);
-        this.downloadFn(res, "辅导员任命导出", "xlsx");
-        //}
-      });
+      outAssistant(data)
+        .then((res) => {
+          // if (res.errcode == "00") {
+          //console.log(res);
+          this.downloadFn(res, "辅导员任命导出", "xlsx");
+          //}
+        })
+        .catch((err) => {
+          //this.$message.error(err.errmsg);
+        });
     },
     //批量移除
     rmAssistant() {
@@ -524,11 +544,15 @@ export default {
         ghList: ghlist,
       };
       console.log(data);
-      removeMoreAssistant(data).then((res) => {
-        if (res.errcode == "00") {
-          console.log(res);
-        }
-      });
+      removeMoreAssistant(data)
+        .then((res) => {
+          if (res.errcode == "00") {
+            console.log(res);
+          }
+        })
+        .catch((err) => {
+          //this.$message.error(err.errmsg);
+        });
       this.getList(this.queryParams);
     },
     //导入信息
@@ -542,11 +566,15 @@ export default {
       let data = {
         ghList: ghlist,
       };
-      addOneAssistant(data).then((res) => {
-        if (res.errcode == "00") {
-          console.log(res);
-        }
-      });
+      addOneAssistant(data)
+        .then((res) => {
+          if (res.errcode == "00") {
+            console.log(res);
+          }
+        })
+        .catch((err) => {
+          //this.$message.error(err.errmsg);
+        });
       this.reset();
       this.getList(this.queryParams);
     },
@@ -557,23 +585,16 @@ export default {
       let ghdata = {
         gh: row.gh,
       };
-      lookDetail(ghdata).then((res) => {
-        if (res.errcode == "00") {
-          //console.log(res);
-          this.tableData = res.assistantDetailRes;
-        }
-      });
-    },
-    //获取数据列表
-    getList(queryParams) {
-      //Object.assign(queryParams, this.queryParams);
-      fdyList(queryParams).then((response) => {
-        //console.log(response);
-        if (response.errcode == "00") {
-          this.basicInfoList = response.resList; // 根据状态码接收数据
-          this.total = response.count; //总条数
-        }
-      });
+      lookDetail(ghdata)
+        .then((res) => {
+          if (res.errcode == "00") {
+            //console.log(res);
+            this.tableData = res.assistantDetailRes;
+          }
+        })
+        .catch((err) => {
+          // this.$message.error(err.errmsg);
+        });
     },
 
     /** 导入按钮操作 */

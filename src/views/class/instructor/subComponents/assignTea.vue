@@ -11,9 +11,9 @@
         class="table-header"
       >
         <div class="assignInput">
-          <el-form-item label="工号" prop="Xgh" class="header-item">
+          <el-form-item label="工号" prop="xgh" class="header-item">
             <el-input
-              v-model="queryParams.Xgh"
+              v-model="queryParams.xgh"
               placeholder="请输入工号"
               clearable
               @keyup.enter.native="handleQuery"
@@ -272,10 +272,10 @@ export default {
       queryParams: {
         pageNum: 1, // 默认请求第一页数据
         pageSize: 10, // 默认一页10条数据
-        Xgh: "", // 学工号
-        Xy: "", // 学员代码
-        Xm: "", // 姓名
-        Bjdm: this.$route.query.bjdm, // 班级编号
+        xgh: "", // 学工号
+        xy: "", // 学员代码
+        xm: "", // 姓名
+        bjdm: this.$route.query.bjdm, // 班级编号
       },
       // 班级代码
       bjdm: "", //班级代码

@@ -109,9 +109,10 @@
                     accept=".xlsx,.xls"
                     :auto-upload="true"
                     :action="uploadUrl"
-                    :on-change="sc"
                     :show-file-list="false"
                     :data="fileData"
+                    :on-success='upLoadSuccess'
+                    :on-error='upLoadError'
                   >
                     <el-button class="export"> 导入</el-button>
                   </el-upload>
@@ -463,32 +464,27 @@ export default {
     this.getOptions(); // 获取生源地、专业、性别筛选框数据
   },
   methods: {
-    sc(file, fileList) {
-    //     console.log('1111111',file,fileList)
-    //     return
-    //   this.fileTemp = file.raw;
-    //   let fileName = file.raw.name;
-    //   let fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
-    //   if (this.fileTemp) {
-    //     if (fileType == "xlsx" || fileType == "xls") {
-    //       var data = {
-    //         file: this.fileTemp,
-    //         classNum: this.$route.query.bjdm,
-    //       };
-    //       console.log("data", data);
-    //       importtable(data).then(() => console.log("asdasd"));
-    //     } else {
-    //       this.$message({
-    //         type: "warning",
-    //         message: "附件格式错误，请删除后重新上传！",
-    //       });
-    //     }
-    //   } else {
-    //     this.$message({
-    //       type: "warning",
-    //       message: "请上传附件！",
-    //     });
-    //   }
+    upLoadSuccess (res,file,fileList){
+        if (res.errcode == '00') {
+            this.$message({
+                type: "success",
+                message: res.errmsg,
+            });
+        }else {
+            this.$message({
+                type: "error",
+                message: res.errmsg,
+            });
+        }
+    },
+    
+    upLoadError (err,file,fileList){
+        
+            this.$message({
+                type: "error",
+                message: '上传失败',
+            });
+        
     },
     mbDown() {
       mbDown().then((res) => this.downloadFn(res, "标准模板下载", "xlsx"));

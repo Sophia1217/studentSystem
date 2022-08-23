@@ -43,7 +43,7 @@
           <el-col :span="8">
             <span>学 院：</span>
             <el-select
-              v-model="moreIform.manageReg"
+              v-model="moreIform.manageReg" multiple collapse-tags
               @change="changeXY"
               placeholder="请选择"
               size="small"
@@ -59,7 +59,7 @@
           <el-col :span="8">
             <span>专 业：</span>
             <el-select
-              v-model="moreIform.stuInfo"
+              v-model="moreIform.stuInfo" multiple collapse-tags
               placeholder="请选择"
               size="small"
             >
@@ -74,9 +74,7 @@
           <el-col :span="8">
             <span>班 级：</span>
             <el-select
-              v-model="moreIform.pread"
-              multiple
-              collapse-tags
+              v-model="moreIform.pread" multiple collapse-tags
               placeholder="请选择"
               size="small"
             >
@@ -307,9 +305,9 @@ export default {
       isMore: false,
       manageRegOps: [], // 学院下拉框
       moreIform: {
-        manageReg: "", // 学院
-        stuInfo: "", // 专业
-        pread: "", // 班级
+        manageReg: [], // 学院
+        stuInfo: [], // 专业
+        pread: [], // 班级
       },
       allDwh: [], // 学院下拉框
       zyOps: [], // 专业下拉
@@ -460,7 +458,8 @@ export default {
     },
     // 查询
     handleSearch() {
-      let csrqs, csrqe = ''
+      let csrqs = ''
+      let csrqe = ''
       if (this.datePicker && this.datePicker.length > 0) {
         csrqs = this.datePicker[0]
         csrqe = this.datePicker[1]
@@ -469,22 +468,22 @@ export default {
         xh: this.select == "xh" ? this.searchVal : "",
         xm: this.select == "xm" ? this.searchVal : "",
         sfzjh: this.select == "sfzjh" ? this.searchVal : "",
-        YDDH: this.select == "yddh" ? this.searchVal : "",
+        yddh: this.select == "yddh" ? this.searchVal : "",
         jg: this.select == 'jg' ? this.searchVal : "",
         csdm: this.select == 'csdm' ? this.searchVal : "",
         gjdqm: this.select == 'gjdqm' ? this.searchVal : "",
         xbm: this.dmxbmOPs.choose,
         csrqs: csrqs,
         csrqe:csrqe,
-        PYCCM: this.training.choose,
-        XZ: this.learnHe.choose,
-        NJ:this.njOps.choose,
-        XJZT: this.studentStatus.choose,
-        ZZMMM: this.politica.choose,
-        MZM: this.ethnic.choose,
-        BJM: this.moreIform.pread, // 班级
-        DWH: this.moreIform.manageReg, // 学院
-        ZYDM: this.moreIform.stuInfo, // 专业
+        pyccm: this.training.choose,
+        xz: this.learnHe.choose,
+        nj:this.njOps.choose,
+        xjzt: this.studentStatus.choose,
+        zzmmm: this.politica.choose,
+        mzm: this.ethnic.choose,
+        bjm: this.moreIform.pread, // 班级
+        dwh: this.moreIform.manageReg, // 学院
+        zydm: this.moreIform.stuInfo, // 专业
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         limitSql: "",

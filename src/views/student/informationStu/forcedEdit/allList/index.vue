@@ -43,7 +43,7 @@
           <el-col :span="8">
             <span>学 院：</span>
             <el-select
-              v-model="moreIform.manageReg"
+              v-model="moreIform.manageReg" multiple collapse-tags
               @change="changeXY"
               placeholder="请选择"
               size="small"
@@ -59,7 +59,7 @@
           <el-col :span="8">
             <span>专 业：</span>
             <el-select
-              v-model="moreIform.stuInfo"
+              v-model="moreIform.stuInfo" multiple collapse-tags
               placeholder="请选择"
               size="small"
             >
@@ -74,9 +74,7 @@
           <el-col :span="8">
             <span>班 级：</span>
             <el-select
-              v-model="moreIform.pread"
-              multiple
-              collapse-tags
+              v-model="moreIform.pread" multiple collapse-tags
               placeholder="请选择"
               size="small"
             >
@@ -557,7 +555,7 @@ export default {
     handleExport() {
       var data = this.multipleSelection;
       console.log(this.multipleSelection, "multipleSelection");
-      if (this.multipleSelection.length > 1) {
+      if (this.multipleSelection.length > 0) {
         forceAdd(data).then(() => this.$message("已成功添加强制修改名单"));
         this.$emit("changeActiveName");
       } else {

@@ -40,7 +40,7 @@
           <el-col :span="8">
             <span>学 院：</span>
             <el-select
-              v-model="moreIform.manageReg"
+              v-model="moreIform.manageReg" multiple collapse-tags
               @change="changeXY"
               placeholder="请选择"
               size="small"
@@ -56,7 +56,7 @@
           <el-col :span="8">
             <span>专 业：</span>
             <el-select
-              v-model="moreIform.stuInfo"
+              v-model="moreIform.stuInfo" multiple collapse-tags
               placeholder="请选择"
               size="small"
             >

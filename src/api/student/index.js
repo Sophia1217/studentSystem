@@ -206,9 +206,9 @@ export function getStuInfoFlowUpdatePage(data) {
 export function gradStu(data) {
   return request({
     url: '/export/gradStu',
-    method: 'get',
+    method: 'post',
     responseType: 'blob',
-    params: data
+    data: data
   })
 }
 
@@ -216,9 +216,9 @@ export function gradStu(data) {
 export function stuCard(data) {
   return request({
     url: '/export/stuCard',
-    method: 'get',
+    method: 'post',
     responseType: 'blob',
-    params: data
+    data: data
   })
 }
 
@@ -226,8 +226,8 @@ export function stuCard(data) {
 export function stuReg(data) {
   return request({
     url: '/export/regStuInfo',
-    method: 'get',
+    method: 'post',
     responseType: 'blob',
-    params: data
+    data: data
   })
 }

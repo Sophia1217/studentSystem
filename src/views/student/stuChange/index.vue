@@ -32,9 +32,9 @@
       <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20">
           <el-col :span="8">
-            <span>学 院：</span>
+            <span class="titleStyle">学 院：</span>
             <el-select
-              v-model="moreIform.manageReg"
+              v-model="moreIform.manageReg" multiple collapse-tags
               @change="changeXY"
               placeholder="请选择"
               size="small"
@@ -50,7 +50,7 @@
           <el-col :span="8">
             <span>专 业：</span>
             <el-select
-              v-model="moreIform.stuInfo"
+              v-model="moreIform.stuInfo" multiple collapse-tags
               placeholder="请选择"
               size="small"
             >
@@ -81,38 +81,77 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">原培养单位???：</el-col>
+          <el-col :span="8">
+            <span class="titleStyle">原培养单位：</span>
+            <el-select
+              v-model="moreIform.ydwh" multiple collapse-tags
+              @change="changeXY"
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="(item, index) in allDwh"
+                :key="index"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="8">
+            <span>原专业：</span>
+            <el-select
+              v-model="moreIform.yzydm" multiple collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="(item, index) in zyOps"
+                :key="index"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="8">
+            <span>原班级：</span>
+            <el-select
+              v-model="moreIform.ybh"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in bjOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
+          </el-col>
+        </el-row>
+        
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="3">原年级：</el-col>
           <el-col :span="20">
             <div class="checkbox">
+              <checkboxCom
+                :objProp="njOps"
+                @training="njAll"
+                @checkedTraining="njCheck"
+              ></checkboxCom>
             </div>
           </el-col>
         </el-row>
-
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">原专业???：</el-col>
+          <el-col :span="3">性别：</el-col>
           <el-col :span="20">
             <div class="checkbox">
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">原班级???：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">原年级???：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">性别???：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
+              <checkboxCom
+                :objProp="dmxbmOPs"
+                @training="dmxbmAll"
+                @checkedTraining="dmxbmCheck"
+              ></checkboxCom>
             </div>
           </el-col>
         </el-row>
@@ -245,9 +284,7 @@ export default {
       searchVal: "",
       select: "",
       isMore: false,
-      moreIform: {
-        value1: "",
-      },
+      moreIform: {},
       allDwh: [], // 学院下拉框
       zyOps: [], // 专业下拉
       bjOps:[], // 班级下拉
@@ -300,13 +337,20 @@ export default {
         checkBox: [],
         isIndeterminate: true,
       },
-      // changTitanic: {
-      //   //异动文号：
-      //   checkAll: false,
-      //   choose: [],
-      //   checkBox: [],
-      //   isIndeterminate: true,
-      // },
+      njOps: {
+        //年级：
+        checkAll: false,
+        choose: [],
+        checkBox: [],
+        isIndeterminate: true,
+      },
+      dmxbmOPs: {
+        // 性别：
+        checkAll: false,
+        choose: [],
+        checkBox: [],
+        isIndeterminate: true,
+      },
       datePicker: "",
       tableData: [],
       multipleSelection: [],
@@ -329,6 +373,7 @@ export default {
     this.getCode("dmzzmmm"); // 政治面貌
     this.getCode("dmxjydlbm"); // 异动类别
     this.getCode("dmxjydyym"); // 异动原因
+    this.getCode("dmxbm"); // 性别
     this.handleSearch();
   },
 
@@ -340,6 +385,9 @@ export default {
       }).catch(err=>{})
     },
     changeXY(val) {
+      if (typeof (val) == 'string') {
+        val = val.split(",")
+      }
       this.getZY(val)
       this.getBJ(val)
     },
@@ -385,9 +433,8 @@ export default {
             case "dmxjydyym":
               this.$set(this.changWhy, "checkBox", res.data);
               break;
-            case "一代文豪":
-              this.$set(this.changWhy, "checkBox", res.data);
-              break;
+            case 'dmxbm':
+              this.$set(this.dmxbmOPs, "checkBox", res.data);
           }
         })
         .catch((err) => {});
@@ -395,19 +442,35 @@ export default {
     getSpread() {
       getManageRegStuInfoSearchSpread()
         .then((res) => {
-          // console.log(res);
-          this.manageRegOps = res.data.dwhbj;
+          let nj = res.data.nj
+          let njops = []
+          for (let x = 0; x < nj.length; x++) {
+            if (nj[x]) {
+              njops.push({mc:nj[x],dm:nj[x]})
+            }
+          }
+          this.njOps.checkBox = njops;
         })
         .catch((err) => {});
     },
     // 查询
     handleSearch() {
+      let YDRQST, YDRQEND = ''
+      if (this.datePicker && this.datePicker.length > 0) {
+        YDRQST = this.datePicker[0]
+        YDRQEND = this.datePicker[1]
+      }
       let data = {
         xh: this.select == "xh" ? this.searchVal : "",
         xm: this.select == "xm" ? this.searchVal : "",
         SFZJH: this.select == "sfzjh" ? this.searchVal : "",
         YDDH: this.select == "yddh" ? this.searchVal : "",
         PYCCM: this.training.choose,
+        YDWH: this.moreIform.ydwh&&this.moreIform.ydwh.length>0?this.moreIform.ydwh.join(','):'', // 原培养单位
+        YZYDM: this.moreIform.yzydm&&this.moreIform.yzydm.length>0?this.moreIform.yzydm.join(','):'', // 原专业
+        YNJ: this.njOps.choose&&this.njOps.choose.length>0?this.njOps.choose.join(','):'', // 原年级
+        YBJ: this.moreIform.ybh&&this.moreIform.ybh.length>0?this.moreIform.ybh.join(','):'', // 原班级
+        XBM: this.dmxbmOPs.choose&&this.dmxbmOPs.choose.length>0?this.dmxbmOPs.choose.join(','):'', // 性别码
         XZ: this.learnHe.choose,
         XJZT: this.studentStatus.choose,
         ZZMMM: this.politica.choose,
@@ -419,6 +482,8 @@ export default {
         YDYY: this.changWhy.choose,
         spwh: this.select == 'spwh'?this.searchVal:'',
         YDRQ: this.datePicker,
+        YDRQST: YDRQST,
+        YDRQEND: YDRQEND,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         limitSql: "",
@@ -568,25 +633,41 @@ export default {
         checkedCount > 0 && checkedCount < this.changWhy.checkBox.length;
       // console.log(this.changWhy.choose, "单选");
     },
-    //异动文号全选
-    // changTitanicAll(val) {
-    //   let allCheck = [];
-    //   for (let i in this.changTitanic.checkBox) {
-    //     allCheck.push(this.changTitanic.checkBox[i].dm);
-    //   }
-    //   this.changTitanic.choose = val ? allCheck : [];
-    //   console.log(this.changTitanic.choose, "全选");
-    //   this.changTitanic.isIndeterminate = false;
-    // },
-    // // 异动文号：单选
-    // changTitanicCheck(value) {
-    //   let checkedCount = value.length;
-    //   this.changTitanic.checkAll =
-    //     checkedCount === this.changTitanic.checkBox.length;
-    //   this.changTitanic.isIndeterminate =
-    //     checkedCount > 0 && checkedCount < this.changTitanic.checkBox.length;
-    //   console.log(this.changTitanic.choose, "单选");
-    // },
+    // 年级全选
+    njAll(val) {
+      let allCheck = [];
+      for (let i in this.njOps.checkBox) {
+        allCheck.push(this.njOps.checkBox[i].dm);
+      }
+      this.njOps.choose = val ? allCheck : [];
+      this.njOps.isIndeterminate = false;
+    },
+    // 异年级：单选
+    njCheck(value) {
+      let checkedCount = value.length;
+      this.njOps.checkAll =
+      checkedCount === this.njOps.checkBox.length;
+      this.njOps.isIndeterminate = checkedCount > 0 && checkedCount < this.njOps.checkBox.length;
+      // console.log(this.njOps.choose, "单选");
+    },
+    // 性别：全选
+    dmxbmAll(val) {
+      let allCheck = [];
+      for (let i in this.dmxbmOPs.checkBox) {
+        allCheck.push(this.dmxbmOPs.checkBox[i].dm);
+      }
+      this.dmxbmOPs.choose = val ? allCheck : [];
+      console.log(this.dmxbmOPs.choose, "全选");
+      this.dmxbmOPs.isIndeterminate = false;
+    },
+    // 性别：单选
+    dmxbmCheck(value) {
+      let checkedCount = value.length;
+      this.dmxbmOPs.checkAll = checkedCount === this.dmxbmOPs.checkBox.length;
+      this.dmxbmOPs.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.dmxbmOPs.checkBox.length;
+      // console.log(this.dmxbmOPs.choose, "单选");
+    },
     // 异动日期
     handleDatePicker(val) {
       console.log(val);
@@ -668,6 +749,10 @@ export default {
       margin-top: 20px;
       padding: 20px;
       background: #fafafa;
+      .titleStyle{
+        display: inline-block;
+        width:120px;
+      }
     }
   }
   .tableWrap {

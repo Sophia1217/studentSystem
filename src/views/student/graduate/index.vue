@@ -127,6 +127,18 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
+          <el-col :span="3">年 级：</el-col>
+          <el-col :span="20">
+            <div class="checkbox">
+              <checkboxCom
+                :objProp="njOps"
+                @training="njAll"
+                @checkedTraining="njCheck"
+              ></checkboxCom>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" class="mt15">
           <el-col :span="3">性别：</el-col>
           <el-col :span="20">
             <div class="checkbox">
@@ -345,6 +357,13 @@ export default {
         checkBox: [],
         isIndeterminate: true,
       },
+      njOps: {
+        //年级：
+        checkAll: false,
+        choose: [],
+        checkBox: [],
+        isIndeterminate: true,
+      },
       tableData: [],
       queryParams: {
         pageNum: 1,
@@ -426,8 +445,16 @@ export default {
     getSpread() {
       getManageRegStuInfoSearchSpread()
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           this.manageRegOps = res.data.dwhbj;
+          let nj = res.data.nj
+          let njops = []
+          for (let x = 0; x < nj.length; x++) {
+            if (nj[x]) {
+              njops.push({mc:nj[x],dm:nj[x]})
+            }
+          }
+          this.njOps.checkBox = njops;
         })
         .catch((err) => {});
     },
@@ -451,6 +478,7 @@ export default {
         csrqe:csrqe,
         PYCCM: this.training.choose,
         XZ: this.learnHe.choose,
+        NJ:this.njOps.choose,
         XJZT: this.studentStatus.choose,
         ZZMMM: this.politica.choose,
         MZM: this.ethnic.choose,
@@ -576,7 +604,24 @@ export default {
       this.dmxbmOPs.checkAll = checkedCount === this.dmxbmOPs.checkBox.length;
       this.dmxbmOPs.isIndeterminate =
         checkedCount > 0 && checkedCount < this.dmxbmOPs.checkBox.length;
-      // console.log(this.dmxbmOPs.choose, "单选");
+    },
+    // 年级全选
+    njAll(val) {
+      let allCheck = [];
+      for (let i in this.njOps.checkBox) {
+        allCheck.push(this.njOps.checkBox[i].dm);
+      }
+      this.njOps.choose = val ? allCheck : [];
+      this.njOps.isIndeterminate = false;
+    },
+    // 异年级：单选
+    njCheck(value) {
+      let checkedCount = value.length;
+      this.njOps.checkAll =
+        checkedCount === this.njOps.checkBox.length;
+      this.njOps.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.njOps.checkBox.length;
+      console.log(this.njOps.choose, "单选");
     },
     // 多选
     handleSelectionChange(val) {
@@ -605,7 +650,7 @@ export default {
         this.$message("请选择");
         return;
       }
-      let data = { xh: this.multipleSelection[0].xh };
+      let data = { xh: xhs.join(','),etype:'docx' };
       gradStu(data).then((res) => this.downloadFn(res, "毕业生登记表", "docx"));
     },
     //学生登记
@@ -618,7 +663,7 @@ export default {
         this.$message("请选择");
         return;
       }
-      let data = { xh: this.multipleSelection[0].xh };
+      let data = { xh: xhs,etype:'docx'};
       stuReg(data).then((res) =>
         this.downloadFn(res, "毕业学生登记表", "docx")
       );
@@ -633,7 +678,7 @@ export default {
         this.$message("请选择");
         return;
       }
-      let data = { xh: this.multipleSelection[0].xh };
+      let data = { xh: xhs.join(','), etype:'docx' };
       stuCard(data).then((res) => this.downloadFn(res, "毕业学生卡片", "docx"));
     },
     hadleDetail(row, flag) {

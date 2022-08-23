@@ -44,7 +44,7 @@
           prop="dwmc"
           sortable
         />
-        <el-table-column label="任职班级" align="center" prop="bjdm" sortable />
+        <el-table-column label="任职班级" align="center" prop="rzbj" sortable />
         <el-table-column
           label="创建时间"
           align="center"
@@ -57,7 +57,7 @@
           prop="rmr"
           sortable
         />
-        <el-table-column
+        <!-- <el-table-column
           label="任命年度"
           align="center"
           prop="updateTime"
@@ -68,11 +68,11 @@
           align="center"
           prop="updateTime"
           sortable
-        />
+        /> -->
         <el-table-column
           label="任命时间"
           align="center"
-          prop="updateTime"
+          prop="rmsj"
           sortable
         />
         <el-table-column
@@ -163,39 +163,39 @@ export default {
       total: 0,
       // 表格数据
       noticeList: [
-        {
-          id: 1,
-          classId: 13070025,
-          className: "计算机工程硕士2022级1班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-          record: "班级操作记录",
-        },
-        {
-          id: 2,
-          classId: 13070025,
-          className: "计算机工程硕士2022级2班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-          record: "班级操作记录",
-        },
-        {
-          id: 3,
-          classId: 13070025,
-          className: "计算机工程硕士2022级3班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-          record: "班级操作记录",
-        },
+        // {
+        //   id: 1,
+        //   classId: 13070025,
+        //   className: "计算机工程硕士2022级1班",
+        //   college: "计算机工程学院",
+        //   level: "本科",
+        //   nums: 34,
+        //   beginTime: "2022-07-07",
+        //   updateTime: "2022-07-07",
+        //   record: "班级操作记录",
+        // },
+        // {
+        //   id: 2,
+        //   classId: 13070025,
+        //   className: "计算机工程硕士2022级2班",
+        //   college: "计算机工程学院",
+        //   level: "本科",
+        //   nums: 34,
+        //   beginTime: "2022-07-07",
+        //   updateTime: "2022-07-07",
+        //   record: "班级操作记录",
+        // },
+        // {
+        //   id: 3,
+        //   classId: 13070025,
+        //   className: "计算机工程硕士2022级3班",
+        //   college: "计算机工程学院",
+        //   level: "本科",
+        //   nums: 34,
+        //   beginTime: "2022-07-07",
+        //   updateTime: "2022-07-07",
+        //   record: "班级操作记录",
+        // },
       ],
       // 弹出层标题
       title: "",

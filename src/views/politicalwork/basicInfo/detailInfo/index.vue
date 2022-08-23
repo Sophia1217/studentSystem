@@ -1810,8 +1810,8 @@ export default {
       // this.$router.push({
       //   path: this.routerFrom,
       // });
-      this.isEdit = 1
-      this.getDetail()
+      this.isEdit = 1;
+      this.getDetail();
     },
     // 提交
     handlUpdata() {
@@ -1822,9 +1822,9 @@ export default {
             message: res.errmsg,
             type: "success",
           });
-          this.$router.push({
-            path: this.routerFrom,
-          });
+          // this.$router.push({
+          //   path: this.routerFrom,
+          // });
         })
         .catch((err) => {
           this.$message.error(err.errmsg);

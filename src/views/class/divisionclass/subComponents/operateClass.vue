@@ -99,16 +99,21 @@
               <span class="iconfont">&#xe631;</span>
               <el-row :gutter="10" class="mb8" style="float: right">
                 <el-col :span="1.5">
-                  <el-button class="export">
+                  <el-button class="export" @click="mbDown">
                     <!-- <span class="iconfont icon-daochu-06"></span> -->
                     模板下载</el-button
                   >
                 </el-col>
                 <el-col :span="1.5">
-                  <el-button class="export">
-                    <span class="iconfont icon-daochu-06"></span>
-                    导入</el-button
+                  <el-upload
+                    :auto-upload="false"
+                    action="string"
+                    multiple
+                    :on-change="sc"
+                    :show-file-list="false"
                   >
+                    <el-button class="export"> 导入</el-button>
+                  </el-upload>
                 </el-col>
                 <el-col :span="1.5">
                   <el-button class="export" @click="handleExport">
@@ -375,6 +380,8 @@ import {
   getMajors,
   getSex,
   expStu,
+  mbDown,
+  importtable,
 } from "@/api/class/divisionClass";
 
 export default {
@@ -442,6 +449,34 @@ export default {
     this.getOptions(); // 获取生源地、专业、性别筛选框数据
   },
   methods: {
+    sc(file, fileList) {
+      this.fileTemp = file.raw;
+      let fileName = file.raw.name;
+      let fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
+      if (this.fileTemp) {
+        if (fileType == "xlsx" || fileType == "xls") {
+          var data = {
+            file: this.fileTemp,
+            classNum: this.$route.query.bjdm,
+          };
+          console.log("data", data);
+          importtable(data).then(() => console.log("asdasd"));
+        } else {
+          this.$message({
+            type: "warning",
+            message: "附件格式错误，请删除后重新上传！",
+          });
+        }
+      } else {
+        this.$message({
+          type: "warning",
+          message: "请上传附件！",
+        });
+      }
+    },
+    mbDown() {
+      mbDown().then((res) => this.downloadFn(res, "标准模板下载", "xlsx"));
+    },
     // 查询某一特定班级学生列表
     getList(queryParams) {
       Object.assign(queryParams, this.queryParams);

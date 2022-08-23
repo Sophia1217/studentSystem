@@ -99,3 +99,27 @@ export function transformStuFromEmptyClass(query) {
       data: data
     })
   }
+
+
+   // 分班管理模板管理下载
+ export function mbDown(data) {
+    return request({
+      url: 'class/downloadExcel',
+      method: 'post',
+      responseType: 'blob',
+      data: data
+    })
+  }
+  
+
+//导入表格
+export function importtable(data,params) {
+    return request({
+      url: '/class/importExcel',
+      method: 'post',
+      headers: {
+        "Content-Type": "multipart/form-data;charset=utf-8"
+      },
+      data:params
+    })
+  }

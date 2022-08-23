@@ -73,6 +73,7 @@ Vue.use(directive);
 Vue.use(plugins);
 Vue.use(VueMeta);
 DictData.install();
+Vue.prototype.$bus=new Vue();
 
 /**
  * If you don't want to use mock-server

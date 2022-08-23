@@ -4,14 +4,14 @@
     <div class="tea-search">
       <el-form
         :model="queryParams"
-        ref="queryForm"
+        ref="queryParams"
         size="small"
         :inline="true"
         v-show="showSearch"
         label-width="68px"
         class="table-header"
       >
-        <el-form-item label="工作单位" prop="college" class="header-item">
+        <el-form-item label="工作单位" prop="ssdwdm" class="header-item">
           <el-select
             v-model="queryParams.ssdwdm"
             placeholder="请选择"
@@ -25,7 +25,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="培养层次" prop="level" class="header-item">
+        <el-form-item label="培养层次" prop="pycc" class="header-item">
           <el-select v-model="queryParams.pycc" placeholder="请选择" clearable>
             <el-option
               v-for="(item, index) in levelOptions"
@@ -35,7 +35,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="年级" prop="grade" class="header-item">
+        <el-form-item label="年级" prop="ssnj" class="header-item">
           <el-select v-model="queryParams.ssnj" placeholder="请选择" clearable>
             <el-option
               v-for="(item, index) in gradeOptions"
@@ -62,7 +62,11 @@
             @click="handleQuery"
             >查询</el-button
           >
-          <el-button size="mini" @click="resetQuery" class="reset">
+          <el-button
+            size="mini"
+            @click="resetQuery('queryParams')"
+            class="reset"
+          >
             <span class="iconfont reset_icon">&#xe614;</span>
             重置</el-button
           >
@@ -135,28 +139,32 @@
             class-name="small-padding fixed-width"
           >
             <template slot-scope="scope">
-              <div >
+              <div>
                 <!-- @click="assignTea(scope.row)" class="operate" -->
                 <!-- <span class="assignTea">分配辅导员</span> -->
-                <span class="iconfont allocate_teacher" @click="assignTea(scope.row)"
-              >&#xe638;</span
-            >
-            <span
-              style="color: #005657; margin-left: 5px; margin-right: 5px"
-              @click="assignTea(scope.row)"
-            >
-              分配辅导员
-            </span>
+                <span
+                  class="iconfont allocate_teacher"
+                  @click="assignTea(scope.row)"
+                  >&#xe638;</span
+                >
+                <span
+                  style="color: #005657; margin-left: 5px; margin-right: 5px"
+                  @click="assignTea(scope.row)"
+                >
+                  分配辅导员
+                </span>
               </div>
-              <span
-              class="iconfont record_icon"
-              style="margin-left: 5px"
-              @click="empRecordClick(scope.row)"
-              >&#xe694;</span
-            >
-            <span style="color: #005657" @click="empRecordClick(scope.row)">
-              任职记录
-            </span>
+              <div>
+                <span
+                  class="iconfont record_icon"
+                  style="margin-left: 5px"
+                  @click="empRecordClick(scope.row)"
+                  >&#xe694;</span
+                >
+                <span style="color: #005657" @click="empRecordClick(scope.row)">
+                  任职记录
+                </span>
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -188,8 +196,8 @@ import {
 export default {
   name: "instructor", //辅导员管理主界面
   mounted() {
-    this.getList(this.queryParams);
     this.getOptions();
+    this.getList();
   },
   data() {
     return {
@@ -238,15 +246,13 @@ export default {
     };
   },
   methods: {
-    getList(queryParams) {
-      // this.loading = true;
-      Object.assign(queryParams, this.queryParams);
-      classList(queryParams).then((response) => {
+    getList() {
+      var data = this.queryParams;
+      classList(data).then((response) => {
         // 获取班级列表数据
         if (response.errcode == "00") {
           this.noticeList = response.data.rows; // 根据状态码接收数据
           this.total = response.data.total; //总条数
-          //  this.loading = false;
         }
       });
     },
@@ -274,12 +280,11 @@ export default {
       });
     },
     // 任职记录
-    empRecordClick() {
-      this.$router.push(
-      {
+    empRecordClick(row) {
+      this.$router.push({
         path: "/class/empRecord",
         query: { bjdm: row.bjdm },
-    });
+      });
     },
     /** 查询公告列表 */
     // getList() {
@@ -295,17 +300,6 @@ export default {
       // this.open = false;
       // this.reset();
     },
-    // 表单重置
-    reset() {
-      // this.form = {
-      //   noticeId: undefined,
-      //   noticeTitle: undefined,
-      //   noticeType: undefined,
-      //   noticeContent: undefined,
-      //   status: "0",
-      // };
-      // this.resetForm("form");
-    },
     /** 搜索按钮操作 */
     handleQuery() {
       // this.queryParams.pageNum = 1;
@@ -313,9 +307,9 @@ export default {
       this.getList(this.queryParams);
     },
     /** 重置按钮操作 */
-    resetQuery() {
-      // this.resetForm("queryForm");
-      // this.handleQuery();
+    resetQuery(queryParams) {
+      this.$refs[queryParams].resetFields();
+      this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(row) {

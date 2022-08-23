@@ -153,7 +153,6 @@
 
     <!-- 批量撤任对话框：cancelAllocate-->
     <el-dialog title="取消分配" :visible.sync="cancelAllocate" width="50%">
-   
 
       <el-form :model="formDismission">
         <el-form-item label="撤任理由" >
@@ -366,11 +365,15 @@ export default {
 //   created() {
     
 //   },
+
   mounted() {
     this.queryParams.bjdm = this.$route.query.bjdm;
     this.table_title = this.$route.query.bjmc;
     console.log("班干部列表挂载");
     console.log("allStu_content:", this.$props.allStu_content);
+    if(this.value)
+
+
     // 班干部职位筛选
     getZwdm().then((res) => {
       console.log(res);
@@ -392,6 +395,7 @@ export default {
         this.getStuList()
       }
     },
+
     // 班干部任职记录
     studentRecord1() {
       this.$router.push({
@@ -450,6 +454,7 @@ export default {
             });
         }
     },
+
 
     // 班干部批量撤任操作
     deleteSome() {
@@ -557,9 +562,10 @@ export default {
     tabClick(index) {
       this.currentIndex = index;
       this.queryParams.pageNum = 1
-
+      this.$bus.$emit("index", this.currentIndex);
       this.getList()
     },
+
 
     // 批量任命取消按钮
     cancelAssignBgb() {

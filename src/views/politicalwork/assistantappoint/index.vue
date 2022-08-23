@@ -548,12 +548,12 @@ export default {
         .then((res) => {
           if (res.errcode == "00") {
             console.log(res);
+            this.getList(this.queryParams);
           }
         })
         .catch((err) => {
           //this.$message.error(err.errmsg);
         });
-      this.getList(this.queryParams);
     },
     //导入信息
     addAssistant() {
@@ -563,20 +563,23 @@ export default {
       let ghlist = [];
 
       ghlist.push(this.form.gh);
+
       let data = {
         ghList: ghlist,
+        xm: this.form.name,
+        lb: this.form.type,
       };
       addOneAssistant(data)
         .then((res) => {
           if (res.errcode == "00") {
             console.log(res);
+            this.getList(this.queryParams);
           }
         })
         .catch((err) => {
           //this.$message.error(err.errmsg);
         });
       this.reset();
-      this.getList(this.queryParams);
     },
     //点击详情
     hadleDetail(row, flag) {

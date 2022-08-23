@@ -19,12 +19,8 @@
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
-          <el-form-item label="工作单位" prop="noticeType" class="header-item">
-            <el-select
-              v-model="queryParams.noticeType"
-              placeholder="请选择"
-              clearable
-            >
+          <el-form-item label="工作单位" prop="xy" class="header-item">
+            <el-select v-model="queryParams.xy" placeholder="请选择" clearable>
             </el-select>
           </el-form-item>
         </div>
@@ -59,7 +55,12 @@
           <span class="iconfont">&#xe631;</span>
           <el-row :gutter="10" class="mb8" style="float: right">
             <el-col :span="1.5">
-              <el-button type="primary" class="create" icon="el-icon-search">
+              <el-button
+                type="primary"
+                class="create"
+                icon="el-icon-search"
+                @click="handleAssignMore"
+              >
                 批量分配</el-button
               >
             </el-col>
@@ -176,7 +177,28 @@
           <el-button @click="submitTips" class="submit_btn">确认</el-button>
         </div>
       </el-dialog>
+      <!-- 批量分配班级对话框 -->
+      <el-dialog
+        class="assign_class"
+        :title="title"
+        :visible.sync="openAssignMoreClass"
+        width="780px"
+        append-to-body
+        ><template v-for="item in multipleSelection">
+          <div :key="item.gh">
+            <span
+              >确认将【{{ item.gh }}】【{{ item.xm }}】任命为【{{
+                $route.query.bjmc
+              }}】辅导员</span
+            >
+          </div>
+        </template>
 
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="cancelMore" class="cancel_btn">取消</el-button>
+          <el-button @click="assignMore" class="submit_btn">确认</el-button>
+        </div>
+      </el-dialog>
       <!-- 取消分配对话框 -->
       <el-dialog
         :title="title"
@@ -295,6 +317,7 @@ export default {
       // 总条数
       total: 100,
       xm: "",
+      multipleSelection: [],
       // 表格数据
       noticeList: [
         {
@@ -335,6 +358,8 @@ export default {
       title: "",
       // 是否显示分配班级弹框
       openAssignClass: false,
+      //是否显示批量分配
+      openAssignMoreClass: false,
       // 是否显示取消分配班级弹框
       openCancelAssignClass: false,
       // 是否显示第二次取消分配班级单矿
@@ -378,6 +403,7 @@ export default {
       this.openAssignClass = true;
       this.title = "分配班级";
       this.bjdm = this.$route.query.bjdm;
+
       this.fdyList.push(row.gh);
       this.rmrgh = "2005690002";
       this.xm = row.xm;
@@ -454,6 +480,30 @@ export default {
         type: "success",
       });
     },
+    handleAssignMore() {
+      this.openAssignMoreClass = true;
+      this.title = "批量分配";
+    },
+    cancelMore() {
+      this.openAssignMoreClass = false;
+    },
+    assignMore() {
+      let fdyghList = [];
+      for (let item_row of this.multipleSelection) {
+        fdyghList.push(item_row.gh);
+      }
+      let data = {
+        bjdm: this.bjdm,
+        fdyList: fdyghList,
+        rmrgh: this.rmrgh,
+        //rmsj: this.rmsj,
+        rmsj: "2020-09-09",
+      };
+      getAssignFdy(data).then((res) => {
+        console.log(res);
+      });
+      this.openAssignMoreClass = false;
+    },
     // 取消按钮
     cancel() {
       // this.open = false;
@@ -482,10 +532,9 @@ export default {
       this.handleQuery();
     },
     // 多选框选中数据
-    handleSelectionChange(selection) {
-      // this.ids = selection.map((item) => item.noticeId);
-      // this.single = selection.length != 1;
-      // this.multiple = !selection.length;
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+      console.log(this.multipleSelection);
     },
     /** 新增按钮操作 */
     handleAdd() {

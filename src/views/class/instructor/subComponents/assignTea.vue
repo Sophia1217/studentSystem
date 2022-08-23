@@ -38,7 +38,11 @@
               @click="handleQuery"
               >查询</el-button
             >
-            <el-button size="mini" @click="resetQuery('queryForm')" class="reset">
+            <el-button
+              size="mini"
+              @click="resetQuery('queryForm')"
+              class="reset"
+            >
               <span class="iconfont reset_icon">&#xe614;</span>
               重置</el-button
             >
@@ -102,38 +106,45 @@
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <div>
-                <span
-                  class="iconfont"
-                  :class="
-                    scope.row.sffp == '0' ? 'allocate_none' : 'allocate_class'
-                  "
+                <el-button
+                  type="text"
+                  size="small"
+                  :disabled="scope.row.sffp === 1 ? true : false"
                   @click="assignClass(scope.row)"
-                  >&#xe638;</span
                 >
-                <span
-                  style="margin-left: 5px; margin-right: 10px"
-                  :class="
-                    scope.row.sffp == '0' ? 'allocate_none' : 'allocate_class'
-                  "
-                  @click="assignClass(scope.row)"
-                  >分配班级</span
-                >
-                <span
-                  class="iconfont"
-                  :class="
-                    scope.row.sffp == '1' ? 'allocate_none' : 'allocate_class'
-                  "
+                  <span
+                    class="iconfont"
+                    :class="
+                      scope.row.sffp == '0' ? 'allocate_none' : 'allocate_class'
+                    "
+                    >&#xe638;</span
+                  >
+                  <span
+                    style="
+                      margin-left: 5px;
+                      margin-right: 10px;
+                      font-size: 16px;
+                    "
+                    >分配班级</span
+                  >
+                </el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  :disabled="scope.row.sffp === 1 ? false : true"
                   @click="allocateNone(scope.row)"
-                  >&#xe638;</span
                 >
-                <span
-                  style="margin-left: 5px"
-                  :class="
-                    scope.row.sffp == '1' ? 'allocate_none' : 'allocate_class'
-                  "
-                  @click="allocateNone(scope.row)"
-                  >取消分配</span
-                >
+                  <span
+                    class="iconfont"
+                    :class="
+                      scope.row.sffp == '1' ? 'allocate_none' : 'allocate_class'
+                    "
+                    >&#xe638;</span
+                  >
+                  <span style="margin-left: 5px; font-size: 16px"
+                    >取消分配</span
+                  >
+                </el-button>
               </div>
             </template>
           </el-table-column>
@@ -156,7 +167,9 @@
         append-to-body
       >
         <span class="assignTips"
-          >确认将【{{fdyList}}】【{{xm}}】任命为【{{$route.query.bjmc}}】辅导员</span
+          >确认将【{{ fdyList }}】【{{ xm }}】任命为【{{
+            $route.query.bjmc
+          }}】辅导员</span
         >
         <div slot="footer" class="dialog-footer">
           <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
@@ -215,7 +228,9 @@
         append-to-body
       >
         <span class="cancelTips"
-          >确认将取消【{{fdyList}}】【{{xm}}】【{{$route.query.bjmc}}】辅导员任命？</span
+          >确认将取消【{{ fdyList }}】【{{ xm }}】【{{
+            $route.query.bjmc
+          }}】辅导员任命？</span
         >
 
         <div slot="footer" classt="dialog-footer">
@@ -233,7 +248,11 @@ import "@/assets/fonts/person/iconfont.css";
 import assignSearch from "../form/assignSearch.vue";
 import assignTable from "../form/assignTable.vue";
 
-import { getPlacementPageList, getAssignFdy, getRemoveAssignFdy} from "@/api/class/instructor";
+import {
+  getPlacementPageList,
+  getAssignFdy,
+  getRemoveAssignFdy,
+} from "@/api/class/instructor";
 export default {
   name: "assignTea", //分配辅导员
   components: {
@@ -241,7 +260,7 @@ export default {
     assignTable,
   },
   mounted() {
-    this.getInstructorList(this.queryParams);
+    this.getInstructorList();
   },
   data() {
     return {
@@ -322,6 +341,7 @@ export default {
       openSecondCancelAssign: false,
       // 表单参数
       form: {},
+      xm: "",
       // 表单校验
       rules: {
         noticeTitle: [
@@ -334,13 +354,12 @@ export default {
     };
   },
   mounted() {
-    this.getInstructorList(this.queryParams);
+    this.getInstructorList();
   },
   methods: {
-    getInstructorList(queryParams) {
-      console.log("hahah");
-      Object.assign(queryParams, this.queryParams);
-      getPlacementPageList(queryParams).then((res) => {
+    getInstructorList() {
+      var data = this.queryParams;
+      getPlacementPageList(data).then((res) => {
         this.placementPageList = res.items;
         this.total = res.total;
         console.log("this.placementPageList:", this.placementPageList);
@@ -358,25 +377,28 @@ export default {
       this.fdyList = this.fdyList.slice(0, -1);
       this.openAssignClass = true;
       this.title = "分配班级";
-      console.log("分配班级信息：", row);
       this.bjdm = this.$route.query.bjdm;
-      
       this.fdyList.push(row.gh);
       this.rmrgh = "2005690002";
       this.xm = row.xm;
-      console.log(this.bjdm);
       this.rmsj = "2020-09-09 00:00:00";
     },
     // 分配班级tips点击“确定”按钮
     submitTips() {
       console.log("分配班级确认！");
-      getAssignFdy({ bjdm:this.bjdm, fdyList:this.fdyList, rmrgh:this.rmrgh, rmsj:this.rmsj }).then((res) => {
+      getAssignFdy({
+        bjdm: this.bjdm,
+        fdyList: this.fdyList,
+        rmrgh: this.rmrgh,
+        rmsj: this.rmsj,
+      }).then((res) => {
         console.log(res);
       });
       this.$message({
         message: "分配成功",
         type: "success",
       });
+      this.getInstructorList();
       this.openAssignClass = false;
     },
     // 取消按钮关闭窗口
@@ -415,9 +437,15 @@ export default {
       this.title = "取消分配确认";
 
       console.log("取消分配二次确认！");
-      let crly = []
-      crly.push(this.form.noticeTitle)
-      getRemoveAssignFdy({cxrGh:this.cxrGh, bjdm:this.bjdm, FdyList:this.FdyList, crly:this.crly, cxsj:this.cxsj}).then((res) => {
+      let crly = [];
+      crly.push(this.form.noticeTitle);
+      getRemoveAssignFdy({
+        cxrGh: this.cxrGh,
+        bjdm: this.bjdm,
+        FdyList: this.FdyList,
+        crly: this.crly,
+        cxsj: this.cxsj,
+      }).then((res) => {
         console.log(res);
       });
 
@@ -608,5 +636,12 @@ export default {
 }
 .allocate_none {
   color: #cce0e1ff;
+}
+.el-button--text {
+  border-color: transparent;
+  color: #515a6e;
+  background: transparent;
+  padding-left: 0;
+  padding-right: 0;
 }
 </style>

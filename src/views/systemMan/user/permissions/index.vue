@@ -83,7 +83,6 @@
         <i class="icon yesIcon"></i> 提交
       </div> -->
     </div>
-  </div>
 </template>
 
 <script>

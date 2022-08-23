@@ -11,20 +11,16 @@
         class="table-header"
       >
         <div class="assignInput">
-          <el-form-item label="工号" prop="noticeType" class="header-item">
+          <el-form-item label="工号" prop="xgh" class="header-item">
             <el-input
-              v-model="queryParams.Xgh"
+              v-model="queryParams.xgh"
               placeholder="请输入工号"
               clearable
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
-          <el-form-item label="工作单位" prop="noticeType" class="header-item">
-            <el-select
-              v-model="queryParams.noticeType"
-              placeholder="请选择"
-              clearable
-            >
+          <el-form-item label="工作单位" prop="xy" class="header-item">
+            <el-select v-model="queryParams.xy" placeholder="请选择" clearable>
             </el-select>
           </el-form-item>
         </div>
@@ -38,7 +34,11 @@
               @click="handleQuery"
               >查询</el-button
             >
-            <el-button size="mini" @click="resetQuery" class="reset">
+            <el-button
+              size="mini"
+              @click="resetQuery('queryForm')"
+              class="reset"
+            >
               <span class="iconfont reset_icon">&#xe614;</span>
               重置</el-button
             >
@@ -55,7 +55,12 @@
           <span class="iconfont">&#xe631;</span>
           <el-row :gutter="10" class="mb8" style="float: right">
             <el-col :span="1.5">
-              <el-button type="primary" class="create" icon="el-icon-search">
+              <el-button
+                type="primary"
+                class="create"
+                icon="el-icon-search"
+                @click="handleAssignMore"
+              >
                 批量分配</el-button
               >
             </el-col>
@@ -102,38 +107,45 @@
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <div>
-                <span
-                  class="iconfont"
-                  :class="
-                    scope.row.sffp == '0' ? 'allocate_none' : 'allocate_class'
-                  "
+                <el-button
+                  type="text"
+                  size="small"
+                  :disabled="scope.row.sffp === 1 ? true : false"
                   @click="assignClass(scope.row)"
-                  >&#xe638;</span
                 >
-                <span
-                  style="margin-left: 5px; margin-right: 10px"
-                  :class="
-                    scope.row.sffp == '0' ? 'allocate_none' : 'allocate_class'
-                  "
-                  @click="assignClass(scope.row)"
-                  >分配班级</span
-                >
-                <span
-                  class="iconfont"
-                  :class="
-                    scope.row.sffp == '1' ? 'allocate_none' : 'allocate_class'
-                  "
+                  <span
+                    class="iconfont"
+                    :class="
+                      scope.row.sffp == '0' ? 'allocate_none' : 'allocate_class'
+                    "
+                    >&#xe638;</span
+                  >
+                  <span
+                    style="
+                      margin-left: 5px;
+                      margin-right: 10px;
+                      font-size: 16px;
+                    "
+                    >分配班级</span
+                  >
+                </el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  :disabled="scope.row.sffp === 1 ? false : true"
                   @click="allocateNone(scope.row)"
-                  >&#xe638;</span
                 >
-                <span
-                  style="margin-left: 5px"
-                  :class="
-                    scope.row.sffp == '1' ? 'allocate_none' : 'allocate_class'
-                  "
-                  @click="allocateNone(scope.row)"
-                  >取消分配</span
-                >
+                  <span
+                    class="iconfont"
+                    :class="
+                      scope.row.sffp == '1' ? 'allocate_none' : 'allocate_class'
+                    "
+                    >&#xe638;</span
+                  >
+                  <span style="margin-left: 5px; font-size: 16px"
+                    >取消分配</span
+                  >
+                </el-button>
               </div>
             </template>
           </el-table-column>
@@ -156,14 +168,37 @@
         append-to-body
       >
         <span class="assignTips"
-          >确认将【{{this.fdyList}}】【{{this.xm}}】任命为【{{this.$route.query.bjmc}}】辅导员</span
+          >确认将【{{ fdyList }}】【{{ xm }}】任命为【{{
+            $route.query.bjmc
+          }}】辅导员</span
         >
         <div slot="footer" class="dialog-footer">
           <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
           <el-button @click="submitTips" class="submit_btn">确认</el-button>
         </div>
       </el-dialog>
+      <!-- 批量分配班级对话框 -->
+      <el-dialog
+        class="assign_class"
+        :title="title"
+        :visible.sync="openAssignMoreClass"
+        width="780px"
+        append-to-body
+        ><template v-for="item in multipleSelection">
+          <div :key="item.gh">
+            <span
+              >确认将【{{ item.gh }}】【{{ item.xm }}】任命为【{{
+                $route.query.bjmc
+              }}】辅导员</span
+            >
+          </div>
+        </template>
 
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="cancelMore" class="cancel_btn">取消</el-button>
+          <el-button @click="assignMore" class="submit_btn">确认</el-button>
+        </div>
+      </el-dialog>
       <!-- 取消分配对话框 -->
       <el-dialog
         :title="title"
@@ -215,7 +250,9 @@
         append-to-body
       >
         <span class="cancelTips"
-          >确认将取消【{{this.fdyList}}】【{{this.xm}}】【{{this.$route.query.bjmc}}】辅导员任命？</span
+          >确认将取消【{{ fdyList }}】【{{ xm }}】【{{
+            $route.query.bjmc
+          }}】辅导员任命？</span
         >
 
         <div slot="footer" classt="dialog-footer">
@@ -233,7 +270,11 @@ import "@/assets/fonts/person/iconfont.css";
 import assignSearch from "../form/assignSearch.vue";
 import assignTable from "../form/assignTable.vue";
 
-import { getPlacementPageList, getAssignFdy, getRemoveAssignFdy} from "@/api/class/instructor";
+import {
+  getPlacementPageList,
+  getAssignFdy,
+  getRemoveAssignFdy,
+} from "@/api/class/instructor";
 export default {
   name: "assignTea", //分配辅导员
   components: {
@@ -241,7 +282,7 @@ export default {
     assignTable,
   },
   mounted() {
-    this.getInstructorList(this.queryParams);
+    this.getInstructorList();
   },
   data() {
     return {
@@ -253,10 +294,10 @@ export default {
       queryParams: {
         pageNum: 1, // 默认请求第一页数据
         pageSize: 10, // 默认一页10条数据
-        Xgh: "", // 学工号
-        Xy: "", // 学员代码
-        Xm: "", // 姓名
-        Bjdm: this.$route.query.bjdm, // 班级编号
+        xgh: "", // 学工号
+        xy: "", // 学员代码
+        xm: "", // 姓名
+        bjdm: this.$route.query.bjdm, // 班级编号
       },
       // 班级代码
       bjdm: "", //班级代码
@@ -275,6 +316,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 100,
+      xm: "",
+      multipleSelection: [],
       // 表格数据
       noticeList: [
         {
@@ -315,12 +358,15 @@ export default {
       title: "",
       // 是否显示分配班级弹框
       openAssignClass: false,
+      //是否显示批量分配
+      openAssignMoreClass: false,
       // 是否显示取消分配班级弹框
       openCancelAssignClass: false,
       // 是否显示第二次取消分配班级单矿
       openSecondCancelAssign: false,
       // 表单参数
       form: {},
+      xm: "",
       // 表单校验
       rules: {
         noticeTitle: [
@@ -333,13 +379,12 @@ export default {
     };
   },
   mounted() {
-    this.getInstructorList(this.queryParams);
+    this.getInstructorList();
   },
   methods: {
-    getInstructorList(queryParams) {
-      console.log("hahah");
-      Object.assign(queryParams, this.queryParams);
-      getPlacementPageList(queryParams).then((res) => {
+    getInstructorList() {
+      var data = this.queryParams;
+      getPlacementPageList(data).then((res) => {
         this.placementPageList = res.items;
         this.total = res.total;
         console.log("this.placementPageList:", this.placementPageList);
@@ -354,26 +399,32 @@ export default {
     // 第一个对话框
     // 分配班级
     assignClass(row) {
+      this.fdyList = this.fdyList.slice(0, -1);
       this.openAssignClass = true;
       this.title = "分配班级";
-      console.log("分配班级信息：", row);
       this.bjdm = this.$route.query.bjdm;
+
       this.fdyList.push(row.gh);
       this.rmrgh = "2005690002";
       this.xm = row.xm;
-      console.log(this.bjdm);
       this.rmsj = "2020-09-09 00:00:00";
     },
     // 分配班级tips点击“确定”按钮
     submitTips() {
       console.log("分配班级确认！");
-      getAssignFdy({ bjdm:this.bjdm, fdyList:this.fdyList, rmrgh:this.rmrgh, rmsj:this.rmsj }).then((res) => {
+      getAssignFdy({
+        bjdm: this.bjdm,
+        fdyList: this.fdyList,
+        rmrgh: this.rmrgh,
+        rmsj: this.rmsj,
+      }).then((res) => {
         console.log(res);
       });
       this.$message({
         message: "分配成功",
         type: "success",
       });
+      this.getInstructorList();
       this.openAssignClass = false;
     },
     // 取消按钮关闭窗口
@@ -381,10 +432,12 @@ export default {
       this.openAssignClass = false;
       this.openCancelAssignClass = false;
       this.openSecondCancelAssign = false;
+      // this.FdyList =[];
     },
 
     // 取消分配辅导员
     allocateNone(row) {
+      this.fdyList = this.fdyList.slice(0, -1);
       this.openCancelAssignClass = true;
       this.title = "取消分配";
       console.log("取消分配信息：", row);
@@ -410,9 +463,15 @@ export default {
       this.title = "取消分配确认";
 
       console.log("取消分配二次确认！");
-      let crly = []
-      crly.push(this.form.noticeTitle)
-      getRemoveAssignFdy({cxrGh:this.cxrGh, bjdm:this.bjdm, FdyList:this.FdyList, crly:this.crly, cxsj:this.cxsj}).then((res) => {
+      let crly = [];
+      crly.push(this.form.noticeTitle);
+      getRemoveAssignFdy({
+        cxrGh: this.cxrGh,
+        bjdm: this.bjdm,
+        FdyList: this.FdyList,
+        crly: this.crly,
+        cxsj: this.cxsj,
+      }).then((res) => {
         console.log(res);
       });
 
@@ -420,6 +479,30 @@ export default {
         message: "取消分配成功",
         type: "success",
       });
+    },
+    handleAssignMore() {
+      this.openAssignMoreClass = true;
+      this.title = "批量分配";
+    },
+    cancelMore() {
+      this.openAssignMoreClass = false;
+    },
+    assignMore() {
+      let fdyghList = [];
+      for (let item_row of this.multipleSelection) {
+        fdyghList.push(item_row.gh);
+      }
+      let data = {
+        bjdm: this.bjdm,
+        fdyList: fdyghList,
+        rmrgh: this.rmrgh,
+        //rmsj: this.rmsj,
+        rmsj: "2020-09-09",
+      };
+      getAssignFdy(data).then((res) => {
+        console.log(res);
+      });
+      this.openAssignMoreClass = false;
     },
     // 取消按钮
     cancel() {
@@ -444,15 +527,14 @@ export default {
       this.getInstructorList(this.queryParams);
     },
     /** 重置按钮操作 */
-    resetQuery() {
-      // this.resetForm("queryForm");
-      // this.handleQuery();
+    resetQuery(queryParams) {
+      this.$refs[queryParams].resetFields();
+      this.handleQuery();
     },
     // 多选框选中数据
-    handleSelectionChange(selection) {
-      // this.ids = selection.map((item) => item.noticeId);
-      // this.single = selection.length != 1;
-      // this.multiple = !selection.length;
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+      console.log(this.multipleSelection);
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -603,5 +685,12 @@ export default {
 }
 .allocate_none {
   color: #cce0e1ff;
+}
+.el-button--text {
+  border-color: transparent;
+  color: #515a6e;
+  background: transparent;
+  padding-left: 0;
+  padding-right: 0;
 }
 </style>

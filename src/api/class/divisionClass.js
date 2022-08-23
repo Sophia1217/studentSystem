@@ -1,7 +1,7 @@
 import request from "@/utils/request.js"
 
 // localhost:8081/sws/class/queryStuList POST bjdm
-// 查询某班级学生列表
+// 分班管理班级列表查询
 export function getStuList(query) {
     return request({
         url: '/class/queryStuList',
@@ -60,7 +60,7 @@ export function getTransformClasses(query) {
 }
 
 // localhost:8081/sws/class/removeStuToEmptyClass POST {stuXhList-Y-学生学号列表}
-// 调整班级——将页签1的学生移入通用班级(暂时不用)
+// 调整班级——将页签2的学生移入班级
 export function removeStuToEmptyClass(query) {
     return request({
         url: '/class/removeStuToEmptyClass',

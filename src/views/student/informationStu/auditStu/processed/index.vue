@@ -484,9 +484,10 @@ export default {
     },
     // 多选
     handleSelectionChange(val) {
-      this.multipleSelection = val.map((item) => {
-        return item.id;
-      });
+      this.multipleSelection = val
+      // this.multipleSelection = val.map((item) => {
+      //   return item.id;
+      // });
     },
     // 打开导出弹窗
     handleExport() {
@@ -494,9 +495,18 @@ export default {
     },
     pass() {
       var data = this.multipleSelection;
-      if (this.multipleSelection.length > 1) {
-        passFlow(data).then(() => {
-          this.$message("已成功通过");
+      let params = []
+      for (let x = 0; x < data.length; x++) {
+        params.push({
+          id: data[x].id,
+          xh: data[x].userId,
+          approver:data[x].approver
+        })
+      }
+      if (this.multipleSelection.length > 0) {
+        passFlow(params).then((res) => {
+          this.$message({message: res.errmsg,type: 'success'});
+          this.handleSearch()
         });
       } else {
         this.$message.error("请先勾选一条信息");
@@ -517,7 +527,8 @@ export default {
     },
     handleOk() {
       var data = {
-        id: this.multipleSelection[0],
+        id: this.multipleSelection[0].id,
+        approver: this.multipleSelection[0].approver,
         rollbackReason: this.form.rollbackReason,
       };
       backFlow(data).then(() => this.$message("已成功拒绝"));

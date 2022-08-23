@@ -173,7 +173,7 @@ export default {
         //   { label: "工业设计", val: 10 },
         //   { label: "统计学", val: 11 },
         ],
-        isIndeterminate: true,
+        isIndeterminate: false,
       },
       studentStatus: {
         // 角色：
@@ -186,14 +186,14 @@ export default {
         //   { label: "培养单位本研学生工作负责人", val: 4 },
         //   { label: "辅导员", val: 5 },
         ],
-        isIndeterminate: true,
+        isIndeterminate: false,
       },
       ethnic: {
         // 姓别
         checkAll: false,
         choose: [],
         checkBox: [],
-        isIndeterminate: true,
+        isIndeterminate: false,
       },
       tableData: [],
       multipleSelection: [],
@@ -322,10 +322,10 @@ export default {
     learnHeAll(val) {
       let allCheck = [];
       for (let i in this.learnHe.checkBox) {
-        allCheck.push(this.learnHe.checkBox[i].val);
+        allCheck.push(this.learnHe.checkBox[i].dwdm);
       }
       this.learnHe.choose = val ? allCheck : [];
-      console.log(this.learnHe.choose, "全选");
+    //   console.log(this.learnHe.choose, "全选");
       this.learnHe.isIndeterminate = false;
     },
     // 单 位：单选
@@ -334,16 +334,17 @@ export default {
       this.learnHe.checkAll = checkedCount === this.learnHe.checkBox.length;
       this.learnHe.isIndeterminate =
         checkedCount > 0 && checkedCount < this.learnHe.checkBox.length;
-      console.log(this.learnHe.choose, "单选");
+    //   console.log(this.learnHe.choose, "单选",value,);
     },
     // 角 色全选
-    studentStatusAll(val) {
+    studentStatusAll(isAll) {
       let allCheck = [];
       for (let i in this.studentStatus.checkBox) {
-        allCheck.push(this.studentStatus.checkBox[i].val);
+        allCheck.push(this.studentStatus.checkBox[i].roleId);
       }
-      this.studentStatus.choose = val ? allCheck : [];
-      console.log(this.studentStatus.choose, "全选");
+      this.studentStatus.choose = isAll ? allCheck : [];
+      this.studentStatus.checkAll = isAll
+    //   console.log(this.studentStatus.choose, "全选",isAll,allCheck);
       this.studentStatus.isIndeterminate = false;
     },
     // 角 色单选
@@ -353,16 +354,16 @@ export default {
         checkedCount === this.studentStatus.checkBox.length;
       this.studentStatus.isIndeterminate =
         checkedCount > 0 && checkedCount < this.studentStatus.checkBox.length;
-      console.log(this.studentStatus.choose, "单选");
+    //   console.log(this.studentStatus.choose, "单选");
     },
     // 性 别全选
     ethnicAll(val) {
       let allCheck = [];
       for (let i in this.ethnic.checkBox) {
-        allCheck.push(this.ethnic.checkBox[i].val);
+        allCheck.push(this.ethnic.checkBox[i].dm);
       }
       this.ethnic.choose = val ? allCheck : [];
-      console.log(this.ethnic.choose, "全选");
+    //   console.log(this.ethnic.choose, "全选");
       this.ethnic.isIndeterminate = false;
     },
     // 性 别单选
@@ -371,7 +372,7 @@ export default {
       this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
       this.ethnic.isIndeterminate =
         checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
-      console.log(this.ethnic.choose, "单选");
+    //   console.log(this.ethnic.choose, "单选",value);
     },
     // 多选
     handleSelectionChange(val) {

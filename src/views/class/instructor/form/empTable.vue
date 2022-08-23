@@ -225,7 +225,7 @@ export default {
       console.log(1);
       this.$router.push("/class/empRecord");
     },
-    /** 查询公告列表 */
+    /** 查询任职记录列表 */
     getList() {
       this.loading = true;
       getQueryRecords(this.queryParams).then((response) => {

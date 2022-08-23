@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="value==1">
     <el-form
       :model="queryParams"
       ref="queryForm"
@@ -35,7 +35,7 @@
             @click="handleQuery"
             >查询</el-button
           >
-          <el-button size="mini" @click="resetQuery" class="reset">
+          <el-button size="mini" @click="resetQuery('queryParams')" class="reset">
             <span class="iconfont reset_icon">&#xe614;</span>
             重置</el-button
           >
@@ -47,7 +47,7 @@
 
 <script>
 import "@/assets/fonts/refresh/iconfont.css";
-import { getZwdm } from "@/api/class/classLeader";
+import { getZwdm,getQueryAllstuList} from "@/api/class/classLeader";
 export default {
   name: "assignSearch", // 把干部任命搜索框
   data() {
@@ -115,6 +115,7 @@ export default {
           record: "班级操作记录",
         },
       ],
+      value:"",
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -146,6 +147,10 @@ export default {
     // this.getList();
   },
   mounted() {
+    this.$bus.$on("index", (value) => {
+    this.value = value;
+       console.log("this.value", value);
+    });
     // 班干部职位筛选
   },
   methods: {
@@ -162,12 +167,12 @@ export default {
     },
     /** 查询公告列表 */
     getList() {
-      // this.loading = true;
-      // listNotice(this.queryParams).then((response) => {
-      //   this.noticeList = response.rows;
-      //   this.total = response.total;
-      //   this.loading = false;
-      // });
+      this.loading = true;
+      getQueryAllstuList(this.queryParams).then((response) => {
+        this.noticeList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
     },
     // 取消按钮
     cancel() {
@@ -187,13 +192,12 @@ export default {
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      // this.queryParams.pageNum = 1;
-      // this.getList();
+      this.queryParams.pageNum = 1;
+      this.getList();
     },
     /** 重置按钮操作 */
     resetQuery() {
-      // this.resetForm("queryForm");
-      // this.handleQuery();
+      this.$refs[queryForm].resetFields();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {

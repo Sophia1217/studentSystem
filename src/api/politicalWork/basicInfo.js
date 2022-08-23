@@ -62,3 +62,21 @@ export function getCodeInfoByEnglish(data) {
     data: data
   })
 }
+
+// 导出
+export function exportBasicInfo(data) {
+  return request({
+    url: '/zg/excelTest',
+    method: 'post',
+    responseType: 'blob',
+    data: data
+  })
+}
+// 查询工作单位列表
+export function getListWorkPlace(query) {
+  return request({
+    url: '/manager/user/queryAllDwh',
+    method: 'post',
+    data: query
+  })
+}

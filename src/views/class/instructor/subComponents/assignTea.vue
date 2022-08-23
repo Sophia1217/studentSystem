@@ -11,7 +11,7 @@
         class="table-header"
       >
         <div class="assignInput">
-          <el-form-item label="工号" prop="noticeType" class="header-item">
+          <el-form-item label="工号" prop="Xgh" class="header-item">
             <el-input
               v-model="queryParams.Xgh"
               placeholder="请输入工号"
@@ -38,7 +38,7 @@
               @click="handleQuery"
               >查询</el-button
             >
-            <el-button size="mini" @click="resetQuery" class="reset">
+            <el-button size="mini" @click="resetQuery('queryForm')" class="reset">
               <span class="iconfont reset_icon">&#xe614;</span>
               重置</el-button
             >
@@ -156,7 +156,7 @@
         append-to-body
       >
         <span class="assignTips"
-          >确认将【{{this.fdyList}}】【{{this.xm}}】任命为【{{this.$route.query.bjmc}}】辅导员</span
+          >确认将【{{fdyList}}】【{{xm}}】任命为【{{$route.query.bjmc}}】辅导员</span
         >
         <div slot="footer" class="dialog-footer">
           <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
@@ -215,7 +215,7 @@
         append-to-body
       >
         <span class="cancelTips"
-          >确认将取消【{{this.fdyList}}】【{{this.xm}}】【{{this.$route.query.bjmc}}】辅导员任命？</span
+          >确认将取消【{{fdyList}}】【{{xm}}】【{{$route.query.bjmc}}】辅导员任命？</span
         >
 
         <div slot="footer" classt="dialog-footer">
@@ -275,6 +275,7 @@ export default {
       showSearch: true,
       // 总条数
       total: 100,
+      xm: "",
       // 表格数据
       noticeList: [
         {
@@ -354,10 +355,12 @@ export default {
     // 第一个对话框
     // 分配班级
     assignClass(row) {
+      this.fdyList = this.fdyList.slice(0, -1);
       this.openAssignClass = true;
       this.title = "分配班级";
       console.log("分配班级信息：", row);
       this.bjdm = this.$route.query.bjdm;
+      
       this.fdyList.push(row.gh);
       this.rmrgh = "2005690002";
       this.xm = row.xm;
@@ -381,10 +384,12 @@ export default {
       this.openAssignClass = false;
       this.openCancelAssignClass = false;
       this.openSecondCancelAssign = false;
+      // this.FdyList =[];
     },
 
     // 取消分配辅导员
     allocateNone(row) {
+      this.fdyList = this.fdyList.slice(0, -1);
       this.openCancelAssignClass = true;
       this.title = "取消分配";
       console.log("取消分配信息：", row);
@@ -444,9 +449,9 @@ export default {
       this.getInstructorList(this.queryParams);
     },
     /** 重置按钮操作 */
-    resetQuery() {
-      // this.resetForm("queryForm");
-      // this.handleQuery();
+    resetQuery(queryParams) {
+      this.$refs[queryParams].resetFields();
+      this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {

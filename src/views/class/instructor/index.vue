@@ -41,7 +41,7 @@
               v-for="(item, index) in gradeOptions"
               :key="index"
               :label="item"
-              :value="index"
+              :value="item"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -246,7 +246,7 @@ export default {
     };
   },
   methods: {
-    getList() {
+    getList(data) {
       var data = this.queryParams;
       classList(data).then((response) => {
         // 获取班级列表数据
@@ -257,6 +257,9 @@ export default {
       });
     },
     getOptions() {
+      this.collegeOptions = [];
+      this.levelOptions = [];
+      this.gradeOptions = [];
       getCollege().then((response) => {
         // 获取培养单位列表数据
         this.collegeOptions = response.data.rows;

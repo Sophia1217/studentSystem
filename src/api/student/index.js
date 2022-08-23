@@ -205,7 +205,7 @@ export function getStuInfoFlowUpdatePage(data) {
 //毕业生等登记表
 export function gradStu(data) {
   return request({
-    url: '/export/gradStu',
+    url: '/export/gradStus',
     method: 'post',
     responseType: 'blob',
     data: data
@@ -215,7 +215,7 @@ export function gradStu(data) {
 //学生卡片
 export function stuCard(data) {
   return request({
-    url: '/export/stuCard',
+    url: '/export/stuCards',
     method: 'post',
     responseType: 'blob',
     data: data
@@ -225,7 +225,7 @@ export function stuCard(data) {
 //学生登记表
 export function stuReg(data) {
   return request({
-    url: '/export/regStuInfo',
+    url: '/export/regStuInfos',
     method: 'post',
     responseType: 'blob',
     data: data

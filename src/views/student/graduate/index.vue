@@ -649,8 +649,8 @@ export default {
         this.$message("请选择");
         return;
       }
-      let data = { xh: xhs.join(','),etype:'docx' };
-      gradStu(data).then((res) => this.downloadFn(res, "毕业生登记表", "docx"));
+      let data = { xhs: xhs,etype:'docx' };
+      gradStu(data).then((res) => this.downloadFn(res, "毕业生登记表", "zip"));
     },
     //学生登记
     getStuReg() {
@@ -662,9 +662,9 @@ export default {
         this.$message("请选择");
         return;
       }
-      let data = { xh: xhs,etype:'docx'};
+      let data = { xhs: xhs,etype:'docx'};
       stuReg(data).then((res) =>
-        this.downloadFn(res, "毕业学生登记表", "docx")
+        this.downloadFn(res, "学生登记表", "zip")
       );
     },
     //学生卡片
@@ -677,8 +677,8 @@ export default {
         this.$message("请选择");
         return;
       }
-      let data = { xh: xhs.join(','), etype:'docx' };
-      stuCard(data).then((res) => this.downloadFn(res, "毕业学生卡片", "docx"));
+      let data = { xhs: xhs, etype:'docx' };
+      stuCard(data).then((res) => this.downloadFn(res, "毕业学生卡片", "zip"));
     },
     hadleDetail(row, flag) {
       let schooling = ""; // 3 4 5 是本科

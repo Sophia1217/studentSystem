@@ -646,8 +646,8 @@ export default {
         this.$message("请选择");
         return;
       }
-      let data = { xh: xhs,etype:'docx'};
-      gradStu(data).then((res) => this.downloadFn(res, "毕业生登记表", "docx"));
+      let data = { xhs: xhs,etype:'docx'};
+      gradStu(data).then((res) => this.downloadFn(res, "毕业生登记表", "zip"));
     },
     //学生登记
     getStuReg() {
@@ -659,8 +659,8 @@ export default {
         this.$message("请选择");
         return;
       }
-      let data = { xh: xhs,etype:'docx' };
-      stuReg(data).then((res) => this.downloadFn(res, "学生登记表", "docx"));
+      let data = { xhs: xhs,etype:'docx' };
+      stuReg(data).then((res) => this.downloadFn(res, "学生登记表", "zip"));
     },
     //学生卡片
     getStu() {
@@ -672,8 +672,8 @@ export default {
         this.$message("请选择");
         return;
       }
-      let data = { xh: xhs,etype:'docx' };
-      stuCard(data).then((res) => this.downloadFn(res, "学生卡片", "docx"));
+      let data = { xhs: xhs,etype:'docx' };
+      stuCard(data).then((res) => this.downloadFn(res, "学生卡片", "zip"));
     },
   },
 };

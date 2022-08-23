@@ -400,7 +400,9 @@ var ls = ""
     ls =" application/vnd.ms-excel;charset=utf-8"
   } else if(type == "xlsx" ){
     ls ="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
-  }else{
+  } else if (type == 'zip') {
+    ls ="application/zip"
+  } else{
     ls ="text/plain;charset=utf-8"
   }
   if (!data) {

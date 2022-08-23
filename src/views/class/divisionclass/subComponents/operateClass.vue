@@ -106,11 +106,13 @@
                 </el-col>
                 <el-col :span="1.5">
                   <el-upload
-                    :auto-upload="false"
-                    action="string"
-                    multiple
-                    :on-change="sc"
+                    accept=".xlsx,.xls"
+                    :auto-upload="true"
+                    :action="uploadUrl"
                     :show-file-list="false"
+                    :data="fileData"
+                    :on-success='upLoadSuccess'
+                    :on-error='upLoadError'
                   >
                     <el-button class="export"> 导入</el-button>
                   </el-upload>
@@ -391,6 +393,8 @@ export default {
       // tab栏切换
       tab_title: [this.$route.query.bjmc, "未分配学生名单"],
       currentIndex: 0, // 0代表展示某一班级学生名单，1代表展示未分配学生名单
+      uploadUrl: process.env.VUE_APP_BASE_API + "/class/importExcel", // 上传的图片服务器地址
+      
       // 遮罩层
       // loading: true,
       // 选中数组
@@ -444,35 +448,43 @@ export default {
       classList: [],
     };
   },
+  computed: {
+        
+        fileData : {
+            get() {
+                return {
+                    classNum: this.$route.query.bjdm
+                }
+            }
+        },
+        
+    },
   mounted() {
     this.getList(this.queryParams); // 页面一挂载就默认展示某一特定班级学生名单
     this.getOptions(); // 获取生源地、专业、性别筛选框数据
   },
   methods: {
-    sc(file, fileList) {
-      this.fileTemp = file.raw;
-      let fileName = file.raw.name;
-      let fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
-      if (this.fileTemp) {
-        if (fileType == "xlsx" || fileType == "xls") {
-          var data = {
-            file: this.fileTemp,
-            classNum: this.$route.query.bjdm,
-          };
-          console.log("data", data);
-          importtable(data).then(() => console.log("asdasd"));
-        } else {
-          this.$message({
-            type: "warning",
-            message: "附件格式错误，请删除后重新上传！",
-          });
+    upLoadSuccess (res,file,fileList){
+        if (res.errcode == '00') {
+            this.$message({
+                type: "success",
+                message: res.errmsg,
+            });
+        }else {
+            this.$message({
+                type: "error",
+                message: res.errmsg,
+            });
         }
-      } else {
-        this.$message({
-          type: "warning",
-          message: "请上传附件！",
-        });
-      }
+    },
+    
+    upLoadError (err,file,fileList){
+        
+            this.$message({
+                type: "error",
+                message: '上传失败',
+            });
+        
     },
     mbDown() {
       mbDown().then((res) => this.downloadFn(res, "标准模板下载", "xlsx"));

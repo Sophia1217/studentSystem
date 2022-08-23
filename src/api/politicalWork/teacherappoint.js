@@ -37,3 +37,23 @@ export function getTeacherDetailList(data) {
     data: data
   })
 }
+
+// 导出
+export function exportTeacher(data) {
+  return request({
+    url: '/bzrrm/excelTest',
+    method: 'post',
+    responseType: 'blob',
+    data: data
+  })
+}
+
+// 查询工作单位列表
+export function getListWorkPlace(query) {
+  return request({
+    url: '/manager/user/queryAllDwh',
+    method: 'post',
+    data: query
+  })
+}
+

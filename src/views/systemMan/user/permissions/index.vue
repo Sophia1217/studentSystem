@@ -97,7 +97,7 @@ export default {
   name: "permissions",
   data() {
     return {
-        props: {    // 数配置
+        props: {    // 树配置
         //   label: 'name',
         //   children: 'rows',
           isLeaf: 'leaf'

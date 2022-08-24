@@ -1,5 +1,5 @@
 <template>
-  <div class="basicInfo">
+  <div class="basicInfoStyle">
     <div class="searchWrap">
       <!-- 搜索 -->
       <div class="search">
@@ -495,7 +495,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.basicInfo {
+.basicInfoStyle {
   .mt15 {
     margin-top: 15px;
   }

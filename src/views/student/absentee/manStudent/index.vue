@@ -1,5 +1,5 @@
 <template>
-  <div class="manStudent">
+  <div class="manStudentStyle">
     <div class="searchWrap">
       <div class="search">
         <el-input
@@ -680,7 +680,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.manStudent {
+.manStudentStyle {
   .mt15 {
     margin-top: 15px;
   }

@@ -14,15 +14,9 @@
           <el-input v-model="queryParams.xh" placeholder="未填写" clearable />
           <!--             @keyup.enter.native="handleQuery" -->
         </el-form-item>
-        <el-form-item label="职位状态" prop="zwzt" class="header-item">
-          <el-select v-model="queryParams.zwzt" placeholder="未选择" clearable>
-            <el-option
-              v-for="(item, index) in zwztOptions"
-              :key="index"
-              :label="item.mc"
-              :value="item.dm"
-            />
-          </el-select>
+        <el-form-item label="姓名" prop="xm" class="header-item">
+          <el-input v-model="queryParams.xm" placeholder="未填写" clearable />
+    
         </el-form-item>
       </div>
       <div class="assignBtn">
@@ -35,7 +29,7 @@
             @click="handleQuery"
             >查询</el-button
           >
-          <el-button size="mini" @click="resetQuery('queryParams')" class="reset">
+          <el-button size="mini" @click="resetQuery('queryForm')" class="reset">
             <span class="iconfont reset_icon">&#xe614;</span>
             重置</el-button
           >
@@ -56,16 +50,6 @@ export default {
       tab_title: ["22级电子信息1班", "未分配学生名单"],
       currentIndex: 0,
       // assignSearch职位状态筛选框数据
-      zwztOptions: [
-        {
-          mc: "在职",
-          dm: "0",
-        },
-        {
-          mc: "无",
-          dm: "1",
-        },
-      ], // 职位状态
       // xh:"", //学号
       // 遮罩层
       // loading: true,
@@ -125,7 +109,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         xh: "",
-        zwzt: "",
+        xm: "",
         noticeTitle: undefined,
         createBy: undefined,
         status: undefined,
@@ -192,11 +176,11 @@ export default {
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1;
+      // this.queryParams.pageNum = 1;
       this.getList();
     },
     /** 重置按钮操作 */
-    resetQuery() {
+    resetQuery(queryForm) {
       this.$refs[queryForm].resetFields();
     },
     // 多选框选中数据

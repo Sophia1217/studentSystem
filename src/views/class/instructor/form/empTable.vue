@@ -87,12 +87,12 @@
           prop="cxsj"
           sortable
         />
-        <el-table-column
+        <!-- <el-table-column
           label="任职状态"
           align="center"
-          prop="updateTime"
+          prop="sfyx"
           sortable
-        />
+        /> -->
         <!-- <el-table-column
         label="公告标题"
         align="center"

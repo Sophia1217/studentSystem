@@ -65,7 +65,10 @@
               >
             </el-col>
             <el-col :span="1.5">
-              <el-button class="delete" icon="el-icon-delete"
+              <el-button 
+              class="delete" 
+              icon="el-icon-delete"
+              @click="deleteAssignMore"
                 >批量取消</el-button
               >
             </el-col>
@@ -250,7 +253,7 @@
         append-to-body
       >
         <span class="cancelTips"
-          >确认将取消【{{ fdyList }}】【{{ xm }}】【{{
+          >确认将取消【{{ FdyList }}】【{{ xm }}】【{{
             $route.query.bjmc
           }}】辅导员任命？</span
         >
@@ -258,6 +261,28 @@
         <div slot="footer" classt="dialog-footer">
           <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
           <el-button @click="submitOut2" class="submit_btn">确认</el-button>
+        </div>
+      </el-dialog>
+      <!-- 批量取消分配班级对话框 -->
+      <el-dialog
+        class="assign_class"
+        :title="title"
+        :visible.sync="openCancelAssignMoreClass"
+        width="780px"
+        append-to-body
+        ><template v-for="item in multipleSelection">
+          <div :key="item.gh">
+            <span
+              >确认取消【{{ item.gh }}】【{{ item.xm }}】【{{
+                $route.query.bjmc
+              }}】辅导员任命</span
+            >
+          </div>
+        </template>
+
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="cancelMore" class="cancel_btn">取消</el-button>
+          <el-button @click="cancelAssignMore" class="submit_btn">确认</el-button>
         </div>
       </el-dialog>
     </div>
@@ -302,6 +327,7 @@ export default {
       // 班级代码
       bjdm: "", //班级代码
       fdyList: [], // 辅导员数组
+      FdyList: [], // 撤任辅导员数组
       rmrgh: "", // 辅导员工号
       rmsj: "", // 任命时间
       // 遮罩层
@@ -360,6 +386,8 @@ export default {
       openAssignClass: false,
       //是否显示批量分配
       openAssignMoreClass: false,
+      //是否显示批量取消分配
+      openCancelAssignMoreClass: false,
       // 是否显示取消分配班级弹框
       openCancelAssignClass: false,
       // 是否显示第二次取消分配班级单矿
@@ -437,12 +465,12 @@ export default {
 
     // 取消分配辅导员
     allocateNone(row) {
-      this.fdyList = this.fdyList.slice(0, -1);
+      this.FdyList = this.FdyList.slice(0, -1);
       this.openCancelAssignClass = true;
       this.title = "取消分配";
       console.log("取消分配信息：", row);
       this.bjdm = this.$route.query.bjdm;
-      this.fdyList.push(row.gh);
+      this.FdyList.push(row.gh);
       this.xm = row.xm;
       this.cxrGh = "2005690002";
       this.cxsj = "2020-09-09 00:00:00";
@@ -486,23 +514,42 @@ export default {
     },
     cancelMore() {
       this.openAssignMoreClass = false;
+      this.openCancelAssignMoreClass =false;
     },
     assignMore() {
-      let fdyghList = [];
-      for (let item_row of this.multipleSelection) {
-        fdyghList.push(item_row.gh);
-      }
-      let data = {
-        bjdm: this.bjdm,
-        fdyList: fdyghList,
-        rmrgh: this.rmrgh,
-        //rmsj: this.rmsj,
-        rmsj: "2020-09-09",
-      };
-      getAssignFdy(data).then((res) => {
-        console.log(res);
-      });
       this.openAssignMoreClass = false;
+      let fdyList = [];
+      let bjdm =this.$route.query.bjdm
+      let rmrgh = this.$store.getters.userId
+      let rmsj = "2020-09-09 00:00:00"
+      for (let item_row of this.multipleSelection) {
+        fdyList.push(item_row.gh);
+      }
+      getAssignFdy({bjdm, fdyList,rmrgh,rmsj}).then((res) => {
+        console.log(res);
+        this.getInstructorList();
+      });
+    },
+    deleteAssignMore(){
+      this.openCancelAssignMoreClass = true;
+      this.title = "批量取消分配";
+    },
+    //批量取消分配确认
+    cancelAssignMore() {
+      let FdyList = []
+      let bjdm =this.$route.query.bjdm
+      let cxrGh = "2005690002"
+      let cxsj = "2020-09-09 00:00:00"
+      for (let item_row of this.multipleSelection) {
+        FdyList.push(item_row.gh);
+      }
+      
+      getRemoveAssignFdy({FdyList, bjdm, cxrGh, cxsj}).then((res) => {
+        console.log(res);
+        this.getInstructorList();
+
+      });
+      this.openCancelAssignMoreClass = false;
     },
     // 取消按钮
     cancel() {

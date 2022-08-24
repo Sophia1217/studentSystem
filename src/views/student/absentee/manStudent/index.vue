@@ -238,7 +238,7 @@
           <el-table-column prop="xz" label="学制" sortable> </el-table-column>
           <el-table-column prop="xjzt" label="学籍状态" sortable>
           </el-table-column>
-          <el-table-column fixed="right" label="操作" width="180">
+          <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
               <el-button
                 type="text"

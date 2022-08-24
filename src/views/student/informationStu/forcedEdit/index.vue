@@ -42,7 +42,7 @@ export default {
 
 <style lang="scss" scoped>
 .forcedEdit{
-  padding:20px;
+  padding:20px 0;
   .tabs{
     background: #fff;
     padding-left: 20px;

@@ -39,8 +39,7 @@ export default {
 
 <style lang="scss" scoped>
 .StudentSysIndex{
-  padding:20px;
-  // background: #fff;
+  padding:20px 0;
   .tabs{
     background: #fff;
     padding-left: 20px;

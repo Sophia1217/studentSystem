@@ -472,7 +472,7 @@ export default {
         ybj: this.moreIform.ybh&&this.moreIform.ybh.length>0?this.moreIform.ybh.join(','):'', // 原班级
         xbm: this.dmxbmOPs.choose&&this.dmxbmOPs.choose.length>0?this.dmxbmOPs.choose.join(','):'', // 性别码
         xz: this.learnHe.choose&&this.learnHe.choose.length>0?this.learnHe.choose.join(','):'',
-        xjzt: this.studentStatus.choose&&this.studentStatus.choose.length>0?this.studentStatus.choose.join(','):'',
+        xjzt: this.studentStatus.choose&&this.studentStatus.choose.length>0?this.studentStatus.choose.join(','):'01,03',
         zzmmm: this.politica.choose&&this.politica.choose.length>0?this.politica.choose.join(','):'',
         mzm: this.ethnic.choose&&this.ethnic.choose.length>0?this.ethnic.choose.join(','):'',
         bjm: this.moreIform.pread&&this.moreIform.pread.length>0?this.moreIform.pread.join(','):'',

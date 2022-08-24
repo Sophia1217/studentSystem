@@ -526,12 +526,12 @@ export default {
       this.dialogVisible = false;
     },
     handleOk() {
-      var data = {
+      let data = {
         id: this.multipleSelection[0].id,
         approver: this.multipleSelection[0].approver,
         rollbackReason: this.form.rollbackReason,
       };
-      backFlow(data).then(() => this.$message("已成功拒绝"));
+      backFlow(data).then(() => this.$message({message: res.errmsg,type: 'success'}))
     },
     // 导出取消
     handleCancel() {

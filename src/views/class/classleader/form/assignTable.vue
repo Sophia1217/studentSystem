@@ -221,7 +221,7 @@
       >
         <el-row>
           <el-col :span="12">
-            <el-form-item label="班干部职位代码" prop="bgbList">
+            <el-form-item label="班干部职位代码" prop="bgbid">
               <!-- <el-input v-model="form.bgbid"></el-input> -->
               <el-select
                 v-model="form.bgbid"
@@ -371,8 +371,7 @@ export default {
     this.table_title = this.$route.query.bjmc;
     console.log("班干部列表挂载");
     console.log("allStu_content:", this.$props.allStu_content);
-    if(this.value)
-
+    // if(this.value)
 
     // 班干部职位筛选
     getZwdm().then((res) => {
@@ -382,11 +381,10 @@ export default {
       }
     });
     this.getList();
-    // this.getBgbListData()
 
   },
   methods: {
-    // // 班干部查询列表
+    //查询列表
     getList(){
       console.log("getList1!");
       if (this.currentIndex == 0) {
@@ -536,7 +534,7 @@ export default {
       let stuList = [];
       let bgbList = [];
       let classList = [];
-      let rgh = this.$store.getters.userId;
+      let rmrgh = this.$store.getters.userId;
 
       for (let item_row of this.currentRow) {
         stuList.push(item_row.xh);
@@ -544,7 +542,7 @@ export default {
         classList.push(this.currentBjdm);
       }
 
-      getAssignBgb({ stuList, bgbList, classList, rgh }).then((res) => {
+      getAssignBgb({ stuList, bgbList, classList, rmrgh }).then((res) => {
         console.log(res);
             this.$message({
                 message: "任命成功",

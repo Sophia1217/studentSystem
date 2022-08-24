@@ -21,6 +21,12 @@
           </el-form-item>
           <el-form-item label="工作单位" prop="xy" class="header-item">
             <el-select v-model="queryParams.xy" placeholder="请选择" clearable>
+              <el-option
+                v-for="(item, index) in collegeOptions"
+                :key="index"
+                :label="item.mc"
+                :value="item.dm"
+              />
             </el-select>
           </el-form-item>
         </div>
@@ -300,6 +306,7 @@ import {
   getAssignFdy,
   getRemoveAssignFdy,
 } from "@/api/class/instructor";
+import { getCollege } from "@/api/class/maintenanceClass"; 
 export default {
   name: "assignTea", //分配辅导员
   components: {
@@ -308,6 +315,7 @@ export default {
   },
   mounted() {
     this.getInstructorList();
+    this.getOptions();
   },
   data() {
     return {
@@ -382,6 +390,8 @@ export default {
       ],
       // 弹出层标题
       title: "",
+      // 筛选框数据
+      collegeOptions: [],
       // 是否显示分配班级弹框
       openAssignClass: false,
       //是否显示批量分配
@@ -406,10 +416,16 @@ export default {
       },
     };
   },
-  mounted() {
-    this.getInstructorList();
-  },
   methods: {
+    getOptions(){
+      this.collegeOptions = [];
+      getCollege().then((response) => {
+        // 获取工作单位列表数据
+        console.log(response);
+        this.collegeOptions = response.data.rows;
+      });
+    },
+    //辅导员列表查询
     getInstructorList() {
       var data = this.queryParams;
       getPlacementPageList(data).then((res) => {

@@ -322,6 +322,10 @@ export default {
         pycc: "", // 培养层次
         ssnj: "", // 年级
         bjdm: "", // 班级编号
+        orderField: "", //
+        orderType: "",
+        roleId: this.$store.state.user.roleId,
+        userId: this.$store.state.user.userId,
       },
       // 新建班级表单参数
       form: {
@@ -455,8 +459,10 @@ export default {
       this.getList(this.queryParams);
     },
     changeTableSort(column) {
-      this.queryParams.orderZd = column.prop;
-      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      //console.log("sadada", this.$store.state);
+      this.queryParams.orderField = column.prop;
+      this.queryParams.orderType =
+        column.order === "descending" ? "desc" : "asc"; // 0是asc升序，1是desc降序
       this.handleQuery();
     },
     // /** 重置按钮操作 */

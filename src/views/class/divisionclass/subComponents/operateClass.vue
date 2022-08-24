@@ -111,8 +111,8 @@
                     :action="uploadUrl"
                     :show-file-list="false"
                     :data="fileData"
-                    :on-success='upLoadSuccess'
-                    :on-error='upLoadError'
+                    :on-success="upLoadSuccess"
+                    :on-error="upLoadError"
                   >
                     <el-button class="export"> 导入</el-button>
                   </el-upload>
@@ -394,7 +394,7 @@ export default {
       tab_title: [this.$route.query.bjmc, "未分配学生名单"],
       currentIndex: 0, // 0代表展示某一班级学生名单，1代表展示未分配学生名单
       uploadUrl: process.env.VUE_APP_BASE_API + "/class/importExcel", // 上传的图片服务器地址
-      
+
       // 遮罩层
       // loading: true,
       // 选中数组
@@ -449,42 +449,38 @@ export default {
     };
   },
   computed: {
-        
-        fileData : {
-            get() {
-                return {
-                    classNum: this.$route.query.bjdm
-                }
-            }
-        },
-        
+    fileData: {
+      get() {
+        return {
+          classNum: this.$route.query.bjdm,
+        };
+      },
     },
+  },
   mounted() {
     this.getList(this.queryParams); // 页面一挂载就默认展示某一特定班级学生名单
     this.getOptions(); // 获取生源地、专业、性别筛选框数据
   },
   methods: {
-    upLoadSuccess (res,file,fileList){
-        if (res.errcode == '00') {
-            this.$message({
-                type: "success",
-                message: res.errmsg,
-            });
-        }else {
-            this.$message({
-                type: "error",
-                message: res.errmsg,
-            });
-        }
+    upLoadSuccess(res, file, fileList) {
+      if (res.errcode == "00") {
+        this.$message({
+          type: "success",
+          message: res.errmsg,
+        });
+      } else {
+        this.$message({
+          type: "error",
+          message: res.errmsg,
+        });
+      }
     },
-    
-    upLoadError (err,file,fileList){
-        
-            this.$message({
-                type: "error",
-                message: '上传失败',
-            });
-        
+
+    upLoadError(err, file, fileList) {
+      this.$message({
+        type: "error",
+        message: "上传失败",
+      });
     },
     mbDown() {
       mbDown().then((res) => this.downloadFn(res, "标准模板下载", "xlsx"));
@@ -500,7 +496,9 @@ export default {
       });
     },
     handleExport() {
-      const data = this.queryParams;
+      var arr = this.list.length > 0 ? this.list.map((item) => item.xh) : [];
+      var data = { stuXhList: arr };
+      Object.assign(data, this.queryParams);
       expStu(data).then((res) => this.downloadFn(res, "分班管理名单", "xlsx"));
     },
     // 查询未分配学生列表数据

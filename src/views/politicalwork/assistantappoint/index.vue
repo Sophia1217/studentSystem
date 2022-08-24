@@ -215,14 +215,32 @@
         :default-sort="{ prop: 'date', order: 'descending' }"
         @selection-change="handleSelectionChange"
       >
-        <!-- <el-table-column type="selection" width="55" /> -->
-        <el-table-column type="index" label="在岗日期" width="50" />
+        <!-- <el-table-column type="index" label="在岗日期" width="50" /> -->
+        <el-table-column label="在岗日期" width="180">
+          <template slot-scope="scope">
+            <div v-if="tableData[0].cxsj != null">
+              <span>{{ tableData[0].rmsj }} 至 {{ tableData[0].cxsj }}</span>
+            </div>
+            <div v-if="tableData[0].cxsj == null && tableData[0].rmsj != null">
+              <span>{{ tableData[0].rmsj }} 至今</span>
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column prop="bjbh" label="班级编号" sortable />
         <el-table-column prop="bjmc" label="班级名称" sortable />
         <el-table-column prop="pycc" label="培养层次" sortable />
         <el-table-column prop="pydw" label="培养单位" sortable />
         <el-table-column prop="nj" label="年级" sortable />
-        <el-table-column prop="sfqy" label="任职状态" sortable />
+        <el-table-column prop="sfqy" label="任职状态" sortable>
+          <template slot-scope="scope">
+            <div v-if="scope.row.sfqy == 1">
+              <span class="greenDot">●</span><span>在岗</span>
+            </div>
+            <!-- <span v-if="scope.row.dbzt == 1">是</span> -->
+            <div v-else><span class="redDot">●</span><span>离岗</span></div>
+            <!-- <span v-else>否</span> -->
+          </template>
+        </el-table-column>
         <el-table-column prop="rmrxm" label="任命人" sortable />
         <el-table-column prop="rmsj" label="任命时间" sortable />
         <el-table-column prop="cxrxm" label="免去人" sortable />
@@ -869,5 +887,15 @@ export default {
   left: 20%;
   transform: translateX(-50%);
   text-align: center;
+}
+.greenDot {
+  width: 8px;
+  height: 8px;
+  color: #23ad6f;
+}
+.redDot {
+  width: 8px;
+  height: 8px;
+  color: #ed5234;
 }
 </style>

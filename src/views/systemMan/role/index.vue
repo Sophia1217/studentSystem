@@ -151,9 +151,11 @@ export default {
     //搜索按钮操作
     handleQuery() {
       let data = {
-        roleId: "01",
+        roleId: this.$store.state.user.roleId,
         roleName: this.queryParams.roleName,
         isUse: this.queryParams.isUse,
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
       };
       queryRoleList(data)
         .then((res) => {
@@ -206,7 +208,7 @@ export default {
       var data = {
         userId: "1234",
         roleId: inf.roleId,
-        isUse: inf.roleId ? "1" : "0",
+        isUse: inf.isUse == "0" ? "1" : "0",
       };
       cancel(data).then((res) => {
         console.log("状态改变成功");

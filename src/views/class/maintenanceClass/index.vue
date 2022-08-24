@@ -89,15 +89,24 @@
     </div>
 
     <!-- v-loading="loading" -->
-    <el-table :data="noticeList" @selection-change="handleSelectionChange">
+    <el-table
+      :data="noticeList"
+      @selection-change="handleSelectionChange"
+      @sort-change="changeTableSort"
+    >
       <el-table-column label="序号" align="center" type="index" />
-      <el-table-column label="班级编号" align="center" prop="bjdm" sortable />
+      <el-table-column
+        label="班级编号"
+        align="center"
+        prop="bjdm"
+        sortable="custom"
+      />
       <el-table-column
         label="班级名称"
         align="center"
         width="250px"
         prop="bjmc"
-        sortable
+        sortable="custom"
       >
         <template slot-scope="{ row }">
           <el-input
@@ -108,31 +117,41 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="培养单位" align="center" prop="ssdwmc" sortable />
-      <el-table-column label="年级" align="center" prop="ssnj" sortable />
+      <el-table-column
+        label="培养单位"
+        align="center"
+        prop="ssdwmc"
+        sortable="custom"
+      />
+      <el-table-column
+        label="年级"
+        align="center"
+        prop="ssnj"
+        sortable="custom"
+      />
       <el-table-column
         label="培养层次"
         align="center"
         prop="pyccName"
-        sortable
+        sortable="custom"
       />
       <el-table-column
         label="班级人数"
         align="center"
         prop="stuNumOfClass"
-        sortable
+        sortable="custom"
       />
       <el-table-column
         label="创建时间"
         align="center"
         prop="createTime"
-        sortable
+        sortable="custom"
       />
       <el-table-column
         label="更新时间"
         align="center"
         prop="updateTime"
-        sortable
+        sortable="custom"
         class-name="small-padding fixed-width"
       />
       <el-table-column
@@ -434,6 +453,11 @@ export default {
     handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList(this.queryParams);
+    },
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.handleQuery();
     },
     // /** 重置按钮操作 */
     resetQuery() {

@@ -213,6 +213,12 @@
                 placeholder="未选择"
                 clearable
               >
+                <el-option
+                  v-for="(item, index) in majorOptions"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                />
               </el-select>
             </el-form-item>
             <el-form-item label="生源地" prop="syd" class="header-item">
@@ -221,6 +227,12 @@
                 placeholder="未选择"
                 clearable
               >
+                <el-option
+                  v-for="(item, index) in sydOptions"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                />
               </el-select>
             </el-form-item>
             <el-form-item label="性别" prop="sex" class="header-item">
@@ -229,6 +241,12 @@
                 placeholder="未选择"
                 clearable
               >
+                <el-option
+                  v-for="(item, index) in sexOptions"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                />
               </el-select>
             </el-form-item>
             <el-form-item label="学号" prop="xh" class="header-item">
@@ -521,6 +539,7 @@ export default {
       // 获取专业
       getMajors({ pyccm: this.$route.query.pycc }).then((response) => {
         // 获取培养层次列表数据
+        console.log("Res", response);
         this.majorOptions = response.data.rows;
       });
       // 获取性别

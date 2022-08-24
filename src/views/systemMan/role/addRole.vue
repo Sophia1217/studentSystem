@@ -126,14 +126,12 @@ export default {
     //elementUi中自带的方法，可以获取到所有选中的节点
     currentChecked(nodeObj, SelectedObj) {
       var that = this;
-      const { checkedNodes } = SelectedObj;
-      console.log("adsasd", checkedNodes);
+      const { checkedNodes, halfCheckedKeys } = SelectedObj;
       var menuList = checkedNodes.map((item) => item.modId);
-      that.savaData = menuList;
+      that.savaData = menuList.concat(halfCheckedKeys); //要获取上级根节点
     },
     sava() {
       if (this.isEdit === "1") {
-        console.log("新增");
         let data = {
           userId: "1234",
           menuList: this.savaData,

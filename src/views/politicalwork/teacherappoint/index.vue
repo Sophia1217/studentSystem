@@ -49,7 +49,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">带班状态：</el-col>
+          <el-col :span="3">状 态：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom :obj-prop="status" @training="handleCheckAllStatusChange" @checkedTraining="handleCheckedStatusChange" />
@@ -70,7 +70,7 @@
         </div>
       </div>
       <div class="mt15">
-        <el-table ref="multipleTable" :data="tableData" style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}" @selection-change="handleSelectionChange">
+        <el-table ref="multipleTable" :data="tableData" style="width: 100%" @sort-change="changeTableSort">
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
           <el-table-column prop="gh" label="工号" sortable />
@@ -82,21 +82,23 @@
             </template>
           </el-table-column>
           <el-table-column prop="xb" label="性别" sortable>
-            <!-- <template slot-scope="scope">
+            <template slot-scope="scope">
               <span v-if="scope.row.xb == 1">男</span>
-              <span v-if="scope.row.xb == 2">女</span>
-            </template> -->
+              <span v-else>女</span>
+            </template>
           </el-table-column>
           <el-table-column prop="gzdw" label="工作单位" sortable />
           <el-table-column prop="dbzt" label="带班状态" sortable>
-            <!-- <template slot-scope="scope">
+            <template slot-scope="scope">
               <div v-if="scope.row.dbzt == 1">
                 <span class="greenDot">●</span><span>是</span>
               </div>
-              <div v-if="scope.row.dbzt == 0">
+              <!-- <span v-if="scope.row.dbzt == 1">是</span> -->
+              <div v-else>
                 <span class="redDot">●</span><span>否</span>
               </div>
-            </template> -->
+              <!-- <span v-else>否</span> -->
+            </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
@@ -225,8 +227,7 @@
 
 </template>
 <script>
-import { getTeacherDetailList, getTeacherDetail, addTeacher, removeTeacher, exportTeacher, getListWorkPlace } from '@/api/politicalWork/teacherappoint'
-// import { getCodeInfoByEnglish } from "@/api/student/fieldSettings"
+import { getTeacherDetailList, getTeacherDetail, addTeacher, removeTeacher, exportTeacher } from '@/api/politicalWork/teacherappoint'
 import CheckboxCom from '@/views/components/checkboxCom'
 
 export default {
@@ -263,17 +264,17 @@ export default {
         gh: '',
         xm: ''
       },
-      // expordParams: {
-      //   pageNum: 1,
-      //   pageSize: 10,
-      //   dwmcList: [],
-      //   genderList: [],
-      //   lbList: [],
-      //   sfdbList: [],
-      //   gh: '',
-      //   xm: ''
+      expordParams: {
+        pageNum: 1,
+        pageSize: 10,
+        dwmcList: [],
+        genderList: [],
+        lbList: [],
+        sfdbList: [],
+        gh: '',
+        xm: ''
 
-      // },
+      },
       searchVal: '',
       select: '',
       isMore: false,
@@ -289,19 +290,19 @@ export default {
       status: { // 状态
         checkAll: false,
         choose: [],
-        checkBox: [{ mc: '是', dm: 1 }, { mc: '否', dm: 0 }],
+        checkBox: [{ label: '是', val: 1 }, { label: '否', val: 0 }],
         isIndeterminate: true
       },
       sex: { // 性别
         checkAll: false,
         choose: [],
-        checkBox: [{ mc: '男', dm: 1 }, { mc: '女', dm: 2 }],
+        checkBox: [{ label: '男', val: 1 }, { label: '女', val: 2 }],
         isIndeterminate: true
       },
       workPlace: { // 单位
         checkAll: false,
         choose: [],
-        checkBox: [{ mc: '软件学院', dm: '软件学院' }, { mc: '设计学院', dm: '设计学院' }, { mc: '文学院', dm: '文学院' }, { mc: '理学院', dm: '理学院' }, { mc: '工业设计', dm: '工业设计' }, { mc: '通信工程', dm: '通信工程' }, { mc: '电子信息', dm: '电子信息' }, { mc: '建筑工程', dm: '建筑工程' }, { mc: '统计学', dm: '统计学' }],
+        checkBox: [{ label: '软件学院', val: '软件学院' }, { label: '设计学院', val: '设计学院' }, { label: '文学院', val: '文学院' }, { label: '理学院', val: '理学院' }, { label: '工业设计', val: '工业设计' }, { label: '通信工程', val: '通信工程' }, { label: '电子信息', val: '电子信息' }, { label: '建筑工程', val: '建筑工程' }, { label: '统计学', val: '统计学' }],
         isIndeterminate: true
       },
       tableData: [],
@@ -320,21 +321,12 @@ export default {
     //   this.initPassword = response.msg
     // })
   },
-  mounted() {
-    this.getListWorkPlace('dmdwmc') // 工作单位
-  },
+  mounted() {},
   methods: {
-    getWorkPlace(data) {
-      this.getListWorkPlace(data)
-    },
-    getListWorkPlace(paramsData) {
-      const data = { listWorkPlace: paramsData }
-      getListWorkPlace(data)
-        .then((res) => {
-          console.log('res', res)
-          this.$set(this.workPlace, 'checkBox', res.data.rows)
-        })
-        .catch((err) => {})
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop
+      this.queryParams.orderPx = column.order === 'descending' ? 1 : 0 // 0是asc升序，1是desc降序
+      this.handleSearch()
     },
     // 查询
     handleSearch() {
@@ -383,7 +375,7 @@ export default {
     handleCheckAllStatusChange(val) {
       const allCheck = []
       for (const i in this.status.checkBox) {
-        allCheck.push(this.status.checkBox[i].dm)
+        allCheck.push(this.status.checkBox[i].val)
       }
       this.status.choose = val ? allCheck : []
       console.log(this.status.choose, '全选')
@@ -410,7 +402,7 @@ export default {
     handleCheckAllSexChange(val) {
       const allCheck = []
       for (const i in this.sex.checkBox) {
-        allCheck.push(this.sex.checkBox[i].dm)
+        allCheck.push(this.sex.checkBox[i].val)
       }
       this.sex.choose = val ? allCheck : []
       console.log(this.sex.choose, '全选')
@@ -437,7 +429,7 @@ export default {
     handleCheckAllWorkPlaceChange(val) {
       const allCheck = []
       for (const i in this.workPlace.checkBox) {
-        allCheck.push(this.workPlace.checkBox[i].dm)
+        allCheck.push(this.workPlace.checkBox[i].val)
       }
       this.workPlace.choose = val ? allCheck : []
       console.log(this.workPlace.choose, '全选')
@@ -465,10 +457,10 @@ export default {
       this.multipleSelection = val
       console.log(this.multipleSelection)
     },
-    // 打开导出弹窗
+    // TODO 打开导出弹窗
     handleExport() {
       // this.showExport = true
-      this.queryParams.pageNum = 1
+      this.queryParams.pageNum = 0
       exportTeacher(this.queryParams)
         .then((res) => {
           this.downloadFn(res, '班主任任命表.xlsx', 'xlsx')
@@ -524,7 +516,7 @@ export default {
     // 确认导入按钮
     confirmImport() {
       this.showConfirmImport = false
-      addTeacher({ 'ghList': [this.importForm.gh], 'xm': this.importForm.xm }).then(res => {
+      addTeacher({ 'ghList': [this.importForm.gh] }).then(res => {
         console.log(res.flag)
         this.getList()
       })
@@ -600,7 +592,6 @@ export default {
       display: flex;
       flex-direction: row;
       align-items: center;
-      background: #fff;
       .elSelect{
         width:110px;
       }

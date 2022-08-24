@@ -4,7 +4,7 @@
       <div class="g-search">
         <el-input
           placeholder="请输入"
-          v-model="searchVal"
+          v-model.trim="searchVal"
           clearable
           class="inputSelect"
         >

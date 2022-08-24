@@ -2,7 +2,7 @@
   <div class="manStudent">
     <div class="searchWrap">
       <div class="search">
-        <el-input placeholder="请输入" v-model="searchVal" clearable class="inputSelect">
+        <el-input placeholder="请输入" v-model.trim="searchVal" clearable class="inputSelect">
           <el-select
             v-model="select"
             class="elSelect"

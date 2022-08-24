@@ -13,442 +13,1569 @@
         <div class="right_top">
           <p class="title">信息修改字段设置
             <el-button class="saveButton" type="primary" @click="onSubmit">保存</el-button>
-          </p>
+            </p>
+          <!-- <div class="saveBtn"> <i class="icon"></i> 保存</div> -->
         </div>
+        <div id="tag_0" class="headline">基本信息</div>
+        <div class="checkButtons">
+          <el-button class="checkButton" @click="allRead(basicInfoForm)">全部只读</el-button>
+          <el-button class="checkButton" @click="allMust(basicInfoForm)">全部必填</el-button>
+        </div>
+        <!-- ///////////////////////////////////////////////////////// -->
 
-        <!-- 基本信息 -->
-        <div class="headline" id="tag_0">
-          <div>基本信息</div>
-          <div class="boxSelect">
-             <el-checkbox v-model="basicCheckBox.jbxxzd" @change="(val) => {xsjbxxReader(val,1,columns.zg_zgjbxx,1)}">全部只读</el-checkbox>
-             <el-checkbox v-model="basicCheckBox.jbxxbt" @change="(val) => {xsjbxxReader(val,2,columns.zg_zgjbxx,1)}">全部必填</el-checkbox>
+        <!-- <el-form-item>
+          <el-button type="primary" @click="onSubmit">保存</el-button>
+          <el-button @click="allRead()">全部只读</el-button>
+        </el-form-item> -->
+
+        <!-- ///////////////////////////////////////////////////////// -->
+        <div class="tableStyle">
+          <div class="information">
+            <el-form :model="basicInfoForm" label-width="80px">
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">工号</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.workId">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">姓名</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.name">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">曾用名</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="20">
+                
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">性别</div>
+                    <el-form-item>
+                      <el-checkbox-group v-model="basicInfoForm.sex">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                 <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">单位</div>
+                    <el-form-item>
+                      <el-checkbox-group v-model="basicInfoForm.workPlace">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">出生日期</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.birth">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">籍贯</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.origin">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">民族</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.ethnic">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">政治面貌</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.political">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">国籍/地区</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.nation">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">身份证件类型</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.idType">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">身份证件号</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.idNumber">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">婚姻状况</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.marriage">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">最高学历码</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.degreeCode">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">教职工人员类别</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.type">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">人员总分类</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.classification">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">人员岗位状态</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.jobStatus">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">学科类别</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.subject">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">一级学科</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.firstDiscipline">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">二级学科</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.secondDiscipline">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div></el-col>
+                  <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">学缘</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.originDegree">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">毕业学校及单位</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.university">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">参加工作日期</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.attendWorkDate">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">来校日期</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.attendSchoolDate">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">参保类型</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.insurance">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">社保号</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.insuranceNumber">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">办公电话</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.telephone">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">移动电话</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.mobilephone">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">电子邮箱</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.email">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">离校审批通过时间</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.leavingApprovalDate">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+
+                
+                
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">办理离校手续时间</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.leavingApplyDate">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">工资停发时间</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.salaryStopDate">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">调往单位</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.newWorkPlace">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form>
           </div>
         </div>
-        <div class="information">
-          <el-row :gutter="20">
-              <el-col :span="8" class="rowStyle" v-for="item in columns.zg_zgjbxx" :key="item.id">
-                <div class="wrap">
-                  <div class="title">{{item.dicCloumnChinese}}</div>
-                  <div class="content">  <!--- 0 必填 1可写 2可读--->
-                    <el-radio v-model="item.approveColumnAuth" label="2">只读</el-radio>
-                    <el-radio v-model="item.approveColumnAuth" label="0">必填</el-radio>
-                    <!-- <el-radio  v-model="item.approveColumnAuth" label="2">隐藏</el-radio> -->
-                  </div>
-                </div>
-              </el-col>
-          </el-row>
-        </div>
 
-        <!-- 工作简历 -->
-        <div class="headline" id="tag_1">
+        <div id="tag_1" class="headline">
           <div>工作简历</div>
-          <div class="boxSelect">
-             <el-checkbox v-model="basicCheckBox.gzjlzd" @change="(val) => {xsjbxxReader(val,1,columns.zg_gzjl,2)}">全部只读</el-checkbox>
-             <el-checkbox v-model="basicCheckBox.gzjlbt" @change="(val) => {xsjbxxReader(val,2,columns.zg_gzjl,2)}">全部必填</el-checkbox>
+
+        </div>
+        <div class="checkButtons">
+          <el-button class="checkButton" @click="allRead(basicInfoForm)">全部只读</el-button>
+          <el-button class="checkButton" @click="allMust(basicInfoForm)">全部必填</el-button>
+        </div>
+        <div class="tableStyle">
+          <div class="information">
+            <el-form :model="basicInfoForm" label-width="80px">
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">起始时间</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.workId">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">终止时间</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.name">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">工作单位</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">工作内容</div>
+                    <el-form-item>
+                      <el-checkbox-group v-model="basicInfoForm.sex">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">职位</div>
+                    <el-form-item>
+                      <el-checkbox-group v-model="basicInfoForm.workPlace">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">曾任党政职务</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.birth">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">曾任专业技术职务</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.origin">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">工作证明人</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.ethnic">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">备注</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.political">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form>
           </div>
         </div>
-        <div class="information">
-          <el-row :gutter="20">
-              <el-col :span="8" class="rowStyle" v-for="item in columns.zg_gzjl" :key="item.id">
-                <div class="wrap">
-                  <div class="title">{{item.dicCloumnChinese}}</div>
-                  <div class="content">
-                    <el-radio v-model="item.approveColumnAuth" label="2">只读</el-radio>
-                    <el-radio v-model="item.approveColumnAuth" label="0">必填</el-radio>
-                  </div>
-                </div>
-              </el-col>
-          </el-row>
-        </div>
 
-        <!-- 学历学位信息 -->
-        <div class="headline" id="tag_2">
-          <div>学历学位信息</div>
-          <div class="boxSelect">
-             <el-checkbox v-model="basicCheckBox.xlxwzd" @change="(val) => {xsjbxxReader(val,1,columns.zg_xlxw,3)}">全部只读</el-checkbox>
-             <el-checkbox v-model="basicCheckBox.xlxwbt" @change="(val) => {xsjbxxReader(val,2,columns.zg_xlxw,3)}">全部必填</el-checkbox>
+        <div id="tag_2" class="headline">学历学位信息</div>
+        <div class="checkButtons">
+          <el-button class="checkButton" @click="allRead(basicInfoForm)">全部只读</el-button>
+          <el-button class="checkButton" @click="allMust(basicInfoForm)">全部必填</el-button>
+        </div>
+        <div class="tableStyle">
+          <div class="information">
+            <el-form :model="basicInfoForm" label-width="80px">
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">成果编号</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.workId">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">证书编号</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.name">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">文理科类别</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">成果名称</div>
+                    <el-form-item>
+                      <el-checkbox-group v-model="basicInfoForm.sex">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">成果形式</div>
+                    <el-form-item>
+                      <el-checkbox-group v-model="basicInfoForm.workPlace">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">完成人</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.birth">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">完成人工号</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.origin">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">所属单位</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.ethnic">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">所学专业</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.political">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">所学专业</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.ethnic">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form>
           </div>
         </div>
-        <div class="information">
-          <el-row :gutter="20">
-              <el-col :span="8" class="rowStyle" v-for="item in columns.zg_xlxw" :key="item.id">
-                <div class="wrap">
-                  <div class="title">{{item.dicCloumnChinese}}</div>
-                  <div class="content">
-                    <el-radio v-model="item.approveColumnAuth" label="2">只读</el-radio>
-                    <el-radio v-model="item.approveColumnAuth" label="0">必填</el-radio>
-                  </div>
-                </div>
-              </el-col>
-          </el-row>
-        </div>
 
-        <!-- 专业技术职务 -->
-        <div class="headline" id="tag_3">
+        <div id="tag_4" class="headline">
           <div>专业技术职务</div>
-          <div class="boxSelect">
-             <el-checkbox v-model="basicCheckBox.zyjszwzd" @change="(val) => {xsjbxxReader(val,1,columns.zg_zyjszw,4)}">全部只读</el-checkbox>
-             <el-checkbox v-model="basicCheckBox.zyjszwbt" @change="(val) => {xsjbxxReader(val,2,columns.zg_zyjszw,4)}">全部必填</el-checkbox>
+        </div>
+        <div class="checkButtons">
+          <el-button class="checkButton" @click="allRead(basicInfoForm)">全部只读</el-button>
+          <el-button class="checkButton" @click="allMust(basicInfoForm)">全部必填</el-button>
+        </div>
+        <div class="tableStyle">
+          <div class="information">
+            <el-form :model="basicInfoForm" label-width="80px">
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">专技职称代码</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.workId">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">专技职称时间</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.name">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">聘任岗位系列</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">聘任岗位等级</div>
+                    <el-form-item>
+                      <el-checkbox-group v-model="basicInfoForm.sex">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">聘任日期</div>
+                    <el-form-item>
+                      <el-checkbox-group v-model="basicInfoForm.workPlace">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">聘任文号</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.birth">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">岗位等级</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.origin">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">专技等级</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.ethnic">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form>
           </div>
         </div>
-        <div class="information">
-          <el-row :gutter="20">
-              <el-col :span="8" class="rowStyle" v-for="item in columns.zg_zyjszw" :key="item.id">
-                <div class="wrap">
-                  <div class="title">{{item.dicCloumnChinese}}</div>
-                  <div class="content">
-                    <el-radio v-model="item.approveColumnAuth" label="2">只读</el-radio>
-                    <el-radio v-model="item.approveColumnAuth" label="0">必填</el-radio>
-                  </div>
-                </div>
-              </el-col>
-          </el-row>
-        </div>
 
-        <!-- 学习培训 -->
-        <div class="headline" id="tag_4">
+        <div id="tag_5" class="headline">
           <div>学习培训</div>
-          <div class="boxSelect">
-             <el-checkbox v-model="basicCheckBox.xxpxzd" @change="(val) => {xsjbxxReader(val,1,columns.zg_xxpx,5)}">全部只读</el-checkbox>
-             <el-checkbox v-model="basicCheckBox.xxpxbt" @change="(val) => {xsjbxxReader(val,2,columns.zg_xxpx,5)}">全部必填</el-checkbox>
-          </div>
+
         </div>
-        <div class="information">
-          <el-row :gutter="20">
-              <el-col :span="8" class="rowStyle" v-for="item in columns.zg_xxpx" :key="item.id">
-                <div class="wrap">
-                  <div class="title">{{item.dicCloumnChinese}}</div>
-                  <div class="content">
-                    <el-radio v-model="item.approveColumnAuth" label="2">只读</el-radio>
-                    <el-radio v-model="item.approveColumnAuth" label="0">必填</el-radio>
-                  </div>
-                </div>
-              </el-col>
-          </el-row>
+        <div class="checkButtons">
+          <el-button class="checkButton" @click="allRead(basicInfoForm)">全部只读</el-button>
+          <el-button class="checkButton" @click="allMust(basicInfoForm)">全部必填</el-button>
         </div>
 
-        <!-- 年度考核 -->
-        <div class="headline" id="tag_5">
+        <div class="tableStyle">
+          <div class="information">
+            <el-form :model="basicInfoForm" label-width="80px">
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">培训名称</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.workId">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">组织单位</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.name">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">培训地点</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">起始时间</div>
+                    <el-form-item>
+                      <el-checkbox-group v-model="basicInfoForm.sex">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">结束时间</div>
+                    <el-form-item>
+                      <el-checkbox-group v-model="basicInfoForm.workPlace">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">培训性质</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.birth">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">培训级别</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.origin">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form>
+          </div>
+        </div>
+
+        <div id="tag_6" class="headline">
           <div>年度考核</div>
-          <div class="boxSelect">
-             <el-checkbox v-model="basicCheckBox.ndkhzd" @change="(val) => {xsjbxxReader(val,1,columns.zg_ndkh,6)}">全部只读</el-checkbox>
-             <el-checkbox v-model="basicCheckBox.ndkhbt" @change="(val) => {xsjbxxReader(val,2,columns.zg_ndkh,6)}">全部必填</el-checkbox>
+        </div>
+        <div class="checkButtons">
+          <el-button class="checkButton" @click="allRead(basicInfoForm)">全部只读</el-button>
+          <el-button class="checkButton" @click="allMust(basicInfoForm)">全部必填</el-button>
+        </div>
+        <div class="tableStyle">
+          <div class="information">
+            <el-form :model="basicInfoForm" label-width="80px">
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">考核年度</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.workId">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">考核日期</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.name">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">考核结果</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form>
           </div>
         </div>
-        <div class="information">
-          <el-row :gutter="20">
-              <el-col :span="8" class="rowStyle" v-for="item in columns.zg_ndkh" :key="item.id">
-                <div class="wrap">
-                  <div class="title">{{item.dicCloumnChinese}}</div>
-                  <div class="content">
-                    <el-radio v-model="item.approveColumnAuth" label="2">只读</el-radio>
-                    <el-radio v-model="item.approveColumnAuth" label="0">必填</el-radio>
-                  </div>
-                </div>
-              </el-col>
-          </el-row>
-        </div>
 
-        <!-- 奖励表彰信息 -->
-        <div class="headline" id="tag_6">
+        <div id="tag_7" class="headline">
           <div>奖励表彰信息</div>
-          <div class="boxSelect">
-             <el-checkbox v-model="basicCheckBox.jlbzzd" @change="(val) => {xsjbxxReader(val,1,columns.zg_jlbz,7)}">全部只读</el-checkbox>
-             <el-checkbox v-model="basicCheckBox.jlbzbt" @change="(val) => {xsjbxxReader(val,2,columns.zg_jlbz,7)}">全部必填</el-checkbox>
+        </div>
+        <div class="checkButtons">
+          <el-button class="checkButton" @click="allRead(basicInfoForm)">全部只读</el-button>
+          <el-button class="checkButton" @click="allMust(basicInfoForm)">全部必填</el-button>
+        </div>
+        <div class="tableStyle">
+          <div class="information">
+            <el-form :model="basicInfoForm" label-width="80px">
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">证书号</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.workId">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">获奖类型</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.name">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">奖项名称</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">获奖成果名称</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">奖项级别</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">获奖时间</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">本人位次</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">表彰部门</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form>
           </div>
         </div>
-        <div class="information">
-          <el-row :gutter="20">
-              <el-col :span="8" class="rowStyle" v-for="item in columns.zg_jlbz" :key="item.id">
-                <div class="wrap">
-                  <div class="title">{{item.dicCloumnChinese}}</div>
-                  <div class="content">
-                    <el-radio v-model="item.approveColumnAuth" label="2">只读</el-radio>
-                    <el-radio v-model="item.approveColumnAuth" label="0">必填</el-radio>
-                  </div>
-                </div>
-              </el-col>
-          </el-row>
-        </div>
 
-        <!-- 科研情况（项目） -->
-        <div class="headline" id="tag_7">
-          <div>科研情况（项目）</div>
-          <div class="boxSelect">
-             <el-checkbox v-model="basicCheckBox.xmkyqkzd" @change="(val) => {xsjbxxReader(val,1,columns.zg_xmkyqk,8)}">全部只读</el-checkbox>
-             <el-checkbox v-model="basicCheckBox.xmkyqkbt" @change="(val) => {xsjbxxReader(val,2,columns.zg_xmkyqk,8)}">全部必填</el-checkbox>
+        <div id="tag_8" class="headline">
+          <div>政工科研情况（项目）</div>
+
+        </div>
+        <div class="checkButtons">
+          <el-button class="checkButton" @click="allRead(basicInfoForm)">全部只读</el-button>
+          <el-button class="checkButton" @click="allMust(basicInfoForm)">全部必填</el-button>
+        </div>
+        <div class="tableStyle">
+          <div class="information">
+            <el-form :model="basicInfoForm" label-width="80px">
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">项目名称</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.workId">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">项目级别</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.name">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">项目编号</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">起始时间</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">结束时间</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">实到经费</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">本人位次</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">批准部门</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form>
           </div>
         </div>
-        <div class="information">
-          <el-row :gutter="20">
-              <el-col :span="8" class="rowStyle" v-for="item in columns.zg_xmkyqk" :key="item.id">
-                <div class="wrap">
-                  <div class="title">{{item.dicCloumnChinese}}</div>
-                  <div class="content">
-                    <el-radio v-model="item.approveColumnAuth" label="2">只读</el-radio>
-                    <el-radio v-model="item.approveColumnAuth" label="0">必填</el-radio>
-                  </div>
-                </div>
-              </el-col>
-          </el-row>
-        </div>
 
-        <!-- 科研情况（论文） -->
-        <div class="headline" id="tag_8">
-          <div>科研情况（论文）</div>
-          <div class="boxSelect">
-             <el-checkbox v-model="basicCheckBox.lwkyqkzd" @change="(val) => {xsjbxxReader(val,1,columns.zg_lwkyqk,9)}">全部只读</el-checkbox>
-             <el-checkbox v-model="basicCheckBox.lwkyqkbt" @change="(val) => {xsjbxxReader(val,2,columns.zg_lwkyqk,9)}">全部必填</el-checkbox>
+        <div id="tag_9" class="headline">
+          <div>政工科研情况（论文）</div>
+
+        </div>
+        <div class="checkButtons">
+          <el-button class="checkButton" @click="allRead(basicInfoForm)">全部只读</el-button>
+          <el-button class="checkButton" @click="allMust(basicInfoForm)">全部必填</el-button>
+        </div>
+        <div class="tableStyle">
+          <div class="information">
+            <el-form :model="basicInfoForm" label-width="80px">
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">论文名称</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.workId">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">期刊名称</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.name">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">期刊国内标准编号</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">期刊类型</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">发表时间</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">本人位次</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form>
           </div>
         </div>
-        <div class="information">
-          <el-row :gutter="20">
-              <el-col :span="8" class="rowStyle" v-for="item in columns.zg_lwkyqk" :key="item.id">
-                <div class="wrap">
-                  <div class="title">{{item.dicCloumnChinese}}</div>
-                  <div class="content">
-                    <el-radio v-model="item.approveColumnAuth" label="2">只读</el-radio>
-                    <el-radio v-model="item.approveColumnAuth" label="0">必填</el-radio>
-                  </div>
-                </div>
-              </el-col>
-          </el-row>
-        </div>
 
-        <!-- 科研情况（著作） -->
-        <div class="headline" id="tag_9">
-          <div>科研情况（著作）</div>
-          <div class="boxSelect">
-             <el-checkbox v-model="basicCheckBox.zzkyqkzd" @change="(val) => {xsjbxxReader(val,1,columns.zg_zzkyqk,10)}">全部只读</el-checkbox>
-             <el-checkbox v-model="basicCheckBox.zzkyqkbt" @change="(val) => {xsjbxxReader(val,2,columns.zg_zzkyqk,10)}">全部必填</el-checkbox>
+        <div id="tag_10" class="headline">
+          <div>政工科研情况（著作）</div>
+
+        </div>
+        <div class="checkButtons">
+          <el-button class="checkButton" @click="allRead(basicInfoForm)">全部只读</el-button>
+          <el-button class="checkButton" @click="allMust(basicInfoForm)">全部必填</el-button>
+        </div>
+        <div class="tableStyle">
+          <div class="information">
+            <el-form :model="basicInfoForm" label-width="80px">
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">著作名称</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.workId">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">著作类型</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.name">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">成果所属单位</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">ISBN号</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">出版社</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">出版时间</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">本人位次</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form>
           </div>
         </div>
-        <div class="information">
-          <el-row :gutter="20">
-              <el-col :span="8" class="rowStyle" v-for="item in columns.zg_zzkyqk" :key="item.id">
-                <div class="wrap">
-                  <div class="title">{{item.dicCloumnChinese}}</div>
-                  <div class="content">
-                    <el-radio v-model="item.approveColumnAuth" label="2">只读</el-radio>
-                    <el-radio v-model="item.approveColumnAuth" label="0">必填</el-radio>
-                  </div>
-                </div>
-              </el-col>
-          </el-row>
-        </div>
 
-        <!-- 科研情况（著作） -->
-        <div class="headline" id="tag_10">
-          <div>科研情况（教学情况）</div>
-          <div class="boxSelect">
-             <el-checkbox v-model="basicCheckBox.jxkyqkzd" @change="(val) => {xsjbxxReader(val,1,columns.zg_jxkyqk,11)}">全部只读</el-checkbox>
-             <el-checkbox v-model="basicCheckBox.jxkyqkbt" @change="(val) => {xsjbxxReader(val,2,columns.zg_jxkyqk,11)}">全部必填</el-checkbox>
+        <div id="tag_11" class="headline">
+          <div>政工科研情况（教学情况）</div>
+        </div>
+        <div class="checkButtons">
+          <el-button class="checkButton" @click="allRead(basicInfoForm)">全部只读</el-button>
+          <el-button class="checkButton" @click="allMust(basicInfoForm)">全部必填</el-button>
+        </div>
+        <div class="tableStyle">
+          <div class="information">
+            <el-form :model="basicInfoForm" label-width="80px">
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">课程名称</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.workId">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">课程类型</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.name">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">课程性质</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">课时量</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">授课人数</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">起始时间</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="8" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">结束时间</div>
+                    <el-form-item label="">
+                      <el-checkbox-group v-model="basicInfoForm.usedName">
+                        <el-checkbox label="只读" />
+                        <el-checkbox label="必填" />
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form>
           </div>
         </div>
-        <div class="information">
-          <el-row :gutter="20">
-              <el-col :span="8" class="rowStyle" v-for="item in columns.zg_jxkyqk" :key="item.id">
-                <div class="wrap">
-                  <div class="title">{{item.dicCloumnChinese}}</div>
-                  <div class="content">
-                    <el-radio v-model="item.approveColumnAuth" label="2">只读</el-radio>
-                    <el-radio v-model="item.approveColumnAuth" label="0">必填</el-radio>
-                  </div>
-                </div>
-              </el-col>
-          </el-row>
-        </div>
-
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { loadStaffColumns, updateStuColumns } from "@/api/politicalWork/basicInfo";
 export default {
   name: 'DetailInfo',
 
   data() {
     return {
+      readFlag: false,
+      mustFlag: false,
       dtailsList: ['基本信息', '工作简历', '学历学位信息', '专业技术职务', '学习培训', '年度考核', '奖励表彰信息', '科研情况（项目）', '科研情况（论文）', '科研情况（著作）', '科研情况（教学情况）'],
       current: 0,
-      basicCheckBox: {}, // 选中
-      columns:{}, // 数据 
+      tableData: [],
+      isEdit: false,
+      value: '',
+      basicInfoForm: {
+        workId: [],
+        name: [],
+        usedName: [],
+        sex: [],
+        workPlace: [],
+        birth: [],
+        origin: [],
+        ethnic: [],
+        political: [],
+        nation: [],
+        idType: [],
+        idNumber: [],
+        marriage: [],
+        degreeCode: [],
+        type: [],
+        classification: [],
+        jobStatus: [],
+        subject: [],
+        firstDiscipline: [],
+        secondDiscipline: [],
+        originDegree: [],
+        university: [],
+        attendWorkDate: [],
+        attendSchoolDate: [],
+        insurance: [],
+        insuranceNumber: [],
+        telephone: [],
+        mobilephone: [],
+        email: [],
+        leavingApprovalDate: [],
+        leavingApplyDate: [],
+        salaryStopDate: [],
+        newWorkPlace: []
+      }
     }
   },
   created() {
 
   },
   mounted() {
-    this.getloadStaffColumns()
+
   },
 
   methods: {
-    getloadStaffColumns() {
-      loadStaffColumns().then(res => {
-        let data = res.data
-        let columns = {
-          zg_zgjbxx:[], // 政工基本信息
-          zg_gzjl:[], // 政工工作简历
-          zg_xlxw:[], // 政工学历学位
-          zg_zyjszw:[], // 政工专业技术职务
-          zg_xxpx:[], // 学习培训表
-          zg_ndkh:[], // 政工年度考核
-          zg_jlbz:[], // 政工奖励表彰信息表
-          zg_xmkyqk:[], // 项目科研情况表
-          zg_lwkyqk:[], // 论文科研情况表
-          zg_zzkyqk:[], // 著作科研情况表
-          zg_jxkyqk:[], // 教学科研情况表
-        }
-        for (let x = 0; x < data.length; x++){
-          if (data[x].dicEnglish == 'zg_zgjbxx') {
-            columns.zg_zgjbxx.push(data[x])
-          } else if (data[x].dicEnglish == 'zg_gzjl') {
-            columns.zg_gzjl.push(data[x])
-          } else if (data[x].dicEnglish == 'zg_xlxw') {
-            columns.zg_xlxw.push(data[x])
-          } else if (data[x].dicEnglish == 'zg_zyjszw') {
-            columns.zg_zyjszw.push(data[x])
-          } else if (data[x].dicEnglish == 'zg_xxpx') {
-            columns.zg_xxpx.push(data[x])
-          } else if (data[x].dicEnglish == 'zg_ndkh') {
-            columns.zg_ndkh.push(data[x])
-          } else if (data[x].dicEnglish == 'zg_jlbz') {
-            columns.zg_jlbz.push(data[x])
-          } else if (data[x].dicEnglish == 'zg_xmkyqk') {
-            columns.zg_xmkyqk.push(data[x])
-          } else if (data[x].dicEnglish == 'zg_lwkyqk') {
-            columns.zg_lwkyqk.push(data[x])
-          } else if (data[x].dicEnglish == 'zg_zzkyqk') {
-            columns.zg_zzkyqk.push(data[x])
-          } else if (data[x].dicEnglish == 'zg_jxkyqk') {
-            columns.zg_jxkyqk.push(data[x])
-          }
-        }
-        this.columns = columns
-      }).catch(err=>{})
-    },
-    // 基本信息全部只读
-    xsjbxxReader(val, index, data, xm) { // val 选中 ，index 0必填 1可写 2可读 ,data数据  xm那块数据
-      let jbxxData = data
-      if (!val) {
-        for (let x = 0; x < jbxxData.length; x++){
-          jbxxData[x].approveColumnAuth = '1'
-        }
-      }
-      if (index == 1) {
-        if (val) {
-          for (let x = 0; x < jbxxData.length; x++){
-            jbxxData[x].approveColumnAuth = '2'
-          }
-        }
-        switch(xm)
-        {
-          case 1:
-            this.basicCheckBox.jbxxbt = false
-            break;
-          case 2:
-            this.basicCheckBox.gzjlbt = false
-            break;
-          case 3:
-            this.basicCheckBox.xlxwbt = false
-            break;
-          case 4:
-            this.basicCheckBox.zyjszwbt = false
-            break;
-          case 5:
-            this.basicCheckBox.xxpxbt = false
-            break;
-          case 6:
-            this.basicCheckBox.ndkhbt = false
-            break;
-          case 7:
-            this.basicCheckBox.jlbzbt = false
-            break;
-          case 8:
-            this.basicCheckBox.xmkyqkbt = false
-            break;
-          case 9:
-            this.basicCheckBox.lwkyqkbt = false
-            break;
-          case 10:
-            this.basicCheckBox.zzkyqkbt = false
-            break;
-          case 11:
-            this.basicCheckBox.jxkyqkbt = false
-            break;
-        }
-      } else {
-        if (val) {
-          for (let x = 0; x < jbxxData.length; x++){
-            jbxxData[x].approveColumnAuth = '0'
-          }
-        }
-        switch(xm)
-        {
-          case 1:
-            this.basicCheckBox.jbxxzd = false
-            break;
-          case 2:
-            this.basicCheckBox.gzjlzd = false
-            break;
-          case 3:
-            this.basicCheckBox.xlxwzd = false
-            break;
-          case 4:
-            this.basicCheckBox.zyjszwzd = false
-            break;
-          case 5:
-            this.basicCheckBox.xxpxzd = false
-            break;
-          case 6:
-            this.basicCheckBox.ndkhzd = false
-            break;
-          case 7:
-            this.basicCheckBox.jlbzzd = false
-            break;
-          case 8:
-            this.basicCheckBox.xmkyqkzd = false
-            break;
-          case 9:
-            this.basicCheckBox.lwkyqkzd = false
-            break;
-          case 10:
-            this.basicCheckBox.zzkyqkzd = false
-            break;
-          case 11:
-            this.basicCheckBox.jxkyqkzd = false
-            break;
-        }
-      }
-    },
     onSubmit() {
-      let newData = []
-      newData = newData.concat(this.columns.zg_zgjbxx,
-        this.columns.zg_gzjl,
-        this.columns.zg_xlxw,
-        this.columns.zg_zyjszw,
-        this.columns.zg_xxpx,
-        this.columns.zg_ndkh,
-        this.columns.zg_jlbz,
-        this.columns.zg_xmkyqk,
-        this.columns.zg_lwkyqk,
-        this.columns.zg_zzkyqk,
-        this.columns.zg_jxkyqk,
-      )
-      updateStuColumns(newData).then(res => {
-        if (res.errcode == '00') {
-          this.$message({
-            message: res.errmsg,
-            type: 'success'
-          })
+      console.log('submit!')
+      console.log(this.basicInfoForm)
+    },
+    allRead(val) {
+      // 勾选
+      console.log(val)
+      if (!this.readFlag) {
+        for (var i in val) {
+          if (val[i] != null) {
+            if (!val[i].includes('必填')) {
+              val[i] = ['只读']
+            } else {
+              val[i] = ['只读', '必填']
+            }
+          } else {
+            val[i] = ['只读']
+          }
         }
-      }).catch(err=>{})
+        this.readFlag = true
+      } else {
+        // 反勾选
+        this.readFlag = false
+        for (var j in val) {
+          if (val[j] != null) {
+            if (val[j].includes('必填')) {
+              val[j] = ['必填']
+            } else {
+              val[j] = []
+            }
+          } else {
+            val[j] = []
+          }
+        }
+      }
+    },
+    allMust(val) {
+    // 勾选
+      if (!this.mustFlag) {
+        for (var i in val) {
+          if (val[i] != null) {
+            if (!val[i].includes('只读')) {
+              val[i] = ['必填']
+            } else {
+              val[i] = ['只读', '必填']
+            }
+          } else {
+            val[i] = ['必填']
+          }
+        }
+        this.mustFlag = true
+      } else {
+      // 反勾选
+        this.mustFlag = false
+        for (var j in val) {
+          if (val[j] != null) {
+            if (val[j].includes('只读')) {
+              val[j] = ['只读']
+            } else {
+              val[j] = []
+            }
+          } else {
+            val[j] = []
+          }
+        }
+      }
     },
     handleList(index, tag) {
       this.current = index
       var id = '#' + tag + '_' + index
+      console.log(id)
       document.querySelector(id).scrollIntoView({
         behavior: 'smooth',
         block: 'center',
@@ -456,6 +1583,19 @@ export default {
       })
     }
   }
+
+  // handleList(index) {
+  //   this.current = index
+  // },
+  // addDetailTable() {
+  //   this.tableData.push({
+  //     date: 3
+  //   })
+  // },
+  // deteleItem(row, index) {
+  //   console.log(index)
+  //   this.tableData.splice(index, 1)
+  // }
 }
 
 </script>
@@ -497,9 +1637,6 @@ export default {
       flex:1;
       background: #fff;
       .right_top{
-        position: relative;
-        border-bottom: 1px solid #D8D8D8;
-        padding-top: 20px;
         .title{
           text-align: center;
           font-weight: 500;
@@ -507,29 +1644,66 @@ export default {
           color: #005657;
           line-height: 24px
         }
-        .saveBtn{
-          position: absolute;
-          top:0;
-          right: 20px;
-          width: 84px;
-          line-height: 36px;
+        .timeWrap{
           text-align: center;
-          background: #005657;
-          border-radius: 2px;
-          color:#fff;
-          cursor: pointer;
-        }
-        .icon{
-          display: inline-block;
-          width:20px;
-          height: 20px;
-          background: url('~@/assets/images/saveIcon.png');
-          vertical-align: middle;
+          font-weight: 400;
+          font-size: 16px;
+          color: #383838;
+          line-height: 28px;
+          .updataTime{
+            margin-left: 20px;
+          }
         }
       }
-      .information{
+      .headline{
+        padding-left: 20px;
+        box-sizing: border-box;
+        font-weight: 600;
+        font-size: 20px;
+        color: #1F1F1F;
+        line-height: 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .editBtn{
+          padding:4px 5px;
+          margin-right: 20px;
+          border: 1px solid #005657;
+          border-radius: 4px;
+          font-weight: 400;
+          font-size: 14px;
+          color: #005657;
+          cursor: pointer;
+          .addIcon{
+            display: inline-block;
+            width:15px;
+            height: 15px;
+            background: url('~@/assets/images/addicon.png') no-repeat center;
+            vertical-align: middle;
+          }
+        }
+      }
+      .tableStyle{
+        position: relative;
+        padding:20px;
+        .imgWrap{
+          position: absolute;
+          right:20px;
+          top:20px;
+          z-index: 100;
+          .photo{
+            width:160px;
+            height: 206px;
+            background: #fff;
+            overflow: hidden;
+            img{
+              width:160px;
+              height: 206px;
+            }
+          }
+        }
+        .information{
           padding:0 20px;
-          margin-top: 15px;
           .rowStyle{
             padding:0 !important;
             margin:0;
@@ -553,20 +1727,6 @@ export default {
               margin-left: 16px;
             }
           }
-        }
-      .headline{
-        margin-top: 20px;
-        padding-left: 20px;
-        box-sizing: border-box;
-        font-weight: 600;
-        font-size: 20px;
-        color: #1F1F1F;
-        line-height: 28px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .boxSelect{
-          padding-right: 20px;
         }
       }
     }
@@ -603,7 +1763,7 @@ export default {
   }
   .saveButton{
     position: absolute;
-    right: 16px;
+    right: 100px;
   }
   .checkButtons{
     position: relative;

@@ -474,18 +474,16 @@ export default {
     doubleCheckConfirm() {
       
       console.log("批量撤任二次确认操作！");
-      let xhList = []
-      let cxlyList = []
+      let idList = []
       let cxrgh = this.$store.getters.userId
+      let cxly = this.formDismission.reason
       console.log(this.currentRowBgb);
 
-
       for (let item_row of this.currentRowBgb) {
-        xhList.push(item_row.xh);
-        cxlyList.push(this.formDismission.reason);
+        idList.push(item_row.id);
       }
 
-      getBgbdismission({ xhList, cxlyList, cxrgh }).then((response) => {
+      getBgbdismission({ idList, cxly, cxrgh }).then((response) => {
         // console.log(response);
 
         this.$message({
@@ -501,7 +499,7 @@ export default {
       
     },
     // 班干部批量任命
-    actionAssignBgb(row) {
+    actionAssignBgb() {
       console.log("批量任命操作！");
       this.openAssignBgb = true;
       this.title = "批量任命班干部";
@@ -532,17 +530,16 @@ export default {
       console.log("批量任命二次确认操作！");
       this.currentBjdm = this.$route.query.bjdm;
       let stuList = [];
-      let bgbList = [];
-      let classList = [];
-      let rmrgh = this.$store.getters.userId;
+      let bjdm = "";
+      let zwdm = this.form.bgbid;
+      bjdm = this.currentBjdm;
+      // let rmrgh = this.$store.getters.userId;
 
       for (let item_row of this.currentRow) {
         stuList.push(item_row.xh);
-        bgbList.push(this.form.bgbid);
-        classList.push(this.currentBjdm);
       }
 
-      getAssignBgb({ stuList, bgbList, classList, rmrgh }).then((res) => {
+      getAssignBgb({ stuList, zwdm, bjdm}).then((res) => {
         console.log(res);
             this.$message({
                 message: "任命成功",

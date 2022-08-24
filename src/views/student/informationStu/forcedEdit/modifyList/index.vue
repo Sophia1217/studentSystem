@@ -462,6 +462,7 @@ export default {
       display: flex;
       flex-direction: row;
       align-items: center;
+      background: #fff;
       .searchBtn {
       }
       .elSelect {

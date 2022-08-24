@@ -489,6 +489,7 @@ export default {
       display: flex;
       flex-direction: row;
       align-items: center;
+      background: #fff;
       .elSelect {
         width: 110px;
       }

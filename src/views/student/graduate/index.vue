@@ -1,7 +1,7 @@
 <template>
   <div class="manStudent">
     <div class="searchWrap">
-      <div class="search">
+      <div class="g-search">
         <el-input
           placeholder="请输入"
           v-model="searchVal"
@@ -709,10 +709,11 @@ export default {
   .searchWrap {
     background: #fff;
     padding: 20px;
-    .search {
+    .g-search {
       display: flex;
       flex-direction: row;
       align-items: center;
+      background: #fff;
       .searchBtn {
         // background: #005657;
         // color:#fff;

@@ -108,9 +108,14 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="培养单位" align="center" prop="ssdw" sortable />
+      <el-table-column label="培养单位" align="center" prop="ssdwmc" sortable />
       <el-table-column label="年级" align="center" prop="ssnj" sortable />
-      <el-table-column label="培养层次" align="center" prop="pycc" sortable />
+      <el-table-column
+        label="培养层次"
+        align="center"
+        prop="pyccName"
+        sortable
+      />
       <el-table-column
         label="班级人数"
         align="center"

@@ -1,7 +1,7 @@
 <template>
   <div class="manStudent">
     <div class="searchWrap">
-      <div class="search">
+      <div class="ms-search">
         <el-input placeholder="请输入" v-model="searchVal" clearable class="inputSelect">
           <el-select
             v-model="select"
@@ -710,7 +710,7 @@ export default {
   .searchWrap {
     background: #fff;
     padding: 20px;
-    .search {
+    .ms-search {
       display: flex;
       flex-direction: row;
       align-items: center;

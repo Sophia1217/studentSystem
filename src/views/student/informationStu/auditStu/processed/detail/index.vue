@@ -1547,6 +1547,7 @@ export default {
               background: #E0E0E0;
               text-align: right;
               padding-right: 5px;
+              margin:0 !important;
             }
             .content{
               font-weight: 400;

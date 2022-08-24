@@ -463,23 +463,23 @@ export default {
       let data = {
         xh: this.select == "xh" ? this.searchVal : "",
         xm: this.select == "xm" ? this.searchVal : "",
-        sfzjh: this.select == "sfzjh" ? this.searchVal : "",
-        yddh: this.select == "yddh" ? this.searchVal : "",
-        pyccm: this.training.choose&&this.training.choose.length>0?this.training.choose.join(','):'',
+        // sfzjh: this.select == "sfzjh" ? this.searchVal : "",
+        // yddh: this.select == "yddh" ? this.searchVal : "",
+        // pyccm: this.training.choose&&this.training.choose.length>0?this.training.choose.join(','):'',
         ydwh: this.moreIform.ydwh&&this.moreIform.ydwh.length>0?this.moreIform.ydwh.join(','):'', // 原培养单位
         yzydm: this.moreIform.yzydm&&this.moreIform.yzydm.length>0?this.moreIform.yzydm.join(','):'', // 原专业
         ynj: this.njOps.choose&&this.njOps.choose.length>0?this.njOps.choose.join(','):'', // 原年级
         ybj: this.moreIform.ybh&&this.moreIform.ybh.length>0?this.moreIform.ybh.join(','):'', // 原班级
         xbm: this.dmxbmOPs.choose&&this.dmxbmOPs.choose.length>0?this.dmxbmOPs.choose.join(','):'', // 性别码
-        xz: this.learnHe.choose&&this.learnHe.choose.length>0?this.learnHe.choose.join(','):'',
+        // xz: this.learnHe.choose&&this.learnHe.choose.length>0?this.learnHe.choose.join(','):'',
         xjzt: this.studentStatus.choose&&this.studentStatus.choose.length>0?this.studentStatus.choose.join(','):'01,03',
-        zzmmm: this.politica.choose&&this.politica.choose.length>0?this.politica.choose.join(','):'',
-        mzm: this.ethnic.choose&&this.ethnic.choose.length>0?this.ethnic.choose.join(','):'',
+        // zzmmm: this.politica.choose&&this.politica.choose.length>0?this.politica.choose.join(','):'',
+        // mzm: this.ethnic.choose&&this.ethnic.choose.length>0?this.ethnic.choose.join(','):'',
         bjm: this.moreIform.pread&&this.moreIform.pread.length>0?this.moreIform.pread.join(','):'',
         dwh: this.moreIform.manageReg&&this.moreIform.manageReg.length>0?this.moreIform.manageReg.join(','):'',
         zydm: this.moreIform.stuInfo&&this.moreIform.stuInfo.length>0?this.moreIform.stuInfo.join(','):'', // 专业
         ydlbm: this.changType.choose&&this.changType.choose.length>0?this.changType.choose.join(','):'',
-        ydyy: this.changWhy.choose&&this.changWhy.choose.length>0?this.changWhy.choose.join(','):'',
+        // ydyy: this.changWhy.choose&&this.changWhy.choose.length>0?this.changWhy.choose.join(','):'',
         spwh: this.select == 'spwh'?this.searchVal:'',
         // ydrq: this.datePicker,
         ydrqst: YDRQST,

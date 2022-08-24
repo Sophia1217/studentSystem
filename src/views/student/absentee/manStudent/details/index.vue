@@ -1618,9 +1618,10 @@ export default {
       routerFrom:'', // 跳转过来的路由
       dtailsList: ['基本信息', '联系方式', '家庭成员信息', '学习经历', '工作经历'],
       current: 0,
-      tableData: [{date:1}],
+      tableData: [],
       isEdit: false,
-      schooling:'',
+      schooling: '',
+      xh:'',
       value: '',
       detailInfo: {
         xsJbxx: {},
@@ -1636,10 +1637,23 @@ export default {
   created() {
     this.isEdit = this.$route.query.show// 1是详情，2是编辑
     this.schooling = this.$route.query.schooling
+    this.xh = this.$route.query.xh
+  },
+  computed: { 
+    roleId() {
+      return this.$store.state.user.roleId
+    },
+    roleType() {
+      return this.$store.state.user.roleType
+    }
   },
   mounted() {
     this.$nextTick(() => {
-      this.getDetail()
+      if (this.xh) {
+        this.getDetail()
+      } else {
+        console.log(this.roleId,'this.roleId',this.roleType)
+      }
     })
   },
 

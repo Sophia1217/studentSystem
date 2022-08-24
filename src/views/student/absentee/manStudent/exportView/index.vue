@@ -123,6 +123,9 @@ export default {
     width: 280px;
   }
   .transfer {
+    ::v-deep .el-transfer-panel__body{
+      overflow: auto;
+    }
     ::v-deep .el-transfer-panel__list {
       height: auto;
       .el-transfer-panel__item {

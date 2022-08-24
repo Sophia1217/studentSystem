@@ -220,9 +220,16 @@ export default {
   methods: {
     //首页基本信息跳转
     stuInfoClick(){
-        this.$router.push("/studentAngle/lookAngle")
+      this.$router.push({
+        path: '/student/studetails',
+        // query: {
+        //   xh: '2008121491',
+        //   show: '2',
+        //   schooling:'2'
+        // }
+      })
     }
-}
+  }
 }
 </script>
 

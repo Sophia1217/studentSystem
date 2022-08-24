@@ -3,7 +3,7 @@
     <div class="wrap">
       <div class="detail_left">
         <div v-for="(item,index) in dtailsList" :key="index">
-          <div class="list" :class="index==current?'active':''" @click="handleList(index)">
+          <div class="list" :class="index==current?'active':''" @click="handleList(index,'tag')">
             <div>{{item}}</div>
             <i :class="index==current?'el-icon-arrow-right':''"></i>
           </div>
@@ -16,7 +16,7 @@
             <span>创建时间：2022-03-23 23:21:34 </span> <span class="updataTime">更新时间：2022-03-23 23:21:34</span>
           </div>
         </div>
-        <div class="headline">基本信息</div>
+        <div class="headline" id="tag_0">基本信息</div>
         <div class="tableStyle">
           <!-- 相片 -->
           <div class="imgWrap">
@@ -92,7 +92,7 @@
           </div>
         </div>
 
-        <div class="headline">学籍异动信息</div>
+        <div class="headline" id="tag_1">学籍异动信息</div>
         <div class="tableStyle">
           <div class="information">
             <el-row :gutter="20">
@@ -224,7 +224,7 @@
           </div>
         </div>
 
-        <div class="headline">审批信息</div>
+        <div class="headline" id="tag_2">审批信息</div>
         <div class="tableStyle">
           <div class="information">
             <el-row :gutter="20">
@@ -285,8 +285,14 @@ export default {
   },
 
   methods: {
-    handleList(index) {
+    handleList(index,tag) {
       this.current = index
+      var id = "#" + tag + '_' + index;
+      document.querySelector(id).scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "nearest",
+      });
     },
     getshowStuStatusChangeInfoRes() {
       let data = { XH:this.xh,ID:this.id }

@@ -13,6 +13,7 @@
           type="text"
           auto-complete="off"
           placeholder="账号"
+          @keyup.enter.native="handleLogin"
         >
           <svg-icon
             slot="prefix"

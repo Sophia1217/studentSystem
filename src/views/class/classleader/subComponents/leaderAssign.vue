@@ -1,6 +1,6 @@
 <template>
   <div>
-    <assign-search></assign-search>
+    <!-- <assign-search></assign-search> -->
     <assign-table
       :table_title="table_title"
       :bgb_content="queryBgbList"

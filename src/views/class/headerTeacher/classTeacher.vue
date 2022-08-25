@@ -82,7 +82,11 @@
     </div>
 
     <!-- 班主任列表 -->
-    <el-table :data="noticeList" @selection-change="handleSelectionChange">
+    <el-table
+      :data="noticeList"
+      @selection-change="handleSelectionChange"
+      @sort-change="changeTableSort"
+    >
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="序号" align="center" width="100" type="index" />
       <el-table-column
@@ -90,14 +94,14 @@
         align="center"
         prop="gh"
         width="100"
-        sortable
+        sortable="custom"
       />
       <el-table-column
         label="姓名"
         align="center"
         prop="xm"
         width="300"
-        sortable
+        sortable="custom"
       >
       </el-table-column>
       <el-table-column
@@ -105,7 +109,7 @@
         align="center"
         prop="xb"
         width="300"
-        sortable
+        sortable="custom"
       >
       </el-table-column>
       <el-table-column
@@ -113,14 +117,14 @@
         align="center"
         prop="dwmc"
         width="150"
-        sortable
+        sortable="custom"
       />
       <el-table-column
         label="已任职班级数量"
         align="center"
         prop="sl"
         width="150"
-        sortable
+        sortable="custom"
       />
       <el-table-column
         label="操作"
@@ -513,6 +517,12 @@ export default {
       if (this.teacherList.length > 0) {
         this.flag1 = true; // 表明勾选了多个班主任
       }
+    },
+    //排序
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.handleSearch();
     },
   },
 };

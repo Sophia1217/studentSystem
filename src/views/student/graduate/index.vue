@@ -43,7 +43,9 @@
           <el-col :span="8">
             <span>学 院：</span>
             <el-select
-              v-model="moreIform.manageReg" multiple collapse-tags
+              v-model="moreIform.manageReg"
+              multiple
+              collapse-tags
               @change="changeXY"
               placeholder="请选择"
               size="small"
@@ -59,7 +61,9 @@
           <el-col :span="8">
             <span>专 业：</span>
             <el-select
-              v-model="moreIform.stuInfo" multiple collapse-tags
+              v-model="moreIform.stuInfo"
+              multiple
+              collapse-tags
               placeholder="请选择"
               size="small"
             >
@@ -74,7 +78,9 @@
           <el-col :span="8">
             <span>班 级：</span>
             <el-select
-              v-model="moreIform.pread" multiple collapse-tags
+              v-model="moreIform.pread"
+              multiple
+              collapse-tags
               placeholder="请选择"
               size="small"
             >
@@ -183,7 +189,8 @@
                 value-format="yyyy-MM-dd"
                 range-separator="至"
                 start-placeholder="开始日期"
-                end-placeholder="结束日期">
+                end-placeholder="结束日期"
+              >
               </el-date-picker>
             </div>
           </el-col>
@@ -218,6 +225,7 @@
           @selection-change="handleSelectionChange"
           style="width: 100%"
           :default-sort="{ prop: 'date', order: 'descending' }"
+          @sort-change="changeTableSort"
         >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
@@ -225,22 +233,29 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" sortable> </el-table-column>
-          <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
-          <el-table-column prop="zzmmm" label="政治面貌" sortable>
+          <el-table-column prop="xh" label="学号" sortable="custom">
           </el-table-column>
-          <el-table-column prop="mzm" label="民族" sortable> </el-table-column>
-          <el-table-column prop="dwh" label="学院" sortable> </el-table-column>
-          <el-table-column prop="zydm" label="专业" sortable> </el-table-column>
-          <el-table-column prop="nj" label="年级" sortable> </el-table-column>
-          <el-table-column prop="pyccm" label="培养层次" sortable>
+          <el-table-column prop="xm" label="姓名" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xz" label="学制" sortable> </el-table-column>
-          <el-table-column prop="xjxs" label="学习形式" sortable>
+          <el-table-column prop="zzmmm" label="政治面貌" sortable="custom">
           </el-table-column>
-          <el-table-column prop="uxjyy" label="无学籍原因" sortable>
+          <el-table-column prop="mzm" label="民族" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xjzt" label="学籍状态" sortable>
+          <el-table-column prop="dwh" label="学院" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="zydm" label="专业" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="nj" label="年级" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="pyccm" label="培养层次" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="xz" label="学制" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="xjxs" label="学习形式" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="uxjyy" label="无学籍原因" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="xjzt" label="学籍状态" sortable="custom">
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
@@ -291,7 +306,9 @@ import {
   getGraduateStuInfoPageList,
   gradStu,
   stuCard,
-  stuReg,getZY,getBJ
+  stuReg,
+  getZY,
+  getBJ,
 } from "@/api/student/index";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getCollege } from "@/api/class/maintenanceClass";
@@ -312,7 +329,7 @@ export default {
       allDwh: [], // 学院下拉框
       zyOps: [], // 专业下拉
       bjOps: [], // 班级下拉
-      datePicker:[],
+      datePicker: [],
       training: {
         // 培养层次
         checkAll: false,
@@ -375,7 +392,7 @@ export default {
 
   mounted() {
     this.getSpread();
-    this.getAllCollege()
+    this.getAllCollege();
     this.getCode("dmpyccm"); // 培养层次
     this.getCode("dmxjztm"); // 培养层次
     this.getCode("dmmzm"); // 培养层次
@@ -390,26 +407,32 @@ export default {
   methods: {
     // 查询学院
     getAllCollege() {
-      getCollege().then(res => {
-        this.allDwh = res.data.rows
-      }).catch(err=>{})
+      getCollege()
+        .then((res) => {
+          this.allDwh = res.data.rows;
+        })
+        .catch((err) => {});
     },
     changeXY(val) {
-      this.getZY(val)
-      this.getBJ(val)
+      this.getZY(val);
+      this.getBJ(val);
     },
-    // 学院找专业 
+    // 学院找专业
     getZY(val) {
-      let data = { DWH: val }
-      getZY(data).then(res => {
-        this.zyOps = res.data
-      }).catch(err=>{})
+      let data = { DWH: val };
+      getZY(data)
+        .then((res) => {
+          this.zyOps = res.data;
+        })
+        .catch((err) => {});
     },
-    getBJ(val) { 
-      let data = { DWH: val }
-      getBJ(data).then(res => {
-        this.bjOps = res.data
-      }).catch(err=>{})
+    getBJ(val) {
+      let data = { DWH: val };
+      getBJ(data)
+        .then((res) => {
+          this.bjOps = res.data;
+        })
+        .catch((err) => {});
     },
     getCode(data) {
       this.getCodeInfoByEnglish(data);
@@ -434,7 +457,7 @@ export default {
             case "dmxz":
               this.$set(this.learnHe, "checkBox", res.data);
               break;
-            case 'dmxbm':
+            case "dmxbm":
               this.$set(this.dmxbmOPs, "checkBox", res.data);
           }
         })
@@ -445,11 +468,11 @@ export default {
         .then((res) => {
           // console.log(res);
           this.manageRegOps = res.data.dwhbj;
-          let nj = res.data.nj
-          let njops = []
+          let nj = res.data.nj;
+          let njops = [];
           for (let x = 0; x < nj.length; x++) {
             if (nj[x]) {
-              njops.push({mc:nj[x],dm:nj[x]})
+              njops.push({ mc: nj[x], dm: nj[x] });
             }
           }
           this.njOps.checkBox = njops;
@@ -458,26 +481,26 @@ export default {
     },
     // 查询
     handleSearch() {
-      let csrqs = ''
-      let csrqe = ''
+      let csrqs = "";
+      let csrqe = "";
       if (this.datePicker && this.datePicker.length > 0) {
-        csrqs = this.datePicker[0]
-        csrqe = this.datePicker[1]
+        csrqs = this.datePicker[0];
+        csrqe = this.datePicker[1];
       }
       let data = {
         xh: this.select == "xh" ? this.searchVal : "",
         xm: this.select == "xm" ? this.searchVal : "",
         sfzjh: this.select == "sfzjh" ? this.searchVal : "",
         yddh: this.select == "yddh" ? this.searchVal : "",
-        jg: this.select == 'jg' ? this.searchVal : "",
-        csdm: this.select == 'csdm' ? this.searchVal : "",
-        gjdqm: this.select == 'gjdqm' ? this.searchVal : "",
+        jg: this.select == "jg" ? this.searchVal : "",
+        csdm: this.select == "csdm" ? this.searchVal : "",
+        gjdqm: this.select == "gjdqm" ? this.searchVal : "",
         xbm: this.dmxbmOPs.choose,
         csrqs: csrqs,
-        csrqe:csrqe,
+        csrqe: csrqe,
         pyccm: this.training.choose,
         xz: this.learnHe.choose,
-        nj:this.njOps.choose,
+        nj: this.njOps.choose,
         xjzt: this.studentStatus.choose,
         zzmmm: this.politica.choose,
         mzm: this.ethnic.choose,
@@ -616,8 +639,7 @@ export default {
     // 异年级：单选
     njCheck(value) {
       let checkedCount = value.length;
-      this.njOps.checkAll =
-        checkedCount === this.njOps.checkBox.length;
+      this.njOps.checkAll = checkedCount === this.njOps.checkBox.length;
       this.njOps.isIndeterminate =
         checkedCount > 0 && checkedCount < this.njOps.checkBox.length;
       console.log(this.njOps.choose, "单选");
@@ -649,7 +671,7 @@ export default {
         this.$message("请选择");
         return;
       }
-      let data = { xhs: xhs,etype:'docx' };
+      let data = { xhs: xhs, etype: "docx" };
       gradStu(data).then((res) => this.downloadFn(res, "毕业生登记表", "zip"));
     },
     //学生登记
@@ -662,10 +684,8 @@ export default {
         this.$message("请选择");
         return;
       }
-      let data = { xhs: xhs,etype:'docx'};
-      stuReg(data).then((res) =>
-        this.downloadFn(res, "学生登记表", "zip")
-      );
+      let data = { xhs: xhs, etype: "docx" };
+      stuReg(data).then((res) => this.downloadFn(res, "学生登记表", "zip"));
     },
     //学生卡片
     getStu() {
@@ -677,7 +697,7 @@ export default {
         this.$message("请选择");
         return;
       }
-      let data = { xhs: xhs, etype:'docx' };
+      let data = { xhs: xhs, etype: "docx" };
       stuCard(data).then((res) => this.downloadFn(res, "毕业学生卡片", "zip"));
     },
     hadleDetail(row, flag) {
@@ -696,6 +716,12 @@ export default {
           schooling: schooling,
         },
       });
+    },
+    //排序
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.handleSearch();
     },
   },
 };

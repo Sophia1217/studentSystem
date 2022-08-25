@@ -2,7 +2,12 @@
   <div class="manStudent">
     <div class="searchWrap">
       <div class="search">
-        <el-input placeholder="请输入" v-model.trim="searchVal" clearable class="inputSelect">
+        <el-input
+          placeholder="请输入"
+          v-model="searchVal"
+          clearable
+          class="inputSelect"
+        >
           <el-select
             v-model="select"
             class="elSelect"
@@ -168,6 +173,7 @@
           @selection-change="handleSelectionChange"
           style="width: 100%"
           :default-sort="{ prop: 'date', order: 'descending' }"
+          @sort-change="changeTableSort"
         >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
@@ -175,15 +181,18 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="userId" label="学号" sortable>
-          </el-table-column>
+          <el-table-column prop="userId" label="学号" sortable="custom"></el-table-column>
           <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
           <el-table-column prop="dwmc" label="学院" sortable> </el-table-column>
           <el-table-column prop="zydmc" label="专业" sortable> </el-table-column>
           <el-table-column prop="njm" label="班级" sortable> </el-table-column>
           <el-table-column prop="pyccmc" label="培养层次" sortable>
           </el-table-column>
-          <el-table-column prop="approveTime" label="修改时间" sortable>
+          <el-table-column
+            prop="approveTime"
+            label="修改时间"
+            sortable="custom"
+          >
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
@@ -229,7 +238,7 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { getZY,getBJ } from "@/api/student/index";
+import { getZY, getBJ } from "@/api/student/index";
 import { getCollege } from "@/api/class/maintenanceClass";
 import {
   getManageRegStuInfoSearchSpread,
@@ -251,7 +260,7 @@ export default {
       },
       allDwh: [], // 学院下拉框
       zyOps: [], // 专业下拉
-      bjOps:[], // 班级下拉
+      bjOps: [], // 班级下拉
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -301,7 +310,7 @@ export default {
 
   mounted() {
     this.handleSearch();
-    this.getAllCollege()
+    this.getAllCollege();
     this.getCode("dmpyccm"); // 培养层次
     this.getCode("dmxjztm"); // 学籍
     this.getCode("dmmzm"); // 民 族
@@ -313,26 +322,32 @@ export default {
   methods: {
     // 查询学院
     getAllCollege() {
-      getCollege().then(res => {
-        this.allDwh = res.data.rows
-      }).catch(err=>{})
+      getCollege()
+        .then((res) => {
+          this.allDwh = res.data.rows;
+        })
+        .catch((err) => {});
     },
     changeXY(val) {
-      this.getZY(val)
-      this.getBJ(val)
+      this.getZY(val);
+      this.getBJ(val);
     },
-    // 学院找专业 
+    // 学院找专业
     getZY(val) {
-      let data = { DWH: val }
-      getZY(data).then(res => {
-        this.zyOps = res.data
-      }).catch(err=>{})
+      let data = { DWH: val };
+      getZY(data)
+        .then((res) => {
+          this.zyOps = res.data;
+        })
+        .catch((err) => {});
     },
-    getBJ(val) { 
-      let data = { DWH: val }
-      getBJ(data).then(res => {
-        this.bjOps = res.data
-      }).catch(err=>{})
+    getBJ(val) {
+      let data = { DWH: val };
+      getBJ(data)
+        .then((res) => {
+          this.bjOps = res.data;
+        })
+        .catch((err) => {});
     },
     getSpread() {
       getManageRegStuInfoSearchSpread()
@@ -484,7 +499,7 @@ export default {
     },
     // 多选
     handleSelectionChange(val) {
-      this.multipleSelection = val
+      this.multipleSelection = val;
       // this.multipleSelection = val.map((item) => {
       //   return item.id;
       // });
@@ -495,18 +510,18 @@ export default {
     },
     pass() {
       var data = this.multipleSelection;
-      let params = []
+      let params = [];
       for (let x = 0; x < data.length; x++) {
         params.push({
           id: data[x].id,
           xh: data[x].userId,
-          approver:data[x].approver
-        })
+          approver: data[x].approver,
+        });
       }
       if (this.multipleSelection.length > 0) {
         passFlow(params).then((res) => {
-          this.$message({message: res.errmsg,type: 'success'});
-          this.handleSearch()
+          this.$message({ message: res.errmsg, type: "success" });
+          this.handleSearch();
         });
       } else {
         this.$message.error("请先勾选一条信息");
@@ -531,7 +546,9 @@ export default {
         approver: this.multipleSelection[0].approver,
         rollbackReason: this.form.rollbackReason,
       };
-      backFlow(data).then(() => this.$message({message: res.errmsg,type: 'success'}))
+      backFlow(data).then(() =>
+        this.$message({ message: res.errmsg, type: "success" })
+      );
     },
     // 导出取消
     handleCancel() {
@@ -559,6 +576,12 @@ export default {
           approveState: 2,
         },
       });
+    },
+    //排序
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.handleSearch();
     },
   },
 };

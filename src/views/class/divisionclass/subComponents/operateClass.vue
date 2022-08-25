@@ -141,6 +141,7 @@
               :data="noticeList"
               @selection-change="handleSelectionChange($event)"
               class="table-body"
+              @sort-change="changeTableSort"
             >
               <el-table-column type="selection" width="65" align="center" />
               <el-table-column
@@ -149,41 +150,61 @@
                 prop="id"
                 type="index"
               />
-              <el-table-column label="学号" align="center" prop="xh" sortable />
-              <el-table-column label="姓名" align="center" prop="xm" sortable>
+              <el-table-column
+                label="学号"
+                align="center"
+                prop="xh"
+                sortable="custom"
+              />
+              <el-table-column
+                label="姓名"
+                align="center"
+                prop="xm"
+                sortable="custom"
+              >
               </el-table-column>
-              <el-table-column label="性别" align="center" prop="xb" sortable />
+              <el-table-column
+                label="性别"
+                align="center"
+                prop="xb"
+                sortable="custom"
+              />
               <el-table-column
                 label="培养单位"
                 align="center"
                 prop="ssdw"
-                sortable
+                sortable="custom"
               >
               </el-table-column>
-              <el-table-column label="专业" align="center" prop="zy" sortable />
+              <el-table-column
+                label="专业"
+                align="center"
+                prop="zy"
+                sortable="custom"
+              />
               <el-table-column
                 label="培养层次"
                 align="center"
                 prop="pyccName"
-                sortable
+                sortable="custom"
               />
               <el-table-column
                 label="年级"
                 align="center"
                 prop="ssnj"
-                sortable
+                sortable="custom"
               />
               <el-table-column
                 label="生源地"
                 align="center"
                 prop="syd"
-                sortable
+                sortable="custom"
               />
               <el-table-column
                 label="出生年月"
                 align="center"
                 prop="csrq"
-                sortable
+                sortable="custom"
               />
             </el-table>
             <pagination
@@ -297,6 +318,7 @@
               :data="noticeList"
               @selection-change="handleSelectionChange($event)"
               class="table-body"
+              @sort-change="changeTableSort"
             >
               <el-table-column type="selection" width="65" align="center" />
               <el-table-column
@@ -305,17 +327,62 @@
                 prop="id"
                 type="index"
               />
-              <el-table-column label="学号" align="center" prop="xh" />
-              <el-table-column label="姓名" align="center" prop="xm">
+              <el-table-column
+                label="学号"
+                align="center"
+                prop="xh"
+                sortable="custom"
+              />
+              <el-table-column
+                label="姓名"
+                align="center"
+                prop="xm"
+                sortable="custom"
+              >
               </el-table-column>
-              <el-table-column label="性别" align="center" prop="xb" />
-              <el-table-column label="培养单位" align="center" prop="ssdw">
+              <el-table-column
+                label="性别"
+                align="center"
+                prop="xb"
+                sortable="custom"
+              />
+              <el-table-column
+                label="培养单位"
+                align="center"
+                prop="ssdw"
+                sortable="custom"
+              >
               </el-table-column>
-              <el-table-column label="专业" align="center" prop="zy" />
-              <el-table-column label="培养层次" align="center" prop="pyccm" />
-              <el-table-column label="年级" align="center" prop="ssnj" />
-              <el-table-column label="生源地" align="center" prop="syd" />
-              <el-table-column label="出生年月" align="center" prop="csrq" />
+              <el-table-column
+                label="专业"
+                align="center"
+                prop="zy"
+                sortable="custom"
+              />
+              <el-table-column
+                label="培养层次"
+                align="center"
+                prop="pyccm"
+                sortable="custom"
+              />
+              <el-table-column
+                label="年级"
+                align="center"
+                prop="ssnj"
+                sortable="custom"
+              />
+              <el-table-column
+                label="生源地"
+                align="center"
+                prop="syd"
+                sortable="custom"
+              />
+              <el-table-column
+                label="出生年月"
+                align="center"
+                prop="csrq"
+                sortable="custom"
+              />
             </el-table>
             <pagination
               id="pagenation"
@@ -563,6 +630,12 @@ export default {
         this.getList1(this.queryParams1);
         this.getOptions(); // 获取生源地、专业、性别筛选框数据
       }
+    },
+    //排序
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.handleSearch();
     },
     /** 重置按钮操作 */
     resetQuery() {

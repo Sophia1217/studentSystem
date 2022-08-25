@@ -68,36 +68,56 @@
     </div>
 
     <!-- 班级列表 -->
-    <el-table :data="noticeList">
+    <el-table :data="noticeList" @sort-change="changeTableSort">
       <el-table-column label="序号" align="center" type="index" />
-      <el-table-column label="班级编号" align="center" prop="bjdm" sortable />
+      <el-table-column
+        label="班级编号"
+        align="center"
+        prop="bjdm"
+        sortable="custom"
+      />
       <el-table-column
         label="班级名称"
         align="center"
         width="250px"
         prop="bjmc"
-        sortable
+        sortable="custom"
       />
-      <el-table-column label="培养单位" align="center" prop="pycc" sortable />
-      <el-table-column label="培养层次" align="center" prop="pycc" sortable />
-      <el-table-column label="年级" align="center" prop="ssnj" sortable />
+      <el-table-column
+        label="培养单位"
+        align="center"
+        prop="pycc"
+        sortable="custom"
+      />
+      <el-table-column
+        label="培养层次"
+        align="center"
+        prop="pycc"
+        sortable="custom"
+      />
+      <el-table-column
+        label="年级"
+        align="center"
+        prop="ssnj"
+        sortable="custom"
+      />
       <el-table-column
         label="班级人数"
         align="center"
         prop="stuNumOfClass"
-        sortable
+        sortable="custom"
       />
       <el-table-column
         label="创建时间"
         align="center"
         prop="createTime"
-        sortable
+        sortable="custom"
       />
       <el-table-column
         label="更新时间"
         align="center"
         prop="updateTime"
-        sortable
+        sortable="custom"
         class-name="small-padding fixed-width"
       />
       <el-table-column
@@ -348,6 +368,11 @@ export default {
         query: { bjdm: row.bjdm },
       });
     },
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.handleSearch();
+    },
   },
 };
 </script>
@@ -356,7 +381,7 @@ export default {
 .banji {
   max-width: 100%;
   height: 100%;
-  padding:20px;
+  padding: 20px;
   background-color: white;
 }
 .search {

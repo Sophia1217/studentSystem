@@ -230,21 +230,21 @@
           </el-table-column>
           <el-table-column prop="xm" label="姓名" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zzmm" label="政治面貌" sortable="custom">
+          <el-table-column prop="zzmmmc" label="政治面貌" sortable="custom">
           </el-table-column>
-          <el-table-column prop="mzm" label="民族" sortable="custom">
+          <el-table-column prop="mzmc" label="民族" sortable="custom">
           </el-table-column>
-          <el-table-column prop="dwh" label="学院" sortable="custom">
+          <el-table-column prop="dwmc" label="学院" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zydm" label="专业" sortable="custom">
+          <el-table-column prop="zydmmc" label="专业" sortable="custom">
           </el-table-column>
           <el-table-column prop="nj" label="年级" sortable="custom">
           </el-table-column>
-          <el-table-column prop="pyccm" label="培养层次" sortable="custom">
+          <el-table-column prop="pyccmc" label="培养层次" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xz" label="学制" sortable="custom">
+          <el-table-column prop="xz" label="学制(年)" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xjzt" label="学籍状态" sortable="custom">
+          <el-table-column prop="xjztmc" label="学籍状态" sortable="custom">
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">

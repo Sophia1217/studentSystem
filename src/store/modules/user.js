@@ -89,7 +89,7 @@ const user = {
                 }
               
               commit('SET_NAME', res.user.xm)
-              commit('SET_PYCC',res.user.pycc)
+              commit('SET_PYCC',res.user.xxm)
               commit('SET_AVATAR', avatar)
 
                 resolve(res)

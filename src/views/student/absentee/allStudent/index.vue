@@ -117,13 +117,13 @@
           </el-table-column>
           <el-table-column prop="xm" label="姓名" sortable="custom">
           </el-table-column>
-          <el-table-column prop="dwh" label="学院" sortable="custom">
+          <el-table-column prop="dwmc" label="学院" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zydm" label="专业" sortable="custom">
+          <el-table-column prop="zydmc" label="专业" sortable="custom">
           </el-table-column>
           <el-table-column prop="nj" label="年级" sortable="custom">
           </el-table-column>
-          <el-table-column prop="pyccm" label="培养层次" sortable="custom">
+          <el-table-column prop="pyccmc" label="培养层次" sortable="custom">
           </el-table-column>
         </el-table>
       </div>

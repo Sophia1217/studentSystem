@@ -64,6 +64,15 @@ export function getRegStuInfoDetailPage(data) {
   })
 }
 
+// 编辑时查询学生信息
+export function loadRegStuInfoUpdatePage(data) {
+  return request({
+    url: '/regStuInfo/loadRegStuInfoUpdatePage',
+    method: 'get',
+    params: data
+  })
+}
+
 // 查询学生信息 -可管理学生更新
 export function updateRegStuInfo(data) {
   return request({

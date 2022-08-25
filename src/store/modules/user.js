@@ -9,6 +9,7 @@ const user = {
     roleId : '',
     roleType : '',
     avatar: '',
+    pycc:'',
     roles: [],
     permissions: []
   },
@@ -21,13 +22,16 @@ const user = {
       state.name = name
     },
     SET_USERID: (state, userId) => {
-        state.userId = userId
+      state.userId = userId
     },
     SET_ROLEID: (state, roleId) => {
         state.roleId = roleId
     },
     SET_ROLETYPE: (state, roleType) => {
         state.roleType = roleType
+    },
+    SET_PYCC: (state, pycc) => {
+      state.pycc = pycc
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
@@ -84,8 +88,9 @@ const user = {
                     reject()
                 }
               
-                commit('SET_NAME', res.user.xm)
-                commit('SET_AVATAR', avatar)
+              commit('SET_NAME', res.user.xm)
+              commit('SET_PYCC',res.user.pycc)
+              commit('SET_AVATAR', avatar)
 
                 resolve(res)
               }).catch(error => {

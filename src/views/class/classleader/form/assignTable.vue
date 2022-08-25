@@ -58,7 +58,7 @@
             </el-table-column>
             <el-table-column label="性别" align="center" prop="sex" />
             <el-table-column label="班级职位" align="center" prop="zwdm" />
-            <el-table-column label="操作" align="center" prop="level">
+            <!-- <el-table-column label="操作" align="center" prop="level">
               <template slot-scope="scope">
                 <span
                   class="iconfont allocate_teacher"
@@ -72,7 +72,7 @@
                   撤任班干部
                 </span>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
           <pagination
             id="pagenation"
@@ -165,7 +165,7 @@
             </el-table-column>
             <el-table-column label="性别" align="center" prop="sex" />
             <el-table-column label="班级职位" align="center" prop="zwdm" />
-            <el-table-column label="操作" align="center" prop="level">
+            <!-- <el-table-column label="操作" align="center" prop="level">
               <template slot-scope="scope">
                 <span
                   class="iconfont allocate_teacher"
@@ -179,7 +179,7 @@
                   分配班干部
                 </span>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
           <pagination
             id="pagenation"
@@ -240,7 +240,7 @@
         <!-- distributeClassConfirm(row) -->
         <el-button
           type="primary"
-          @click="doubleCheckConfirm(row)"
+          @click="doubleCheckConfirm()"
           class="confirm"
           >确 定</el-button
         >
@@ -495,18 +495,18 @@ export default {
         });
     },
 
-    // 撤任班干部
-    handleCancel(item) {
-      this.getCxlyData();
-      this.currentRowBgb = [item];
-      this.cancelAllocate = true;
-    },
+    // // 撤任班干部
+    // handleCancel(item) {
+    //   this.getCxlyData();
+    //   this.currentRowBgb = [item];
+    //   this.cancelAllocate = true;
+    // },
 
-    // 任命班干部
-    appointHandle(item) {
-      this.currentRow = [item];
-      this.openAssignBgb = true;
-    },
+    // // 任命班干部
+    // appointHandle(item) {
+    //   this.currentRow = [item];
+    //   this.openAssignBgb = true;
+    // },
 
     // 获取撤任理由
     getCxlyData() {

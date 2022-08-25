@@ -716,7 +716,7 @@ export default {
       .searchBtn {
       }
       .elSelect {
-        width: 110px;
+        width: 130px;
       }
       .inputSelect {
         width: 50%;

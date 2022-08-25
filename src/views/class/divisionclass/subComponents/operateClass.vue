@@ -675,19 +675,24 @@ export default {
       // 调入空班级
       if (action == 0) {
         // 弹出调入空班级弹出框
-        this.open = true;
-        // 整理参数
-        const params = {};
-        params.ssdw = this.$route.query.pydw;
-        params.pycc = this.$route.query.pycc;
-        params.ssnj = this.$route.query.ssnj;
-        params.bjdm = this.$route.query.bjdm;
-        // 获取班级下拉列表数据
-        getTransformClasses(params).then((response) => {
-          if (response.errcode == "00") {
-            this.classList = response.data.rows;
-          }
-        });
+        if (this.list.length > 0) {
+          // 弹出调入空班级弹出框
+          this.open = true;
+          // 整理参数
+          const params = {};
+          params.ssdw = this.$route.query.pydw;
+          params.pycc = this.$route.query.pycc;
+          params.ssnj = this.$route.query.ssnj;
+          params.bjdm = this.$route.query.bjdm;
+          // 获取班级下拉列表数据
+          getTransformClasses(params).then((response) => {
+            if (response.errcode == "00") {
+              this.classList = response.data.rows;
+            }
+          });
+        } else {
+          this.$message.error("至少勾选一条数据");
+        }
       }
       // 从空班级调入
       else {

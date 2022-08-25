@@ -259,6 +259,9 @@ export default {
 };
 </script>
 <style scope lang="scss">
+.app-container {
+  background: #ffffff;
+}
 .queryForm {
   background: #fff;
   padding: 20px;

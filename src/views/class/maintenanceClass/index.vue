@@ -161,10 +161,8 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="scope">
-          <div>
-            <span @click="handleDelete(scope.row.bjdm)" class="deleteClass"
-              >删除空班级</span
-            >
+          <div class="deleteBtn" @click="handleDelete(scope.row.bjdm)">
+            <i class="el-icon-delete"></i>删除空班级
           </div>
         </template>
       </el-table-column>
@@ -596,7 +594,10 @@ export default {
   background-color: #ecfbf4;
   color: #ecfbf4;
 }
-
+.deleteBtn {
+  color: #005657;
+  cursor: pointer;
+}
 .el-notification.right {
   left: 30%;
   transform: translateX(50%);

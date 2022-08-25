@@ -1814,7 +1814,7 @@ export default {
         this.$set(this.detailInfo, 'xsJtcyxxList', res.data.xsJtcyxxList)
         this.$set(this.detailInfo, 'xsXxjlList', res.data.xsXxjlList)
         this.$set(this.detailInfo, 'xsGzjlList', res.data.xsGzjlList)
-        this.$set(this.detailInfo, 'xsXszpb', res.data.xsXszpb?res.data.xsXszpb:{})
+        this.$set(this.detailInfo, 'xsXszpb', res.data.xsXszpb ? res.data.xsXszpb : {})
       }).catch(err=>{})
     },
     getDetail() {

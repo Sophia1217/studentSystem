@@ -96,7 +96,7 @@
               v-model="moreIform.ydwh"
               multiple
               collapse-tags
-              @change="changeXY"
+              @change="changeXYOld"
               placeholder="请选择"
               size="small"
             >
@@ -402,6 +402,21 @@ export default {
         .catch((err) => {});
     },
     changeXY(val) {
+      if (val&&val.length == 0) {
+        this.moreIform.stuInfo = [] // 专业
+        this.moreIform.pread = [] // 班级
+      }
+      if (typeof val == "string") {
+        val = val.split(",");
+      }
+      this.getZY(val);
+      this.getBJ(val);
+    },
+    changeXYOld(val) {
+      if (val&&val.length == 0) {
+        this.moreIform.yzydm = [] // 专业
+        this.moreIform.ybh = [] // 班级
+      }
       if (typeof val == "string") {
         val = val.split(",");
       }

@@ -66,8 +66,25 @@
               ></el-option>
             </el-select>
           </el-col>
+          <el-col :span="8">
+            <span>年 级：</span>
+            <el-select
+              v-model="moreIform.njVal"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in njOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
+          </el-col>
         </el-row>
-        <el-row :gutter="20" class="mt15">
+        <!-- <el-row :gutter="20" class="mt15">
           <el-col :span="3">年 级：</el-col>
           <el-col :span="20">
             <div class="checkbox">
@@ -78,7 +95,7 @@
               ></checkboxCom>
             </div>
           </el-col>
-        </el-row>
+        </el-row> -->
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">培养层次：</el-col>
           <el-col :span="20">
@@ -174,13 +191,7 @@ export default {
         checkBox: [],
         isIndeterminate: true,
       },
-      learnHe: {
-        //年级：
-        checkAll: false,
-        choose: [],
-        checkBox: [],
-        isIndeterminate: true,
-      },
+      njOps:[],
       tableData: [],
       manageRegOps: [],
       zymOps: [],
@@ -209,6 +220,9 @@ export default {
         .catch((err) => {});
     },
     changeXY(val) {
+      if (val&&val.length == 0) {
+        this.moreIform.zydam = [] // 专业
+      }
       this.getZY(val);
     },
     // 学院找专业
@@ -246,7 +260,8 @@ export default {
           for (let x = 0; x < data.length; x++) {
             nj.push({ dm: data[x], mc: data[x] });
           }
-          this.$set(this.learnHe, "checkBox", nj);
+          // this.$set(this.learnHe, "checkBox", nj);
+          this.njOps = nj
         })
         .catch((err) => {});
     },
@@ -260,7 +275,7 @@ export default {
         xh: this.select == "xh" ? this.searchVal : "",
         dwh: this.moreIform.xydm,
         zydm: this.moreIform.zydm,
-        nj: this.learnHe.choose,
+        nj: this.moreIform.njVal,
         pyccm: this.training.choose,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,

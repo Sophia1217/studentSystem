@@ -41,6 +41,8 @@
             <span>学 院：</span>
             <el-select
               v-model="moreIform.manageReg"
+              multiple
+              collapse-tags
               @change="changeXY"
               placeholder="请选择"
               size="small"
@@ -57,6 +59,8 @@
             <span>专 业：</span>
             <el-select
               v-model="moreIform.stuInfo"
+              multiple
+              collapse-tags
               placeholder="请选择"
               size="small"
             >
@@ -329,6 +333,10 @@ export default {
         .catch((err) => {});
     },
     changeXY(val) {
+      if (val&&val.length == 0) {
+        this.moreIform.stuInfo = [] // 专业
+        this.moreIform.pread = [] // 班级
+      }
       this.getZY(val);
       this.getBJ(val);
     },

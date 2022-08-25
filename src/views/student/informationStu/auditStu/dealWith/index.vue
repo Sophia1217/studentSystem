@@ -318,6 +318,10 @@ export default {
         .catch((err) => {});
     },
     changeXY(val) {
+      if (val&&val.length == 0) {
+        this.moreIform.stuInfo = [] // 专业
+        this.moreIform.pread = [] // 班级
+      }
       this.getZY(val);
       this.getBJ(val);
     },

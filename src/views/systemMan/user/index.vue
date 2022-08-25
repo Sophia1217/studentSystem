@@ -274,6 +274,12 @@ export default {
     },
     // 查询
     handleSearch() {
+        this.queryParams.pageNum = 1
+        this.getList()
+    },
+    // 获取数据
+    getList() {
+
       var data = {
         // userId: "2005690002", // 用户Id
         userId: this.$store.getters.userId, // 用户Id

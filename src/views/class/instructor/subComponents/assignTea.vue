@@ -135,7 +135,7 @@
                 <el-button
                   type="text"
                   size="small"
-                  :disabled="scope.row.sffp === 1 ? true : false"
+                  :disabled="scope.row.sffp == '0' ? true : false"
                   @click="assignClass(scope.row)"
                 >
                   <span
@@ -157,7 +157,7 @@
                 <el-button
                   type="text"
                   size="small"
-                  :disabled="scope.row.sffp === 1 ? false : true"
+                  :disabled="scope.row.sffp == '1' ?  true : false"
                   @click="allocateNone(scope.row)"
                 >
                   <span
@@ -275,7 +275,7 @@
         append-to-body
       >
         <span class="cancelTips"
-          >确认将取消【{{ FdyList }}】【{{ xm }}】【{{
+          >确认将取消【{{ fdyList }}】【{{ xm }}】【{{
             $route.query.bjmc
           }}】辅导员任命？</span
         >
@@ -353,7 +353,6 @@ export default {
       // 班级代码
       bjdm: "", //班级代码
       fdyList: [], // 辅导员数组
-      FdyList: [], // 撤任辅导员数组
       rmrgh: "", // 辅导员工号
       rmsj: "", // 任命时间
       // 遮罩层
@@ -499,12 +498,12 @@ export default {
 
     // 取消分配辅导员
     allocateNone(row) {
-      this.FdyList = this.FdyList.slice(0, -1);
+      this.fdyList = this.fdyList.slice(0, -1);
       this.openCancelAssignClass = true;
       this.title = "取消分配";
       console.log("取消分配信息：", row);
       this.bjdm = this.$route.query.bjdm;
-      this.FdyList.push(row.gh);
+      this.fdyList.push(row.gh);
       this.xm = row.xm;
       this.cxrGh = "2005690002";
       this.cxsj = "2020-09-09 00:00:00";
@@ -525,12 +524,12 @@ export default {
       this.title = "取消分配确认";
 
       console.log("取消分配二次确认！");
-      let crly = [];
-      crly.push(this.form.noticeTitle);
+      let crly = "";
+      crly = this.form.noticeTitle;
       getRemoveAssignFdy({
         cxrGh: this.cxrGh,
         bjdm: this.bjdm,
-        FdyList: this.FdyList,
+        fdyList: this.fdyList,
         crly: this.crly,
         cxsj: this.cxsj,
       }).then((res) => {
@@ -570,15 +569,16 @@ export default {
     },
     //批量取消分配确认
     cancelAssignMore() {
-      let FdyList = [];
-      let bjdm = this.$route.query.bjdm;
-      let cxrGh = "2005690002";
-      let cxsj = "2020-09-09 00:00:00";
+      let fdyList = []
+      let bjdm =this.$route.query.bjdm
+      let cxrGh = "2005690002"
+      let crly = ""
+      let cxsj = "2020-09-09 00:00:00"
       for (let item_row of this.multipleSelection) {
-        FdyList.push(item_row.gh);
+        fdyList.push(item_row.gh);
       }
-
-      getRemoveAssignFdy({ FdyList, bjdm, cxrGh, cxsj }).then((res) => {
+      
+      getRemoveAssignFdy({fdyList, bjdm, cxrGh, crly, cxsj}).then((res) => {
         console.log(res);
         this.getInstructorList();
       });

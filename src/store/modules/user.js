@@ -102,7 +102,6 @@ const user = {
 
     SaveRole({commit},role){
         return new Promise((resolve, reject) => {
-            commit('SET_ROLES', [role])
             commit('SET_USERID',role.userId)
             commit('SET_ROLEID',role.roleId)
             commit('SET_ROLETYPE',role.roleType)

@@ -71,10 +71,10 @@
               >
             </el-col>
             <el-col :span="1.5">
-              <el-button 
-              class="delete" 
-              icon="el-icon-delete"
-              @click="deleteAssignMore"
+              <el-button
+                class="delete"
+                icon="el-icon-delete"
+                @click="deleteAssignMore"
                 >批量取消</el-button
               >
             </el-col>
@@ -84,6 +84,7 @@
         <el-table
           :data="placementPageList"
           @selection-change="handleSelectionChange"
+          @sort-change="changeTableSort"
         >
           <el-table-column type="selection" align="center" />
           <el-table-column
@@ -92,26 +93,41 @@
             type="index"
             width="60px"
           />
-          <el-table-column label="学工号" align="center" prop="gh" sortable />
-          <el-table-column label="姓名" align="center" prop="xm" sortable>
+          <el-table-column
+            label="学工号"
+            align="center"
+            prop="gh"
+            sortable="custom"
+          />
+          <el-table-column
+            label="姓名"
+            align="center"
+            prop="xm"
+            sortable="custom"
+          >
             <!-- <el-input
               :value="noticeList[0].className"
               clearable
               @keyup.enter.native="handleQuery"
             /> -->
           </el-table-column>
-          <el-table-column label="性别" align="center" prop="xb" sortable />
+          <el-table-column
+            label="性别"
+            align="center"
+            prop="xb"
+            sortable="custom"
+          />
           <el-table-column
             label="工作单位"
             align="center"
             prop="dwmc"
-            sortable
+            sortable="custom"
           />
           <el-table-column
             label="已任职班级数量"
             align="center"
             prop="sl"
-            sortable
+            sortable="custom"
           />
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
@@ -288,7 +304,9 @@
 
         <div slot="footer" class="dialog-footer">
           <el-button @click="cancelMore" class="cancel_btn">取消</el-button>
-          <el-button @click="cancelAssignMore" class="submit_btn">确认</el-button>
+          <el-button @click="cancelAssignMore" class="submit_btn"
+            >确认</el-button
+          >
         </div>
       </el-dialog>
     </div>
@@ -306,7 +324,7 @@ import {
   getAssignFdy,
   getRemoveAssignFdy,
 } from "@/api/class/instructor";
-import { getCollege } from "@/api/class/maintenanceClass"; 
+import { getCollege } from "@/api/class/maintenanceClass";
 export default {
   name: "assignTea", //分配辅导员
   components: {
@@ -417,7 +435,7 @@ export default {
     };
   },
   methods: {
-    getOptions(){
+    getOptions() {
       this.collegeOptions = [];
       getCollege().then((response) => {
         // 获取工作单位列表数据
@@ -530,42 +548,47 @@ export default {
     },
     cancelMore() {
       this.openAssignMoreClass = false;
-      this.openCancelAssignMoreClass =false;
+      this.openCancelAssignMoreClass = false;
     },
     assignMore() {
       this.openAssignMoreClass = false;
       let fdyList = [];
-      let bjdm =this.$route.query.bjdm
-      let rmrgh = this.$store.getters.userId
-      let rmsj = "2020-09-09 00:00:00"
+      let bjdm = this.$route.query.bjdm;
+      let rmrgh = this.$store.getters.userId;
+      let rmsj = "2020-09-09 00:00:00";
       for (let item_row of this.multipleSelection) {
         fdyList.push(item_row.gh);
       }
-      getAssignFdy({bjdm, fdyList,rmrgh,rmsj}).then((res) => {
+      getAssignFdy({ bjdm, fdyList, rmrgh, rmsj }).then((res) => {
         console.log(res);
         this.getInstructorList();
       });
     },
-    deleteAssignMore(){
+    deleteAssignMore() {
       this.openCancelAssignMoreClass = true;
       this.title = "批量取消分配";
     },
     //批量取消分配确认
     cancelAssignMore() {
-      let FdyList = []
-      let bjdm =this.$route.query.bjdm
-      let cxrGh = "2005690002"
-      let cxsj = "2020-09-09 00:00:00"
+      let FdyList = [];
+      let bjdm = this.$route.query.bjdm;
+      let cxrGh = "2005690002";
+      let cxsj = "2020-09-09 00:00:00";
       for (let item_row of this.multipleSelection) {
         FdyList.push(item_row.gh);
       }
-      
-      getRemoveAssignFdy({FdyList, bjdm, cxrGh, cxsj}).then((res) => {
+
+      getRemoveAssignFdy({ FdyList, bjdm, cxrGh, cxsj }).then((res) => {
         console.log(res);
         this.getInstructorList();
-
       });
       this.openCancelAssignMoreClass = false;
+    },
+    // 排序
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.handleQuery();
     },
     // 取消按钮
     cancel() {

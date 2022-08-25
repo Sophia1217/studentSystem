@@ -2,7 +2,12 @@
   <div class="manStudent">
     <div class="searchWrap">
       <div class="ms-search">
-        <el-input placeholder="请输入" v-model="searchVal" clearable class="inputSelect">
+        <el-input
+          placeholder="请输入"
+          v-model="searchVal"
+          clearable
+          class="inputSelect"
+        >
           <el-select
             v-model="select"
             class="elSelect"
@@ -34,7 +39,9 @@
           <el-col :span="8">
             <span class="titleStyle">学 院：</span>
             <el-select
-              v-model="moreIform.manageReg" multiple collapse-tags
+              v-model="moreIform.manageReg"
+              multiple
+              collapse-tags
               @change="changeXY"
               placeholder="请选择"
               size="small"
@@ -50,7 +57,9 @@
           <el-col :span="8">
             <span>专 业：</span>
             <el-select
-              v-model="moreIform.stuInfo" multiple collapse-tags
+              v-model="moreIform.stuInfo"
+              multiple
+              collapse-tags
               placeholder="请选择"
               size="small"
             >
@@ -84,7 +93,9 @@
           <el-col :span="8">
             <span class="titleStyle">原培养单位：</span>
             <el-select
-              v-model="moreIform.ydwh" multiple collapse-tags
+              v-model="moreIform.ydwh"
+              multiple
+              collapse-tags
               @change="changeXY"
               placeholder="请选择"
               size="small"
@@ -100,7 +111,9 @@
           <el-col :span="8">
             <span>原专业：</span>
             <el-select
-              v-model="moreIform.yzydm" multiple collapse-tags
+              v-model="moreIform.yzydm"
+              multiple
+              collapse-tags
               placeholder="请选择"
               size="small"
             >
@@ -130,7 +143,7 @@
             </el-select>
           </el-col>
         </el-row>
-        
+
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">原年级：</el-col>
           <el-col :span="20">
@@ -190,7 +203,8 @@
                 value-format="yyyyMMdd"
                 range-separator="至"
                 start-placeholder="开始日期"
-                end-placeholder="结束日期">
+                end-placeholder="结束日期"
+              >
               </el-date-picker>
             </div>
           </el-col>
@@ -221,6 +235,7 @@
           @selection-change="handleSelectionChange"
           style="width: 100%"
           :default-sort="{ prop: 'date', order: 'descending' }"
+          @sort-change="changeTableSort"
         >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
@@ -228,18 +243,23 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" sortable> </el-table-column>
-          <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
-          <el-table-column prop="dwh" label="学院" sortable> </el-table-column>
-          <el-table-column prop="zydm" label="专业" sortable> </el-table-column>
-          <el-table-column prop="bjm" label="班级" sortable> </el-table-column>
-          <el-table-column prop="ydlbm" label="异动类别" sortable>
+          <el-table-column prop="xh" label="学号" sortable="custom">
           </el-table-column>
-          <el-table-column prop="ydyy" label="异动原因" sortable>
+          <el-table-column prop="xm" label="姓名" sortable="custom">
           </el-table-column>
-          <el-table-column prop="ydczrgh" label="异动操作人" sortable>
+          <el-table-column prop="dwh" label="学院" sortable="custom">
           </el-table-column>
-          <el-table-column prop="ydrq" label="异动日期" sortable>
+          <el-table-column prop="zydm" label="专业" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="bjm" label="班级" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="ydlbm" label="异动类别" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="ydyy" label="异动原因" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="ydczrgh" label="异动操作人" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="ydrq" label="异动日期" sortable="custom">
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
@@ -269,7 +289,7 @@
 <script>
 import CheckboxCom from "../../components/checkboxCom";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { getZY,getBJ } from "@/api/student/index";
+import { getZY, getBJ } from "@/api/student/index";
 import { getCollege } from "@/api/class/maintenanceClass";
 import {
   getStuChangeInfoPageList,
@@ -287,7 +307,7 @@ export default {
       moreIform: {},
       allDwh: [], // 学院下拉框
       zyOps: [], // 专业下拉
-      bjOps:[], // 班级下拉
+      bjOps: [], // 班级下拉
       training: {
         // 培养层次
         checkAll: false,
@@ -365,7 +385,7 @@ export default {
 
   mounted() {
     this.getSpread();
-    this.getAllCollege()
+    this.getAllCollege();
     this.getCode("dmpyccm"); // 培养层次
     this.getCode("dmxz"); // 学 制
     this.getCode("dmxjztm"); // 学籍
@@ -380,29 +400,35 @@ export default {
   methods: {
     // 查询学院
     getAllCollege() {
-      getCollege().then(res => {
-        this.allDwh = res.data.rows
-      }).catch(err=>{})
+      getCollege()
+        .then((res) => {
+          this.allDwh = res.data.rows;
+        })
+        .catch((err) => {});
     },
     changeXY(val) {
-      if (typeof (val) == 'string') {
-        val = val.split(",")
+      if (typeof val == "string") {
+        val = val.split(",");
       }
-      this.getZY(val)
-      this.getBJ(val)
+      this.getZY(val);
+      this.getBJ(val);
     },
-    // 学院找专业 
+    // 学院找专业
     getZY(val) {
-      let data = { DWH: val }
-      getZY(data).then(res => {
-        this.zyOps = res.data
-      }).catch(err=>{})
+      let data = { DWH: val };
+      getZY(data)
+        .then((res) => {
+          this.zyOps = res.data;
+        })
+        .catch((err) => {});
     },
-    getBJ(val) { 
-      let data = { DWH: val }
-      getBJ(data).then(res => {
-        this.bjOps = res.data
-      }).catch(err=>{})
+    getBJ(val) {
+      let data = { DWH: val };
+      getBJ(data)
+        .then((res) => {
+          this.bjOps = res.data;
+        })
+        .catch((err) => {});
     },
     getCode(data) {
       this.getCodeInfoByEnglish(data);
@@ -433,7 +459,7 @@ export default {
             case "dmxjydyym":
               this.$set(this.changWhy, "checkBox", res.data);
               break;
-            case 'dmxbm':
+            case "dmxbm":
               this.$set(this.dmxbmOPs, "checkBox", res.data);
           }
         })
@@ -442,11 +468,11 @@ export default {
     getSpread() {
       getManageRegStuInfoSearchSpread()
         .then((res) => {
-          let nj = res.data.nj
-          let njops = []
+          let nj = res.data.nj;
+          let njops = [];
           for (let x = 0; x < nj.length; x++) {
             if (nj[x]) {
-              njops.push({mc:nj[x],dm:nj[x]})
+              njops.push({ mc: nj[x], dm: nj[x] });
             }
           }
           this.njOps.checkBox = njops;
@@ -455,10 +481,11 @@ export default {
     },
     // 查询
     handleSearch() {
-      let YDRQST, YDRQEND = ''
+      let YDRQST,
+        YDRQEND = "";
       if (this.datePicker && this.datePicker.length > 0) {
-        YDRQST = this.datePicker[0]
-        YDRQEND = this.datePicker[1]
+        YDRQST = this.datePicker[0];
+        YDRQEND = this.datePicker[1];
       }
       let data = {
         xh: this.select == "xh" ? this.searchVal : "",
@@ -466,21 +493,51 @@ export default {
         // sfzjh: this.select == "sfzjh" ? this.searchVal : "",
         // yddh: this.select == "yddh" ? this.searchVal : "",
         // pyccm: this.training.choose&&this.training.choose.length>0?this.training.choose.join(','):'',
-        ydwh: this.moreIform.ydwh&&this.moreIform.ydwh.length>0?this.moreIform.ydwh.join(','):'', // 原培养单位
-        yzydm: this.moreIform.yzydm&&this.moreIform.yzydm.length>0?this.moreIform.yzydm.join(','):'', // 原专业
-        ynj: this.njOps.choose&&this.njOps.choose.length>0?this.njOps.choose.join(','):'', // 原年级
-        ybj: this.moreIform.ybh&&this.moreIform.ybh.length>0?this.moreIform.ybh.join(','):'', // 原班级
-        xbm: this.dmxbmOPs.choose&&this.dmxbmOPs.choose.length>0?this.dmxbmOPs.choose.join(','):'', // 性别码
+        ydwh:
+          this.moreIform.ydwh && this.moreIform.ydwh.length > 0
+            ? this.moreIform.ydwh.join(",")
+            : "", // 原培养单位
+        yzydm:
+          this.moreIform.yzydm && this.moreIform.yzydm.length > 0
+            ? this.moreIform.yzydm.join(",")
+            : "", // 原专业
+        ynj:
+          this.njOps.choose && this.njOps.choose.length > 0
+            ? this.njOps.choose.join(",")
+            : "", // 原年级
+        ybj:
+          this.moreIform.ybh && this.moreIform.ybh.length > 0
+            ? this.moreIform.ybh.join(",")
+            : "", // 原班级
+        xbm:
+          this.dmxbmOPs.choose && this.dmxbmOPs.choose.length > 0
+            ? this.dmxbmOPs.choose.join(",")
+            : "", // 性别码
         // xz: this.learnHe.choose&&this.learnHe.choose.length>0?this.learnHe.choose.join(','):'',
-        xjzt: this.studentStatus.choose&&this.studentStatus.choose.length>0?this.studentStatus.choose.join(','):'01,03',
+        xjzt:
+          this.studentStatus.choose && this.studentStatus.choose.length > 0
+            ? this.studentStatus.choose.join(",")
+            : "01,03",
         // zzmmm: this.politica.choose&&this.politica.choose.length>0?this.politica.choose.join(','):'',
         // mzm: this.ethnic.choose&&this.ethnic.choose.length>0?this.ethnic.choose.join(','):'',
-        bjm: this.moreIform.pread&&this.moreIform.pread.length>0?this.moreIform.pread.join(','):'',
-        dwh: this.moreIform.manageReg&&this.moreIform.manageReg.length>0?this.moreIform.manageReg.join(','):'',
-        zydm: this.moreIform.stuInfo&&this.moreIform.stuInfo.length>0?this.moreIform.stuInfo.join(','):'', // 专业
-        ydlbm: this.changType.choose&&this.changType.choose.length>0?this.changType.choose.join(','):'',
+        bjm:
+          this.moreIform.pread && this.moreIform.pread.length > 0
+            ? this.moreIform.pread.join(",")
+            : "",
+        dwh:
+          this.moreIform.manageReg && this.moreIform.manageReg.length > 0
+            ? this.moreIform.manageReg.join(",")
+            : "",
+        zydm:
+          this.moreIform.stuInfo && this.moreIform.stuInfo.length > 0
+            ? this.moreIform.stuInfo.join(",")
+            : "", // 专业
+        ydlbm:
+          this.changType.choose && this.changType.choose.length > 0
+            ? this.changType.choose.join(",")
+            : "",
         // ydyy: this.changWhy.choose&&this.changWhy.choose.length>0?this.changWhy.choose.join(','):'',
-        spwh: this.select == 'spwh'?this.searchVal:'',
+        spwh: this.select == "spwh" ? this.searchVal : "",
         // ydrq: this.datePicker,
         ydrqst: YDRQST,
         ydrqend: YDRQEND,
@@ -645,9 +702,9 @@ export default {
     // 异年级：单选
     njCheck(value) {
       let checkedCount = value.length;
-      this.njOps.checkAll =
-      checkedCount === this.njOps.checkBox.length;
-      this.njOps.isIndeterminate = checkedCount > 0 && checkedCount < this.njOps.checkBox.length;
+      this.njOps.checkAll = checkedCount === this.njOps.checkBox.length;
+      this.njOps.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.njOps.checkBox.length;
       // console.log(this.njOps.choose, "单选");
     },
     // 性别：全选
@@ -697,6 +754,12 @@ export default {
           id: row.id,
         },
       });
+    },
+    //排序
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.handleSearch();
     },
   },
 };
@@ -749,9 +812,9 @@ export default {
       margin-top: 20px;
       padding: 20px;
       background: #fafafa;
-      .titleStyle{
+      .titleStyle {
         display: inline-block;
-        width:120px;
+        width: 120px;
       }
     }
   }

@@ -2,7 +2,12 @@
   <div class="manStudent">
     <div class="searchWrap">
       <div class="search">
-        <el-input placeholder="请输入" v-model="searchVal" clearable class="inputSelect">
+        <el-input
+          placeholder="请输入"
+          v-model="searchVal"
+          clearable
+          class="inputSelect"
+        >
           <el-select
             v-model="select"
             class="elSelect"
@@ -161,6 +166,7 @@
           @selection-change="handleSelectionChange"
           style="width: 100%"
           :default-sort="{ prop: 'date', order: 'descending' }"
+          @sort-change="changeTableSort"
         >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
@@ -168,21 +174,37 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="tableColumnValue" label="学号" sortable>
+          <el-table-column
+            prop="tableColumnValue"
+            label="学号"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
-          <el-table-column prop="dwh" label="学院" sortable> </el-table-column>
-          <el-table-column prop="zydm" label="专业" sortable> </el-table-column>
-          <el-table-column prop="njm" label="班级" sortable> </el-table-column>
-          <el-table-column prop="pyccm" label="培养层次" sortable>
+          <el-table-column prop="xm" label="姓名" sortable="custom">
           </el-table-column>
-          <el-table-column prop="approveTime" label="修改时间" sortable>
+          <el-table-column prop="dwh" label="学院" sortable="custom">
           </el-table-column>
-          <el-table-column prop="approveState" label="审核状态" sortable>
+          <el-table-column prop="zydm" label="专业" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="njm" label="班级" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="pyccm" label="培养层次" sortable="custom">
+          </el-table-column>
+          <el-table-column
+            prop="approveTime"
+            label="修改时间"
+            sortable="custom"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="approveState"
+            label="审核状态"
+            sortable="custom"
+          >
             <template slot-scope="scope">
-              <div v-if="scope.row.approveState == 1"> 已审批</div>
-              <div v-else-if="scope.row.approveState == 2"> 未审批</div>
-              <div v-else> 退回</div>
+              <div v-if="scope.row.approveState == 1">已审批</div>
+              <div v-else-if="scope.row.approveState == 2">未审批</div>
+              <div v-else>退回</div>
             </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="180">
@@ -213,7 +235,7 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { getZY,getBJ } from "@/api/student/index";
+import { getZY, getBJ } from "@/api/student/index";
 import { getCollege } from "@/api/class/maintenanceClass";
 import {
   getManageRegStuInfoSearchSpread,
@@ -237,7 +259,7 @@ export default {
       },
       allDwh: [], // 学院下拉框
       zyOps: [], // 专业下拉
-      bjOps:[], // 班级下拉
+      bjOps: [], // 班级下拉
       training: {
         // 培养层次
         checkAll: false,
@@ -281,7 +303,7 @@ export default {
 
   mounted() {
     this.handleSearch();
-    this.getAllCollege()
+    this.getAllCollege();
     this.getCode("dmpyccm"); // 培养层次
     this.getCode("dmxjztm"); // 学籍
     this.getCode("dmmzm"); // 民 族
@@ -293,26 +315,32 @@ export default {
   methods: {
     // 查询学院
     getAllCollege() {
-      getCollege().then(res => {
-        this.allDwh = res.data.rows
-      }).catch(err=>{})
+      getCollege()
+        .then((res) => {
+          this.allDwh = res.data.rows;
+        })
+        .catch((err) => {});
     },
     changeXY(val) {
-      this.getZY(val)
-      this.getBJ(val)
+      this.getZY(val);
+      this.getBJ(val);
     },
-    // 学院找专业 
+    // 学院找专业
     getZY(val) {
-      let data = { DWH: val }
-      getZY(data).then(res => {
-        this.zyOps = res.data
-      }).catch(err=>{})
+      let data = { DWH: val };
+      getZY(data)
+        .then((res) => {
+          this.zyOps = res.data;
+        })
+        .catch((err) => {});
     },
-    getBJ(val) { 
-      let data = { DWH: val }
-      getBJ(data).then(res => {
-        this.bjOps = res.data
-      }).catch(err=>{})
+    getBJ(val) {
+      let data = { DWH: val };
+      getBJ(data)
+        .then((res) => {
+          this.bjOps = res.data;
+        })
+        .catch((err) => {});
     },
     getSpread() {
       getManageRegStuInfoSearchSpread()
@@ -507,6 +535,12 @@ export default {
           approveState: row.approveState,
         },
       });
+    },
+    //排序
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.handleSearch();
     },
   },
 };

@@ -106,18 +106,24 @@
           ref="multipleTable"
           style="width: 100%"
           :default-sort="{ prop: 'date', order: 'descending' }"
+          @sort-change="changeTableSort"
         >
           <el-table-column
             type="index"
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" sortable> </el-table-column>
-          <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
-          <el-table-column prop="dwh" label="学院" sortable> </el-table-column>
-          <el-table-column prop="zydm" label="专业" sortable> </el-table-column>
-          <el-table-column prop="nj" label="年级" sortable> </el-table-column>
-          <el-table-column prop="pyccm" label="培养层次" sortable>
+          <el-table-column prop="xh" label="学号" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="xm" label="姓名" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="dwh" label="学院" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="zydm" label="专业" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="nj" label="年级" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="pyccm" label="培养层次" sortable="custom">
           </el-table-column>
         </el-table>
       </div>
@@ -139,7 +145,7 @@ import {
   getManageRegStuInfoSearchSpread,
 } from "@/api/student/index";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { getZY,getBJ } from "@/api/student/index";
+import { getZY, getBJ } from "@/api/student/index";
 import { getCollege } from "@/api/class/maintenanceClass";
 export default {
   name: "manStudent",
@@ -160,7 +166,7 @@ export default {
       ],
       allDwh: [], // 学院下拉框
       zyOps: [], // 专业下拉
-      bjOps:[], // 班级下拉
+      bjOps: [], // 班级下拉
       training: {
         // 培养层次
         checkAll: false,
@@ -188,27 +194,31 @@ export default {
 
   mounted() {
     this.getSpread();
-    this.getAllCollege()
+    this.getAllCollege();
     this.getCode("dmpyccm"); // 培养层次
     this.handleSearch();
   },
 
   methods: {
-     // 查询学院
+    // 查询学院
     getAllCollege() {
-      getCollege().then(res => {
-        this.allDwh = res.data.rows
-      }).catch(err=>{})
+      getCollege()
+        .then((res) => {
+          this.allDwh = res.data.rows;
+        })
+        .catch((err) => {});
     },
     changeXY(val) {
-      this.getZY(val)
+      this.getZY(val);
     },
-    // 学院找专业 
+    // 学院找专业
     getZY(val) {
-      let data = { DWH: val }
-      getZY(data).then(res => {
-        this.zyOps = res.data
-      }).catch(err=>{})
+      let data = { DWH: val };
+      getZY(data)
+        .then((res) => {
+          this.zyOps = res.data;
+        })
+        .catch((err) => {});
     },
     getCode(data) {
       this.getCodeInfoByEnglish(data);
@@ -362,6 +372,12 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       console.log(this.multipleSelection);
+    },
+    //排序
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.handleSearch();
     },
   },
 };

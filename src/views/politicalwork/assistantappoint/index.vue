@@ -214,6 +214,7 @@
         style="width: 100%"
         :default-sort="{ prop: 'date', order: 'descending' }"
         @selection-change="handleSelectionChange"
+        @sort-change="changeTableSort"
       >
         <!-- <el-table-column type="index" label="在岗日期" width="50" /> -->
         <el-table-column label="在岗日期" width="180">
@@ -226,12 +227,12 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="bjbh" label="班级编号" sortable />
-        <el-table-column prop="bjmc" label="班级名称" sortable />
-        <el-table-column prop="pycc" label="培养层次" sortable />
-        <el-table-column prop="pydw" label="培养单位" sortable />
-        <el-table-column prop="nj" label="年级" sortable />
-        <el-table-column prop="sfqy" label="任职状态" sortable>
+        <el-table-column prop="bjbh" label="班级编号" sortable="custom" />
+        <el-table-column prop="bjmc" label="班级名称" sortable="custom" />
+        <el-table-column prop="pycc" label="培养层次" sortable="custom" />
+        <el-table-column prop="pydw" label="培养单位" sortable="custom" />
+        <el-table-column prop="nj" label="年级" sortable="custom" />
+        <el-table-column prop="sfqy" label="任职状态" sortable="custom">
           <template slot-scope="scope">
             <div v-if="scope.row.sfqy == 1">
               <span class="greenDot">●</span><span>在岗</span>
@@ -241,10 +242,10 @@
             <!-- <span v-else>否</span> -->
           </template>
         </el-table-column>
-        <el-table-column prop="rmrxm" label="任命人" sortable />
-        <el-table-column prop="rmsj" label="任命时间" sortable />
-        <el-table-column prop="cxrxm" label="免去人" sortable />
-        <el-table-column prop="cxsj" label="撤任时间" sortable />
+        <el-table-column prop="rmrxm" label="任命人" sortable="custom" />
+        <el-table-column prop="rmsj" label="任命时间" sortable="custom" />
+        <el-table-column prop="cxrxm" label="免去人" sortable="custom" />
+        <el-table-column prop="cxsj" label="撤任时间" sortable="custom" />
       </el-table>
       <div slot="footer" class="dialog-footer">
         <el-button class="closeButton" @click="cancel">关 闭</el-button>
@@ -718,6 +719,11 @@ export default {
       };
       //console.log(queryParams);
       this.getList(this.queryParams);
+    },
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.searchClick();
     },
   },
 };

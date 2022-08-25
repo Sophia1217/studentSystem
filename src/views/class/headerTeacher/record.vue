@@ -20,19 +20,63 @@
     </div>
 
     <!-- 班主任任职记录 问题：数据字段仍需仔细核对-->
-    <el-table :data="noticeList" @selection-change="handleSelectionChange">
+    <el-table
+      :data="noticeList"
+      @selection-change="handleSelectionChange"
+      @sort-change="changeTableSort"
+    >
       <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column label="序号" align="center" type="index" />
-      <el-table-column label="学工号" align="center" prop="gh" sortable />
-      <el-table-column label="姓名" align="center" prop="xm" sortable>
+      <el-table-column
+        label="学工号"
+        align="center"
+        prop="gh"
+        sortable="custom"
+      />
+      <el-table-column label="姓名" align="center" prop="xm" sortable="custom">
       </el-table-column>
-      <el-table-column label="性别" align="center" prop="xb" sortable />
-      <el-table-column label="工作单位" align="center" prop="dwmc" sortable />
-      <el-table-column label="任职班级" align="center" prop="rzbj" sortable />
-      <el-table-column label="任命人" align="center" prop="rmr" sortable />
-      <el-table-column label="任命时间" align="center" prop="rmsj" sortable />
-      <el-table-column label="撤任人" align="center" prop="cxr" sortable />
-      <el-table-column label="撤任时间" align="center" prop="cxsj" sortable />
+      <el-table-column
+        label="性别"
+        align="center"
+        prop="xb"
+        sortable="custom"
+      />
+      <el-table-column
+        label="工作单位"
+        align="center"
+        prop="dwmc"
+        sortable="custom"
+      />
+      <el-table-column
+        label="任职班级"
+        align="center"
+        prop="rzbj"
+        sortable="custom"
+      />
+      <el-table-column
+        label="任命人"
+        align="center"
+        prop="rmr"
+        sortable="custom"
+      />
+      <el-table-column
+        label="任命时间"
+        align="center"
+        prop="rmsj"
+        sortable="custom"
+      />
+      <el-table-column
+        label="撤任人"
+        align="center"
+        prop="cxr"
+        sortable="custom"
+      />
+      <el-table-column
+        label="撤任时间"
+        align="center"
+        prop="cxsj"
+        sortable="custom"
+      />
     </el-table>
 
     <pagination
@@ -129,6 +173,11 @@ export default {
           });
         }
       });
+    },
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.getList(this.queryParams);
     },
   },
 };

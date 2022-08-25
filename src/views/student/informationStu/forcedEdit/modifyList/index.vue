@@ -40,7 +40,9 @@
           <el-col :span="8">
             <span>学 院：</span>
             <el-select
-              v-model="moreIform.manageReg" multiple collapse-tags
+              v-model="moreIform.manageReg"
+              multiple
+              collapse-tags
               @change="changeXY"
               placeholder="请选择"
               size="small"
@@ -56,7 +58,9 @@
           <el-col :span="8">
             <span>专 业：</span>
             <el-select
-              v-model="moreIform.stuInfo" multiple collapse-tags
+              v-model="moreIform.stuInfo"
+              multiple
+              collapse-tags
               placeholder="请选择"
               size="small"
             >
@@ -123,6 +127,7 @@
           @selection-change="handleSelectionChange"
           style="width: 100%"
           :default-sort="{ prop: 'date', order: 'descending' }"
+          @sort-change="changeTableSort"
         >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
@@ -130,14 +135,19 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" sortable> </el-table-column>
-          <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
-          <el-table-column prop="dwh" label="学院" sortable> </el-table-column>
-          <el-table-column prop="zydm" label="专业" sortable> </el-table-column>
-          <el-table-column prop="bjm" label="班级" sortable> </el-table-column>
-          <el-table-column prop="xslbm" label="学生类别" sortable>
+          <el-table-column prop="xh" label="学号" sortable="custom">
           </el-table-column>
-          <el-table-column prop="updateTime" label="修改时间" sortable>
+          <el-table-column prop="xm" label="姓名" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="dwh" label="学院" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="zydm" label="专业" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="bjm" label="班级" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="xslbm" label="学生类别" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="updateTime" label="修改时间" sortable="custom">
           </el-table-column>
         </el-table>
         <pagination
@@ -158,14 +168,13 @@
         <p class="describe">尚未导入强制修改名单</p>
       </div>
     </div>
-    
   </div>
 </template>
 
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { getZY,getBJ } from "@/api/student/index";
+import { getZY, getBJ } from "@/api/student/index";
 import { getCollege } from "@/api/class/maintenanceClass";
 import {
   getManageRegStuInfoSearchSpread,
@@ -188,7 +197,7 @@ export default {
       datePicker: [],
       allDwh: [], // 学院下拉框
       zyOps: [], // 专业下拉
-      bjOps:[], // 班级下拉
+      bjOps: [], // 班级下拉
       moreIform: {
         value1: "",
       },
@@ -235,7 +244,7 @@ export default {
 
   mounted() {
     this.handleSearch();
-    this.getAllCollege()
+    this.getAllCollege();
     this.getCode("dmpyccm"); // 培养层次
     this.getCode("dmxjztm"); // 学籍
     this.getCode("dmmzm"); // 民 族
@@ -247,26 +256,32 @@ export default {
   methods: {
     // 查询学院
     getAllCollege() {
-      getCollege().then(res => {
-        this.allDwh = res.data.rows
-      }).catch(err=>{})
+      getCollege()
+        .then((res) => {
+          this.allDwh = res.data.rows;
+        })
+        .catch((err) => {});
     },
     changeXY(val) {
-      this.getZY(val)
-      this.getBJ(val)
+      this.getZY(val);
+      this.getBJ(val);
     },
-    // 学院找专业 
+    // 学院找专业
     getZY(val) {
-      let data = { DWH: val }
-      getZY(data).then(res => {
-        this.zyOps = res.data
-      }).catch(err=>{})
+      let data = { DWH: val };
+      getZY(data)
+        .then((res) => {
+          this.zyOps = res.data;
+        })
+        .catch((err) => {});
     },
-    getBJ(val) { 
-      let data = { DWH: val }
-      getBJ(data).then(res => {
-        this.bjOps = res.data
-      }).catch(err=>{})
+    getBJ(val) {
+      let data = { DWH: val };
+      getBJ(data)
+        .then((res) => {
+          this.bjOps = res.data;
+        })
+        .catch((err) => {});
     },
     getSpread() {
       getManageRegStuInfoSearchSpread()
@@ -445,6 +460,12 @@ export default {
     // 导出确认
     handleConfirm() {
       this.showExport = false;
+    },
+    // 排序
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.handleSearch();
     },
   },
 };

@@ -324,8 +324,8 @@ export default {
         bjdm: "", // 班级编号
         orderField: "", //
         orderType: "",
-        roleId: this.$store.state.user.roleId,
-        userId: this.$store.state.user.userId,
+        //roleId: this.$store.state.user.roleId,
+        //userId: this.$store.state.user.userId,
       },
       // 新建班级表单参数
       form: {

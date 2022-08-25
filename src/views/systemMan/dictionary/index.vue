@@ -71,7 +71,11 @@
         <div class="headerRight"></div>
       </div>
 
-      <el-table :data="noticeList" @selection-change="handleSelectionChange">
+      <el-table
+        :data="noticeList"
+        @selection-change="handleSelectionChange"
+        @sort-change="changeTableSort"
+      >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column
           label="序号"
@@ -162,6 +166,8 @@ export default {
       ],
       // 查询参数
       queryParams: {
+        orderZd: "",
+        orderPx: "",
         codeTableEnglish: "",
         codeTableChinese: "",
         state: "",
@@ -201,6 +207,8 @@ export default {
         state: this.queryParams.state,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
       };
       queryManage(data)
         .then((res) => {
@@ -215,6 +223,11 @@ export default {
           });
         })
         .catch((err) => {});
+    },
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.handleQuery();
     },
 
     handleCurrentChange(val) {

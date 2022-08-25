@@ -137,7 +137,7 @@
         :total="queryParams.total"
         :page.sync="queryParams.pageNum"
         :limit.sync="queryParams.pageSize"
-        @pagination="handleSearch"
+        @pagination="getList"
       />
     </div>
   </div>
@@ -214,7 +214,7 @@ export default {
     },
 
   activated() {
-    this.handleSearch();
+    this.getList();
   },
   methods: {
 
@@ -272,7 +272,12 @@ export default {
       this.searchVal = "";
     },
     // 查询
-    handleSearch() {
+    handleSearch(){
+        this.queryParams.pageNum = 1
+        this.getList()
+    },
+    // 获取数据
+    getList() {
 
       var data = {
         // userId: "2005690002", // 用户Id

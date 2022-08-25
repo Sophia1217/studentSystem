@@ -5,6 +5,7 @@
       :model="loginForm"
       :rules="loginRules"
       class="login-form"
+      @submit.native.prevent
     >
       <h3 class="title">学工管理系统</h3>
       <el-form-item prop="username">
@@ -55,8 +56,9 @@
           size="medium"
           type="primary"
           style="width: 100%"
-          @click.native.prevent="handleLogin"
+          
         >
+        <!-- @click.native.prevent="handleLogin" -->
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
         </el-button>
@@ -148,9 +150,11 @@ export default {
             .then((res) => {
               var token = res.accessToken;
               setToken(token);
+              this.loading = false
               this.$router.push("/");
             })
             .catch((err) => {
+                this.loading = false
               // console.log("登录返回错误", err);
             });
           // if (this.loginForm.rememberMe) {

@@ -56,9 +56,8 @@
           size="medium"
           type="primary"
           style="width: 100%"
-          
+          @click.native.prevent="handleLogin"
         >
-        <!-- @click.native.prevent="handleLogin" -->
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
         </el-button>

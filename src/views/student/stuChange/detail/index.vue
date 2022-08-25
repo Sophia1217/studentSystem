@@ -48,7 +48,7 @@
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
-                    <div class="title">学院??</div>
+                    <div class="title">学院</div>
                     <div class="content">{{infoRes.stuStatusChangeInfoJbxxRes.pyccm}}</div>
                   </div>
                 </el-col>

@@ -230,10 +230,10 @@
           ></el-table-column>
           <el-table-column prop="xh" label="学号" sortable> </el-table-column>
           <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
-          <el-table-column prop="dwh" label="学院" sortable> </el-table-column>
-          <el-table-column prop="zydm" label="专业" sortable> </el-table-column>
+          <el-table-column prop="dwhmc" label="学院" sortable> </el-table-column>
+          <el-table-column prop="zydmc" label="专业" sortable> </el-table-column>
           <el-table-column prop="bjm" label="班级" sortable> </el-table-column>
-          <el-table-column prop="ydlbm" label="异动类别" sortable>
+          <el-table-column prop="ydlbmc" label="异动类别" sortable>
           </el-table-column>
           <el-table-column prop="ydyy" label="异动原因" sortable>
           </el-table-column>

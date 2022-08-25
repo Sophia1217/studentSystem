@@ -50,6 +50,7 @@
 <script>
 import {
   queryTreeList,
+  queryTreeListJ,
   savaTreeList,
   savaEditList,
 } from "@/api/systemMan/role";
@@ -88,11 +89,12 @@ export default {
     handleTree() {
       if (this.isEdit == 2) {
         let data = { roleId: this.roleId1 };
-        let dataALL = { roleId: "01" };
-        queryTreeList(data)
+        let dataALL = { roleId: this.$store.state.user.roleId };
+        queryTreeListJ(data)
           .then((res) => {
             var result = res.data;
-            this.getData(result); //
+            this.arr = result;
+            // this.getData(result); //
           })
           .catch((err) => {});
         queryTreeList(dataALL)
@@ -102,7 +104,7 @@ export default {
           })
           .catch((err) => {});
       } else {
-        let data = { roleId: "01" };
+        let data = { roleId: this.$store.state.user.roleId };
         queryTreeList(data)
           .then((res) => {
             this.treeData = res.data;
@@ -116,8 +118,9 @@ export default {
     },
     getData(data) {
       for (var i in data) {
-        this.arr.push(data[i].modId); //将第一层的那么保存出来，
+        this.arr.push(data[i].modId); //将第一层的保存出来，
         if (data[i].children) {
+          // if(data[i].length >)
           this.getData(data[i].children);
         }
       }
@@ -132,6 +135,7 @@ export default {
     },
     sava() {
       if (this.isEdit === "1") {
+        console.log("xinzeng");
         let data = {
           userId: "1234",
           menuList: this.savaData,

@@ -18,6 +18,15 @@ export function queryTreeList(data) {
   })
 }
 
+//操作人的树
+export function queryTreeListJ(data) {
+  return request({
+    url: '/manager/role/queryMenuIdList',
+    method: 'post',
+    data: data
+  })
+}
+
 //新增数据提交
 export function savaTreeList(data) {
   return request({

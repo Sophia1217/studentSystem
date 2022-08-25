@@ -134,12 +134,7 @@
           <el-table-column type="index" label="序号" width="50" />
           <el-table-column prop="gh" label="工号" sortable />
           <el-table-column prop="xm" label="姓名" sortable />
-          <el-table-column prop="xbm" label="性别" sortable>
-            <template slot-scope="scope">
-              <span v-if="scope.row.xbm == 1">男</span>
-              <span v-else>女</span>
-            </template>
-          </el-table-column>
+          <el-table-column prop="xb" label="性别" sortable> </el-table-column>
           <el-table-column prop="lxdh" label="联系方式" sortable />
           <el-table-column prop="gzdw" label="工作单位" sortable />
           <el-table-column prop="zgxl" label="最高学历" sortable />
@@ -496,6 +491,7 @@ export default {
 
 <style lang="scss" scoped>
 .basicInfoStyle {
+  background: #ffffff;
   .mt15 {
     margin-top: 15px;
   }

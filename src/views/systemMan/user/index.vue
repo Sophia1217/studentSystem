@@ -12,8 +12,7 @@
           >
             <el-option label="学号" value="1"></el-option>
             <el-option label="姓名" value="2"></el-option>
-            <el-option label="身份证号" value="3"></el-option>
-            <el-option label="手机号" value="4"></el-option>
+            <el-option label="单位" value="3"></el-option>
           </el-select>
           <el-button
             slot="append"
@@ -31,7 +30,7 @@
       </div>
       <!-- 更多选择 -->
       <div class="moreSelect" v-if="isMore">
-        <el-row :gutter="20" class="mt15">
+        <!-- <el-row :gutter="20" class="mt15">
           <el-col :span="2">单 位：</el-col>
           <el-col :span="20">
             <div class="checkbox">
@@ -42,14 +41,14 @@
               ></checkboxCom>
             </div>
           </el-col>
-        </el-row>
+        </el-row> -->
         <el-row :gutter="20" class="mt15">
           <el-col :span="2">角 色：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
-              label='roleId'
-              name='roleName'
+                label="roleId"
+                name="roleName"
                 :objProp="studentStatus"
                 @training="studentStatusAll"
                 @checkedTraining="studentStatusCheck"
@@ -58,7 +57,7 @@
             </div>
           </el-col>
         </el-row>
-        <el-row :gutter="20" class="mt15">
+        <!-- <el-row :gutter="20" class="mt15">
           <el-col :span="2">性 别：</el-col>
           <el-col :span="20">
             <div class="checkbox">
@@ -69,7 +68,7 @@
               ></checkboxCom>
             </div>
           </el-col>
-        </el-row>
+        </el-row> -->
       </div>
     </div>
     <!-- table -->
@@ -114,7 +113,7 @@
                 v-model="scope.row.isUse"
                 active-color="#23AD6F"
                 inactive-color="#E0E0E0"
-                @change='onSwitchChange(scope.row)'
+                @change="onSwitchChange(scope.row)"
               ></el-switch>
             </template>
           </el-table-column>
@@ -137,7 +136,7 @@
         :total="queryParams.total"
         :page.sync="queryParams.pageNum"
         :limit.sync="queryParams.pageSize"
-        @pagination="handleSearch"
+        @pagination="getList"
       />
     </div>
   </div>
@@ -145,7 +144,11 @@
 
 <script>
 import CheckboxCom from "../../components/checkboxCom";
-import {queryDataAuth, queryUserPageList ,disableUser} from "@/api/systemMan/user";
+import {
+  queryDataAuth,
+  queryUserPageList,
+  disableUser,
+} from "@/api/systemMan/user";
 import { queryRoleList } from "@/api/systemMan/role";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
@@ -161,17 +164,17 @@ export default {
         checkAll: false,
         choose: [],
         checkBox: [
-        //   { label: "软件学院", val: 1 },
-        //   { label: "设计学院", val: 2 },
-        //   { label: "文学院", val: 3 },
-        //   { label: "理学院", val: 4 },
-        //   { label: "工业设计", val: 5 },
-        //   { label: "通信工程", val: 6 },
-        //   { label: "电子信息", val: 7 },
-        //   { label: "建筑工程", val: 8 },
-        //   { label: "统计学", val: 9 },
-        //   { label: "工业设计", val: 10 },
-        //   { label: "统计学", val: 11 },
+          //   { label: "软件学院", val: 1 },
+          //   { label: "设计学院", val: 2 },
+          //   { label: "文学院", val: 3 },
+          //   { label: "理学院", val: 4 },
+          //   { label: "工业设计", val: 5 },
+          //   { label: "通信工程", val: 6 },
+          //   { label: "电子信息", val: 7 },
+          //   { label: "建筑工程", val: 8 },
+          //   { label: "统计学", val: 9 },
+          //   { label: "工业设计", val: 10 },
+          //   { label: "统计学", val: 11 },
         ],
         isIndeterminate: false,
       },
@@ -180,11 +183,11 @@ export default {
         checkAll: false,
         choose: [],
         checkBox: [
-        //   { label: "校级领导用户", val: 1 },
-        //   { label: "业务部门人员", val: 2 },
-        //   { label: "培养单位负责人", val: 3 },
-        //   { label: "培养单位本研学生工作负责人", val: 4 },
-        //   { label: "辅导员", val: 5 },
+          //   { label: "校级领导用户", val: 1 },
+          //   { label: "业务部门人员", val: 2 },
+          //   { label: "培养单位负责人", val: 3 },
+          //   { label: "培养单位本研学生工作负责人", val: 4 },
+          //   { label: "辅导员", val: 5 },
         ],
         isIndeterminate: false,
       },
@@ -206,38 +209,37 @@ export default {
     };
   },
 
-    mounted (){
-        // this.handleSearch();
-        this.getCode('dmxbm') // 获取性别
-        this.getqueryRoleList() // 获取角色
-        this.getOrg() // 获取单位
-    },
+  mounted() {
+    // this.handleSearch();
+    this.getCode("dmxbm"); // 获取性别
+    this.getqueryRoleList(); // 获取角色
+    this.getOrg(); // 获取单位
+  },
 
   activated() {
-    this.handleSearch();
+    this.getList();
   },
   methods: {
-
     // 获取单位
-    getOrg (){
-        let data = { 
-            userId: this.$store.getters.userId, 
-            roleId: this.$store.getters.roleId ,
-            type : '0',
-        };
-        queryDataAuth(data) 
-            .then((res) => {
-                // console.log('操作人返回学院列表',res);
-                var  resData = res.data.rows || [];
-                for (let x = 0; x < resData.length; x++) {
-                    resData[x].dm = resData[x].dwdm;
-                    resData[x].mc = resData[x].dwmc;
-                } 
-                this.$set(this.learnHe, "checkBox", resData);
-            })
-            .catch((err) => {
-                // console.log('操作人返回学院列表失败',err,data);
-            });
+    getOrg() {
+      let data = {
+        userId: this.$store.getters.userId,
+        roleId: this.$store.getters.roleId,
+        type: "0",
+      };
+      queryDataAuth(data)
+        .then((res) => {
+          // console.log('操作人返回学院列表',res);
+          var resData = res.data.rows || [];
+          for (let x = 0; x < resData.length; x++) {
+            resData[x].dm = resData[x].dwdm;
+            resData[x].mc = resData[x].dwmc;
+          }
+          this.$set(this.learnHe, "checkBox", resData);
+        })
+        .catch((err) => {
+          // console.log('操作人返回学院列表失败',err,data);
+        });
     },
     // 查询性别代码
     getCode(paramsData) {
@@ -248,22 +250,21 @@ export default {
             case "dmxbm":
               this.$set(this.ethnic, "checkBox", res.data);
               break;
-            
           }
         })
         .catch((err) => {});
     },
     // 获取用户角色
     getqueryRoleList() {
-      let data = { roleId: this.$store.getters.roleId};
+      let data = { roleId: this.$store.getters.roleId };
       queryRoleList(data)
         .then((res) => {
           var checkboxWrap = res.data.rows || [];
-            for (let index = 0; index < checkboxWrap.length; index++) {
-                const element = checkboxWrap[index];
-                element.dm = element.roleId
-                element.mc = element.roleName
-            }
+          for (let index = 0; index < checkboxWrap.length; index++) {
+            const element = checkboxWrap[index];
+            element.dm = element.roleId;
+            element.mc = element.roleName;
+          }
           this.$set(this.studentStatus, "checkBox", res.data.rows);
         })
         .catch((res) => {});
@@ -273,41 +274,40 @@ export default {
     },
     // 查询
     handleSearch() {
-
       var data = {
         // userId: "2005690002", // 用户Id
-        userId:this.$store.getters.userId, // 用户Id
+        userId: this.$store.getters.userId, // 用户Id
         // roleId: "01", //当前人
         roleId: this.$store.getters.roleId, //当前人
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
       };
-        if (this.select == 1) { // 学号
-            data.gh = this.searchVal
-        }else if (this.select == 2) { // 姓名
-            data.xm = this.searchVal
-        } else if (this.select == 3){ // 身份证号
-            data.sfzjh = this.searchVal
-        }else if (this.select == 4){ // 手机号
-            data.yddh = this.searchVal
-        }
+      if (this.select == 1) {
+        // 学号
+        data.gh = this.searchVal;
+      } else if (this.select == 2) {
+        // 姓名
+        data.xm = this.searchVal;
+      } else if (this.select == 3) {
+        // 单位
+        data.dwmc = this.searchVal;
+      }
+      // var xbsz = this.ethnic.choose || [];
+      // data.sexTypes = xbsz.join(",");
 
-        var xbsz = this.ethnic.choose || []
-        data.sexTypes = xbsz.join(',')
+      var jssz = this.studentStatus.choose || [];
+      data.childRoleIds = jssz.join(",");
 
-        var jssz = this.studentStatus.choose || []
-        data.childRoleIds = jssz.join(',')
-
-        var dwsz = this.learnHe.choose || []
-        data.organizationCodes = dwsz.join(',')
+      // var dwsz = this.learnHe.choose || [];
+      // data.organizationCodes = dwsz.join(",");
 
       queryUserPageList(data)
         .then((res) => {
-            var rows = res.rows || []
-            for (let index = 0; index < rows.length; index++) {
+          var rows = res.rows || [];
+          for (let index = 0; index < rows.length; index++) {
             const element = rows[index];
-            element.isUse = element.isUse == '0' ? true : false
-            element.roleNames ?  ()=>{} : element.roleNames = '校友'
+            element.isUse = element.isUse == "0" ? true : false;
+            element.roleNames ? () => {} : (element.roleNames = "校友");
           }
           this.tableData = rows;
           this.queryParams.total = res.totalCount;
@@ -318,24 +318,7 @@ export default {
     handleMore() {
       this.isMore = !this.isMore;
     },
-    // 单 位：全选
-    learnHeAll(val) {
-      let allCheck = [];
-      for (let i in this.learnHe.checkBox) {
-        allCheck.push(this.learnHe.checkBox[i].dwdm);
-      }
-      this.learnHe.choose = val ? allCheck : [];
-    //   console.log(this.learnHe.choose, "全选");
-      this.learnHe.isIndeterminate = false;
-    },
-    // 单 位：单选
-    learnHeCheck(value) {
-      let checkedCount = value.length;
-      this.learnHe.checkAll = checkedCount === this.learnHe.checkBox.length;
-      this.learnHe.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.learnHe.checkBox.length;
-    //   console.log(this.learnHe.choose, "单选",value,);
-    },
+
     // 角 色全选
     studentStatusAll(isAll) {
       let allCheck = [];
@@ -343,8 +326,8 @@ export default {
         allCheck.push(this.studentStatus.checkBox[i].roleId);
       }
       this.studentStatus.choose = isAll ? allCheck : [];
-      this.studentStatus.checkAll = isAll
-    //   console.log(this.studentStatus.choose, "全选",isAll,allCheck);
+      this.studentStatus.checkAll = isAll;
+      //   console.log(this.studentStatus.choose, "全选",isAll,allCheck);
       this.studentStatus.isIndeterminate = false;
     },
     // 角 色单选
@@ -354,75 +337,76 @@ export default {
         checkedCount === this.studentStatus.checkBox.length;
       this.studentStatus.isIndeterminate =
         checkedCount > 0 && checkedCount < this.studentStatus.checkBox.length;
-    //   console.log(this.studentStatus.choose, "单选");
+      //   console.log(this.studentStatus.choose, "单选");
     },
-    // 性 别全选
-    ethnicAll(val) {
-      let allCheck = [];
-      for (let i in this.ethnic.checkBox) {
-        allCheck.push(this.ethnic.checkBox[i].dm);
-      }
-      this.ethnic.choose = val ? allCheck : [];
-    //   console.log(this.ethnic.choose, "全选");
-      this.ethnic.isIndeterminate = false;
-    },
-    // 性 别单选
-    ethnicCheck(value) {
-      let checkedCount = value.length;
-      this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
-      this.ethnic.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
-    //   console.log(this.ethnic.choose, "单选",value);
-    },
+    // // 性 别全选
+    // ethnicAll(val) {
+    //   let allCheck = [];
+    //   for (let i in this.ethnic.checkBox) {
+    //     allCheck.push(this.ethnic.checkBox[i].dm);
+    //   }
+    //   this.ethnic.choose = val ? allCheck : [];
+    // //   console.log(this.ethnic.choose, "全选");
+    //   this.ethnic.isIndeterminate = false;
+    // },
+    // // 性 别单选
+    // ethnicCheck(value) {
+    //   let checkedCount = value.length;
+    //   this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
+    //   this.ethnic.isIndeterminate =
+    //     checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
+    // //   console.log(this.ethnic.choose, "单选",value);
+    // },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-    //   console.log(this.multipleSelection);
+      //   console.log(this.multipleSelection);
     },
 
     handleCommand(command) {
-    //   this.$message("click on item " + command);
+      //   this.$message("click on item " + command);
       console.log(command);
-      var selectedArr = this.multipleSelection || []
+      var selectedArr = this.multipleSelection || [];
       if (selectedArr.length == 0) {
-            this.$message({
-                message : '请至少选择一个用户',
-                type: 'warning'
-            })
-            return
+        this.$message({
+          message: "请至少选择一个用户",
+          type: "warning",
+        });
+        return;
       }
-        var userArr = []
-        for (let index = 0; index < selectedArr.length; index++) {
-            const element = selectedArr[index];
-            userArr.push(element.userId)
-        }
+      var userArr = [];
+      for (let index = 0; index < selectedArr.length; index++) {
+        const element = selectedArr[index];
+        userArr.push(element.userId);
+      }
 
       let param = {
-            userIdList:userArr,
-            isUse : command == open ? '0':'1'
-        };
-      disableUser(param).then((res)=>{
-        for (let i = 0; i < selectedArr.length; i++) {
-            const item = selectedArr[index];
-            item.isUse = command == open ? true: false
-        }
-      }).catch(()=>{
-
-      })
+        userIdList: userArr,
+        isUse: command == "open" ? "0" : "1",
+      };
+      disableUser(param)
+        .then((res) => {
+          // for (let i = 0; i < selectedArr.length; i++) {
+          //   const item = selectedArr[index];
+          //   item.isUse = command == open ? true : false;
+        })
+        .catch(() => {});
     },
 
     // 用户状态改变
-    onSwitchChange (user){
-        console.log('用户状态改变',user,user.isUse)
-        let param = {
-            userIdList:[user.userId],
-            isUse : user.isUse ? '0':'1'
-        };
-        disableUser(param).then((res)=>{
-            console.log('用户状态接口',res)
-        }).catch(()=>{
-            user.isUse = !user.isUse
+    onSwitchChange(user) {
+      console.log("用户状态改变", user, user.isUse);
+      let param = {
+        userIdList: [user.userId],
+        isUse: user.isUse ? "0" : "1",
+      };
+      disableUser(param)
+        .then((res) => {
+          console.log("用户状态接口", res);
         })
+        .catch(() => {
+          user.isUse = !user.isUse;
+        });
     },
     // 数据权限
     handlePermiss(row) {
@@ -441,7 +425,7 @@ export default {
 
 <style lang="scss" scoped>
 .manUser {
-    background-color: #fff;
+  background-color: #fff;
   .mt15 {
     margin-top: 15px;
   }

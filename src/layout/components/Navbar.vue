@@ -62,7 +62,7 @@ export default {
     },
     canChange: {
         get() {
-            return this.$store.getters.roles.length > 0
+            return this.$store.getters.roles.length > 1
         }
     }
   },

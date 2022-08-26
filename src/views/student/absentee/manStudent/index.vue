@@ -819,16 +819,16 @@ export default {
             margin-right: 5px;
           }
           .blueIcon {
-            background: url("../../../../assets/images/icon_1.png") no-repeat;
+            background: url("~@/assets/images/icon_1.png") no-repeat;
           }
           .orangeIcon {
-            background: url("../../../../assets/images/icon_2.png") no-repeat;
+            background: url("~@/assets/images/icon_2.png") no-repeat;
           }
           .lightIcon {
-            background: url("../../../../assets/images/icon_3.png") no-repeat;
+            background: url("~@/assets/images/icon_3.png") no-repeat;
           }
           .greenIcon {
-            background: url("../../../../assets/images/export.png");
+            background: url("~@/assets/images/export.png");
           }
         }
       }

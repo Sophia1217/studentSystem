@@ -1694,14 +1694,27 @@
       </div>
     </div>
     <div class="editBottom" v-if="isEdit == 2">
-      <div class="btn cancel" @click="handleCencle">取消</div>
+    <!-- this.$route.query.xh -->
+      <div v-show="this.$route.query.xh" class="btn cancel" @click="handleCencle">取消</div>
+      <div v-show="!this.$route.query.xh" class="btns borderBlue" @click="getGraStu">
+        <i class="icon blueIcon"></i><span class="title">毕业生登记表</span>
+      </div>
+      <div v-show="!this.$route.query.xh" class="btns borderOrange" @click="getStuReg">
+        <i class="icon orangeIcon"></i><span class="title">学生登记表</span>
+      </div>
+      <div v-show="!this.$route.query.xh" class="btns borderLight" @click="getStu">
+        <i class="icon lightIcon"></i><span class="title">学生卡片</span>
+      </div>
       <div class="btn confirm" @click="handlUpdata">保存</div>
     </div>
   </div>
 </template>
 
 <script>
-import { getRegStuInfoDetailPage, updateRegStuInfo, loadRegStuInfoUpdatePage } from "@/api/student/index"
+import {
+  getRegStuInfoDetailPage, updateRegStuInfo,
+  loadRegStuInfoUpdatePage, gradStu,
+  stuCard, stuReg, } from "@/api/student/index"
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import TopTitle from '@/components/TopTitle/index.vue'
 export default {
@@ -1888,6 +1901,24 @@ export default {
       }).catch(err => {
         this.$message.error(err.errmsg);
       })
+    },
+    // 毕业生登记表
+    getGraStu() {
+      let xhs = [this.xh];
+      let data = { xhs: xhs, etype: "docx" };
+      gradStu(data).then((res) => this.downloadFn(res, "毕业生登记表", "zip"));
+    },
+    //学生登记
+    getStuReg() {
+      let xhs = [this.xh];
+      let data = { xhs: xhs, etype: "docx" };
+      stuReg(data).then((res) => this.downloadFn(res, "学生登记表", "zip"));
+    },
+    //学生卡片
+    getStu() {
+      let xhs = [this.xh]
+      let data = { xhs: xhs, etype: "docx" };
+      stuCard(data).then((res) => this.downloadFn(res, "学生卡片", "zip"));
     }
   },
 };
@@ -2060,6 +2091,56 @@ export default {
       background: #005657;
       color:#fff;
     }
+    .borderBlue {
+          border: 1px solid #0d84e0;
+          color: #0d84e0;
+          background: #ebfafd;
+        }
+        .borderOrange {
+          border: 1px solid #cc3014;
+          color: #cc3014;
+          background: #fdf6f3;
+        }
+        .borderLight {
+          border: 1px solid #0090a1;
+          color: #0090a1;
+          background: #e7fcfc;
+        }
+        .borderGreen {
+          border: 1px solid #005657;
+          color: #005657;
+          background: #fff;
+        }
+        .btns {
+          margin-right: 15px;
+          padding: 5px 10px;
+          cursor: pointer;
+          .title {
+            font-size: 14px;
+            text-align: center;
+            line-height: 22px;
+            // vertical-align: middle;
+          }
+          .icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            vertical-align: top;
+            margin-right: 5px;
+          }
+          .blueIcon {
+            background: url("~@/assets/images/icon_1.png") no-repeat;
+          }
+          .orangeIcon {
+            background: url("~@/assets/images/icon_2.png") no-repeat;
+          }
+          .lightIcon {
+            background: url("~@/assets/images/icon_3.png") no-repeat;
+          }
+          .greenIcon {
+            background: url("~@/assets/images/export.png");
+          }
+        }
   }
 }
 </style>

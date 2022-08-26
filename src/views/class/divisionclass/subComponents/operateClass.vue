@@ -860,7 +860,7 @@ li {
 .title {
   margin-bottom: 32px;
   margin: 0px auto 30px auto;
-  /* text-align: center; */
+  text-align: left;
   color: #707070;
 }
 .title-item {

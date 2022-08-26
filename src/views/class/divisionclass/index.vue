@@ -341,6 +341,7 @@ export default {
 
 .title {
   margin-bottom: 32px;
+  text-align: left;
 }
 .title-item {
   width: 80px;

@@ -30,7 +30,7 @@
                   <div class="content"> 
                     <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
                     <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
-                    <!-- <el-radio  v-model="item.columnAuth" label="2">隐藏</el-radio> -->
+                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -52,6 +52,7 @@
                   <div class="content">
                     <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
                     <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -73,6 +74,7 @@
                   <div class="content">
                     <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
                     <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -94,6 +96,7 @@
                   <div class="content">
                     <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
                     <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -115,6 +118,7 @@
                   <div class="content">
                     <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
                     <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -349,7 +353,7 @@ export default {
             display: flex;
             align-items: center;
             .title{
-              flex: 0 0 160px;
+              flex: 0 0 130px;
               line-height: 48px;
               background: #E0E0E0;
               text-align: right;

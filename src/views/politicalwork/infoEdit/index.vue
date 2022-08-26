@@ -32,7 +32,7 @@
                   <div class="content">  <!--- 0 必填 1可写 2可读--->
                     <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
                     <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
-                    <!-- <el-radio  v-model="item.stuColumnAuth" label="2">隐藏</el-radio> -->
+                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -55,6 +55,7 @@
                   <div class="content">
                     <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
                     <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -77,6 +78,7 @@
                   <div class="content">
                     <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
                     <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -99,6 +101,7 @@
                   <div class="content">
                     <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
                     <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -121,6 +124,7 @@
                   <div class="content">
                     <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
                     <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -143,6 +147,7 @@
                   <div class="content">
                     <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
                     <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -165,6 +170,7 @@
                   <div class="content">
                     <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
                     <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -187,6 +193,7 @@
                   <div class="content">
                     <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
                     <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -209,6 +216,7 @@
                   <div class="content">
                     <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
                     <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -231,6 +239,7 @@
                   <div class="content">
                     <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
                     <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -253,6 +262,7 @@
                   <div class="content">
                     <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
                     <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
                   </div>
                 </div>
               </el-col>

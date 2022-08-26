@@ -864,7 +864,7 @@ li {
   color: #707070;
 }
 .title-item {
-  width: 1000px;
+  width: auto;
   height: 28px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;

@@ -144,7 +144,7 @@ export default {
     };
   },
   created() {
-    this.handleQuery();
+    // this.handleQuery();
   },
   activated() {
     this.handleQuery();

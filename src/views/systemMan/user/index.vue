@@ -457,6 +457,8 @@ export default {
       background: #fff;
 
       .searchBtn {
+        background: #005657;
+        color: white;
       }
 
       .elSelect {

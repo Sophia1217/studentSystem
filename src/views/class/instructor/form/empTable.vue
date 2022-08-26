@@ -333,7 +333,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .emp-table {
   height: 100vh;
   background-color: #ffffff;

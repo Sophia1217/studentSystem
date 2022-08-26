@@ -82,7 +82,7 @@ export default {
       // 任职记录errcode
       errcode: "-200",
       // 当前班级代码
-      bjdm:"",
+      bjdm: "",
       // 遮罩层
       // loading: true,
       // 选中数组
@@ -106,7 +106,7 @@ export default {
       dialogVisible: false,
       // 查询参数
       queryParams: {
-        bjdm:"1004001000",
+        bjdm: this.$route.query.bjdm,
         pageNum: 1,
         pageSize: 10,
       },
@@ -129,16 +129,16 @@ export default {
   },
   methods: {
     getList(x) {
-      Object.assign(x, this.queryParams)
+      Object.assign(x, this.queryParams);
       getQueryBgbRmjl(x).then((res) => {
-        var current_total = 0
-        console.log("res.datas:",res.datas);
+        var current_total = 0;
+        console.log("res.datas:", res.datas);
         this.queryBgbRmjList = res.datas;
         console.log("this.queryBgbRmjList:", this.queryBgbRmjList);
-        for(let index in this.queryBgbRmjList){
-           current_total += this.queryBgbRmjList[index].children.length
+        for (let index in this.queryBgbRmjList) {
+          current_total += this.queryBgbRmjList[index].children.length;
         }
-        this.total = current_total==0?this.total:current_total
+        this.total = current_total == 0 ? this.total : current_total;
       });
     },
     // 删除记录
@@ -162,7 +162,7 @@ export default {
       if (this.errcode == "00") {
         console.log("刷新操作！");
         this.getList({
-          bjdm: "1004001000",
+          bjdm: this.$route.query.bjdm,
           pageNum: 1,
           pageSize: 10,
         });

@@ -1,6 +1,7 @@
 <template>
   <div class="detail">
-    <div class="wrap">
+    <TopTitle v-if="roleType == 1"></TopTitle>
+    <div :class="roleType == 1 ? 'wrap student' : 'wrap'">
       <div class="detail_left">
         <div v-for="(item,index) in dtailsList" :key="index">
           <div class="list" :class="index==current?'active':''" @click="handleList(index,'tag')">
@@ -1702,8 +1703,12 @@
 <script>
 import { getRegStuInfoDetailPage, updateRegStuInfo, loadRegStuInfoUpdatePage } from "@/api/student/index"
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
+import TopTitle from '@/components/TopTitle/index.vue'
 export default {
   name: 'detail',
+  components : {
+    TopTitle
+  },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.routerFrom = from.fullPath
@@ -1892,6 +1897,9 @@ export default {
 .detail{
   padding:20px 0;
   box-sizing: border-box;
+  .student {
+    margin-top: 60px;
+  }
   .wrap{
     display: flex;
     flex-direction: row;

@@ -749,7 +749,7 @@ export default {
         // color:#fff;
       }
       .elSelect {
-        width: 110px;
+        width: 120px;
       }
       .inputSelect {
         width: 50%;

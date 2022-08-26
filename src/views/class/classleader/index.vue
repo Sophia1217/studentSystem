@@ -59,12 +59,16 @@
     </el-form>
     <div>
       <h3 class="title-item">
-        班级列表<span class="iconfont repeat_icon">&#xe7b1; </span>
+        班干部管理列表<span class="iconfont repeat_icon">&#xe7b1; </span>
       </h3>
     </div>
 
     <!-- 班级列表 -->
-    <el-table :data="noticeList" @selection-change="handleSelectionChange">
+    <el-table
+      :data="noticeList"
+      @selection-change="handleSelectionChange"
+      @sort-change="changeTableSort"
+    >
       <el-table-column label="序号" align="center" type="index" />
       <el-table-column label="班级编号" align="center" prop="bjdm" sortable />
       <el-table-column
@@ -74,8 +78,8 @@
         prop="bjmc"
         sortable
       />
-      <el-table-column label="培养单位" align="center" prop="ssdwmc" sortable />
-      <el-table-column label="培养层次" align="center" prop="pyccName" sortable />
+      <el-table-column label="培养单位" align="center" prop="ssdw" sortable />
+      <el-table-column label="培养层次" align="center" prop="pycc" sortable />
       <el-table-column
         label="班级人数"
         align="center"
@@ -177,6 +181,8 @@ export default {
         pycc: "", // 培养层次
         ssnj: "", // 年级
         bjdm: "", // 班级编号
+        orderField: "",
+        orderType: "", // 0是asc升序，1是desc降序
       },
       // 表单参数
       form: {},
@@ -196,6 +202,12 @@ export default {
     this.getOptions();
   },
   methods: {
+    changeTableSort(column) {
+      this.queryParams.orderField = column.prop;
+      this.queryParams.orderType =
+        column.order === "descending" ? "desc" : "asc"; // 0是asc升序，1是desc降序
+      this.getList(this.queryParams);
+    },
     getList(data = {}) {
       var data = this.queryParams;
       console.log("data", data);
@@ -308,7 +320,7 @@ export default {
     } */
 .title-item {
   display: inline-block;
-  width: 120px;
+  width: 170px;
   height: 28px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;

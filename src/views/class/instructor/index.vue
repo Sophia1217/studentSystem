@@ -77,7 +77,7 @@
     <div class="tea-table">
       <div class="table-content">
         <div class="title" icon="el-icon-refresh">
-          <span class="title-item">班级列表</span>
+          <span class="title-itemopn">辅导员管理列表</span>
           <span class="iconfont">&#xe631;</span>
           <!-- <el-row :gutter="10" class="mb8" style="float: right">
             <el-col :span="1.5">
@@ -93,7 +93,11 @@
           </el-row> -->
         </div>
         <!-- v-loading="loading" -->
-        <el-table :data="noticeList" @selection-change="handleSelectionChange">
+        <el-table
+          :data="noticeList"
+          @selection-change="handleSelectionChange"
+          @sort-change="changeTableSort"
+        >
           <el-table-column label="序号" align="center" type="index" />
           <el-table-column
             label="班级编号"
@@ -231,6 +235,8 @@ export default {
         pycc: "", // 培养层次
         ssnj: "", // 年级
         bjdm: "", // 班级编号
+        orderField: "",
+        orderType: "", // 0是asc升序，1是desc降序
       },
       // 表单参数
       form: {},
@@ -246,6 +252,12 @@ export default {
     };
   },
   methods: {
+    changeTableSort(column) {
+      this.queryParams.orderField = column.prop;
+      this.queryParams.orderType =
+        column.order === "descending" ? "desc" : "asc"; // 0是asc升序，1是desc降序
+      this.getList(this.queryParams);
+    },
     getList(data) {
       var data = this.queryParams;
       classList(data).then((response) => {
@@ -432,8 +444,8 @@ export default {
 .title {
   margin-bottom: 32px;
 }
-.title-item {
-  width: 80px;
+.title-itemopn {
+  width: 9%;
   height: 28px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;

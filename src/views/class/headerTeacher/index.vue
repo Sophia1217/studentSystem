@@ -63,7 +63,7 @@
     </el-form>
     <div>
       <h3 class="bjtitle-item">
-        班级列表<span class="iconfont repeat_icon">&#xe7b1; </span>
+        班主任管理列表<span class="iconfont repeat_icon">&#xe7b1; </span>
       </h3>
     </div>
 
@@ -86,13 +86,13 @@
       <el-table-column
         label="培养单位"
         align="center"
-        prop="pycc"
+        prop="ssdwmc"
         sortable="custom"
       />
       <el-table-column
         label="培养层次"
         align="center"
-        prop="pycc"
+        prop="pyccName"
         sortable="custom"
       />
       <el-table-column
@@ -261,6 +261,8 @@ export default {
         pycc: "", // 培养层次
         ssnj: "", // 年级
         bjdm: "", // 班级编号
+        orderField: "",
+        orderType: "", // 0是asc升序，1是desc降序
       },
       // 表单参数
       form: {},
@@ -369,9 +371,10 @@ export default {
       });
     },
     changeTableSort(column) {
-      this.queryParams.orderZd = column.prop;
-      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
-      this.handleSearch();
+      this.queryParams.orderField = column.prop;
+      this.queryParams.orderType =
+        column.order === "descending" ? "desc" : "asc"; // 0是asc升序，1是desc降序
+      this.getList(this.queryParams);
     },
   },
 };

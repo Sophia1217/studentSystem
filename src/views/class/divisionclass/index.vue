@@ -65,7 +65,7 @@
     </el-form>
     <div class="table-content">
       <div class="title" icon="el-icon-refresh">
-        <span class="title-item">班级列表</span>
+        <span class="title-itemlll">分班管理列表</span>
         <span class="iconfont">&#xe631;</span>
       </div>
       <!-- v-loading="loading" -->
@@ -257,8 +257,9 @@ export default {
     },
     //排序
     changeTableSort(column) {
-      this.queryParams.orderZd = column.prop;
-      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.queryParams.orderField = column.prop;
+      this.queryParams.orderType =
+        column.order === "descending" ? "desc" : "asc"; // 0是asc升序，1是desc降序
       this.getList();
     },
     // 分班管理
@@ -344,8 +345,8 @@ export default {
   margin-bottom: 32px;
   text-align: left;
 }
-.title-item {
-  width: 80px;
+.title-itemlll {
+  width: 10%;
   height: 28px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;

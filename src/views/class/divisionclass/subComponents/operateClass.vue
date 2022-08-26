@@ -95,7 +95,7 @@
 
           <div class="table-content">
             <div class="title" icon="el-icon-refresh">
-              <span class="title-item">{{ $route.query.bjmc }}学生列表</span>
+              <span class="title-itemll">{{ $route.query.bjmc }}学生列表</span>
               <span class="iconfont">&#xe631;</span>
               <el-row :gutter="10" class="mb8" style="float: right">
                 <el-col :span="1.5">
@@ -298,7 +298,7 @@
 
           <div class="table-content">
             <div class="title" icon="el-icon-refresh">
-              <span class="title-item">未分配学生列表</span>
+              <span class="title-itemll">未分配学生列表</span>
               <span class="iconfont">&#xe631;</span>
               <el-row :gutter="10" class="mb8" style="float: right">
                 <el-col :span="1.5">
@@ -634,10 +634,12 @@ export default {
     },
     //排序
     changeTableSort(column, val) {
-      this.queryParams.orderZd = column.prop;
-      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
-      this.queryParams1.orderZd = column.prop;
-      this.queryParams1.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.queryParams.orderField = column.prop;
+      this.queryParams.orderType =
+        column.order === "descending" ? "desc" : "asc"; // 0是asc升序，1是desc降序
+      this.queryParams1.orderField = column.prop;
+      this.queryParams1.orderType =
+        column.order === "descending" ? "desc" : "asc"; // 0是asc升序，1是desc降序
       if (val == 1) {
         console.log("111");
         this.getList(this.queryParams);
@@ -873,8 +875,8 @@ li {
   text-align: left;
   color: #707070;
 }
-.title-item {
-  width: auto;
+.title-itemll {
+  width: 13%;
   height: 28px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;

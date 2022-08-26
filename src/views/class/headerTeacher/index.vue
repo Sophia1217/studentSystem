@@ -62,7 +62,7 @@
       </el-form-item>
     </el-form>
     <div>
-      <h3 class="title-item">
+      <h3 class="bjtitle-item">
         班级列表<span class="iconfont repeat_icon">&#xe7b1; </span>
       </h3>
     </div>
@@ -449,7 +449,7 @@ export default {
 /* .el-notification__title {
       color: #ed5234;
     } */
-.title-item {
+.bjtitle-item {
   display: inline-block;
   height: 28px;
   font-family: "PingFangSC-Semibold";

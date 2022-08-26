@@ -639,7 +639,7 @@ export default {
       this.showExport = false;
     },
     hadleDetail(row, flag) {
-      if (flag == '2' && row.flag == 'false') {
+      if (flag == '2' && row.flag == 'false' || !row.flag) {
         return
       }
       let schooling = ""; // 3 4 5 是本科

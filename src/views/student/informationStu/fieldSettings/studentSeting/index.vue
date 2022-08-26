@@ -353,11 +353,14 @@ export default {
             display: flex;
             align-items: center;
             .title{
-              flex: 0 0 130px;
+              flex: 0 0 140px;
               line-height: 48px;
               background: #E0E0E0;
               text-align: right;
               padding-right: 5px;
+              overflow: hidden;
+              text-overflow:ellipsis;
+              white-space:nowrap;
             }
             .content{
               font-weight: 400;
@@ -365,6 +368,9 @@ export default {
               color: #1F1F1F;
               line-height: 22px;
               margin-left: 16px;
+              .el-radio{
+                margin-right: 15px;
+              }
             }
           }
         }

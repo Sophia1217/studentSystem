@@ -256,13 +256,13 @@
                 <i class="scopeIncon handledie"></i>
                 <span class="handleName">详情</span>
               </el-button>
-              <el-button
+              <el-button v-show="!scope.row.flag || scope.row.flag ==null"
                 type="text"
                 size="small"
                 @click="hadleDetail(scope.row, 2)"
               >
                 <i class="scopeIncon handleEdit"></i>
-                <span class="handleName" :class="!scope.row.flag?'':'noflag'">编辑</span>
+                <span class="handleName">编辑</span>
               </el-button>
             </template>
           </el-table-column>
@@ -639,9 +639,9 @@ export default {
       this.showExport = false;
     },
     hadleDetail(row, flag) {
-      if (flag == '2' && row.flag == 'false' || !row.flag) {
-        return
-      }
+      // if (flag == '2' && row.flag == 'false' || !row.flag) {
+      //   return
+      // }
       let schooling = ""; // 3 4 5 是本科
       if (row.pyccm == 1 || row.pyccm == 2) {
         // 1 2 是研究生

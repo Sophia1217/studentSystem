@@ -58,7 +58,7 @@
         </el-col>
       </el-row>
 
-      <el-table :data="noticeList">
+      <el-table :data="noticeList" @sort-change="changeTableSort">
         <el-table-column
           label="序号"
           align="center"
@@ -131,6 +131,8 @@ export default {
         total: 0,
         pageNum: 1,
         pageSize: 10,
+        orderZd: "",
+        orderPx: "",
       },
       roleNameOps: [
         { label: "所有", value: "" },
@@ -148,6 +150,11 @@ export default {
     this.handleQuery();
   },
   methods: {
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.handleQuery();
+    },
     //搜索按钮操作
     handleQuery() {
       let data = {
@@ -156,6 +163,8 @@ export default {
         isUse: this.queryParams.isUse,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
       };
       queryRoleList(data)
         .then((res) => {
@@ -210,9 +219,11 @@ export default {
         roleId: inf.roleId,
         isUse: inf.isUse == "0" ? "1" : "0",
       };
-      cancel(data).then((res) => {
-        console.log("状态改变成功");
-      });
+      cancel(data)
+        .then((res) => {})
+        .catch(() => {
+          this.handleQuery();
+        });
     },
     delete(id) {
       let data = { userId: "1234", roleId: id };

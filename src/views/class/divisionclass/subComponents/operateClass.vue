@@ -141,7 +141,7 @@
               :data="noticeList"
               @selection-change="handleSelectionChange($event)"
               class="table-body"
-              @sort-change="changeTableSort"
+              @sort-change="changeTableSort($event, 1)"
             >
               <el-table-column type="selection" width="65" align="center" />
               <el-table-column
@@ -318,7 +318,7 @@
               :data="noticeList"
               @selection-change="handleSelectionChange($event)"
               class="table-body"
-              @sort-change="changeTableSort"
+              @sort-change="changeTableSort($event, 2)"
             >
               <el-table-column type="selection" width="65" align="center" />
               <el-table-column
@@ -632,10 +632,17 @@ export default {
       }
     },
     //排序
-    changeTableSort(column) {
+    changeTableSort(column, val) {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
-      this.handleSearch();
+      this.queryParams1.orderZd = column.prop;
+      this.queryParams1.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      if (val == 1) {
+        console.log("111");
+        this.getList(this.queryParams);
+      } else {
+        this.getList1(this.queryParams1);
+      }
     },
     /** 重置按钮操作 */
     resetQuery() {

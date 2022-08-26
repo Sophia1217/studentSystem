@@ -93,7 +93,7 @@
           ref="multipleTable"
           @selection-change="handleSelectionChange"
           style="width: 100%"
-          :default-sort="{ prop: 'date', order: 'descending' }"
+          @sort-change="changeTableSort"
         >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
@@ -202,6 +202,8 @@ export default {
       multipleSelection: [],
       checkboxWrap: [],
       queryParams: {
+        orderZd: "",
+        orderPx: "",
         pageNum: 1,
         pageSize: 10,
         total: 0,
@@ -220,6 +222,11 @@ export default {
     this.getList();
   },
   methods: {
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.handleSearch();
+    },
     // 获取单位
     getOrg() {
       let data = {
@@ -286,6 +293,8 @@ export default {
         roleId: this.$store.getters.roleId, //当前人
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
       };
       if (this.select == 1) {
         // 学号

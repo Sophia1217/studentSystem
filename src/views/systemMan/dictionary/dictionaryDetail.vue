@@ -63,9 +63,10 @@
 
     <div class="content">
       <div class="content_top">
-        <h3 class="title-item">
-          班级操作字典 <span class="iconfont repeat_icon">&#xe7b1; </span>
-        </h3>
+        <div>
+          <span class="title-item"> 班级操作字典 </span>
+          <span class="iconfont repeat_icon">&#xe7b1; </span>
+        </div>
         <div class="headerRight">
           <div class="btns borderBlue" @click="handleAdd1()">
             <i class="icon blueIcon"></i><span class="title">新增字典</span>
@@ -349,12 +350,12 @@ export default {
   padding: 20px;
   margin-top: 20px;
   .content_top {
-    display: flex;
+    text-align: left;
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
     .title-item {
-      // display: inline-block;
+      display: inline-block;
       // width: 120px;
       height: 28px;
       font-family: "PingFangSC-Semibold";

@@ -84,14 +84,14 @@
           prop="bjmc"
           sortable="custom"
         >
-          <template slot-scope="{ row }">
+          <!-- <template slot-scope="{ row }">
             <el-input
               v-model="row.bjmc"
               clearable
               width="200px"
               @keyup.enter.native="alterClassName(row)"
             />
-          </template>
+          </template> -->
         </el-table-column>
         <el-table-column
           label="培养单位"
@@ -259,7 +259,7 @@ export default {
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
-      this.handleSearch();
+      this.getList();
     },
     // 分班管理
     operate(row) {

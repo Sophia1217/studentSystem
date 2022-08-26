@@ -195,7 +195,11 @@
 
     <!-- 批量撤任对话框：cancelAllocate-->
     <el-dialog title="取消分配" :visible.sync="cancelAllocate" width="50%">
-      <el-form :model="formDismission">
+      <el-form 
+        :model="formDismission" 
+        :rules="rules"
+        height="150px"
+      >
         <el-form-item label="撤任理由">
           <el-select v-model="formDismission.reason" placeholder="请选择">
             <el-option
@@ -206,14 +210,23 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="撤任详情" prop="detail">
+        <el-form-item label="撤任日期">
+          <el-date-picker
+            type="date"
+            style="width: 30%"
+            placeholder="选择撤任日期"
+            v-model="formDismission.offDate"
+            value-format="yyyy-MM-dd hh:mm:ss"
+          ></el-date-picker>
+        </el-form-item>
+        <!-- <el-form-item label="撤任详情" prop="detail">
           <el-input
             v-model="formDismission.detail"
             autocomplete="off"
             type="textarea"
             :autosize="{ minRows: 2, maxRows: 4 }"
           ></el-input>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancelAllocate = false">取 消</el-button>
@@ -258,11 +271,18 @@
         :rules="rules"
         label-width="150px"
       >
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="班干部职位代码" prop="bgbid">
+      <el-form-item label="任命日期">
+          <el-date-picker
+            type="date"
+            style="width: 80%"
+            placeholder="选择任命日期"
+            value-format="yyyy-MM-dd hh:mm:ss"
+            v-model="form.rmsj"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="班干部职位代码" prop="bgbid">
               <!-- <el-input v-model="form.bgbid"></el-input> -->
-              <el-select v-model="form.bgbid" placeholder="未选择" clearable>
+              <el-select v-model="form.bgbid" placeholder="请选择" clearable>
                 <!-- 班干部职位筛选框 -->
                 <el-option
                   v-for="(item, index) in bjzwOptions"
@@ -272,13 +292,6 @@
                 />
               </el-select>
             </el-form-item>
-          </el-col>
-          <!-- <el-col :span="12">
-            <el-form-item label="人工号" prop="rmrgh">
-              <el-input v-model="form.rmrgh"></el-input>
-            </el-form-item>
-          </el-col> -->
-        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancelAssignBgb">取消</el-button>
@@ -400,11 +413,12 @@ export default {
       form: {
         bgbid: "",
         rmrgh: "",
+        rmsj: "",
       },
       //批量撤任表单参数
       formDismission: {
         reason: "",
-        detail: "",
+        offDate: "",
       },
       // 表单校验
       rules: {
@@ -413,6 +427,12 @@ export default {
         ],
         noticeType: [
           { required: true, message: "公告类型不能为空", trigger: "change" },
+        ],
+        bgbid: [
+          {required: true, message: "公告类型不能为空", trigger: "change"}
+        ],
+        reason: [
+          {required: true, message: "公告类型不能为空", trigger: "change"}
         ],
       },
     };
@@ -539,13 +559,14 @@ export default {
       let idList = [];
       let cxrgh = this.$store.getters.userId;
       let cxly = this.formDismission.reason;
+      let cxsj = this.formDismission.offDate;
       console.log(this.currentRowBgb);
 
       for (let item_row of this.currentRowBgb) {
         idList.push(item_row.id);
       }
 
-      getBgbdismission({ idList, cxly, cxrgh }).then((response) => {
+      getBgbdismission({ idList, cxly, cxrgh, cxsj }).then((response) => {
         // console.log(response);
 
         this.$message({
@@ -590,6 +611,7 @@ export default {
       console.log("批量任命二次确认操作！");
       this.currentBjdm = this.$route.query.bjdm;
       let stuList = [];
+      let rmsj = this.form.rmsj
       let bjdm = "";
       let zwdm = this.form.bgbid;
       bjdm = this.currentBjdm;
@@ -599,7 +621,7 @@ export default {
         stuList.push(item_row.xh);
       }
 
-      getAssignBgb({ stuList, zwdm, bjdm }).then((res) => {
+      getAssignBgb({ stuList, zwdm, bjdm, rmsj }).then((res) => {
         console.log(res);
         this.$message({
           message: "任命成功",

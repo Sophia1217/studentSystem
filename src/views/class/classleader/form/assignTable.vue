@@ -238,10 +238,7 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="doubleCheck = false">取 消</el-button>
         <!-- distributeClassConfirm(row) -->
-        <el-button
-          type="primary"
-          @click="doubleCheckConfirm()"
-          class="confirm"
+        <el-button type="primary" @click="doubleCheckConfirm()" class="confirm"
           >确 定</el-button
         >
       </span>
@@ -477,6 +474,7 @@ export default {
     studentRecord1() {
       this.$router.push({
         path: "/class/leadRecord",
+        query: { bjdm: this.$route.query.bjdm },
       });
     },
     // //班干部列表

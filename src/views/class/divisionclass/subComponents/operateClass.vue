@@ -94,7 +94,7 @@
           </el-form>
 
           <div class="table-content">
-            <div class="title" icon="el-icon-refresh">
+            <div class="title content_top" icon="el-icon-refresh">
               <span class="title-item">{{ $route.query.bjmc }}学生列表</span>
               <span class="iconfont">&#xe631;</span>
               <el-row :gutter="10" class="mb8" style="float: right">
@@ -856,7 +856,9 @@ li {
 .table-body::before {
   height: 0;
 }
-
+.content_top{
+  text-align: left;
+}
 .title {
   margin-bottom: 32px;
   margin: 0px auto 30px auto;
@@ -864,7 +866,6 @@ li {
   color: #707070;
 }
 .title-item {
-  width: 1000px;
   height: 28px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;

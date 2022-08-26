@@ -64,7 +64,7 @@
       </el-form-item>
     </el-form>
     <div class="table-content">
-      <div class="title" icon="el-icon-refresh">
+      <div class="title content_top" icon="el-icon-refresh">
         <span class="title-item">班级列表</span>
         <span class="iconfont">&#xe631;</span>
       </div>
@@ -337,6 +337,9 @@ export default {
   height: 100%;
   background-color: #ffffff;
   margin-top: 24px;
+}
+.content_top{
+  text-align: left;
 }
 
 .title {

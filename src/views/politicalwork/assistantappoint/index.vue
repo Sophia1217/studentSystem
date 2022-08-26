@@ -38,7 +38,12 @@
         <el-row :gutter="20" class="mt15">
           <el-col :span="20">
             <span>工作单位：</span>
-            <el-select v-model="workPlace" multiple placeholder="请选择">
+            <el-select
+              v-model="workPlace"
+              multiple
+              placeholder="请选择"
+              collapse-tags
+            >
               <el-option
                 v-for="(item, index) in gzdwOptions"
                 :key="index"
@@ -110,17 +115,17 @@
           ref="multipleTable"
           :data="basicInfoList"
           style="width: 100%"
-          :default-sort="{ prop: 'date', order: 'descending' }"
           @selection-change="handleSelectionChange"
+          @sort-change="changeTableSort"
         >
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
-          <el-table-column prop="gh" label="工号" sortable />
-          <el-table-column prop="xm" label="姓名" sortable />
-          <el-table-column prop="lb" label="类别" sortable />
-          <el-table-column prop="xb" label="性别" sortable />
-          <el-table-column prop="gzdw" label="工作单位" sortable />
-          <el-table-column prop="dbzt" label="带班状态" sortable />
+          <el-table-column prop="gh" label="工号" sortable="custom" />
+          <el-table-column prop="xm" label="姓名" sortable="custom" />
+          <el-table-column prop="lb" label="类别" sortable="custom" />
+          <el-table-column prop="xb" label="性别" sortable="custom" />
+          <el-table-column prop="gzdw" label="工作单位" sortable="custom" />
+          <el-table-column prop="dbzt" label="带班状态" sortable="custom" />
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
               <el-button
@@ -379,6 +384,8 @@ export default {
         genderList: [],
         lbList: [],
         sfdbList: [],
+        orderZd: "",
+        orderPx: "",
       },
     };
   },
@@ -707,20 +714,26 @@ export default {
         name = "";
         gonghao = "";
       }
-      this.queryParams = {
-        pageNum: 1,
-        pageSize: 10,
-        dwmcList: this.workPlace,
-        lbList: this.category.choose,
-        genderList: this.sex.choose,
-        sfdbList: this.status.choose,
-        xm: name,
-        gh: gonghao,
-      };
-      //console.log(queryParams);
+      // this.queryParams = {
+      //   pageNum: 1,
+      //   pageSize: 10,
+      //   dwmcList: this.workPlace,
+      //   lbList: this.category.choose,
+      //   genderList: this.sex.choose,
+      //   sfdbList: this.status.choose,
+      //   xm: name,
+      //   gh: name,
+      // };
+      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.lbList = this.category.choose;
+      this.queryParams.genderList = this.sex.choose;
+      this.queryParams.sfdbList = this.status.choose;
+      this.queryParams.xm = name;
+      this.queryParams.gh = name;
       this.getList(this.queryParams);
     },
     changeTableSort(column) {
+      console.log(1);
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
       this.searchClick();

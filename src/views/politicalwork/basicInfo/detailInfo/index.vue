@@ -1440,7 +1440,7 @@
                   <!-- {{ scope.row.crzyjszwm }} -->
 
                   <el-select
-                      v-model="detailInfoData.zgGzjls.crzyjszwm"
+                      v-model="scope.row.crzyjszwm"
                       placeholder=""
                       size="small"
                       disabled
@@ -1456,7 +1456,7 @@
                 <div v-else>
                   <div v-if="zgGzjlsAuth.CRZYJSZWM == 2">
                     <el-select
-                      v-model="detailInfoData.zgGzjls.crzyjszwm"
+                      v-model="scope.row.crzyjszwm"
                       placeholder="请选择"
                       size="small"
                       disabled
@@ -1471,7 +1471,7 @@
                   </div>
                   <div v-else>
                     <el-select
-                      v-model="detailInfoData.zgGzjls.crzyjszwm"
+                      v-model="scope.row.crzyjszwm"
                       placeholder="请选择"
                       size="small"
                     >
@@ -2239,7 +2239,7 @@
                 <div v-if="isEdit == 1">
                   <!-- {{ scope.row.zjzcdm }} -->
                   <el-select
-                      v-model="detailInfoData.zgZyjszws.zjzcdm"
+                      v-model="scope.row.zjzcdm"
                       placeholder=""
                       size="small"
                       disabled
@@ -2255,7 +2255,7 @@
                 <div v-else>
                   <div v-if="zgZyjszwsAuth.ZJZCDM == 2">
                     <el-select
-                      v-model="detailInfoData.zgZyjszws.zjzcdm"
+                      v-model="scope.row.zjzcdm"
                       placeholder="请选择"
                       size="small"
                       disabled
@@ -2270,7 +2270,7 @@
                   </div>
                   <div v-else>
                     <el-select
-                      v-model="detailInfoData.zgZyjszws.zjzcdm"
+                      v-model="scope.row.zjzcdm"
                       placeholder="请选择"
                       size="small"
                     >
@@ -2303,7 +2303,7 @@
                 <div v-if="isEdit == 1">
                   <!-- {{ scope.row.prgwxlm }} -->
                   <el-select
-                      v-model="detailInfoData.zgZyjszws.prgwxlm"
+                      v-model="scope.row.prgwxlm"
                       placeholder=""
                       size="small"
                       disabled
@@ -2319,7 +2319,7 @@
                 <div v-else>
                   <div v-if="zgZyjszwsAuth.PRGWXLM == 2">
                     <el-select
-                      v-model="detailInfoData.zgZyjszws.prgwxlm"
+                      v-model="scope.row.prgwxlm"
                       placeholder="请选择"
                       size="small"
                       disabled
@@ -2334,7 +2334,7 @@
                   </div>
                   <div v-else>
                     <el-select
-                      v-model="detailInfoData.zgZyjszws.prgwxlm"
+                      v-model="scope.row.prgwxlm"
                       placeholder="请选择"
                       size="small"
                     >
@@ -2354,7 +2354,7 @@
                 <div v-if="isEdit == 1">
                   <!-- {{ scope.row.prgwdjm }} -->
                   <el-select
-                      v-model="detailInfoData.zgZyjszws.prgwdjm"
+                      v-model="scope.row.prgwdjm"
                       placeholder=""
                       size="small"
                       disabled
@@ -2370,7 +2370,7 @@
                 <div v-else>
                   <div v-if="zgZyjszwsAuth.PRGWDJM == 2">
                     <el-select
-                      v-model="detailInfoData.zgZyjszws.prgwdjm"
+                      v-model="scope.row.prgwdjm"
                       placeholder="请选择"
                       size="small"
                       disabled
@@ -2385,7 +2385,7 @@
                   </div>
                   <div v-else>
                     <el-select
-                      v-model="detailInfoData.zgZyjszws.prgwdjm"
+                      v-model="scope.row.prgwdjm"
                       placeholder="请选择"
                       size="small"
                       disabled
@@ -2432,7 +2432,7 @@
                 <div v-if="isEdit == 1">
                   <!-- {{ scope.row.gwdjm }} -->
                   <el-select
-                      v-model="detailInfoData.zgZyjszws.gwdjm"
+                      v-model="scope.row.gwdjm"
                       placeholder=""
                       size="small"
                       disabled
@@ -2448,7 +2448,7 @@
                 <div v-else>
                   <div v-if="zgZyjszwsAuth.GWDJM == 2">
                     <el-select
-                      v-model="detailInfoData.zgZyjszws.gwdjm"
+                      v-model="scope.row.gwdjm"
                       placeholder="请选择"
                       size="small"
                       disabled
@@ -2463,7 +2463,7 @@
                   </div>
                   <div v-else>
                     <el-select
-                      v-model="detailInfoData.zgZyjszws.gwdjm"
+                      v-model="scope.row.gwdjm"
                       placeholder="请选择"
                       size="small"
                     >
@@ -2483,7 +2483,7 @@
                 <div v-if="isEdit == 1">
                   <!-- {{ scope.row.zjdj }} -->
                   <el-select
-                      v-model="detailInfoData.zgZyjszws.zjdj"
+                      v-model="scope.row.zjdj"
                       placeholder=""
                       size="small"
                       disabled
@@ -2499,7 +2499,7 @@
                 <div v-else>
                   <div v-if="zgZyjszwsAuth.ZJDJ == 2">
                     <el-select
-                      v-model="detailInfoData.zgZyjszws.zjdj"
+                      v-model="scope.row.zjdj"
                       placeholder="请选择"
                       size="small"
                       disabled
@@ -2514,7 +2514,7 @@
                   </div>
                   <div v-else>
                     <el-select
-                      v-model="detailInfoData.zgZyjszws.zjdj"
+                      v-model="scope.row.zjdj"
                       placeholder="请选择"
                       size="small"
                     >
@@ -2693,7 +2693,7 @@
                 <div v-if="isEdit == 1">
                   <!-- {{ scope.row.khjgm }} -->
                   <el-select
-                      v-model="detailInfoData.zgNdkhs.khjgm"
+                      v-model="scope.row.khjgm"
                       placeholder=""
                       size="small"
                       disabled
@@ -2709,7 +2709,7 @@
                 <div v-else>
                   <div v-if="zgNdkhsAuth.KHJGM == 2">
                     <el-select
-                      v-model="detailInfoData.zgNdkhs.khjgm"
+                      v-model="scope.row.khjgm"
                       placeholder="请选择"
                       size="small"
                       disabled
@@ -2724,7 +2724,7 @@
                   </div>
                   <div v-else>
                     <el-select
-                      v-model="detailInfoData.zgNdkhs.khjgm"
+                      v-model="scope.row.khjgm"
                       placeholder="请选择"
                       size="small"
                       disabled
@@ -3364,7 +3364,7 @@ export default {
       sfzjlxmOps: [],
       hyzkmOps: [],
       zgxlmOps: [],
-      zgxwmOps: [],
+      xwmOps: [],
       jzgrylbmOps: [],
       ryzflOps: [],
       rygwztmOps: [],
@@ -3516,7 +3516,7 @@ export default {
               this.zgxlmOps = res.data
               break
             case 'dmxwm':
-              this.zgxwmOps = res.data
+              this.xwmOps = res.data
               break
             case 'dmrsrylbm':
               this.jzgrylbmOps = res.data

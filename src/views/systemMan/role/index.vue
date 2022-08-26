@@ -104,14 +104,14 @@
           </template>
         </el-table-column>
       </el-table>
-      <pagination
+      <!-- <pagination
         v-show="queryParams.total > 0"
         :total="queryParams.total"
         :page.sync="queryParams.pageNum"
         :limit.sync="queryParams.pageSize"
         @pagination="handleQuery"
         :page-sizes="[10, 20, 30, 40, 50, 100]"
-      />
+      /> -->
     </div>
   </div>
 </template>

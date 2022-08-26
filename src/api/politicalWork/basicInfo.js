@@ -21,7 +21,7 @@ export function getConditionPoliticalWorkList(data) {
 // 政工干部详情查询
 export function getDetailQueryPoliticalWorkList(data) {
   return request({
-    url: '/zgjbxx/zgDetailQuery',
+    url: '/zg/zgDetailQuery',
     method: 'post',
     data: data
   })

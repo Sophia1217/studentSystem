@@ -223,6 +223,8 @@ export default {
         pageNum: this.info.pageNum,
         pageSize: this.info.pageSize,
         codeKey: this.info.codeKey,
+        orderZd: this.info.orderZd,
+        orderPx: this.info.orderPx,
       };
       listQuery(data).then((res) => {
         this.noticeList = res.data;

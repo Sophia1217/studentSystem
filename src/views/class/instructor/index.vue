@@ -144,7 +144,7 @@
             class-name="small-padding fixed-width"
           >
             <template slot-scope="scope">
-              <div>
+              <div class="ins-handle">
                 <!-- @click="assignTea(scope.row)" class="operate" -->
                 <!-- <span class="assignTea">分配辅导员</span> -->
                 <span
@@ -159,7 +159,7 @@
                   分配辅导员
                 </span>
               </div>
-              <div>
+              <div class="ins-handle">
                 <span
                   class="iconfont record_icon"
                   style="margin-left: 5px"
@@ -395,12 +395,12 @@ export default {
 /* 搜索 */
 .table-header {
   background-color: #ffffff;
-  height: 128px;
+  height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 15px;
-  margin-top: 10px;
+  padding: 0 20px;
+  /* margin-top: 10px; */
 }
 .assignInput {
   display: flex;
@@ -423,7 +423,7 @@ export default {
 }
 /* 表格 */
 .tea-table {
-  height: 100vh;
+  /* height: 100vh; */
   background-color: #ffffff;
 }
 #pagenation {
@@ -434,14 +434,17 @@ export default {
 }
 
 .table-content {
-  padding-top: 32px;
-  padding-left: 40px;
-  padding-right: 40px;
-  height: 100%;
+  /* padding-top: 32px; */
+  padding-left: 20px;
+  padding-right: 20px;
+  /* height: 100%; */
   background-color: #ffffff;
-  margin-top: 24px;
+  /* margin-top: 24px; */
 }
 
+.ins-handle {
+    cursor: pointer;
+}
 .title {
   margin-bottom: 32px;
 }

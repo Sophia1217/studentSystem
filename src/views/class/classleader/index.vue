@@ -268,6 +268,10 @@ export default {
 </script>
 
 <style scoped>
+.app-container {
+    padding: 20px;
+    background-color: #fff;
+}
 .search {
   background: #005657;
 }

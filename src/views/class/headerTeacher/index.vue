@@ -127,7 +127,7 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="scope">
-          <div>
+          <div class="tea-handle" >
             <span class="iconfont allocate_teacher" @click="action(scope.row)"
               >&#xe638;</span
             >
@@ -137,6 +137,8 @@
             >
               分配班主任
             </span>
+            </div>
+            <div class="tea-handle" >
             <span
               class="iconfont record_icon"
               style="margin-left: 5px"
@@ -386,6 +388,9 @@ export default {
   height: 100%;
   padding: 20px;
   background-color: white;
+}
+.tea-handle {
+    cursor: pointer;
 }
 .search {
   background: #005657;

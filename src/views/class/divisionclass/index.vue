@@ -150,7 +150,7 @@
         :page.sync="queryParams.pageNum"
         :limit.sync="queryParams.pageSize"
         @pagination="getList"
-        :page-sizes="[10, 20, 30, 40, 50, 100]"
+        
       />
     </div>
   </div>
@@ -290,11 +290,12 @@ export default {
 
 .table-header {
   background-color: #ffffff;
-  height: 128px;
+  height: 80px;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 0 20px;
+  padding-left: 20px ;
+  padding-right: 20px ;
 }
 
 .header-item {
@@ -333,12 +334,12 @@ export default {
 }
 
 .table-content {
-  padding-top: 32px;
+  /* padding-top: 32px; */
   padding-left: 40px;
   padding-right: 40px;
-  height: 100%;
+  /* height: 100%; */
   background-color: #ffffff;
-  margin-top: 24px;
+  /* margin-top: 24px; */
 }
 
 .title {

@@ -192,11 +192,22 @@
         width="780px"
         append-to-body
       >
+      <el-form :model="form">
+        <el-form-item label="任命日期">
+          <el-date-picker
+            type="date"
+            style="width: 30%"
+            placeholder="选择任命日期"
+            value-format="yyyy-MM-dd hh:mm:ss"
+            v-model="form.rmsj"
+          ></el-date-picker>
+        </el-form-item>
         <span class="assignTips"
           >确认将【{{ fdyList }}】【{{ xm }}】任命为【{{
             $route.query.bjmc
           }}】辅导员</span
         >
+        </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
           <el-button @click="submitTips" class="submit_btn">确认</el-button>
@@ -209,7 +220,18 @@
         :visible.sync="openAssignMoreClass"
         width="780px"
         append-to-body
-        ><template v-for="item in multipleSelection">
+        >
+        <el-form :model="formMore">
+          <el-form-item label="任命日期">
+          <el-date-picker
+            type="date"
+            style="width: 30%"
+            placeholder="选择任命日期"
+            value-format="yyyy-MM-dd hh:mm:ss"
+            v-model="formMore.rmsj"
+          ></el-date-picker>
+        </el-form-item>
+        <template v-for="item in multipleSelection">
           <div :key="item.gh">
             <span
               >确认将【{{ item.gh }}】【{{ item.xm }}】任命为【{{
@@ -218,6 +240,7 @@
             >
           </div>
         </template>
+        </el-form>
 
         <div slot="footer" class="dialog-footer">
           <el-button @click="cancelMore" class="cancel_btn">取消</el-button>
@@ -227,39 +250,32 @@
       <!-- 取消分配对话框 -->
       <el-dialog
         :title="title"
-        :visible.sync="openCancelAssignClass"
+        :visible.sync="openCancelAssign"
         width="780px"
         append-to-body
       >
         <el-form
           ref="form"
-          :model="form"
-          :rules="rules"
-          label-width="80px"
+          :model="formDismission"
+          label-width="100px"
           class="cancel_class"
         >
-          <el-row class="change_row">
-            <el-col :span="24" class="in_class">
-              <el-form-item label="撤任理由" prop="noticeTitle">
-                <el-select
-                  v-model="form.noticeTitle"
-                  placeholder="休学"
-                  style="width: 100%"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="10" class="in_class"> </el-col>
-          </el-row>
-          <el-row>
-            <el-form-item label="撤任详情">
-              <el-input
-                type="textarea"
-                placeholder="休学回家种地"
-                style="width: 100%"
-                :rows="5"
-              />
-            </el-form-item>
-          </el-row>
+          <el-form-item label="撤任理由" prop="noticeTitle">
+          <el-input
+            v-model="formDismission.noticeTitle"
+            autocomplete="off"
+            type="textarea"
+          ></el-input>
+        </el-form-item>
+          <el-form-item label="撤任日期" prop="offDate">
+          <el-date-picker
+            type="date"
+            style="width: 40%"
+            placeholder="选择撤任日期"
+            v-model="formDismission.offDate"
+            value-format="yyyy-MM-dd hh:mm:ss"
+          ></el-date-picker>
+        </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
@@ -267,7 +283,7 @@
         </div>
       </el-dialog>
 
-      <!-- 二次确认取消对话框 -->
+      <!-- 二次确认取消分配对话框 -->
       <el-dialog
         :title="title"
         :visible.sync="openSecondCancelAssign"
@@ -285,11 +301,48 @@
           <el-button @click="submitOut2" class="submit_btn">确认</el-button>
         </div>
       </el-dialog>
-      <!-- 批量取消分配班级对话框 -->
+
+      <!-- 批量取消分配对话框 -->
+      <el-dialog
+        :title="title"
+        :visible.sync="openCancelAssignMore"
+        width="780px"
+        append-to-body
+      >
+        <el-form
+          ref="form"
+          :model="formDismissionMore"
+          label-width="100px"
+          class="cancel_class"
+        >
+          <el-form-item label="撤任理由" prop="noticeTitle">
+          <el-input
+            v-model="formDismissionMore.noticeTitle"
+            autocomplete="off"
+            type="textarea"
+          ></el-input>
+        </el-form-item>
+          <el-form-item label="撤任日期" prop="offDate">
+          <el-date-picker
+            type="date"
+            style="width: 40%"
+            placeholder="选择撤任日期"
+            v-model="formDismissionMore.offDate"
+            value-format="yyyy-MM-dd hh:mm:ss"
+          ></el-date-picker>
+        </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="cancelMore" class="cancel_btn">取消</el-button>
+          <el-button @click="submitOutMore" class="submit_btn">确认</el-button>
+        </div>
+      </el-dialog>
+      
+      <!-- 二次确认批量取消分配对话框 -->
       <el-dialog
         class="assign_class"
         :title="title"
-        :visible.sync="openCancelAssignMoreClass"
+        :visible.sync="openSecondCancelAssignMore"
         width="780px"
         append-to-body
         ><template v-for="item in multipleSelection">
@@ -355,6 +408,8 @@ export default {
       fdyList: [], // 辅导员数组
       rmrgh: "", // 辅导员工号
       rmsj: "", // 任命时间
+      cxsj: "",
+      cxrGh: "",
       // 遮罩层
       // loading: true,
       // 选中数组
@@ -414,19 +469,24 @@ export default {
       //是否显示批量分配
       openAssignMoreClass: false,
       //是否显示批量取消分配
-      openCancelAssignMoreClass: false,
+      openCancelAssignMore: false,
       // 是否显示取消分配班级弹框
-      openCancelAssignClass: false,
+      openCancelAssign: false,
       // 是否显示第二次取消分配班级单矿
       openSecondCancelAssign: false,
+      //是否显示第二次批量取消分配
+      openSecondCancelAssignMore: false,
       // 表单参数
       form: {},
+      formMore: {},
+      formDismission: {},
+      formDismissionMore: {},
       xm: "",
       // 表单校验
       rules: {
-        noticeTitle: [
-          { required: true, message: "公告标题不能为空", trigger: "blur" },
-        ],
+        // noticeTitle: [
+        //   { required: true, message: "公告标题不能为空", trigger: "blur" },
+        // ],
         noticeType: [
           { required: true, message: "公告类型不能为空", trigger: "change" },
         ],
@@ -466,32 +526,34 @@ export default {
       this.bjdm = this.$route.query.bjdm;
 
       this.fdyList.push(row.gh);
-      this.rmrgh = "2005690002";
       this.xm = row.xm;
-      this.rmsj = "2020-09-09 00:00:00";
     },
     // 分配班级tips点击“确定”按钮
     submitTips() {
       console.log("分配班级确认！");
+      let rmsj = this.form.rmsj
+      let rmrgh = this.$store.getters.userId
       getAssignFdy({
         bjdm: this.bjdm,
         fdyList: this.fdyList,
-        rmrgh: this.rmrgh,
-        rmsj: this.rmsj,
-      }).then((res) => {
+        rmrgh,
+        rmsj }).then((res) => {
         console.log(res);
-      });
-      this.$message({
+
+        this.$message({
         message: "分配成功",
         type: "success",
+        });
+        this.getInstructorList();
       });
-      this.getInstructorList();
+      
+      
       this.openAssignClass = false;
     },
     // 取消按钮关闭窗口
     cancelTips() {
       this.openAssignClass = false;
-      this.openCancelAssignClass = false;
+      this.openCancelAssign = false;
       this.openSecondCancelAssign = false;
       // this.FdyList =[];
     },
@@ -499,23 +561,23 @@ export default {
     // 取消分配辅导员
     allocateNone(row) {
       this.fdyList = this.fdyList.slice(0, -1);
-      this.openCancelAssignClass = true;
+      this.openCancelAssign = true;
       this.title = "取消分配";
       console.log("取消分配信息：", row);
       this.bjdm = this.$route.query.bjdm;
       this.fdyList.push(row.gh);
       this.xm = row.xm;
-      this.cxrGh = "2005690002";
-      this.cxsj = "2020-09-09 00:00:00";
+      
+      // this.cxsj = "2020-09-09 00:00:00";
     },
     // 第一个对话框
     // 取消分配tips
     cancelAssignClass() {
-      this.openCancelAssignClass = true;
+      this.openCancelAssign = true;
       this.title = "取消分配";
     },
     submitOut() {
-      this.openCancelAssignClass = false;
+      this.openCancelAssign = false;
       this.openSecondCancelAssign = true;
     },
     // 第二个对话框,撤销二次确认操作
@@ -523,23 +585,18 @@ export default {
       this.openSecondCancelAssign = false;
       this.title = "取消分配确认";
 
-      console.log("取消分配二次确认！");
-      let crly = "";
-      crly = this.form.noticeTitle;
-      getRemoveAssignFdy({
-        cxrGh: this.cxrGh,
-        bjdm: this.bjdm,
-        fdyList: this.fdyList,
-        crly: this.crly,
-        cxsj: this.cxsj,
-      }).then((res) => {
+      console.log("取消分配二次确认！")
+      let crly = this.formDismission.noticeTitle
+      let cxsj = this.formDismission.offDate
+      let cxrGh = "2005690002";
+      getRemoveAssignFdy({ cxrGh, bjdm: this.bjdm, fdyList: this.fdyList, crly, cxsj }).then((res) => {
         console.log(res);
-      });
-
-      this.$message({
+        this.$message({
         message: "取消分配成功",
         type: "success",
+        });
       });
+      this.getInstructorList();
     },
     handleAssignMore() {
       this.openAssignMoreClass = true;
@@ -547,42 +604,55 @@ export default {
     },
     cancelMore() {
       this.openAssignMoreClass = false;
-      this.openCancelAssignMoreClass = false;
+      this.openCancelAssignMore = false;
+      this.openSecondCancelAssignMore = false;
     },
+    //批量分配二次确认
     assignMore() {
       this.openAssignMoreClass = false;
       let fdyList = [];
       let bjdm = this.$route.query.bjdm;
       let rmrgh = this.$store.getters.userId;
-      let rmsj = "2020-09-09 00:00:00";
+      let rmsj = this.formMore.rmsj;
       for (let item_row of this.multipleSelection) {
         fdyList.push(item_row.gh);
       }
       getAssignFdy({ bjdm, fdyList, rmrgh, rmsj }).then((res) => {
         console.log(res);
-        this.getInstructorList();
+        
       });
+      this.getInstructorList();
     },
     deleteAssignMore() {
-      this.openCancelAssignMoreClass = true;
+      this.openCancelAssignMore = true;
       this.title = "批量取消分配";
     },
-    //批量取消分配确认
+    //批量取消第一次确定操作
+    submitOutMore(){
+      this.openCancelAssignMore = false;
+      this.openSecondCancelAssignMore = true;
+    },
+    //批量取消分配二次确认
     cancelAssignMore() {
       let fdyList = []
       let bjdm =this.$route.query.bjdm
       let cxrGh = "2005690002"
-      let crly = ""
-      let cxsj = "2020-09-09 00:00:00"
+      let crly = this.formDismissionMore.noticeTitle
+      let cxsj = this.formDismissionMore.offDate
       for (let item_row of this.multipleSelection) {
         fdyList.push(item_row.gh);
       }
       
       getRemoveAssignFdy({fdyList, bjdm, cxrGh, crly, cxsj}).then((res) => {
         console.log(res);
+
+        this.$message({
+        message: "取消分配成功",
+        type: "success",
+        });
         this.getInstructorList();
       });
-      this.openCancelAssignMoreClass = false;
+      this.openSecondCancelAssignMore = false;
     },
     // 排序
     changeTableSort(column) {

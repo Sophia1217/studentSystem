@@ -76,7 +76,11 @@
         </div>
       </div>
 
-      <el-table :data="noticeList" @selection-change="handleSelectionChange">
+      <el-table
+        :data="noticeList"
+        @selection-change="handleSelectionChange"
+        @sort-change="changeTableSort"
+      >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column
           label="序号"
@@ -174,6 +178,8 @@ export default {
       ],
       // 查询参数
       info: {
+        orderZd: "",
+        orderPx: "",
         codeTableEnglish: "",
         codeTableChinese: "",
         state: "",
@@ -201,6 +207,11 @@ export default {
     this.handleQuery();
   },
   methods: {
+    changeTableSort(column) {
+      this.info.orderZd = column.prop;
+      this.info.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.handleQuery();
+    },
     //搜索按钮操作
     handleQuery() {
       let data = {

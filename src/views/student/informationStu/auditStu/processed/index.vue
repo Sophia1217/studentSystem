@@ -185,10 +185,15 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="userId" label="学号" sortable="custom"></el-table-column>
+          <el-table-column
+            prop="userId"
+            label="学号"
+            sortable="custom"
+          ></el-table-column>
           <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
           <el-table-column prop="dwmc" label="学院" sortable> </el-table-column>
-          <el-table-column prop="zydmc" label="专业" sortable> </el-table-column>
+          <el-table-column prop="zydmc" label="专业" sortable>
+          </el-table-column>
           <el-table-column prop="njm" label="班级" sortable> </el-table-column>
           <el-table-column prop="pyccmc" label="培养层次" sortable>
           </el-table-column>
@@ -333,9 +338,9 @@ export default {
         .catch((err) => {});
     },
     changeXY(val) {
-      if (val&&val.length == 0) {
-        this.moreIform.stuInfo = [] // 专业
-        this.moreIform.pread = [] // 班级
+      if (val && val.length == 0) {
+        this.moreIform.stuInfo = []; // 专业
+        this.moreIform.pread = []; // 班级
       }
       this.getZY(val);
       this.getBJ(val);
@@ -409,6 +414,8 @@ export default {
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         limitSql: "",
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
       };
       FlowPageList(data)
         .then((res) => {
@@ -588,7 +595,7 @@ export default {
     //排序
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
-      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
     },
   },

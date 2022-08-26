@@ -283,6 +283,8 @@ export default {
 .division-class {
   background-color: #fff;
   margin-top: 10px;
+  padding-bottom: 20px;
+  /* height: 100%; */
 }
 
 .table-header {

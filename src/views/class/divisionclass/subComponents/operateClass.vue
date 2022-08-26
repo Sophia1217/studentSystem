@@ -207,8 +207,9 @@
                 sortable="custom"
               />
             </el-table>
+            <!-- id="pagenation" -->
             <pagination
-              id="pagenation"
+              
               v-show="total > 0"
               :total="total"
               :page.sync="queryParams.pageNum"
@@ -766,14 +767,16 @@ export default {
   },
 };
 </script>
-<style>
+<style  scoped>
+
 .operate-class {
-  background-color: #f0f0f0;
-  height: 100vh;
+  background-color: #fff;
+  padding: 20px;
 }
 /* tab前端开始 */
 .tab {
-  height: 100vh;
+    padding: 20px;
+  background-color: #fff;
 }
 ul,
 li {
@@ -785,7 +788,7 @@ li {
   background-color: #ffffff;
 }
 .tab_con {
-  height: 100%;
+  background-color: #fff;
 }
 .tab_list li {
   margin: 12px 0;
@@ -848,12 +851,12 @@ li {
   height: 100vh;
 }
 .table-content {
-  padding-top: 32px;
+  /* padding-top: 32px; */
   padding-left: 40px;
   padding-right: 40px;
   height: 100vh !important;
   background-color: #ffffff;
-  margin-top: 24px;
+  /* margin-top: 24px; */
 }
 .table-body {
   left: 50%;

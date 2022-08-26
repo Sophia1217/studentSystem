@@ -538,7 +538,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .app-container {
   background-color: white;
 }

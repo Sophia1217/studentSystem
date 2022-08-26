@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="instructor">
     <!-- 辅导员管理首页搜索 -->
     <div class="tea-search">
       <el-form
@@ -375,6 +375,10 @@ export default {
 </script>
 
 <style scoped>
+.instructor {
+    padding: 20px;
+    background-color: #fff;
+}
 /* 搜索 */
 .table-header {
   background-color: #ffffff;

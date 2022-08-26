@@ -40,25 +40,23 @@
       <!-- 更多选择 -->
       <div v-if="isMore" class="moreSelect">
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">工作单位：</el-col>
           <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :obj-prop="workPlace"
-                @training="handleCheckAllWorkPlaceChange"
-                @checkedTraining="handleCheckedWorkPlaceChange"
-              />
-            </div>
+            <span>工作单位：</span>
+            <el-select
+              v-model="workPlace"
+              multiple
+              placeholder="请选择"
+              collapse-tags
+            >
+              <el-option
+                v-for="(item, index) in gzdwOptions"
+                :key="index"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
           </el-col>
         </el-row>
-        <!-- <el-row :gutter="20" class="mt15">
-          <el-col :span="3">类 别：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom :obj-prop="category" @training="handleCheckAllCategoryChange" @checkedTraining="handleCheckedCategoryChange" />
-            </div>
-          </el-col>
-        </el-row> -->
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">性 别：</el-col>
           <el-col :span="20">
@@ -288,7 +286,7 @@ import {
   exportTeacher,
   getListWorkPlace,
 } from "@/api/politicalWork/teacherappoint";
-// import { getCodeInfoByEnglish } from "@/api/student/fieldSettings"
+import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import CheckboxCom from "@/views/components/checkboxCom";
 
 export default {
@@ -342,12 +340,7 @@ export default {
       moreIform: {
         value1: "",
       },
-      // category: { // 类别
-      //   checkAll: false,
-      //   choose: [],
-      //   checkBox: [{ label: '专职', val: 0 }, { label: '兼职', val: 1 }],
-      //   isIndeterminate: true
-      // },
+      gzdwOptions: [],
       status: {
         // 状态
         checkAll: false,
@@ -368,23 +361,7 @@ export default {
         ],
         isIndeterminate: true,
       },
-      workPlace: {
-        // 单位
-        checkAll: false,
-        choose: [],
-        checkBox: [
-          { mc: "软件学院", dm: "软件学院" },
-          { mc: "设计学院", dm: "设计学院" },
-          { mc: "文学院", dm: "文学院" },
-          { mc: "理学院", dm: "理学院" },
-          { mc: "工业设计", dm: "工业设计" },
-          { mc: "通信工程", dm: "通信工程" },
-          { mc: "电子信息", dm: "电子信息" },
-          { mc: "建筑工程", dm: "建筑工程" },
-          { mc: "统计学", dm: "统计学" },
-        ],
-        isIndeterminate: true,
-      },
+      workPlace: [],
       tableData: [],
       tableDataDetail: [],
       multipleSelection: [],
@@ -403,13 +380,21 @@ export default {
   },
   mounted() {
     this.getListWorkPlace("dmdwmc"); // 工作单位
+    this.getCode("dmxbm"); // 性别
   },
   methods: {
-    // 排序
-    changeTableSort(column) {
-      this.queryParams.orderZd = column.prop;
-      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
-      this.handleSearch();
+    getCode(data) {
+      this.getCodeInfoByEnglish(data);
+    },
+    getCodeInfoByEnglish(paramsData) {
+      const data = { codeTableEnglish: paramsData };
+      getCodeInfoByEnglish(data)
+        .then((res) => {
+          console.log("res", res);
+
+          this.$set(this.sex, "checkBox", res.data);
+        })
+        .catch((err) => {});
     },
 
     getWorkPlace(data) {
@@ -420,10 +405,11 @@ export default {
       getListWorkPlace(data)
         .then((res) => {
           console.log("res", res);
-          this.$set(this.workPlace, "checkBox", res.data.rows);
+          this.gzdwOptions = res.data.rows;
         })
         .catch((err) => {});
     },
+
     // 查询
     handleSearch() {
       console.log(this.queryParams.keyword);
@@ -476,7 +462,7 @@ export default {
       this.status.choose = val ? allCheck : [];
       console.log(this.status.choose, "全选");
       this.status.isIndeterminate = false;
-      this.queryParams.dwmcList = this.workPlace.choose;
+      this.queryParams.dwmcList = this.workPlace;
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
       // 调用接口
@@ -489,7 +475,7 @@ export default {
       this.status.isIndeterminate =
         checkedCount > 0 && checkedCount < this.status.checkBox.length;
       console.log(this.status.choose, "单选");
-      this.queryParams.dwmcList = this.workPlace.choose;
+      this.queryParams.dwmcList = this.workPlace;
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
       // 调用接口
@@ -504,7 +490,7 @@ export default {
       this.sex.choose = val ? allCheck : [];
       console.log(this.sex.choose, "全选");
       this.sex.isIndeterminate = false;
-      this.queryParams.dwmcList = this.workPlace.choose;
+      this.queryParams.dwmcList = this.workPlace;
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
       // 调用接口
@@ -517,40 +503,40 @@ export default {
       this.sex.isIndeterminate =
         checkedCount > 0 && checkedCount < this.sex.checkBox.length;
       console.log(this.sex.choose, "单选");
-      this.queryParams.dwmcList = this.workPlace.choose;
+      this.queryParams.dwmcList = this.workPlace;
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
       // 调用接口
       this.getList();
     },
-    // 工作单位全选
-    handleCheckAllWorkPlaceChange(val) {
-      const allCheck = [];
-      for (const i in this.workPlace.checkBox) {
-        allCheck.push(this.workPlace.checkBox[i].dm);
-      }
-      this.workPlace.choose = val ? allCheck : [];
-      console.log(this.workPlace.choose, "全选");
-      this.workPlace.isIndeterminate = false;
-      this.queryParams.dwmcList = this.workPlace.choose;
-      this.queryParams.genderList = this.sex.choose;
-      this.queryParams.sfdbList = this.status.choose;
-      // 调用接口
-      this.getList();
-    },
-    // 工作单位单选
-    handleCheckedWorkPlaceChange(value) {
-      const checkedCount = value.length;
-      this.workPlace.checkAll = checkedCount === this.workPlace.checkBox.length;
-      this.workPlace.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.workPlace.checkBox.length;
-      console.log(this.workPlace.choose, "单选");
-      this.queryParams.dwmcList = this.workPlace.choose;
-      this.queryParams.genderList = this.sex.choose;
-      this.queryParams.sfdbList = this.status.choose;
-      // 调用接口
-      this.getList();
-    },
+    // // 工作单位全选
+    // handleCheckAllWorkPlaceChange(val) {
+    //   const allCheck = [];
+    //   for (const i in this.workPlace.checkBox) {
+    //     allCheck.push(this.workPlace.checkBox[i].dm);
+    //   }
+    //   this.workPlace.choose = val ? allCheck : [];
+    //   console.log(this.workPlace.choose, "全选");
+    //   this.workPlace.isIndeterminate = false;
+    //   this.queryParams.dwmcList = this.workPlace.choose;
+    //   this.queryParams.genderList = this.sex.choose;
+    //   this.queryParams.sfdbList = this.status.choose;
+    //   // 调用接口
+    //   this.getList();
+    // },
+    // // 工作单位单选
+    // handleCheckedWorkPlaceChange(value) {
+    //   const checkedCount = value.length;
+    //   this.workPlace.checkAll = checkedCount === this.workPlace.checkBox.length;
+    //   this.workPlace.isIndeterminate =
+    //     checkedCount > 0 && checkedCount < this.workPlace.checkBox.length;
+    //   console.log(this.workPlace.choose, "单选");
+    //   this.queryParams.dwmcList = this.workPlace.choose;
+    //   this.queryParams.genderList = this.sex.choose;
+    //   this.queryParams.sfdbList = this.status.choose;
+    //   // 调用接口
+    //   this.getList();
+    // },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;

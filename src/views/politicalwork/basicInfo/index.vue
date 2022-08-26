@@ -43,6 +43,24 @@
       <div v-if="isMore" class="moreSelect">
         <el-row :gutter="20" class="mt15">
           <el-row :gutter="20" class="mt15">
+            <el-col :span="20">
+              <span>工作单位：</span>
+              <el-select
+                v-model="workPlace"
+                multiple
+                placeholder="请选择"
+                collapse-tags
+              >
+                <el-option
+                  v-for="(item, index) in gzdwOptions"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" class="mt15">
             <el-col :span="3">性 别：</el-col>
             <el-col :span="20">
               <div class="checkbox">
@@ -78,18 +96,7 @@
               </div>
             </el-col>
           </el-row>
-          <el-row :gutter="20" class="mt15">
-            <el-col :span="3">工作单位：</el-col>
-            <el-col :span="20">
-              <div class="checkbox">
-                <checkboxCom
-                  :obj-prop="workPlace"
-                  @training="workPlaceAll"
-                  @checkedTraining="workPlaceCheck"
-                />
-              </div>
-            </el-col>
-          </el-row>
+
           <el-row :gutter="20" class="mt15">
             <el-col :span="3">岗 位：</el-col>
             <el-col :span="20">
@@ -205,6 +212,7 @@ export default {
       selectedCheckbox: [],
       tableData: [],
       multipleSelection: [],
+      gzdwOptions: [],
       gender: {
         // 性别
         checkAll: false,
@@ -227,13 +235,7 @@ export default {
         ],
         isIndeterminate: true,
       },
-      workPlace: {
-        // 工作单位
-        checkAll: false,
-        choose: [],
-        checkBox: [],
-        isIndeterminate: true,
-      },
+      workPlace: [],
       ethnic: {
         // 民 族
         checkAll: false,
@@ -282,7 +284,7 @@ export default {
       getListWorkPlace(data)
         .then((res) => {
           console.log("res", res);
-          this.$set(this.workPlace, "checkBox", res.data.rows);
+          this.gzdwOptions = res.data.rows;
         })
         .catch((err) => {});
     },
@@ -337,7 +339,7 @@ export default {
       this.queryParams.genderList = this.gender.choose;
       this.queryParams.mzList = this.ethnic.choose;
       this.queryParams.zzmmLixt = this.politica.choose;
-      this.queryParams.dwmcList = this.workPlace.choose;
+      this.queryParams.dwmcList = this.workPlace;
       this.queryParams.gwList = this.position.choose;
       getPoliticalWorkList(this.queryParams)
         .then((res) => {
@@ -391,26 +393,7 @@ export default {
       console.log(this.position.choose, "单选");
       this.handleSearch();
     },
-    // 工作单位全选
-    workPlaceAll(val) {
-      const allCheck = [];
-      for (const i in this.workPlace.checkBox) {
-        allCheck.push(this.workPlace.checkBox[i].dm);
-      }
-      this.workPlace.choose = val ? allCheck : [];
-      console.log(this.workPlace.choose, "全选");
-      this.workPlace.isIndeterminate = false;
-      this.handleSearch();
-    },
-    // 工作单位单选
-    workPlaceCheck(value) {
-      const checkedCount = value.length;
-      this.workPlace.checkAll = checkedCount === this.workPlace.checkBox.length;
-      this.workPlace.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.workPlace.checkBox.length;
-      console.log(this.workPlace.choose, "单选");
-      this.handleSearch();
-    },
+
     // 民 族全选
     ethnicAll(val) {
       const allCheck = [];

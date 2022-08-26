@@ -111,13 +111,13 @@
           <el-table-column
             label="培养单位"
             align="center"
-            prop="pycc"
+            prop="ssdwmc"
             sortable
           />
           <el-table-column
             label="培养层次"
             align="center"
-            prop="pycc"
+            prop="pyccName"
             sortable
           />
           <el-table-column

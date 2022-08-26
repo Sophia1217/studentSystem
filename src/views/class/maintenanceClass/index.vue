@@ -94,6 +94,7 @@
       @selection-change="handleSelectionChange"
       @sort-change="changeTableSort"
     >
+      <el-table-column type="selection" width="55" />
       <el-table-column label="序号" align="center" type="index" />
       <el-table-column
         label="班级编号"
@@ -113,6 +114,7 @@
             v-model="row.bjmc"
             clearable
             width="200px"
+            @blur="alterClassName(row)"
             @keyup.enter.native="alterClassName(row)"
           />
         </template>

@@ -103,7 +103,7 @@
         <el-table-column
           label="培养层次"
           align="center"
-          prop="pycc"
+          prop="pyccName"
           sortable="custom"
         />
         <el-table-column

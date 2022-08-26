@@ -144,7 +144,6 @@
           </template>
         </el-table-column>
       </el-table>
-
       <pagination
         v-show="total > 0"
         :total="total"
@@ -282,7 +281,7 @@ export default {
 </script>
 <style>
 .division-class {
-  background-color: #f0f0f0;
+  background-color: #fff;
   margin-top: 10px;
 }
 
@@ -365,5 +364,10 @@ export default {
   font-weight: 700;
   font-size: 14px;
   color: #005657;
+}
+.pagination-container .el-pagination {
+  right: 50%;
+  position: absolute;
+  transform: translateX(50%);
 }
 </style>

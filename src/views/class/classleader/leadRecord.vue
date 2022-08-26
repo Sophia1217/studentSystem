@@ -45,13 +45,15 @@
       >
         <template slot-scope="scope">
           <div>
-            <span class="iconfont allocate_teacher">&#xe604;</span>
-            <span style="color: #005657" v-show="scope.row.sfqy == '0'">
-              在岗
-            </span>
-            <span style="color: #ed5234" v-show="scope.row.sfqy == '1'">
-              离岗
-            </span>
+            <span
+              class="iconfont allocate_teacher"
+              :class="
+                scope.row.sfqy == '1' ? 'allocate_none' : 'allocate_class'
+              "
+              >&#xe604;</span
+            >
+            <span v-show="scope.row.sfqy == '0'"> 在岗 </span>
+            <span v-show="scope.row.sfqy == '1'"> 离岗 </span>
           </div>
         </template>
       </el-table-column>
@@ -265,5 +267,11 @@ export default {
 }
 .el-pagination {
   margin-top: 20px;
+}
+.allocate_class {
+  color: #005657;
+}
+.allocate_none {
+  color: red;
 }
 </style>

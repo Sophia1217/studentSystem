@@ -2,13 +2,13 @@
   <div class="detail">
     <div class="wrap">
       <div class="detail_left">
-        <div v-for="(item, index) in dtailsList" :key="index">
-          <div
+        <div>
+          <div v-for="(item, index) in dtailsList" :key="index"
             class="list"
             :class="index == current ? 'active' : ''"
             @click="handleList(index, 'tag')"
           >
-            <div>{{ item }}</div>
+            <div class="ellipsis">{{ item }}</div>
             <i :class="index == current ? 'el-icon-arrow-right' : ''" />
           </div>
         </div>
@@ -2780,6 +2780,12 @@ export default {
         cursor: pointer;
         padding: 0 10px;
         box-sizing: border-box;
+        .ellipsis{
+          width:150px;
+          overflow: hidden;//溢出隐藏
+          white-space: nowrap;//禁止换行
+          text-overflow: ellipsis;//...
+        }
       }
       .active {
         background: #f0f0f0;
@@ -2871,6 +2877,7 @@ export default {
               background: #e0e0e0;
               text-align: right;
               padding-right: 5px;
+              margin:0 !important;
             }
             .content {
               font-weight: 400;

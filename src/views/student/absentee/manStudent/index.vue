@@ -262,7 +262,7 @@
                 @click="hadleDetail(scope.row, 2)"
               >
                 <i class="scopeIncon handleEdit"></i>
-                <span class="handleName">编辑</span>
+                <span class="handleName" :class="!scope.row.flag?'':'noflag'">编辑</span>
               </el-button>
             </template>
           </el-table-column>
@@ -639,6 +639,9 @@ export default {
       this.showExport = false;
     },
     hadleDetail(row, flag) {
+      if (flag == '2' && row.flag == 'false') {
+        return
+      }
       let schooling = ""; // 3 4 5 是本科
       if (row.pyccm == 1 || row.pyccm == 2) {
         // 1 2 是研究生
@@ -841,6 +844,9 @@ export default {
       font-size: 14px;
       color: #005657;
       line-height: 28px;
+    }
+    .noflag{
+      color:#ccc;
     }
     .handledie {
       background: url("../../../../assets/images/details.png");

@@ -10,7 +10,7 @@
         <div
           class="slideArea"
           ref="slideArea"
-          v-show="user.length < 4 && user.length > 0"
+          v-show="user.length <= 4 && user.length > 0"
         >
           <div
             class="cardItem"

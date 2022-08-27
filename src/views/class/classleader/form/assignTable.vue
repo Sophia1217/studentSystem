@@ -543,7 +543,7 @@ export default {
 
     // 班干部批量撤任操作
     deleteSome() {
-        if (this.currentRow.length > 0) {
+        if (this.currentRowBgb.length > 0) {
             getCxly().then((res) => {
             // console.log(res);
             this.cxlyOptions = res.data.rows;
@@ -592,8 +592,8 @@ export default {
     },
     // 班干部批量任命
     actionAssignBgb() {
-    //   console.log("批量任命操作！");
-    if (this.currentRowBgb.length > 0) {
+    //   console.log("批量任命操作！",this.currentRowBgb);
+    if (this.currentRow.length > 0) {
         this.openAssignBgb = true;
         this.title = "批量任命班干部";
     }else {

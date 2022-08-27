@@ -183,7 +183,7 @@ export default {
 </script>
 <style scoped>
 .app-container {
-  height: 100vh;
+  /* height: 100vh; */
   background-color: white;
 }
 .search {
@@ -264,7 +264,7 @@ export default {
 }
 .pagination-container {
   margin-top: 0px;
-  height: 100%;
+  /* height: 100%; */
 }
 .el-pagination {
   margin-top: 20px;

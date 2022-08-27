@@ -264,7 +264,7 @@
         <!-- distributeClassConfirm(row) -->
         <el-button
           type="primary"
-          @click="doubleCheckConfirm(row)"
+          @click="doubleCheckConfirm"
           class="confirm"
           >确 定</el-button
         >
@@ -389,11 +389,13 @@ export default {
     allocateClass(row) {
       this.teacherClass = true;
       this.show = row; // 存储单条班主任数据
+      this.flag = false
     },
     // 班主任对班级一对一取消分配班级
     allocateNone(row) {
       this.cancelAllocate = true;
       this.show = row; // 存储单条班主任数据
+      this.flag1 = false
     },
     // 分配班级-确认操作
     distributeClassConfirm() {

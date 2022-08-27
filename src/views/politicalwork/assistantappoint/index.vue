@@ -12,6 +12,7 @@
             slot="prepend"
             v-model="select"
             class="elSelect"
+            @change="selectChange"
             placeholder="查询条件"
           >
             <el-option label="工号" value="1" />
@@ -399,6 +400,9 @@ export default {
   },
 
   methods: {
+    selectChange(val) {
+      this.searchVal = "";
+    },
     getCode(data) {
       this.getCodeInfoByEnglish(data);
     },
@@ -429,7 +433,9 @@ export default {
     },
     //获取数据列表
     getList(queryParams) {
-      //Object.assign(queryParams, this.queryParams);
+      console.log(this.select,'select')
+      queryParams.xh = this.select ==1?this.searchVal:''
+      queryParams.xm = this.select ==2?this.searchVal:''
       fdyList(queryParams)
         .then((response) => {
           //console.log(response);

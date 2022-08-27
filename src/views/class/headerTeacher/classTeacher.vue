@@ -412,23 +412,21 @@ export default {
         // 一对一分配
         q.teacherList.push(this.show.gh);
       }
-      q.rmrgh = "2005690002"; // 任命人的工号
+      q.rmrgh =this.$store.getters.userId; // 任命人的工号
       // q.rmsj = ""; // 任命时间
       // 给一对一或一对多任命请求——若操作成功
       assignTeacher(q).then((response) => {
-        if (response.errmsg == "操作成功！") {
           this.$message({
             message: "分配班级成功",
             type: "success",
           });
           this.getTeacherList(this.queryParams); // 重新发送请求获取班主任列表数据
-        }
-        if (response.errcode == "-200") {
-          this.$message({
-            message: "分配班级失败",
-            type: "error",
-          });
-        }
+        // if (response.errcode == "-200") {
+        //   this.$message({
+        //     message: "分配班级失败",
+        //     type: "error",
+        //   });
+        // }
       });
     },
     // 取消分配-确认操作
@@ -467,7 +465,7 @@ export default {
     // 取消分配-二次确认按钮
     doubleCheckConfirm() {
       const q = {};
-      q.cxrGh = "2005690002"; // 撤销人的工号
+      q.cxrGh = this.$store.getters.userId; // 撤销人的工号
       q.bjdm = this.$route.query.bjdm; // 班级代码
       q.crly = this.form.reason; // 撤任理由
       q.cxsj = this.form.offDate; // 撤任时间
@@ -504,18 +502,31 @@ export default {
     },
     // 批量分配班主任——多个班主任分配一个班级
     distributeSomeClass() {
-      // 拿到勾选的那几个班主任信息，后弹出分配班级弹出框
-      this.teacherClass = true;
+      
       // 判断勾选了多少班主任， 请求分配班主任接口数据
       if (this.teacherList.length > 0) {
         this.flag = true; // 表明勾选了多个班主任
+        // 拿到勾选的那几个班主任信息，后弹出分配班级弹出框
+        this.teacherClass = true;
+      }else {
+        this.$message({
+            message: "请至少选择一位辅导员！",
+            type: 'warning',
+          });
       }
     },
     // 批量取消分配班级
     cancelDistributeSomeClass() {
-      this.cancelAllocate = true;
+      // 判断勾选了多少班主任， 请求分配班主任接口数据
       if (this.teacherList.length > 0) {
         this.flag1 = true; // 表明勾选了多个班主任
+        // 拿到勾选的那几个班主任信息，后弹出分配班级弹出框
+        this.cancelAllocate = true;
+      }else {
+        this.$message({
+            message: "请至少选择一位辅导员！",
+            type: 'warning',
+          });
       }
     },
     //排序
@@ -530,7 +541,7 @@ export default {
 
 <style scoped>
 .app-container {
-  height: 100vh;
+  /* height: 100vh; */
   background-color: white;
 }
 .search {
@@ -624,7 +635,7 @@ export default {
 }
 .pagination-container {
   margin-top: 0px;
-  height: 100%;
+  /* height: 100%; */
 }
 .el-pagination {
   margin-top: 50px;

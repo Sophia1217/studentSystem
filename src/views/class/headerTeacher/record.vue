@@ -122,6 +122,8 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        orderZd:'',
+        orderPx : '',
         bjdm: this.$route.query.bjdm,
       },
       // 表单参数
@@ -138,7 +140,7 @@ export default {
     };
   },
   mounted() {
-    this.getList(this.queryParams);
+    // this.getList(this.queryParams);
   },
   activated() {
     this.getList(this.queryParams);
@@ -158,21 +160,29 @@ export default {
     },
     // 删除任职记录——一次性一条或多条
     deleteRecord() {
-      deleteRecords({ recordsList: this.recordsList }).then((response) => {
-        // console.log(response);
-        if (response.errcode == "00") {
-          this.$message({
-            message: "删除班主任任职记录操作成功",
-            type: "success",
-          });
-          this.getList(this.queryParams);
-        } else {
-          this.$message({
-            message: "删除班主任任职记录操作失败",
-            type: "error",
-          });
+        if (this.recordsList.length > 0) {
+            deleteRecords({ recordsList: this.recordsList }).then((response) => {
+                // console.log(response);
+                if (response.errcode == "00") {
+                this.$message({
+                    message: "删除班主任任职记录操作成功",
+                    type: "success",
+                });
+                this.getList(this.queryParams);
+                } else {
+                this.$message({
+                    message: "删除班主任任职记录操作失败",
+                    type: "error",
+                });
+                }
+            });
+        }else {
+            this.$message({
+                    message: "请至少选择一条记录！",
+                    type: 'warning',
+                });
         }
-      });
+      
     },
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
@@ -265,7 +275,7 @@ export default {
 }
 .pagination-container {
   margin-top: 0px;
-  height: 100%;
+  /* height: 100%; */
 }
 .el-pagination {
   margin-top: 20px;

@@ -539,12 +539,20 @@ export default {
 
     // 班干部批量撤任操作
     deleteSome() {
-      getCxly().then((res) => {
-        // console.log(res);
-        this.cxlyOptions = res.data.rows;
-        // console.log("crlyOptions:", this.cxlyOptions);
-      });
-      this.cancelAllocate = true;
+        if (this.currentRow.length > 0) {
+            getCxly().then((res) => {
+            // console.log(res);
+            this.cxlyOptions = res.data.rows;
+            // console.log("crlyOptions:", this.cxlyOptions);
+        });
+        this.cancelAllocate = true;
+    }else {
+        this.$message({
+          message: "请至少选择一位班干部！",
+          type: 'warning',
+        });
+    }
+      
     },
     // 批量取消分配-确认操作
     cancelAllocateConfirm() {
@@ -581,7 +589,7 @@ export default {
     // 班干部批量任命
     actionAssignBgb() {
     //   console.log("批量任命操作！");
-    if (this.bjzwOptions.length > 0) {
+    if (this.currentRowBgb.length > 0) {
         this.openAssignBgb = true;
         this.title = "批量任命班干部";
     }else {

@@ -129,7 +129,7 @@
             prop="sl"
             sortable="custom"
           />
-          <el-table-column label="操作" align="center">
+          <el-table-column label="操作" align="center" width="150px">
             <template slot-scope="scope">
               <div>
                 <el-button
@@ -588,19 +588,28 @@ export default {
       // console.log("取消分配二次确认！")
       let crly = this.formDismission.noticeTitle
       let cxsj = this.formDismission.offDate
-      let cxrGh = "2005690002";
+      let cxrGh = this.$store.getters.userId;
       getRemoveAssignFdy({ cxrGh, bjdm: this.bjdm, fdyList: this.fdyList, crly, cxsj }).then((res) => {
         
         this.$message({
         message: "取消分配成功",
         type: "success",
         });
+        this.getInstructorList();
       });
-      this.getInstructorList();
+      
     },
     handleAssignMore() {
-      this.openAssignMoreClass = true;
-      this.title = "批量分配";
+        if (this.multipleSelection.length > 0) {
+            this.openAssignMoreClass = true;
+            this.title = "批量分配";
+        }else {
+            this.$message({
+                message: "请至少选择一位辅导员！",
+                type: 'warning',
+            });
+        }
+      
     },
     cancelMore() {
       this.openAssignMoreClass = false;
@@ -618,14 +627,22 @@ export default {
         fdyList.push(item_row.gh);
       }
       getAssignFdy({ bjdm, fdyList, rmrgh, rmsj }).then((res) => {
-       
+       this.getInstructorList();
         
       });
-      this.getInstructorList();
+      
     },
     deleteAssignMore() {
-      this.openCancelAssignMore = true;
-      this.title = "批量取消分配";
+        if (this.multipleSelection.length > 0) {
+            this.openCancelAssignMore = true;
+            this.title = "批量取消分配";
+        }else {
+            this.$message({
+                message: "请至少选择一位辅导员！",
+                type: 'warning',
+            });
+        }
+      
     },
     //批量取消第一次确定操作
     submitOutMore(){
@@ -636,7 +653,7 @@ export default {
     cancelAssignMore() {
       let fdyList = []
       let bjdm =this.$route.query.bjdm
-      let cxrGh = "2005690002"
+      let cxrGh = this.$store.getters.userId
       let crly = this.formDismissionMore.noticeTitle
       let cxsj = this.formDismissionMore.offDate
       for (let item_row of this.multipleSelection) {

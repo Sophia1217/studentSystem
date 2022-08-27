@@ -175,7 +175,7 @@
             width="50"
           ></el-table-column>
           <el-table-column
-            prop="tableColumnValue"
+            prop="userId"
             label="学号"
             sortable="custom"
           >
@@ -185,7 +185,7 @@
           <el-table-column prop="dwmc" label="学院" sortable> </el-table-column>
           <el-table-column prop="zydmc" label="专业" sortable>
           </el-table-column>
-          <el-table-column prop="njm" label="班级" sortable> </el-table-column>
+          <el-table-column prop="bjm" label="班级" sortable> </el-table-column>
           <el-table-column
             prop="pyccmc"
             label="培养层次"

@@ -112,9 +112,9 @@
           <span class="title">强制修改名单列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight" v-if="tableData.length > 0">
-          <div class="btns borderGreen" @click="handleExport">
+          <!-- <div class="btns borderGreen" @click="handleExport">
             <i class="icon greenIcon"></i><span class="title">导出</span>
-          </div>
+          </div> -->
           <div class="btns deteBtn" @click="del">
             <i class="icon deteIcon"></i><span class="title">删除</span>
           </div>
@@ -458,14 +458,6 @@ export default {
     // 打开导出弹窗
     handleExport() {
       this.showExport = true;
-    },
-    // 导出取消
-    handleCancel() {
-      this.showExport = false;
-    },
-    // 导出确认
-    handleConfirm() {
-      this.showExport = false;
     },
     // 排序
     changeTableSort(column) {

@@ -729,6 +729,7 @@ export default {
             margin-right: 5px;
           }
           .greenIcon {
+            color: #fff;
             background: url("~@/assets/images/export2.png") no-repeat;
           }
           .deteIcon {

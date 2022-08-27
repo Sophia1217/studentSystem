@@ -211,7 +211,7 @@ export default {
   },
   created() {
     this.getList();
-    console.log('111111')
+    // console.log('111111')
   },
   methods: {
     // 辅导员任命

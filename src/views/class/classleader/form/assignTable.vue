@@ -580,9 +580,17 @@ export default {
     },
     // 班干部批量任命
     actionAssignBgb() {
-      console.log("批量任命操作！");
-      this.openAssignBgb = true;
-      this.title = "批量任命班干部";
+    //   console.log("批量任命操作！");
+    if (this.bjzwOptions.length > 0) {
+        this.openAssignBgb = true;
+        this.title = "批量任命班干部";
+    }else {
+        this.$message({
+          message: "请至少选择一位学生！",
+          type: 'warning',
+        });
+    }
+      
     },
     // 批量任命班干部-确认操作
     assignBgbConfirm() {

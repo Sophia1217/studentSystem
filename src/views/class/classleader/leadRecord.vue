@@ -156,19 +156,20 @@ export default {
       console.log("this.xhs:", this.xhs);
       console.log("this.zws:", this.zws);
       getDeleteBgbRm({ xhs: this.xhs, zws: this.zws }).then((res) => {
-        console.log(res);
-        this.errcode = res.errcode;
-        console.log("this.errcode:", this.errcode);
-      });
-      // 重新请求数据
-      if (this.errcode == "00") {
-        console.log("刷新操作！");
+        // console.log(res);
+        // this.errcode = res.errcode;
+        // console.log("this.errcode:", this.errcode);
         this.getList({
           bjdm: this.$route.query.bjdm,
           pageNum: 1,
           pageSize: 10,
         });
-      }
+      });
+      // 重新请求数据
+    //   if (this.errcode == "00") {
+    //     console.log("刷新操作！");
+        
+    //   }
       this.xhs = "";
       this.zws = "";
       this.errcode = "-200";

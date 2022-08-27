@@ -504,19 +504,19 @@ export default {
     deleteConfirm(row) {
       deleteEmptyClass({ bjdm: this.bjdm }).then((response) => {
         this.dialogVisible = false;
-        if (response.flag == true) {
+        // if (response.flag == true) {
           this.$message({
             showClose: true,
             message: "删除成功",
             type: "success",
           });
-        } else {
-          this.$message({
-            showClose: true,
-            message: "班级代码编号末尾班级目前仍有成员，请调出所有成员后重试",
-            type: "error",
-          });
-        }
+        // } else {
+        //   this.$message({
+        //     showClose: true,
+        //     message: "班级代码编号末尾班级目前仍有成员，请调出所有成员后重试",
+        //     type: "error",
+        //   });
+        // }
         this.getList(this.queryParams);
       });
     },

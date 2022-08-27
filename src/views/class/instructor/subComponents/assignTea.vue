@@ -426,39 +426,39 @@ export default {
       multipleSelection: [],
       // 表格数据
       noticeList: [
-        {
-          id: 1,
-          classId: 13070025,
-          className: "计算机工程硕士2022级1班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-          record: "班级操作记录",
-        },
-        {
-          id: 2,
-          classId: 13070025,
-          className: "计算机工程硕士2022级2班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-          record: "班级操作记录",
-        },
-        {
-          id: 3,
-          classId: 13070025,
-          className: "计算机工程硕士2022级3班",
-          college: "计算机工程学院",
-          level: "本科",
-          nums: 34,
-          beginTime: "2022-07-07",
-          updateTime: "2022-07-07",
-          record: "班级操作记录",
-        },
+        // {
+        //   id: 1,
+        //   classId: 13070025,
+        //   className: "计算机工程硕士2022级1班",
+        //   college: "计算机工程学院",
+        //   level: "本科",
+        //   nums: 34,
+        //   beginTime: "2022-07-07",
+        //   updateTime: "2022-07-07",
+        //   record: "班级操作记录",
+        // },
+        // {
+        //   id: 2,
+        //   classId: 13070025,
+        //   className: "计算机工程硕士2022级2班",
+        //   college: "计算机工程学院",
+        //   level: "本科",
+        //   nums: 34,
+        //   beginTime: "2022-07-07",
+        //   updateTime: "2022-07-07",
+        //   record: "班级操作记录",
+        // },
+        // {
+        //   id: 3,
+        //   classId: 13070025,
+        //   className: "计算机工程硕士2022级3班",
+        //   college: "计算机工程学院",
+        //   level: "本科",
+        //   nums: 34,
+        //   beginTime: "2022-07-07",
+        //   updateTime: "2022-07-07",
+        //   record: "班级操作记录",
+        // },
       ],
       // 弹出层标题
       title: "",
@@ -747,6 +747,9 @@ export default {
 </script>
 
 <style scoped>
+.assign_tea {
+    padding: 20px;
+}
 /* 搜索 */
 .table-header {
   background-color: #ffffff;
@@ -778,7 +781,7 @@ export default {
 }
 /* 表格 */
 .assign-table {
-  height: 100vh;
+  /* height: 100vh; */
   background-color: #ffffff;
 }
 

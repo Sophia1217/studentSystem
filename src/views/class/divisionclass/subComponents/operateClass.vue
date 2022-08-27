@@ -850,13 +850,14 @@ li {
 }
 
 .tab_con {
-  height: 100vh;
+  /* height: 100vh; */
+  background-color: #ffffff;
 }
 .table-content {
   /* padding-top: 32px; */
   padding-left: 40px;
   padding-right: 40px;
-  height: 100vh !important;
+  /* height: 100vh !important; */
   background-color: #ffffff;
   /* margin-top: 24px; */
 }

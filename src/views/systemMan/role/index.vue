@@ -41,7 +41,8 @@
     </el-form>
 
     <div class="content">
-      <h3 class="title-item">
+        <div class="content-top">
+            <h3 class="title-item">
         角色列表<span class="iconfont repeat_icon">&#xe7b1; </span>
       </h3>
       <el-row :gutter="10" class="mb8" style="float: right; margin-top: 15px">
@@ -57,6 +58,8 @@
           </el-button>
         </el-col>
       </el-row>
+        </div>
+      
 
       <el-table :data="noticeList" @sort-change="changeTableSort">
         <el-table-column
@@ -161,8 +164,8 @@ export default {
         roleId: this.$store.state.user.roleId,
         roleName: this.queryParams.roleName,
         isUse: this.queryParams.isUse,
-        pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize,
+        // pageNum: this.queryParams.pageNum,
+        // pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
@@ -215,7 +218,7 @@ export default {
     },
     openOrClose(inf) {
       var data = {
-        userId: "1234",
+        // userId: "1234",
         roleId: inf.roleId,
         isUse: inf.isUse == "0" ? "1" : "0",
       };
@@ -226,7 +229,7 @@ export default {
         });
     },
     delete(id) {
-      let data = { userId: "1234", roleId: id };
+      let data = {  roleId: id };// userId: "1234",
       deleteList(data)
         .then((res) => {
           if (res.errcode == "00") {
@@ -243,7 +246,11 @@ export default {
   },
 };
 </script>
-<style scope lang="scss">
+<style scoped lang="scss">
+.app-container {
+    padding: 20px;
+    // height: 100%;
+}
 .queryForm {
   background: #fff;
   padding: 20px;
@@ -264,6 +271,12 @@ export default {
   background: #fff;
   padding: 20px;
   margin-top: 20px;
+  
+
+  .content-top {
+    display: flex;
+    justify-content: space-between;
+  }
   .title-item {
     display: inline-block;
     width: 120px;

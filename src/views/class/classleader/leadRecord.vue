@@ -126,7 +126,7 @@ export default {
     };
   },
   mounted() {
-    console.log("guazai");
+    // console.log("guazai");
     this.getList(this.queryParams);
   },
   methods: {
@@ -134,9 +134,9 @@ export default {
       Object.assign(x, this.queryParams);
       getQueryBgbRmjl(x).then((res) => {
         var current_total = 0;
-        console.log("res.datas:", res.datas);
+        // console.log("res.datas:", res.datas);
         this.queryBgbRmjList = res.datas;
-        console.log("this.queryBgbRmjList:", this.queryBgbRmjList);
+        // console.log("this.queryBgbRmjList:", this.queryBgbRmjList);
         for (let index in this.queryBgbRmjList) {
           current_total += this.queryBgbRmjList[index].children.length;
         }
@@ -145,30 +145,31 @@ export default {
     },
     // 删除记录
     deleteRecord() {
-      console.log("删除记录");
-      console.log("this.currentRow:", this.currentRow);
+      // console.log("删除记录");
+      // console.log("this.currentRow:", this.currentRow);
       for (let item of this.currentRow) {
         this.xhs += item.xh + ",";
         this.zws += item.zwdm + ",";
       }
       this.xhs = this.xhs.substring(0, this.xhs.length - 1);
       this.zws = this.zws.substring(0, this.zws.length - 1);
-      console.log("this.xhs:", this.xhs);
-      console.log("this.zws:", this.zws);
+      // console.log("this.xhs:", this.xhs);
+      // console.log("this.zws:", this.zws);
       getDeleteBgbRm({ xhs: this.xhs, zws: this.zws }).then((res) => {
-        console.log(res);
-        this.errcode = res.errcode;
-        console.log("this.errcode:", this.errcode);
-      });
-      // 重新请求数据
-      if (this.errcode == "00") {
-        console.log("刷新操作！");
+        // console.log(res);
+        // this.errcode = res.errcode;
+        // console.log("this.errcode:", this.errcode);
         this.getList({
           bjdm: this.$route.query.bjdm,
           pageNum: 1,
           pageSize: 10,
         });
-      }
+      });
+      // 重新请求数据
+    //   if (this.errcode == "00") {
+    //     console.log("刷新操作！");
+        
+    //   }
       this.xhs = "";
       this.zws = "";
       this.errcode = "-200";

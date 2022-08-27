@@ -536,13 +536,13 @@ export default {
         allCheck.push(this.training.checkBox[i].dm);
       }
       this.training.choose = val ? allCheck : [];
-      console.log("全选", this.training);
+     
       this.training.isIndeterminate = false;
     },
     // 培养层次单选
     handleCheckedCitiesChangeTraining(value) {
       this.training.choose = value;
-      console.log("单选", this.training);
+     
       let checkedCount = value.length;
       this.training.checkAll = checkedCount === this.training.checkBox.length;
       this.training.isIndeterminate =
@@ -623,7 +623,7 @@ export default {
         allCheck.push(this.dmxbmOPs.checkBox[i].dm);
       }
       this.dmxbmOPs.choose = val ? allCheck : [];
-      console.log(this.dmxbmOPs.choose, "全选");
+
       this.dmxbmOPs.isIndeterminate = false;
     },
     // 性别：单选
@@ -648,12 +648,12 @@ export default {
       this.njOps.checkAll = checkedCount === this.njOps.checkBox.length;
       this.njOps.isIndeterminate =
         checkedCount > 0 && checkedCount < this.njOps.checkBox.length;
-      console.log(this.njOps.choose, "单选");
+
     },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      console.log(this.multipleSelection);
+
     },
     // 打开导出弹窗
     handleExport() {

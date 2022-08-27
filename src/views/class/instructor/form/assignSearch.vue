@@ -135,7 +135,7 @@ export default {
   methods: {
     // 分班管理路由跳转
     operate() {
-      console.log(123);
+      // console.log(123);
       this.$router.push({
         path: "/class/operateClass",
       });
@@ -190,7 +190,7 @@ export default {
       // this.reset();
       this.open = true;
       this.title = "调整班级";
-      console.log("123");
+     //  console.log("123");
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -236,7 +236,7 @@ export default {
       //   })
       //   .catch(() => {});
       this.$modal.confirm("是否删除？");
-      console.log(123);
+      // console.log(123);
     },
   },
 };

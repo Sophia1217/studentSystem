@@ -211,7 +211,7 @@ export default {
   },
   created() {
     this.getList();
-    console.log('111111')
+    // console.log('111111')
   },
   methods: {
     // 辅导员任命
@@ -222,7 +222,7 @@ export default {
     },
     // 任职记录
     empRecordClick() {
-      console.log(1);
+      // console.log(1);
       this.$router.push("/class/empRecord");
     },
     /** 查询任职记录列表 */

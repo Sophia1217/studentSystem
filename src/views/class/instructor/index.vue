@@ -289,7 +289,7 @@ export default {
     },
     // 分配辅导员
     assignTea(row) {
-      console.log("currentRow:", this.currentRow);
+      // console.log("currentRow:", this.currentRow);
       this.$router.push({
         path: "/class/assignTea",
         query: { bjdm: row.bjdm, bjmc: row.bjmc },

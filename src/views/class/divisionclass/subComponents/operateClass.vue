@@ -607,7 +607,7 @@ export default {
       // 获取专业
       getMajors({ pyccm: this.$route.query.pycc }).then((response) => {
         // 获取培养层次列表数据
-        console.log("Res", response);
+        // console.log("Res", response);
         this.majorOptions = response.data.rows;
       });
       // 获取性别
@@ -641,7 +641,7 @@ export default {
       this.queryParams1.orderType =
         column.order === "descending" ? "desc" : "asc"; // 0是asc升序，1是desc降序
       if (val == 1) {
-        console.log("111");
+        // console.log("111");
         this.getList(this.queryParams);
       } else {
         this.getList1(this.queryParams1);
@@ -850,13 +850,14 @@ li {
 }
 
 .tab_con {
-  height: 100vh;
+  /* height: 100vh; */
+  background-color: #ffffff;
 }
 .table-content {
   /* padding-top: 32px; */
   padding-left: 40px;
   padding-right: 40px;
-  height: 100vh !important;
+  /* height: 100vh !important; */
   background-color: #ffffff;
   /* margin-top: 24px; */
 }

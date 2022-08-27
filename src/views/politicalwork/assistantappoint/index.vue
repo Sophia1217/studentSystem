@@ -421,7 +421,7 @@ export default {
           if (res.errcode == "00") {
             this.gzdwOptions = res.data.rows;
           }
-          console.log(res);
+
         })
         .catch((err) => {
           //this.$message.error(err.errmsg);
@@ -475,7 +475,7 @@ export default {
         allCheck.push(this.category.checkBox[i].dm);
       }
       this.category.choose = val ? allCheck : [];
-      console.log(this.category.choose, "全选");
+      
       this.category.isIndeterminate = false;
     },
     // 类别单选
@@ -484,7 +484,7 @@ export default {
       this.category.checkAll = checkedCount === this.category.checkBox.length;
       this.category.isIndeterminate =
         checkedCount > 0 && checkedCount < this.category.checkBox.length;
-      console.log(this.category.choose, "单选");
+      
     },
     // 性别全选
     handleCheckAllSexChange(val) {
@@ -493,7 +493,7 @@ export default {
         allCheck.push(this.sex.checkBox[i].dm);
       }
       this.sex.choose = val ? allCheck : [];
-      console.log(this.sex.choose, "全选");
+     
       this.sex.isIndeterminate = false;
     },
     // 性别单选
@@ -502,13 +502,13 @@ export default {
       this.sex.checkAll = checkedCount === this.sex.checkBox.length;
       this.sex.isIndeterminate =
         checkedCount > 0 && checkedCount < this.sex.checkBox.length;
-      console.log(this.sex.choose, "单选");
+     
     },
 
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      console.log(this.multipleSelection);
+
     },
     //状态全选
     handleCheckAllStatusChange(val) {
@@ -517,7 +517,7 @@ export default {
         allCheck.push(this.status.checkBox[i].dm);
       }
       this.status.choose = val ? allCheck : [];
-      console.log(this.status.choose, "全选");
+     
       this.status.isIndeterminate = false;
     },
     // 状态单选
@@ -526,7 +526,7 @@ export default {
       this.status.checkAll = checkedCount === this.status.checkBox.length;
       this.status.isIndeterminate =
         checkedCount > 0 && checkedCount < this.status.checkBox.length;
-      console.log(this.status.choose, "单选");
+    
     },
     // 打开导出弹窗
     handleExport() {
@@ -569,11 +569,11 @@ export default {
       let data = {
         ghList: ghlist,
       };
-      console.log(data);
+    
       removeMoreAssistant(data)
         .then((res) => {
           if (res.errcode == "00") {
-            console.log(res);
+
             this.getList(this.queryParams);
           }
         })
@@ -598,7 +598,7 @@ export default {
       addOneAssistant(data)
         .then((res) => {
           if (res.errcode == "00") {
-            console.log(res);
+
             this.getList(this.queryParams);
           }
         })
@@ -701,7 +701,7 @@ export default {
     },
     // 搜索查询按钮
     searchClick() {
-      console.log(this.select);
+    
       let str = [];
       let name, gonghao;
       if (this.select == "1") {
@@ -733,7 +733,7 @@ export default {
       this.getList(this.queryParams);
     },
     changeTableSort(column) {
-      console.log(1);
+    
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
       this.searchClick();

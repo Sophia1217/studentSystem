@@ -1754,9 +1754,10 @@ export default {
     };
   },
   created() {
+    console.log(this.pycc,'this.pycc')
     // schooling = ""; // 3 4 5 是本科
     this.isEdit = this.$route.query.show ?this.$route.query.show: '2' // 1是详情，2是编辑
-    this.schooling = this.$route.query.schooling?this.$route.query.schooling:this.pycc
+    this.schooling = this.$route.query.schooling?this.$route.query.schooling:((this.pycc ==1||this.pucc == 2)?2:1)
     this.xh = this.$route.query.xh ? this.$route.query.xh : this.userId
     console.log(this.userId, this.pycc)
   },

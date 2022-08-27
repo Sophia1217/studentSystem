@@ -9,7 +9,12 @@
       label-width="68px"
     >
       <el-form-item label="培养单位" prop="ssdwdm">
-        <el-select v-model="queryParams.ssdwdm" placeholder="未选择" clearable>
+        <el-select
+          v-model="queryParams.ssdwdmList"
+          placeholder="未选择"
+          clearable
+          multiple
+        >
           <el-option
             v-for="(item, index) in collegeOptions"
             :key="index"
@@ -19,7 +24,12 @@
         </el-select>
       </el-form-item>
       <el-form-item label="培养层次" prop="pycc">
-        <el-select v-model="queryParams.pycc" placeholder="未选择" clearable>
+        <el-select
+          v-model="queryParams.pyccList"
+          placeholder="未选择"
+          clearable
+          multiple
+        >
           <el-option
             v-for="(item, index) in levelOptions"
             :key="index"
@@ -29,7 +39,12 @@
         </el-select>
       </el-form-item>
       <el-form-item label="年级" prop="ssnj">
-        <el-select v-model="queryParams.ssnj" placeholder="未选择" clearable>
+        <el-select
+          v-model="queryParams.ssnjList"
+          placeholder="未选择"
+          clearable
+          multiple
+        >
           <el-option
             v-for="(item, index) in gradeOptions"
             :key="index"
@@ -59,12 +74,16 @@
     </el-form>
     <div>
       <h3 class="title-item">
-        班级列表<span class="iconfont repeat_icon">&#xe7b1; </span>
+        班干部管理列表<span class="iconfont repeat_icon">&#xe7b1; </span>
       </h3>
     </div>
 
     <!-- 班级列表 -->
-    <el-table :data="noticeList" @selection-change="handleSelectionChange">
+    <el-table
+      :data="noticeList"
+      @selection-change="handleSelectionChange"
+      @sort-change="changeTableSort"
+    >
       <el-table-column label="序号" align="center" type="index" />
       <el-table-column label="班级编号" align="center" prop="bjdm" sortable />
       <el-table-column
@@ -74,8 +93,8 @@
         prop="bjmc"
         sortable
       />
-      <el-table-column label="培养单位" align="center" prop="ssdw" sortable />
-      <el-table-column label="培养层次" align="center" prop="pycc" sortable />
+      <el-table-column label="培养单位" align="center" prop="ssdwmc" sortable />
+      <el-table-column label="培养层次" align="center" prop="pyccName" sortable />
       <el-table-column
         label="班级人数"
         align="center"
@@ -173,10 +192,12 @@ export default {
       queryParams: {
         pageNum: 1, // 默认请求第一页数据
         pageSize: 10, // 默认一页10条数据
-        ssdwdm: "", // 培养单位
-        pycc: "", // 培养层次
-        ssnj: "", // 年级
+        ssdwdmList: [], // 培养单位
+        pyccList: [], // 培养层次
+        ssnjList: [], // 年级
         bjdm: "", // 班级编号
+        orderField: "",
+        orderType: "", // 0是asc升序，1是desc降序
       },
       // 表单参数
       form: {},
@@ -196,6 +217,12 @@ export default {
     this.getOptions();
   },
   methods: {
+    changeTableSort(column) {
+      this.queryParams.orderField = column.prop;
+      this.queryParams.orderType =
+        column.order === "descending" ? "desc" : "asc"; // 0是asc升序，1是desc降序
+      this.getList(this.queryParams);
+    },
     getList(data = {}) {
       var data = this.queryParams;
       console.log("data", data);
@@ -241,6 +268,10 @@ export default {
 </script>
 
 <style scoped>
+.app-container {
+    padding: 20px;
+    background-color: #fff;
+}
 .search {
   background: #005657;
 }
@@ -308,7 +339,7 @@ export default {
     } */
 .title-item {
   display: inline-block;
-  width: 120px;
+  width: 170px;
   height: 28px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;

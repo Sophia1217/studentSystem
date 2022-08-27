@@ -353,9 +353,9 @@ export default {
 };
 </script>
 
-<style>
+<style  scoped>
 .assign-table {
-  height: 100vh;
+  /* height: 100vh; */
   background-color: #ffffff;
 }
 

@@ -9,7 +9,7 @@
       label-width="68px"
     >
       <el-form-item label="培养单位" prop="ssdwdm">
-        <el-select v-model="queryParams.ssdwdm" placeholder="未选择" clearable>
+        <el-select v-model="queryParams.ssdwdmList" placeholder="未选择" clearable multiple>
           <el-option
             v-for="(item, index) in collegeOptions"
             :key="index"
@@ -19,7 +19,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="培养层次" prop="pycc">
-        <el-select v-model="queryParams.pycc" placeholder="未选择" clearable>
+        <el-select v-model="queryParams.pyccList" placeholder="未选择" clearable multiple>
           <el-option
             v-for="(item, index) in levelOptions"
             :key="index"
@@ -29,7 +29,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="年级" prop="ssnj">
-        <el-select v-model="queryParams.ssnj" placeholder="未选择" clearable>
+        <el-select v-model="queryParams.ssnjList" placeholder="未选择" clearable multiple>
           <el-option
             v-for="(item, index) in gradeOptions"
             :key="index"
@@ -63,7 +63,7 @@
     </el-form>
     <div>
       <h3 class="bjtitle-item">
-        班级列表<span class="iconfont repeat_icon">&#xe7b1; </span>
+        班主任管理列表<span class="iconfont repeat_icon">&#xe7b1; </span>
       </h3>
     </div>
 
@@ -86,13 +86,13 @@
       <el-table-column
         label="培养单位"
         align="center"
-        prop="pycc"
+        prop="ssdwmc"
         sortable="custom"
       />
       <el-table-column
         label="培养层次"
         align="center"
-        prop="pycc"
+        prop="pyccName"
         sortable="custom"
       />
       <el-table-column
@@ -127,7 +127,7 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="scope">
-          <div>
+          <div class="tea-handle" >
             <span class="iconfont allocate_teacher" @click="action(scope.row)"
               >&#xe638;</span
             >
@@ -137,6 +137,8 @@
             >
               分配班主任
             </span>
+            </div>
+            <div class="tea-handle" >
             <span
               class="iconfont record_icon"
               style="margin-left: 5px"
@@ -257,10 +259,12 @@ export default {
       queryParams: {
         pageNum: 1, // 默认请求第一页数据
         pageSize: 10, // 默认一页10条数据
-        ssdwdm: "", // 培养单位
-        pycc: "", // 培养层次
-        ssnj: "", // 年级
+        ssdwdmList: [], // 培养单位
+        pyccList: [], // 培养层次
+        ssnjList: [], // 年级
         bjdm: "", // 班级编号
+        orderField: "",
+        orderType: "", // 0是asc升序，1是desc降序
       },
       // 表单参数
       form: {},
@@ -369,20 +373,24 @@ export default {
       });
     },
     changeTableSort(column) {
-      this.queryParams.orderZd = column.prop;
-      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
-      this.handleSearch();
+      this.queryParams.orderField = column.prop;
+      this.queryParams.orderType =
+        column.order === "descending" ? "desc" : "asc"; // 0是asc升序，1是desc降序
+      this.getList(this.queryParams);
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .banji {
   max-width: 100%;
-  height: 100%;
+  /* height: 100%; */
   padding: 20px;
   background-color: white;
+}
+.tea-handle {
+    cursor: pointer;
 }
 .search {
   background: #005657;

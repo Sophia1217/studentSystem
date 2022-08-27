@@ -9,7 +9,7 @@
       label-width="68px"
     >
       <el-form-item label="培养单位" prop="ssdwdm">
-        <el-select v-model="queryParams.ssdwdm" placeholder="未选择" clearable>
+        <el-select v-model="queryParams.ssdwdmList" placeholder="未选择" clearable multiple>
           <el-option
             v-for="(item, index) in collegeOptions"
             :key="index"
@@ -19,7 +19,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="培养层次" prop="pycc">
-        <el-select v-model="queryParams.pycc" placeholder="未选择" clearable>
+        <el-select v-model="queryParams.pyccList" placeholder="未选择" clearable multiple>
           <el-option
             v-for="(item, index) in levelOptions"
             :key="index"
@@ -29,7 +29,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="年级" prop="ssnj">
-        <el-select v-model="queryParams.ssnj" placeholder="未选择" clearable>
+        <el-select v-model="queryParams.ssnjList" placeholder="未选择" clearable multiple>
           <el-option
             v-for="(item, index) in gradeOptions"
             :key="index"
@@ -318,9 +318,9 @@ export default {
       queryParams: {
         pageNum: 1, // 默认请求第一页数据
         pageSize: 10, // 默认一页10条数据
-        ssdwdm: "", // 培养单位
-        pycc: "", // 培养层次
-        ssnj: "", // 年级
+        ssdwdmList: [], // 培养单位
+        pyccList: [], // 培养层次
+        ssnjList: [], // 年级
         bjdm: "", // 班级编号
         orderField: "", //
         orderType: "",
@@ -451,7 +451,16 @@ export default {
     },
     // 筛选框表单重置
     resetForm() {
-      this.queryParams = {};
+      this.queryParams = {
+        pageNum: 1, // 默认请求第一页数据
+        pageSize: 10, // 默认一页10条数据
+        ssdwdmList: [], // 培养单位
+        pyccList: [], // 培养层次
+        ssnjList: [], // 年级
+        bjdm: "", // 班级编号
+        orderField: "", //
+        orderType: "",
+      };
     },
     // /** 搜索按钮操作 */
     handleQuery() {
@@ -538,7 +547,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .app-container {
   background-color: white;
 }

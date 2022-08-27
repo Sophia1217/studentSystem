@@ -191,7 +191,7 @@ export default {
         checkBox: [],
         isIndeterminate: true,
       },
-      njOps:[],
+      njOps: [],
       tableData: [],
       manageRegOps: [],
       zymOps: [],
@@ -220,8 +220,8 @@ export default {
         .catch((err) => {});
     },
     changeXY(val) {
-      if (val&&val.length == 0) {
-        this.moreIform.zydam = [] // 专业
+      if (val && val.length == 0) {
+        this.moreIform.zydam = []; // 专业
       }
       this.getZY(val);
     },
@@ -261,7 +261,7 @@ export default {
             nj.push({ dm: data[x], mc: data[x] });
           }
           // this.$set(this.learnHe, "checkBox", nj);
-          this.njOps = nj
+          this.njOps = nj;
         })
         .catch((err) => {});
     },
@@ -279,6 +279,8 @@ export default {
         pyccm: this.training.choose,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
       };
       getSchoolRegStuInfoPageList(data)
         .then((res) => {
@@ -390,8 +392,9 @@ export default {
     },
     //排序
     changeTableSort(column) {
+      //console.log(1);
       this.queryParams.orderZd = column.prop;
-      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
     },
   },

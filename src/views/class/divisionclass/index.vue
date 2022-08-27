@@ -10,7 +10,7 @@
       class="table-header"
     >
       <el-form-item label="培养单位" prop="ssdwdm" class="header-item">
-        <el-select v-model="queryParams.ssdwdm" placeholder="未选择" clearable>
+        <el-select v-model="queryParams.ssdwdmList" placeholder="未选择" clearable multiple>
           <el-option
             v-for="(item, index) in collegeOptions"
             :key="index"
@@ -20,7 +20,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="培养层次" prop="pycc" class="header-item">
-        <el-select v-model="queryParams.pycc" placeholder="未选择" clearable>
+        <el-select v-model="queryParams.pyccList" placeholder="未选择" clearable multiple>
           <el-option
             v-for="(item, index) in levelOptions"
             :key="index"
@@ -30,7 +30,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="年级" prop="ssnj" class="header-item">
-        <el-select v-model="queryParams.ssnj" placeholder="未选择" clearable>
+        <el-select v-model="queryParams.ssnjList" placeholder="未选择" clearable multiple>
           <el-option
             v-for="(item, index) in gradeOptions"
             :key="index"
@@ -65,7 +65,7 @@
     </el-form>
     <div class="table-content">
       <div class="title" icon="el-icon-refresh">
-        <span class="title-item">班级列表</span>
+        <span class="title-itemlll">分班管理列表</span>
         <span class="iconfont">&#xe631;</span>
       </div>
       <!-- v-loading="loading" -->
@@ -150,7 +150,7 @@
         :page.sync="queryParams.pageNum"
         :limit.sync="queryParams.pageSize"
         @pagination="getList"
-        :page-sizes="[10, 20, 30, 40, 50, 100]"
+        
       />
     </div>
   </div>
@@ -199,9 +199,9 @@ export default {
       queryParams: {
         pageNum: 1, // 默认请求第一页数据
         pageSize: 10, // 默认一页10条数据
-        ssdwdm: "", // 培养单位
-        pycc: "", // 培养层次
-        ssnj: "", // 年级
+        ssdwdmList: [], // 培养单位
+        pyccList: [], // 培养层次
+        ssnjList: [], // 年级
         bjdm: "", // 班级编号
       },
       // 表单参数
@@ -257,8 +257,9 @@ export default {
     },
     //排序
     changeTableSort(column) {
-      this.queryParams.orderZd = column.prop;
-      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.queryParams.orderField = column.prop;
+      this.queryParams.orderType =
+        column.order === "descending" ? "desc" : "asc"; // 0是asc升序，1是desc降序
       this.getList();
     },
     // 分班管理
@@ -279,19 +280,22 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .division-class {
   background-color: #fff;
   margin-top: 10px;
+  padding-bottom: 20px;
+  /* height: 100%; */
 }
 
 .table-header {
   background-color: #ffffff;
-  height: 128px;
+  height: 80px;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 0 20px;
+  padding-left: 20px ;
+  padding-right: 20px ;
 }
 
 .header-item {
@@ -330,20 +334,20 @@ export default {
 }
 
 .table-content {
-  padding-top: 32px;
+  /* padding-top: 32px; */
   padding-left: 40px;
   padding-right: 40px;
-  height: 100%;
+  /* height: 100%; */
   background-color: #ffffff;
-  margin-top: 24px;
+  /* margin-top: 24px; */
 }
 
 .title {
   margin-bottom: 32px;
   text-align: left;
 }
-.title-item {
-  width: 80px;
+.title-itemlll {
+  width: 10%;
   height: 28px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;

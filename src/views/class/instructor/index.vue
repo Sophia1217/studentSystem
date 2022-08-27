@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="instructor">
     <!-- 辅导员管理首页搜索 -->
     <div class="tea-search">
       <el-form
@@ -13,9 +13,10 @@
       >
         <el-form-item label="工作单位" prop="ssdwdm" class="header-item">
           <el-select
-            v-model="queryParams.ssdwdm"
+            v-model="queryParams.ssdwdmList"
             placeholder="请选择"
             clearable
+            multiple
           >
             <el-option
               v-for="(item, index) in collegeOptions"
@@ -26,7 +27,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="培养层次" prop="pycc" class="header-item">
-          <el-select v-model="queryParams.pycc" placeholder="请选择" clearable>
+          <el-select v-model="queryParams.pyccList" placeholder="请选择" clearable multiple>
             <el-option
               v-for="(item, index) in levelOptions"
               :key="index"
@@ -36,7 +37,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="年级" prop="ssnj" class="header-item">
-          <el-select v-model="queryParams.ssnj" placeholder="请选择" clearable>
+          <el-select v-model="queryParams.ssnjList" placeholder="请选择" clearable multiple>
             <el-option
               v-for="(item, index) in gradeOptions"
               :key="index"
@@ -77,7 +78,7 @@
     <div class="tea-table">
       <div class="table-content">
         <div class="title" icon="el-icon-refresh">
-          <span class="title-item">班级列表</span>
+          <span class="title-itemopn">辅导员管理列表</span>
           <span class="iconfont">&#xe631;</span>
           <!-- <el-row :gutter="10" class="mb8" style="float: right">
             <el-col :span="1.5">
@@ -93,7 +94,11 @@
           </el-row> -->
         </div>
         <!-- v-loading="loading" -->
-        <el-table :data="noticeList" @selection-change="handleSelectionChange">
+        <el-table
+          :data="noticeList"
+          @selection-change="handleSelectionChange"
+          @sort-change="changeTableSort"
+        >
           <el-table-column label="序号" align="center" type="index" />
           <el-table-column
             label="班级编号"
@@ -139,7 +144,7 @@
             class-name="small-padding fixed-width"
           >
             <template slot-scope="scope">
-              <div>
+              <div class="ins-handle">
                 <!-- @click="assignTea(scope.row)" class="operate" -->
                 <!-- <span class="assignTea">分配辅导员</span> -->
                 <span
@@ -154,7 +159,7 @@
                   分配辅导员
                 </span>
               </div>
-              <div>
+              <div class="ins-handle">
                 <span
                   class="iconfont record_icon"
                   style="margin-left: 5px"
@@ -227,10 +232,12 @@ export default {
       queryParams: {
         pageNum: 1, // 默认请求第一页数据
         pageSize: 10, // 默认一页10条数据
-        ssdwdm: "", // 工作单位
-        pycc: "", // 培养层次
-        ssnj: "", // 年级
+        ssdwdmList: [], // 培养单位
+        pyccList: [], // 培养层次
+        ssnjList: [], // 年级
         bjdm: "", // 班级编号
+        orderField: "",
+        orderType: "", // 0是asc升序，1是desc降序
       },
       // 表单参数
       form: {},
@@ -246,6 +253,12 @@ export default {
     };
   },
   methods: {
+    changeTableSort(column) {
+      this.queryParams.orderField = column.prop;
+      this.queryParams.orderType =
+        column.order === "descending" ? "desc" : "asc"; // 0是asc升序，1是desc降序
+      this.getList(this.queryParams);
+    },
     getList(data) {
       var data = this.queryParams;
       classList(data).then((response) => {
@@ -375,15 +388,19 @@ export default {
 </script>
 
 <style scoped>
+.instructor {
+    padding: 20px;
+    background-color: #fff;
+}
 /* 搜索 */
 .table-header {
   background-color: #ffffff;
-  height: 128px;
+  height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 15px;
-  margin-top: 10px;
+  padding: 0 20px;
+  /* margin-top: 10px; */
 }
 .assignInput {
   display: flex;
@@ -406,7 +423,7 @@ export default {
 }
 /* 表格 */
 .tea-table {
-  height: 100vh;
+  /* height: 100vh; */
   background-color: #ffffff;
 }
 #pagenation {
@@ -417,19 +434,22 @@ export default {
 }
 
 .table-content {
-  padding-top: 32px;
-  padding-left: 40px;
-  padding-right: 40px;
-  height: 100%;
+  /* padding-top: 32px; */
+  padding-left: 20px;
+  padding-right: 20px;
+  /* height: 100%; */
   background-color: #ffffff;
-  margin-top: 24px;
+  /* margin-top: 24px; */
 }
 
+.ins-handle {
+    cursor: pointer;
+}
 .title {
   margin-bottom: 32px;
 }
-.title-item {
-  width: 80px;
+.title-itemopn {
+  width: 9%;
   height: 28px;
   font-family: "PingFangSC-Semibold";
   font-weight: 600;

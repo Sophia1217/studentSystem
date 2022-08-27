@@ -263,9 +263,9 @@ export default {
         .catch((err) => {});
     },
     changeXY(val) {
-      if (val&&val.length == 0) {
-        this.moreIform.stuInfo = [] // 专业
-        this.moreIform.pread = [] // 班级
+      if (val && val.length == 0) {
+        this.moreIform.stuInfo = []; // 专业
+        this.moreIform.pread = []; // 班级
       }
       this.getZY(val);
       this.getBJ(val);
@@ -339,6 +339,8 @@ export default {
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         limitSql: "",
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
       };
       forceUpdateList(data)
         .then((res) => {
@@ -468,7 +470,7 @@ export default {
     // 排序
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
-      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
     },
   },

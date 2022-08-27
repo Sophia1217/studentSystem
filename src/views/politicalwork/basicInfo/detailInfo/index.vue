@@ -30,10 +30,10 @@
         <!-- </div> -->
         <div class="tableStyle">
           <div class="imgWrap">
-            <!-- <div class="photo">
-              <img :src="detailInfoData.zgZgjbxxes" alt="照片"> </img>
-              <img src="" alt="">
-            </div> -->
+            <div class="photo">
+              <img :src="detailInfoData.zgZps" alt="照片"> </img>
+              <!-- <img src="" alt=""> -->
+            </div>
           </div>
 
           <div class="information">
@@ -3360,7 +3360,7 @@ export default {
       xbmOps: [],
       mzmOps: [],
       zzmmmOps: [],
-      gjdqmOps: [],
+      sxwgjdqmOps: [],
       sfzjlxmOps: [],
       hyzkmOps: [],
       zgxlmOps: [],
@@ -3374,6 +3374,8 @@ export default {
       xyOps: [],
       cblbmOps: [],
       dwhOps: [],
+      gjdqmOps:[],
+      sxzymOps:[],
 
       crzyjszwmOps: [],
 
@@ -3525,7 +3527,7 @@ export default {
               this.rsryflmOps = res.data
               break
             case 'dmrsgwztm':
-              this.ryzflOps = res.data
+              this.rygwztmOps = res.data
               break
             case 'dmrsxklbm':
               this.xklbmOps = res.data
@@ -3923,191 +3925,5 @@ export default {
     }
   }
 }
-// .detail{
-//   padding:20px 0;
-//   box-sizing: border-box;
-//   .wrap{
-//     display: flex;
-//     flex-direction: row;
-//     // overflow: hidden;
-//     .detail_left{
-//       flex:0 0 220px;
-//       margin-right: 24px;
-//       background: #fff;
-//       // height: calc(100vh - 170px);
-//       padding:20px;
-//       box-sizing: border-box;
-//       .list{
-//         display: flex;
-//         flex-direction: row;
-//         justify-content: space-between;
-//         align-items: center;
-//         height: 36px;
-//         line-height: 36px;
-//         font-size: 14px;
-//         color: #1F1F1F;
-//         cursor: pointer;
-//         padding:0 10px;
-//         box-sizing: border-box;
-//       }
-//       .active{
-//         background: #F0F0F0;
-//         border-radius: 2px;
-//       }
-//     }
-//     .detail_right{
-//       flex:1;
-//       background: #fff;
-//       .right_top{
-//         .title{
-//           text-align: center;
-//           font-weight: 500;
-//           font-size: 24px;
-//           color: #005657;
-//           line-height: 24px
-//         }
-//         .timeWrap{
-//           text-align: center;
-//           font-weight: 400;
-//           font-size: 16px;
-//           color: #383838;
-//           line-height: 28px;
-//           .updataTime{
-//             margin-left: 20px;
-//           }
-//         }
-//       }
-//       .headline{
-//         padding-left: 20px;
-//         box-sizing: border-box;
-//         font-weight: 600;
-//         font-size: 20px;
-//         color: #1F1F1F;
-//         line-height: 28px;
-//         display: flex;
-//         justify-content: space-between;
-//         align-items: center;
-//         .editBtn{
-//           padding:4px 5px;
-//           margin-right: 20px;
-//           border: 1px solid #005657;
-//           border-radius: 4px;
-//           font-weight: 400;
-//           font-size: 14px;
-//           color: #005657;
-//           cursor: pointer;
-//           .addIcon{
-//             display: inline-block;
-//             width:15px;
-//             height: 15px;
-//             background: url('~@/assets/images/addicon.png') no-repeat center;
-//             vertical-align: middle;
-//           }
-//         }
-//       }
-//       .tableStyle{
-//         position: relative;
-//         padding:20px;
-//         .imgWrap{
-//           position: absolute;
-//           right:20px;
-//           top:20px;
-//           z-index: 100;
-//           .photo{
-//             width:160px;
-//             height: 206px;
-//             background: #fff;
-//             overflow: hidden;
-//             img{
-//               width:160px;
-//               height: 206px;
-//             }
-//           }
-//         }
-//         .information{
-//           padding:0 20px;
-//           .rowStyle{
-//             padding:0 !important;
-//             margin:0;
-//             border-bottom:1px solid #cccccc;
-//           }
-//           .wrap{
-//             display: flex;
-//             align-items: center;
-//             .title{
-//               flex: 0 0 160px;
-//               line-height: 48px;
-//               background: #E0E0E0;
-//               text-align: right;
-//               padding-right: 5px;
-//             }
-//             .content{
-//               font-weight: 400;
-//               font-size: 14px;
-//               color: #1F1F1F;
-//               line-height: 22px;
-//               margin-left: 16px;
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-//   .editBottom{
-//     width:100%;
-//     height: 60px;
-//     background: #fff;
-//     box-shadow: 0 0 2px 0 rgba(0,0,0,0.10), 0 -2px 6px -1px rgba(0,0,0,0.20);
-//     position: fixed;
-//     bottom:0;
-//     left:0;
-//     z-index:100;
-//     display: flex;
-//     justify-content: flex-end;
-//     align-items: center;
-//     .btn{
-//       width: 84px;
-//       height: 36px;
-//       line-height: 36px;
-//       text-align: center;
-//       cursor: pointer;
-//       border: 1px solid #005657;
-//       border-radius: 2px;
-//       margin-right: 20px;
-//     }
-//     .cancel{
-//       color: #005657;
-//     }
-//     .confirm{
-//       background: #005657;
-//       color:#fff;
-//     }
-//   }
-//   .saveEditBtn{
-//           position: relative;
-//           top:0;
-//           left: 2200px;
-//           width: 84px;
-//           line-height: 36px;
-//           text-align: center;
-//           background: #005657;
-//           border-radius: 2px;
-//           color:#fff;
-//           cursor: pointer;
-//         }
-//         .icon{
-//           display: inline-block;
-//           width:20px;
-//           height: 20px;
-//           background: url('~@/assets/images/icon_edit_white.png');
-//           vertical-align: middle;
-//         }
-//         .iconSave{
-//           display: inline-block;
-//           width:20px;
-//           height: 20px;
-//           background: url('~@/assets/images/saveIcon.png');
-//           vertical-align: middle;
-//         }
-// }
+
 </style>

@@ -554,9 +554,12 @@ export default {
         approver: this.multipleSelection[0].approver,
         rollbackReason: this.form.rollbackReason,
       };
-      backFlow(data).then(() =>
+      backFlow(data).then(() => {
         this.$message({ message: res.errmsg, type: "success" })
-      );
+        this.dialogVisible = false
+      }).catch(err => {
+        this.dialogVisible = false
+      })
     },
     // 导出取消
     handleCancel() {
@@ -582,6 +585,7 @@ export default {
           schooling: schooling,
           id: row.id,
           approveState: 2,
+          approver: row.approver
         },
       });
     },

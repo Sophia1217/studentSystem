@@ -1384,6 +1384,7 @@ export default {
       this.dialogVisible = false
       let data = {
         id: this.$route.query.id,
+        approver: this.$route.query.approver,
         rollbackReason: this.textarea
       }
       backFlow(data).then(res => {
@@ -1395,7 +1396,7 @@ export default {
     // 通过确定
     handleConThrou() {
       this.throughDialogV = false
-      let data = { id: this.$route.query.id }
+      let data = [{ id: this.$route.query.id,xh: this.$route.query.xh,approver: this.$route.query.approver }]
       passFlow(data).then(res => {
         this.$message({
           message: res.errmsg,

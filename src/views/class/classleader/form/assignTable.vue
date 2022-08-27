@@ -238,8 +238,8 @@
 
     <!-- 批量撤任——二次确定：checkDouble -->
     <el-dialog title="取消分配" :visible.sync="doubleCheck" width="50%">
-      <template v-for="item in currentRowBgb">
-        <div :key="item.xh">
+      <template>
+        <div v-for="item in currentRowBgb" :key="item.xh">
           <span
             >确认取消【{{ item.xh }}(学工号)】【{{ item.xm }}】对【{{
               table_title
@@ -307,8 +307,8 @@
       :visible.sync="doubleAssign"
       width="50%"
     >
-      <template v-for="item in currentRow">
-        <div :key="item.xh">
+      <template>
+        <div v-for="item in currentRow" :key="item.xh">
           <span
             >确认任命【{{ item.xh }}(学工号)】【{{ item.xm }}】为【{{
               table_title
@@ -452,6 +452,10 @@ export default {
         this.bjzwOptions = res.data.rows;
       }
     });
+    // this.getList();
+  },
+  activated() {
+    this.currentIndex = 0
     this.getList();
   },
   methods: {

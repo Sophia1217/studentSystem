@@ -24,10 +24,10 @@
         <div class="tableStyle">
           <div class="imgWrap">
             <div class="photo">
-              <img :src="detailInfo.xsXszpb?detailInfo.xsXszpb.bkzp:''" alt="报考照片">
+              <img :src="detailInfo.xsXszpb?'data:image/png;base64,'+detailInfo.xsXszpb.bkzp:''" alt="报考照片">
             </div>
             <div class="photo" style="margin-top:10px;">
-              <img :src="detailInfo.xsXszpb?detailInfo.xsXszpb.byzp:''" alt="毕业照片">
+              <img :src="detailInfo.xsXszpb?'data:image/png;base64,'+detailInfo.xsXszpb.byzp:''" alt="毕业照片">
             </div>
           </div>
           <div class="information" v-if="schooling==1">
@@ -90,7 +90,8 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">单位</div>
-                    <div class="content" :class="detailInfo.xsXjxx.dwh_approveFlag==1?'greenColor':''">{{detailInfo.xsXjxx.dwh}}</div>
+                    <div class="content" :class="detailInfo.xsXjxx.dwh_approveFlag==1?'greenColor':''">
+                    {{getName(allDwh,detailInfo.xsXjxx.dwh)}}</div>
                     
                   </div>
                 </el-col>
@@ -115,14 +116,18 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">籍贯</div>
-                    <div class="content" :class="detailInfo.xsJbxx.jg_approveFlag==1?'greenColor':''">{{detailInfo.xsJbxx.jg}}</div>
+                    <div class="content" :class="detailInfo.xsJbxx.jg_approveFlag==1?'greenColor':''">
+                      {{detailInfo.xsJbxx.jg}}
+                    </div>
                     
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">民族</div>
-                    <div class="content" :class="detailInfo.xsJbxx.MZM_approveFlag==1?'greenColor':''">{{detailInfo.xsJbxx.mzm}}</div>
+                    <div class="content" :class="detailInfo.xsJbxx.MZM_approveFlag==1?'greenColor':''">
+                      {{getName(dmmzmOps,detailInfo.xsJbxx.mzm)}}
+                    </div>
                     
                   </div>
                 </el-col>
@@ -186,7 +191,8 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">班级</div>
-                    <div class="content" :class="detailInfo.xsXjxx.bjm_approveFlag==1?'greenColor':''">{{detailInfo.xsXjxx.bjm}}</div>
+                    <div class="content" :class="detailInfo.xsXjxx.bjm_approveFlag==1?'greenColor':''">
+                    {{getName(bjOps,detailInfo.xsXjxx.bjm)}}</div>
                     
                   </div>
                 </el-col>
@@ -195,7 +201,8 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">专业</div>
-                    <div class="content" :class="detailInfo.xsXjxx.zydm_approveFlag==1?'greenColor':''">{{detailInfo.xsXjxx.zydm}}</div>
+                    <div class="content" :class="detailInfo.xsXjxx.zydm_approveFlag==1?'greenColor':''">
+                    {{getName(zyOps,detailInfo.xsXjxx.zydm)}}</div>
                     
                   </div>
                 </el-col>
@@ -227,7 +234,8 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">学籍状态</div>
-                    <div class="content" :class="detailInfo.xsXjxx.xjzt_approveFlag==1?'greenColor':''">{{detailInfo.xsXjxx.xjzt}}</div>
+                    <div class="content" :class="detailInfo.xsXjxx.xjzt_approveFlag==1?'greenColor':''">
+                    {{getName(dmxjztmOps,detailInfo.xsXjxx.xjzt)}}</div>
                     
                   </div>
                 </el-col>
@@ -266,7 +274,8 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">政治面貌</div>
-                    <div class="content" :class="detailInfo.xsJbxx.zzmmm_approveFlag==1?'greenColor':''">{{detailInfo.xsJbxx.zzmmm}}</div>
+                    <div class="content" :class="detailInfo.xsJbxx.zzmmm_approveFlag==1?'greenColor':''">
+                    {{getName(zzmmOps,detailInfo.xsJbxx.zzmmm)}}</div>
                     
                   </div>
                 </el-col>
@@ -419,7 +428,8 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">培养层次</div>
-                    <div class="content" :class="detailInfo.xsXjxx.pyccm_approveFlag==1?'greenColor':''">{{detailInfo.xsXjxx.pyccm}}</div>
+                    <div class="content" :class="detailInfo.xsXjxx.pyccm_approveFlag==1?'greenColor':''">
+                    {{getName(pyccOps,detailInfo.xsXjxx.pyccm)}}</div>
                     
                   </div>
                 </el-col>
@@ -540,7 +550,8 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">单位</div>
-                    <div class="content" :class="detailInfo.xsXjxx.dwh_approveFlag==1?'greenColor':''">{{detailInfo.xsXjxx.dwh}}</div>
+                    <div class="content" :class="detailInfo.xsXjxx.dwh_approveFlag==1?'greenColor':''">
+                    {{getName(allDwh,detailInfo.xsXjxx.dwh)}}</div>
                     
                   </div>
                 </el-col>
@@ -572,7 +583,9 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">民族</div>
-                  <div class="content" :class="detailInfo.xsJbxx.mzm_approveFlag==1?'greenColor':''">{{detailInfo.xsJbxx.mzm}}</div>
+                  <div class="content" :class="detailInfo.xsJbxx.mzm_approveFlag==1?'greenColor':''">
+                    {{getName(dmmzmOps,detailInfo.xsJbxx.mzm)}}
+                  </div>
                   
                 </div>
               </el-col>
@@ -652,7 +665,8 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">学籍状态</div>
-                  <div class="content" :class="detailInfo.xsXjxx.xjzt_approveFlag==1?'greenColor':''">{{detailInfo.xsXjxx.xjzt}}</div>
+                  <div class="content" :class="detailInfo.xsXjxx.xjzt_approveFlag==1?'greenColor':''">
+                  {{getName(dmxjztmOps,detailInfo.xsXjxx.xjzt)}}</div>
                   
                 </div>
               </el-col>
@@ -693,7 +707,8 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">政治面貌</div>
-                  <div class="content" :class="detailInfo.xsJbxx.zzmmm_approveFlag==1?'greenColor':''">{{detailInfo.xsJbxx.zzmmm}}</div>
+                  <div class="content" :class="detailInfo.xsJbxx.zzmmm_approveFlag==1?'greenColor':''">
+                  {{getName(zzmmOps,detailInfo.xsJbxx.zzmmm)}}</div>
                   
                 </div>
               </el-col>
@@ -725,7 +740,8 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">专业</div>
-                  <div class="content" :class="detailInfo.xsXjxx.zydm_approveFlag==1?'greenColor':''">{{detailInfo.xsXjxx.zydm}}</div>
+                  <div class="content" :class="detailInfo.xsXjxx.zydm_approveFlag==1?'greenColor':''">
+                  {{getName(zyOps,detailInfo.xsXjxx.zydm)}}</div>
                   
                 </div>
               </el-col>
@@ -773,7 +789,8 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">培养层次</div>
-                  <div class="content" :class="detailInfo.xsXjxx.pyccm_approveFlag==1?'greenColor':''">{{detailInfo.xsXjxx.pyccm}}</div>
+                  <div class="content" :class="detailInfo.xsXjxx.pyccm_approveFlag==1?'greenColor':''">
+                  {{getName(pyccOps,detailInfo.xsXjxx.pyccm)}}</div>
                   
                 </div>
               </el-col>
@@ -1299,7 +1316,8 @@
 
 <script>
 import { getDetailQueryPoliticalWorkList } from '../../../../../../api/politicalWork/basicInfo';
-import { getStuInfoFlowUpdatePage,passFlow,backFlow } from "@/api/student/index"
+import { getStuInfoFlowUpdatePage, passFlow, backFlow } from "@/api/student/index"
+import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
   name: 'detail',
 
@@ -1327,7 +1345,18 @@ export default {
         xsGzjlList: [], // 学生工作经历
         xsXszpb: {}, // 学生信息照片
         dtailsList:[]
-      }
+      },
+      pyccOps: [],
+      dmxjztmOps: [],
+      dmmzmOps: [],
+      zzmmOps: [],
+      xzOps: [],
+      dmxbmOPs: [],
+      xslbOps: [],
+      zxjhmOps: [],
+      allDwh: [],
+      zyOps: [],
+      bjOps: []
     };
   },
   props: {
@@ -1340,10 +1369,84 @@ export default {
     this.schooling = this.$route.query.schooling
   },
   mounted() {
+    this.getCode("dmxbm"); // 性别码
+    this.getCode("dmmzm"); // 民 族
+    this.getCode("dmxjztm"); // 学籍
+    this.getCode("dmpyccm"); // 培养层次
+    this.getCode("dmzzmmm"); // 政治面貌
+    this.getCode("dmxz"); // 学 制
+    this.getCode("dmxslbm"); // 学学生类别 
+    this.getCode("dmyjszxjhm"); // 专项计划码 
     this.getDetailQueryPoliticalWorkList()
   },
 
   methods: {
+    getName(data, val) {
+      if (data.length > 0 && val) {
+        for (let x = 0; x < data.length; x++) {
+          if (data[x].dm == val) {
+            return data[x].mc
+          }
+        } 
+      } 
+    },
+    getAllCollege() {
+      getCollege()
+        .then((res) => {
+          this.allDwh = res.data.rows;
+        })
+        .catch((err) => {});
+    },
+    // 学院找专业
+    getZY(val) {
+      let data = { DWH: val };
+      getZY(data)
+        .then((res) => {
+          this.zyOps = res.data;
+        })
+        .catch((err) => {});
+    },
+    getBJ(val) {
+      let data = { DWH: val };
+      getBJ(data)
+        .then((res) => {
+          this.bjOps = res.data;
+        })
+        .catch((err) => {});
+    },
+    getCode(data) {
+      this.getCodeInfoByEnglish(data);
+    },
+    getCodeInfoByEnglish(paramsData) {
+      let data = { codeTableEnglish: paramsData };
+      getCodeInfoByEnglish(data)
+        .then((res) => {
+          switch (paramsData) {
+            case "dmpyccm":
+              this.pyccOps = res.data
+              break;
+            case "dmxjztm":
+              this.dmxjztmOps = res.data
+              break;
+            case "dmmzm":
+              this.dmmzmOps = res.data
+              break;
+            case "dmzzmmm":
+              this.zzmmOps = res.data
+              break;
+            case "dmxz":
+              this.xzOps = res.data
+              break;
+            case 'dmxbm':
+              this.dmxbmOPs = res.data
+            case 'dmxslbm':
+              this.xslbOps = res.data
+            case 'dmyjszxjhm':
+              this.zxjhmOps = res.data
+          }
+        })
+        .catch((err) => {});
+    },
     // 左侧list
     handleList(index,tag) {
       this.current = index
@@ -1356,6 +1459,7 @@ export default {
       });
     },
     getDetailQueryPoliticalWorkList() { 
+      console.log(11111)
       let data = { XH: this.$route.query.xh,id:this.$route.query.id }
       getStuInfoFlowUpdatePage(data).then(res => {
         // console.log(res.data,'res.data')
@@ -1366,7 +1470,10 @@ export default {
         this.$set(this.detailInfo, 'xsXxjlList', res.data.xsXxjlListMap)
         this.$set(this.detailInfo, 'xsGzjlList', res.data.xsGzjlListMap)
         this.$set(this.detailInfo, 'xsXszpb', res.data.xsXszpbMap ? res.data.xsXszpbMap : {})
-        this.$set(this.detailInfo, 'dtailsList',res.data.modelColNum)
+        this.$set(this.detailInfo, 'dtailsList', res.data.modelColNum)
+        this.getAllCollege(this.detailInfo.xsXjxx.dwh)
+        this.getZY([this.detailInfo.xsXjxx.dwh]);
+        this.getBJ([this.detailInfo.xsXjxx.dwh]);
       }).catch(err=>{})
     },
     // 打开退回弹窗

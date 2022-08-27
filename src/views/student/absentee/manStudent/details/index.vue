@@ -110,7 +110,8 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">单位</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.dwh}}</div>
+                    <!-- <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.dwh}}</div> -->
+                    <div v-if="isEdit ==1" class="content">{{getName(allDwh,detailInfo.xsXjxx.dwh)}}</div>
                     <div v-if="isEdit ==2" class="content">
                       <el-input v-model="detailInfo.xsXjxx.dwh" :disabled="detailInfo.xsXjxx.dwh_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
                     </div>
@@ -248,7 +249,7 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">专业</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.zydm}}</div>
+                    <div v-if="isEdit ==1" class="content">{{ getName(zyOps,detailInfo.xsXjxx.zydm) }}</div>
                     <div v-if="isEdit ==2" class="content">
                       <el-input v-model="detailInfo.xsXjxx.zydm" :disabled="detailInfo.xsXjxx.zydm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
                     </div>
@@ -295,7 +296,7 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">学籍状态</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.xjzt}}</div>
+                    <div v-if="isEdit ==1" class="content">{{getName(dmxjztmOps,detailInfo.xsXjxx.xjzt)}}</div>
                     <div v-if="isEdit ==2" class="content">
                       <!-- <el-input v-model="detailInfo.xsXjxx.xjzt" size="small" placeholder="请输入内容"></el-input> -->
                       <el-select v-model="detailInfo.xsXjxx.xjzt" size="small" :disabled="detailInfo.xsXjxx.xjzt_stuFlag == 2" placeholder="请选择">
@@ -352,7 +353,7 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">政治面貌</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.zzmmm}}</div>
+                    <div v-if="isEdit ==1" class="content">{{getName(zzmmOps,detailInfo.xsJbxx.zzmmm)}}</div>
                     <div v-if="isEdit ==2" class="content">
                       <!-- <el-input v-model="detailInfo.xsJbxx.zzmmm" size="small" placeholder="请输入内容"></el-input> -->
                       <el-select v-model="detailInfo.xsJbxx.zzmmm" size="small" :disabled="detailInfo.xsJbxx.zzmmm_stuFlag == 2" placeholder="请选择">
@@ -588,9 +589,17 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">学生类别</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.xslbm}}</div>
+                    <div v-if="isEdit ==1" class="content">{{getName(xslbOps,detailInfo.xsXjxx.xslbm)}}</div>
                     <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.xslbm" :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                      <!-- <el-input v-model="detailInfo.xsXjxx.xslbm" :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
+                      <el-select v-model="detailInfo.xsXjxx.xslbm" size="small" :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2" placeholder="请选择">
+                        <el-option
+                          v-for="item in xslbOps"
+                          :key="item.dm"
+                            :label="item.mc"
+                            :value="item.dm">
+                        </el-option>
+                      </el-select>
                     </div>
                   </div>
                 </el-col>
@@ -720,7 +729,7 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">单位</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.dwh}}</div>
+                    <div v-if="isEdit ==1" class="content">{{getName(allDwh,detailInfo.xsXjxx.dwh)}}</div>
                     <div v-if="isEdit ==2" class="content">
                       <el-input v-model="detailInfo.xsXjxx.dwh" :disabled="detailInfo.xsXjxx.dwh_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
                     </div>
@@ -868,7 +877,7 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">学籍状态</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.xjzt}}</div>
+                  <div v-if="isEdit ==1" class="content">{{getName(dmxjztmOps,detailInfo.xsXjxx.xjzt)}}</div>
                   <div v-if="isEdit ==2" class="content">
                     <!-- <el-input v-model="detailInfo.xsXjxx.xjzt" :disabled="detailInfo.xsXjxx.xjzt_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
                     <el-select v-model="detailInfo.xsXjxx.xjzt" size="small" :disabled="detailInfo.xsXjxx.xjzt_stuFlag == 2" placeholder="请选择">
@@ -927,7 +936,7 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">政治面貌</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.zzmmm}}</div>
+                  <div v-if="isEdit ==1" class="content">{{getName(zzmmOps,detailInfo.xsJbxx.zzmmm)}}</div>
                   <div v-if="isEdit ==2" class="content">
                     <!-- <el-input v-model="detailInfo.xsJbxx.zzmmm" :disabled="detailInfo.xsJbxx.zzmmm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
                     <el-select v-model="detailInfo.xsJbxx.zzmmm" size="small" :disabled="detailInfo.xsJbxx.zzmmm_stuFlag == 2" placeholder="请选择">
@@ -975,7 +984,7 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">专业</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.zydm}}</div>
+                  <div v-if="isEdit ==1" class="content">{{ getName(zyOps,detailInfo.xsXjxx.zydm) }}</div>
                   <div v-if="isEdit ==2" class="content">
                     <el-input v-model="detailInfo.xsXjxx.zydm" :disabled="detailInfo.xsXjxx.zydm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
                   </div>
@@ -1072,9 +1081,17 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">学生类别</div>
-                  <div v-if="isEdit ==1" class="content">{{ detailInfo.xsXjxx.xslbm }}</div>
+                  <div v-if="isEdit ==1" class="content">{{getName(xslbOps,detailInfo.xsXjxx.xslbm)}}</div>
                   <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.xslbm" :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                    <!-- <el-input v-model="detailInfo.xsXjxx.xslbm" :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
+                    <el-select v-model="detailInfo.xsXjxx.xslbm" size="small" :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2" placeholder="请选择">
+                      <el-option
+                        v-for="item in xslbOps"
+                        :key="item.dm"
+                          :label="item.mc"
+                          :value="item.dm">
+                      </el-option>
+                    </el-select>
                   </div>
                 </div>
               </el-col>
@@ -1103,9 +1120,17 @@
               <el-col :span="24" class="rowStyle">
                 <div class="wrap">
                   <div class="title">专项计划码</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.zxjhm}}</div>
+                  <div v-if="isEdit ==1" class="content">{{getName(zxjhmOps,detailInfo.xsXjxx.zxjhm)}}</div>
                   <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.zxjhm" :disabled="detailInfo.xsXjxx.zxjhm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                    <el-select v-model="detailInfo.xsXjxx.zxjhm" size="small" :disabled="detailInfo.xsXjxx.zxjhm_stuFlag == 2" placeholder="请选择">
+                      <el-option
+                        v-for="item in zxjhmOps"
+                        :key="item.dm"
+                          :label="item.mc"
+                          :value="item.dm">
+                      </el-option>
+                    </el-select>
+                    <!-- <el-input v-model="detailInfo.xsXjxx.zxjhm" :disabled="detailInfo.xsXjxx.zxjhm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
                   </div>
                 </div>
               </el-col>
@@ -1712,9 +1737,10 @@
 import {
   getRegStuInfoDetailPage, updateRegStuInfo,
   loadRegStuInfoUpdatePage, gradStu,
-  stuCard, stuReg, } from "@/api/student/index"
+  stuCard, stuReg, getZY, getBJ} from "@/api/student/index"
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import TopTitle from '@/components/TopTitle/index.vue'
+import { getCollege } from "@/api/class/maintenanceClass";
 export default {
   name: 'detail',
   components : {
@@ -1750,7 +1776,11 @@ export default {
       dmxjztmOps: [],
       pyccOps: [],
       zzmmOps: [],
-      xzOps:[]
+      xzOps: [],
+      allDwh: [],
+      zyOps: [],
+      xslbOps: [],
+      zxjhmOps:[] 
     };
   },
   created() {
@@ -1784,6 +1814,8 @@ export default {
       this.getCode("dmpyccm"); // 培养层次
       this.getCode("dmzzmmm"); // 政治面貌
       this.getCode("dmxz"); // 学 制
+      this.getCode("dmxslbm"); // 学学生类别 
+      this.getCode("dmyjszxjhm"); // 专项计划码 
       if (this.isEdit == 1) {
         this.getDetail()
       } else {
@@ -1793,6 +1825,39 @@ export default {
   },
 
   methods: {
+     // 查询学院
+    getAllCollege() {
+      getCollege()
+        .then((res) => {
+          this.allDwh = res.data.rows;
+        })
+        .catch((err) => {});
+    },
+    changeXY(val) {
+      if (val && val.length == 0) {
+        this.moreIform.stuInfo = []; // 专业
+        this.moreIform.pread = []; // 班级
+      }
+      this.getZY(val);
+      this.getBJ(val);
+    },
+    // 学院找专业
+    getZY(val) {
+      let data = { DWH: val };
+      getZY(data)
+        .then((res) => {
+          this.zyOps = res.data;
+        })
+        .catch((err) => {});
+    },
+    getBJ(val) {
+      let data = { DWH: val };
+      getBJ(data)
+        .then((res) => {
+          this.bjOps = res.data;
+        })
+        .catch((err) => {});
+    },
     getName(data, val) {
       if (data.length > 0 && val) {
         for (let x = 0; x < data.length; x++) {
@@ -1827,6 +1892,10 @@ export default {
               break;
             case 'dmxbm':
               this.dmxbmOPs = res.data
+            case 'dmxslbm':
+              this.xslbOps = res.data
+            case 'dmyjszxjhm':
+              this.zxjhmOps = res.data
           }
         })
         .catch((err) => {});
@@ -1841,6 +1910,7 @@ export default {
         this.$set(this.detailInfo, 'xsXxjlList', res.data.xsXxjlList)
         this.$set(this.detailInfo, 'xsGzjlList', res.data.xsGzjlList)
         this.$set(this.detailInfo, 'xsXszpb', res.data.xsXszpb ? res.data.xsXszpb : {})
+        // this.getAllCollege(this.detailInfo.xsXjxx.dwh)
       }).catch(err=>{})
     },
     getDetail() {
@@ -1853,7 +1923,9 @@ export default {
         this.$set(this.detailInfo, 'xsXxjlList', res.data.xsXxjlList)
         this.$set(this.detailInfo, 'xsGzjlList', res.data.xsGzjlList)
         this.$set(this.detailInfo, 'xsXszpb', res.data.xsXszpb?res.data.xsXszpb:{})
-        
+        this.getAllCollege(this.detailInfo.xsXjxx.dwh)
+        this.getZY([this.detailInfo.xsXjxx.dwh]);
+        this.getBJ([this.detailInfo.xsXjxx.dwh]);
         
       }).catch(err=>{})
     },

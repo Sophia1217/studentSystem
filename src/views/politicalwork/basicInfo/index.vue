@@ -283,7 +283,7 @@ export default {
       const data = { listWorkPlace: paramsData };
       getListWorkPlace(data)
         .then((res) => {
-          console.log("res", res);
+        
           this.gzdwOptions = res.data.rows;
         })
         .catch((err) => {});
@@ -292,7 +292,7 @@ export default {
       const data = { codeTableEnglish: paramsData };
       getCodeInfoByEnglish(data)
         .then((res) => {
-          console.log("res", res);
+         
           switch (paramsData) {
             case "dmmzm":
               this.$set(this.ethnic, "checkBox", res.data);
@@ -347,7 +347,7 @@ export default {
           this.queryParams.total = res.count;
         })
         .catch((err) => {});
-      console.log(this.ethnic, "this.ethnic");
+     
     },
     // 点击更多
     handleMore() {
@@ -360,7 +360,7 @@ export default {
         allCheck.push(this.gender.checkBox[i].dm);
       }
       this.gender.choose = val ? allCheck : [];
-      console.log(this.gender.choose, "全选");
+     
       this.gender.isIndeterminate = false;
       this.handleSearch();
     },
@@ -380,7 +380,7 @@ export default {
         allCheck.push(this.position.checkBox[i].dm);
       }
       this.position.choose = val ? allCheck : [];
-      console.log(this.position.choose, "全选");
+
       this.position.isIndeterminate = false;
       this.handleSearch();
     },
@@ -390,7 +390,7 @@ export default {
       this.position.checkAll = checkedCount === this.position.checkBox.length;
       this.position.isIndeterminate =
         checkedCount > 0 && checkedCount < this.position.checkBox.length;
-      console.log(this.position.choose, "单选");
+    
       this.handleSearch();
     },
 
@@ -401,7 +401,7 @@ export default {
         allCheck.push(this.ethnic.checkBox[i].dm);
       }
       this.ethnic.choose = val ? allCheck : [];
-      console.log(this.ethnic.choose, "全选");
+    
       this.ethnic.isIndeterminate = false;
       this.handleSearch();
     },
@@ -414,7 +414,7 @@ export default {
       this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
       this.ethnic.isIndeterminate =
         checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
-      console.log(this.ethnic.choose, "单选");
+     
       this.handleSearch();
     },
     // 政治面貌：全选
@@ -424,7 +424,7 @@ export default {
         allCheck.push(this.politica.checkBox[i].dm);
       }
       this.politica.choose = val ? allCheck : [];
-      console.log(this.politica.choose, "全选");
+    
       this.politica.isIndeterminate = false;
       this.handleSearch();
     },
@@ -434,7 +434,7 @@ export default {
       this.politica.checkAll = checkedCount === this.politica.checkBox.length;
       this.politica.isIndeterminate =
         checkedCount > 0 && checkedCount < this.politica.checkBox.length;
-      console.log(this.politica.choose, "单选");
+    
       this.handleSearch();
     },
     // 多选

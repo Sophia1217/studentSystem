@@ -225,7 +225,7 @@ export default {
     },
     getList(data = {}) {
       var data = this.queryParams;
-      console.log("data", data);
+    //   console.log("data", data);
       classList(data).then((response) => {
         // 获取班级列表数据
         this.noticeList = response.data.rows; // 根据状态码接收数据

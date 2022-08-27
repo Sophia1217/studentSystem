@@ -231,7 +231,7 @@ export default {
     },
 
     handleCurrentChange(val) {
-      console.log("val", val);
+
     },
     //重置按钮操作
     resetQuery(queryForm) {

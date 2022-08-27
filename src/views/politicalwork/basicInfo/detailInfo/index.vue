@@ -3492,7 +3492,7 @@ export default {
       const data = { codeTableEnglish: paramsData }
       getCodeInfoByEnglish(data)
         .then((res) => {
-          console.log('res', res)
+         
           switch (paramsData) {
             case 'dmxbm':
               this.xbmOps = res.data
@@ -3649,7 +3649,7 @@ export default {
     handleList(index, tag) {
       this.current = index
       var id = '#' + tag + '_' + index
-      console.log(id)
+     
       document.querySelector(id).scrollIntoView({
         behavior: 'smooth',
         block: 'center',
@@ -3715,7 +3715,7 @@ export default {
         // 政工科研情况（教学情况）
         this.detailInfoData.zgJxkyqks.splice(index, 1)
       }
-      console.log(index)
+    
     },
     editButtonClick() {
       this.isEdit = 2 // 控制是否可以编辑的字段

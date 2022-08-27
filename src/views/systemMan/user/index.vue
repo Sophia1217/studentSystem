@@ -379,7 +379,7 @@ export default {
 
     handleCommand(command) {
       //   this.$message("click on item " + command);
-      console.log(command);
+
       var selectedArr = this.multipleSelection || [];
       if (selectedArr.length == 0) {
         this.$message({
@@ -407,14 +407,14 @@ export default {
 
     // 用户状态改变
     onSwitchChange(user) {
-      console.log("用户状态改变", user, user.isUse);
+
       let param = {
         userIdList: [user.userId],
         isUse: user.isUse ? "0" : "1",
       };
       disableUser(param)
         .then((res) => {
-          console.log("用户状态接口", res);
+         
         })
         .catch(() => {
           user.isUse = !user.isUse;

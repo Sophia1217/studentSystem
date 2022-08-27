@@ -441,13 +441,13 @@ export default {
     this.queryParams.bjdm = this.$route.query.bjdm;
     this.queryParams1.bjdm = this.$route.query.bjdm;
     this.table_title = this.$route.query.bjmc;
-    console.log("班干部列表挂载");
-    console.log("allStu_content:", this.$props.allStu_content);
+    // console.log("班干部列表挂载");
+    // console.log("allStu_content:", this.$props.allStu_content);
     // if(this.value)
 
     // 班干部职位筛选
     getZwdm().then((res) => {
-      console.log(res);
+      // console.log(res);
       if (res.errcode == "00") {
         this.bjzwOptions = res.data.rows;
       }
@@ -467,13 +467,13 @@ export default {
       var data = this.queryParams1;
       getQueryAllstuList(data)
         .then((res) => {
-          console.log("该班学生查询结果：", res);
+          // console.log("该班学生查询结果：", res);
           let data = res.rows || [];
           this.stuList = data;
           this.total = res.total;
         })
         .catch((err) => {
-          console.log("该班学生查询结果错误：", err);
+          // console.log("该班学生查询结果错误：", err);
         });
     },
     /** 重置按钮操作 */
@@ -501,15 +501,15 @@ export default {
     getBgbListData() {
       getQueryBgbList(this.queryParams)
         .then((res) => {
-          console.log("该班班干部查询结果：", res);
+          // console.log("该班班干部查询结果：", res);
           let data = res.rows || [];
           this.queryBgbList = data;
           this.total = res.total;
 
-          console.log("test:", this.queryBgbList);
+          // console.log("test:", this.queryBgbList);
         })
         .catch((err) => {
-          console.log("该班班干部查询结果错误：", err);
+          // console.log("该班班干部查询结果错误：", err);
         });
     },
 
@@ -530,9 +530,9 @@ export default {
     getCxlyData() {
       if (this.cxlyOptions.length == 0) {
         getCxly().then((res) => {
-          console.log(res);
+          // console.log(res);
           this.cxlyOptions = res.data.rows || [];
-          console.log("crlyOptions:", this.cxlyOptions);
+          // console.log("crlyOptions:", this.cxlyOptions);
         });
       }
     },
@@ -540,9 +540,9 @@ export default {
     // 班干部批量撤任操作
     deleteSome() {
       getCxly().then((res) => {
-        console.log(res);
+        // console.log(res);
         this.cxlyOptions = res.data.rows;
-        console.log("crlyOptions:", this.cxlyOptions);
+        // console.log("crlyOptions:", this.cxlyOptions);
       });
       this.cancelAllocate = true;
     },
@@ -555,12 +555,12 @@ export default {
     },
     // 批量撤任-二次确认按钮
     doubleCheckConfirm() {
-      console.log("批量撤任二次确认操作！");
+      // console.log("批量撤任二次确认操作！");
       let idList = [];
       let cxrgh = this.$store.getters.userId;
       let cxly = this.formDismission.reason;
       let cxsj = this.formDismission.offDate;
-      console.log(this.currentRowBgb);
+      // console.log(this.currentRowBgb);
 
       for (let item_row of this.currentRowBgb) {
         idList.push(item_row.id);
@@ -594,7 +594,7 @@ export default {
     },
     // 批量任命班干部-确认操作
     assignBgbConfirm() {
-      console.log("批量任命确认操作");
+      // console.log("批量任命确认操作");
       this.openAssignBgb = false;
       var bgbmc = "";
       for (let index = 0; index < this.bjzwOptions.length; index++) {
@@ -616,7 +616,7 @@ export default {
 
     //班干部批量任命————二次确定操作
     doubleAssignConfirm() {
-      console.log("批量任命二次确认操作！");
+      // console.log("批量任命二次确认操作！");
       this.currentBjdm = this.$route.query.bjdm;
       let stuList = [];
       let rmsj = this.form.rmsj
@@ -630,7 +630,7 @@ export default {
       }
 
       getAssignBgb({ stuList, zwdm, bjdm, rmsj }).then((res) => {
-        console.log(res);
+        // console.log(res);
         this.$message({
           message: "任命成功",
           type: "success",
@@ -656,13 +656,13 @@ export default {
 
     // 全班同学多选框选中数据
     handleSelectionChange(row) {
-      console.log(row);
+      // console.log(row);
       // 选中的行数据
       this.currentRow = row;
     },
     //班干部多选框选中数据
     handleSelectionChangeBgb(row) {
-      console.log(row);
+      // console.log(row);
       this.currentRowBgb = row;
     },
   },

@@ -159,7 +159,7 @@ export default {
     // 删除任职记录——一次性一条或多条
     deleteRecord() {
       deleteRecords({ recordsList: this.recordsList }).then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response.errcode == "00") {
           this.$message({
             message: "删除班主任任职记录操作成功",

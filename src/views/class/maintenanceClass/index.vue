@@ -413,7 +413,7 @@ export default {
     alterClassName(row) {
       // 整理参数
       const { bjdm, bjmc } = row;
-      console.log({ bjdm, bjmc });
+
       modifyClassName({ bjdm, bjmc }).then((response) => {
         //response：{new className: '计算机学院硕士2020级5班'} {"fail to modify className": false}
         if (response.flag == true) {

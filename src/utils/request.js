@@ -130,7 +130,7 @@ service.interceptors.response.use(res => {
 //     return res.data
 //   }
     if (code === 'EC-000006' ) { // || code === 'EC-000005'
-        console.log('登录失效',res)
+        // console.log('登录失效',res)
         // let outLength = '/loginout'.length
         // let allLength = res.request.responseURL.length
         // console.log('当前url',res.request.responseURL)

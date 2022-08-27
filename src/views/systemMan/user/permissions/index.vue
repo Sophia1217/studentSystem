@@ -374,7 +374,7 @@ export default {
                 this.$refs.tree[index].setCheckedKeys(this.roleData[index].checksedKeys)
             })
             .catch((err) => {
-                console.log('操作人返回学院列表失败',err,data);
+                
             });
 
     },

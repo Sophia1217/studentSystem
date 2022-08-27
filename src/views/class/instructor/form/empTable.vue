@@ -222,7 +222,7 @@ export default {
     },
     // 任职记录
     empRecordClick() {
-      console.log(1);
+      // console.log(1);
       this.$router.push("/class/empRecord");
     },
     /** 查询任职记录列表 */

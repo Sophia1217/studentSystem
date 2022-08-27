@@ -113,7 +113,7 @@ export default {
       }
     },
     setkeys() {
-      console.log("this.arr", this.arr);
+      
       this.$refs.tree.setCheckedKeys(this.arr);
     },
     getData(data) {
@@ -135,7 +135,7 @@ export default {
     },
     sava() {
       if (this.isEdit === "1") {
-        console.log("xinzeng");
+
         let data = {
           userId: "1234",
           menuList: this.savaData,

@@ -498,7 +498,7 @@ export default {
       this.collegeOptions = [];
       getCollege().then((response) => {
         // 获取工作单位列表数据
-        console.log(response);
+       //  console.log(response);
         this.collegeOptions = response.data.rows;
       });
     },
@@ -508,7 +508,7 @@ export default {
       getPlacementPageList(data).then((res) => {
         this.placementPageList = res.items;
         this.total = res.total;
-        console.log("this.placementPageList:", this.placementPageList);
+        // console.log("this.placementPageList:", this.placementPageList);
       });
     },
     // 辅导员任命
@@ -530,7 +530,7 @@ export default {
     },
     // 分配班级tips点击“确定”按钮
     submitTips() {
-      console.log("分配班级确认！");
+      // console.log("分配班级确认！");
       let rmsj = this.form.rmsj
       let rmrgh = this.$store.getters.userId
       getAssignFdy({
@@ -538,7 +538,7 @@ export default {
         fdyList: this.fdyList,
         rmrgh,
         rmsj }).then((res) => {
-        console.log(res);
+        // console.log(res);
 
         this.$message({
         message: "分配成功",
@@ -563,7 +563,7 @@ export default {
       this.fdyList = this.fdyList.slice(0, -1);
       this.openCancelAssign = true;
       this.title = "取消分配";
-      console.log("取消分配信息：", row);
+      // console.log("取消分配信息：", row);
       this.bjdm = this.$route.query.bjdm;
       this.fdyList.push(row.gh);
       this.xm = row.xm;
@@ -585,12 +585,12 @@ export default {
       this.openSecondCancelAssign = false;
       this.title = "取消分配确认";
 
-      console.log("取消分配二次确认！")
+      // console.log("取消分配二次确认！")
       let crly = this.formDismission.noticeTitle
       let cxsj = this.formDismission.offDate
       let cxrGh = "2005690002";
       getRemoveAssignFdy({ cxrGh, bjdm: this.bjdm, fdyList: this.fdyList, crly, cxsj }).then((res) => {
-        console.log(res);
+        
         this.$message({
         message: "取消分配成功",
         type: "success",
@@ -618,7 +618,7 @@ export default {
         fdyList.push(item_row.gh);
       }
       getAssignFdy({ bjdm, fdyList, rmrgh, rmsj }).then((res) => {
-        console.log(res);
+       
         
       });
       this.getInstructorList();
@@ -644,7 +644,7 @@ export default {
       }
       
       getRemoveAssignFdy({fdyList, bjdm, cxrGh, crly, cxsj}).then((res) => {
-        console.log(res);
+        
 
         this.$message({
         message: "取消分配成功",

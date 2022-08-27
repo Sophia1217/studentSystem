@@ -1444,7 +1444,7 @@ export default {
       });
     },
     deteleItem(row, index) {
-      console.log(index);
+    
       this.tableData.splice(index, 1);
     },
   },

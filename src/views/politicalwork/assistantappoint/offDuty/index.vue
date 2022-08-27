@@ -325,7 +325,7 @@ export default {
         allCheck.push(this.category.checkBox[i].val);
       }
       this.category.choose = val ? allCheck : [];
-      console.log(this.category.choose, "全选");
+     
       this.category.isIndeterminate = false;
     },
     // 类别单选
@@ -334,7 +334,7 @@ export default {
       this.category.checkAll = checkedCount === this.category.checkBox.length;
       this.category.isIndeterminate =
         checkedCount > 0 && checkedCount < this.category.checkBox.length;
-      console.log(this.category.choose, "单选");
+     
     },
     // 性别全选
     handleCheckAllSexChange(val) {
@@ -343,7 +343,7 @@ export default {
         allCheck.push(this.sex.checkBox[i].val);
       }
       this.sex.choose = val ? allCheck : [];
-      console.log(this.sex.choose, "全选");
+
       this.sex.isIndeterminate = false;
     },
     // 性别单选
@@ -352,7 +352,7 @@ export default {
       this.sex.checkAll = checkedCount === this.sex.checkBox.length;
       this.sex.isIndeterminate =
         checkedCount > 0 && checkedCount < this.sex.checkBox.length;
-      console.log(this.sex.choose, "单选");
+    
     },
     // 类别全选
     handleCheckAllWorkPlaceChange(val) {
@@ -361,7 +361,7 @@ export default {
         allCheck.push(this.workPlace.checkBox[i].val);
       }
       this.workPlace.choose = val ? allCheck : [];
-      console.log(this.workPlace.choose, "全选");
+
       this.workPlace.isIndeterminate = false;
     },
     // 类别单选
@@ -370,12 +370,12 @@ export default {
       this.workPlace.checkAll = checkedCount === this.workPlace.checkBox.length;
       this.workPlace.isIndeterminate =
         checkedCount > 0 && checkedCount < this.workPlace.checkBox.length;
-      console.log(this.workPlace.choose, "单选");
+    
     },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      console.log(this.multipleSelection);
+    
     },
     // 状态全选
     handleCheckAllStatusChange(val) {
@@ -384,7 +384,7 @@ export default {
         allCheck.push(this.status.checkBox[i].val);
       }
       this.status.choose = val ? allCheck : [];
-      console.log(this.status.choose, "全选");
+    
       this.status.isIndeterminate = false;
     },
     // 状态单选
@@ -393,7 +393,7 @@ export default {
       this.status.checkAll = checkedCount === this.status.checkBox.length;
       this.status.isIndeterminate =
         checkedCount > 0 && checkedCount < this.status.checkBox.length;
-      console.log(this.status.choose, "单选");
+    
     },
     // 打开导出弹窗
     handleExport() {
@@ -416,7 +416,7 @@ export default {
       lookDetail(ghdata).then((res) => {
         if (res.errcode == "00") {
           //this.moreIform.classNum = res.assistantDetailRes[0].bjbh;
-          console.log(res);
+        
           this.tableData = res.assistantDetailRes;
         }
       });
@@ -551,7 +551,7 @@ export default {
         lbList: this.category.choose,
         genderList: this.sex.choose,
       };
-      console.log(queryParams);
+     
       this.getList(queryParams);
     },
     /** 详细信息查询 */

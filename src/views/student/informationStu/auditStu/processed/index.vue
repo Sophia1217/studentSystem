@@ -247,7 +247,7 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { getZY, getBJ } from "@/api/student/index";
+import { getZY, getBJ,StuInfoFlowExport } from "@/api/student/index";
 import { getCollege } from "@/api/class/maintenanceClass";
 import {
   getManageRegStuInfoSearchSpread,
@@ -521,7 +521,18 @@ export default {
     },
     // 打开导出弹窗
     handleExport() {
-      this.showExport = true;
+      if (this.multipleSelection.length <= 0) {
+        this.$message.error('请勾选一条数据');
+        return
+      }
+      let ids = []
+      this.multipleSelection.forEach(item => {
+        ids.push(item.id)
+      })
+      let data = { idList: ids, exportStyle:'EXCEL'}
+      StuInfoFlowExport(data).then(res => {
+        this.downloadFn(res, "学生信息审核导出", "xls")
+      }).catch(err=>{})
     },
     pass() {
       var data = this.multipleSelection;
@@ -547,7 +558,7 @@ export default {
       if (this.multipleSelection.length == 1) {
         this.dialogVisible = true;
       } else if (this.multipleSelection.length > 1) {
-        this.$message.error("只能勾选一条信息");
+        this.$message.error("最多勾选一条信息");
       } else {
         this.$message.error("请先勾选一条信息");
       }

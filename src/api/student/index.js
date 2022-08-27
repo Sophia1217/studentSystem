@@ -82,6 +82,16 @@ export function updateRegStuInfo(data) {
   })
 }
 
+// 审核导出
+export function StuInfoFlowExport(data) {
+  return request({
+    url: '/StuInfoFlow/export',
+    method: 'post',
+    responseType: 'blob',
+    data: data
+  })
+}
+
 // 导出在籍学生信息字段展示
 export function exportQuery(data) {
   return request({

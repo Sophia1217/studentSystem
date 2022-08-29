@@ -575,6 +575,7 @@ export default {
       backFlow(data).then(() => {
         this.$message({ message: res.errmsg, type: "success" })
         this.dialogVisible = false
+        this.handleSearch()
       }).catch(err => {
         this.dialogVisible = false
       })

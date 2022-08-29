@@ -388,8 +388,8 @@ export default {
         sfdbList: [],
         orderZd: "",
         orderPx: "",
-        xm:'',
-        gh:''
+        xm: "",
+        gh: "",
       },
       list: [],
     };
@@ -405,8 +405,8 @@ export default {
 
   methods: {
     //工作地点勾选
-    workPlaceChange(){
-      this.queryParams.dwmcList = this.workPlace
+    workPlaceChange() {
+      this.queryParams.dwmcList = this.workPlace;
       this.getList(this.queryParams);
     },
     selectChange(val) {
@@ -441,15 +441,9 @@ export default {
     },
     //获取数据列表
     getList(queryParams) {
-<<<<<<< Updated upstream
-      console.log(this.select,'select')
-      queryParams.gh = this.select ==1?this.searchVal:''
-      queryParams.xm = this.select ==2?this.searchVal:''
-=======
       console.log(this.select, "select");
       queryParams.xh = this.select == 1 ? this.searchVal : "";
       queryParams.xm = this.select == 2 ? this.searchVal : "";
->>>>>>> Stashed changes
       fdyList(queryParams)
         .then((response) => {
           //console.log(response);
@@ -497,11 +491,11 @@ export default {
       this.category.choose = val ? allCheck : [];
 
       this.category.isIndeterminate = false;
-      this.queryParams.dwmcList = this.workPlace
-      this.queryParams.genderList = this.sex.choose
-      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.genderList = this.sex.choose;
+      this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList(this.queryParams)
+      this.getList(this.queryParams);
     },
     // 类别单选
     handleCheckedCategoryChange(value) {
@@ -509,15 +503,11 @@ export default {
       this.category.checkAll = checkedCount === this.category.checkBox.length;
       this.category.isIndeterminate =
         checkedCount > 0 && checkedCount < this.category.checkBox.length;
-<<<<<<< Updated upstream
-      this.queryParams.dwmcList = this.workPlace
-      this.queryParams.genderList = this.sex.choose
-      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.genderList = this.sex.choose;
+      this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList(this.queryParams)
-
-=======
->>>>>>> Stashed changes
+      this.getList(this.queryParams);
     },
     // 性别全选
     handleCheckAllSexChange(val) {
@@ -528,11 +518,11 @@ export default {
       this.sex.choose = val ? allCheck : [];
 
       this.sex.isIndeterminate = false;
-      this.queryParams.dwmcList = this.workPlace
-      this.queryParams.genderList = this.sex.choose
-      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.genderList = this.sex.choose;
+      this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList(this.queryParams)
+      this.getList(this.queryParams);
     },
     // 性别单选
     handleCheckedSexChange(value) {
@@ -540,14 +530,10 @@ export default {
       this.sex.checkAll = checkedCount === this.sex.checkBox.length;
       this.sex.isIndeterminate =
         checkedCount > 0 && checkedCount < this.sex.checkBox.length;
-<<<<<<< Updated upstream
-      this.queryParams.dwmcList = this.workPlace
-      this.queryParams.genderList = this.sex.choose
-      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.genderList = this.sex.choose;
+      this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList(this.queryParams)
-=======
->>>>>>> Stashed changes
     },
 
     // 多选
@@ -565,11 +551,11 @@ export default {
       this.status.choose = val ? allCheck : [];
 
       this.status.isIndeterminate = false;
-      this.queryParams.dwmcList = this.workPlace
-      this.queryParams.genderList = this.sex.choose
-      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.genderList = this.sex.choose;
+      this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList(this.queryParams)
+      this.getList(this.queryParams);
     },
     // 状态单选
     handleCheckedStatusChange(value) {
@@ -577,14 +563,11 @@ export default {
       this.status.checkAll = checkedCount === this.status.checkBox.length;
       this.status.isIndeterminate =
         checkedCount > 0 && checkedCount < this.status.checkBox.length;
-<<<<<<< Updated upstream
-      this.queryParams.dwmcList = this.workPlace
-      this.queryParams.genderList = this.sex.choose
-      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.genderList = this.sex.choose;
+      this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList(this.queryParams)
-=======
->>>>>>> Stashed changes
+      this.getList(this.queryParams);
     },
     // 打开导出弹窗
     handleExport() {

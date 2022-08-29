@@ -180,7 +180,7 @@ export default {
     flex-direction: row;
     background: #fff;
     padding: 20px;
-    height: calc(100vh - 250px);
+    // height: calc(100vh - 250px);
     .perName {
       font-weight: 600;
       font-size: 14px;

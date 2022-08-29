@@ -52,7 +52,7 @@
                 v-for="(item, index) in gzdwOptions"
                 :key="index"
                 :label="item.mc"
-                :value="item.mc"
+                :value="item.dm"
               />
             </el-select>
           </el-col>

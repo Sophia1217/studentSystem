@@ -56,7 +56,7 @@
                   v-for="(item, index) in gzdwOptions"
                   :key="index"
                   :label="item.mc"
-                  :value="item.mc"
+                  :value="item.dm"
                 ></el-option>
               </el-select>
             </el-col>
@@ -200,7 +200,7 @@ export default {
         zybj: "",
         genderList: [],
         mzList: [],
-        zzmmLixt: [],
+        zzmmList: [],
         dwmcList: [],
         gwList: [],
         pageNum: 1,

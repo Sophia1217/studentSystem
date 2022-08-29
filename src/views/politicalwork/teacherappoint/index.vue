@@ -46,12 +46,13 @@
               multiple
               placeholder="请选择"
               collapse-tags
+              @change = 'workPlaceChange'
             >
               <el-option
                 v-for="(item, index) in gzdwOptions"
                 :key="index"
                 :label="item.mc"
-                :value="item.dm"
+                :value="item.mc"
               />
             </el-select>
           </el-col>
@@ -381,6 +382,11 @@ export default {
     this.getCode('dmxbm') // 性别
   },
   methods: {
+    //工作地点勾选
+    workPlaceChange(){
+      this.queryParams.dwmcList = this.workPlace
+      this.getList();
+    },
     getCode(data) {
       this.getCodeInfoByEnglish(data)
     },

@@ -50,12 +50,13 @@
                 multiple
                 placeholder="请选择"
                 collapse-tags
+                @change = 'workPlaceChange'
               >
                 <el-option
                   v-for="(item, index) in gzdwOptions"
                   :key="index"
                   :label="item.mc"
-                  :value="item.dm"
+                  :value="item.mc"
                 ></el-option>
               </el-select>
             </el-col>
@@ -338,7 +339,7 @@ export default {
       this.queryParams.byyx = this.select == "byyx" ? this.searchVal : "";
       this.queryParams.genderList = this.gender.choose;
       this.queryParams.mzList = this.ethnic.choose;
-      this.queryParams.zzmmLixt = this.politica.choose;
+      this.queryParams.zzmmList = this.politica.choose;
       this.queryParams.dwmcList = this.workPlace;
       this.queryParams.gwList = this.position.choose;
       getPoliticalWorkList(this.queryParams)
@@ -352,6 +353,10 @@ export default {
     // 点击更多
     handleMore() {
       this.isMore = !this.isMore;
+    },
+    //工作地点勾选
+    workPlaceChange(){
+      this.handleSearch();
     },
     // 性别全选
     genderAll(val) {

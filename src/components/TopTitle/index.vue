@@ -98,7 +98,7 @@ export default {
                 type: 'warning'
             }).then(() => {
                 this.$store.dispatch('LogOut').then(() => {
-                    location.href = 'https://account.ccnu.edu.cn/cas/login?service=http://10.222.7.139:8081/sws/checkLogin';
+                    location.href = 'https://account.ccnu.edu.cn/cas/logout?service=http://10.222.7.139:8081/sws/checkLogin';
                 })
             }).catch(() => {});
         },

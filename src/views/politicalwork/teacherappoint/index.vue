@@ -27,7 +27,8 @@
             class="searchButton"
             icon="el-icon-search"
             @click="handleSearch"
-          >查询</el-button>
+            >查询</el-button
+          >
         </el-input>
         <div class="more" @click="handleMore">
           <span>更多分类</span>
@@ -174,13 +175,15 @@
         <el-table-column label="在岗日期" width="180">
           <template slot-scope="scope">
             <div v-if="tableDataDetail[0].cxsj != null">
-              <span>{{ tableDataDetail[0].rmsj }} 至
-                {{ tableDataDetail[0].cxsj }}</span>
+              <span
+                >{{ tableDataDetail[0].rmsj }} 至
+                {{ tableDataDetail[0].cxsj }}</span
+              >
             </div>
             <div
               v-if="
                 tableDataDetail[0].cxsj == null &&
-                  tableDataDetail[0].rmsj != null
+                tableDataDetail[0].rmsj != null
               "
             >
               <span>{{ tableDataDetail[0].rmsj }} 至今</span>
@@ -213,11 +216,7 @@
       </div>
     </el-dialog>
     <!-- 批量免去对话框 -->
-    <el-dialog
-
-      :visible.sync="showRemove"
-      width="30%"
-    >
+    <el-dialog :visible.sync="showRemove" width="30%">
       <template v-for="item in multipleSelection">
         <div :key="item.xh">
           <span>确认免去【{{ item.gh }}】【{{ item.xm }}】班主任身份？</span>
@@ -226,18 +225,13 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancleRemove">取 消</el-button>
-        <el-button
-          type="primary"
-          class="confirm"
-          @click="confirmRemove"
-        >确 定</el-button>
+        <el-button type="primary" class="confirm" @click="confirmRemove"
+          >确 定</el-button
+        >
       </span>
     </el-dialog>
     <!-- 导入对话框 -->
-    <el-dialog
-      :visible.sync="showImport"
-      width="30%"
-    >
+    <el-dialog :visible.sync="showImport" width="30%">
       <el-form label-position="left" label-width="100px" :model="importForm">
         <el-form-item label="学工号" prop="gh">
           <el-input v-model="importForm.gh" />
@@ -249,29 +243,23 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancelImport">取 消</el-button>
-        <el-button
-          type="primary"
-          class="confirm"
-          @click="submitImport"
-        >确 定</el-button>
+        <el-button type="primary" class="confirm" @click="submitImport"
+          >确 定</el-button
+        >
       </span>
     </el-dialog>
     <!-- 导入确认对话框 -->
-    <el-dialog
-
-      :visible.sync="showConfirmImport"
-      width="30%"
-    >
-      <span>确认任命【{{ importForm.gh }}】【{{
-        importForm.xm
-      }}】班主任身份？</span>
+    <el-dialog :visible.sync="showConfirmImport" width="30%">
+      <span
+        >确认任命【{{ importForm.gh }}】【{{
+          importForm.xm
+        }}】班主任身份？</span
+      >
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancelConfirmImport">取 消</el-button>
-        <el-button
-          type="primary"
-          class="confirm"
-          @click="confirmImport"
-        >确 定</el-button>
+        <el-button type="primary" class="confirm" @click="confirmImport"
+          >确 定</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -283,13 +271,13 @@ import {
   addTeacher,
   removeTeacher,
   exportTeacher,
-  getListWorkPlace
-} from '@/api/politicalWork/teacherappoint'
-import { getCodeInfoByEnglish } from '@/api/student/fieldSettings'
-import CheckboxCom from '@/views/components/checkboxCom'
+  getListWorkPlace,
+} from "@/api/politicalWork/teacherappoint";
+import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
+import CheckboxCom from "@/views/components/checkboxCom";
 
 export default {
-  name: 'Teacherappoint',
+  name: "Teacherappoint",
   components: { CheckboxCom },
   props: [],
   data() {
@@ -297,8 +285,8 @@ export default {
       // // 用户导入参数
       showImport: false,
       importForm: {
-        gh: '',
-        xm: ''
+        gh: "",
+        xm: "",
       },
       // 确认导入弹出
       showConfirmImport: false,
@@ -319,8 +307,8 @@ export default {
         genderList: [],
         lbList: [],
         sfdbList: [],
-        gh: '',
-        xm: ''
+        gh: "",
+        xm: "",
       },
       // expordParams: {
       //   pageNum: 1,
@@ -333,11 +321,12 @@ export default {
       //   xm: ''
 
       // },
-      searchVal: '',
-      select: '',
+      list: [],
+      searchVal: "",
+      select: "",
       isMore: false,
       moreIform: {
-        value1: ''
+        value1: "",
       },
       gzdwOptions: [],
       status: {
@@ -345,41 +334,41 @@ export default {
         checkAll: false,
         choose: [],
         checkBox: [
-          { mc: '是', dm: 1 },
-          { mc: '否', dm: 0 }
+          { mc: "是", dm: 1 },
+          { mc: "否", dm: 0 },
         ],
-        isIndeterminate: true
+        isIndeterminate: true,
       },
       sex: {
         // 性别
         checkAll: false,
         choose: [],
         checkBox: [
-          { mc: '男', dm: 1 },
-          { mc: '女', dm: 2 }
+          { mc: "男", dm: 1 },
+          { mc: "女", dm: 2 },
         ],
-        isIndeterminate: true
+        isIndeterminate: true,
       },
       workPlace: [],
       tableData: [],
       tableDataDetail: [],
       multipleSelection: [],
       removeGh: {
-        ghList: []
-      }
-    }
+        ghList: [],
+      },
+    };
   },
   computed: {},
   watch: {},
   created() {
-    this.getList()
+    this.getList();
     // this.getConfigKey('sys.user.initPassword').then(response => {
     //   this.initPassword = response.msg
     // })
   },
   mounted() {
-    this.getListWorkPlace('dmdwmc') // 工作单位
-    this.getCode('dmxbm') // 性别
+    this.getListWorkPlace("dmdwmc"); // 工作单位
+    this.getCode("dmxbm"); // 性别
   },
   methods: {
     //工作地点勾选
@@ -388,196 +377,196 @@ export default {
       this.getList();
     },
     getCode(data) {
-      this.getCodeInfoByEnglish(data)
+      this.getCodeInfoByEnglish(data);
     },
     getCodeInfoByEnglish(paramsData) {
-      const data = { codeTableEnglish: paramsData }
+      const data = { codeTableEnglish: paramsData };
       getCodeInfoByEnglish(data)
         .then((res) => {
-          this.$set(this.sex, 'checkBox', res.data)
+          this.$set(this.sex, "checkBox", res.data);
         })
-        .catch((err) => {})
+        .catch((err) => {});
     },
 
     getWorkPlace(data) {
-      this.getListWorkPlace(data)
+      this.getListWorkPlace(data);
     },
     getListWorkPlace(paramsData) {
-      const data = { listWorkPlace: paramsData }
+      const data = { listWorkPlace: paramsData };
       getListWorkPlace(data)
         .then((res) => {
-          this.gzdwOptions = res.data.rows
+          this.gzdwOptions = res.data.rows;
         })
-        .catch((err) => {})
+        .catch((err) => {});
     },
 
     // 查询
     handleSearch() {
-      if (this.select == 'xm') {
-        this.queryParams.xm = this.searchVal
-      } else if (this.select == 'gh') {
-        this.queryParams.gh = this.searchVal
+      if (this.select == "xm") {
+        this.queryParams.xm = this.searchVal;
+      } else if (this.select == "gh") {
+        this.queryParams.gh = this.searchVal;
       }
-      this.getList()
-      this.queryParams.xm = ''
-      this.queryParams.gh = ''
+      this.getList();
+      this.queryParams.xm = "";
+      this.queryParams.gh = "";
     },
     // 点击更多
     handleMore() {
-      this.isMore = !this.isMore
+      this.isMore = !this.isMore;
     },
     // 状态全选
     handleCheckAllStatusChange(val) {
-      const allCheck = []
+      const allCheck = [];
       for (const i in this.status.checkBox) {
-        allCheck.push(this.status.checkBox[i].dm)
+        allCheck.push(this.status.checkBox[i].dm);
       }
-      this.status.choose = val ? allCheck : []
+      this.status.choose = val ? allCheck : [];
 
-      this.status.isIndeterminate = false
-      this.queryParams.dwmcList = this.workPlace
-      this.queryParams.genderList = this.sex.choose
-      this.queryParams.sfdbList = this.status.choose
+      this.status.isIndeterminate = false;
+      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.genderList = this.sex.choose;
+      this.queryParams.sfdbList = this.status.choose;
       // 调用接口
-      this.getList()
+      this.getList();
     },
     // 状态单选
     handleCheckedStatusChange(value) {
-      const checkedCount = value.length
-      this.status.checkAll = checkedCount === this.status.checkBox.length
+      const checkedCount = value.length;
+      this.status.checkAll = checkedCount === this.status.checkBox.length;
       this.status.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.status.checkBox.length
+        checkedCount > 0 && checkedCount < this.status.checkBox.length;
 
-      this.queryParams.dwmcList = this.workPlace
-      this.queryParams.genderList = this.sex.choose
-      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.genderList = this.sex.choose;
+      this.queryParams.sfdbList = this.status.choose;
       // 调用接口
-      this.getList()
+      this.getList();
     },
     // 性别全选
     handleCheckAllSexChange(val) {
-      const allCheck = []
+      const allCheck = [];
       for (const i in this.sex.checkBox) {
-        allCheck.push(this.sex.checkBox[i].dm)
+        allCheck.push(this.sex.checkBox[i].dm);
       }
-      this.sex.choose = val ? allCheck : []
+      this.sex.choose = val ? allCheck : [];
 
-      this.sex.isIndeterminate = false
-      this.queryParams.dwmcList = this.workPlace
-      this.queryParams.genderList = this.sex.choose
-      this.queryParams.sfdbList = this.status.choose
+      this.sex.isIndeterminate = false;
+      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.genderList = this.sex.choose;
+      this.queryParams.sfdbList = this.status.choose;
       // 调用接口
-      this.getList()
+      this.getList();
     },
     // 性别单选
     handleCheckedSexChange(value) {
-      const checkedCount = value.length
-      this.sex.checkAll = checkedCount === this.sex.checkBox.length
+      const checkedCount = value.length;
+      this.sex.checkAll = checkedCount === this.sex.checkBox.length;
       this.sex.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.sex.checkBox.length
+        checkedCount > 0 && checkedCount < this.sex.checkBox.length;
 
-      this.queryParams.dwmcList = this.workPlace
-      this.queryParams.genderList = this.sex.choose
-      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.genderList = this.sex.choose;
+      this.queryParams.sfdbList = this.status.choose;
       // 调用接口
-      this.getList()
+      this.getList();
     },
 
     // 多选
     handleSelectionChange(val) {
-      this.multipleSelection = val
+      this.multipleSelection = val;
+      this.list = [...val];
     },
     // 打开导出弹窗
     handleExport() {
-      // this.showExport = true
-      this.queryParams.pageNum = 1
-      exportTeacher(this.queryParams)
-        .then((res) => {
-          this.downloadFn(res, '班主任任命表.xlsx', 'xlsx')
-        })
-        .catch((err) => {})
+      var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
+      var data = { ghList: arr };
+      Object.assign(data, this.queryParams);
+      exportTeacher(data)
+        .then((res) => this.downloadFn(res, "班主任任命表", "xlsx"))
+        .catch((err) => {});
     },
     // 导出取消
     handleCancel() {
-      this.showExport = false
+      this.showExport = false;
     },
     // 导出确认
     handleConfirm() {
-      this.showExport = false
+      this.showExport = false;
     },
     // 点击详情
     hadleDetail(row, flag) {
       // getTeacherDetail()
-      var data = { gh: row.gh }
+      var data = { gh: row.gh };
       getTeacherDetail(data).then((response) => {
-        this.tableDataDetail = response.teacherDetailRes
-      })
+        this.tableDataDetail = response.teacherDetailRes;
+      });
 
-      this.open = true
+      this.open = true;
     },
     // ///////////////////////////////////////////////////////////////
     /** 查询岗位列表 */
     getList() {
       getTeacherDetailList(this.queryParams)
         .then((response) => {
-          this.tableData = response.resList
-          this.total = response.count
+          this.tableData = response.resList;
+          this.total = response.count;
         })
-        .catch((err) => {})
+        .catch((err) => {});
     },
 
     /** 导入按钮操作 */
     handleImport() {
-      this.showImport = true
+      this.showImport = true;
     },
 
     // /** 导入提交按钮 */
-    submitImport: function() {
+    submitImport: function () {
       // todo
-      this.showImport = false
-      this.showConfirmImport = true
+      this.showImport = false;
+      this.showConfirmImport = true;
     },
     // 取消导入提交按钮
     cancelImport() {
-      this.showImport = false
+      this.showImport = false;
     },
 
     // 确认导入按钮
     confirmImport() {
-      this.showConfirmImport = false
+      this.showConfirmImport = false;
       addTeacher({ ghList: [this.importForm.gh], xm: this.importForm.xm }).then(
         (res) => {
-          this.getList()
+          this.getList();
         }
-      )
+      );
     },
     // 取消导入按钮
     cancelConfirmImport() {
-      this.showConfirmImport = false
+      this.showConfirmImport = false;
     },
     // 点击批量免去
     handleRemove() {
-      this.showRemove = true
+      this.showRemove = true;
     },
     // 确认批量免去
     confirmRemove() {
       for (var i in this.multipleSelection) {
-        this.removeGh.ghList.push(this.multipleSelection[i].gh)
+        this.removeGh.ghList.push(this.multipleSelection[i].gh);
       }
       removeTeacher(this.removeGh).then((res) => {
-        this.getList()
-      })
-      this.showRemove = false
+        this.getList();
+      });
+      this.showRemove = false;
     },
     // 取消免任
     cancleRemove() {
-      this.showRemove = false
+      this.showRemove = false;
     },
 
     // 详情取消按钮
     cancel() {
-      this.open = false
-      this.reset()
+      this.open = false;
+      this.reset();
     },
     // 表单重置
     reset() {
@@ -590,25 +579,25 @@ export default {
         phonenumber: undefined,
         email: undefined,
         sex: undefined,
-        status: '0',
+        status: "0",
         remark: undefined,
         postIds: [],
-        roleIds: []
-      }
-      this.resetForm('form')
+        roleIds: [],
+      };
+      this.resetForm("form");
     },
     changeTableSort(column) {
-      this.queryParams.orderZd = column.prop
-      this.queryParams.orderPx = column.order === 'descending' ? 1 : 0 // 0是asc升序，1是desc降序
-      this.handleSearch()
-    }
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.handleSearch();
+    },
     /** 详细信息查询 */
     // handleGet(row) {
     //   const name = row.name || ''
     //   this.$router.push({ path: '/basicInfo/detailInfo/index', query: { name: name }})
     // }
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -9,7 +9,12 @@
       label-width="68px"
     >
       <el-form-item label="培养单位" prop="ssdwdm">
-        <el-select v-model="queryParams.ssdwdmList" placeholder="未选择" clearable multiple>
+        <el-select
+          v-model="queryParams.ssdwdmList"
+          placeholder="未选择"
+          clearable
+          multiple
+        >
           <el-option
             v-for="(item, index) in collegeOptions"
             :key="index"
@@ -19,7 +24,12 @@
         </el-select>
       </el-form-item>
       <el-form-item label="培养层次" prop="pycc">
-        <el-select v-model="queryParams.pyccList" placeholder="未选择" clearable multiple>
+        <el-select
+          v-model="queryParams.pyccList"
+          placeholder="未选择"
+          clearable
+          multiple
+        >
           <el-option
             v-for="(item, index) in levelOptions"
             :key="index"
@@ -29,7 +39,12 @@
         </el-select>
       </el-form-item>
       <el-form-item label="年级" prop="ssnj">
-        <el-select v-model="queryParams.ssnjList" placeholder="未选择" clearable multiple>
+        <el-select
+          v-model="queryParams.ssnjList"
+          placeholder="未选择"
+          clearable
+          multiple
+        >
           <el-option
             v-for="(item, index) in gradeOptions"
             :key="index"
@@ -315,6 +330,7 @@ export default {
       // 是否显示删除空班级弹出层
       dialogVisible: false,
       // 查询参数
+      list: [],
       queryParams: {
         pageNum: 1, // 默认请求第一页数据
         pageSize: 10, // 默认一页10条数据
@@ -383,7 +399,9 @@ export default {
       });
     },
     handleExport() {
-      const data = this.queryParams;
+      var arr = this.list.length > 0 ? this.list.map((item) => item.bjdm) : [];
+      var data = { bjdmList: arr };
+      Object.assign(data, this.queryParams);
       expClass(data).then((res) => this.downloadFn(res, "班级名单", "xlsx"));
     },
     getOptions() {
@@ -481,9 +499,8 @@ export default {
     },
     // // 多选框选中数据
     handleSelectionChange(selection) {
-      // this.ids = selection.map((item) => item.noticeId);
-      // this.single = selection.length != 1;
-      // this.multiple = !selection.length;
+      this.list = [...selection];
+      console.log("list", this.list);
     },
     /** 新增班级按钮操作 */
     handleAdd() {
@@ -505,11 +522,11 @@ export default {
       deleteEmptyClass({ bjdm: this.bjdm }).then((response) => {
         this.dialogVisible = false;
         // if (response.flag == true) {
-          this.$message({
-            showClose: true,
-            message: "删除成功",
-            type: "success",
-          });
+        this.$message({
+          showClose: true,
+          message: "删除成功",
+          type: "success",
+        });
         // } else {
         //   this.$message({
         //     showClose: true,

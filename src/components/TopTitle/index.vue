@@ -91,14 +91,14 @@ export default {
 
     },
     methods: {
-        async logout() {
+        logout() {
             this.$confirm('确定注销并退出系统吗？', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
                 this.$store.dispatch('LogOut').then(() => {
-                    location.href = 'https://account.ccnu.edu.cn/cas/logout?service=http://10.222.7.139:8081/sws/checkLogin';
+                    location.href = 'https://account.ccnu.edu.cn/cas/logout?service=' + location.protocol+'//' + location.host;
                 })
             }).catch(() => {});
         },

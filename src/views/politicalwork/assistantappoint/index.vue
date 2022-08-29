@@ -44,6 +44,7 @@
               multiple
               placeholder="请选择"
               collapse-tags
+              @change="workPlaceChange"
             >
               <el-option
                 v-for="(item, index) in gzdwOptions"
@@ -387,6 +388,8 @@ export default {
         sfdbList: [],
         orderZd: "",
         orderPx: "",
+        xm:'',
+        gh:''
       },
     };
   },
@@ -400,6 +403,11 @@ export default {
   },
 
   methods: {
+    //工作地点勾选
+    workPlaceChange(){
+      this.queryParams.dwmcList = this.workPlace
+      this.getList(this.queryParams);
+    },
     selectChange(val) {
       this.searchVal = "";
     },
@@ -434,7 +442,7 @@ export default {
     //获取数据列表
     getList(queryParams) {
       console.log(this.select,'select')
-      queryParams.xh = this.select ==1?this.searchVal:''
+      queryParams.gh = this.select ==1?this.searchVal:''
       queryParams.xm = this.select ==2?this.searchVal:''
       fdyList(queryParams)
         .then((response) => {
@@ -483,6 +491,11 @@ export default {
       this.category.choose = val ? allCheck : [];
       
       this.category.isIndeterminate = false;
+      this.queryParams.dwmcList = this.workPlace
+      this.queryParams.genderList = this.sex.choose
+      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.lbList = this.category.choose;
+      this.getList(this.queryParams)
     },
     // 类别单选
     handleCheckedCategoryChange(value) {
@@ -490,6 +503,11 @@ export default {
       this.category.checkAll = checkedCount === this.category.checkBox.length;
       this.category.isIndeterminate =
         checkedCount > 0 && checkedCount < this.category.checkBox.length;
+      this.queryParams.dwmcList = this.workPlace
+      this.queryParams.genderList = this.sex.choose
+      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.lbList = this.category.choose;
+      this.getList(this.queryParams)
       
     },
     // 性别全选
@@ -501,6 +519,11 @@ export default {
       this.sex.choose = val ? allCheck : [];
      
       this.sex.isIndeterminate = false;
+      this.queryParams.dwmcList = this.workPlace
+      this.queryParams.genderList = this.sex.choose
+      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.lbList = this.category.choose;
+      this.getList(this.queryParams)
     },
     // 性别单选
     handleCheckedSexChange(value) {
@@ -508,7 +531,11 @@ export default {
       this.sex.checkAll = checkedCount === this.sex.checkBox.length;
       this.sex.isIndeterminate =
         checkedCount > 0 && checkedCount < this.sex.checkBox.length;
-     
+      this.queryParams.dwmcList = this.workPlace
+      this.queryParams.genderList = this.sex.choose
+      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.lbList = this.category.choose;
+      this.getList(this.queryParams)
     },
 
     // 多选
@@ -525,6 +552,11 @@ export default {
       this.status.choose = val ? allCheck : [];
      
       this.status.isIndeterminate = false;
+      this.queryParams.dwmcList = this.workPlace
+      this.queryParams.genderList = this.sex.choose
+      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.lbList = this.category.choose;
+      this.getList(this.queryParams)
     },
     // 状态单选
     handleCheckedStatusChange(value) {
@@ -532,7 +564,11 @@ export default {
       this.status.checkAll = checkedCount === this.status.checkBox.length;
       this.status.isIndeterminate =
         checkedCount > 0 && checkedCount < this.status.checkBox.length;
-    
+      this.queryParams.dwmcList = this.workPlace
+      this.queryParams.genderList = this.sex.choose
+      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.lbList = this.category.choose;
+      this.getList(this.queryParams)
     },
     // 打开导出弹窗
     handleExport() {
@@ -735,7 +771,7 @@ export default {
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
       this.queryParams.xm = name;
-      this.queryParams.gh = name;
+      this.queryParams.gh = gonghao;
       this.getList(this.queryParams);
     },
     changeTableSort(column) {

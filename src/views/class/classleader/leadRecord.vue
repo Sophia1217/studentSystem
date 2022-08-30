@@ -77,6 +77,7 @@ export default {
   name: "LeadRecord",
   data() {
     return {
+      arr: [],
       // 任职记录当前行数据
       currentRow: [],
       // 任职记录勾选框收集ids
@@ -145,7 +146,6 @@ export default {
     },
     // 删除记录
     deleteRecord() {
-      console.log("sadasd", this.currentRow_ids);
       // for (let item of this.currentRow) {
       //   this.xhs += item.xh + ",";
       //   this.zws += item.zwdm + ",";

@@ -137,6 +137,7 @@
           :data="tableData"
           style="width: 100%"
           @sort-change="changeTableSort"
+          @selection-change="handleSelectionChange($event)"
         >
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
@@ -214,6 +215,7 @@ export default {
       tableData: [],
       multipleSelection: [],
       gzdwOptions: [],
+      list: [],
       gender: {
         // 性别
         checkAll: false,
@@ -284,7 +286,6 @@ export default {
       const data = { listWorkPlace: paramsData };
       getListWorkPlace(data)
         .then((res) => {
-        
           this.gzdwOptions = res.data.rows;
         })
         .catch((err) => {});
@@ -293,7 +294,6 @@ export default {
       const data = { codeTableEnglish: paramsData };
       getCodeInfoByEnglish(data)
         .then((res) => {
-         
           switch (paramsData) {
             case "dmmzm":
               this.$set(this.ethnic, "checkBox", res.data);
@@ -348,7 +348,6 @@ export default {
           this.queryParams.total = res.count;
         })
         .catch((err) => {});
-     
     },
     // 点击更多
     handleMore() {
@@ -365,7 +364,7 @@ export default {
         allCheck.push(this.gender.checkBox[i].dm);
       }
       this.gender.choose = val ? allCheck : [];
-     
+
       this.gender.isIndeterminate = false;
       this.handleSearch();
     },
@@ -395,7 +394,7 @@ export default {
       this.position.checkAll = checkedCount === this.position.checkBox.length;
       this.position.isIndeterminate =
         checkedCount > 0 && checkedCount < this.position.checkBox.length;
-    
+
       this.handleSearch();
     },
 
@@ -406,7 +405,7 @@ export default {
         allCheck.push(this.ethnic.checkBox[i].dm);
       }
       this.ethnic.choose = val ? allCheck : [];
-    
+
       this.ethnic.isIndeterminate = false;
       this.handleSearch();
     },
@@ -419,7 +418,7 @@ export default {
       this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
       this.ethnic.isIndeterminate =
         checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
-     
+
       this.handleSearch();
     },
     // 政治面貌：全选
@@ -429,7 +428,7 @@ export default {
         allCheck.push(this.politica.checkBox[i].dm);
       }
       this.politica.choose = val ? allCheck : [];
-    
+
       this.politica.isIndeterminate = false;
       this.handleSearch();
     },
@@ -439,13 +438,12 @@ export default {
       this.politica.checkAll = checkedCount === this.politica.checkBox.length;
       this.politica.isIndeterminate =
         checkedCount > 0 && checkedCount < this.politica.checkBox.length;
-    
+
       this.handleSearch();
     },
     // 多选
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-      // console.log(this.multipleSelection)
+    handleSelectionChange(arr, index) {
+      this.list = [...arr]; // 存储已被勾选的数据
     },
 
     hadleDetail(row, flag) {
@@ -459,20 +457,13 @@ export default {
       });
     },
     handleExport() {
-      // this.showExport = true
-      this.queryParams.pageNum = 1;
-      // this.queryParams.pageSize = 1
-      exportBasicInfo(this.queryParams)
-        .then((res) => {
-          this.downloadFn(res, "政工干部信息表.xlsx", "xlsx");
-        })
+      var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
+      var data = { ghList: arr };
+      Object.assign(data, this.queryParams);
+      exportBasicInfo(data)
+        .then((res) => this.downloadFn(res, "政工干部信息表", "xlsx"))
         .catch((err) => {});
     },
-    /** 详细信息查询 */
-    // handleGet(row) {
-    //   const name = row.name || ''
-    //   this.$router.push({ path: '/basicInfo/detailInfo/index', query: { name: name }})
-    // }
   },
 };
 </script>

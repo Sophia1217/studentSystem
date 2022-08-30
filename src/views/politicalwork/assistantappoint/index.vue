@@ -388,9 +388,10 @@ export default {
         sfdbList: [],
         orderZd: "",
         orderPx: "",
-        xm:'',
-        gh:''
+        xm: "",
+        gh: "",
       },
+      list: [],
     };
   },
   computed: {},
@@ -404,8 +405,8 @@ export default {
 
   methods: {
     //工作地点勾选
-    workPlaceChange(){
-      this.queryParams.dwmcList = this.workPlace
+    workPlaceChange() {
+      this.queryParams.dwmcList = this.workPlace;
       this.getList(this.queryParams);
     },
     selectChange(val) {
@@ -433,7 +434,6 @@ export default {
           if (res.errcode == "00") {
             this.gzdwOptions = res.data.rows;
           }
-
         })
         .catch((err) => {
           //this.$message.error(err.errmsg);
@@ -441,9 +441,9 @@ export default {
     },
     //获取数据列表
     getList(queryParams) {
-      console.log(this.select,'select')
-      queryParams.gh = this.select ==1?this.searchVal:''
-      queryParams.xm = this.select ==2?this.searchVal:''
+      console.log(this.select, "select");
+      queryParams.xh = this.select == 1 ? this.searchVal : "";
+      queryParams.xm = this.select == 2 ? this.searchVal : "";
       fdyList(queryParams)
         .then((response) => {
           //console.log(response);
@@ -489,13 +489,13 @@ export default {
         allCheck.push(this.category.checkBox[i].dm);
       }
       this.category.choose = val ? allCheck : [];
-      
+
       this.category.isIndeterminate = false;
-      this.queryParams.dwmcList = this.workPlace
-      this.queryParams.genderList = this.sex.choose
-      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.genderList = this.sex.choose;
+      this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList(this.queryParams)
+      this.getList(this.queryParams);
     },
     // 类别单选
     handleCheckedCategoryChange(value) {
@@ -503,12 +503,11 @@ export default {
       this.category.checkAll = checkedCount === this.category.checkBox.length;
       this.category.isIndeterminate =
         checkedCount > 0 && checkedCount < this.category.checkBox.length;
-      this.queryParams.dwmcList = this.workPlace
-      this.queryParams.genderList = this.sex.choose
-      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.genderList = this.sex.choose;
+      this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList(this.queryParams)
-      
+      this.getList(this.queryParams);
     },
     // 性别全选
     handleCheckAllSexChange(val) {
@@ -517,13 +516,13 @@ export default {
         allCheck.push(this.sex.checkBox[i].dm);
       }
       this.sex.choose = val ? allCheck : [];
-     
+
       this.sex.isIndeterminate = false;
-      this.queryParams.dwmcList = this.workPlace
-      this.queryParams.genderList = this.sex.choose
-      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.genderList = this.sex.choose;
+      this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList(this.queryParams)
+      this.getList(this.queryParams);
     },
     // 性别单选
     handleCheckedSexChange(value) {
@@ -531,17 +530,17 @@ export default {
       this.sex.checkAll = checkedCount === this.sex.checkBox.length;
       this.sex.isIndeterminate =
         checkedCount > 0 && checkedCount < this.sex.checkBox.length;
-      this.queryParams.dwmcList = this.workPlace
-      this.queryParams.genderList = this.sex.choose
-      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.genderList = this.sex.choose;
+      this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList(this.queryParams)
     },
 
     // 多选
     handleSelectionChange(val) {
+      console.log("val", val);
       this.multipleSelection = val;
-
+      this.list = [...val]; // 存储已被勾选的数据
     },
     //状态全选
     handleCheckAllStatusChange(val) {
@@ -550,13 +549,13 @@ export default {
         allCheck.push(this.status.checkBox[i].dm);
       }
       this.status.choose = val ? allCheck : [];
-     
+
       this.status.isIndeterminate = false;
-      this.queryParams.dwmcList = this.workPlace
-      this.queryParams.genderList = this.sex.choose
-      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.genderList = this.sex.choose;
+      this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList(this.queryParams)
+      this.getList(this.queryParams);
     },
     // 状态单选
     handleCheckedStatusChange(value) {
@@ -564,11 +563,11 @@ export default {
       this.status.checkAll = checkedCount === this.status.checkBox.length;
       this.status.isIndeterminate =
         checkedCount > 0 && checkedCount < this.status.checkBox.length;
-      this.queryParams.dwmcList = this.workPlace
-      this.queryParams.genderList = this.sex.choose
-      this.queryParams.sfdbList = this.status.choose
+      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.genderList = this.sex.choose;
+      this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList(this.queryParams)
+      this.getList(this.queryParams);
     },
     // 打开导出弹窗
     handleExport() {
@@ -582,24 +581,12 @@ export default {
     // 导出确认
     handleConfirm() {
       this.showExport = false;
-      let data = {
-        pageNum: 1,
-        pageSize: 0,
-        dwmcList: this.workPlace,
-        lbList: this.category.choose,
-        genderList: this.sex.choose,
-        sfdbList: this.status.choose,
-      };
+      var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
+      var data = { ghList: arr };
+      Object.assign(data, this.queryParams);
       outAssistant(data)
-        .then((res) => {
-          // if (res.errcode == "00") {
-          //console.log(res);
-          this.downloadFn(res, "辅导员任命导出", "xlsx");
-          //}
-        })
-        .catch((err) => {
-          //this.$message.error(err.errmsg);
-        });
+        .then((res) => this.downloadFn(res, "辅导员任命导出", "xlsx"))
+        .catch((err) => {});
     },
     //批量移除
     rmAssistant() {
@@ -611,11 +598,10 @@ export default {
       let data = {
         ghList: ghlist,
       };
-    
+
       removeMoreAssistant(data)
         .then((res) => {
           if (res.errcode == "00") {
-
             this.getList(this.queryParams);
           }
         })
@@ -640,7 +626,6 @@ export default {
       addOneAssistant(data)
         .then((res) => {
           if (res.errcode == "00") {
-
             this.getList(this.queryParams);
           }
         })
@@ -743,7 +728,6 @@ export default {
     },
     // 搜索查询按钮
     searchClick() {
-    
       let str = [];
       let name, gonghao;
       if (this.select == "1") {
@@ -775,7 +759,6 @@ export default {
       this.getList(this.queryParams);
     },
     changeTableSort(column) {
-    
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
       this.searchClick();

@@ -145,17 +145,16 @@ export default {
     },
     // 删除记录
     deleteRecord() {
-      // console.log("删除记录");
-      // console.log("this.currentRow:", this.currentRow);
-      for (let item of this.currentRow) {
-        this.xhs += item.xh + ",";
-        this.zws += item.zwdm + ",";
-      }
-      this.xhs = this.xhs.substring(0, this.xhs.length - 1);
-      this.zws = this.zws.substring(0, this.zws.length - 1);
+      console.log("sadasd", this.currentRow_ids);
+      // for (let item of this.currentRow) {
+      //   this.xhs += item.xh + ",";
+      //   this.zws += item.zwdm + ",";
+      // }
+      // this.xhs = this.xhs.substring(0, this.xhs.length - 1);
+      // this.zws = this.zws.substring(0, this.zws.length - 1);
       // console.log("this.xhs:", this.xhs);
       // console.log("this.zws:", this.zws);
-      getDeleteBgbRm({ xhs: this.xhs, zws: this.zws }).then((res) => {
+      getDeleteBgbRm({ ids: this.currentRow_ids }).then((res) => {
         // console.log(res);
         // this.errcode = res.errcode;
         // console.log("this.errcode:", this.errcode);
@@ -165,18 +164,24 @@ export default {
           pageSize: 10,
         });
       });
-      // 重新请求数据
-    //   if (this.errcode == "00") {
-    //     console.log("刷新操作！");
-        
-    //   }
-      this.xhs = "";
-      this.zws = "";
-      this.errcode = "-200";
+      // this.xhs = "";
+      // this.zws = "";
+      // this.errcode = "-200";
     },
     // 班干部记录删除
     handleSelectionChange(row) {
-      this.currentRow = row;
+      //待优化
+      this.getData(row);
+      var data = Array.from(new Set(this.arr.map((item) => item.id))).join(","); //给后端的参数
+      this.currentRow_ids = data;
+    },
+    getData(data) {
+      //处理数据 判断是否含有children这个字段 如果没有拼他的id进去
+      for (var i in data) {
+        if (!data[i].children) {
+          this.arr.push(data[i]);
+        }
+      }
     },
   },
 };

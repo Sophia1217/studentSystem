@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
-// 培养单位列表
-// localhost:8081/sws/manager/user/queryAllDwh
+// 学院
 export function getCollege() {
     return request({
-        url: '/manager/user/queryAllDwh',
+        // url: '/manager/user/queryAllDwh',
+        url: '/manager/user/queryOwnDwh',
         method: 'post',
     })
 }

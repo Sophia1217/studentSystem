@@ -143,7 +143,7 @@
           </el-table-column>
           <el-table-column prop="zydmc" label="专业" sortable="custom">
           </el-table-column>
-          <el-table-column prop="bjm" label="班级" sortable="custom">
+          <el-table-column prop="bjmc" label="班级" sortable="custom">
           </el-table-column>
           <el-table-column prop="xslbmc" label="学生类别" sortable="custom">
           </el-table-column>

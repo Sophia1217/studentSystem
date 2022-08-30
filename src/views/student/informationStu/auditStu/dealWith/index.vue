@@ -185,7 +185,7 @@
           <el-table-column prop="dwmc" label="学院" sortable> </el-table-column>
           <el-table-column prop="zydmc" label="专业" sortable>
           </el-table-column>
-          <el-table-column prop="bjm" label="班级" sortable> </el-table-column>
+          <el-table-column prop="bjmc" label="班级" sortable> </el-table-column>
           <el-table-column
             prop="pyccmc"
             label="培养层次"
@@ -384,7 +384,7 @@ export default {
     // 查询
     handleSearch() {
       let data = {
-        xh: this.select == "xh" ? this.searchVal : "",
+        userId: this.select == "xh" ? this.searchVal : "",
         xm: this.select == "xm" ? this.searchVal : "",
         sfzjh: this.select == "sfzjh" ? this.searchVal : "",
         yddh: this.select == "yddh" ? this.searchVal : "",

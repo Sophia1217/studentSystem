@@ -75,7 +75,7 @@ export function exportBasicInfo(data) {
 // 查询工作单位列表
 export function getListWorkPlace(query) {
   return request({
-    url: '/manager/user/queryAllDwh',
+    url: '/manager/user/queryOwnDwh',
     method: 'post',
     data: query
   })

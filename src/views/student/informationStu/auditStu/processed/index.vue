@@ -399,7 +399,7 @@ export default {
     // 查询
     handleSearch() {
       let data = {
-        xh: this.select == "xh" ? this.searchVal : "",
+        userId: this.select == "xh" ? this.searchVal : "",
         xm: this.select == "xm" ? this.searchVal : "",
         sfzjh: this.select == "sfzjh" ? this.searchVal : "",
         yddh: this.select == "yddh" ? this.searchVal : "",

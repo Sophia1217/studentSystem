@@ -10,7 +10,12 @@
       class="table-header"
     >
       <el-form-item label="培养单位" prop="ssdwdm" class="header-item">
-        <el-select v-model="queryParams.ssdwdmList" placeholder="未选择" clearable multiple>
+        <el-select
+          v-model="queryParams.ssdwdmList"
+          placeholder="未选择"
+          clearable
+          multiple
+        >
           <el-option
             v-for="(item, index) in collegeOptions"
             :key="index"
@@ -20,7 +25,12 @@
         </el-select>
       </el-form-item>
       <el-form-item label="培养层次" prop="pycc" class="header-item">
-        <el-select v-model="queryParams.pyccList" placeholder="未选择" clearable multiple>
+        <el-select
+          v-model="queryParams.pyccList"
+          placeholder="未选择"
+          clearable
+          multiple
+        >
           <el-option
             v-for="(item, index) in levelOptions"
             :key="index"
@@ -30,7 +40,12 @@
         </el-select>
       </el-form-item>
       <el-form-item label="年级" prop="ssnj" class="header-item">
-        <el-select v-model="queryParams.ssnjList" placeholder="未选择" clearable multiple>
+        <el-select
+          v-model="queryParams.ssnjList"
+          placeholder="未选择"
+          clearable
+          multiple
+        >
           <el-option
             v-for="(item, index) in gradeOptions"
             :key="index"
@@ -139,7 +154,7 @@
         >
           <template slot-scope="scope">
             <div @click="operate(scope.row)" class="operate">
-              <span class="operateSpan">分班管理</span>
+              <span class="operateSpan" v-if="fbgl">分班管理</span>
             </div>
           </template>
         </el-table-column>
@@ -150,7 +165,6 @@
         :page.sync="queryParams.pageNum"
         :limit.sync="queryParams.pageSize"
         @pagination="getList"
-        
       />
     </div>
   </div>
@@ -215,13 +229,28 @@ export default {
           { required: true, message: "公告类型不能为空", trigger: "change" },
         ],
       },
+      menuVal: this.$store.state.permission.topbarRouters,
+      Jr: [],
+      fbgl: true,
     };
   },
   mounted() {
     this.getList();
     this.getOptions();
+    this.getData(this.menuVal);
+    this.fbgl = this.Jr.includes("0304");
   },
   methods: {
+    getData(data) {
+      for (var i in data) {
+        this.Jr.push(data[i].modId); //将第一层的保存出来，
+        if (data[i].children) {
+          // if(data[i].length >)
+          this.getData(data[i].children);
+        }
+      }
+      return this.Jr;
+    },
     getList() {
       var data = this.queryParams;
       classList(data).then((response) => {
@@ -294,8 +323,8 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding-left: 20px ;
-  padding-right: 20px ;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .header-item {

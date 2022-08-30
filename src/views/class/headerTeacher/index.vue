@@ -9,7 +9,12 @@
       label-width="68px"
     >
       <el-form-item label="培养单位" prop="ssdwdm">
-        <el-select v-model="queryParams.ssdwdmList" placeholder="未选择" clearable multiple>
+        <el-select
+          v-model="queryParams.ssdwdmList"
+          placeholder="未选择"
+          clearable
+          multiple
+        >
           <el-option
             v-for="(item, index) in collegeOptions"
             :key="index"
@@ -19,7 +24,12 @@
         </el-select>
       </el-form-item>
       <el-form-item label="培养层次" prop="pycc">
-        <el-select v-model="queryParams.pyccList" placeholder="未选择" clearable multiple>
+        <el-select
+          v-model="queryParams.pyccList"
+          placeholder="未选择"
+          clearable
+          multiple
+        >
           <el-option
             v-for="(item, index) in levelOptions"
             :key="index"
@@ -29,7 +39,12 @@
         </el-select>
       </el-form-item>
       <el-form-item label="年级" prop="ssnj">
-        <el-select v-model="queryParams.ssnjList" placeholder="未选择" clearable multiple>
+        <el-select
+          v-model="queryParams.ssnjList"
+          placeholder="未选择"
+          clearable
+          multiple
+        >
           <el-option
             v-for="(item, index) in gradeOptions"
             :key="index"
@@ -127,18 +142,19 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="scope">
-          <div class="tea-handle" >
+          <div class="tea-handle" v-if="fpbzr">
             <span class="iconfont allocate_teacher" @click="action(scope.row)"
               >&#xe638;</span
             >
+            <!-- <span :class="true ? 'spanF' : 'spanT'" @click="action(scope.row)"> -->
             <span
               style="color: #005657; margin-left: 5px; margin-right: 5px"
               @click="action(scope.row)"
             >
               分配班主任
             </span>
-            </div>
-            <div class="tea-handle" >
+          </div>
+          <div class="tea-handle" v-if="rejl">
             <span
               class="iconfont record_icon"
               style="margin-left: 5px"
@@ -277,13 +293,30 @@ export default {
           { required: true, message: "培养层次不能为空", trigger: "change" },
         ],
       },
+      menuVal: this.$store.state.permission.topbarRouters,
+      Jr: [],
+      rejl: true,
+      fpbzr: true,
     };
   },
   mounted() {
     this.getList(this.queryParams);
     this.getOptions();
+    this.getData(this.menuVal);
+    this.rejl = this.Jr.includes("0302");
+    this.fpbzr = this.Jr.includes("0307");
   },
   methods: {
+    getData(data) {
+      for (var i in data) {
+        this.Jr.push(data[i].modId); //将第一层的保存出来，
+        if (data[i].children) {
+          // if(data[i].length >)
+          this.getData(data[i].children);
+        }
+      }
+      return this.Jr;
+    },
     // 查询班级列表
     getList(queryParams) {
       // this.loading = true;
@@ -389,9 +422,22 @@ export default {
   padding: 20px;
   background-color: white;
 }
-.tea-handle {
-    cursor: pointer;
+.spanT {
+  pointer-events: auto;
+  color: #005657;
+  margin-left: 5px;
+  margin-right: 5px;
 }
+.spanF {
+  pointer-events: none;
+  color: #cce0e1ff;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.tea-handle {
+  cursor: pointer;
+}
+
 .search {
   background: #005657;
 }

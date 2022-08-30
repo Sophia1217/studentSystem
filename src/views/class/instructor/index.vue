@@ -27,7 +27,12 @@
           </el-select>
         </el-form-item>
         <el-form-item label="培养层次" prop="pycc" class="header-item">
-          <el-select v-model="queryParams.pyccList" placeholder="请选择" clearable multiple>
+          <el-select
+            v-model="queryParams.pyccList"
+            placeholder="请选择"
+            clearable
+            multiple
+          >
             <el-option
               v-for="(item, index) in levelOptions"
               :key="index"
@@ -37,7 +42,12 @@
           </el-select>
         </el-form-item>
         <el-form-item label="年级" prop="ssnj" class="header-item">
-          <el-select v-model="queryParams.ssnjList" placeholder="请选择" clearable multiple>
+          <el-select
+            v-model="queryParams.ssnjList"
+            placeholder="请选择"
+            clearable
+            multiple
+          >
             <el-option
               v-for="(item, index) in gradeOptions"
               :key="index"
@@ -144,7 +154,7 @@
             class-name="small-padding fixed-width"
           >
             <template slot-scope="scope">
-              <div class="ins-handle">
+              <div class="ins-handle" v-if="fpfdy">
                 <!-- @click="assignTea(scope.row)" class="operate" -->
                 <!-- <span class="assignTea">分配辅导员</span> -->
                 <span
@@ -159,7 +169,7 @@
                   分配辅导员
                 </span>
               </div>
-              <div class="ins-handle">
+              <div class="ins-handle" v-if="rejl">
                 <span
                   class="iconfont record_icon"
                   style="margin-left: 5px"
@@ -203,6 +213,9 @@ export default {
   mounted() {
     this.getOptions();
     this.getList();
+    this.getData(this.menuVal);
+    this.fpfdy = this.Jr.includes("0310");
+    this.rejl = this.Jr.includes("0309");
   },
   data() {
     return {
@@ -250,9 +263,23 @@ export default {
           { required: true, message: "公告类型不能为空", trigger: "change" },
         ],
       },
+      menuVal: this.$store.state.permission.topbarRouters,
+      Jr: [],
+      fpfdy: true,
+      rejl: true,
     };
   },
   methods: {
+    getData(data) {
+      for (var i in data) {
+        this.Jr.push(data[i].modId); //将第一层的保存出来，
+        if (data[i].children) {
+          // if(data[i].length >)
+          this.getData(data[i].children);
+        }
+      }
+      return this.Jr;
+    },
     changeTableSort(column) {
       this.queryParams.orderField = column.prop;
       this.queryParams.orderType =
@@ -389,8 +416,8 @@ export default {
 
 <style scoped>
 .instructor {
-    padding: 20px;
-    background-color: #fff;
+  padding: 20px;
+  background-color: #fff;
 }
 /* 搜索 */
 .table-header {
@@ -443,7 +470,7 @@ export default {
 }
 
 .ins-handle {
-    cursor: pointer;
+  cursor: pointer;
 }
 .title {
   margin-bottom: 32px;

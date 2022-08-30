@@ -94,7 +94,12 @@
         sortable
       />
       <el-table-column label="培养单位" align="center" prop="ssdwmc" sortable />
-      <el-table-column label="培养层次" align="center" prop="pyccName" sortable />
+      <el-table-column
+        label="培养层次"
+        align="center"
+        prop="pyccName"
+        sortable
+      />
       <el-table-column
         label="班级人数"
         align="center"
@@ -121,7 +126,7 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="scope">
-          <div>
+          <div v-if="bgbrm">
             <span class="iconfont allocate_teacher">&#xe638;</span>
             <span
               class="leaderAssign"
@@ -210,13 +215,28 @@ export default {
           { required: true, message: "培养层次不能为空", trigger: "change" },
         ],
       },
+      menuVal: this.$store.state.permission.topbarRouters,
+      Jr: [],
+      bgbrm: true,
     };
   },
   mounted() {
     this.getList();
     this.getOptions();
+    this.getData(this.menuVal);
+    this.bgbrm = this.Jr.includes("0312");
   },
   methods: {
+    getData(data) {
+      for (var i in data) {
+        this.Jr.push(data[i].modId); //将第一层的保存出来，
+        if (data[i].children) {
+          // if(data[i].length >)
+          this.getData(data[i].children);
+        }
+      }
+      return this.Jr;
+    },
     changeTableSort(column) {
       this.queryParams.orderField = column.prop;
       this.queryParams.orderType =
@@ -225,7 +245,7 @@ export default {
     },
     getList(data = {}) {
       var data = this.queryParams;
-    //   console.log("data", data);
+      //   console.log("data", data);
       classList(data).then((response) => {
         // 获取班级列表数据
         this.noticeList = response.data.rows; // 根据状态码接收数据
@@ -269,8 +289,8 @@ export default {
 
 <style scoped>
 .app-container {
-    padding: 20px;
-    background-color: #fff;
+  padding: 20px;
+  background-color: #fff;
 }
 .search {
   background: #005657;

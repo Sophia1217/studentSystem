@@ -51,7 +51,7 @@ export function exportTeacher(data) {
 // 查询工作单位列表
 export function getListWorkPlace(query) {
   return request({
-    url: '/manager/user/queryAllDwh',
+    url: '/assistant/getdwmc',
     method: 'post',
     data: query
   })

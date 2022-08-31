@@ -221,7 +221,7 @@
         style="width: 100%"
         :default-sort="{ prop: 'date', order: 'descending' }"
         @selection-change="handleSelectionChange"
-        @sort-change="changeTableSort"
+        @sort-change="changeTableDetailSort"
       >
         <!-- <el-table-column type="index" label="在岗日期" width="50" /> -->
         <el-table-column label="在岗日期" width="180">
@@ -375,6 +375,7 @@ export default {
           { required: true, message: "工号不能为空", trigger: "blur" },
         ],
       },
+      detailGh: '',
       basicInfoList: [],
       tableData: [],
       multipleSelection: [],
@@ -638,6 +639,7 @@ export default {
     hadleDetail(row, flag) {
       this.open = true;
       this.title = "详情";
+      this.detailGh = row.gh
       let ghdata = {
         gh: row.gh,
       };
@@ -763,6 +765,20 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
       this.searchClick();
     },
+    changeTableDetailSort(column) {
+      let orderZd = column.prop;
+      let orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      var data = { gh: this.detailGh, orderZd: orderZd, orderPx: orderPx };
+      lookDetail(data).then((res) => {
+          if (res.errcode == "00") {
+            //console.log(res);
+            this.tableData = res.assistantDetailRes;
+          }
+        })
+        .catch((err) => {
+          // this.$message.error(err.errmsg);
+        });
+    }
   },
 };
 </script>

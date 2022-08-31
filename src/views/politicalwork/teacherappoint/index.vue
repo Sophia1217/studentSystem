@@ -16,11 +16,6 @@
           >
             <el-option label="工号" value="gh" />
             <el-option label="姓名" value="xm" />
-            <!-- <el-option label="身份证号" value="sfzh" />
-            <el-option label="籍贯" value="jg" />
-            <el-option label="家庭住址" value="jtzz" />
-            <el-option label="毕业院校" value="byyx" />
-            <el-option label="家庭背景" value="jtbj" /> -->
           </el-select>
           <el-button
             slot="append"
@@ -109,7 +104,7 @@
           :data="tableData"
           style="width: 100%"
           :default-sort="{ prop: 'date', order: 'descending' }"
-          @selection-change="handleSelectionChange"
+          @sort-change="changeTableSort"
         >
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
@@ -169,7 +164,7 @@
         style="width: 100%"
         :default-sort="{ prop: 'date', order: 'descending' }"
         @selection-change="handleSelectionChange"
-        @sort-change="changeTableSort"
+        @sort-change="changeTableDetailSort"
       >
         <!-- <el-table-column type="selection" width="55" /> -->
         <el-table-column label="在岗日期" width="180">
@@ -310,17 +305,7 @@ export default {
         gh: "",
         xm: "",
       },
-      // expordParams: {
-      //   pageNum: 1,
-      //   pageSize: 10,
-      //   dwmcList: [],
-      //   genderList: [],
-      //   lbList: [],
-      //   sfdbList: [],
-      //   gh: '',
-      //   xm: ''
 
-      // },
       list: [],
       searchVal: "",
       select: "",
@@ -334,8 +319,8 @@ export default {
         checkAll: false,
         choose: [],
         checkBox: [
-          { mc: "是", dm: 1 },
           { mc: "否", dm: 0 },
+          { mc: "是", dm: 1 },
         ],
         isIndeterminate: true,
       },
@@ -353,6 +338,7 @@ export default {
       tableData: [],
       tableDataDetail: [],
       multipleSelection: [],
+      detailGh: '',
       removeGh: {
         ghList: [],
       },
@@ -497,6 +483,7 @@ export default {
     // 点击详情
     hadleDetail(row, flag) {
       // getTeacherDetail()
+      this.detailGh = row.gh
       var data = { gh: row.gh };
       getTeacherDetail(data).then((response) => {
         this.tableDataDetail = response.teacherDetailRes;
@@ -591,6 +578,14 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
       this.handleSearch();
     },
+    changeTableDetailSort(column) {
+      let orderZd = column.prop;
+      let orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      var data = { gh: this.detailGh, orderZd: orderZd, orderPx: orderPx };
+      getTeacherDetail(data).then((response) => {
+        this.tableDataDetail = response.teacherDetailRes;
+      });
+    }
     /** 详细信息查询 */
     // handleGet(row) {
     //   const name = row.name || ''

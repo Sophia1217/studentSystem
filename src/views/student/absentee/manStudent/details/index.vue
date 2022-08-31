@@ -3,10 +3,14 @@
     <TopTitle v-if="roleType == 1"></TopTitle>
     <div :class="roleType == 1 ? 'wrap student' : 'wrap'">
       <div class="detail_left">
-        <div v-for="(item,index) in dtailsList" :key="index">
-          <div class="list" :class="index==current?'active':''" @click="handleList(index,'tag')">
-            <div>{{item}}</div>
-            <i :class="index==current?'el-icon-arrow-right':''"></i>
+        <div v-for="(item, index) in dtailsList" :key="index">
+          <div
+            class="list"
+            :class="index == current ? 'active' : ''"
+            @click="handleList(index, 'tag')"
+          >
+            <div>{{ item }}</div>
+            <i :class="index == current ? 'el-icon-arrow-right' : ''"></i>
           </div>
         </div>
       </div>
@@ -14,770 +18,255 @@
         <div class="right_top">
           <p class="title">学生信息</p>
           <div class="timeWrap">
-            <span>创建时间：{{formatDate(detailInfo.xsJbxx.createTime)}} </span> 
-            <span class="updataTime">更新时间：{{formatDate(detailInfo.xsJbxx.updateTime)}}</span>
+            <span
+              >创建时间：{{ formatDate(detailInfo.xsJbxx.createTime) }}
+            </span>
+            <span class="updataTime"
+              >更新时间：{{ formatDate(detailInfo.xsJbxx.updateTime) }}</span
+            >
           </div>
         </div>
         <div class="headline" id="tag_0">基本信息</div>
         <div class="tableStyle">
           <div class="imgWrap">
             <div class="photo">
-              <img :src="detailInfo.xsXszpb?'data:image/png;base64,'+ detailInfo.xsXszpb.bkzp:''" alt="报考照片">
+              <img
+                :src="
+                  detailInfo.xsXszpb
+                    ? 'data:image/png;base64,' + detailInfo.xsXszpb.bkzp
+                    : ''
+                "
+                alt="报考照片"
+              />
             </div>
-            <div class="photo" style="margin-top:10px;">
-              <img :src="detailInfo.xsXszpb?'data:image/png;base64,'+ detailInfo.xsXszpb.byzp:''" alt="毕业照片">
+            <div class="photo" style="margin-top: 10px">
+              <img
+                :src="
+                  detailInfo.xsXszpb
+                    ? 'data:image/png;base64,' + detailInfo.xsXszpb.byzp
+                    : ''
+                "
+                alt="毕业照片"
+              />
             </div>
           </div>
-          <div class="information" v-if="schooling==1">
+          <div class="information" v-if="schooling == 1">
             <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">学号</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.xh}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.xh" :disabled="detailInfo.xsJbxx.xh_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">学号</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.xh }}
                   </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">姓名</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.xm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.xm" :disabled="detailInfo.xsJbxx.xm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.xh"
+                      :disabled="detailInfo.xsJbxx.xh_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
-                </el-col>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">姓名</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.xm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.xm"
+                      :disabled="detailInfo.xsJbxx.xm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">拼音姓</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.pyx}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.pyx" :disabled="detailInfo.xsJbxx.pyx_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">拼音姓</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.pyx }}
                   </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">拼音名</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.pym}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.pym" :disabled="detailInfo.xsJbxx.pym_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.pyx"
+                      :disabled="detailInfo.xsJbxx.pyx_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
-                </el-col>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">拼音名</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.pym }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.pym"
+                      :disabled="detailInfo.xsJbxx.pym_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">曾用名</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.cym}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.cym" :disabled="detailInfo.xsJbxx.cym_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">曾用名</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.cym }}
                   </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">英文姓名</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.ywxm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.ywxm" :disabled="detailInfo.xsJbxx.ywxm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.cym"
+                      :disabled="detailInfo.xsJbxx.cym_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
-                </el-col>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">英文姓名</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.ywxm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.ywxm"
+                      :disabled="detailInfo.xsJbxx.ywxm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">性别</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.xbm_chinese}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <!-- <el-input v-model="detailInfo.xsJbxx.xbm" size="small" placeholder="请输入内容"></el-input> -->
-                      <el-select v-model="detailInfo.xsJbxx.xbm" size="small" :disabled="detailInfo.xsJbxx.xbm_stuFlag == 2" placeholder="请选择">
-                        <el-option
-                          v-for="item in dmxbmOPs"
-                          :key="item.dm"
-                          :label="item.mc"
-                          :value="item.dm">
-                        </el-option>
-                      </el-select>
-                    </div>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">性别</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.xbm_chinese }}
                   </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">单位</div>
-                    <!-- <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.dwh}}</div> -->
-                    <div v-if="isEdit ==1" class="content">{{getName(allDwh,detailInfo.xsXjxx.dwh)}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.dwh" :disabled="detailInfo.xsXjxx.dwh_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">出生日期</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.csrq}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.csrq" :disabled="detailInfo.xsJbxx.csrq_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">出生地</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.csdm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.csdm" :disabled="detailInfo.xsJbxx.csdm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">籍贯</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.jg_chinese}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.jg" :disabled="detailInfo.xsJbxx.jg_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">民族</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.mzm_chinese}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-select v-model="detailInfo.xsJbxx.mzm" size="small" :disabled="detailInfo.xsJbxx.mzm_stuFlag == 2" placeholder="请选择">
-                        <el-option
-                          v-for="item in dmmzmOps"
-                          :key="item.dm"
-                          :label="item.mc"
-                          :value="item.dm">
-                        </el-option>
-                      </el-select>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">国籍/地区</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.gjdqm_chinese}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.gjdqm" :disabled="detailInfo.xsJbxx.gjdqm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">身份证件类型</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.sfzjlxm_chinese}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.sfzjlxm" :disabled="detailInfo.xsJbxx.sfzjlxm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">身份证件号</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.sfzjh}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.sfzjh" :disabled="detailInfo.xsJbxx.sfzjh_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">身份证件有效期</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.sfzjyxq}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.sfzjyxq" :disabled="detailInfo.xsJbxx.sfzjyxq_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">入学时间</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.rxny}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.rxny" :disabled="detailInfo.xsXjxx.rxny_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">结束学业年月</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.jsxyny}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.jsxyny" :disabled="detailInfo.xsXjxx.jsxyny_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">年级</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.nj}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.nj" :disabled="detailInfo.xsXjxx.nj_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">班级</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.bjm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.bjm" :disabled="detailInfo.xsXjxx.bjm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">专业</div>
-                    <div v-if="isEdit ==1" class="content">{{ getName(zyOps,detailInfo.xsXjxx.zydm) }}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.zydm" :disabled="detailInfo.xsXjxx.zydm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">学制</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.xz}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-select v-model="detailInfo.xsXjxx.xz" size="small" :disabled="detailInfo.xsXjxx.xz_stuFlag == 2" placeholder="请选择">
-                        <el-option
-                          v-for="item in xzOps"
-                          :key="item.dm"
-                          :label="item.mc"
-                          :value="item.dm">
-                        </el-option>
-                      </el-select>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">在册情况</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.zcqk}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.zcqk" :disabled="detailInfo.xsXjxx.zcqk_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">是否在校</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.sfzx}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.sfzx" :disabled="detailInfo.xsXjxx.sfzx_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">学籍状态</div>
-                    <div v-if="isEdit ==1" class="content">{{getName(dmxjztmOps,detailInfo.xsXjxx.xjzt)}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <!-- <el-input v-model="detailInfo.xsXjxx.xjzt" size="small" placeholder="请输入内容"></el-input> -->
-                      <el-select v-model="detailInfo.xsXjxx.xjzt" size="small" :disabled="detailInfo.xsXjxx.xjzt_stuFlag == 2" placeholder="请选择">
-                        <el-option
-                          v-for="item in dmxjztmOps"
-                          :key="item.dm"
-                          :label="item.mc"
-                          :value="item.dm">
-                        </el-option>
-                      </el-select>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">学生当前状态</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.xsdqztm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.xsdqztm" :disabled="detailInfo.xsXjxx.xsdqztm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">是否毕业</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.sfby}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.sfby" :disabled="detailInfo.xsXjxx.sfby_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">婚姻状况</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.hyzkm_chinese}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.hyzkm" :disabled="detailInfo.xsJbxx.hyzkm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">港澳台侨外</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.gatqwm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.gatqwm" :disabled="detailInfo.xsJbxx.gatqwm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">政治面貌</div>
-                    <div v-if="isEdit ==1" class="content">{{getName(zzmmOps,detailInfo.xsJbxx.zzmmm)}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <!-- <el-input v-model="detailInfo.xsJbxx.zzmmm" size="small" placeholder="请输入内容"></el-input> -->
-                      <el-select v-model="detailInfo.xsJbxx.zzmmm" size="small" :disabled="detailInfo.xsJbxx.zzmmm_stuFlag == 2" placeholder="请选择">
+                  <div v-if="isEdit == 2" class="content">
+                    <!-- <el-input v-model="detailInfo.xsJbxx.xbm" size="small" placeholder="请输入内容"></el-input> -->
+                    <el-select
+                      v-model="detailInfo.xsJbxx.xbm"
+                      size="small"
+                      :disabled="detailInfo.xsJbxx.xbm_stuFlag == 2"
+                      placeholder="请选择"
+                    >
                       <el-option
-                        v-for="item in zzmmOps"
+                        v-for="item in dmxbmOPs"
                         :key="item.dm"
-                          :label="item.mc"
-                          :value="item.dm">
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
                       </el-option>
                     </el-select>
-                    </div>
                   </div>
-                </el-col>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">单位</div>
+                  <!-- <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.dwh}}</div> -->
+                  <div v-if="isEdit == 1" class="content">
+                    {{ getName(allDwh, detailInfo.xsXjxx.dwh) }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.dwh"
+                      :disabled="detailInfo.xsXjxx.dwh_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">健康状况</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.jkztm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.jkztm" :disabled="detailInfo.xsJbxx.jkztm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">出生日期</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.csrq }}
                   </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">信仰宗教</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.xyzjm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.xyzjm" :disabled="detailInfo.xsJbxx.xyzjm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.csrq"
+                      :disabled="detailInfo.xsJbxx.csrq_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">血型</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.xxm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.xxm" :disabled="detailInfo.xsJbxx.xxm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">出生地</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.csdm_chinese }}
                   </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">是否独生子女</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.sfdszn}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.sfdszn" :disabled="detailInfo.xsJbxx.sfdszn_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.csdm_chinese"
+                      :disabled="detailInfo.xsJbxx.csdm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">身高</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.sg}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.sg" :disabled="detailInfo.xsTxxx.sg_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">体重</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.tz}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.tz" :disabled="detailInfo.xsTxxx.tz_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">原学校名称</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.yxxmc}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.yxxmc" :disabled="detailInfo.xsJbxx.yxxmc_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">原学号</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.yxh}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.yxh" :disabled="detailInfo.xsJbxx.yxh_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">入学方式</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.rxfsm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.rxfsm" :disabled="detailInfo.xsXjxx.rxfsm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">来源地区</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.lydqm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.lydqm" :disabled="detailInfo.xsXjxx.lydqm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">学生来源</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.xslym}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.xslym" :disabled="detailInfo.xsXjxx.xslym_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">就读方式</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.jdfsm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.jdfsm" :disabled="detailInfo.xsXjxx.jdfsm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">入学前学历</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.rxqxlm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.rxqxlm" :disabled="detailInfo.xsXjxx.rxqxlm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">入学前学位</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.rxqxwm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.rxqxwm" :disabled="detailInfo.xsXjxx.rxqxwm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">获得学历方式</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.hdxlfsm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.hdxlfsm" :disabled="detailInfo.xsJbxx.hdxlfsm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">是否学分制</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.sfxfz}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.sfxfz" :disabled="detailInfo.xsXjxx.sfxfz_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">是否师范生</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.sfsfs}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.sfsfs" :disabled="detailInfo.xsXjxx.sfsfs_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">培养方式</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.pyfsm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.pyfsm" :disabled="detailInfo.xsXjxx.pyfsm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">培养层次</div>
-                    <div v-if="isEdit ==1" class="content">{{getName(pyccOps,detailInfo.xsXjxx.pyccm)}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <!-- <el-input v-model="detailInfo.xsXjxx.pyccm" size="small" placeholder="请输入内容"></el-input> -->
-                      <el-select v-model="detailInfo.xsXjxx.pyccm" size="small" :disabled="detailInfo.xsXjxx.pyccm_stuFlag == 2" placeholder="请选择">
-                      <el-option
-                        v-for="item in pyccOps"
-                        :key="item.dm"
-                          :label="item.mc"
-                          :value="item.dm">
-                      </el-option>
-                    </el-select>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">连读方式</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.ldfsm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.ldfsm" :disabled="detailInfo.xsXjxx.ldfsm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">定向或委培</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.dxhwpdw}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.dxhwpdw" :disabled="detailInfo.xsXjxx.dxhwpdw_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">学生类别</div>
-                    <div v-if="isEdit ==1" class="content">{{getName(xslbOps,detailInfo.xsXjxx.xslbm)}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <!-- <el-input v-model="detailInfo.xsXjxx.xslbm" :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
-                      <el-select v-model="detailInfo.xsXjxx.xslbm" size="small" :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2" placeholder="请选择">
-                        <el-option
-                          v-for="item in xslbOps"
-                          :key="item.dm"
-                            :label="item.mc"
-                            :value="item.dm">
-                        </el-option>
-                      </el-select>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">第一外语语种</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.dywyyz}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.dywyyz" :disabled="detailInfo.xsJbxx.dywyyz_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">第一外语水平</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.dywysp}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.dywysp" :disabled="detailInfo.xsJbxx.dywysp_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">第二外语语种</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.dewyyz}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.dewyyz" :disabled="detailInfo.xsXjxx.dewyyz_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">第二外语水平</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.dewysp}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.dewysp" :disabled="detailInfo.xsXjxx.dewysp_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-          </div>
-
-           <!-- 研究生基本信息  XXXX_stuFlag 0必填，1可写，2可读-->
-          <div class="information" v-if="schooling==2">
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">学号</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.xh}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.xh" :disabled="detailInfo.xsJbxx.xh_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">姓名</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.xm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.xm" :disabled="detailInfo.xsJbxx.xm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">拼音姓</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.pyx}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.pyx" :disabled="detailInfo.xsJbxx.pyx_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">拼音名</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.pym}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.pym" :disabled="detailInfo.xsJbxx.pym_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">曾用名</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.cym}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.cym" :disabled="detailInfo.xsJbxx.cym_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">英文姓名</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.ywxm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.ywxm" :disabled="detailInfo.xsJbxx.ywxm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">性别</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.xbm_chinese}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <!-- <el-input v-model="detailInfo.xsJbxx.xbm" :disabled="detailInfo.xsJbxx.xbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
-                      <el-select v-model="detailInfo.xsJbxx.xbm" size="small" :disabled="detailInfo.xsJbxx.xbm_stuFlag == 2" placeholder="请选择">
-                        <el-option
-                          v-for="item in dmxbmOPs"
-                          :key="item.dm"
-                          :label="item.mc"
-                          :value="item.dm">
-                        </el-option>
-                      </el-select>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">单位</div>
-                    <div v-if="isEdit ==1" class="content">{{getName(allDwh,detailInfo.xsXjxx.dwh)}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.dwh" :disabled="detailInfo.xsXjxx.dwh_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">出生日期</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.csrq}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.csrq" :disabled="detailInfo.xsJbxx.csrq_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">出生地</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.csdm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsJbxx.csdm" :disabled="detailInfo.xsJbxx.csdm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
-                  </div>
-                </el-col>
+                </div>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">籍贯</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.jg_chinese}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsJbxx.jg" :disabled="detailInfo.xsJbxx.jg_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.jg }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.jg"
+                      :disabled="detailInfo.xsJbxx.jg_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">民族</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.mzm_chinese}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <!-- <el-input v-model="detailInfo.xsJbxx.mzm" :disabled="detailInfo.xsJbxx.mzm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
-                    <el-select v-model="detailInfo.xsJbxx.mzm" size="small" :disabled="detailInfo.xsJbxx.mzm_stuFlag == 2" placeholder="请选择">
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.mzm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-select
+                      v-model="detailInfo.xsJbxx.mzm"
+                      size="small"
+                      :disabled="detailInfo.xsJbxx.mzm_stuFlag == 2"
+                      placeholder="请选择"
+                    >
                       <el-option
                         v-for="item in dmmzmOps"
                         :key="item.dm"
-                          :label="item.mc"
-                          :value="item.dm">
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
                       </el-option>
                     </el-select>
                   </div>
@@ -788,18 +277,32 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">国籍/地区</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.gjdqm_chinese}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsJbxx.gjdqm" :disabled="detailInfo.xsJbxx.gjdqm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.gjdqm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.gjdqm"
+                      :disabled="detailInfo.xsJbxx.gjdqm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">身份证件类型</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.sfzjlxm_chinese}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsJbxx.sfzjlxm" :disabled="detailInfo.xsJbxx.sfzjlxm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.sfzjlxm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.sfzjlxm"
+                      :disabled="detailInfo.xsJbxx.sfzjlxm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
@@ -808,38 +311,32 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">身份证件号</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.sfzjh}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsJbxx.sfzjh" :disabled="detailInfo.xsJbxx.sfzjh_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.sfzjh }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.sfzjh"
+                      :disabled="detailInfo.xsJbxx.sfzjh_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">年级</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.nj}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.nj" :disabled="detailInfo.xsXjxx.nj_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div class="title">身份证件有效期</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.sfzjyxq }}
                   </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">入学年月</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.rxny}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.rxny" :disabled="detailInfo.xsXjxx.rxny_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">预计毕业时间</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.yjbysj}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsJbxx.yjbys" :disabled="detailInfo.xsJbxx.yjbys_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.sfzjyxq"
+                      :disabled="detailInfo.xsJbxx.sfzjyxq_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
@@ -847,19 +344,399 @@
             <el-row :gutter="20">
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">实际毕业时间</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.sjbysj}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsJbxx.sjbysj" :disabled="detailInfo.xsJbxx.sjbysj_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div class="title">入学时间</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.rxny }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.rxny"
+                      :disabled="detailInfo.xsXjxx.rxny_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">结束学业年月</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.jsxyny}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.jsxyny" :disabled="detailInfo.xsXjxx.jsxyny_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.jsxyny }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.jsxyny"
+                      :disabled="detailInfo.xsXjxx.jsxyny_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">年级</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.nj }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.nj"
+                      :disabled="detailInfo.xsXjxx.nj_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">班级</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.bjm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.bjm"
+                      :disabled="detailInfo.xsXjxx.bjm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">专业</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ getName(zyOps, detailInfo.xsXjxx.zydm) }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.zydm"
+                      :disabled="detailInfo.xsXjxx.zydm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">学制</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.xz }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-select
+                      v-model="detailInfo.xsXjxx.xz"
+                      size="small"
+                      :disabled="detailInfo.xsXjxx.xz_stuFlag == 2"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in xzOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">在册情况</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.zcqk }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.zcqk"
+                      :disabled="detailInfo.xsXjxx.zcqk_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">是否在校</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.sfzx }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.sfzx"
+                      :disabled="detailInfo.xsXjxx.sfzx_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">学籍状态</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ getName(dmxjztmOps, detailInfo.xsXjxx.xjzt) }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <!-- <el-input v-model="detailInfo.xsXjxx.xjzt" size="small" placeholder="请输入内容"></el-input> -->
+                    <el-select
+                      v-model="detailInfo.xsXjxx.xjzt"
+                      size="small"
+                      :disabled="detailInfo.xsXjxx.xjzt_stuFlag == 2"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in dmxjztmOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">学生当前状态</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.xsdqztm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.xsdqztm"
+                      :disabled="detailInfo.xsXjxx.xsdqztm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">是否毕业</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.sfby_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.sfby_chinese"
+                      :disabled="detailInfo.xsXjxx.sfby_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">婚姻状况</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.hyzkm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.hyzkm"
+                      :disabled="detailInfo.xsJbxx.hyzkm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">港澳台侨外</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.gatqwm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.gatqwm_chinese"
+                      :disabled="detailInfo.xsJbxx.gatqwm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">政治面貌</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ getName(zzmmOps, detailInfo.xsJbxx.zzmmm) }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <!-- <el-input v-model="detailInfo.xsJbxx.zzmmm" size="small" placeholder="请输入内容"></el-input> -->
+                    <el-select
+                      v-model="detailInfo.xsJbxx.zzmmm"
+                      size="small"
+                      :disabled="detailInfo.xsJbxx.zzmmm_stuFlag == 2"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in zzmmOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">健康状况</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.jkztm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.jkztm"
+                      :disabled="detailInfo.xsJbxx.jkztm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">信仰宗教</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.xyzjm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.xyzjm"
+                      :disabled="detailInfo.xsJbxx.xyzjm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">血型</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.xxm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.xxm"
+                      :disabled="detailInfo.xsJbxx.xxm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">是否独生子女</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.sfdszn }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.sfdszn"
+                      :disabled="detailInfo.xsJbxx.sfdszn_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">身高</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.sg }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.sg"
+                      :disabled="detailInfo.xsTxxx.sg_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">体重</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.tz }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.tz"
+                      :disabled="detailInfo.xsTxxx.tz_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">原学校名称</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.yxxmc }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.yxxmc"
+                      :disabled="detailInfo.xsJbxx.yxxmc_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">原学号</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.yxh }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.yxh"
+                      :disabled="detailInfo.xsJbxx.yxh_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
@@ -868,24 +745,725 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">入学方式</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.rxfsm}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.rxfsm" :disabled="detailInfo.xsXjxx.rxfsm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.rxfsm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.rxfsm_chinese"
+                      :disabled="detailInfo.xsXjxx.rxfsm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">来源地区</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.lydqm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.lydqm_chinese"
+                      :disabled="detailInfo.xsXjxx.lydqm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">学生来源</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.xslym }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.xslym"
+                      :disabled="detailInfo.xsXjxx.xslym_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">就读方式</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.jdfsm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.jdfsm_chinese"
+                      :disabled="detailInfo.xsXjxx.jdfsm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">入学前学历</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.rxqxlm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.rxqxlm"
+                      :disabled="detailInfo.xsXjxx.rxqxlm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">入学前学位</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.rxqxwm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.rxqxwm"
+                      :disabled="detailInfo.xsXjxx.rxqxwm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">获得学历方式</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.hdxlfsm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.hdxlfsm_chinese"
+                      :disabled="detailInfo.xsJbxx.hdxlfsm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">是否学分制</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.sfxfz_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.sfxfz_chinese"
+                      :disabled="detailInfo.xsXjxx.sfxfz_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">是否师范生</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.sfsfs }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.sfsfs"
+                      :disabled="detailInfo.xsXjxx.sfsfs_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">培养方式</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.rxfsm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.rxfsm_chinese"
+                      :disabled="detailInfo.xsXjxx.pyfsm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">培养层次</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ getName(pyccOps, detailInfo.xsXjxx.pyccm) }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <!-- <el-input v-model="detailInfo.xsXjxx.pyccm" size="small" placeholder="请输入内容"></el-input> -->
+                    <el-select
+                      v-model="detailInfo.xsXjxx.pyccm"
+                      size="small"
+                      :disabled="detailInfo.xsXjxx.pyccm_stuFlag == 2"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in pyccOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">连读方式</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.ldfsm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.ldfsm"
+                      :disabled="detailInfo.xsXjxx.ldfsm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">定向或委培</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.dxhwpdw }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.dxhwpdw"
+                      :disabled="detailInfo.xsXjxx.dxhwpdw_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">学生类别</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ getName(xslbOps, detailInfo.xsXjxx.xslbm_chinese) }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <!-- <el-input v-model="detailInfo.xsXjxx.xslbm" :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
+                    <el-select
+                      v-model="detailInfo.xsXjxx.xslbm_chinese"
+                      size="small"
+                      :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in xslbOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">第一外语语种</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.dywyyz }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.dywyyz"
+                      :disabled="detailInfo.xsJbxx.dywyyz_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">第一外语水平</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.dywysp }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.dywysp"
+                      :disabled="detailInfo.xsJbxx.dywysp_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">第二外语语种</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.dewyyz }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.dewyyz"
+                      :disabled="detailInfo.xsXjxx.dewyyz_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">第二外语水平</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.dewysp }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.dewysp"
+                      :disabled="detailInfo.xsXjxx.dewysp_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+
+          <!-- 研究生基本信息  XXXX_stuFlag 0必填，1可写，2可读-->
+          <div class="information" v-if="schooling == 2">
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">学号</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.xh }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.xh"
+                      :disabled="detailInfo.xsJbxx.xh_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">姓名</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.xm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.xm"
+                      :disabled="detailInfo.xsJbxx.xm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">拼音姓</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.pyx }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.pyx"
+                      :disabled="detailInfo.xsJbxx.pyx_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">拼音名</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.pym }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.pym"
+                      :disabled="detailInfo.xsJbxx.pym_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">曾用名</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.cym }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.cym"
+                      :disabled="detailInfo.xsJbxx.cym_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">英文姓名</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.ywxm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.ywxm"
+                      :disabled="detailInfo.xsJbxx.ywxm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">性别</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.xbm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <!-- <el-input v-model="detailInfo.xsJbxx.xbm" :disabled="detailInfo.xsJbxx.xbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
+                    <el-select
+                      v-model="detailInfo.xsJbxx.xbm"
+                      size="small"
+                      :disabled="detailInfo.xsJbxx.xbm_stuFlag == 2"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in dmxbmOPs"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">单位</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ getName(allDwh, detailInfo.xsXjxx.dwh) }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.dwh"
+                      :disabled="detailInfo.xsXjxx.dwh_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">出生日期</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.csrq }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.csrq"
+                      :disabled="detailInfo.xsJbxx.csrq_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">出生地</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.csdm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.csdm_chinese"
+                      :disabled="detailInfo.xsJbxx.csdm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">籍贯</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.jg }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.jg"
+                      :disabled="detailInfo.xsJbxx.jg_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">民族</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.mzm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <!-- <el-input v-model="detailInfo.xsJbxx.mzm" :disabled="detailInfo.xsJbxx.mzm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
+                    <el-select
+                      v-model="detailInfo.xsJbxx.mzm"
+                      size="small"
+                      :disabled="detailInfo.xsJbxx.mzm_stuFlag == 2"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in dmmzmOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">国籍/地区</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.gjdqm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.gjdqm"
+                      :disabled="detailInfo.xsJbxx.gjdqm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">身份证件类型</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.sfzjlxm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.sfzjlxm"
+                      :disabled="detailInfo.xsJbxx.sfzjlxm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">身份证件号</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.sfzjh }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.sfzjh"
+                      :disabled="detailInfo.xsJbxx.sfzjh_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">年级</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.nj }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.nj"
+                      :disabled="detailInfo.xsXjxx.nj_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">入学年月</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.rxny }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.rxny"
+                      :disabled="detailInfo.xsXjxx.rxny_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">预计毕业时间</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.yjbysj }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.yjbys"
+                      :disabled="detailInfo.xsJbxx.yjbys_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">实际毕业时间</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.sjbysj }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.sjbysj"
+                      :disabled="detailInfo.xsJbxx.sjbysj_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">结束学业年月</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.jsxyny }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.jsxyny"
+                      :disabled="detailInfo.xsXjxx.jsxyny_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">入学方式</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.rxfsm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.rxfsm_chinese"
+                      :disabled="detailInfo.xsXjxx.rxfsm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">学籍状态</div>
-                  <div v-if="isEdit ==1" class="content">{{getName(dmxjztmOps,detailInfo.xsXjxx.xjzt)}}</div>
-                  <div v-if="isEdit ==2" class="content">
+                  <div v-if="isEdit == 1" class="content">
+                    {{ getName(dmxjztmOps, detailInfo.xsXjxx.xjzt) }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
                     <!-- <el-input v-model="detailInfo.xsXjxx.xjzt" :disabled="detailInfo.xsXjxx.xjzt_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
-                    <el-select v-model="detailInfo.xsXjxx.xjzt" size="small" :disabled="detailInfo.xsXjxx.xjzt_stuFlag == 2" placeholder="请选择">
+                    <el-select
+                      v-model="detailInfo.xsXjxx.xjzt"
+                      size="small"
+                      :disabled="detailInfo.xsXjxx.xjzt_stuFlag == 2"
+                      placeholder="请选择"
+                    >
                       <el-option
                         v-for="item in dmxjztmOps"
                         :key="item.dm"
-                          :label="item.mc"
-                          :value="item.dm">
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
                       </el-option>
                     </el-select>
                   </div>
@@ -896,18 +1474,32 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">是否毕业</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.sfby}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.sfby" :disabled="detailInfo.xsXjxx.sfby_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.sfby_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.sfby_chinese"
+                      :disabled="detailInfo.xsXjxx.sfby_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">是否在校</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.sfzx}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.sfzx" :disabled="detailInfo.xsXjxx.sfzx_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.sfzx }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.sfzx"
+                      :disabled="detailInfo.xsXjxx.sfzx_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
@@ -916,18 +1508,32 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">港澳台侨外</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.gatqwm}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsJbxx.gatqwm" :disabled="detailInfo.xsJbxx.gatqwm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.gatqwm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.gatqwm_chinese"
+                      :disabled="detailInfo.xsJbxx.gatqwm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">婚姻状况</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsJbxx.hyzkm_chinese}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsJbxx.hyzkm" :disabled="detailInfo.xsJbxx.hyzkm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsJbxx.hyzkm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsJbxx.hyzkm"
+                      :disabled="detailInfo.xsJbxx.hyzkm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
@@ -936,15 +1542,23 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">政治面貌</div>
-                  <div v-if="isEdit ==1" class="content">{{getName(zzmmOps,detailInfo.xsJbxx.zzmmm)}}</div>
-                  <div v-if="isEdit ==2" class="content">
+                  <div v-if="isEdit == 1" class="content">
+                    {{ getName(zzmmOps, detailInfo.xsJbxx.zzmmm) }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
                     <!-- <el-input v-model="detailInfo.xsJbxx.zzmmm" :disabled="detailInfo.xsJbxx.zzmmm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
-                    <el-select v-model="detailInfo.xsJbxx.zzmmm" size="small" :disabled="detailInfo.xsJbxx.zzmmm_stuFlag == 2" placeholder="请选择">
+                    <el-select
+                      v-model="detailInfo.xsJbxx.zzmmm"
+                      size="small"
+                      :disabled="detailInfo.xsJbxx.zzmmm_stuFlag == 2"
+                      placeholder="请选择"
+                    >
                       <el-option
                         v-for="item in zzmmOps"
                         :key="item.dm"
-                          :label="item.mc"
-                          :value="item.dm">
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
                       </el-option>
                     </el-select>
                   </div>
@@ -953,9 +1567,16 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">来源地区</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.lydqm}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.lydqm" :disabled="detailInfo.xsXjxx.lydqm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.lydqm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.lydqm_chinese"
+                      :disabled="detailInfo.xsXjxx.lydqm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
@@ -964,18 +1585,32 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">学习方式</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.xxm_chinese}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.xxfsm" :disabled="detailInfo.xsXjxx.xxfsm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.xxfsm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.xxfsm_chinese"
+                      :disabled="detailInfo.xsXjxx.xxfsm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">就读方式</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.jdfsm}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.jdfsm" :disabled="detailInfo.xsXjxx.jdfsm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.jdfsm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.jdfsm_chinese"
+                      :disabled="detailInfo.xsXjxx.jdfsm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
@@ -984,18 +1619,32 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">专业</div>
-                  <div v-if="isEdit ==1" class="content">{{ getName(zyOps,detailInfo.xsXjxx.zydm) }}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.zydm" :disabled="detailInfo.xsXjxx.zydm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ getName(zyOps, detailInfo.xsXjxx.zydm) }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.zydm"
+                      :disabled="detailInfo.xsXjxx.zydm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">研究方向</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.yjfxm}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.yjfxm" :disabled="detailInfo.xsXjxx.yjfxm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.yjfxm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.yjfxm"
+                      :disabled="detailInfo.xsXjxx.yjfxm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
@@ -1004,18 +1653,32 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">导师姓名</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.dsxm}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.dsxm" :disabled="detailInfo.xsXjxx.dsxm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.dsxm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.dsxm"
+                      :disabled="detailInfo.xsXjxx.dsxm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">导师类别</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.dslb}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.dslb" :disabled="detailInfo.xsXjxx.dslb_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.dslb }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.dslb"
+                      :disabled="detailInfo.xsXjxx.dslb_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
@@ -1024,18 +1687,32 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">获得学历方式</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.hdxlfsm}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.hdxlfsm" :disabled="detailInfo.xsXjxx.hdxlfsm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.hdxlfsm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.hdxlfsm_chinese"
+                      :disabled="detailInfo.xsXjxx.hdxlfsm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">是否学分制</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.sfxfz}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.sfxfz" :disabled="detailInfo.xsXjxx.sfxfz_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.sfxfz_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.sfxfz_chinese"
+                      :disabled="detailInfo.xsXjxx.sfxfz_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
@@ -1045,14 +1722,22 @@
                 <div class="wrap">
                   <div class="title">培养层次</div>
                   <!-- <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.pyccm}}</div> -->
-                  <div v-if="isEdit ==1" class="content">{{getName(pyccOps,detailInfo.xsXjxx.pyccm)}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-select v-model="detailInfo.xsXjxx.pyccm" size="small" :disabled="detailInfo.xsXjxx.pyccm_stuFlag == 2" placeholder="请选择">
+                  <div v-if="isEdit == 1" class="content">
+                    {{ getName(pyccOps, detailInfo.xsXjxx.pyccm) }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-select
+                      v-model="detailInfo.xsXjxx.pyccm"
+                      size="small"
+                      :disabled="detailInfo.xsXjxx.pyccm_stuFlag == 2"
+                      placeholder="请选择"
+                    >
                       <el-option
                         v-for="item in pyccOps"
-                          :key="item.dm"
-                          :label="item.mc"
-                          :value="item.dm">
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
                       </el-option>
                     </el-select>
                   </div>
@@ -1061,9 +1746,16 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">培养方式</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.pyfsm}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.pyfsm" :disabled="detailInfo.xsXjxx.pyfsm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.rxfsm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.rxfsm_chinese"
+                      :disabled="detailInfo.xsXjxx.pyfsm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
@@ -1072,24 +1764,39 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">培养类别</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.pyfsm}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.pyfsm" :disabled="detailInfo.xsXjxx.pyfsm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.pylb }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.pylb"
+                      :disabled="detailInfo.xsXjxx.pylb_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">学生类别</div>
-                  <div v-if="isEdit ==1" class="content">{{getName(xslbOps,detailInfo.xsXjxx.xslbm)}}</div>
-                  <div v-if="isEdit ==2" class="content">
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.xslbm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
                     <!-- <el-input v-model="detailInfo.xsXjxx.xslbm" :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
-                    <el-select v-model="detailInfo.xsXjxx.xslbm" size="small" :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2" placeholder="请选择">
+                    <el-select
+                      v-model="detailInfo.xsXjxx.xslbm_chinese"
+                      size="small"
+                      :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2"
+                      placeholder="请选择"
+                    >
                       <el-option
                         v-for="item in xslbOps"
                         :key="item.dm"
-                          :label="item.mc"
-                          :value="item.dm">
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
                       </el-option>
                     </el-select>
                   </div>
@@ -1100,18 +1807,32 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">单双证</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.dsz}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.dsz" :disabled="detailInfo.xsXjxx.dsz_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.dsz }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.dsz"
+                      :disabled="detailInfo.xsXjxx.dsz_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">定向或委培单位</div>
-                  <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.dxhwpdw}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-input v-model="detailInfo.xsXjxx.dxhwpdw" :disabled="detailInfo.xsXjxx.dxhwpdw_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.dxhwpdw }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.dxhwpdw"
+                      :disabled="detailInfo.xsXjxx.dxhwpdw_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
                 </div>
               </el-col>
@@ -1120,14 +1841,22 @@
               <el-col :span="24" class="rowStyle">
                 <div class="wrap">
                   <div class="title">专项计划码</div>
-                  <div v-if="isEdit ==1" class="content">{{getName(zxjhmOps,detailInfo.xsXjxx.zxjhm)}}</div>
-                  <div v-if="isEdit ==2" class="content">
-                    <el-select v-model="detailInfo.xsXjxx.zxjhm" size="small" :disabled="detailInfo.xsXjxx.zxjhm_stuFlag == 2" placeholder="请选择">
+                  <div v-if="isEdit == 1" class="content">
+                    {{ getName(zxjhmOps, detailInfo.xsXjxx.zxjhm) }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-select
+                      v-model="detailInfo.xsXjxx.zxjhm"
+                      size="small"
+                      :disabled="detailInfo.xsXjxx.zxjhm_stuFlag == 2"
+                      placeholder="请选择"
+                    >
                       <el-option
                         v-for="item in zxjhmOps"
                         :key="item.dm"
-                          :label="item.mc"
-                          :value="item.dm">
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
                       </el-option>
                     </el-select>
                     <!-- <el-input v-model="detailInfo.xsXjxx.zxjhm" :disabled="detailInfo.xsXjxx.zxjhm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
@@ -1138,328 +1867,530 @@
           </div>
         </div>
 
-        <div class="headline" v-if="schooling==2">学历学位信息</div>
-        <div class="tableStyle" v-if="schooling==2">
+        <div class="headline" v-if="schooling == 2">学历学位信息</div>
+        <div class="tableStyle" v-if="schooling == 2">
           <div class="information">
             <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">学历证书号</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.xlzsh}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.xlzsh" :disabled="detailInfo.xsXjxx.xlzsh_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">学历证书号</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.xlzsh }}
                   </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">毕业证印制号</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.byzyzh}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.byzyzh" :disabled="detailInfo.xsXjxx.byzyzh_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.xlzsh"
+                      :disabled="detailInfo.xsXjxx.xlzsh_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
-                </el-col>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">毕业证印制号</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.byzyzh }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.byzyzh"
+                      :disabled="detailInfo.xsXjxx.byzyzh_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">获学位日期</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.hxwrq}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.hxwrq" :disabled="detailInfo.xsXjxx.hxwrq_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">获学位日期</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.hxwrq }}
                   </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">学位证书号</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.xwzsh}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.xwzsh" :disabled="detailInfo.xsXjxx.xwzsh_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.hxwrq"
+                      :disabled="detailInfo.xsXjxx.hxwrq_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
-                </el-col>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">学位证书号</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.xwzsh }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.xwzsh"
+                      :disabled="detailInfo.xsXjxx.xwzsh_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">是否专业学位</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.sfzyxw}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.sfzyxw" :disabled="detailInfo.xsXjxx.sfzyxw_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">是否专业学位</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.sfzyxw }}
                   </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">专业学位类别</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.zyxwlbm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.zyxwlbm" :disabled="detailInfo.xsXjxx.zyxwlbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.sfzyxw"
+                      :disabled="detailInfo.xsXjxx.sfzyxw_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
-                </el-col>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">专业学位类别</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.zyxwlbm_chinese }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.zyxwlbm_chinese"
+                      :disabled="detailInfo.xsXjxx.zyxwlbm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="24" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">专业学位领域</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.zyxwlym}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsXjxx.zyxwlym" :disabled="detailInfo.xsXjxx.zyxwlym_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="24" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">专业学位领域</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsXjxx.zyxwlym }}
                   </div>
-                </el-col>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsXjxx.zyxwlym"
+                      :disabled="detailInfo.xsXjxx.zyxwlym_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
           </div>
         </div>
 
         <div class="headline" id="tag_1">联系方式</div>
-        <div class="tableStyle" v-if="schooling==1">
+        <div class="tableStyle" v-if="schooling == 1">
           <div class="information">
             <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">移动电话</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.yddh}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.yddh" :disabled="detailInfo.xsTxxx.yddh_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">移动电话</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.yddh }}
                   </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">电子邮箱</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.dzyx}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.dzyx" :disabled="detailInfo.xsTxxx.dzyx_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.yddh"
+                      :disabled="detailInfo.xsTxxx.yddh_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
-                </el-col>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">电子邮箱</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.dzyx }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.dzyx"
+                      :disabled="detailInfo.xsTxxx.dzyx_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">QQ号码</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.qqhm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.qqhm" :disabled="detailInfo.xsTxxx.qqhm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">QQ号码</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.qqhm }}
                   </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">微信号</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.wxhm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.wxhm" :disabled="detailInfo.xsTxxx.wxhm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.qqhm"
+                      :disabled="detailInfo.xsTxxx.qqhm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
-                </el-col>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">微信号</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.wxhm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.wxhm"
+                      :disabled="detailInfo.xsTxxx.wxhm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">传真电话</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.czdh}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.czdh" :disabled="detailInfo.xsTxxx.czdh_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">传真电话</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.czdh }}
                   </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">邮政编码</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.yzbm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.yzbm" :disabled="detailInfo.xsTxxx.yzbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.czdh"
+                      :disabled="detailInfo.xsTxxx.czdh_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
-                </el-col>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">邮政编码</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.yzbm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.yzbm"
+                      :disabled="detailInfo.xsTxxx.yzbm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="24" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">通信地址</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.txdz}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.txdz" :disabled="detailInfo.xsTxxx.txdz_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="24" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">通信地址</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.txdz }}
                   </div>
-                </el-col>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.txdz"
+                      :disabled="detailInfo.xsTxxx.txdz_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">网络地址</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.wldz}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.wldz" :disabled="detailInfo.xsTxxx.wldz_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">网络地址</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.wldz }}
                   </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">家庭电话</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.jtdh}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.jtdh" :disabled="detailInfo.xsTxxx.jtdh_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.wldz"
+                      :disabled="detailInfo.xsTxxx.wldz_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
-                </el-col>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">家庭电话</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.jtdh }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.jtdh"
+                      :disabled="detailInfo.xsTxxx.jtdh_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">家庭邮编</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.jtyzbm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.jtyzbm" :disabled="detailInfo.xsTxxx.jtyzbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">家庭邮编</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.jtyzbm }}
                   </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">家庭住址</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.jtzz}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.jtzz" :disabled="detailInfo.xsTxxx.jtzz_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.jtyzbm"
+                      :disabled="detailInfo.xsTxxx.jtyzbm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
-                </el-col>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">家庭住址</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.jtzz }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.jtzz"
+                      :disabled="detailInfo.xsTxxx.jtzz_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="24" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">家庭Email</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.jtdzxx}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.jtdzxx" :disabled="detailInfo.xsTxxx.jtdzxx_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="24" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">家庭Email</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.jtdzxx }}
                   </div>
-                </el-col>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.jtdzxx"
+                      :disabled="detailInfo.xsTxxx.jtdzxx_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
           </div>
         </div>
 
-        <div class="tableStyle" v-if="schooling==2">
+        <div class="tableStyle" v-if="schooling == 2">
           <div class="information">
             <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">移动电话</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.yddh}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.yddh" :disabled="detailInfo.xsTxxx.yddh_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">移动电话</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.yddh }}
                   </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">电子邮箱</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.dzyx}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.dzyx" :disabled="detailInfo.xsTxxx.dzyx_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.yddh"
+                      :disabled="detailInfo.xsTxxx.yddh_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
-                </el-col>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">电子邮箱</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.dzyx }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.dzyx"
+                      :disabled="detailInfo.xsTxxx.dzyx_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">QQ号码</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.qqhm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.qqhm" :disabled="detailInfo.xsTxxx.qqhm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">QQ号码</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.qqhm }}
                   </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">微信号</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.wxhm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.wxhm" :disabled="detailInfo.xsTxxx.wxhm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.qqhm"
+                      :disabled="detailInfo.xsTxxx.qqhm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
-                </el-col>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">微信号</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.wxhm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.wxhm"
+                      :disabled="detailInfo.xsTxxx.wxhm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">家庭电话</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.jtdh}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.jtdh" :disabled="detailInfo.xsTxxx.jtdh_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">家庭电话</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.jtdh }}
                   </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">邮政编码</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.jtyzbm}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.jtyzbm" :disabled="detailInfo.xsTxxx.jtyzbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.jtdh"
+                      :disabled="detailInfo.xsTxxx.jtdh_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
                   </div>
-                </el-col>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">邮政编码</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.jtyzbm }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.jtyzbm"
+                      :disabled="detailInfo.xsTxxx.jtyzbm_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="24" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">通信地址</div>
-                    <div v-if="isEdit ==1" class="content">{{detailInfo.xsTxxx.txdz}}</div>
-                    <div v-if="isEdit ==2" class="content">
-                      <el-input v-model="detailInfo.xsTxxx.txdz" :disabled="detailInfo.xsTxxx.txdz_stuFlag == 2" size="small" placeholder="请输入内容"></el-input>
-                    </div>
+              <el-col :span="24" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">通信地址</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfo.xsTxxx.txdz }}
                   </div>
-                </el-col>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.txdz"
+                      :disabled="detailInfo.xsTxxx.txdz_stuFlag == 2"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                </div>
+              </el-col>
             </el-row>
           </div>
         </div>
 
         <div class="headline" id="tag_2">
           <div>家庭成员信息</div>
-          <div class="editBtn" v-if="isEdit ==2" @click="addDetailTable(1)"><i class="addIcon"></i> 添加家庭成员信息</div>
+          <div class="editBtn" v-if="isEdit == 2" @click="addDetailTable(1)">
+            <i class="addIcon"></i> 添加家庭成员信息
+          </div>
         </div>
         <div class="tableStyle">
-          <el-table :data="detailInfo.xsJtcyxxList" style="width: 100%;">
+          <el-table :data="detailInfo.xsJtcyxxList" style="width: 100%">
             <el-table-column prop="cyxm" label="姓名">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.cyxm}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.cyxm }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.cyxm" :disabled="scope.row.cyxm_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.cyxm"
+                    :disabled="scope.row.cyxm_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="csny" label="出生年月">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.csny}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.csny }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.csny" :disabled="scope.row.csny_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.csny"
+                    :disabled="scope.row.csny_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="gxm" label="关系">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.gxm}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.gxm }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.gxm" :disabled="scope.row.gxm_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.gxm"
+                    :disabled="scope.row.gxm_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="mzm" label="民族">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.mzm}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.mzm }}</div>
                 <div v-else>
                   <!-- <el-input v-model="scope.row.mzm" :disabled="scope.row.mzm_stuFlag ==2" placeholder="请输入"></el-input> -->
-                  <el-select v-model="scope.row.mzm" size="small" :disabled="scope.row.mzm_stuFlag == 2" placeholder="请选择">
+                  <el-select
+                    v-model="scope.row.mzm"
+                    size="small"
+                    :disabled="scope.row.mzm_stuFlag == 2"
+                    placeholder="请选择"
+                  >
                     <el-option
                       v-for="item in dmmzmOps"
                       :key="item.dm"
                       :label="item.mc"
-                      :value="item.dm">
+                      :value="item.dm"
+                    >
                     </el-option>
                   </el-select>
                 </div>
@@ -1467,79 +2398,118 @@
             </el-table-column>
             <el-table-column prop="gjdqm" label="国籍/地区">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.gjdqm}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.gjdqm }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.gjdqm" :disabled="scope.row.gjdqm_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.gjdqm"
+                    :disabled="scope.row.gjdqm_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="jkzkm" label="健康状况">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.jkzkm}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.jkzkm }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.jkzkm" :disabled="scope.row.jkzkm_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.jkzkm"
+                    :disabled="scope.row.jkzkm_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="cygzdw" label="工作单位">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.cygzdw}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.cygzdw }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.cygzdw" :disabled="scope.row.cygzdw_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.cygzdw"
+                    :disabled="scope.row.cygzdw_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="cygzdwdz" label="工作单位地址">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.cygzdwdz}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.cygzdwdz }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.cygzdwdz" :disabled="scope.row.cygzdwdz_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.cygzdwdz"
+                    :disabled="scope.row.cygzdwdz_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="cysfzh" label="身份证号码">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.cysfzh}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.cysfzh }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.cysfzh" :disabled="scope.row.cysfzh_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.cysfzh"
+                    :disabled="scope.row.cysfzh_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="zyjszwm" label="专业技术职务">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.zyjszwm}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.zyjszwm }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.zyjszwm" :disabled="scope.row.zyjszwm_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.zyjszwm"
+                    :disabled="scope.row.zyjszwm_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="zwjbm" label="职务级别">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.zwjbm}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.zwjbm }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.zwjbm" :disabled="scope.row.zwjbm_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.zwjbm"
+                    :disabled="scope.row.zwjbm_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="yddh" label="移动电话">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.yddh}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.yddh }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.yddh" :disabled="scope.row.yddh_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.yddh"
+                    :disabled="scope.row.yddh_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="dzyx" label="电子邮箱">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.dzyx}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.dzyx }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.dzyx" :disabled="scope.row.dzyx_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.dzyx"
+                    :disabled="scope.row.dzyx_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
-            <el-table-column  label="" v-if="isEdit ==2">
+            <el-table-column label="" v-if="isEdit == 2">
               <template slot-scope="scope">
-                <div class="deteleBtn" @click="deteleItem(scope.row,scope.$index ,'a')">
+                <div
+                  class="deteleBtn"
+                  @click="deteleItem(scope.row, scope.$index, 'a')"
+                >
                   <i class="el-icon-close"></i>
                 </div>
               </template>
@@ -1549,77 +2519,114 @@
 
         <div class="headline" id="tag_3">
           <div>学习经历</div>
-          <div class="editBtn" v-if="isEdit ==2" @click="addDetailTable(2)"><i class="addIcon"></i> 添加学习经历</div>
+          <div class="editBtn" v-if="isEdit == 2" @click="addDetailTable(2)">
+            <i class="addIcon"></i> 添加学习经历
+          </div>
         </div>
         <div class="tableStyle">
-          <el-table :data="detailInfo.xsXxjlList" style="width: 100%;">
+          <el-table :data="detailInfo.xsXxjlList" style="width: 100%">
             <el-table-column prop="xxqsny" label="起始时间">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.xxqsny}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.xxqsny }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.xxqsny" :disabled="scope.row.xxqsny_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.xxqsny"
+                    :disabled="scope.row.xxqsny_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="xxzzny" label="终止时间">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.xxzzny}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.xxzzny }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.xxzzny" :disabled="scope.row.xxzzny_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.xxzzny"
+                    :disabled="scope.row.xxzzny_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="xxdw" label="学习单位">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.xxdw}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.xxdw }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.xxdw" :disabled="scope.row.xxdw_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.xxdw"
+                    :disabled="scope.row.xxdw_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="sxzymc" label="所学专业">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.sxzymc}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.sxzymc }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.sxzymc" :disabled="scope.row.sxzymc_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.sxzymc"
+                    :disabled="scope.row.sxzymc_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="shxwm" label="获得学位">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.shxwm}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.shxwm }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.shxwm" :disabled="scope.row.shxwm_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.shxwm"
+                    :disabled="scope.row.shxwm_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="xxzmr" label="学习证明人">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.xxzmr}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.xxzmr }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.xxzmr" :disabled="scope.row.xxzmr_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.xxzmr"
+                    :disabled="scope.row.xxzmr_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="zmrdw" label="证明人单位">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.zmrdw}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.zmrdw }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.zmrdw" :disabled="scope.row.zmrdw_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.zmrdw"
+                    :disabled="scope.row.zmrdw_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="xxjlbz" label="学习简历备注">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.xxjlbz}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.xxjlbz }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.xxjlbz" :disabled="scope.row.xxjlbz_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.xxjlbz"
+                    :disabled="scope.row.xxjlbz_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
-            <el-table-column  label="" v-if="isEdit ==2">
+            <el-table-column label="" v-if="isEdit == 2">
               <template slot-scope="scope">
-                <div class="deteleBtn" @click="deteleItem(scope.row,scope.$index, 'b')">
+                <div
+                  class="deteleBtn"
+                  @click="deteleItem(scope.row, scope.$index, 'b')"
+                >
                   <i class="el-icon-close"></i>
                 </div>
               </template>
@@ -1629,85 +2636,126 @@
 
         <div class="headline" id="tag_4">
           <div>工作经历</div>
-          <div class="editBtn" v-if="isEdit ==2" @click="addDetailTable(3)"><i class="addIcon"></i> 添加工作经历</div>
+          <div class="editBtn" v-if="isEdit == 2" @click="addDetailTable(3)">
+            <i class="addIcon"></i> 添加工作经历
+          </div>
         </div>
         <div class="tableStyle">
-          <el-table :data="detailInfo.xsGzjlList" style="width: 100%;">
+          <el-table :data="detailInfo.xsGzjlList" style="width: 100%">
             <el-table-column prop="gzqsrq" label="起始时间">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.gzqsrq}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.gzqsrq }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.gzqsrq" :disabled="scope.row.gzqsrq_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.gzqsrq"
+                    :disabled="scope.row.gzqsrq_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="gzzzrq" label="终止时间">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.gzzzrq}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.gzzzrq }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.gzzzrq" :disabled="scope.row.gzzzrq_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.gzzzrq"
+                    :disabled="scope.row.gzzzrq_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="gzdw" label="工作单位">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.gzdw}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.gzdw }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.gzdw" :disabled="scope.row.gzdw_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.gzdw"
+                    :disabled="scope.row.gzdw_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="gznr" label="工作内容">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.gznr}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.gznr }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.gznr" :disabled="scope.row.gznr_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.gznr"
+                    :disabled="scope.row.gznr_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="crdzzwm" label="曾任党政职务">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.crdzzwm}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.crdzzwm }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.crdzzwm" :disabled="scope.row.crdzzwm_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.crdzzwm"
+                    :disabled="scope.row.crdzzwm_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="crzyjszw" label="曾任专业技术职务">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.crzyjszw}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.crzyjszw }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.crzyjszw" :disabled="scope.row.crzyjszw_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.crzyjszw"
+                    :disabled="scope.row.crzyjszw_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="gzzmr" label="工作证明人">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.gzzmr}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.gzzmr }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.gzzmr" :disabled="scope.row.gzzmr_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.gzzmr"
+                    :disabled="scope.row.gzzmr_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="gzzmrdw" label="证明人在何处">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.gzzmrdw}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.gzzmrdw }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.gzzmrdw" :disabled="scope.row.gzzmrdw_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.gzzmrdw"
+                    :disabled="scope.row.gzzmrdw_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="gzjlbz" label="工作简历备注">
               <template slot-scope="scope">
-                <div v-if="isEdit ==1">{{scope.row.gzjlbz}}</div>
+                <div v-if="isEdit == 1">{{ scope.row.gzjlbz }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.gzjlbz" :disabled="scope.row.gzjlbz_stuFlag ==2" placeholder="请输入"></el-input>
+                  <el-input
+                    v-model="scope.row.gzjlbz"
+                    :disabled="scope.row.gzjlbz_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
                 </div>
               </template>
             </el-table-column>
-            <el-table-column  label="" v-if="isEdit ==2">
+            <el-table-column label="" v-if="isEdit == 2">
               <template slot-scope="scope">
-                <div class="deteleBtn" @click="deteleItem(scope.row,scope.$index, 'c')">
+                <div
+                  class="deteleBtn"
+                  @click="deteleItem(scope.row, scope.$index, 'c')"
+                >
                   <i class="el-icon-close"></i>
                 </div>
               </template>
@@ -1717,15 +2765,33 @@
       </div>
     </div>
     <div class="editBottom" v-if="isEdit == 2">
-    <!-- this.$route.query.xh -->
-      <div v-show="this.$route.query.xh" class="btn cancel" @click="handleCencle">取消</div>
-      <div v-show="!this.$route.query.xh" class="btns borderBlue" @click="getGraStu">
+      <!-- this.$route.query.xh -->
+      <div
+        v-show="this.$route.query.xh"
+        class="btn cancel"
+        @click="handleCencle"
+      >
+        取消
+      </div>
+      <div
+        v-show="!this.$route.query.xh"
+        class="btns borderBlue"
+        @click="getGraStu"
+      >
         <i class="icon blueIcon"></i><span class="title">毕业生登记表</span>
       </div>
-      <div v-show="!this.$route.query.xh" class="btns borderOrange" @click="getStuReg">
+      <div
+        v-show="!this.$route.query.xh"
+        class="btns borderOrange"
+        @click="getStuReg"
+      >
         <i class="icon orangeIcon"></i><span class="title">学生登记表</span>
       </div>
-      <div v-show="!this.$route.query.xh" class="btns borderLight" @click="getStu">
+      <div
+        v-show="!this.$route.query.xh"
+        class="btns borderLight"
+        @click="getStu"
+      >
         <i class="icon lightIcon"></i><span class="title">学生卡片</span>
       </div>
       <div class="btn confirm" @click="handlUpdata">保存</div>
@@ -1735,33 +2801,44 @@
 
 <script>
 import {
-  getRegStuInfoDetailPage, updateRegStuInfo,
-  loadRegStuInfoUpdatePage, gradStu,
-  stuCard, stuReg, getZY, getBJ} from "@/api/student/index"
+  getRegStuInfoDetailPage,
+  updateRegStuInfo,
+  loadRegStuInfoUpdatePage,
+  gradStu,
+  stuCard,
+  stuReg,
+  getZY,
+  getBJ,
+} from "@/api/student/index";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import TopTitle from '@/components/TopTitle/index.vue'
+import TopTitle from "@/components/TopTitle/index.vue";
 import { getCollege } from "@/api/class/maintenanceClass";
 export default {
-  name: 'detail',
-  components : {
-    TopTitle
+  name: "detail",
+  components: {
+    TopTitle,
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.routerFrom = from.fullPath
-    })
-    
+      vm.routerFrom = from.fullPath;
+    });
   },
   data() {
     return {
-      routerFrom:'', // 跳转过来的路由
-      dtailsList: ['基本信息', '联系方式', '家庭成员信息', '学习经历', '工作经历'],
+      routerFrom: "", // 跳转过来的路由
+      dtailsList: [
+        "基本信息",
+        "联系方式",
+        "家庭成员信息",
+        "学习经历",
+        "工作经历",
+      ],
       current: 0,
       tableData: [],
       isEdit: false,
-      schooling: '',
-      xh:'',
-      value: '',
+      schooling: "",
+      xh: "",
+      value: "",
       detailInfo: {
         xsJbxx: {},
         xsTxxx: {},
@@ -1769,7 +2846,7 @@ export default {
         xsJtcyxxList: [], // 家庭成员
         xsXxjlList: [], // 学生学习经历
         xsGzjlList: [], // 学生工作经历
-        xsXszpb:{} // 学生信息照片
+        xsXszpb: {}, // 学生信息照片
       },
       dmxbmOPs: [],
       dmmzmOps: [],
@@ -1780,31 +2857,33 @@ export default {
       allDwh: [],
       zyOps: [],
       xslbOps: [],
-      zxjhmOps:[] 
+      zxjhmOps: [],
     };
   },
   created() {
-    
     // schooling = ""; // 3 4 5 是本科
-    this.isEdit = this.$route.query.show ?this.$route.query.show: '2' // 1是详情，2是编辑
-    this.schooling = this.$route.query.schooling?this.$route.query.schooling:((this.pycc ==1||this.pucc == 2)?2:1)
-    this.xh = this.$route.query.xh ? this.$route.query.xh : this.userId
-
+    this.isEdit = this.$route.query.show ? this.$route.query.show : "2"; // 1是详情，2是编辑
+    this.schooling = this.$route.query.schooling
+      ? this.$route.query.schooling
+      : this.pycc == 1 || this.pucc == 2
+      ? 2
+      : 1;
+    this.xh = this.$route.query.xh ? this.$route.query.xh : this.userId;
   },
-  
-  computed: { 
+
+  computed: {
     roleId() {
-      return this.$store.state.user.roleId
+      return this.$store.state.user.roleId;
     },
     roleType() {
-      return this.$store.state.user.roleType
+      return this.$store.state.user.roleType;
     },
     userId() {
-      return this.$store.state.user.userId
+      return this.$store.state.user.userId;
     },
     pycc() {
-      return this.$store.state.user.pycc
-    }
+      return this.$store.state.user.pycc;
+    },
   },
   mounted() {
     this.$nextTick(() => {
@@ -1814,18 +2893,18 @@ export default {
       this.getCode("dmpyccm"); // 培养层次
       this.getCode("dmzzmmm"); // 政治面貌
       this.getCode("dmxz"); // 学 制
-      this.getCode("dmxslbm"); // 学学生类别 
-      this.getCode("dmyjszxjhm"); // 专项计划码 
+      this.getCode("dmxslbm"); // 学学生类别
+      this.getCode("dmyjszxjhm"); // 专项计划码
       if (this.isEdit == 1) {
-        this.getDetail()
+        this.getDetail();
       } else {
-        this.getloadRegStuInfoUpdatePage()
+        this.getloadRegStuInfoUpdatePage();
       }
-    })
+    });
   },
 
   methods: {
-     // 查询学院
+    // 查询学院
     getAllCollege() {
       getCollege()
         .then((res) => {
@@ -1862,10 +2941,10 @@ export default {
       if (data.length > 0 && val) {
         for (let x = 0; x < data.length; x++) {
           if (data[x].dm == val) {
-            return data[x].mc
+            return data[x].mc;
           }
-        } 
-      } 
+        }
+      }
     },
     getCode(data) {
       this.getCodeInfoByEnglish(data);
@@ -1876,111 +2955,149 @@ export default {
         .then((res) => {
           switch (paramsData) {
             case "dmpyccm":
-              this.pyccOps = res.data
+              this.pyccOps = res.data;
               break;
             case "dmxjztm":
-              this.dmxjztmOps = res.data
+              this.dmxjztmOps = res.data;
               break;
             case "dmmzm":
-              this.dmmzmOps = res.data
+              this.dmmzmOps = res.data;
               break;
             case "dmzzmmm":
-              this.zzmmOps = res.data
+              this.zzmmOps = res.data;
               break;
             case "dmxz":
-              this.xzOps = res.data
+              this.xzOps = res.data;
               break;
-            case 'dmxbm':
-              this.dmxbmOPs = res.data
-            case 'dmxslbm':
-              this.xslbOps = res.data
-            case 'dmyjszxjhm':
-              this.zxjhmOps = res.data
+            case "dmxbm":
+              this.dmxbmOPs = res.data;
+            case "dmxslbm":
+              this.xslbOps = res.data;
+            case "dmyjszxjhm":
+              this.zxjhmOps = res.data;
           }
         })
         .catch((err) => {});
     },
     getloadRegStuInfoUpdatePage() {
-      let data = { XH: this.xh }
-      loadRegStuInfoUpdatePage(data).then(res => {
-        this.$set(this.detailInfo, 'xsJbxx', res.data.xsJbxx?res.data.xsJbxx:{})
-        this.$set(this.detailInfo, 'xsTxxx', res.data.xsTxxx?res.data.xsTxxx:{})
-        this.$set(this.detailInfo, 'xsXjxx', res.data.xsXjxx?res.data.xsXjxx:{})
-        this.$set(this.detailInfo, 'xsJtcyxxList', res.data.xsJtcyxxList)
-        this.$set(this.detailInfo, 'xsXxjlList', res.data.xsXxjlList)
-        this.$set(this.detailInfo, 'xsGzjlList', res.data.xsGzjlList)
-        this.$set(this.detailInfo, 'xsXszpb', res.data.xsXszpb ? res.data.xsXszpb : {})
-        // this.getAllCollege(this.detailInfo.xsXjxx.dwh)
-      }).catch(err=>{})
+      let data = { XH: this.xh };
+      loadRegStuInfoUpdatePage(data)
+        .then((res) => {
+          this.$set(
+            this.detailInfo,
+            "xsJbxx",
+            res.data.xsJbxx ? res.data.xsJbxx : {}
+          );
+          this.$set(
+            this.detailInfo,
+            "xsTxxx",
+            res.data.xsTxxx ? res.data.xsTxxx : {}
+          );
+          this.$set(
+            this.detailInfo,
+            "xsXjxx",
+            res.data.xsXjxx ? res.data.xsXjxx : {}
+          );
+          this.$set(this.detailInfo, "xsJtcyxxList", res.data.xsJtcyxxList);
+          this.$set(this.detailInfo, "xsXxjlList", res.data.xsXxjlList);
+          this.$set(this.detailInfo, "xsGzjlList", res.data.xsGzjlList);
+          this.$set(
+            this.detailInfo,
+            "xsXszpb",
+            res.data.xsXszpb ? res.data.xsXszpb : {}
+          );
+          // this.getAllCollege(this.detailInfo.xsXjxx.dwh)
+        })
+        .catch((err) => {});
     },
     getDetail() {
-      let data = { XH: this.$route.query.xh }
-      getRegStuInfoDetailPage(data).then(res => {
-        this.$set(this.detailInfo, 'xsJbxx', res.data.xsJbxx?res.data.xsJbxx:{})
-        this.$set(this.detailInfo, 'xsTxxx', res.data.xsTxxx?res.data.xsTxxx:{})
-        this.$set(this.detailInfo, 'xsXjxx', res.data.xsXjxx?res.data.xsXjxx:{})
-        this.$set(this.detailInfo, 'xsJtcyxxList', res.data.xsJtcyxxList)
-        this.$set(this.detailInfo, 'xsXxjlList', res.data.xsXxjlList)
-        this.$set(this.detailInfo, 'xsGzjlList', res.data.xsGzjlList)
-        this.$set(this.detailInfo, 'xsXszpb', res.data.xsXszpb?res.data.xsXszpb:{})
-        this.getAllCollege(this.detailInfo.xsXjxx.dwh)
-        this.getZY([this.detailInfo.xsXjxx.dwh]);
-        this.getBJ([this.detailInfo.xsXjxx.dwh]);
-        
-      }).catch(err=>{})
+      let data = { XH: this.$route.query.xh };
+      getRegStuInfoDetailPage(data)
+        .then((res) => {
+          this.$set(
+            this.detailInfo,
+            "xsJbxx",
+            res.data.xsJbxx ? res.data.xsJbxx : {}
+          );
+          this.$set(
+            this.detailInfo,
+            "xsTxxx",
+            res.data.xsTxxx ? res.data.xsTxxx : {}
+          );
+          this.$set(
+            this.detailInfo,
+            "xsXjxx",
+            res.data.xsXjxx ? res.data.xsXjxx : {}
+          );
+          this.$set(this.detailInfo, "xsJtcyxxList", res.data.xsJtcyxxList);
+          this.$set(this.detailInfo, "xsXxjlList", res.data.xsXxjlList);
+          this.$set(this.detailInfo, "xsGzjlList", res.data.xsGzjlList);
+          this.$set(
+            this.detailInfo,
+            "xsXszpb",
+            res.data.xsXszpb ? res.data.xsXszpb : {}
+          );
+          this.getAllCollege(this.detailInfo.xsXjxx.dwh);
+          this.getZY([this.detailInfo.xsXjxx.dwh]);
+          this.getBJ([this.detailInfo.xsXjxx.dwh]);
+        })
+        .catch((err) => {});
     },
-    handleList(index,tag) {
-      this.current = index
-      var id = "#" + tag + '_' + index;
-     
+    handleList(index, tag) {
+      this.current = index;
+      var id = "#" + tag + "_" + index;
+
       document.querySelector(id).scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-          inline: "nearest",
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
       });
     },
     // 添加
     addDetailTable(index) {
       if (index == 1) {
-        this.detailInfo.xsJtcyxxList.push({})
+        this.detailInfo.xsJtcyxxList.push({});
       } else if (index == 2) {
-        this.detailInfo.xsXxjlList.push({})
+        this.detailInfo.xsXxjlList.push({});
       } else if (index == 3) {
-        this.detailInfo.xsGzjlList.push({})
+        this.detailInfo.xsGzjlList.push({});
       }
     },
-    // 删除 
+    // 删除
     deteleItem(row, index, leg) {
       // console.log(row,index,leg)
-      if (leg == 'a') {
-        this.detailInfo.xsJtcyxxList.splice(index, 1)
-      } else if (leg == 'b') {
-        this.detailInfo.xsXxjlList.splice(index, 1)
-      } else if (leg == 'c') {
-        this.detailInfo.xsGzjlList.splice(index, 1)
-      }detailInfo
+      if (leg == "a") {
+        this.detailInfo.xsJtcyxxList.splice(index, 1);
+      } else if (leg == "b") {
+        this.detailInfo.xsXxjlList.splice(index, 1);
+      } else if (leg == "c") {
+        this.detailInfo.xsGzjlList.splice(index, 1);
+      }
+      detailInfo;
     },
     // 取消
     handleCencle() {
       this.$router.push({
-        path:this.routerFrom
-      })
+        path: this.routerFrom,
+      });
     },
     // 提交
     handlUpdata() {
-      this.$set(this.detailInfo,'xh',this.$route.query.xh)
-      let data = this.detailInfo
-      updateRegStuInfo(data).then(res => {
-        this.$message({
-          message: res.errmsg,
-          type: 'success'
+      this.$set(this.detailInfo, "xh", this.$route.query.xh);
+      let data = this.detailInfo;
+      updateRegStuInfo(data)
+        .then((res) => {
+          this.$message({
+            message: res.errmsg,
+            type: "success",
+          });
+          this.$router.push({
+            path: this.routerFrom,
+          });
         })
-        this.$router.push({
-          path:this.routerFrom
-        })
-      }).catch(err => {
-        this.$message.error(err.errmsg);
-      })
+        .catch((err) => {
+          this.$message.error(err.errmsg);
+        });
     },
     // 毕业生登记表
     getGraStu() {
@@ -1996,33 +3113,33 @@ export default {
     },
     //学生卡片
     getStu() {
-      let xhs = [this.xh]
+      let xhs = [this.xh];
       let data = { xhs: xhs, etype: "docx" };
       stuCard(data).then((res) => this.downloadFn(res, "学生卡片", "zip"));
-    }
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.detail{
-  padding:20px 0;
+.detail {
+  padding: 20px 0;
   box-sizing: border-box;
   .student {
     margin-top: 60px;
   }
-  .wrap{
+  .wrap {
     display: flex;
     flex-direction: row;
     // overflow: hidden;
-    .detail_left{
-      flex:0 0 198px;
+    .detail_left {
+      flex: 0 0 198px;
       margin-right: 24px;
       background: #fff;
       // height: calc(100vh - 170px);
-      padding:20px;
+      padding: 20px;
       box-sizing: border-box;
-      .list{
+      .list {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -2030,50 +3147,50 @@ export default {
         height: 36px;
         line-height: 36px;
         font-size: 14px;
-        color: #1F1F1F;
+        color: #1f1f1f;
         cursor: pointer;
-        padding:0 10px;
+        padding: 0 10px;
         box-sizing: border-box;
       }
-      .active{
-        background: #F0F0F0;
+      .active {
+        background: #f0f0f0;
         border-radius: 2px;
       }
     }
-    .detail_right{
-      flex:1;
+    .detail_right {
+      flex: 1;
       background: #fff;
-      .right_top{
-        .title{
+      .right_top {
+        .title {
           text-align: center;
           font-weight: 500;
           font-size: 24px;
           color: #005657;
-          line-height: 24px
+          line-height: 24px;
         }
-        .timeWrap{
+        .timeWrap {
           text-align: center;
           font-weight: 400;
           font-size: 16px;
           color: #383838;
           line-height: 28px;
-          .updataTime{
+          .updataTime {
             margin-left: 20px;
           }
         }
       }
-      .headline{
+      .headline {
         padding-left: 20px;
         box-sizing: border-box;
         font-weight: 600;
         font-size: 20px;
-        color: #1F1F1F;
+        color: #1f1f1f;
         line-height: 28px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        .editBtn{
-          padding:4px 5px;
+        .editBtn {
+          padding: 4px 5px;
           margin-right: 20px;
           border: 1px solid #005657;
           border-radius: 4px;
@@ -2081,60 +3198,60 @@ export default {
           font-size: 14px;
           color: #005657;
           cursor: pointer;
-          .addIcon{
+          .addIcon {
             display: inline-block;
-            width:15px;
+            width: 15px;
             height: 15px;
-            background: url('~@/assets/images/addicon.png') no-repeat center;
+            background: url("~@/assets/images/addicon.png") no-repeat center;
             vertical-align: middle;
           }
         }
       }
-      .tableStyle{
+      .tableStyle {
         position: relative;
-        padding:20px;
-        .imgWrap{
+        padding: 20px;
+        .imgWrap {
           position: absolute;
-          right:20px;
-          top:20px;
+          right: 20px;
+          top: 20px;
           z-index: 100;
-          .photo{
-            width:160px;
+          .photo {
+            width: 160px;
             height: 206px;
             background: #fff;
             overflow: hidden;
-            img{
-              width:160px;
+            img {
+              width: 160px;
               height: 206px;
             }
           }
         }
-        .information{
-          padding:0 20px;
-          .rowStyle{
-            padding:0 !important;
-            margin:0;
-            border-bottom:1px solid #cccccc;
+        .information {
+          padding: 0 20px;
+          .rowStyle {
+            padding: 0 !important;
+            margin: 0;
+            border-bottom: 1px solid #cccccc;
           }
-          .wrap{
+          .wrap {
             display: flex;
             align-items: center;
-            .title{
+            .title {
               flex: 0 0 160px;
               line-height: 48px;
-              background: #E0E0E0;
+              background: #e0e0e0;
               text-align: right;
               padding-right: 5px;
-              margin:0 !important;
+              margin: 0 !important;
             }
-            .content{
+            .content {
               font-weight: 400;
               font-size: 14px;
-              color: #1F1F1F;
+              color: #1f1f1f;
               line-height: 22px;
               margin-left: 16px;
-              ::v-deep .el-input{
-                width:200px;
+              ::v-deep .el-input {
+                width: 200px;
               }
             }
           }
@@ -2142,19 +3259,19 @@ export default {
       }
     }
   }
-  .editBottom{
-    width:100%;
+  .editBottom {
+    width: 100%;
     height: 60px;
     background: #fff;
-    box-shadow: 0 0 2px 0 rgba(0,0,0,0.10), 0 -2px 6px -1px rgba(0,0,0,0.20);
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 -2px 6px -1px rgba(0, 0, 0, 0.2);
     position: fixed;
-    bottom:0;
-    left:0;
-    z-index:100;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    .btn{
+    .btn {
       width: 84px;
       height: 36px;
       line-height: 36px;
@@ -2164,63 +3281,63 @@ export default {
       border-radius: 2px;
       margin-right: 20px;
     }
-    .cancel{
+    .cancel {
       color: #005657;
     }
-    .confirm{
+    .confirm {
       background: #005657;
-      color:#fff;
+      color: #fff;
     }
     .borderBlue {
-          border: 1px solid #0d84e0;
-          color: #0d84e0;
-          background: #ebfafd;
-        }
-        .borderOrange {
-          border: 1px solid #cc3014;
-          color: #cc3014;
-          background: #fdf6f3;
-        }
-        .borderLight {
-          border: 1px solid #0090a1;
-          color: #0090a1;
-          background: #e7fcfc;
-        }
-        .borderGreen {
-          border: 1px solid #005657;
-          color: #005657;
-          background: #fff;
-        }
-        .btns {
-          margin-right: 15px;
-          padding: 5px 10px;
-          cursor: pointer;
-          .title {
-            font-size: 14px;
-            text-align: center;
-            line-height: 22px;
-            // vertical-align: middle;
-          }
-          .icon {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            vertical-align: top;
-            margin-right: 5px;
-          }
-          .blueIcon {
-            background: url("~@/assets/images/icon_1.png") no-repeat;
-          }
-          .orangeIcon {
-            background: url("~@/assets/images/icon_2.png") no-repeat;
-          }
-          .lightIcon {
-            background: url("~@/assets/images/icon_3.png") no-repeat;
-          }
-          .greenIcon {
-            background: url("~@/assets/images/export.png");
-          }
-        }
+      border: 1px solid #0d84e0;
+      color: #0d84e0;
+      background: #ebfafd;
+    }
+    .borderOrange {
+      border: 1px solid #cc3014;
+      color: #cc3014;
+      background: #fdf6f3;
+    }
+    .borderLight {
+      border: 1px solid #0090a1;
+      color: #0090a1;
+      background: #e7fcfc;
+    }
+    .borderGreen {
+      border: 1px solid #005657;
+      color: #005657;
+      background: #fff;
+    }
+    .btns {
+      margin-right: 15px;
+      padding: 5px 10px;
+      cursor: pointer;
+      .title {
+        font-size: 14px;
+        text-align: center;
+        line-height: 22px;
+        // vertical-align: middle;
+      }
+      .icon {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        vertical-align: top;
+        margin-right: 5px;
+      }
+      .blueIcon {
+        background: url("~@/assets/images/icon_1.png") no-repeat;
+      }
+      .orangeIcon {
+        background: url("~@/assets/images/icon_2.png") no-repeat;
+      }
+      .lightIcon {
+        background: url("~@/assets/images/icon_3.png") no-repeat;
+      }
+      .greenIcon {
+        background: url("~@/assets/images/export.png");
+      }
+    }
   }
 }
 </style>

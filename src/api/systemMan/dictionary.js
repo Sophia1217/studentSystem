@@ -85,7 +85,7 @@ export function queryManage(data) {
       data: data
     })
   }
-  //   字典模板导入
+  //   字典列表模板导入
   export function importtableInfo(data,params) {
     return request({
       url: '/codeTable/importTableInfo',

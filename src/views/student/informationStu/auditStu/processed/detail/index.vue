@@ -26,6 +26,9 @@
             <div class="photo">
               <img :src="detailInfo.xsXszpb?'data:image/png;base64,'+detailInfo.xsXszpb.bkzp:''" alt="报考照片">
             </div>
+            <div class="photo">
+              <img :src="detailInfo.xsXszpb?'data:image/png;base64,'+detailInfo.xsXszpb.bkzp:''" alt="在校照片">
+            </div>
             <div class="photo" style="margin-top:10px;">
               <img :src="detailInfo.xsXszpb?'data:image/png;base64,'+detailInfo.xsXszpb.byzp:''" alt="毕业照片">
             </div>

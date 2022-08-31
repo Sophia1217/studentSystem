@@ -39,6 +39,18 @@
                 alt="报考照片"
               />
             </div>
+
+            <div class="photo">
+              <img
+                :src="
+                  detailInfo.xsXszpb
+                    ? 'data:image/png;base64,' + detailInfo.xsXszpb.bkzp
+                    : ''
+                "
+                alt="在校照片"
+              />
+            </div>
+
             <div class="photo" style="margin-top: 10px">
               <img
                 :src="
@@ -236,7 +248,7 @@
                 <div class="wrap">
                   <div class="title">籍贯</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfo.xsJbxx.jg }}
+                    {{ detailInfo.xsJbxx.jg_chinese }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
@@ -1253,7 +1265,7 @@
                 <div class="wrap">
                   <div class="title">籍贯</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfo.xsJbxx.jg }}
+                    {{ detailInfo.xsJbxx.jg_chinese }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input

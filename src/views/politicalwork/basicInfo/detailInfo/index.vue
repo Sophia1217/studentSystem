@@ -30,8 +30,12 @@
         <!-- </div> -->
         <div class="tableStyle">
           <div class="imgWrap">
-            <div class="photo">
-              <img :src="detailInfoData.zgZps" alt="照片"> </img>
+            <div class="photo" v-if="detailInfoData.zgZps != null">
+              <img :src="detailInfoData.zgZps.zp" alt="照片"> </img>
+              <!-- <img src="" alt=""> -->
+            </div>
+            <div class="photo" v-else>
+              <img src="" alt=""> </img>
               <!-- <img src="" alt=""> -->
             </div>
           </div>
@@ -256,24 +260,49 @@
                 <div class="wrap">
                   <div class="title">籍贯</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgZgjbxxes.jg }}
+                    <el-select
+                        v-model="detailInfoData.zgZgjbxxes.jg"
+                        placeholder=""
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="item in jgOps"
+                          :key="item.dm"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <div v-if="zgZgjbxxesAuth.JG == 2">
-                      <el-input
+                      <el-select
                         v-model="detailInfoData.zgZgjbxxes.jg"
+                        placeholder=""
                         size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
+                        disabled
+                      >
+                        <el-option
+                          v-for="item in jgOps"
+                          :key="item.dm"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
                     </div>
                     <div v-else>
-                      <el-input
+                      <el-select
                         v-model="detailInfoData.zgZgjbxxes.jg"
+                        placeholder=""
                         size="small"
-                        placeholder="请输入内容"
-                        :disabled="false"
-                      />
+                      >
+                        <el-option
+                          v-for="item in jgOps"
+                          :key="item.dm"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
                     </div>
                   </div>
                 </div>
@@ -3376,6 +3405,7 @@ export default {
       dwhOps: [],
       gjdqmOps:[],
       sxzymOps:[],
+      jgOps:[],
 
       crzyjszwmOps: [],
 
@@ -3411,7 +3441,8 @@ export default {
         zgXmkyqks: [],
         zgLwkyqks: [],
         zgZzkyqks: [],
-        zgJxkyqks: []
+        zgJxkyqks: [],
+        zgZps: {}
       },
       dtailsList: [
         '基本信息',
@@ -3440,7 +3471,8 @@ export default {
   },
   mounted() {
     this.getCode('dmxbm') // 性别码
-    this.getCode('dmmzm') // 民族码
+    this.getCode('dmmzm') // 民族码 
+    this.getCode('dmxzqhm') // 籍贯码
     this.getCode('dmzzmmm') // 政治面貌码
     this.getCode('dmrsgjdqm') // 国籍地区码
     this.getCode('dmsfzjlxm') // 身份证件类型码
@@ -3507,6 +3539,7 @@ export default {
               break
             case 'dmrsgjdqm':
               this.gjdqmOps = res.data
+              this.sxwgjdqmOps = res.data
               break
             case 'dmsfzjlxm':
               this.sfzjlxmOps = res.data
@@ -3561,6 +3594,10 @@ export default {
               break
             case 'dmrskhjgm':
               this.khjgmOps = res.data
+              break
+              //籍贯
+            case 'dmxzqhm':
+              this.jgOps = res.data
               break
           }
         })
@@ -3630,6 +3667,11 @@ export default {
             this.detailInfoData,
             'zgJxkyqks',
             res.zgJxkyqks ? res.zgJxkyqks : {} // 教学科研情况
+          ),
+          this.$set(
+            this.detailInfoData,
+            'zgZps',
+            res.zgZps[0] ? res.zgZps[0] : {} // 照片
           )
           this.$set(this.detailInfoData, 'updateTime', res.updateTime)
           this.$set(this.detailInfoData, 'createTime', res.createTime)

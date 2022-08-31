@@ -111,6 +111,7 @@
                     :action="uploadUrl"
                     :show-file-list="false"
                     :data="fileData"
+                    :headers='fileHeader'
                     :on-success="upLoadSuccess"
                     :on-error="upLoadError"
                   >
@@ -458,6 +459,7 @@
 <script>
 import "@/assets/fonts/export/iconfont.css";
 import "@/assets/fonts/refresh/iconfont.css";
+import { getToken } from '@/utils/auth'
 import {
   getStuList,
   queryWfbStuList,
@@ -539,6 +541,15 @@ export default {
       get() {
         return {
           classNum: this.$route.query.bjdm,
+        };
+      },
+    },
+      fileHeader: {
+      get() {
+        return {
+            accessToken: getToken() ,// 让每个请求携带自定义token 请根据实际情况自行修改 
+            uuid: new Date().getTime(),
+            clientId :'111'
         };
       },
     },

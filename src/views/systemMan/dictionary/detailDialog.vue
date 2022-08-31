@@ -29,6 +29,14 @@
             :disabled="true"
           ></el-input>
         </el-form-item>
+        <el-form-item label="字典值" prop="codeValue">
+          <el-input
+            v-model="rowId.codeValue"
+            size="small"
+            placeholder="请输入字典值"
+            :disabled="true"
+          ></el-input>
+        </el-form-item>
         <el-form-item label="字典状态" prop="state">
           <el-switch
             v-model="rowId.state"
@@ -63,6 +71,7 @@ export default {
         codeTableChinese: "",
         state: "",
         codeKey: "",
+        codeValue: "",
         remark: "",
       },
     };

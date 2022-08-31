@@ -33,6 +33,13 @@
           placeholder="请输入字典名称"
         ></el-input>
       </el-form-item>
+      <el-form-item label="字典值" prop="codeValue">
+        <el-input
+          v-model="info.codeValue"
+          size="small"
+          placeholder="请输入字典值"
+        ></el-input>
+      </el-form-item>
       <el-form-item label="创建时间" prop="array">
         <el-date-picker
           v-model="info.array"
@@ -67,13 +74,36 @@
           <span class="title-item"> 班级操作字典 </span>
           <span class="iconfont repeat_icon">&#xe7b1; </span>
         </div>
+
         <div class="headerRight">
-          <div class="btns borderBlue" @click="handleAdd1()">
-            <i class="icon blueIcon"></i><span class="title">新增字典</span>
-          </div>
-          <!-- <div class="btns borderOrange" @click="handleDetele">
-            <i class="icon orangeIcon"></i><span class="title">删除</span>
-          </div> -->
+          <el-row :gutter="10" class="mb8" style="float: right">
+            <el-col :span="1.5">
+              <el-button class="export" @click="mbDown">
+                <!-- <span class="iconfont icon-daochu-06"></span> -->
+                模板下载</el-button
+              >
+            </el-col>
+            <el-col :span="1.5">
+              <el-upload
+                accept=".xlsx,.xls"
+                :auto-upload="true"
+                :action="uploadUrl"
+                :show-file-list="false"
+                :data="fileData"
+                :headers="fileHeader"
+                :on-success="upLoadSuccess"
+                :on-error="upLoadError"
+              >
+                <el-button class="export"> 导入</el-button>
+              </el-upload>
+            </el-col>
+            <el-col :span="1.5">
+              <el-button class="btns borderBlue" @click="handleAdd1()"
+                ><i class="icon blueIcon"></i
+                ><span class="title">新增字典</span></el-button
+              >
+            </el-col>
+          </el-row>
         </div>
       </div>
 
@@ -94,6 +124,12 @@
           label="字典标签"
           align="center"
           prop="codeKey"
+          sortable
+        />
+        <el-table-column
+          label="字典值"
+          align="center"
+          prop="codeValue"
           sortable
         />
         <el-table-column label="字典状态" align="center" prop="state" sortable>
@@ -155,14 +191,20 @@ import {
   listQuery,
   updateDicList,
   addDicList,
+  fileInfoDown,
   checkKey,
+  importtableInfo,
 } from "@/api/systemMan/dictionary";
+import { getToken } from "@/utils/auth";
 import { Message } from "element-ui";
 export default {
   name: "dictionary",
   components: { DicDialog, dialogVisibleAdd },
+
   data() {
     return {
+      uploadUrl: process.env.VUE_APP_BASE_API + "/codeTable/importTableInfo",
+
       state1: [
         {
           value: "",
@@ -189,6 +231,7 @@ export default {
         pageSize: 10,
         total: 0,
         codeKey: "",
+        codeValue: "",
       },
       roleNameOps: [],
       noticeList: [],
@@ -204,10 +247,56 @@ export default {
     // this.$set(this.info, "array", [this.info.createTime, this.info.createTime]); //,如果需要动态回显，这里就需要处理日期格式,同时动态监听
     this.handleQuery();
   },
+  computed: {
+    fileData: {
+      get() {
+        return {
+          codeTableEnglish: this.$route.query.codeTableEnglish,
+          codeTableChinese: this.$route.query.codeTableChinese,
+        };
+      },
+    },
+    fileHeader: {
+      get() {
+        return {
+          accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
+          uuid: new Date().getTime(),
+          clientId: "111",
+        };
+      },
+    },
+  },
   created() {
     this.handleQuery();
   },
   methods: {
+    //模板下载
+    mbDown() {
+      fileInfoDown().then((res) =>
+        this.downloadFn(res, "字典列表模板下载", "xlsx")
+      );
+    },
+    ///上传
+    upLoadSuccess(res, file, fileList) {
+      if (res.errcode == "00") {
+        this.$message({
+          type: "success",
+          message: res.errmsg,
+        });
+      } else {
+        this.$message({
+          type: "error",
+          message: res.errmsg,
+        });
+      }
+    },
+
+    upLoadError(err, file, fileList) {
+      this.$message({
+        type: "error",
+        message: "上传失败",
+      });
+    },
     changeTableSort(column) {
       this.info.orderZd = column.prop;
       this.info.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
@@ -224,6 +313,7 @@ export default {
         pageNum: this.info.pageNum,
         pageSize: this.info.pageSize,
         codeKey: this.info.codeKey,
+        codeValue: this.info.codeValue,
         orderZd: this.info.orderZd,
         orderPx: this.info.orderPx,
       };
@@ -266,10 +356,12 @@ export default {
         state: cal.state ? "0" : "1",
         remark: cal.remark,
         codeKey: cal.codeKey,
+        codeValue: cal.codeValue,
       };
       const data1 = {
         codeTableEnglish: this.info.codeTableEnglish,
-        codeKey: cal.codeKey,
+        codeKey: "",
+        codeValue: cal.codeValue,
       };
       checkKey(data1).then((res) => {
         if (res.data) {
@@ -277,7 +369,7 @@ export default {
             this.handleQuery();
           });
         } else {
-          this.$message.error("请不要提交重复字典便签名");
+          this.$message.error("请不要提交重复字典标签值");
         }
       });
     },
@@ -288,6 +380,7 @@ export default {
         state: val.state ? "0" : "1",
         remark: val.remark,
         codeKey: val.codeKey,
+        codeValue: val.codeValue,
         id: val.id,
       };
 
@@ -303,20 +396,17 @@ export default {
         state: cal.state ? "0" : "1",
         remark: cal.remark,
         codeKey: cal.codeKey,
+        codeValue: cal.codeValue,
         id: cal.id,
       };
       const data1 = {
         codeTableEnglish: cal.codeTableEnglish,
         codeKey: cal.codeKey,
+        codeValue: cal.codeValue,
       };
-      checkKey(data1).then((res) => {
-        if (res.data) {
-          updateDicList(data).then((res) => {
-            this.handleQuery();
-          });
-        } else {
-          this.$message.error("请不要提交重复字典便签名");
-        }
+
+      updateDicList(data).then((res) => {
+        this.handleQuery();
       });
     },
     handleAdd1() {
@@ -365,6 +455,10 @@ export default {
       .iconfont {
         margin-left: 5px;
       }
+    }
+    .export {
+      color: #005657;
+      border-color: #005657;
     }
     .headerRight {
       display: flex;

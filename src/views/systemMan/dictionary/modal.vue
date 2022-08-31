@@ -28,6 +28,13 @@
             placeholder="请输入字典类型"
           ></el-input>
         </el-form-item>
+        <el-form-item label="字典值" prop="codeValue">
+          <el-input
+            v-model="queryParams.codeValue"
+            size="small"
+            placeholder="请输入字典值"
+          ></el-input>
+        </el-form-item>
         <el-form-item label="字典状态" prop="state">
           <el-switch
             v-model="queryParams.state"
@@ -61,6 +68,7 @@ export default {
       queryParams: {
         state: "",
         codeKey: "",
+        codeValue: "",
         remark: "",
       },
     };

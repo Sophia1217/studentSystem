@@ -54,3 +54,45 @@ export function queryManage(data) {
       data: data
     })
   }
+  //    字典模板下载
+  export function fileDown(data) {
+    
+    return request({
+      url:'/codeTable/downloadTable',
+      method: 'post',
+      responseType: 'blob',
+      data: data
+    })
+  }
+  //   字典模板导入
+  export function importtable(data,params) {
+    return request({
+      url: '/codeTable/importTable',
+      method: 'post',
+      headers: {
+        "Content-Type": "multipart/form-data;charset=utf-8"
+      },
+      data:params
+    })
+  }
+   //    字典列表模板下载
+   export function fileInfoDown(data) {
+    
+    return request({
+      url:'/codeTable/downloadTableInfo',
+      method: 'post',
+      responseType: 'blob',
+      data: data
+    })
+  }
+  //   字典模板导入
+  export function importtableInfo(data,params) {
+    return request({
+      url: '/codeTable/importTableInfo',
+      method: 'post',
+      headers: {
+        "Content-Type": "multipart/form-data;charset=utf-8"
+      },
+      data:params
+    })
+  }

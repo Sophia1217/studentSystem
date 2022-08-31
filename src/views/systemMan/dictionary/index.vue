@@ -69,6 +69,27 @@
           字典管理<span class="iconfont repeat_icon">&#xe7b1; </span>
         </h3>
         <div class="headerRight"></div>
+        <el-row :gutter="10" class="mb8" style="float: right">
+          <el-col :span="1.5">
+            <el-button class="export" @click="mbDown">
+              <!-- <span class="iconfont icon-daochu-06"></span> -->
+              模板下载</el-button
+            >
+          </el-col>
+          <el-col :span="1.5">
+            <el-upload
+              accept=".xlsx,.xls"
+              :auto-upload="true"
+              :action="uploadUrl"
+              :show-file-list="false"
+              :headers="fileHeader"
+              :on-success="upLoadSuccess"
+              :on-error="upLoadError"
+            >
+              <el-button class="export"> 导入</el-button>
+            </el-upload>
+          </el-col>
+        </el-row>
       </div>
 
       <el-table
@@ -96,6 +117,7 @@
           prop="codeTableChinese"
           sortable
         />
+
         <!-- <el-table-column label="字典状态" align="center" prop="state" sortable>
           <template slot-scope="scope">
             <div>
@@ -148,12 +170,19 @@
 <script>
 import "@/assets/fonts/repeat/iconfont.css";
 import DicDialog from "./dicDialog.vue";
-import { queryManage, updateDic } from "@/api/systemMan/dictionary";
+import {
+  queryManage,
+  updateDic,
+  fileDown,
+  importtable,
+} from "@/api/systemMan/dictionary";
+import { getToken } from "@/utils/auth";
 export default {
   name: "dictionary",
   components: { DicDialog },
   data() {
     return {
+      uploadUrl: process.env.VUE_APP_BASE_API + "/codeTable/importTable",
       options: [
         {
           value: "0",
@@ -170,6 +199,7 @@ export default {
         orderPx: "",
         codeTableEnglish: "",
         codeTableChinese: "",
+
         state: "",
         array: [],
         pageNum: 1,
@@ -187,7 +217,43 @@ export default {
   created() {
     this.handleQuery();
   },
+  computed: {
+    fileHeader: {
+      get() {
+        return {
+          accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
+          uuid: new Date().getTime(),
+          clientId: "111",
+        };
+      },
+    },
+  },
   methods: {
+    //模板下载
+    mbDown() {
+      fileDown().then((res) => this.downloadFn(res, "标准模板下载", "xlsx"));
+    },
+    ///上传
+    upLoadSuccess(res, file, fileList) {
+      if (res.errcode == "00") {
+        this.$message({
+          type: "success",
+          message: res.errmsg,
+        });
+      } else {
+        this.$message({
+          type: "error",
+          message: res.errmsg,
+        });
+      }
+    },
+
+    upLoadError(err, file, fileList) {
+      this.$message({
+        type: "error",
+        message: "上传失败",
+      });
+    },
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
@@ -230,9 +296,7 @@ export default {
         .catch((err) => {});
     },
 
-    handleCurrentChange(val) {
-
-    },
+    handleCurrentChange(val) {},
     //重置按钮操作
     resetQuery(queryForm) {
       this.$refs[queryForm].resetFields();
@@ -254,6 +318,7 @@ export default {
       const data = {
         codeTableEnglish: cal.codeTableEnglish,
         codeTableChinese: cal.codeTableChinese,
+
         state: cal.state ? "0" : "1",
         remark: cal.remark,
       };
@@ -311,6 +376,10 @@ export default {
       .iconfont {
         margin-left: 5px;
       }
+    }
+    .export {
+      color: #005657;
+      border-color: #005657;
     }
     .headerRight {
       display: flex;

@@ -200,7 +200,7 @@ export default {
         ssdwdmList: [], // 培养单位
         pyccList: [], // 培养层次
         ssnjList: [], // 年级
-        bjdm: "", // 班级编号
+        bjmc: "", //班级名称
         orderField: "",
         orderType: "", // 0是asc升序，1是desc降序
       },

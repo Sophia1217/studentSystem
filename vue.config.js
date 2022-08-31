@@ -35,22 +35,9 @@ module.exports = {
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
-        // target: `http://10.161.11.70:8080`,
-
-        //target: `http://10.161.26.133:8081`, //杨瑞
-
-        // target: `http://10.161.26.133:8081`, //杨瑞
-
-        // target: `http://10.161.9.97:8081`, //凯文
-        // target: `http://10.161.17.174:8081`, //芦晨
-        // target: `http://10.161.23.133:8081`, // 黄聪
-        // target: `http://10.161.23.133:8081`,//黄聪
-        // target: `http://10.161.7.39:8082`, // 郑浩
-        // target: `http://10.161.3.70:8081`,
-        //  target: `http://10.146.83.42:8081`,  // 涂晓招
-        // target: `http://10.130.66.230:8081`,  // 张沈龙
-        // target: `http://10.161.10.116:8081`,  // 华庚兴
-        target: `http://10.222.7.139:8081`, //测试服务器
+        // target: `http://10.222.7.139:8081`, //华师测试服务器
+        target: `http://172.30.66.41:8081`, //基地测试服务器
+        
 
         changeOrigin: true,
         pathRewrite: {

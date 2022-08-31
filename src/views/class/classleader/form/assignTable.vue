@@ -58,6 +58,9 @@
             </el-table-column>
             <el-table-column label="性别" align="center" prop="sex" />
             <el-table-column label="班级职位" align="center" prop="zwdm" />
+            <el-table-column label="任命人" align="center" prop="zwdm" />
+            <el-table-column label="任命时间" align="center" prop="zwdm" />
+
             <!-- <el-table-column label="操作" align="center" prop="level">
               <template slot-scope="scope">
                 <span

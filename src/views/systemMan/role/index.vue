@@ -82,6 +82,20 @@
           prop="modTime"
           sortable
         /> -->
+        <el-table-column
+          label="创建人"
+          align="center"
+         
+          sortable
+        >
+          <template slot-scope="scope">
+            <div>
+              <!-- 同时显示姓名和工号 -->
+              {{noticeList[scope.$index].createUserName}}（{{noticeList[scope.$index].createUserId}}）
+            </div>
+          </template>
+        
+        </el-table-column>
         <el-table-column label="角色状态" align="center" prop="isUse" sortable>
           <template slot-scope="scope">
             <div>
@@ -136,6 +150,8 @@ export default {
         pageSize: 10,
         orderZd: "",
         orderPx: "",
+        createUserId: "",
+        createUserName: "",
       },
       roleNameOps: [
         { label: "所有", value: "" },

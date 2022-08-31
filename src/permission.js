@@ -71,12 +71,12 @@ router.beforeEach((to, from, next) => {
             }
         } else {
             // console.log('跳转登录')
-            location.href = 'https://account.ccnu.edu.cn/cas/login?service=http://10.222.7.139:8081/sws/checkLogin'
-            // if (to.path == '/login') {
-            //     next()
-            // }else {
-            //     next({ path: '/login',replace: true })
-            // }
+            // location.href = 'https://account.ccnu.edu.cn/cas/login?service=http://10.222.7.139:8081/sws/checkLogin'
+            if (to.path == '/login') {
+                next()
+            }else {
+                next({ path: '/login',replace: true })
+            }
             NProgress.done()
         }
   }

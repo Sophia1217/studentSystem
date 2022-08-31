@@ -53,10 +53,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="班级编号" prop="bjdm">
+      <el-form-item label="班级名称" prop="bjmc">
         <el-input
-          v-model="queryParams.bjdm"
-          placeholder="未选择"
+          v-model="queryParams.bjmc"
+          placeholder="请输入班级名称"
           clearable
           @keyup.enter.native="handleQuery"
         />

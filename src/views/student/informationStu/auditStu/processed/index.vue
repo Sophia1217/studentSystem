@@ -315,6 +315,7 @@ export default {
         checkBox: [],
         isIndeterminate: true,
       },
+      queryExport:{},
       ethnic: {
         // 民 族
         checkAll: false,
@@ -430,7 +431,7 @@ export default {
         xm: this.select == "xm" ? this.searchVal : "",
         sfzjh: this.select == "sfzjh" ? this.searchVal : "",
         yddh: this.select == "yddh" ? this.searchVal : "",
-        pyccm: this.training.choose,
+        pyccm: this.training.choose ||[],
         xz: this.learnHe.choose,
         xjzt: this.studentStatus.choose,
         zzmmm: this.politica.choose,
@@ -445,6 +446,7 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
+      this.queryExport = data
       FlowPageList(data)
         .then((res) => {
           this.tableData = res.data.data;
@@ -550,17 +552,34 @@ export default {
     // 打开导出弹窗
     handleExport() {
       if (this.multipleSelection.length <= 0) {
-        this.$message.error('请勾选一条数据');
-        return
-      }
-      let ids = []
-      this.multipleSelection.forEach(item => {
-        ids.push(item.id)
-      })
-      let data = { idList: ids, exportStyle:'EXCEL'}
-      StuInfoFlowExport(data).then(res => {
+        let stuInfoFlowExportParam = this.queryExport
+        let data = {stuInfoFlowExportParam, exportStyle:'EXCEL'}
+        // let data = this.queryExport
+        console.log("stuInfoFlowExportParam",stuInfoFlowExportParam);
+        // if(data.length == 0){
+        //   console.log("data",data);
+        // }
+        StuInfoFlowExport(data).then(res => {
         this.downloadFn(res, "学生信息审核导出", "xls")
-      }).catch(err=>{})
+
+        this.$message.success('学生信息审核已导出');
+        return
+        }).catch(err=>{})
+
+        
+      }
+      else{
+        console.log("有勾选");
+        let ids = []
+        this.multipleSelection.forEach(item => {
+          ids.push(item.id)
+        })
+        let data = { idList: ids, exportStyle:'EXCEL'}
+        StuInfoFlowExport(data).then(res => {
+          this.downloadFn(res, "学生信息审核导出", "xls")
+        }).catch(err=>{})
+      }
+      
     },
     pass() {
       var data = this.multipleSelection;

@@ -47,7 +47,7 @@ export function outAssistant(data) {
 
 export function getGzdw(data) {
   return request({
-    url: '/manager/user/queryOwnDwh',
+    url: '/zg/queryOwnDwh',
     method: 'post',
     data: data
   })

@@ -75,8 +75,18 @@ export function exportBasicInfo(data) {
 // 查询工作单位列表
 export function getListWorkPlace(query) {
   return request({
-    url: '/assistant/getdwmc',
+    url: '/manager/user/queryOwnDwh',
     method: 'post',
     data: query
+  })
+}
+
+// 字段中单位码表 /manager/user/queryAllDwh
+
+export function queryAllDwh() {
+  return request({
+    url: '/manager/user/queryAllDwh',
+    method: 'post',
+    // params: query
   })
 }

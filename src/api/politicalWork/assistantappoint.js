@@ -47,7 +47,7 @@ export function outAssistant(data) {
 
 export function getGzdw(data) {
   return request({
-    url: '/assistant/getdwmc',
+    url: '/manager/user/queryOwnDwh',
     method: 'post',
     data: data
   })

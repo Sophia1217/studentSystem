@@ -3374,9 +3374,9 @@ import {
   getDetailQueryPoliticalWorkList,
   updateDetailQueryPoliticalWorkList,
   getCodeInfoByEnglish,
-  getListWorkPlace
+  getListWorkPlace,
+  queryAllDwh
 } from '@/api/politicalWork/basicInfo'
-import {} from '@/api/politicalWork/detailInfo'
 export default {
   name: 'DetailInfo',
   beforeRouteEnter(to, from, next) {
@@ -3479,7 +3479,7 @@ export default {
     this.getCode('dmrshyzkm') // 婚姻状况码_公用
     this.getCode('dmrsxlm') // 学历码
     this.getCode('dmxwm') // 学位码
-    this.getWorkPlace('dmdwmc') // 单位
+    // this.getWorkPlace('dmdwmc') // 单位
 
     this.getCode('dmrsrylbm') // 人员类别码
     this.getCode('dmrsryflm') // 人员总分类
@@ -3505,15 +3505,25 @@ export default {
     // this.getCode('dmrsprgwdjm') // 专技等级
 
     this.getCode('dmrskhjgm') // 考核结果码
+
+    this.getListWorkPlace() //单位码表
   },
 
   methods: {
-    getWorkPlace(data) {
-      this.getListWorkPlace(data)
-    },
-    getListWorkPlace(paramsData) {
-      const data = { listWorkPlace: paramsData }
-      getListWorkPlace(data)
+    // getWorkPlace(data) {
+    //   this.getListWorkPlace(data)
+    // },
+
+    // getListWorkPlace(paramsData) {
+    //   const data = { listWorkPlace: paramsData }
+    //   getListWorkPlace(data)
+    //     .then((res) => {
+    //       this.dwhOps = res.data.rows
+    //     })
+    //     .catch((err) => {})
+    // },
+    getListWorkPlace() {
+      queryAllDwh()
         .then((res) => {
           this.dwhOps = res.data.rows
         })

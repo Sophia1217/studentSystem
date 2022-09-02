@@ -117,12 +117,13 @@
           ref="multipleTable"
           :data="basicInfoList"
           style="width: 100%"
+          :default-sort="{ prop: 'gh', order: 'ascending' }"
           @selection-change="handleSelectionChange"
           @sort-change="changeTableSort"
         >
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
-          <el-table-column prop="gh" label="工号" sortable="custom" />
+          <el-table-column prop="gh" label="工号" sortable />
           <el-table-column prop="xm" label="姓名" sortable="custom" />
           <el-table-column prop="lb" label="类别" sortable="custom" />
           <el-table-column prop="xb" label="性别" sortable="custom" />

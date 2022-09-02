@@ -103,7 +103,7 @@
           ref="multipleTable"
           :data="tableData"
           style="width: 100%"
-          :default-sort="{ prop: 'date', order: 'descending' }"
+          :default-sort="{ prop: 'gh', order: 'ascending' }"
           @sort-change="changeTableSort"
         >
           <el-table-column type="selection" width="55" />

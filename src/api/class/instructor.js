@@ -46,3 +46,21 @@ export function getDeleteFdyRecords(query) {
     data: query,
   });
 }
+
+// 6.输入学号回显姓名
+export function getXm(query) {
+  return request({
+    url: "/zg/getXm",
+    method: "post",
+    data: query,
+  });
+}
+
+// 7.批量任命
+export function assignFdyByClass(query) {
+  return request({
+    url: "/classfdy/assignFdyByClass",
+    method: "post",
+    data: query,
+  });
+}

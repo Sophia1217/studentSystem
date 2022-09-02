@@ -90,18 +90,18 @@
         <div class="title" icon="el-icon-refresh">
           <span class="title-itemopn">辅导员管理列表</span>
           <span class="iconfont">&#xe631;</span>
-          <!-- <el-row :gutter="10" class="mb8" style="float: right">
+          <el-row :gutter="10" class="mb8" style="float: right">
             <el-col :span="1.5">
               <el-button
-                @click="empRecordClick"
+                @click="assignClick"
                 type="primary"
                 class="teaRecord"
                 icon="el-icon-search"
               >
-                任职记录</el-button
+                批量分配</el-button
               >
             </el-col>
-          </el-row> -->
+          </el-row>
         </div>
         <!-- v-loading="loading" -->
         <el-table
@@ -109,6 +109,7 @@
           @selection-change="handleSelectionChange"
           @sort-change="changeTableSort"
         >
+          <el-table-column type="selection" width="55" />
           <el-table-column label="序号" align="center" type="index" />
           <el-table-column
             label="班级编号"
@@ -194,6 +195,122 @@
       </div>
     </div>
     <!-- <tea-table :table_content="noticeList" :total="total"></tea-table> -->
+    <!-- 导入对话框 -->
+    <!-- <el-dialog :visible.sync="openAssign" width="30%">
+      <el-form label-position="left" label-width="100px" :model="importForm">
+        <el-form-item label="学工号" prop="gh">
+            <el-input v-model="importForm.gh" @input="inputChange" />
+        </el-form-item>
+        <el-form-item label="姓名" prop="xm">
+                <el-select
+                    v-model="importForm.xm"
+                    placeholder=""
+                    size="small"
+                    @change="selectClick"
+                  >
+                    <el-option
+                      v-for="item in xmOps"
+                      :key="item.gh"
+                      :label="item.xm + item.gh"
+                      :value="item.gh"
+                    />
+                </el-select>
+        </el-form-item>
+      </el-form>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancelImport">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="submitImport"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog> -->
+    <!-- 批量任命对话框 -->
+    <el-dialog
+      title="辅导员任命"
+      :visible.sync="openAssign"
+      width="550px"
+      height="243px"
+      append-to-body
+    >
+      <el-form
+        :inline="true"
+        ref="form"
+        :model="form"
+        :rules="rules"
+        label-width="150px"
+      >
+      <el-form-item label="任命日期">
+          <el-date-picker
+            type="date"
+            style="width: 100%"
+            placeholder="选择任命日期"
+            value-format="yyyy-MM-dd hh:mm:ss"
+            v-model="form.rmsj"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="学工号" prop="fdyGh" style="width: 80%">
+            <el-input v-model="form.fdyGh" @input="inputChange" />
+        </el-form-item>
+        <el-form-item label="姓名" prop="xm" style="width: 80%">
+                <el-select
+                    v-model="importForm.xm"
+                    placeholder=""
+                    size="small"
+                    @change="selectClick"
+                  >
+                    <el-option
+                      v-for="item in xmOps"
+                      :key="item.gh"
+                      :label="item.xm +'：'+ item.gh"
+                      :value="item.gh"
+                    />
+                </el-select>
+        </el-form-item>
+
+        <!-- <el-form-item label="辅导员工号" prop="fdyGh">
+              <el-select v-model="form.fdyGh" placeholder="请选择" clearable>
+                <el-option
+                  v-for="(item, index) in xmOps"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                />
+              </el-select>
+            </el-form-item> -->
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancelAssign">取消</el-button>
+        <el-button type="primary" @click="assignConfirm" class="confirm"
+          >确定</el-button
+        >
+      </div>
+    </el-dialog>
+
+    <!-- 批量任命二次确定：doubleCheckAssign-->
+    <el-dialog
+      title="批量任命辅导员确认"
+      :visible.sync="doubleAssign"
+      width="50%"
+    >
+      <template>
+        <div v-for="item in multipleSelection" :key="item.gh">
+          <span
+            >确认任命【{{ form.fdyGh }}({{fdyXm}})】为【{{
+              item.bjmc
+            }}】的【辅导员】？</span
+          >
+        </div>
+      </template>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="doubleAssignCancel">取 消</el-button>
+
+        <el-button type="primary" @click="doubleAssignConfirm()" class="confirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -207,7 +324,10 @@ import {
   getGrade,
   addClass,
   deleteEmptyClass,
+  
 } from "@/api/class/maintenanceClass"; // 引入班级列表查询、修改班级名称接口
+import {getXm, assignFdyByClass} from "@/api/class/instructor"
+import { param } from "../../../utils";
 export default {
   name: "instructor", //辅导员管理主界面
   mounted() {
@@ -219,10 +339,21 @@ export default {
   },
   data() {
     return {
+      table_title:'',
+      doubleAssign: false,
+      importForm: {
+        gh: "",
+        xm: "",
+      },
+      // 确认导入弹出
+      showConfirmImport: false,
+      // 批量任命显示
+      openAssign: false,
       // 遮罩层
       // loading: true,
       // 选中数组
-      ids: [],
+      list: [],
+      multipleSelection:[],
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -253,7 +384,11 @@ export default {
         orderType: "", // 0是asc升序，1是desc降序
       },
       // 表单参数
-      form: {},
+      form: {
+        fdyGh: '',
+        rmsj: '',
+        bjdmList: []
+      },
       // 表单校验
       rules: {
         noticeTitle: [
@@ -267,9 +402,34 @@ export default {
       Jr: [],
       fpfdy: true,
       rejl: true,
+      xmOps: [],
+      fdyXm: '',
+      rmsj: '',
+      bjdmList: []
     };
   },
   methods: {
+    selectClick(val){
+      this.form.fdyGh = val
+      for( var i in this.xmOps){
+        if(this.xmOps[i].gh == val){
+          this.fdyXm = this.xmOps[i].xm
+          break
+        }
+      }
+    },
+    //批量输入框查找姓名
+    inputChange(){
+      if(this.form.fdyGh.length > 4){
+        getXm({gh : this.form.fdyGh}).then((res) => {
+          // console.log(res, 'res')
+          // this.$set(this.sex, "checkBox", res.data);
+          this.xmOps = res.XmGh;
+        })
+        .catch((err) => {});
+      }
+      // console.log(this.importForm.gh,'importForm.gh')
+    },
     getData(data) {
       for (var i in data) {
         this.Jr.push(data[i].modId); //将第一层的保存出来，
@@ -329,6 +489,57 @@ export default {
         query: { bjdm: row.bjdm },
       });
     },
+    // 批量分配
+    assignClick() {
+      // console.log(this.multipleSelection)
+      
+      if (this.multipleSelection.length > 0) {
+        this.openAssign = true
+        this.title = "批量任命辅导员";
+    }else {
+        this.$message({
+          message: "请至少选择一个班级！",
+          type: 'warning',
+        });
+    }
+    },
+    // 取消导入提交按钮
+    cancelAssign() {
+      this.openAssign = false;
+      this.form.rmsj = ''
+      this.form.fdyGh = ''
+      this.importForm.xm = ''
+      this.xmOps = []
+    },
+    // /** 导入提交按钮 */
+    assignConfirm() {
+      this.openAssign = false;
+      this.doubleAssign = true
+      // let params= {
+      //   bjdm : this.bjdmList,
+      //   fdyGh : this.importForm.gh
+      //   // rmsj : 
+      // }
+      this.fdyGh = this.importForm.gh
+    },
+    //班干部批量任命————二次确定操作
+    doubleAssignConfirm() {
+      let param = this.form
+      assignFdyByClass(param).then((res) => {
+        // console.log(res);
+        this.$message({
+          message: "任命成功",
+          type: "success",
+        });
+        this.doubleAssign = false;
+        this.queryParams.pageNum = 1;
+        this.getList();
+        this.form.rmsj = ''
+      this.form.fdyGh = ''
+      this.importForm.xm = ''
+      this.xmOps = []
+      });
+    },
     /** 查询公告列表 */
     // getList() {
     //   // this.loading = true;
@@ -355,11 +566,29 @@ export default {
       this.handleQuery();
     },
     // 多选框选中数据
-    handleSelectionChange(row) {
+    handleSelectionChange(selection) {
+      this.form.bjdmList = []
+      this.multipleSelection = selection;
+      for(var i in selection){
+        if ( !this.form.bjdmList.includes(selection[i].bjdm)){
+          this.form.bjdmList.push(selection[i].bjdm)
+        }
+        
+      }
+      this.list = [...selection];
       // this.ids = selection.map((item) => item.noticeId);
       // this.single = selection.length != 1;
       // this.multiple = !selection.length;
     },
+    doubleAssignCancel(){
+      // this.form = []
+      this.form.rmsj = ''
+      this.form.fdyGh = ''
+      this.importForm.xm = ''
+      this.xmOps = []
+      this.doubleAssign = false
+    },
+    
     /** 新增按钮操作 */
     handleAdd() {
       // this.reset();

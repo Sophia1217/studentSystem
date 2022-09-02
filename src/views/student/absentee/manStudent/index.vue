@@ -149,12 +149,17 @@
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">民 族：</el-col>
           <el-col :span="20">
-            <div class="checkbox">
+            <div :class="expand ? 'expandOpen' : 'expandClose'">
               <checkboxCom
+                :class="expand ? 'expandOpen' : 'expandClose'"
                 :objProp="ethnic"
                 @training="ethnicAll"
                 @checkedTraining="ethnicCheck"
               ></checkboxCom>
+            </div>
+            <div>
+              <el-button v-if="expand" @click="openIt"> 展开</el-button>
+              <el-button v-else @click="closeIt"> 收起</el-button>
             </div>
           </el-col>
         </el-row>
@@ -307,6 +312,7 @@ export default {
   components: { CheckboxCom, exportView },
   data() {
     return {
+      expand: false,
       searchVal: "",
       select: "",
       isMore: false,
@@ -390,6 +396,12 @@ export default {
   },
 
   methods: {
+    openIt() {
+      this.expand = false;
+    },
+    closeIt() {
+      this.expand = true;
+    },
     // 查询学院
     getAllCollege() {
       getCollege()
@@ -463,9 +475,7 @@ export default {
     changeSelect(val) {
       this.searchVal = "";
     },
-    handleDatePicker(val) {
-      
-    },
+    handleDatePicker(val) {},
     // 查询
     handleSearch() {
       let csrqs,
@@ -517,7 +527,7 @@ export default {
         allCheck.push(this.training.checkBox[i].dm);
       }
       this.training.choose = val ? allCheck : [];
-      
+
       this.training.isIndeterminate = false;
     },
     // 培养层次单选
@@ -535,7 +545,7 @@ export default {
         allCheck.push(this.learnHe.checkBox[i].dm);
       }
       this.learnHe.choose = val ? allCheck : [];
-      
+
       this.learnHe.isIndeterminate = false;
     },
     // 学制单选
@@ -544,7 +554,6 @@ export default {
       this.learnHe.checkAll = checkedCount === this.learnHe.checkBox.length;
       this.learnHe.isIndeterminate =
         checkedCount > 0 && checkedCount < this.learnHe.checkBox.length;
-      
     },
     // 学籍全选
     studentStatusAll(val) {
@@ -553,7 +562,7 @@ export default {
         allCheck.push(this.studentStatus.checkBox[i].dm);
       }
       this.studentStatus.choose = val ? allCheck : [];
-     
+
       this.studentStatus.isIndeterminate = false;
     },
     // 学籍单选
@@ -563,7 +572,6 @@ export default {
         checkedCount === this.studentStatus.checkBox.length;
       this.studentStatus.isIndeterminate =
         checkedCount > 0 && checkedCount < this.studentStatus.checkBox.length;
-     
     },
     // 民 族全选
     ethnicAll(val) {
@@ -572,7 +580,7 @@ export default {
         allCheck.push(this.ethnic.checkBox[i].dm);
       }
       this.ethnic.choose = val ? allCheck : [];
-    
+
       this.ethnic.isIndeterminate = false;
     },
     // 民 族单选
@@ -581,7 +589,6 @@ export default {
       this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
       this.ethnic.isIndeterminate =
         checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
-     
     },
     // 政治面貌：全选
     politicaAll(val) {
@@ -590,7 +597,7 @@ export default {
         allCheck.push(this.politica.checkBox[i].dm);
       }
       this.politica.choose = val ? allCheck : [];
-     
+
       this.politica.isIndeterminate = false;
     },
     // 政治面貌：单选
@@ -713,6 +720,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.expandOpen {
+  width: 80%;
+  height: 100px;
+  overflow: hidden;
+  padding: 10px;
+  margin-left: -10px;
+}
+.expandClose {
+  width: 80%;
+  height: 310px;
+}
 .manStudentStyle {
   .mt15 {
     margin-top: 15px;

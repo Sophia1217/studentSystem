@@ -64,8 +64,8 @@
           <!-- :id="index" -->
           <!--  -->
           <!-- <span class="custom-tree-node" slot-scope="{ node, data }">
-              <span @click="() => append(data, index)">{{ node.label }}</span>
-            </span> -->
+            <span @click="() => append(data, index)">{{ node.label }}</span>
+          </span> -->
         </el-tree>
       </div>
 
@@ -76,12 +76,12 @@
     </div>
 
     <!-- <div class="editBottom">
-        <div class="btn cancel" @click="handleCencal">
-          <i class="icon noIcon"></i> 取消
-        </div>
-        <div class="btn confirm" @click="handleDataAuth">
-          <i class="icon yesIcon"></i> 提交
-        </div> -->
+      <div class="btn cancel" @click="handleCencal">
+        <i class="icon noIcon"></i> 取消
+      </div>
+      <div class="btn confirm" @click="handleDataAuth">
+        <i class="icon yesIcon"></i> 提交
+      </div> -->
   </div>
 </template>
 
@@ -120,10 +120,12 @@ export default {
 
   created() {
     this.formName = this.$route.query;
+    // this.formName.userId = '2021980054'
   },
 
   mounted() {
     this.getqueryRoleList();
+    // this.getQueryDataAuth();
   },
 
   methods: {
@@ -135,20 +137,27 @@ export default {
         .then((res) => {
           this.checkboxWrap = res.data.rows || [];
         })
-        .catch((err) => {});
+        .catch((err) => {
+          // console.log('获取用户出错',err);
+        });
       //  获取被操作用户角色
+      let user = { roleId: this.formName.roleId };
       let user1 = {
         userId: this.$store.getters.userId, // 用户Id
+        // userId:'2005690002',
         roleId: this.$store.getters.roleId, //当前人
         gh: this.formName.userId,
         pageNum: 1,
         pageSize: 1,
       };
-      queryUserPageList(user1) //查询操作人的所有权限角色
+      queryUserPageList(user1)
         .then((res) => {
+          // console.log('被操作人返回用户角色',res);
           var roleIdStr = res.rows[0].roleIds || "";
+          // console.log(roleIdStr,'1111')
           var roleIdArr = roleIdStr.split(",") || []; // roleIdArr ['865066957']
           const roleData = [];
+          //  console.log(roleIdStr,'1111',roleIdArr)
           for (let index = 0; index < roleIdArr.length; index++) {
             var roleId = roleIdArr[index] || "";
             if (roleId.length == 0) {
@@ -165,21 +174,29 @@ export default {
               roleId: element.roleId,
               type: 0,
             };
-            queryDataAuth(data1) //查询被操作人的返回权限数据  第一级树展示的数据
+            // console.log("开始请求次数",index)
+            queryDataAuth(data1)
               .then((res1) => {
-                console.log("diyicijiazai", res1);
+                // console.log('被操作人返回学院列表',res1,data1,index);
                 var resData = res1.data.rows || [];
                 for (let x = 0; x < resData.length; x++) {
-                  //   var nodeId = resData[x].dwdm || "";
-                  var nodeId = resData[x].orgType || "";
+                  var nodeId = resData[x].dwdm || "";
+                  console.log("nodeId", nodeId);
                   element.checksedKeys.push(nodeId);
+                  // console.log('数据',data1,element,nodeId,res1,this.index++)
                 }
+                // console.log("返回次数",index,roleData)
               })
-              .catch((err) => {});
+              .catch((err) => {
+                // console.log('被操作人返回学院列表失败',err,data);
+              });
             this.roleData = roleData; //把回显的数组放进去
+            console.log("this.roledata", this.roleData);
           }
         })
-        .catch((err) => {});
+        .catch((err) => {
+          // console.log('获取用户出错',err);
+        });
     },
     // 添加角色
     addRoles() {
@@ -221,7 +238,7 @@ export default {
     // 获取节点数据
     loadNode(node, resolve) {
       if (node.level == 0) {
-        // 查询是什么机构
+        // 学院
         // 请求操作人权限列表  全量数据
         let data = {
           userId: this.$store.getters.userId,
@@ -231,92 +248,66 @@ export default {
         // let data = { userId: "2006970417", roleId: "01" };
         queryDataAuth(data)
           .then((res) => {
+            // console.log('操作人返回学院列表',res);
             var resData = res.data.rows || [];
             for (let x = 0; x < resData.length; x++) {
-              resData[x].nodeId = resData[x].orgType;
-              resData[x].label = resData[x].orgTypeName;
+              resData[x].nodeId = resData[x].dwdm;
+              resData[x].label = resData[x].dwmc;
             }
             setTimeout(() => {
+              console.log("树", this.$refs.tree, "角色", this.roleData);
               for (let index = 0; index < this.roleData.length; index++) {
                 var role = this.roleData[index];
                 var tree = this.$refs.tree[index];
+                // console.log('树',tree,'角色',role,index)
                 tree.setCheckedKeys(role.checksedKeys);
               }
             }, 100);
             return resolve(resData);
           })
           .catch((err) => {
+            // console.log('操作人返回学院列表失败',err,data);
             return resolve([]);
           });
       } else if (node.level == 1) {
+        // 班级
+        // let data = { ssdwdm: node.data.dwdm };
         var param = {
           userId: this.$store.getters.userId,
           roleId: this.$store.getters.roleId,
           type: node.level,
         };
-        param.orgType = node.data.orgType;
+        param.dwdm = node.data.dwdm;
 
+        // console.log('班级节点',node)
         queryDataAuth(param)
           .then((res) => {
+            // console.log('返回班级列表全量数据',res);
             var rowData = res.data.rows || [];
-            for (let x = 0; x < rowData.length; x++) {
-              rowData[x].label = rowData[x].dwmc;
-              rowData[x].nodeId = rowData[x].dwdm;
-            }
-            return resolve(rowData);
-          })
-          .catch((err) => {
-            return resolve([]);
-          });
-      } else if (node.level == 2) {
-        var param = {
-          userId: this.$store.getters.userId,
-          roleId: this.$store.getters.roleId,
-          type: node.level,
-        };
-        param.dwdm = node.data.dwdm;
-        queryDataAuth(param)
-          .then((res) => {
-            var pyccData = res.data.rows || [];
-            for (let x = 0; x < pyccData.length; x++) {
-              pyccData[x].label = pyccData[x].pyccName;
-              pyccData[x].nodeId = pyccData[x].pycc;
-            }
-            return resolve(pyccData);
-          })
-          .catch((err) => {
-            return resolve([]);
-          });
-      } else if (node.level == 3) {
-        var param = {
-          userId: this.$store.getters.userId,
-          roleId: this.$store.getters.roleId,
-          type: node.level,
-        };
-        param.pycc = node.data.pycc;
-        param.dwdm = node.data.dwdm;
-        queryDataAuth(param)
-          .then((res) => {
-            var rowData = res.data.rows || [];
+            // console.log('返回班级列表全量数据',res,rowData);
             for (let x = 0; x < rowData.length; x++) {
               rowData[x].label = rowData[x].bjmc;
               rowData[x].nodeId = rowData[x].bjdm;
               rowData[x].dwdm = node.data.dwdm;
             }
+            // console.log('返回班级列表',rowData);
             return resolve(rowData);
           })
           .catch((err) => {
+            // console.log('返回班级列表失败',err);
             return resolve([]);
           });
-      } else if (node.level == 4) {
+      } else if (node.level == 2) {
+        // 学生
+        // let data = { bjdm: node.data.bjdm };
         var param = {
           userId: this.$store.getters.userId,
           roleId: this.$store.getters.roleId,
           type: node.level,
         };
         param.bjdm = node.data.bjdm;
-        param.pycc = node.data.pycc;
         param.dwdm = node.data.dwdm;
+        // console.log('学生节点',node)
         queryDataAuth(param)
           .then((res) => {
             var stuData = res.data.rows || [];
@@ -333,10 +324,16 @@ export default {
             return resolve([]);
           });
       }
+      // if (node.level > 1) return resolve([]);
     },
 
     nodeClick(data, node, nodeVue) {
-      if (node.level > 5 || node.loaded) {
+      console.log("data", data);
+      console.log("node", node);
+      console.log("nodeVue", nodeVue);
+      // console.log('节点被点击',data,node,nodeVue,nodeVue.$parent)
+      if (node.level > 2 || node.loaded) {
+        // console.log('节点被点击不处理')
         return;
       }
       var index = -1;
@@ -346,70 +343,77 @@ export default {
       };
       if (node.level == 1) {
         index = this.$refs.tree.indexOf(nodeVue.$parent);
-        param.orgType = data.orgType;
+        param.dwdm = data.dwdm;
       } else if (node.level == 2) {
         index = this.$refs.tree.indexOf(nodeVue.$parent.$parent);
-        param.dwdm = data.dwdm;
-      } else if (node.level == 3) {
-        index = this.$refs.tree.indexOf(nodeVue.$parent.$parent.$parent);
-        param.pycc = data.pycc;
-        param.dwdm = node.data.dwdm;
-      } else if (node.level == 4) {
-        index = this.$refs.tree.indexOf(
-          nodeVue.$parent.$parent.$parent.$parent
-        );
-        param.bjdm = node.data.bjdm;
-        param.pycc = data.pycc;
-        param.dwdm = node.data.dwdm;
+        param.bjdm = data.bjdm;
       }
       var role = this.roleData[index];
 
       param.roleId = role.oldRoleId || "";
 
+      // console.log('当前节点所在树的索引',index,role);
       if (index < 0 || param.roleId.length == 0) {
         return;
       }
 
+      // let data = { userId: "2006970417", roleId: "01" };
       queryDataAuth(param)
         .then((res) => {
+          // console.log('操作人返回学院列表',res);
           var resData = res.data.rows || [];
           for (let x = 0; x < resData.length; x++) {
             if (node.level == 1) {
               // 不同机构
-              var nodeId = resData[x].orgType || "";
-              this.roleData[index].checksedKeys.push(nodeId);
-            } else if (node.level == 2) {
-              // 不同学院
-              var nodeId = resData[x].dwdm || "";
-              this.roleData[index].checksedKeys.push(nodeId);
-            } else if (node.level == 3) {
-              // 不同培养层次
-              var nodeId = resData[x].pycc || "";
-              this.roleData[index].checksedKeys.push(nodeId);
-            } else if (node.level == 4) {
-              // 不同班级
               var nodeId = resData[x].bjdm || "";
               this.roleData[index].checksedKeys.push(nodeId);
-            } else if (node.level == 4) {
-              // 不同学生
+              console.log("this.this.roleData第1层", this.roleData);
+            }
+            this.$refs.tree[index].setCheckedKeys(
+              this.roleData[index].checksedKeys
+            );
+          }
+          this.roleData[index].checksedKeys = [];
+          for (let x = 0; x < resData.length; x++) {
+            if (node.level == 2) {
+              // 不同机构
               var nodeId = resData[x].xh || "";
               this.roleData[index].checksedKeys.push(nodeId);
+              console.log("this.this.roleData第2层", this.roleData);
             }
+            this.$refs.tree[index].setCheckedKeys(
+              this.roleData[index].checksedKeys
+            );
           }
-          this.$refs.tree[index].setCheckedKeys(
-            this.roleData[index].checksedKeys
-          );
+          // for (let x = 0; x < resData.length; x++) {
+          //   if (node.level == 1) {
+          //     // 班级
+          //     var nodeId = resData[x].bjdm || "";
+          //     this.roleData[index].checksedKeys.push(nodeId);
+          //     console.log("this.this.roleData第1层", this.roleData);
+          //   } else if (node.level == 2) {
+          //     // 学生
+          //     var nodeId = resData[x].xh || "";
+          //     this.roleData[index].checksedKeys.push(nodeId);
+          //     console.log("this.this.roleData第2层", this.roleData);
+          //   }
+          // }
+          // this.$refs.tree[index].setCheckedKeys(
+          //   this.roleData[index].checksedKeys
+          // );
         })
         .catch((err) => {});
     },
 
     handleCheckChange(data, checked) {
+      // console.log(data, checked);
       for (let index = 0; index < this.roleData.length; index++) {
         var role = this.roleData[index];
         var tree = this.$refs.tree[index];
         role.checksedKeys = tree.getCheckedKeys();
       }
     },
+
     // 更新数据权限
     handleDataAuth(role, index) {
       // 参数合法校验
@@ -429,92 +433,59 @@ export default {
         });
         return;
       }
+
       // 数据筛选
       var dataArr = [];
-      console.log("开始筛选权限数据", nodes);
+      // console.log('开始筛选权限数据',nodes);
       for (let index = 0; index < nodes.length; index++) {
         var element = nodes[index];
-        if (element.visitId == "4") {
+        if (element.visitId == "2") {
+          // 学生，查询是否已经被包含在班级
           var flag = false;
           for (let x = 0; x < nodes.length; x++) {
             const item = nodes[x];
-            if (item.visitId == "3" && item.nodeId == element.bjdm) {
+            if (item.visitId == "1" && item.nodeId == element.bjdm) {
               flag = true;
+              // console.log('当前节点是学生，有班级',element);
               break;
             }
           }
           if (flag == false) {
             dataArr.push(element);
-          }
-        } else if (element.visitId == "3") {
-          //班级是否在培养层次
-          var hasPy = false;
-          for (let i = 0; i < nodes.length; i++) {
-            const b = nodes[i];
-            if (b.visitId == "2" && b.nodeId == element.pycc) {
-              hasPy = true;
-              break;
-            }
-          }
-          if (hasPy == false) {
-            dataArr.push(element);
-          }
-        } else if (element.visitId == "2") {
-          // 培养层次是否在学院
-          var hasxy = false;
-          for (let x = 0; x < nodes.length; x++) {
-            const item = nodes[x];
-            if (item.visitId == "1" && item.nodeId == element.dwdm) {
-              hasxy = true;
-              break;
-            }
-          }
-          if (hasxy == false) {
-            dataArr.push(element);
+            // console.log('当前节点是学生，没有班级',element);
           }
         } else if (element.visitId == "1") {
-          //学院是否在机构
-          var hasORG = false;
+          // 班级，查询是否已经被包含在学院里
+          var hasXY = false;
           for (let i = 0; i < nodes.length; i++) {
             const b = nodes[i];
-            if (b.visitId == "0" && b.nodeId == element.orgType) {
-              hasORG = true;
+            if (b.visitId == "0" && b.nodeId == element.dwdm) {
+              hasXY = true;
+              // console.log('当前节点是班级，有学院',element);
               break;
             }
           }
-          if (hasORG == false) {
+          if (hasXY == false) {
             dataArr.push(element);
+            // console.log('当前节点是班级，没有学院',element);
           }
         } else {
+          // console.log('当前节点是学院');
           dataArr.push(element);
         }
       }
-      console.log("dataArr", dataArr);
       // 包装数据
       var dataList = [];
       for (let s = 0; s < dataArr.length; s++) {
         var node = dataArr[s];
         var data = {};
         if (node.visitId == "0") {
-          console.log("node", node);
-          data.orgType = node.orgType;
+          data.orginazationCode = node.dwdm;
         } else if (node.visitId == "1") {
-          console.log("node", node);
-          //   data.orgType = node.orgType;
           data.orginazationCode = node.dwdm;
-        } else if (node.visitId == "2") {
-          //   data.orgType = node.orgType;
-          data.orginazationCode = node.dwdm;
-          data.pycc = node.pycc;
-        } else if (node.visitId == "3") {
-          //   data.orgType = node.orgType;
-          data.orginazationCode = node.dwdm;
-          data.pycc = node.pycc;
           data.classNo = node.bjdm;
-        } else if (node.visitId == "4") {
-          //   data.orgType = node.orgType;
+        } else if (node.visitId == "2") {
           data.orginazationCode = node.dwdm;
-          data.pycc = node.pycc;
           data.classNo = node.bjdm;
           data.stuId = node.xh;
         }

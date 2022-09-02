@@ -262,10 +262,7 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="doubleCheck = false">取 消</el-button>
         <!-- distributeClassConfirm(row) -->
-        <el-button
-          type="primary"
-          @click="doubleCheckConfirm"
-          class="confirm"
+        <el-button type="primary" @click="doubleCheckConfirm" class="confirm"
           >确 定</el-button
         >
       </span>
@@ -389,13 +386,13 @@ export default {
     allocateClass(row) {
       this.teacherClass = true;
       this.show = row; // 存储单条班主任数据
-      this.flag = false
+      this.flag = false;
     },
     // 班主任对班级一对一取消分配班级
     allocateNone(row) {
       this.cancelAllocate = true;
       this.show = row; // 存储单条班主任数据
-      this.flag1 = false
+      this.flag1 = false;
     },
     // 分配班级-确认操作
     distributeClassConfirm() {
@@ -414,15 +411,15 @@ export default {
         // 一对一分配
         q.teacherList.push(this.show.gh);
       }
-      q.rmrgh =this.$store.getters.userId; // 任命人的工号
+      q.rmrgh = this.$store.getters.userId; // 任命人的工号
       // q.rmsj = ""; // 任命时间
       // 给一对一或一对多任命请求——若操作成功
       assignTeacher(q).then((response) => {
-          this.$message({
-            message: "分配班级成功",
-            type: "success",
-          });
-          this.getTeacherList(this.queryParams); // 重新发送请求获取班主任列表数据
+        this.$message({
+          message: "分配班级成功",
+          type: "success",
+        });
+        this.getTeacherList(this.queryParams); // 重新发送请求获取班主任列表数据
         // if (response.errcode == "-200") {
         //   this.$message({
         //     message: "分配班级失败",
@@ -504,17 +501,16 @@ export default {
     },
     // 批量分配班主任——多个班主任分配一个班级
     distributeSomeClass() {
-      
       // 判断勾选了多少班主任， 请求分配班主任接口数据
       if (this.teacherList.length > 0) {
         this.flag = true; // 表明勾选了多个班主任
         // 拿到勾选的那几个班主任信息，后弹出分配班级弹出框
         this.teacherClass = true;
-      }else {
+      } else {
         this.$message({
-            message: "请至少选择一位辅导员！",
-            type: 'warning',
-          });
+          message: "请至少选择一位辅导员！",
+          type: "warning",
+        });
       }
     },
     // 批量取消分配班级
@@ -524,18 +520,18 @@ export default {
         this.flag1 = true; // 表明勾选了多个班主任
         // 拿到勾选的那几个班主任信息，后弹出分配班级弹出框
         this.cancelAllocate = true;
-      }else {
+      } else {
         this.$message({
-            message: "请至少选择一位辅导员！",
-            type: 'warning',
-          });
+          message: "请至少选择一位辅导员！",
+          type: "warning",
+        });
       }
     },
     //排序
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
-      this.handleSearch();
+      this.getTeacherList(this.queryParams);
     },
   },
 };

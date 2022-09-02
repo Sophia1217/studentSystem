@@ -84,7 +84,7 @@ export default  {
     color: #fff;
 }
 .el-select__tags span :nth-child(1).el-tag.el-tag--info {
-  width:140px;
+  max-width:140px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

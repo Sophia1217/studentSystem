@@ -40,7 +40,7 @@
       <!-- 更多选择 -->
       <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20">
-          <el-col :span="8">
+          <el-col :span="6">
             <span>学 院：</span>
             <el-select
               v-model="moreIform.manageReg"
@@ -58,7 +58,7 @@
               ></el-option>
             </el-select>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="6">
             <span>专 业：</span>
             <el-select
               v-model="moreIform.stuInfo"
@@ -75,7 +75,7 @@
               ></el-option>
             </el-select>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="6">
             <span>班 级：</span>
             <el-select
               v-model="moreIform.pread"
@@ -89,6 +89,23 @@
                 :key="item.dm"
                 :label="item.mc"
                 :value="item.dm"
+              ></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="6">
+            <span>年 级：</span>
+            <el-select
+              v-model="moreIform.grade"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="(item, index) in allNj"
+                :key="index"
+                :label="item"
+                :value="item"
               ></el-option>
             </el-select>
           </el-col>
@@ -270,7 +287,7 @@
 import CheckboxCom from "../../../../components/checkboxCom";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getZY, getBJ } from "@/api/student/index";
-import { getCollege } from "@/api/class/maintenanceClass";
+import { getCollege, getGrade } from "@/api/class/maintenanceClass";
 import {
   getManageRegStuInfoSearchSpread,
   forceList,
@@ -296,6 +313,7 @@ export default {
       allDwh: [], // 学院下拉框
       zyOps: [], // 专业下拉
       bjOps: [], // 班级下拉
+      allNj: [], //年级下拉
       training: {
         // 培养层次
         checkAll: false,
@@ -347,6 +365,7 @@ export default {
   mounted() {
     this.getSpread();
     this.getAllCollege();
+    this.getAllGrade();
     this.getCode("dmpyccm"); // 培养层次
     this.getCode("dmxjztm"); // 学籍
     this.getCode("dmmzm"); // 民 族
@@ -387,6 +406,14 @@ export default {
       getBJ(data)
         .then((res) => {
           this.bjOps = res.data;
+        })
+        .catch((err) => {});
+    },
+    //查询年级
+    getAllGrade(){
+      getGrade()
+      .then((res) => {
+          this.allNj = res.data.rows;
         })
         .catch((err) => {});
     },
@@ -450,9 +477,10 @@ export default {
         xjzt: this.studentStatus.choose,
         zzmmm: this.politica.choose,
         mzm: this.ethnic.choose,
-        bjm: [],
-        dwh: [],
-        zydm: [],
+        bjm: this.moreIform.pread,
+        dwh: this.moreIform.manageReg,
+        zydm: this.moreIform.stuInfo,
+        nj: this.moreIform.grade,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         limitSql: "",

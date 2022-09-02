@@ -149,7 +149,7 @@
           <el-table-column prop="zgxl" label="最高学历" sortable />
           <el-table-column prop="zgxlbyxx" label="最高学历毕业学校" sortable />
           <el-table-column prop="zybj" label="专业背景" sortable />
-          <el-table-column prop="gw" label="职务" sortable />
+          <el-table-column prop="gwList" label="职务" sortable />
           <el-table-column prop="cjgzsj" label="参加工作时间" sortable />
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">

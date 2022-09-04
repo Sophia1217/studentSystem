@@ -312,7 +312,7 @@ export default {
   components: { CheckboxCom, exportView },
   data() {
     return {
-      expand: false,
+      expand: true,
       searchVal: "",
       select: "",
       isMore: false,

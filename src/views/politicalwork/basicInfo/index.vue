@@ -50,7 +50,7 @@
                 multiple
                 placeholder="请选择"
                 collapse-tags
-                @change = 'workPlaceChange'
+                @change="workPlaceChange"
               >
                 <el-option
                   v-for="(item, index) in gzdwOptions"
@@ -76,12 +76,17 @@
           <el-row :gutter="20" class="mt15">
             <el-col :span="3">民 族：</el-col>
             <el-col :span="20">
-              <div class="checkbox">
+              <div :class="expand ? 'expandOpen' : 'expandClose'">
                 <checkboxCom
+                  :class="expand ? 'expandOpen' : 'expandClose'"
                   :obj-prop="ethnic"
                   @training="ethnicAll"
                   @checkedTraining="ethnicCheck"
                 />
+              </div>
+              <div>
+                <el-button v-if="expand" @click="openIt"> 展开</el-button>
+                <el-button v-else @click="closeIt"> 收起</el-button>
               </div>
             </el-col>
           </el-row>
@@ -191,6 +196,7 @@ export default {
   props: [],
   data() {
     return {
+      expand: true,
       queryParams: {
         xm: "",
         gh: "",
@@ -264,6 +270,12 @@ export default {
     this.handleSearch();
   },
   methods: {
+    openIt() {
+      this.expand = false;
+    },
+    closeIt() {
+      this.expand = true;
+    },
     getCode(data) {
       this.getCodeInfoByEnglish(data);
     },
@@ -354,7 +366,7 @@ export default {
       this.isMore = !this.isMore;
     },
     //工作地点勾选
-    workPlaceChange(){
+    workPlaceChange() {
       this.handleSearch();
     },
     // 性别全选
@@ -469,6 +481,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.expandOpen {
+  width: 80%;
+  height: 100px;
+  overflow: hidden;
+  padding: 10px;
+  margin-left: -10px;
+}
+.expandClose {
+  width: 80%;
+  height: 310px;
+}
 .basicInfoStyle {
   background: #ffffff;
   .mt15 {

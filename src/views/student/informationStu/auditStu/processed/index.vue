@@ -146,12 +146,17 @@
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">民 族：</el-col>
           <el-col :span="20">
-            <div class="checkbox">
+            <div :class="expand ? 'expandOpen' : 'expandClose'">
               <checkboxCom
+                :class="expand ? 'expandOpen' : 'expandClose'"
                 :objProp="ethnic"
                 @training="ethnicAll"
                 @checkedTraining="ethnicCheck"
               ></checkboxCom>
+            </div>
+            <div>
+              <el-button v-if="expand" @click="openIt"> 展开</el-button>
+              <el-button v-else @click="closeIt"> 收起</el-button>
             </div>
           </el-col>
         </el-row>
@@ -264,7 +269,7 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { getZY, getBJ,StuInfoFlowExport } from "@/api/student/index";
+import { getZY, getBJ, StuInfoFlowExport } from "@/api/student/index";
 import { getCollege, getGrade } from "@/api/class/maintenanceClass";
 import {
   getManageRegStuInfoSearchSpread,
@@ -277,6 +282,7 @@ export default {
   components: { CheckboxCom },
   data() {
     return {
+      expand: true,
       form: { rollbackReason: "" },
       searchVal: "",
       select: "",
@@ -315,7 +321,7 @@ export default {
         checkBox: [],
         isIndeterminate: true,
       },
-      queryExport:{},
+      queryExport: {},
       ethnic: {
         // 民 族
         checkAll: false,
@@ -349,6 +355,12 @@ export default {
   },
 
   methods: {
+    openIt() {
+      this.expand = false;
+    },
+    closeIt() {
+      this.expand = true;
+    },
     // 查询学院
     getAllCollege() {
       getCollege()
@@ -383,9 +395,9 @@ export default {
         .catch((err) => {});
     },
     //查询年级
-    getAllGrade(){
+    getAllGrade() {
       getGrade()
-      .then((res) => {
+        .then((res) => {
           this.allNj = res.data.rows;
         })
         .catch((err) => {});
@@ -431,7 +443,7 @@ export default {
         xm: this.select == "xm" ? this.searchVal : "",
         sfzjh: this.select == "sfzjh" ? this.searchVal : "",
         yddh: this.select == "yddh" ? this.searchVal : "",
-        pyccm: this.training.choose ||[],
+        pyccm: this.training.choose || [],
         xz: this.learnHe.choose,
         xjzt: this.studentStatus.choose,
         zzmmm: this.politica.choose,
@@ -446,7 +458,7 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      this.queryExport = data
+      this.queryExport = data;
       FlowPageList(data)
         .then((res) => {
           this.tableData = res.data.data;
@@ -552,34 +564,34 @@ export default {
     // 打开导出弹窗
     handleExport() {
       if (this.multipleSelection.length <= 0) {
-        let stuInfoFlowExportParam = this.queryExport
-        let data = {stuInfoFlowExportParam, exportStyle:'EXCEL'}
+        let stuInfoFlowExportParam = this.queryExport;
+        let data = { stuInfoFlowExportParam, exportStyle: "EXCEL" };
         // let data = this.queryExport
-        console.log("stuInfoFlowExportParam",stuInfoFlowExportParam);
+        console.log("stuInfoFlowExportParam", stuInfoFlowExportParam);
         // if(data.length == 0){
         //   console.log("data",data);
         // }
-        StuInfoFlowExport(data).then(res => {
-        this.downloadFn(res, "学生信息审核导出", "xls")
+        StuInfoFlowExport(data)
+          .then((res) => {
+            this.downloadFn(res, "学生信息审核导出", "xls");
 
-        this.$message.success('学生信息审核已导出');
-        return
-        }).catch(err=>{})
-
-        
-      }
-      else{
+            this.$message.success("学生信息审核已导出");
+            return;
+          })
+          .catch((err) => {});
+      } else {
         console.log("有勾选");
-        let ids = []
-        this.multipleSelection.forEach(item => {
-          ids.push(item.id)
-        })
-        let data = { idList: ids, exportStyle:'EXCEL'}
-        StuInfoFlowExport(data).then(res => {
-          this.downloadFn(res, "学生信息审核导出", "xls")
-        }).catch(err=>{})
+        let ids = [];
+        this.multipleSelection.forEach((item) => {
+          ids.push(item.id);
+        });
+        let data = { idList: ids, exportStyle: "EXCEL" };
+        StuInfoFlowExport(data)
+          .then((res) => {
+            this.downloadFn(res, "学生信息审核导出", "xls");
+          })
+          .catch((err) => {});
       }
-      
     },
     pass() {
       var data = this.multipleSelection;
@@ -619,13 +631,15 @@ export default {
         approver: this.multipleSelection[0].approver,
         rollbackReason: this.form.rollbackReason,
       };
-      backFlow(data).then(() => {
-        this.$message({ message: res.errmsg, type: "success" })
-        this.dialogVisible = false
-        this.handleSearch()
-      }).catch(err => {
-        this.dialogVisible = false
-      })
+      backFlow(data)
+        .then(() => {
+          this.$message({ message: res.errmsg, type: "success" });
+          this.dialogVisible = false;
+          this.handleSearch();
+        })
+        .catch((err) => {
+          this.dialogVisible = false;
+        });
     },
     // 导出取消
     handleCancel() {
@@ -651,7 +665,7 @@ export default {
           schooling: schooling,
           id: row.id,
           approveState: 2,
-          approver: row.approver
+          approver: row.approver,
         },
       });
     },
@@ -667,6 +681,17 @@ export default {
 
 <style lang="scss" scoped>
 .manStudent {
+  .expandOpen {
+    width: 80%;
+    height: 100px;
+    overflow: hidden;
+    padding: 10px;
+    margin-left: -10px;
+  }
+  .expandClose {
+    width: 80%;
+    height: 310px;
+  }
   .mt15 {
     margin-top: 15px;
   }

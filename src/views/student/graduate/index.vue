@@ -157,12 +157,17 @@
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">民 族：</el-col>
           <el-col :span="20">
-            <div class="checkbox">
+            <div :class="expand ? 'expandOpen' : 'expandClose'">
               <checkboxCom
+                :class="expand ? 'expandOpen' : 'expandClose'"
                 :objProp="ethnic"
                 @training="ethnicAll"
                 @checkedTraining="ethnicCheck"
               ></checkboxCom>
+            </div>
+            <div>
+              <el-button v-if="expand" @click="openIt"> 展开</el-button>
+              <el-button v-else @click="closeIt"> 收起</el-button>
             </div>
           </el-col>
         </el-row>
@@ -267,7 +272,8 @@
                 <i class="scopeIncon handledie"></i>
                 <span class="handleName">详情</span>
               </el-button>
-              <el-button v-show="!scope.row.flag"
+              <el-button
+                v-show="!scope.row.flag"
                 type="text"
                 size="small"
                 @click="hadleDetail(scope.row, 2)"
@@ -317,6 +323,7 @@ export default {
   components: { CheckboxCom, exportView },
   data() {
     return {
+      expand: true,
       searchVal: "",
       select: "",
       isMore: false,
@@ -405,6 +412,12 @@ export default {
     this.getSpread();
   },
   methods: {
+    openIt() {
+      this.expand = false;
+    },
+    closeIt() {
+      this.expand = true;
+    },
     // 查询学院
     getAllCollege() {
       getCollege()
@@ -536,13 +549,13 @@ export default {
         allCheck.push(this.training.checkBox[i].dm);
       }
       this.training.choose = val ? allCheck : [];
-     
+
       this.training.isIndeterminate = false;
     },
     // 培养层次单选
     handleCheckedCitiesChangeTraining(value) {
       this.training.choose = value;
-     
+
       let checkedCount = value.length;
       this.training.checkAll = checkedCount === this.training.checkBox.length;
       this.training.isIndeterminate =
@@ -648,12 +661,10 @@ export default {
       this.njOps.checkAll = checkedCount === this.njOps.checkBox.length;
       this.njOps.isIndeterminate =
         checkedCount > 0 && checkedCount < this.njOps.checkBox.length;
-
     },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-
     },
     // 打开导出弹窗
     handleExport() {
@@ -738,6 +749,17 @@ export default {
 
 <style lang="scss" scoped>
 .manStudent {
+  .expandOpen {
+    width: 80%;
+    height: 100px;
+    overflow: hidden;
+    padding: 10px;
+    margin-left: -10px;
+  }
+  .expandClose {
+    width: 80%;
+    height: 310px;
+  }
   .mt15 {
     margin-top: 15px;
   }
@@ -870,8 +892,8 @@ export default {
       height: 20px;
       vertical-align: middle;
     }
-    .noflag{
-      color:#ccc !important;
+    .noflag {
+      color: #ccc !important;
     }
     .handleName {
       font-weight: 400;

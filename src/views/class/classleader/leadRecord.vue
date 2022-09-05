@@ -61,8 +61,6 @@
 
     <pagination
       id="test"
-      v-show="total >= 0"
-      :total="total"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
@@ -109,9 +107,9 @@ export default {
       dialogVisible: false,
       // 查询参数
       queryParams: {
-        bjdm: this.$route.query.bjdm,
+        bjdm: "",
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 9999,
       },
       // 表单参数
       form: {},
@@ -131,6 +129,7 @@ export default {
     // this.getList(this.queryParams);
   },
   activated() {
+    this.queryParams.bjdm = this.$route.query.bjdm;
     this.getList(this.queryParams);
   },
   methods: {
@@ -141,10 +140,10 @@ export default {
         // console.log("res.datas:", res.datas);
         this.queryBgbRmjList = res.datas;
         // console.log("this.queryBgbRmjList:", this.queryBgbRmjList);
-        for (let index in this.queryBgbRmjList) {
-          current_total += this.queryBgbRmjList[index].children.length;
-        }
-        this.total = current_total == 0 ? this.total : current_total;
+        // for (let index in this.queryBgbRmjList) {
+        //   current_total += this.queryBgbRmjList[index].children.length;
+        // }
+        // this.total = current_total == 0 ? this.total : current_total;
       });
     },
     // 删除记录

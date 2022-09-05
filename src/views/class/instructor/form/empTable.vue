@@ -166,7 +166,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        bjdm: this.$route.query.bjdm,
+        bjdm: "",
       },
     };
   },
@@ -175,6 +175,7 @@ export default {
     // console.log('111111')
   },
   activated() {
+    this.queryParams.bjdm = this.$route.query.bjdm;
     this.getList();
   },
   methods: {

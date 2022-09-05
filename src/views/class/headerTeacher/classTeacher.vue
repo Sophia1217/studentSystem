@@ -312,7 +312,7 @@ export default {
         xgh: "", // 学工号
         xm: "", // 姓名 新增字段查询
         xy: "", // 学院代码
-        bjdm: this.$route.query.bjdm, // 班级代码
+        bjdm: "", // 班级代码
       },
       // 是给一个班级任命一个还是多个班主任
       flag: false,
@@ -336,9 +336,13 @@ export default {
   mounted() {
     // this.getTeacherList(this.queryParams);
     // this.getGradeOptions();
+    // this.queryParams.xgh = "";
+    // this.queryParams.xy = "";
+    // this.getTeacherList(this.queryParams);
   },
   // 组件激活时清除筛选框 重新发送请求
   activated() {
+    this.queryParams.bjdm = this.$route.query.bjdm; // 班级代码
     this.getTeacherList(this.queryParams);
     this.getGradeOptions();
     this.queryParams.xgh = "";

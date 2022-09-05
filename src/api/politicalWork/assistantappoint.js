@@ -52,3 +52,11 @@ export function getGzdw(data) {
     data: data
   })
 }
+//导入辅导员班主任工号查姓名
+export function getXm(data){
+  return request({
+    url: '/zg/getXm',
+    method: 'post',
+    data: data
+  })
+}

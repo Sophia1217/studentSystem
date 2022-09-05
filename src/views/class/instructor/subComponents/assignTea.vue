@@ -388,7 +388,8 @@ export default {
     // this.getInstructorList();
     // this.getOptions();
   },
-  activated(){
+  activated() {
+    this.bjdm = this.$route.query.bjdm; // 班级编号
     this.getInstructorList();
     this.getOptions();
   },
@@ -405,7 +406,6 @@ export default {
         xgh: "", // 学工号
         xy: "", // 学员代码
         xm: "", // 姓名
-        bjdm: this.$route.query.bjdm, // 班级编号
       },
       // 班级代码
       bjdm: "", //班级代码
@@ -502,7 +502,7 @@ export default {
       this.collegeOptions = [];
       getCollege().then((response) => {
         // 获取工作单位列表数据
-       //  console.log(response);
+        //  console.log(response);
         this.collegeOptions = response.data.rows;
       });
     },
@@ -535,22 +535,22 @@ export default {
     // 分配班级tips点击“确定”按钮
     submitTips() {
       // console.log("分配班级确认！");
-      let rmsj = this.form.rmsj
-      let rmrgh = this.$store.getters.userId
+      let rmsj = this.form.rmsj;
+      let rmrgh = this.$store.getters.userId;
       getAssignFdy({
         bjdm: this.bjdm,
         fdyList: this.fdyList,
         rmrgh,
-        rmsj }).then((res) => {
+        rmsj,
+      }).then((res) => {
         // console.log(res);
 
         this.$message({
-        message: "分配成功",
-        type: "success",
+          message: "分配成功",
+          type: "success",
         });
         this.getInstructorList();
       });
-
 
       this.openAssignClass = false;
     },
@@ -590,30 +590,33 @@ export default {
       this.title = "取消分配确认";
 
       // console.log("取消分配二次确认！")
-      let crly = this.formDismission.noticeTitle
-      let cxsj = this.formDismission.offDate
+      let crly = this.formDismission.noticeTitle;
+      let cxsj = this.formDismission.offDate;
       let cxrGh = this.$store.getters.userId;
-      getRemoveAssignFdy({ cxrGh, bjdm: this.bjdm, fdyList: this.fdyList, crly, cxsj }).then((res) => {
-
+      getRemoveAssignFdy({
+        cxrGh,
+        bjdm: this.bjdm,
+        fdyList: this.fdyList,
+        crly,
+        cxsj,
+      }).then((res) => {
         this.$message({
-        message: "取消分配成功",
-        type: "success",
+          message: "取消分配成功",
+          type: "success",
         });
         this.getInstructorList();
       });
-
     },
     handleAssignMore() {
-        if (this.multipleSelection.length > 0) {
-            this.openAssignMoreClass = true;
-            this.title = "批量分配";
-        }else {
-            this.$message({
-                message: "请至少选择一位辅导员！",
-                type: 'warning',
-            });
-        }
-
+      if (this.multipleSelection.length > 0) {
+        this.openAssignMoreClass = true;
+        this.title = "批量分配";
+      } else {
+        this.$message({
+          message: "请至少选择一位辅导员！",
+          type: "warning",
+        });
+      }
     },
     cancelMore() {
       this.openAssignMoreClass = false;
@@ -631,45 +634,40 @@ export default {
         fdyList.push(item_row.gh);
       }
       getAssignFdy({ bjdm, fdyList, rmrgh, rmsj }).then((res) => {
-       this.getInstructorList();
-
+        this.getInstructorList();
       });
-
     },
     deleteAssignMore() {
-        if (this.multipleSelection.length > 0) {
-            this.openCancelAssignMore = true;
-            this.title = "批量取消分配";
-        }else {
-            this.$message({
-                message: "请至少选择一位辅导员！",
-                type: 'warning',
-            });
-        }
-
+      if (this.multipleSelection.length > 0) {
+        this.openCancelAssignMore = true;
+        this.title = "批量取消分配";
+      } else {
+        this.$message({
+          message: "请至少选择一位辅导员！",
+          type: "warning",
+        });
+      }
     },
     //批量取消第一次确定操作
-    submitOutMore(){
+    submitOutMore() {
       this.openCancelAssignMore = false;
       this.openSecondCancelAssignMore = true;
     },
     //批量取消分配二次确认
     cancelAssignMore() {
-      let fdyList = []
-      let bjdm =this.$route.query.bjdm
-      let cxrGh = this.$store.getters.userId
-      let crly = this.formDismissionMore.noticeTitle
-      let cxsj = this.formDismissionMore.offDate
+      let fdyList = [];
+      let bjdm = this.$route.query.bjdm;
+      let cxrGh = this.$store.getters.userId;
+      let crly = this.formDismissionMore.noticeTitle;
+      let cxsj = this.formDismissionMore.offDate;
       for (let item_row of this.multipleSelection) {
         fdyList.push(item_row.gh);
       }
 
-      getRemoveAssignFdy({fdyList, bjdm, cxrGh, crly, cxsj}).then((res) => {
-
-
+      getRemoveAssignFdy({ fdyList, bjdm, cxrGh, crly, cxsj }).then((res) => {
         this.$message({
-        message: "取消分配成功",
-        type: "success",
+          message: "取消分配成功",
+          type: "success",
         });
         this.getInstructorList();
       });

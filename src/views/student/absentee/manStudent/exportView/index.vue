@@ -99,11 +99,20 @@ export default {
         exportStyle: "EXCEL",
       };
       exportStu(data).then((res) => {
-        if (this.tag == 1) {
-          this.downloadFn(res, "在籍学生信息导出", "xlsx");
-        } else {
-          this.downloadFn(res, "毕业学生信息导出", "xlsx");
+        //勾选一条，导出文件名为学号姓名
+        if(this.multipleSelection.length == 1){
+          let exportXh = this.multipleSelection[0].xh
+          let exportXm = this.multipleSelection[0].xm
+          this.downloadFn(res, exportXh + exportXm, "xls");
         }
+        else{
+          if (this.tag == 1) {
+          this.downloadFn(res, "在籍学生信息导出", "xls");
+          } else {
+          this.downloadFn(res, "毕业学生信息导出", "xls");
+          }   
+        }
+        
       });
     },
   },

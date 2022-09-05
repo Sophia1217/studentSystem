@@ -232,10 +232,17 @@
     <el-dialog :visible.sync="showImport" width="30%">
       <el-form label-position="left" label-width="100px" :model="importForm">
         <el-form-item label="学工号" prop="gh">
-          <el-input v-model="importForm.gh" />
+          <el-input v-model="importForm.gh" @input="handleInput" />
         </el-form-item>
         <el-form-item label="姓名" prop="xm">
-          <el-input v-model="importForm.xm" />
+          <el-select v-model="importForm.xm" placeholder="未选择" @change="selectClick">
+            <el-option
+              v-for="(item, index) in nameOptions"
+                :key="index"
+                :label="item.xm +'（' + item.gh + '）'"
+                :value="item.xm"
+            ></el-option>
+          </el-select>
         </el-form-item>
       </el-form>
 
@@ -273,6 +280,7 @@ import {
 } from "@/api/politicalWork/teacherappoint";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import CheckboxCom from "@/views/components/checkboxCom";
+import { getXm } from "@/api/politicalWork/assistantappoint";
 
 export default {
   name: "Teacherappoint",
@@ -317,6 +325,7 @@ export default {
         value1: "",
       },
       gzdwOptions: [],
+      nameOptions: [],
       status: {
         // 状态
         checkAll: false,
@@ -598,7 +607,33 @@ export default {
       getTeacherDetail(data).then((response) => {
         this.tableDataDetail = response.teacherDetailRes;
       });
-    }
+    },
+    //工号查姓名
+    handleInput(){
+      let inputGh = this.importForm.gh
+      if(inputGh.length >=5){
+        console.log("输入数大于等于5个");
+        getXm({gh: this.importForm.gh}).then((res) => {
+          this.nameOptions = res.XmGh
+          console.log("getXm成功");
+        })
+        .catch((err) => {});
+
+      }
+    },
+    //选中姓名，工号自动补充
+    selectClick(val){
+      for(var i in this.nameOptions){
+        if(this.nameOptions[i].xm == val){
+          this.importForm.gh = this.nameOptions[i].gh
+
+          //打印看看
+          let a = this.importForm.gh
+          console.log("gh", a);
+          break
+        }
+      }     
+    },
     /** 详细信息查询 */
     // handleGet(row) {
     //   const name = row.name || ''

@@ -391,6 +391,7 @@ export default {
 
     // 查询
     handleSearch() {
+      this.queryParams.pageNum = 1
       if (this.select == "xm") {
         this.queryParams.xm = this.searchVal;
       } else if (this.select == "gh") {

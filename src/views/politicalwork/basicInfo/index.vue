@@ -342,6 +342,7 @@ export default {
       //   pageNum: this.queryParams.pageNum,
       //   pageSize: this.queryParams.pageSize
       // }
+      this.queryParams.pageNum = 1
       this.queryParams.xm = this.select == "xm" ? this.searchVal : "";
       this.queryParams.gh = this.select == "gh" ? this.searchVal : "";
       this.queryParams.sfzjh = this.select == "sfzjh" ? this.searchVal : "";

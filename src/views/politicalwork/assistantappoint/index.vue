@@ -304,26 +304,8 @@ export default {
   props: [],
   data() {
     return {
-      // dicts: ['sys_normal_disable'],
-      // // 遮罩层
-      // // loading: true,
-      // // 用户导入参数
-      // upload: {
-      //   // 是否显示弹出层（用户导入）
 
-      //   // 弹出层标题（用户导入）
       title: "",
-      //   // 是否禁用上传
-      //   isUploading: false,
-      //   // 是否更新已经存在的用户数据
-      //   updateSupport: 0,
-      //   // 设置上传的请求头部
-      //   headers: { Authorization: 'Bearer ' + getToken() },
-      //   // 上传的地址
-      //   url: process.env.VUE_APP_BASE_API + '/system/user/importData'
-      // },
-      // // 显示搜索条件
-      // showSearch: true,
       // // 总条数
       total: 0,
       // 批量免去确定框弹出
@@ -444,11 +426,11 @@ export default {
         });
     },
     //获取数据列表
-    getList(queryParams) {
+    getList() {
       // console.log(this.select, "select");
-      queryParams.xh = this.select == 1 ? this.searchVal : "";
-      queryParams.xm = this.select == 2 ? this.searchVal : "";
-      fdyList(queryParams)
+      this.queryParams.xh = this.select == 1 ? this.searchVal : "";
+      this.queryParams.xm = this.select == 2 ? this.searchVal : "";
+      fdyList(this.queryParams)
         .then((response) => {
           //console.log(response);
           if (response.errcode == "00") {
@@ -499,7 +481,7 @@ export default {
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList(this.queryParams);
+      this.getList();
     },
     // 类别单选
     handleCheckedCategoryChange(value) {
@@ -511,7 +493,7 @@ export default {
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList(this.queryParams);
+      this.getList();
     },
     // 性别全选
     handleCheckAllSexChange(val) {
@@ -526,7 +508,7 @@ export default {
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList(this.queryParams);
+      this.getList();
     },
     // 性别单选
     handleCheckedSexChange(value) {
@@ -559,7 +541,7 @@ export default {
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList(this.queryParams);
+      this.getList();
     },
     // 状态单选
     handleCheckedStatusChange(value) {
@@ -571,7 +553,7 @@ export default {
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList(this.queryParams);
+      this.getList();
     },
     // 打开导出弹窗
     handleExport() {
@@ -606,7 +588,7 @@ export default {
       removeMoreAssistant(data)
         .then((res) => {
           if (res.errcode == "00") {
-            this.getList(this.queryParams);
+            this.getList();
           }
         })
         .catch((err) => {
@@ -630,7 +612,7 @@ export default {
       addOneAssistant(data)
         .then((res) => {
           if (res.errcode == "00") {
-            this.getList(this.queryParams);
+            this.getList();
           }
         })
         .catch((err) => {
@@ -752,16 +734,7 @@ export default {
         name = "";
         gonghao = "";
       }
-      // this.queryParams = {
-      //   pageNum: 1,
-      //   pageSize: 10,
-      //   dwmcList: this.workPlace,
-      //   lbList: this.category.choose,
-      //   genderList: this.sex.choose,
-      //   sfdbList: this.status.choose,
-      //   xm: name,
-      //   gh: name,
-      // };
+      this.queryParams.pageNum = 1
       this.queryParams.dwmcList = this.workPlace;
       this.queryParams.lbList = this.category.choose;
       this.queryParams.genderList = this.sex.choose;

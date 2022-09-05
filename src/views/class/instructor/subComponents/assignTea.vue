@@ -403,9 +403,9 @@ export default {
         xgh: "", // 学工号
         xy: "", // 学员代码
         xm: "", // 姓名
+        bjdm: this.$route.query.bjdm, //班级代码
       },
       // 班级代码
-      bjdm: "", //班级代码
       fdyList: [], // 辅导员数组
       rmrgh: "", // 辅导员工号
       rmsj: "", // 任命时间

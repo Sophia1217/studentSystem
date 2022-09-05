@@ -134,38 +134,49 @@
       >
         <template slot-scope="scope">
           <div>
-            <span
-              class="iconfont"
-              :class="
-                scope.row.sffp == '0' ? 'allocate_none' : 'allocate_class'
-              "
+            <el-button
+              type= "text"
+              size="small"
+              :disabled="scope.row.sffp == '0' ? true : false"
               @click="allocateClass(scope.row)"
-              >&#xe638;</span
             >
-            <span
-              style="margin-left: 5px; margin-right: 10px"
-              :class="
-                scope.row.sffp == '0' ? 'allocate_none' : 'allocate_class'
-              "
-              @click="allocateClass(scope.row)"
-              >分配班级</span
-            >
-            <span
-              class="iconfont"
-              :class="
-                scope.row.sffp == '1' ? 'allocate_none' : 'allocate_class'
-              "
+              <span
+                class="iconfont"
+                :class="
+                  scope.row.sffp == '0' ? 'allocate_none' : 'allocate_class'
+                "
+                >&#xe638;</span
+              >
+              <span
+                style="margin-left: 5px; margin-right: 10px"
+                :class="
+                  scope.row.sffp == '0' ? 'allocate_none' : 'allocate_class'
+                "
+                >分配班级</span
+              >
+            </el-button>
+            <el-button
+              type= "text"
+              size="small"
+              :disabled="scope.row.sffp == '1' ? true : false"
               @click="allocateNone(scope.row)"
-              >&#xe638;</span
             >
-            <span
-              style="margin-left: 5px"
-              :class="
-                scope.row.sffp == '1' ? 'allocate_none' : 'allocate_class'
-              "
-              @click="allocateNone(scope.row)"
-              >取消分配</span
-            >
+              <span
+                class="iconfont"
+                :class="
+                  scope.row.sffp == '1' ? 'allocate_none' : 'allocate_class'
+                "
+                >&#xe638;</span
+              >
+              <span
+                style="margin-left: 5px"
+                :class="
+                  scope.row.sffp == '1' ? 'allocate_none' : 'allocate_class'
+                "
+                >取消分配</span
+              >
+            </el-button>
+            
           </div>
         </template>
       </el-table-column>
@@ -312,7 +323,7 @@ export default {
         xgh: "", // 学工号
         xm: "", // 姓名 新增字段查询
         xy: "", // 学院代码
-        bjdm: "", // 班级代码
+        bjdm: this.$route.query.bjdm, // 班级代码
       },
       // 是给一个班级任命一个还是多个班主任
       flag: false,

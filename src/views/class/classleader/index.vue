@@ -242,6 +242,7 @@ export default {
       }
       return this.Jr;
     },
+    //排序
     changeTableSort(column) {
       this.queryParams.orderField = column.prop;
       this.queryParams.orderType =

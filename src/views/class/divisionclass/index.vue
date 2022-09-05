@@ -9,7 +9,7 @@
       label-width="68px"
       class="table-header"
     >
-      <el-form-item label="培养单位" prop="ssdwdm" class="header-item">
+      <el-form-item label="培养单位" prop="ssdwdmList" class="header-item">
         <el-select
           v-model="queryParams.ssdwdmList"
           placeholder="未选择"
@@ -24,7 +24,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="培养层次" prop="pycc" class="header-item">
+      <el-form-item label="培养层次" prop="pyccList" class="header-item">
         <el-select
           v-model="queryParams.pyccList"
           placeholder="未选择"
@@ -39,7 +39,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="年级" prop="ssnj" class="header-item">
+      <el-form-item label="年级" prop="ssnjList" class="header-item">
         <el-select
           v-model="queryParams.ssnjList"
           placeholder="未选择"
@@ -71,7 +71,7 @@
           @click="handleQuery"
           >查询</el-button
         >
-        <el-button size="mini" @click="resetQuery" class="reset">
+        <el-button size="mini" @click="resetQuery('queryForm')" class="reset">
           <span class="iconfont reset_icon">&#xe614;</span>
 
           重置</el-button
@@ -281,8 +281,8 @@ export default {
       this.getList(this.queryParams);
     },
     // /** 重置按钮操作 */
-    resetQuery() {
-      this.queryParams = {};
+    resetQuery(a) {
+      this.$refs[a].resetFields();
       this.handleQuery();
     },
     //排序

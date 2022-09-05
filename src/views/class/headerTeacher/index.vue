@@ -8,7 +8,7 @@
       v-show="showSearch"
       label-width="68px"
     >
-      <el-form-item label="培养单位" prop="ssdwdm">
+      <el-form-item label="培养单位" prop="ssdwdmList">
         <el-select
           v-model="queryParams.ssdwdmList"
           placeholder="未选择"
@@ -23,7 +23,7 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="培养层次" prop="pycc">
+      <el-form-item label="培养层次" prop="pyccList">
         <el-select
           v-model="queryParams.pyccList"
           placeholder="未选择"
@@ -38,7 +38,7 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="年级" prop="ssnj">
+      <el-form-item label="年级" prop="ssnjList">
         <el-select
           v-model="queryParams.ssnjList"
           placeholder="未选择"
@@ -70,7 +70,7 @@
           @click="handleQuery"
           >查询</el-button
         >
-        <el-button size="mini" @click="resetQuery" class="reset">
+        <el-button size="mini" @click="resetQuery('queryForm')" class="reset">
           <span class="iconfont reset_icon">&#xe614;</span>
           重置</el-button
         >
@@ -373,8 +373,8 @@ export default {
       this.getList(this.queryParams);
     },
     // /** 重置按钮操作 */
-    resetQuery() {
-      this.resetForm("queryForm");
+    resetQuery(a) {
+      this.$refs[a].resetFields();
       this.handleQuery();
     },
     // 新建班级-取消按钮

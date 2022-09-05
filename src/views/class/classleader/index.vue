@@ -8,7 +8,7 @@
       v-show="showSearch"
       label-width="68px"
     >
-      <el-form-item label="培养单位" prop="ssdwdm">
+      <el-form-item label="培养单位" prop="ssdwdmList">
         <el-select
           v-model="queryParams.ssdwdmList"
           placeholder="未选择"
@@ -23,7 +23,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="培养层次" prop="pycc">
+      <el-form-item label="培养层次" prop="pyccList">
         <el-select
           v-model="queryParams.pyccList"
           placeholder="未选择"
@@ -38,7 +38,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="年级" prop="ssnj">
+      <el-form-item label="年级" prop="ssnjList">
         <el-select
           v-model="queryParams.ssnjList"
           placeholder="未选择"
@@ -276,8 +276,9 @@ export default {
       this.getList(this.queryParams);
     },
     // 重置按钮
-    resetQuery(queryForm) {
-      this.$refs[queryForm].resetFields();
+    resetQuery(a) {
+      this.$refs[a].resetFields();
+      this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {},

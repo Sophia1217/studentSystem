@@ -11,7 +11,7 @@
         label-width="68px"
         class="table-header"
       >
-        <el-form-item label="工作单位" prop="ssdwdm" class="header-item">
+        <el-form-item label="工作单位" prop="ssdwdmList" class="header-item">
           <el-select
             v-model="queryParams.ssdwdmList"
             placeholder="请选择"
@@ -26,7 +26,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="培养层次" prop="pycc" class="header-item">
+        <el-form-item label="培养层次" prop="pyccList" class="header-item">
           <el-select
             v-model="queryParams.pyccList"
             placeholder="请选择"
@@ -41,7 +41,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="年级" prop="ssnj" class="header-item">
+        <el-form-item label="年级" prop="ssnjList" class="header-item">
           <el-select
             v-model="queryParams.ssnjList"
             placeholder="请选择"
@@ -568,8 +568,8 @@ export default {
       this.getList(this.queryParams);
     },
     /** 重置按钮操作 */
-    resetQuery(queryParams) {
-      this.$refs[queryParams].resetFields();
+    resetQuery(a) {
+      this.$refs[a].resetFields();
       this.handleQuery();
     },
     // 多选框选中数据

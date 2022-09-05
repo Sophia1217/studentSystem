@@ -169,10 +169,17 @@
       >
         <el-row>
           <el-form-item label="学工号" prop="gh">
-            <el-input v-model="form.gh"></el-input>
+            <el-input v-model="form.gh" @input="handleInput"></el-input>
           </el-form-item>
           <el-form-item label="姓 名" prop="name">
-            <el-input v-model="form.name"></el-input>
+            <el-select v-model="form.name" placeholder="未选择" @change="selectClick">
+              <el-option
+                v-for="(item, index) in nameOptions"
+                :key="index"
+                :label="item.xm +'（' + item.gh + '）'"
+                :value="item.xm"
+              ></el-option
+            ></el-select>
           </el-form-item>
           <el-form-item label="类 型" prop="type">
             <el-select v-model="form.type" placeholder="未选择">
@@ -296,6 +303,7 @@ import {
   lookDetail,
   outAssistant,
   getGzdw,
+  getXm,
 } from "@/api/politicalWork/assistantappoint";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
@@ -340,6 +348,7 @@ export default {
       select: "",
       isMore: false,
       gzdwOptions: [],
+      nameOptions: [],
       category: {
         // 类别
         checkAll: false,
@@ -788,7 +797,33 @@ export default {
         .catch((err) => {
           // this.$message.error(err.errmsg);
         });
-    }
+    },
+    //工号查姓名
+    handleInput(){
+      let inputGh = this.form.gh
+      if(inputGh.length >=5){
+        console.log("输入数大于等于5个");
+        getXm({gh: this.form.gh}).then((res) => {
+          this.nameOptions = res.XmGh
+          console.log("getXm成功");
+        })
+        .catch((err) => {});
+
+      }
+    },
+    //选中姓名，工号自动补充
+    selectClick(val){
+      for(var i in this.nameOptions){
+        if(this.nameOptions[i].xm == val){
+          this.form.gh = this.nameOptions[i].gh
+
+          //打印看看
+          let a = this.form.gh
+          console.log("gh", a);
+          break
+        }
+      }     
+    },
   },
 };
 </script>

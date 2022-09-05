@@ -363,11 +363,11 @@ export default {
     },
 
     nodeClick(data, node, nodeVue) {
-      console.log("nodeVue", nodeVue);
+    //   console.log("nodeVue", nodeVue);
       if (node.level > 5 || node.loaded) {
         return;
       }
-      console.log("node-level", node.level);
+    //   console.log("node-level", node.level);
       var index = -1;
       var param = {
         userId: this.formName.userId,
@@ -391,10 +391,10 @@ export default {
         param.pycc = data.pycc;
         param.dwdm = node.data.dwdm;
       }
-      console.log("this.roleData", this.roleData);
+    //   console.log("this.roleData", this.roleData);
       var role = this.roleData[index];
       // console.log("展开的role", role);
-      console.log("index", index);
+    //   console.log("index", index);
       param.roleId = role.oldRoleId || "";
 
       if (index < 0 || param.roleId.length == 0) {
@@ -404,7 +404,7 @@ export default {
       queryDataAuth(param)
         .then((res) => {
           var resData = res.data.rows || [];
-          console.log("被操作人返回的数据", resData);
+        //   console.log("被操作人返回的数据", resData);
           // for (let x = 0; x < resData.length; x++) {
           //   if (node.level == 0) {
           //     // 不同机构
@@ -469,16 +469,16 @@ export default {
               // 不同机构
               var nodeId = resData[x].orgType || "";
               this.roleData[index].checksedKeys.push(nodeId);
-              console.log("this.this.roleData第0层", this.roleData);
+            //   console.log("this.this.roleData第0层", this.roleData);
             } else if (node.level == 1) {
               // var one = [];
               // 不同学院
               var nodeId = resData[x].dwdm || "";
-              one.push(nodeId);
+            //   one.push(nodeId);
               // this.roleData[index].checksedKeys = [];
               // this.roleData[index].checksedKeys = one[x];
               this.roleData[index].checksedKeys.push(nodeId);
-              console.log("this.this.roleData第1层", this.roleData);
+            //   console.log("this.this.roleData第1层", this.roleData);
             } else if (node.level == 2) {
               // var two = [];
               // 不同培养层次
@@ -487,7 +487,7 @@ export default {
               // this.roleData[index].checksedKeys = [];
               // this.roleData[index].checksedKeys = two[x];
               this.roleData[index].checksedKeys.push(nodeId);
-              console.log("this.this.roleData第2层", this.roleData);
+            //   console.log("this.this.roleData第2层", this.roleData);
             } else if (node.level == 3) {
               // var three = [];
               // 不同班级
@@ -496,7 +496,7 @@ export default {
               // this.roleData[index].checksedKeys = [];
               // this.roleData[index].checksedKeys = three[x];
               this.roleData[index].checksedKeys.push(nodeId);
-              console.log("this.this.roleData第3层", this.roleData);
+            //   console.log("this.this.roleData第3层", this.roleData);
             } else if (node.level == 4) {
               var four = [];
               // 不同学生
@@ -505,7 +505,7 @@ export default {
               this.roleData[index].checksedKeys = [];
               // this.roleData[index].checksedKeys = four[x];
               this.roleData[index].checksedKeys.push(nodeId);
-              console.log("this.this.roleData第4层", this.roleData);
+            //   console.log("this.this.roleData第4层", this.roleData);
             }
             this.$refs.tree[index].setCheckedKeys(
               this.roleData[index].checksedKeys

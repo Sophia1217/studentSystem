@@ -62,7 +62,7 @@
                         v-model="detailInfoData.zgZgjbxxes.gh"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="false"
+                        :disabled="true"
                       />
                     </div>
                   </div>
@@ -88,7 +88,7 @@
                         v-model="detailInfoData.zgZgjbxxes.xm"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="false"
+                        :disabled="true"
                       />
                     </div>
                   </div>
@@ -116,7 +116,7 @@
                         v-model="detailInfoData.zgZgjbxxes.cym"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="false"
+                        :disabled="true"
                       />
                     </div>
                   </div>
@@ -162,6 +162,7 @@
                         v-model="detailInfoData.zgZgjbxxes.xbm"
                         placeholder="请选择"
                         size="small"
+                        disabled
                       >
                         <el-option
                           v-for="item in xbmOps"
@@ -216,6 +217,7 @@
                       v-model="detailInfoData.zgZgjbxxes.dwh"
                       placeholder="请选择"
                       size="small"
+                      disabled
                     >
                       <el-option
                         v-for="item in dwhOps"
@@ -248,7 +250,7 @@
                         v-model="detailInfoData.zgZgjbxxes.csrq"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="false"
+                        :disabled="true"
                       />
                     </div>
                   </div>
@@ -295,6 +297,7 @@
                         v-model="detailInfoData.zgZgjbxxes.jg"
                         placeholder=""
                         size="small"
+                        disabled
                       >
                         <el-option
                           v-for="item in jgOps"
@@ -347,6 +350,7 @@
                         v-model="detailInfoData.zgZgjbxxes.mzm"
                         placeholder="请选择"
                         size="small"
+                        disabled
                       >
                         <el-option
                           v-for="item in mzmOps"
@@ -401,6 +405,7 @@
                         v-model="detailInfoData.zgZgjbxxes.zzmmm"
                         placeholder="请选择"
                         size="small"
+                        disabled
                       >
                         <el-option
                           v-for="item in zzmmmOps"
@@ -453,6 +458,7 @@
                         v-model="detailInfoData.zgZgjbxxes.gjdqm"
                         placeholder="请选择"
                         size="small"
+                        disabled
                       >
                         <el-option
                           v-for="item in gjdqmOps"
@@ -507,6 +513,7 @@
                         v-model="detailInfoData.zgZgjbxxes.sfzjlxm"
                         placeholder="请选择"
                         size="small"
+                        disabled
                       >
                         <el-option
                           v-for="item in sfzjlxmOps"
@@ -539,7 +546,7 @@
                         v-model="detailInfoData.zgZgjbxxes.sfzjh"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="false"
+                        :disabled="true"
                       />
                     </div>
                   </div>
@@ -587,6 +594,7 @@
                         v-model="detailInfoData.zgZgjbxxes.hyzkm"
                         placeholder="请选择"
                         size="small"
+                        disabled
                       >
                         <el-option
                           v-for="item in hyzkmOps"
@@ -639,6 +647,7 @@
                         v-model="detailInfoData.zgZgjbxxes.zgxlm"
                         placeholder="请选择"
                         size="small"
+                        disabled
                       >
                         <el-option
                           v-for="item in zgxlmOps"
@@ -693,6 +702,7 @@
                         v-model="detailInfoData.zgZgjbxxes.jzgrylbm"
                         placeholder="请选择"
                         size="small"
+                        disabled
                       >
                         <el-option
                           v-for="item in jzgrylbmOps"
@@ -745,6 +755,7 @@
                         v-model="detailInfoData.zgZgjbxxes.ryzfl"
                         placeholder="请选择"
                         size="small"
+                        disabled
                       >
                         <el-option
                           v-for="item in ryzflOps"
@@ -799,6 +810,7 @@
                         v-model="detailInfoData.zgZgjbxxes.rygwztm"
                         placeholder="请选择"
                         size="small"
+                        disabled
                       >
                         <el-option
                           v-for="item in rygwztmOps"
@@ -851,6 +863,7 @@
                         v-model="detailInfoData.zgZgjbxxes.xklbm"
                         placeholder="请选择"
                         size="small"
+                        disabled
                       >
                         <el-option
                           v-for="item in xklbmOps"
@@ -905,6 +918,7 @@
                         v-model="detailInfoData.zgZgjbxxes.yjxkm"
                         placeholder="请选择"
                         size="small"
+                        disabled
                       >
                         <el-option
                           v-for="item in yjxkmOps"
@@ -957,6 +971,7 @@
                         v-model="detailInfoData.zgZgjbxxes.ejxkm"
                         placeholder="请选择"
                         size="small"
+                        disabled
                       >
                         <el-option
                           v-for="item in ejxkmOps"
@@ -1011,6 +1026,7 @@
                         v-model="detailInfoData.zgZgjbxxes.xy"
                         placeholder="请选择"
                         size="small"
+                        disabled
                       >
                         <el-option
                           v-for="item in xyOps"
@@ -1043,7 +1059,7 @@
                         v-model="detailInfoData.zgZgjbxxes.byxxjdw"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="false"
+                        :disabled="true"
                       />
                     </div>
                   </div>
@@ -1071,7 +1087,7 @@
                         v-model="detailInfoData.zgZgjbxxes.cjgzrq"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="false"
+                        :disabled="true"
                       />
                     </div>
                   </div>
@@ -1097,7 +1113,7 @@
                         v-model="detailInfoData.zgZgjbxxes.lxrq"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="false"
+                        :disabled="true"
                       />
                     </div>
                   </div>
@@ -1145,6 +1161,7 @@
                         v-model="detailInfoData.zgZgjbxxes.cblbm"
                         placeholder="请选择"
                         size="small"
+                        disabled
                       >
                         <el-option
                           v-for="item in cblbmOps"
@@ -1177,7 +1194,7 @@
                         v-model="detailInfoData.zgZgjbxxes.sbh"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="false"
+                        :disabled="true"
                       />
                     </div>
                   </div>
@@ -1205,7 +1222,7 @@
                         v-model="detailInfoData.zgZgjbxxes.bgdh"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="false"
+                        :disabled="true"
                       />
                     </div>
                   </div>
@@ -1259,7 +1276,7 @@
                         v-model="detailInfoData.zgZgjbxxes.dzyx"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="false"
+                        :disabled="true"
                       />
                     </div>
                   </div>
@@ -1287,7 +1304,7 @@
                         v-model="detailInfoData.zgZgjbxxes.lxsptgsj"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="false"
+                        :disabled="true"
                       />
                     </div>
                   </div>
@@ -1313,7 +1330,7 @@
                         v-model="detailInfoData.zgZgjbxxes.bllxsxsj"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="false"
+                        :disabled="true"
                       />
                     </div>
                   </div>
@@ -1341,7 +1358,7 @@
                         v-model="detailInfoData.zgZgjbxxes.gztfsj"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="false"
+                        :disabled="true"
                       />
                     </div>
                   </div>
@@ -1367,7 +1384,7 @@
                         v-model="detailInfoData.zgZgjbxxes.dwdw"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="false"
+                        :disabled="true"
                       />
                     </div>
                   </div>

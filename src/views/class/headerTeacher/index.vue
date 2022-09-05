@@ -242,6 +242,7 @@ import {
   getLevel,
   getGrade,
 } from "@/api/class/maintenanceClass"; // 引入班级列表查询、修改班级名称接口
+
 import { getHeaderTeacher, queryRecords } from "@/api/class/headerTeacher";
 export default {
   name: "headerTeacher", //班主任
@@ -301,17 +302,17 @@ export default {
   },
   mounted() {
     // this.getList(this.queryParams);
-    // this.getOptions();
-    // this.getData(this.menuVal);
-    // this.rejl = this.Jr.includes("0302");
-    // this.fpbzr = this.Jr.includes("0307");
-  },
-  activated() {
-    this.getList(this.queryParams);
     this.getOptions();
     this.getData(this.menuVal);
     this.rejl = this.Jr.includes("0302");
     this.fpbzr = this.Jr.includes("0307");
+  },
+  activated() {
+    this.getList(this.queryParams);
+    // this.getOptions();
+    // this.getData(this.menuVal);
+    // this.rejl = this.Jr.includes("0302");
+    // this.fpbzr = this.Jr.includes("0307");
   },
   methods: {
     getData(data) {

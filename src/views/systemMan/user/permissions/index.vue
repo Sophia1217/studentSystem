@@ -262,6 +262,13 @@ export default {
               rowData[x].label = rowData[x].dwmc;
               rowData[x].nodeId = rowData[x].dwdm;
             }
+            setTimeout(() => {
+              for (let index = 0; index < this.roleData.length; index++) {
+                var role = this.roleData[index];
+                var tree = this.$refs.tree[index];
+                tree.setCheckedKeys(role.checksedKeys);
+              }
+            }, 100);
             return resolve(rowData);
           })
           .catch((err) => {
@@ -281,6 +288,13 @@ export default {
               pyccData[x].label = pyccData[x].pyccName;
               pyccData[x].nodeId = pyccData[x].pycc;
             }
+            setTimeout(() => {
+              for (let index = 0; index < this.roleData.length; index++) {
+                var role = this.roleData[index];
+                var tree = this.$refs.tree[index];
+                tree.setCheckedKeys(role.checksedKeys);
+              }
+            }, 100);
             return resolve(pyccData);
           })
           .catch((err) => {
@@ -302,6 +316,13 @@ export default {
               rowData[x].nodeId = rowData[x].bjdm;
               rowData[x].dwdm = node.data.dwdm;
             }
+            setTimeout(() => {
+              for (let index = 0; index < this.roleData.length; index++) {
+                var role = this.roleData[index];
+                var tree = this.$refs.tree[index];
+                tree.setCheckedKeys(role.checksedKeys);
+              }
+            }, 100);
             return resolve(rowData);
           })
           .catch((err) => {
@@ -326,6 +347,13 @@ export default {
               stuData[x].bjdm = node.data.bjdm;
               stuData[x].dwdm = node.data.dwdm;
             }
+            setTimeout(() => {
+              for (let index = 0; index < this.roleData.length; index++) {
+                var role = this.roleData[index];
+                var tree = this.$refs.tree[index];
+                tree.setCheckedKeys(role.checksedKeys);
+              }
+            }, 100);
             return resolve(stuData);
           })
           .catch((err) => {

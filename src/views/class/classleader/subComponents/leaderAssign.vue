@@ -30,17 +30,13 @@ export default {
     };
   },
   mounted() {
-    // let self = this;
-    // self.currentBjdm = this.$route.query.bjdm;
-    // self.getQuery();
-    // 想要动态的，将"1004001000"换为self.currentBjdm
-    // self.getList({ bjdm: "1004001000" }); // 获取任职记录列表-班干部
-  },
-  activated() {
     let self = this;
     self.currentBjdm = this.$route.query.bjdm;
     self.getQuery();
+    // 想要动态的，将"1004001000"换为self.currentBjdm
+    // self.getList({ bjdm: "1004001000" }); // 获取任职记录列表-班干部
   },
+  activated() {},
   methods: {
     // 获取任职记录列表-班干部
     // getList(x) {

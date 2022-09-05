@@ -373,11 +373,10 @@ export default {
     // exportClassList({}).then((res) => {
     //   console.log(res);
     // });
-  },
-  activated() {
     this.getList(this.queryParams);
     this.getOptions();
   },
+  activated() {},
   methods: {
     // // 查看班级操作记录
     // showRecord(row) {

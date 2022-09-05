@@ -385,14 +385,11 @@ export default {
     assignTable,
   },
   mounted() {
-    // this.getInstructorList();
-    // this.getOptions();
-  },
-  activated() {
     this.bjdm = this.$route.query.bjdm; // 班级编号
     this.getInstructorList();
     this.getOptions();
   },
+  activated() {},
   data() {
     return {
       // 总条数

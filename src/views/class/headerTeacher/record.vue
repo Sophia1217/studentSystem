@@ -140,11 +140,12 @@ export default {
     };
   },
   mounted() {
-    // this.getList(this.queryParams);
-  },
-  activated() {
     this.queryParams.bjdm = this.$route.query.bjdm;
     this.getList(this.queryParams);
+  },
+  activated() {
+    // this.queryParams.bjdm = this.$route.query.bjdm;
+    // this.getList(this.queryParams);
   },
   methods: {
     // 班主任任职记录查询

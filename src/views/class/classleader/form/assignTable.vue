@@ -198,11 +198,7 @@
 
     <!-- 批量撤任对话框：cancelAllocate-->
     <el-dialog title="取消分配" :visible.sync="cancelAllocate" width="50%">
-      <el-form 
-        :model="formDismission" 
-        :rules="rules"
-        height="150px"
-      >
+      <el-form :model="formDismission" :rules="rules" height="150px">
         <el-form-item label="撤任理由">
           <el-select v-model="formDismission.reason" placeholder="请选择">
             <el-option
@@ -274,7 +270,7 @@
         :rules="rules"
         label-width="150px"
       >
-      <el-form-item label="任命日期">
+        <el-form-item label="任命日期">
           <el-date-picker
             type="date"
             style="width: 80%"
@@ -284,17 +280,17 @@
           ></el-date-picker>
         </el-form-item>
         <el-form-item label="班干部职位代码" prop="bgbid">
-              <!-- <el-input v-model="form.bgbid"></el-input> -->
-              <el-select v-model="form.bgbid" placeholder="请选择" clearable>
-                <!-- 班干部职位筛选框 -->
-                <el-option
-                  v-for="(item, index) in bjzwOptions"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                />
-              </el-select>
-            </el-form-item>
+          <!-- <el-input v-model="form.bgbid"></el-input> -->
+          <el-select v-model="form.bgbid" placeholder="请选择" clearable>
+            <!-- 班干部职位筛选框 -->
+            <el-option
+              v-for="(item, index) in bjzwOptions"
+              :key="index"
+              :label="item.mc"
+              :value="item.dm"
+            />
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancelAssignBgb">取消</el-button>
@@ -432,15 +428,31 @@ export default {
           { required: true, message: "公告类型不能为空", trigger: "change" },
         ],
         bgbid: [
-          {required: true, message: "公告类型不能为空", trigger: "change"}
+          { required: true, message: "公告类型不能为空", trigger: "change" },
         ],
         reason: [
-          {required: true, message: "公告类型不能为空", trigger: "change"}
+          { required: true, message: "公告类型不能为空", trigger: "change" },
         ],
       },
     };
   },
   mounted() {
+    // this.queryParams.bjdm = this.$route.query.bjdm;
+    // this.queryParams1.bjdm = this.$route.query.bjdm;
+    // this.table_title = this.$route.query.bjmc;
+    // console.log("班干部列表挂载");
+    // console.log("allStu_content:", this.$props.allStu_content);
+    // if(this.value)
+    // 班干部职位筛选
+    // getZwdm().then((res) => {
+    //   // console.log(res);
+    //   if (res.errcode == "00") {
+    //     this.bjzwOptions = res.data.rows;
+    //   }
+    // });
+    // this.getList();
+  },
+  activated() {
     this.queryParams.bjdm = this.$route.query.bjdm;
     this.queryParams1.bjdm = this.$route.query.bjdm;
     this.table_title = this.$route.query.bjmc;
@@ -455,10 +467,7 @@ export default {
         this.bjzwOptions = res.data.rows;
       }
     });
-    // this.getList();
-  },
-  activated() {
-    this.currentIndex = 0
+    this.currentIndex = 0;
     this.getList();
   },
   methods: {
@@ -546,20 +555,19 @@ export default {
 
     // 班干部批量撤任操作
     deleteSome() {
-        if (this.currentRowBgb.length > 0) {
-            getCxly().then((res) => {
-            // console.log(res);
-            this.cxlyOptions = res.data.rows;
-            // console.log("crlyOptions:", this.cxlyOptions);
+      if (this.currentRowBgb.length > 0) {
+        getCxly().then((res) => {
+          // console.log(res);
+          this.cxlyOptions = res.data.rows;
+          // console.log("crlyOptions:", this.cxlyOptions);
         });
         this.cancelAllocate = true;
-    }else {
+      } else {
         this.$message({
           message: "请至少选择一位班干部！",
-          type: 'warning',
+          type: "warning",
         });
-    }
-      
+      }
     },
     // 批量取消分配-确认操作
     cancelAllocateConfirm() {
@@ -595,17 +603,16 @@ export default {
     },
     // 班干部批量任命
     actionAssignBgb() {
-    //   console.log("批量任命操作！",this.currentRowBgb);
-    if (this.currentRow.length > 0) {
+      //   console.log("批量任命操作！",this.currentRowBgb);
+      if (this.currentRow.length > 0) {
         this.openAssignBgb = true;
         this.title = "批量任命班干部";
-    }else {
+      } else {
         this.$message({
           message: "请至少选择一位学生！",
-          type: 'warning',
+          type: "warning",
         });
-    }
-      
+      }
     },
     // 批量任命班干部-确认操作
     assignBgbConfirm() {
@@ -634,7 +641,7 @@ export default {
       // console.log("批量任命二次确认操作！");
       this.currentBjdm = this.$route.query.bjdm;
       let stuList = [];
-      let rmsj = this.form.rmsj
+      let rmsj = this.form.rmsj;
       let bjdm = "";
       let zwdm = this.form.bgbid;
       bjdm = this.currentBjdm;

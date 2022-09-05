@@ -111,7 +111,7 @@
                     :action="uploadUrl"
                     :show-file-list="false"
                     :data="fileData"
-                    :headers='fileHeader'
+                    :headers="fileHeader"
                     :on-success="upLoadSuccess"
                     :on-error="upLoadError"
                   >
@@ -210,7 +210,6 @@
             </el-table>
             <!-- id="pagenation" -->
             <pagination
-              
               v-show="total > 0"
               :total="total"
               :page.sync="queryParams.pageNum"
@@ -459,7 +458,7 @@
 <script>
 import "@/assets/fonts/export/iconfont.css";
 import "@/assets/fonts/refresh/iconfont.css";
-import { getToken } from '@/utils/auth'
+import { getToken } from "@/utils/auth";
 import {
   getStuList,
   queryWfbStuList,
@@ -544,17 +543,21 @@ export default {
         };
       },
     },
-      fileHeader: {
+    fileHeader: {
       get() {
         return {
-            accessToken: getToken() ,// 让每个请求携带自定义token 请根据实际情况自行修改 
-            uuid: new Date().getTime(),
-            clientId :'111'
+          accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
+          uuid: new Date().getTime(),
+          clientId: "111",
         };
       },
     },
   },
   mounted() {
+    // this.getList(this.queryParams); // 页面一挂载就默认展示某一特定班级学生名单
+    // this.getOptions(); // 获取生源地、专业、性别筛选框数据
+  },
+  activated() {
     this.getList(this.queryParams); // 页面一挂载就默认展示某一特定班级学生名单
     this.getOptions(); // 获取生源地、专业、性别筛选框数据
   },
@@ -780,15 +783,14 @@ export default {
   },
 };
 </script>
-<style  scoped>
-
+<style scoped>
 .operate-class {
   background-color: #fff;
   padding: 20px;
 }
 /* tab前端开始 */
 .tab {
-    padding: 20px;
+  padding: 20px;
   background-color: #fff;
 }
 ul,

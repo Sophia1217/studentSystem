@@ -334,11 +334,13 @@ export default {
     };
   },
   mounted() {
-    this.getTeacherList(this.queryParams);
-    this.getGradeOptions();
+    // this.getTeacherList(this.queryParams);
+    // this.getGradeOptions();
   },
   // 组件激活时清除筛选框 重新发送请求
   activated() {
+    this.getTeacherList(this.queryParams);
+    this.getGradeOptions();
     this.queryParams.xgh = "";
     this.queryParams.xy = "";
     this.getTeacherList(this.queryParams);

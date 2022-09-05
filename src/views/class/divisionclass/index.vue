@@ -235,10 +235,16 @@ export default {
     };
   },
   mounted() {
+    // this.getList();
+    // this.getOptions();
+    // this.getData(this.menuVal);
+    // this.fbgl = this.Jr.includes("0304");
+  },
+  activated() {
     this.getList();
     this.getOptions();
     this.getData(this.menuVal);
-    this.fbgl = this.Jr.includes("0304");
+    this.getData(this.menuVal);
   },
   methods: {
     getData(data) {

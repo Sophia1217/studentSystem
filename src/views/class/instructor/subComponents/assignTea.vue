@@ -157,7 +157,7 @@
                 <el-button
                   type="text"
                   size="small"
-                  :disabled="scope.row.sffp == '1' ?  true : false"
+                  :disabled="scope.row.sffp == '1' ? true : false"
                   @click="allocateNone(scope.row)"
                 >
                   <span
@@ -192,21 +192,21 @@
         width="780px"
         append-to-body
       >
-      <el-form :model="form">
-        <el-form-item label="任命日期">
-          <el-date-picker
-            type="date"
-            style="width: 30%"
-            placeholder="选择任命日期"
-            value-format="yyyy-MM-dd hh:mm:ss"
-            v-model="form.rmsj"
-          ></el-date-picker>
-        </el-form-item>
-        <span class="assignTips"
-          >确认将【{{ fdyList }}】【{{ xm }}】任命为【{{
-            $route.query.bjmc
-          }}】辅导员</span
-        >
+        <el-form :model="form">
+          <el-form-item label="任命日期">
+            <el-date-picker
+              type="date"
+              style="width: 30%"
+              placeholder="选择任命日期"
+              value-format="yyyy-MM-dd hh:mm:ss"
+              v-model="form.rmsj"
+            ></el-date-picker>
+          </el-form-item>
+          <span class="assignTips"
+            >确认将【{{ fdyList }}】【{{ xm }}】任命为【{{
+              $route.query.bjmc
+            }}】辅导员</span
+          >
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
@@ -220,26 +220,26 @@
         :visible.sync="openAssignMoreClass"
         width="780px"
         append-to-body
-        >
+      >
         <el-form :model="formMore">
           <el-form-item label="任命日期">
-          <el-date-picker
-            type="date"
-            style="width: 30%"
-            placeholder="选择任命日期"
-            value-format="yyyy-MM-dd hh:mm:ss"
-            v-model="formMore.rmsj"
-          ></el-date-picker>
-        </el-form-item>
-        <template v-for="item in multipleSelection">
-          <div :key="item.gh">
-            <span
-              >确认将【{{ item.gh }}】【{{ item.xm }}】任命为【{{
-                $route.query.bjmc
-              }}】辅导员</span
-            >
-          </div>
-        </template>
+            <el-date-picker
+              type="date"
+              style="width: 30%"
+              placeholder="选择任命日期"
+              value-format="yyyy-MM-dd hh:mm:ss"
+              v-model="formMore.rmsj"
+            ></el-date-picker>
+          </el-form-item>
+          <template v-for="item in multipleSelection">
+            <div :key="item.gh">
+              <span
+                >确认将【{{ item.gh }}】【{{ item.xm }}】任命为【{{
+                  $route.query.bjmc
+                }}】辅导员</span
+              >
+            </div>
+          </template>
         </el-form>
 
         <div slot="footer" class="dialog-footer">
@@ -261,21 +261,21 @@
           class="cancel_class"
         >
           <el-form-item label="撤任理由" prop="noticeTitle">
-          <el-input
-            v-model="formDismission.noticeTitle"
-            autocomplete="off"
-            type="textarea"
-          ></el-input>
-        </el-form-item>
+            <el-input
+              v-model="formDismission.noticeTitle"
+              autocomplete="off"
+              type="textarea"
+            ></el-input>
+          </el-form-item>
           <el-form-item label="撤任日期" prop="offDate">
-          <el-date-picker
-            type="date"
-            style="width: 40%"
-            placeholder="选择撤任日期"
-            v-model="formDismission.offDate"
-            value-format="yyyy-MM-dd hh:mm:ss"
-          ></el-date-picker>
-        </el-form-item>
+            <el-date-picker
+              type="date"
+              style="width: 40%"
+              placeholder="选择撤任日期"
+              v-model="formDismission.offDate"
+              value-format="yyyy-MM-dd hh:mm:ss"
+            ></el-date-picker>
+          </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
@@ -316,28 +316,28 @@
           class="cancel_class"
         >
           <el-form-item label="撤任理由" prop="noticeTitle">
-          <el-input
-            v-model="formDismissionMore.noticeTitle"
-            autocomplete="off"
-            type="textarea"
-          ></el-input>
-        </el-form-item>
+            <el-input
+              v-model="formDismissionMore.noticeTitle"
+              autocomplete="off"
+              type="textarea"
+            ></el-input>
+          </el-form-item>
           <el-form-item label="撤任日期" prop="offDate">
-          <el-date-picker
-            type="date"
-            style="width: 40%"
-            placeholder="选择撤任日期"
-            v-model="formDismissionMore.offDate"
-            value-format="yyyy-MM-dd hh:mm:ss"
-          ></el-date-picker>
-        </el-form-item>
+            <el-date-picker
+              type="date"
+              style="width: 40%"
+              placeholder="选择撤任日期"
+              v-model="formDismissionMore.offDate"
+              value-format="yyyy-MM-dd hh:mm:ss"
+            ></el-date-picker>
+          </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="cancelMore" class="cancel_btn">取消</el-button>
           <el-button @click="submitOutMore" class="submit_btn">确认</el-button>
         </div>
       </el-dialog>
-      
+
       <!-- 二次确认批量取消分配对话框 -->
       <el-dialog
         class="assign_class"
@@ -385,6 +385,10 @@ export default {
     assignTable,
   },
   mounted() {
+    // this.getInstructorList();
+    // this.getOptions();
+  },
+  activated(){
     this.getInstructorList();
     this.getOptions();
   },
@@ -546,8 +550,8 @@ export default {
         });
         this.getInstructorList();
       });
-      
-      
+
+
       this.openAssignClass = false;
     },
     // 取消按钮关闭窗口
@@ -567,7 +571,7 @@ export default {
       this.bjdm = this.$route.query.bjdm;
       this.fdyList.push(row.gh);
       this.xm = row.xm;
-      
+
       // this.cxsj = "2020-09-09 00:00:00";
     },
     // 第一个对话框
@@ -590,14 +594,14 @@ export default {
       let cxsj = this.formDismission.offDate
       let cxrGh = this.$store.getters.userId;
       getRemoveAssignFdy({ cxrGh, bjdm: this.bjdm, fdyList: this.fdyList, crly, cxsj }).then((res) => {
-        
+
         this.$message({
         message: "取消分配成功",
         type: "success",
         });
         this.getInstructorList();
       });
-      
+
     },
     handleAssignMore() {
         if (this.multipleSelection.length > 0) {
@@ -609,7 +613,7 @@ export default {
                 type: 'warning',
             });
         }
-      
+
     },
     cancelMore() {
       this.openAssignMoreClass = false;
@@ -628,9 +632,9 @@ export default {
       }
       getAssignFdy({ bjdm, fdyList, rmrgh, rmsj }).then((res) => {
        this.getInstructorList();
-        
+
       });
-      
+
     },
     deleteAssignMore() {
         if (this.multipleSelection.length > 0) {
@@ -642,7 +646,7 @@ export default {
                 type: 'warning',
             });
         }
-      
+
     },
     //批量取消第一次确定操作
     submitOutMore(){
@@ -659,9 +663,9 @@ export default {
       for (let item_row of this.multipleSelection) {
         fdyList.push(item_row.gh);
       }
-      
+
       getRemoveAssignFdy({fdyList, bjdm, cxrGh, crly, cxsj}).then((res) => {
-        
+
 
         this.$message({
         message: "取消分配成功",
@@ -765,7 +769,7 @@ export default {
 
 <style scoped>
 .assign_tea {
-    padding: 20px;
+  padding: 20px;
 }
 /* 搜索 */
 .table-header {

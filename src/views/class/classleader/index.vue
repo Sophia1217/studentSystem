@@ -54,7 +54,11 @@
         </el-select>
       </el-form-item>
       <el-form-item label="班级名称" prop="bjmc">
-        <el-input v-model="queryParams.bjmc" placeholder="请输入班级名称" clearable />
+        <el-input
+          v-model="queryParams.bjmc"
+          placeholder="请输入班级名称"
+          clearable
+        />
         <!--           @keyup.enter.native="handleQuery" -->
       </el-form-item>
       <el-form-item>
@@ -221,6 +225,12 @@ export default {
     };
   },
   mounted() {
+    // this.getList();
+    // this.getOptions();
+    // this.getData(this.menuVal);
+    // this.bgbrm = this.Jr.includes("0312");
+  },
+  activated() {
     this.getList();
     this.getOptions();
     this.getData(this.menuVal);

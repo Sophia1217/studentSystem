@@ -240,7 +240,7 @@
         :rules="rules"
         label-width="150px"
       >
-      <el-form-item label="任命日期">
+        <el-form-item label="任命日期">
           <el-date-picker
             type="date"
             style="width: 100%"
@@ -250,22 +250,22 @@
           ></el-date-picker>
         </el-form-item>
         <el-form-item label="学工号" prop="fdyGh" style="width: 80%">
-            <el-input v-model="form.fdyGh" @input="inputChange" />
+          <el-input v-model="form.fdyGh" @input="inputChange" />
         </el-form-item>
         <el-form-item label="姓名" prop="xm" style="width: 80%">
-                <el-select
-                    v-model="importForm.xm"
-                    placeholder=""
-                    size="small"
-                    @change="selectClick"
-                  >
-                    <el-option
-                      v-for="item in xmOps"
-                      :key="item.gh"
-                      :label="item.xm +'：'+ item.gh"
-                      :value="item.gh"
-                    />
-                </el-select>
+          <el-select
+            v-model="importForm.xm"
+            placeholder=""
+            size="small"
+            @change="selectClick"
+          >
+            <el-option
+              v-for="item in xmOps"
+              :key="item.gh"
+              :label="item.xm + '：' + item.gh"
+              :value="item.gh"
+            />
+          </el-select>
         </el-form-item>
 
         <!-- <el-form-item label="辅导员工号" prop="fdyGh">
@@ -296,7 +296,7 @@
       <template>
         <div v-for="item in multipleSelection" :key="item.gh">
           <span
-            >确认任命【{{ form.fdyGh }}({{fdyXm}})】为【{{
+            >确认任命【{{ form.fdyGh }}({{ fdyXm }})】为【{{
               item.bjmc
             }}】的【辅导员】？</span
           >
@@ -324,13 +324,19 @@ import {
   getGrade,
   addClass,
   deleteEmptyClass,
-  
 } from "@/api/class/maintenanceClass"; // 引入班级列表查询、修改班级名称接口
-import {getXm, assignFdyByClass} from "@/api/class/instructor"
+import { getXm, assignFdyByClass } from "@/api/class/instructor";
 import { param } from "../../../utils";
 export default {
   name: "instructor", //辅导员管理主界面
   mounted() {
+    // this.getOptions();
+    // this.getList();
+    // this.getData(this.menuVal);
+    // this.fpfdy = this.Jr.includes("0310");
+    // this.rejl = this.Jr.includes("0309");
+  },
+  activated() {
     this.getOptions();
     this.getList();
     this.getData(this.menuVal);
@@ -339,7 +345,7 @@ export default {
   },
   data() {
     return {
-      table_title:'',
+      table_title: "",
       doubleAssign: false,
       importForm: {
         gh: "",
@@ -353,7 +359,7 @@ export default {
       // loading: true,
       // 选中数组
       list: [],
-      multipleSelection:[],
+      multipleSelection: [],
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -385,9 +391,9 @@ export default {
       },
       // 表单参数
       form: {
-        fdyGh: '',
-        rmsj: '',
-        bjdmList: []
+        fdyGh: "",
+        rmsj: "",
+        bjdmList: [],
       },
       // 表单校验
       rules: {
@@ -403,30 +409,31 @@ export default {
       fpfdy: true,
       rejl: true,
       xmOps: [],
-      fdyXm: '',
-      rmsj: '',
-      bjdmList: []
+      fdyXm: "",
+      rmsj: "",
+      bjdmList: [],
     };
   },
   methods: {
-    selectClick(val){
-      this.form.fdyGh = val
-      for( var i in this.xmOps){
-        if(this.xmOps[i].gh == val){
-          this.fdyXm = this.xmOps[i].xm
-          break
+    selectClick(val) {
+      this.form.fdyGh = val;
+      for (var i in this.xmOps) {
+        if (this.xmOps[i].gh == val) {
+          this.fdyXm = this.xmOps[i].xm;
+          break;
         }
       }
     },
     //批量输入框查找姓名
-    inputChange(){
-      if(this.form.fdyGh.length > 4){
-        getXm({gh : this.form.fdyGh}).then((res) => {
-          // console.log(res, 'res')
-          // this.$set(this.sex, "checkBox", res.data);
-          this.xmOps = res.XmGh;
-        })
-        .catch((err) => {});
+    inputChange() {
+      if (this.form.fdyGh.length > 4) {
+        getXm({ gh: this.form.fdyGh })
+          .then((res) => {
+            // console.log(res, 'res')
+            // this.$set(this.sex, "checkBox", res.data);
+            this.xmOps = res.XmGh;
+          })
+          .catch((err) => {});
       }
       // console.log(this.importForm.gh,'importForm.gh')
     },
@@ -492,39 +499,39 @@ export default {
     // 批量分配
     assignClick() {
       // console.log(this.multipleSelection)
-      
+
       if (this.multipleSelection.length > 0) {
-        this.openAssign = true
+        this.openAssign = true;
         this.title = "批量任命辅导员";
-    }else {
+      } else {
         this.$message({
           message: "请至少选择一个班级！",
-          type: 'warning',
+          type: "warning",
         });
-    }
+      }
     },
     // 取消导入提交按钮
     cancelAssign() {
       this.openAssign = false;
-      this.form.rmsj = ''
-      this.form.fdyGh = ''
-      this.importForm.xm = ''
-      this.xmOps = []
+      this.form.rmsj = "";
+      this.form.fdyGh = "";
+      this.importForm.xm = "";
+      this.xmOps = [];
     },
     // /** 导入提交按钮 */
     assignConfirm() {
       this.openAssign = false;
-      this.doubleAssign = true
+      this.doubleAssign = true;
       // let params= {
       //   bjdm : this.bjdmList,
       //   fdyGh : this.importForm.gh
-      //   // rmsj : 
+      //   // rmsj :
       // }
-      this.fdyGh = this.importForm.gh
+      this.fdyGh = this.importForm.gh;
     },
     //班干部批量任命————二次确定操作
     doubleAssignConfirm() {
-      let param = this.form
+      let param = this.form;
       assignFdyByClass(param).then((res) => {
         // console.log(res);
         this.$message({
@@ -534,10 +541,10 @@ export default {
         this.doubleAssign = false;
         this.queryParams.pageNum = 1;
         this.getList();
-        this.form.rmsj = ''
-      this.form.fdyGh = ''
-      this.importForm.xm = ''
-      this.xmOps = []
+        this.form.rmsj = "";
+        this.form.fdyGh = "";
+        this.importForm.xm = "";
+        this.xmOps = [];
       });
     },
     /** 查询公告列表 */
@@ -567,28 +574,27 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.form.bjdmList = []
+      this.form.bjdmList = [];
       this.multipleSelection = selection;
-      for(var i in selection){
-        if ( !this.form.bjdmList.includes(selection[i].bjdm)){
-          this.form.bjdmList.push(selection[i].bjdm)
+      for (var i in selection) {
+        if (!this.form.bjdmList.includes(selection[i].bjdm)) {
+          this.form.bjdmList.push(selection[i].bjdm);
         }
-        
       }
       this.list = [...selection];
       // this.ids = selection.map((item) => item.noticeId);
       // this.single = selection.length != 1;
       // this.multiple = !selection.length;
     },
-    doubleAssignCancel(){
+    doubleAssignCancel() {
       // this.form = []
-      this.form.rmsj = ''
-      this.form.fdyGh = ''
-      this.importForm.xm = ''
-      this.xmOps = []
-      this.doubleAssign = false
+      this.form.rmsj = "";
+      this.form.fdyGh = "";
+      this.importForm.xm = "";
+      this.xmOps = [];
+      this.doubleAssign = false;
     },
-    
+
     /** 新增按钮操作 */
     handleAdd() {
       // this.reset();

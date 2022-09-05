@@ -13,17 +13,8 @@
       <!-- v-loading="loading" -->
       <el-table :data="noticeList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="65" align="center" />
-        <el-table-column
-            type="index"
-            label="序号"
-            width="50"
-          ></el-table-column>
-        <el-table-column
-          label="学工号"
-          align="center"
-          prop="gh"
-          width="100"
-        />
+        <el-table-column type="index" label="序号" width="50"></el-table-column>
+        <el-table-column label="学工号" align="center" prop="gh" width="100" />
         <el-table-column
           label="姓名"
           align="center"
@@ -38,25 +29,10 @@
           /> -->
         </el-table-column>
         <el-table-column label="性别" align="center" prop="xb" sortable />
-        <el-table-column
-          label="工作单位"
-          align="center"
-          prop="dwmc"
-          sortable
-        />
+        <el-table-column label="工作单位" align="center" prop="dwmc" sortable />
         <el-table-column label="任职班级" align="center" prop="rzbj" sortable />
-        <el-table-column
-          label="创建时间"
-          align="center"
-          prop="rmsj"
-          sortable
-        />
-        <el-table-column
-          label="任命人"
-          align="center"
-          prop="rmr"
-          sortable
-        />
+        <el-table-column label="创建时间" align="center" prop="rmsj" sortable />
+        <el-table-column label="任命人" align="center" prop="rmr" sortable />
         <!-- <el-table-column
           label="任命年度"
           align="center"
@@ -69,24 +45,9 @@
           prop="updateTime"
           sortable
         /> -->
-        <el-table-column
-          label="任命时间"
-          align="center"
-          prop="rmsj"
-          sortable
-        />
-        <el-table-column
-          label="撤任人"
-          align="center"
-          prop="cxr"
-          sortable
-        />
-        <el-table-column
-          label="撤任时间"
-          align="center"
-          prop="cxsj"
-          sortable
-        />
+        <el-table-column label="任命时间" align="center" prop="rmsj" sortable />
+        <el-table-column label="撤任人" align="center" prop="cxr" sortable />
+        <el-table-column label="撤任时间" align="center" prop="cxsj" sortable />
         <!-- <el-table-column
           label="任职状态"
           align="center"
@@ -143,7 +104,7 @@
 
 <script>
 import "@/assets/fonts/refresh/iconfont.css";
-import {getDeleteFdyRecords, getQueryRecords} from '@/api/class/instructor'
+import { getDeleteFdyRecords, getQueryRecords } from "@/api/class/instructor";
 export default {
   name: "empTable", //辅导员任职记录
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
@@ -206,12 +167,15 @@ export default {
         pageNum: 1,
         pageSize: 10,
         bjdm: this.$route.query.bjdm,
-      },      
+      },
     };
   },
   created() {
-    this.getList();
+    // this.getList();
     // console.log('111111')
+  },
+  activated() {
+    this.getList();
   },
   methods: {
     // 辅导员任命
@@ -262,7 +226,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection
+      this.ids = selection;
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -302,21 +266,21 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete() {
-        var selectedArr = this.ids || []
-        if (selectedArr.length == 0) {
-            this.$message({
-                message : '请至少选择一条记录',
-                type: 'warning'
-            })
-            return
-        }
-      let param = {
-        recordsList : selectedArr
+      var selectedArr = this.ids || [];
+      if (selectedArr.length == 0) {
+        this.$message({
+          message: "请至少选择一条记录",
+          type: "warning",
+        });
+        return;
       }
-      var names = []
+      let param = {
+        recordsList: selectedArr,
+      };
+      var names = [];
       for (let index = 0; index < selectedArr.length; index++) {
         const element = selectedArr[index];
-        names.push(element.xm)
+        names.push(element.xm);
       }
       this.$modal
         .confirm('是否确认删除姓名为"' + names + '"的数据项？')

@@ -370,11 +370,13 @@ export default {
   // 组件创建完请求数据
   mounted() {
     // this.getList({ bjdm: this.queryParams.classId });  // { pydw, pycc, ssnj, bjdm: this.queryParams.classId, pageNum-Y, pageSize-Y}
-    this.getList(this.queryParams);
-    this.getOptions();
     // exportClassList({}).then((res) => {
     //   console.log(res);
     // });
+  },
+  activated() {
+    this.getList(this.queryParams);
+    this.getOptions();
   },
   methods: {
     // // 查看班级操作记录

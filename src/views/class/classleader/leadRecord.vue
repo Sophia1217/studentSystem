@@ -128,6 +128,9 @@ export default {
   },
   mounted() {
     // console.log("guazai");
+    // this.getList(this.queryParams);
+  },
+  activated() {
     this.getList(this.queryParams);
   },
   methods: {

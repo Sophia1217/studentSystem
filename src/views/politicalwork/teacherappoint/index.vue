@@ -104,6 +104,7 @@
           :data="tableData"
           style="width: 100%"
           :default-sort="{ prop: 'gh', order: 'ascending' }"
+          @selection-change="handleSelectionChange"
           @sort-change="changeTableSort"
         >
           <el-table-column type="selection" width="55" />
@@ -163,26 +164,28 @@
         :data="tableDataDetail"
         style="width: 100%"
         :default-sort="{ prop: 'date', order: 'descending' }"
-        @selection-change="handleSelectionChange"
         @sort-change="changeTableDetailSort"
       >
         <!-- <el-table-column type="selection" width="55" /> -->
         <el-table-column label="在岗日期" width="180">
-          <template slot-scope="scope">
-            <div v-if="tableDataDetail[0].cxsj != null">
-              <span
-                >{{ tableDataDetail[0].rmsj }} 至
-                {{ tableDataDetail[0].cxsj }}</span
+          <template slot-scope="">
+            <div v-if="tableDataDetail.length>0">
+              <div v-if="tableDataDetail[0].cxsj != null">
+                <span
+                  >{{ tableDataDetail[0].rmsj }} 至
+                  {{ tableDataDetail[0].cxsj }}</span
+                >
+              </div>
+              <div
+                v-if="
+                  tableDataDetail[0].cxsj == null &&
+                  tableDataDetail[0].rmsj != null
+                "
               >
+                <span>{{ tableDataDetail[0].rmsj }} 至今</span>
+              </div>
             </div>
-            <div
-              v-if="
-                tableDataDetail[0].cxsj == null &&
-                tableDataDetail[0].rmsj != null
-              "
-            >
-              <span>{{ tableDataDetail[0].rmsj }} 至今</span>
-            </div>
+            <!-- <div></div> -->
           </template>
         </el-table-column>
         <el-table-column prop="bjbh" label="班级编号" sortable="custom" />
@@ -192,7 +195,7 @@
         <el-table-column prop="nj" label="年级" sortable="custom" />
         <el-table-column prop="sfqy" label="任职状态" sortable="custom">
           <template slot-scope="scope">
-            <div v-if="scope.row.sfqy == 1">
+            <div v-if="scope.row.sfqy == 0">
               <span class="greenDot">●</span><span>在岗</span>
             </div>
             <!-- <span v-if="scope.row.dbzt == 1">是</span> -->
@@ -213,7 +216,7 @@
     <!-- 批量免去对话框 -->
     <el-dialog :visible.sync="showRemove" width="30%">
       <template v-for="item in multipleSelection">
-        <div :key="item.xh">
+        <div :key="item.gh">
           <span>确认免去【{{ item.gh }}】【{{ item.xm }}】班主任身份？</span>
         </div>
       </template>
@@ -533,7 +536,16 @@ export default {
     },
     // 点击批量免去
     handleRemove() {
-      this.showRemove = true;
+      if (this.multipleSelection.length > 0) {
+        this.showRemove = true;
+        this.title = "免去";
+      }else {
+          this.$message({
+            message: "请至少选择一名班主任！",
+            type: 'warning',
+          });
+      }
+      // console.log(this.multipleSelection,'this.multipleSelection')
     },
     // 确认批量免去
     confirmRemove() {

@@ -226,13 +226,15 @@
       >
         <!-- <el-table-column type="index" label="在岗日期" width="50" /> -->
         <el-table-column label="在岗日期" width="180">
-          <template slot-scope="scope">
+          <template slot-scope="">
+            <div v-if="tableData.length>0">
             <div v-if="tableData[0].cxsj != null">
               <span>{{ tableData[0].rmsj }} 至 {{ tableData[0].cxsj }}</span>
             </div>
             <div v-if="tableData[0].cxsj == null && tableData[0].rmsj != null">
               <span>{{ tableData[0].rmsj }} 至今</span>
             </div>
+          </div>
           </template>
         </el-table-column>
         <el-table-column prop="bjbh" label="班级编号" sortable="custom" />
@@ -242,7 +244,7 @@
         <el-table-column prop="nj" label="年级" sortable="custom" />
         <el-table-column prop="sfqy" label="任职状态" sortable="custom">
           <template slot-scope="scope">
-            <div v-if="scope.row.sfqy == 1">
+            <div v-if="scope.row.sfqy == 0">
               <span class="greenDot">●</span><span>在岗</span>
             </div>
             <!-- <span v-if="scope.row.dbzt == 1">是</span> -->
@@ -443,7 +445,7 @@ export default {
     },
     //获取数据列表
     getList(queryParams) {
-      console.log(this.select, "select");
+      // console.log(this.select, "select");
       queryParams.xh = this.select == 1 ? this.searchVal : "";
       queryParams.xm = this.select == 2 ? this.searchVal : "";
       fdyList(queryParams)
@@ -663,8 +665,15 @@ export default {
     },
     /**批量免去按钮*/
     handleRemove() {
-      this.showRemove = true;
-      this.title = "免去";
+      if (this.multipleSelection.length > 0) {
+        this.showRemove = true;
+        this.title = "免去";
+      }else {
+          this.$message({
+            message: "请至少选择一名辅导员！",
+            type: 'warning',
+          });
+      }
     },
     /** 下载模板操作 */
     importTemplate() {

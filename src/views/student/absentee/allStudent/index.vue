@@ -60,7 +60,7 @@
             >
               <el-option
                 v-for="item in zyOps"
-                :key="item.dm"
+                :key="item.id"
                 :label="item.mc"
                 :value="item.dm"
               ></el-option>
@@ -284,7 +284,6 @@ export default {
       };
       getSchoolRegStuInfoPageList(data)
         .then((res) => {
-          
           this.tableData = res.data.data;
           this.queryParams.total = res.data.total;
         })
@@ -301,7 +300,7 @@ export default {
         allCheck.push(this.training.checkBox[i].dm);
       }
       this.training.choose = val ? allCheck : [];
-    
+
       this.training.isIndeterminate = false;
     },
     // 培养层次单选
@@ -310,7 +309,6 @@ export default {
       this.training.checkAll = checkedCount === this.training.checkBox.length;
       this.training.isIndeterminate =
         checkedCount > 0 && checkedCount < this.training.checkBox.length;
-     
     },
     // 学制全选
     learnHeAll(val) {
@@ -319,7 +317,7 @@ export default {
         allCheck.push(this.learnHe.checkBox[i].dm);
       }
       this.learnHe.choose = val ? allCheck : [];
-     
+
       this.learnHe.isIndeterminate = false;
     },
     // 学制单选
@@ -328,7 +326,6 @@ export default {
       this.learnHe.checkAll = checkedCount === this.learnHe.checkBox.length;
       this.learnHe.isIndeterminate =
         checkedCount > 0 && checkedCount < this.learnHe.checkBox.length;
-     
     },
     // 学籍全选
     studentStatusAll(val) {
@@ -337,7 +334,7 @@ export default {
         allCheck.push(this.studentStatus.checkBox[i].val);
       }
       this.studentStatus.choose = val ? allCheck : [];
-    
+
       this.studentStatus.isIndeterminate = false;
     },
     // 学籍单选
@@ -347,7 +344,6 @@ export default {
         checkedCount === this.studentStatus.checkBox.length;
       this.studentStatus.isIndeterminate =
         checkedCount > 0 && checkedCount < this.studentStatus.checkBox.length;
-     
     },
     // 民 族全选
     ethnicAll(val) {
@@ -365,7 +361,6 @@ export default {
       this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
       this.ethnic.isIndeterminate =
         checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
-      
     },
     // 政治面貌：全选
     politicaAll(val) {
@@ -374,7 +369,7 @@ export default {
         allCheck.push(this.politica.checkBox[i].val);
       }
       this.politica.choose = val ? allCheck : [];
-     
+
       this.politica.isIndeterminate = false;
     },
     // 政治面貌：单选
@@ -383,12 +378,10 @@ export default {
       this.politica.checkAll = checkedCount === this.politica.checkBox.length;
       this.politica.isIndeterminate =
         checkedCount > 0 && checkedCount < this.politica.checkBox.length;
-     
     },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      
     },
     //排序
     changeTableSort(column) {

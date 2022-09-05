@@ -554,13 +554,14 @@ export default {
     },
   },
   mounted() {
-    // this.getList(this.queryParams); // 页面一挂载就默认展示某一特定班级学生名单
-    // this.getOptions(); // 获取生源地、专业、性别筛选框数据
-  },
-  activated() {
     this.queryParams.bjdm = this.$route.query.bjdm; // 班级编号
     this.getList(this.queryParams); // 页面一挂载就默认展示某一特定班级学生名单
     this.getOptions(); // 获取生源地、专业、性别筛选框数据
+  },
+  activated() {
+    // this.queryParams.bjdm = this.$route.query.bjdm; // 班级编号
+    // this.getList(this.queryParams); // 页面一挂载就默认展示某一特定班级学生名单
+    // this.getOptions(); // 获取生源地、专业、性别筛选框数据
   },
   methods: {
     upLoadSuccess(res, file, fileList) {

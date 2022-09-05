@@ -330,18 +330,18 @@ import { param } from "../../../utils";
 export default {
   name: "instructor", //辅导员管理主界面
   mounted() {
-    // this.getOptions();
-    // this.getList();
-    // this.getData(this.menuVal);
-    // this.fpfdy = this.Jr.includes("0310");
-    // this.rejl = this.Jr.includes("0309");
-  },
-  activated() {
     this.getOptions();
     this.getList();
     this.getData(this.menuVal);
     this.fpfdy = this.Jr.includes("0310");
     this.rejl = this.Jr.includes("0309");
+  },
+  activated() {
+    // this.getOptions();
+    // this.getList();
+    // this.getData(this.menuVal);
+    // this.fpfdy = this.Jr.includes("0310");
+    // this.rejl = this.Jr.includes("0309");
   },
   data() {
     return {

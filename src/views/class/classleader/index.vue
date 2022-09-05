@@ -225,17 +225,12 @@ export default {
     };
   },
   mounted() {
-    // this.getList();
-    // this.getOptions();
-    // this.getData(this.menuVal);
-    // this.bgbrm = this.Jr.includes("0312");
-  },
-  activated() {
     this.getList();
     this.getOptions();
     this.getData(this.menuVal);
     this.bgbrm = this.Jr.includes("0312");
   },
+  activated() {},
   methods: {
     getData(data) {
       for (var i in data) {

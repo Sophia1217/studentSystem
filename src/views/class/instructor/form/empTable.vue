@@ -171,13 +171,10 @@ export default {
     };
   },
   created() {
-    // this.getList();
-    // console.log('111111')
-  },
-  activated() {
     this.queryParams.bjdm = this.$route.query.bjdm;
     this.getList();
   },
+  activated() {},
   methods: {
     // 辅导员任命
     operate() {

@@ -437,6 +437,22 @@ export default {
     };
   },
   mounted() {
+    this.queryParams.bjdm = this.$route.query.bjdm;
+    this.queryParams1.bjdm = this.$route.query.bjdm;
+    this.table_title = this.$route.query.bjmc;
+    // console.log("班干部列表挂载");
+    // console.log("allStu_content:", this.$props.allStu_content);
+    // if(this.value)
+    // 班干部职位筛选
+    getZwdm().then((res) => {
+      // console.log(res);
+      if (res.errcode == "00") {
+        this.bjzwOptions = res.data.rows;
+      }
+    });
+    this.getList();
+  },
+  activated() {
     // this.queryParams.bjdm = this.$route.query.bjdm;
     // this.queryParams1.bjdm = this.$route.query.bjdm;
     // this.table_title = this.$route.query.bjmc;
@@ -450,25 +466,8 @@ export default {
     //     this.bjzwOptions = res.data.rows;
     //   }
     // });
+    // this.currentIndex = 0;
     // this.getList();
-  },
-  activated() {
-    this.queryParams.bjdm = this.$route.query.bjdm;
-    this.queryParams1.bjdm = this.$route.query.bjdm;
-    this.table_title = this.$route.query.bjmc;
-    // console.log("班干部列表挂载");
-    // console.log("allStu_content:", this.$props.allStu_content);
-    // if(this.value)
-
-    // 班干部职位筛选
-    getZwdm().then((res) => {
-      // console.log(res);
-      if (res.errcode == "00") {
-        this.bjzwOptions = res.data.rows;
-      }
-    });
-    this.currentIndex = 0;
-    this.getList();
   },
   methods: {
     //全班同学列表

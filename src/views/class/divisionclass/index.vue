@@ -235,17 +235,12 @@ export default {
     };
   },
   mounted() {
-    // this.getList();
-    // this.getOptions();
-    // this.getData(this.menuVal);
-    // this.fbgl = this.Jr.includes("0304");
-  },
-  activated() {
     this.getList();
     this.getOptions();
     this.getData(this.menuVal);
-    this.getData(this.menuVal);
+    this.fbgl = this.Jr.includes("0304");
   },
+  activated() {},
   methods: {
     getData(data) {
       for (var i in data) {

@@ -301,18 +301,18 @@ export default {
     };
   },
   mounted() {
-    // this.getList(this.queryParams);
+    this.getList(this.queryParams);
     this.getOptions();
     this.getData(this.menuVal);
     this.rejl = this.Jr.includes("0302");
     this.fpbzr = this.Jr.includes("0307");
   },
   activated() {
-    this.getList(this.queryParams);
-    // this.getOptions();
-    // this.getData(this.menuVal);
-    // this.rejl = this.Jr.includes("0302");
-    // this.fpbzr = this.Jr.includes("0307");
+    // this.getList(this.queryParams);
+    // // this.getOptions();
+    // // this.getData(this.menuVal);
+    // // this.rejl = this.Jr.includes("0302");
+    // // this.fpbzr = this.Jr.includes("0307");
   },
   methods: {
     getData(data) {

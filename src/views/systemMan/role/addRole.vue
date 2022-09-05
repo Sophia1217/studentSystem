@@ -1,17 +1,26 @@
 <template>
   <div class="addRole">
-    <div>
+    <div class="permissions">
       <el-form
         :model="queryParams"
         ref="queryParams"
-        class="queryForm"
+        class="perName"
         size="small"
         :inline="true"
-        label-width="68px"
+        label-width="82px"
+        :rules="{
+          roleName: [
+            { required: true, message: '请输入角色名称', trigger: 'change' },
+          ],
+          roleRem: [
+            { required: true, message: '请选择权限描述', trigger: 'change' },
+          ],
+        }"
       >
-        <el-form-item label="角色名称" prop="roleName">
+        <el-form-item label="角色名称" prop="roleName"
+          >/
           <el-input
-            v-model="roleName"
+            v-model="queryParams.roleName"
             size="small"
             placeholder="请输入角色名称"
           ></el-input>
@@ -58,11 +67,10 @@ export default {
   data() {
     return {
       modId: "",
-      roleName: this.isEdit == "1" ? "" : this.$route.query.roleNameEdit, // 编辑是2
       // 查询参数
       queryParams: {
-        roleState: "",
         roleRem: "",
+        roleName: this.isEdit == "1" ? "" : this.$route.query.roleNameEdit, // 编辑是2
       },
       treeData: [],
       defaultProps: {
@@ -113,7 +121,6 @@ export default {
       }
     },
     setkeys() {
-      
       this.$refs.tree.setCheckedKeys(this.arr);
     },
     getData(data) {
@@ -135,11 +142,10 @@ export default {
     },
     sava() {
       if (this.isEdit === "1") {
-
         let data = {
           userId: "1234",
           menuList: this.savaData,
-          roleName: this.roleName,
+          roleName: this.queryParams.roleName,
           loginRoleId: "01",
           roleRem: this.queryParams.roleRem,
         };
@@ -154,7 +160,8 @@ export default {
         let data = {
           userId: "412341234",
           menuList: this.savaData.length > 0 ? this.savaData : this.arr, //如果用户进来没编辑，默认前一次筛选出来的树
-          roleName: this.isEdit === "1" ? this.roleName : this.roleName1,
+          roleName:
+            this.isEdit === "1" ? this.queryParams.roleName : this.roleName1,
           roleId: this.roleId1,
           roleRem: this.queryParams.roleRem,
         };
@@ -230,6 +237,9 @@ export default {
     .confirm {
       background: #005657;
       color: #fff;
+    }
+    .shishi {
+      width: 10px;
     }
   }
 }

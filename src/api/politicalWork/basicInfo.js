@@ -85,7 +85,7 @@ export function getListWorkPlace(query) {
 
 export function queryAllDwh() {
   return request({
-    url: '/manager/user/queryAllDwh',
+    url: '/zg/queryAllDwh',
     method: 'post',
     // params: query
   })

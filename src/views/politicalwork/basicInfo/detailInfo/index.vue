@@ -3374,7 +3374,6 @@ import {
   getDetailQueryPoliticalWorkList,
   updateDetailQueryPoliticalWorkList,
   getCodeInfoByEnglish,
-  getListWorkPlace,
   queryAllDwh
 } from '@/api/politicalWork/basicInfo'
 export default {

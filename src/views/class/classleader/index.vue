@@ -278,6 +278,7 @@ export default {
     // 重置按钮
     resetQuery(a) {
       this.$refs[a].resetFields();
+      this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {},

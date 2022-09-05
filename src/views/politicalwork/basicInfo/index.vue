@@ -27,7 +27,7 @@
             slot="append"
             class="searchButton"
             icon="el-icon-search"
-            @click="handleSearch"
+            @click="clickSearch"
             >查询</el-button
           >
         </el-input>
@@ -328,21 +328,6 @@ export default {
     },
     // 查询
     handleSearch() {
-      // const data = {
-      //   xm: this.select == 'xm' ? this.searchVal : '',
-      //   gh: this.select == 'gh' ? this.searchVal : '',
-      //   sfzjh: this.select == 'sfzjh' ? this.searchVal : '',
-      //   yddh: this.select == 'yddh' ? this.searchVal : '',
-      //   zybj: this.select == 'zybj' ? this.searchVal : '',
-      //   jg: this.select == 'jg' ? this.searchVal : '',
-      //   byyx: this.select == 'byyx' ? this.searchVal : '',
-      //   // jg: this.queryParams.jg,
-      //   // byyx: this.queryParams.byyx,
-      //   // zybj: this.queryParams.zybj,
-      //   pageNum: this.queryParams.pageNum,
-      //   pageSize: this.queryParams.pageSize
-      // }
-      this.queryParams.pageNum = 1
       this.queryParams.xm = this.select == "xm" ? this.searchVal : "";
       this.queryParams.gh = this.select == "gh" ? this.searchVal : "";
       this.queryParams.sfzjh = this.select == "sfzjh" ? this.searchVal : "";
@@ -361,6 +346,10 @@ export default {
           this.queryParams.total = res.count;
         })
         .catch((err) => {});
+    },
+    clickSearch(){
+      this.queryParams.pageNum = 1
+      this.handleSearch()
     },
     // 点击更多
     handleMore() {

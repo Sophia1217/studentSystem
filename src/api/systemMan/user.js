@@ -27,6 +27,14 @@ export function queryDataAuth(data) {
   })
 }
 
+// 查询用户数据权限
+export function defaultRoleAuth(data) {
+  return request({
+    url: '/manager/role/defaultRoleAuth',
+    method: 'post',
+    data: data
+  })
+}
 
 // 班级查询
 export function queryClassList(data) {

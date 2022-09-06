@@ -44,7 +44,7 @@
               <img
                 :src="
                   detailInfo.xsXszpb
-                    ? 'data:image/png;base64,' + detailInfo.xsXszpb.bkzp
+                    ? 'data:image/png;base64,' + detailInfo.xsXszpb.lqzp
                     : ''
                 "
                 alt="在校照片"

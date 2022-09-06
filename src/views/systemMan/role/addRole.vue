@@ -17,8 +17,7 @@
           ],
         }"
       >
-        <el-form-item label="角色名称" prop="roleName"
-          >/
+        <el-form-item label="角色名称" prop="roleName">
           <el-input
             v-model="queryParams.roleName"
             size="small"

@@ -87,7 +87,7 @@
     <!-- 辅导员管理首页列表 -->
     <div class="tea-table">
       <div class="table-content">
-        <div class="title" icon="el-icon-refresh">
+        <div class="title" icon="el-icon-refresh" v-if="fpfdy">
           <span class="title-itemopn">辅导员管理列表</span>
           <span class="iconfont">&#xe631;</span>
           <el-row :gutter="10" class="mb8" style="float: right">

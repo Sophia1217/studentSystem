@@ -2,9 +2,7 @@
   <div class="app-container">
     <div>
       <h3 class="title-item">
-        22电子信息1班班干部任职记录<span class="iconfont repeat_icon"
-          >&#xe7b1;
-        </span>
+        {{ table_title }}<span class="iconfont repeat_icon">&#xe7b1; </span>
       </h3>
       <el-row :gutter="10" class="mb8" style="float: right; margin-top: 15px">
         <el-col :span="1.5">
@@ -58,13 +56,6 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <pagination
-      id="test"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
   </div>
 </template>
 
@@ -75,6 +66,7 @@ export default {
   name: "LeadRecord",
   data() {
     return {
+      table_title: "",
       arr: [],
       // 任职记录当前行数据
       currentRow: [],
@@ -125,25 +117,16 @@ export default {
     };
   },
   mounted() {
-    // console.log("guazai");
-    // this.getList(this.queryParams);
-  },
-  activated() {
+    this.table_title = this.$route.query.table_title;
     this.queryParams.bjdm = this.$route.query.bjdm;
     this.getList(this.queryParams);
   },
+  activated() {},
   methods: {
     getList(x) {
       Object.assign(x, this.queryParams);
       getQueryBgbRmjl(x).then((res) => {
-        var current_total = 0;
-        // console.log("res.datas:", res.datas);
         this.queryBgbRmjList = res.datas;
-        // console.log("this.queryBgbRmjList:", this.queryBgbRmjList);
-        // for (let index in this.queryBgbRmjList) {
-        //   current_total += this.queryBgbRmjList[index].children.length;
-        // }
-        // this.total = current_total == 0 ? this.total : current_total;
       });
     },
     // 删除记录

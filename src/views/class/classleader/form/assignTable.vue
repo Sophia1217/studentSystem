@@ -440,12 +440,7 @@ export default {
     this.queryParams.bjdm = this.$route.query.bjdm;
     this.queryParams1.bjdm = this.$route.query.bjdm;
     this.table_title = this.$route.query.bjmc;
-    // console.log("班干部列表挂载");
-    // console.log("allStu_content:", this.$props.allStu_content);
-    // if(this.value)
-    // 班干部职位筛选
     getZwdm().then((res) => {
-      // console.log(res);
       if (res.errcode == "00") {
         this.bjzwOptions = res.data.rows;
       }
@@ -453,21 +448,10 @@ export default {
     this.getList();
   },
   activated() {
-    // this.queryParams.bjdm = this.$route.query.bjdm;
-    // this.queryParams1.bjdm = this.$route.query.bjdm;
-    // this.table_title = this.$route.query.bjmc;
-    // console.log("班干部列表挂载");
-    // console.log("allStu_content:", this.$props.allStu_content);
-    // if(this.value)
-    // 班干部职位筛选
-    // getZwdm().then((res) => {
-    //   // console.log(res);
-    //   if (res.errcode == "00") {
-    //     this.bjzwOptions = res.data.rows;
-    //   }
-    // });
-    // this.currentIndex = 0;
-    // this.getList();
+    this.queryParams.bjdm = this.$route.query.bjdm;
+    this.queryParams1.bjdm = this.$route.query.bjdm;
+    this.table_title = this.$route.query.bjmc;
+    this.getList();
   },
   methods: {
     //全班同学列表
@@ -509,7 +493,10 @@ export default {
     studentRecord1() {
       this.$router.push({
         path: "/class/leadRecord",
-        query: { bjdm: this.$route.query.bjdm },
+        query: {
+          bjdm: this.queryParams.bjdm,
+          table_title: this.$route.query.bjmc,
+        },
       });
     },
     // //班干部列表

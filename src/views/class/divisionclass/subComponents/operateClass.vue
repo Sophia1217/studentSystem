@@ -529,6 +529,7 @@ export default {
         syd: "", // 生源地代码
         sex: "", // 性别代码
         xh: "", // 学号
+        bjdm: this.$route.query.bjdm, // 班级编号
       },
       // 收集的是转入的班级的编号
       form: {},

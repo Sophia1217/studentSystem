@@ -2571,18 +2571,24 @@ export default {
     },
     // 退回确认
     handleConfirm() {
-      this.dialogVisible = false;
-      let data = {
-        id: this.$route.query.id,
-        approver: this.$route.query.approver,
-        rollbackReason: this.textarea,
-      };
-      backFlow(data)
-        .then((res) => {
-          this.textarea = "";
-          this.$emit("parendFn", "th");
+      if(this.textarea == ''){
+        this.$message({
+          message: "请输入退回理由!",
+          type: 'warning'
         })
-        .catch((err) => {});
+      }
+      else{
+        this.dialogVisible = false
+        let data = {
+          id: this.$route.query.id,
+          approver: this.$route.query.approver,
+          rollbackReason: this.textarea
+        }
+        backFlow(data).then(res => {
+          this.textarea = ''
+          this.$emit('parendFn','th')
+        }).catch(err => { })
+      }     
     },
     // 通过确定
     handleConThrou() {

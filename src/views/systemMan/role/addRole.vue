@@ -47,7 +47,9 @@
     </div>
 
     <div class="editBottom">
-      <div class="btn cancel"><i class="icon noIcon"></i> 取消</div>
+      <div class="btn cancel" @click="cancel()">
+        <i class="icon noIcon"></i> 取消
+      </div>
       <div class="btn confirm" @click="sava()">
         <i class="icon yesIcon"></i> 提交
       </div>
@@ -93,6 +95,9 @@ export default {
   },
 
   methods: {
+    cancel() {
+      window.history.go(-1);
+    },
     handleTree() {
       if (this.isEdit == 2) {
         let data = { roleId: this.roleId1 };
@@ -159,8 +164,7 @@ export default {
         let data = {
           userId: "412341234",
           menuList: this.savaData.length > 0 ? this.savaData : this.arr, //如果用户进来没编辑，默认前一次筛选出来的树
-          roleName:
-            this.isEdit === "1" ? this.queryParams.roleName : this.roleName1,
+          roleName: this.queryParams.roleName,
           roleId: this.roleId1,
           roleRem: this.queryParams.roleRem,
         };

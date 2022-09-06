@@ -393,7 +393,7 @@ export default {
       }
       for (let a = 0; a < this.roleData.length; a++) {
         console.log("his.defaultArr.length", this.defaultArr.length);
-        if (this.defaultArr.length == 0) {
+        if (this.defaultArr.length == 0 && !this.roleData[a].Edit) {
           console.log(" yuanyou", a);
           //如果是原有数据
           if (node.level == 1) {

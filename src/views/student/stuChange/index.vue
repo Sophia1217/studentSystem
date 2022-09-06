@@ -500,8 +500,8 @@ export default {
         YDRQEND = this.datePicker[1];
       }
       let data = {
-        xh: this.select == "xh" ? this.searchVal : "",
-        xm: this.select == "xm" ? this.searchVal : "",
+        xh: this.select == "xh" ? this.searchVal : null,
+        xm: this.select == "xm" ? this.searchVal : null,
         // sfzjh: this.select == "sfzjh" ? this.searchVal : "",
         // yddh: this.select == "yddh" ? this.searchVal : "",
         // pyccm: this.training.choose&&this.training.choose.length>0?this.training.choose.join(','):'',
@@ -583,7 +583,7 @@ export default {
         allCheck.push(this.training.checkBox[i].dm);
       }
       this.training.choose = val ? allCheck : [];
-     
+
       this.training.isIndeterminate = false;
     },
     // 培养层次单选
@@ -592,7 +592,6 @@ export default {
       this.training.checkAll = checkedCount === this.training.checkBox.length;
       this.training.isIndeterminate =
         checkedCount > 0 && checkedCount < this.training.checkBox.length;
-     
     },
     // 学制全选
     learnHeAll(val) {
@@ -610,7 +609,6 @@ export default {
       this.learnHe.checkAll = checkedCount === this.learnHe.checkBox.length;
       this.learnHe.isIndeterminate =
         checkedCount > 0 && checkedCount < this.learnHe.checkBox.length;
-     
     },
     // 学籍全选
     studentStatusAll(val) {
@@ -619,7 +617,7 @@ export default {
         allCheck.push(this.studentStatus.checkBox[i].dm);
       }
       this.studentStatus.choose = val ? allCheck : [];
-    
+
       this.studentStatus.isIndeterminate = false;
     },
     // 学籍单选
@@ -629,7 +627,6 @@ export default {
         checkedCount === this.studentStatus.checkBox.length;
       this.studentStatus.isIndeterminate =
         checkedCount > 0 && checkedCount < this.studentStatus.checkBox.length;
-     
     },
     // 民 族全选
     ethnicAll(val) {
@@ -638,7 +635,7 @@ export default {
         allCheck.push(this.ethnic.checkBox[i].dm);
       }
       this.ethnic.choose = val ? allCheck : [];
-    
+
       this.ethnic.isIndeterminate = false;
     },
     // 民 族单选
@@ -647,7 +644,6 @@ export default {
       this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
       this.ethnic.isIndeterminate =
         checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
-     
     },
     // 政治面貌：全选
     politicaAll(val) {
@@ -665,7 +661,6 @@ export default {
       this.politica.checkAll = checkedCount === this.politica.checkBox.length;
       this.politica.isIndeterminate =
         checkedCount > 0 && checkedCount < this.politica.checkBox.length;
-
     },
 
     //异动类别全选
@@ -675,7 +670,7 @@ export default {
         allCheck.push(this.changType.checkBox[i].dm);
       }
       this.changType.choose = val ? allCheck : [];
-    
+
       this.changType.isIndeterminate = false;
     },
     // 异动类别：单选
@@ -684,7 +679,6 @@ export default {
       this.changType.checkAll = checkedCount === this.changType.checkBox.length;
       this.changType.isIndeterminate =
         checkedCount > 0 && checkedCount < this.changType.checkBox.length;
-     
     },
     //异动原因全选
     changWhyAll(val) {
@@ -693,7 +687,7 @@ export default {
         allCheck.push(this.changWhy.checkBox[i].dm);
       }
       this.changWhy.choose = val ? allCheck : [];
-     
+
       this.changWhy.isIndeterminate = false;
     },
     // 异动原因：单选
@@ -740,9 +734,7 @@ export default {
       // console.log(this.dmxbmOPs.choose, "单选");
     },
     // 异动日期
-    handleDatePicker(val) {
-     
-    },
+    handleDatePicker(val) {},
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;

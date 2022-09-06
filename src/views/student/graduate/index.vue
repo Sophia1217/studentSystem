@@ -242,7 +242,7 @@
           </el-table-column>
           <el-table-column prop="xm" label="姓名" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zzmmmc" label="政治面貌" sortable="custom">
+          <el-table-column prop="zzmmc" label="政治面貌" sortable="custom">
           </el-table-column>
           <el-table-column prop="mzmc" label="民族" sortable="custom">
           </el-table-column>
@@ -505,10 +505,10 @@ export default {
         csrqe = this.datePicker[1];
       }
       let data = {
-        xh: this.select == "xh" ? this.searchVal : "",
-        xm: this.select == "xm" ? this.searchVal : "",
-        sfzjh: this.select == "sfzjh" ? this.searchVal : "",
-        yddh: this.select == "yddh" ? this.searchVal : "",
+        xh: this.select == "xh" ? this.searchVal : null,
+        xm: this.select == "xm" ? this.searchVal : null,
+        sfzjh: this.select == "sfzjh" ? this.searchVal : null,
+        yddh: this.select == "yddh" ? this.searchVal : null,
         jg: this.select == "jg" ? this.searchVal : "",
         csdm: this.select == "csdm" ? this.searchVal : "",
         gjdqm: this.select == "gjdqm" ? this.searchVal : "",

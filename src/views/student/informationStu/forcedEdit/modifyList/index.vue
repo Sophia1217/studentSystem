@@ -106,7 +106,6 @@
               ></el-option>
             </el-select>
           </el-col>
-          
         </el-row>
 
         <el-row :gutter="20" class="mt15">
@@ -308,9 +307,9 @@ export default {
         .catch((err) => {});
     },
     //查询年级
-    getAllGrade(){
+    getAllGrade() {
       getGrade()
-      .then((res) => {
+        .then((res) => {
           this.allNj = res.data.rows;
         })
         .catch((err) => {});
@@ -352,10 +351,10 @@ export default {
     // 查询
     handleSearch() {
       let data = {
-        xh: this.select == "xh" ? this.searchVal : "",
-        xm: this.select == "xm" ? this.searchVal : "",
-        sfzjh: this.select == "sfzjh" ? this.searchVal : "",
-        yddh: this.select == "yddh" ? this.searchVal : "",
+        xh: this.select == "xh" ? this.searchVal : null,
+        xm: this.select == "xm" ? this.searchVal : null,
+        sfzjh: this.select == "sfzjh" ? this.searchVal : null,
+        yddh: this.select == "yddh" ? this.searchVal : null,
         pyccm: this.training.choose,
         xz: this.learnHe.choose,
         xjzt: this.studentStatus.choose,

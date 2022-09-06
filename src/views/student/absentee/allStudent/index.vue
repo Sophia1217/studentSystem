@@ -271,8 +271,8 @@ export default {
     // 查询
     handleSearch() {
       let data = {
-        xm: this.select == "xm" ? this.searchVal : "",
-        xh: this.select == "xh" ? this.searchVal : "",
+        xm: this.select == "xm" ? this.searchVal : null,
+        xh: this.select == "xh" ? this.searchVal : null,
         dwh: this.moreIform.xydm,
         zydm: this.moreIform.zydm,
         nj: this.moreIform.njVal,

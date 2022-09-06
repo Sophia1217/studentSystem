@@ -419,10 +419,10 @@ export default {
     // 查询
     handleSearch() {
       let data = {
-        userId: this.select == "xh" ? this.searchVal : "",
-        xm: this.select == "xm" ? this.searchVal : "",
-        sfzjh: this.select == "sfzjh" ? this.searchVal : "",
-        yddh: this.select == "yddh" ? this.searchVal : "",
+        userId: this.select == "xh" ? this.searchVal : null,
+        xm: this.select == "xm" ? this.searchVal : null,
+        sfzjh: this.select == "sfzjh" ? this.searchVal : null,
+        yddh: this.select == "yddh" ? this.searchVal : null,
         pyccm: this.training.choose,
         xz: this.learnHe.choose,
         xjzt: this.studentStatus.choose,

@@ -410,9 +410,9 @@ export default {
         .catch((err) => {});
     },
     //查询年级
-    getAllGrade(){
+    getAllGrade() {
       getGrade()
-      .then((res) => {
+        .then((res) => {
           this.allNj = res.data.rows;
         })
         .catch((err) => {});
@@ -462,10 +462,10 @@ export default {
         csrqe = this.datePicker[1];
       }
       let data = {
-        xh: this.select == "xh" ? this.searchVal : "",
-        xm: this.select == "xm" ? this.searchVal : "",
-        sfzjh: this.select == "sfzjh" ? this.searchVal : "",
-        yddh: this.select == "yddh" ? this.searchVal : "",
+        xh: this.select == "xh" ? this.searchVal : null,
+        xm: this.select == "xm" ? this.searchVal : null,
+        sfzjh: this.select == "sfzjh" ? this.searchVal : null,
+        yddh: this.select == "yddh" ? this.searchVal : null,
         jg: this.select == "jg" ? this.searchVal : "",
         csdm: this.select == "csdm" ? this.searchVal : "",
         gjdqm: this.select == "gjdqm" ? this.searchVal : "",

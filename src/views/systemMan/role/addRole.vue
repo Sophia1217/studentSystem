@@ -147,10 +147,10 @@ export default {
     sava() {
       if (this.isEdit === "1") {
         let data = {
-          userId: "1234",
+          userId: this.$store.getters.userId,
           menuList: this.savaData,
           roleName: this.queryParams.roleName,
-          loginRoleId: "01",
+          loginRoleId: this.$store.getters.roleId,
           roleRem: this.queryParams.roleRem,
         };
         savaTreeList(data)
@@ -162,7 +162,7 @@ export default {
           .catch((err) => {});
       } else {
         let data = {
-          userId: "412341234",
+          userId: this.$store.getters.userId,
           menuList: this.savaData.length > 0 ? this.savaData : this.arr, //如果用户进来没编辑，默认前一次筛选出来的树
           roleName: this.queryParams.roleName,
           roleId: this.roleId1,

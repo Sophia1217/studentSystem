@@ -222,7 +222,7 @@
           ref="multipleTable"
           @selection-change="handleSelectionChange"
           style="width: 100%"
-          :default-sort="{ prop: 'xh', order: 'descending' }"
+          :default-sort="{ prop: 'xh', order: 'ascending' }"
           @sort-change="changeTableSort"
         >
           <el-table-column type="selection" width="55"></el-table-column>
@@ -231,7 +231,7 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" sortable="custom">
+          <el-table-column prop="xh" label="学号" sortable>
           </el-table-column>
           <el-table-column prop="xm" label="姓名" sortable="custom">
           </el-table-column>

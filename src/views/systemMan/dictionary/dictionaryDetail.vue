@@ -71,7 +71,7 @@
     <div class="content">
       <div class="content_top">
         <div>
-          <span class="title-item"> 班级操作字典 </span>
+          <span class="title-item"> 字典列表</span>
           <span class="iconfont repeat_icon">&#xe7b1; </span>
         </div>
 
@@ -332,6 +332,7 @@ export default {
     //重置按钮操作
     resetQuery(queryForm) {
       this.$refs[queryForm].resetFields();
+      this.info.codeTableChinese = this.$route.query.codeTableChinese; //重置不能重置上一个页面带过来的参数
     },
     /** 新增 */
     handleAdd(row) {
@@ -446,7 +447,7 @@ export default {
     flex-direction: row;
     .title-item {
       display: inline-block;
-      // width: 120px;
+      width: 95px;
       height: 28px;
       font-family: "PingFangSC-Semibold";
       font-weight: 600;

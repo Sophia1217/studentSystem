@@ -402,7 +402,7 @@ export default {
     //工作地点勾选
     workPlaceChange() {
       this.queryParams.dwmcList = this.workPlace;
-      this.getList(this.queryParams);
+      // this.getList(this.queryParams);
     },
     selectChange(val) {
       this.searchVal = "";
@@ -490,7 +490,6 @@ export default {
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList();
     },
     // 类别单选
     handleCheckedCategoryChange(value) {
@@ -502,7 +501,6 @@ export default {
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList();
     },
     // 性别全选
     handleCheckAllSexChange(val) {
@@ -517,7 +515,6 @@ export default {
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList();
     },
     // 性别单选
     handleCheckedSexChange(value) {
@@ -529,7 +526,6 @@ export default {
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList();
     },
 
     // 多选
@@ -551,7 +547,6 @@ export default {
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList();
     },
     // 状态单选
     handleCheckedStatusChange(value) {
@@ -563,7 +558,6 @@ export default {
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
-      this.getList();
     },
     // 打开导出弹窗
     handleExport() {

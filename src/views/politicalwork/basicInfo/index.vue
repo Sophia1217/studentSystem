@@ -363,7 +363,7 @@ export default {
     },
     //工作地点勾选
     workPlaceChange() {
-      this.handleSearch();
+
     },
     // 性别全选
     genderAll(val) {
@@ -374,7 +374,6 @@ export default {
       this.gender.choose = val ? allCheck : [];
 
       this.gender.isIndeterminate = false;
-      this.handleSearch();
     },
     // 性别单选
     genderCheck(value) {
@@ -383,7 +382,6 @@ export default {
       this.gender.isIndeterminate =
         checkedCount > 0 && checkedCount < this.gender.checkBox.length;
       // console.log(this.training.choose, "单选");
-      this.handleSearch();
     },
     // 岗位全选
     positionAll(val) {
@@ -394,7 +392,6 @@ export default {
       this.position.choose = val ? allCheck : [];
 
       this.position.isIndeterminate = false;
-      this.handleSearch();
     },
     // 岗位单选
     positionCheck(value) {
@@ -403,7 +400,6 @@ export default {
       this.position.isIndeterminate =
         checkedCount > 0 && checkedCount < this.position.checkBox.length;
 
-      this.handleSearch();
     },
 
     // 民 族全选
@@ -415,7 +411,6 @@ export default {
       this.ethnic.choose = val ? allCheck : [];
 
       this.ethnic.isIndeterminate = false;
-      this.handleSearch();
     },
     clear() {
       this.searchVal = "";
@@ -427,7 +422,6 @@ export default {
       this.ethnic.isIndeterminate =
         checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
 
-      this.handleSearch();
     },
     // 政治面貌：全选
     politicaAll(val) {
@@ -438,7 +432,6 @@ export default {
       this.politica.choose = val ? allCheck : [];
 
       this.politica.isIndeterminate = false;
-      this.handleSearch();
     },
     // 政治面貌：单选
     politicaCheck(value) {
@@ -447,7 +440,6 @@ export default {
       this.politica.isIndeterminate =
         checkedCount > 0 && checkedCount < this.politica.checkBox.length;
 
-      this.handleSearch();
     },
     // 多选
     handleSelectionChange(arr, index) {

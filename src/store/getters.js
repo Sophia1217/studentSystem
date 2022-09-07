@@ -13,6 +13,7 @@ const getters = {
   roleType :state => state.user.roleType,
   introduction: state => state.user.introduction,
   roles: state => state.user.roles,
+  gh:state=>state.user.gh,
   permissions: state => state.user.permissions,
   permission_routes: state => state.permission.routes,
   topbarRouters:state => state.permission.topbarRouters,

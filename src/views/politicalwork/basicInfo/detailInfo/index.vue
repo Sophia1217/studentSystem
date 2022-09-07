@@ -3631,7 +3631,12 @@ export default {
     },
     getDetail() {
       // 学历学位;
-      const data = { gh: this.$route.query.gh }
+      const data = {
+        gh: this.$route.query.gh
+          ? this.$route.query.gh
+          : this.$store.getters.gh,
+      };
+      this.isEdit = 1;
       getDetailQueryPoliticalWorkList(data)
         .then((res) => {
           this.$set(

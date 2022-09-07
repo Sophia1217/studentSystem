@@ -39,6 +39,9 @@ const user = {
     SET_ROLES: (state, roles) => {
       state.roles = roles
     },
+    SET_GH: (state, gh) => {
+      state.gh = gh
+    },
     SET_PERMISSIONS: (state, permissions) => {
       state.permissions = permissions
     }
@@ -89,6 +92,7 @@ const user = {
                 }
               
               commit('SET_NAME', res.user.xm)
+              commit('SET_GH', res.user.gh)
               commit('SET_PYCC',res.user.xxm)
               commit('SET_AVATAR', avatar)
 

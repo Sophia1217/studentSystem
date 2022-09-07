@@ -5,7 +5,7 @@
       <div class="search">
         <el-input
           v-model="searchVal"
-          placeholder="可输入多个查询条件，以半角空格区分"
+          placeholder="请输入..."
           class="inputSelect"
         >
           <el-select
@@ -353,9 +353,9 @@ export default {
         })
         .catch((err) => {});
     },
-    clickSearch(){
-      this.queryParams.pageNum = 1
-      this.handleSearch()
+    clickSearch() {
+      this.queryParams.pageNum = 1;
+      this.handleSearch();
     },
     // 点击更多
     handleMore() {

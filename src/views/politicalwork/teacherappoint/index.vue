@@ -5,7 +5,7 @@
       <div class="search">
         <el-input
           v-model="searchVal"
-          placeholder="可输入多个查询条件，以半角空格区分"
+          placeholder="请输入..."
           class="inputSelect"
         >
           <el-select
@@ -42,7 +42,7 @@
               multiple
               placeholder="请选择"
               collapse-tags
-              @change = 'workPlaceChange'
+              @change="workPlaceChange"
             >
               <el-option
                 v-for="(item, index) in gzdwOptions"
@@ -169,7 +169,7 @@
         <!-- <el-table-column type="selection" width="55" /> -->
         <el-table-column label="在岗日期" width="180">
           <template slot-scope="">
-            <div v-if="tableDataDetail.length>0">
+            <div v-if="tableDataDetail.length > 0">
               <div v-if="tableDataDetail[0].cxsj != null">
                 <span
                   >{{ tableDataDetail[0].rmsj }} 至
@@ -235,12 +235,16 @@
           <el-input v-model="importForm.gh" @input="handleInput" />
         </el-form-item>
         <el-form-item label="姓名" prop="xm">
-          <el-select v-model="importForm.xm" placeholder="未选择" @change="selectClick">
+          <el-select
+            v-model="importForm.xm"
+            placeholder="未选择"
+            @change="selectClick"
+          >
             <el-option
               v-for="(item, index) in nameOptions"
-                :key="index"
-                :label="item.xm +'（' + item.gh + '）'"
-                :value="item.xm"
+              :key="index"
+              :label="item.xm + '（' + item.gh + '）'"
+              :value="item.xm"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -350,7 +354,7 @@ export default {
       tableData: [],
       tableDataDetail: [],
       multipleSelection: [],
-      detailGh: '',
+      detailGh: "",
       removeGh: {
         ghList: [],
       },
@@ -370,9 +374,9 @@ export default {
   },
   methods: {
     //工作地点勾选
-    workPlaceChange(){
-      this.queryParams.dwmcList = this.workPlace
-      this.getList();
+    workPlaceChange() {
+      this.queryParams.dwmcList = this.workPlace;
+      //this.getList();
     },
     getCode(data) {
       this.getCodeInfoByEnglish(data);
@@ -400,7 +404,7 @@ export default {
 
     // 查询
     handleSearch() {
-      this.queryParams.pageNum = 1
+      this.queryParams.pageNum = 1;
       if (this.select == "xm") {
         this.queryParams.xm = this.searchVal;
       } else if (this.select == "gh") {
@@ -426,8 +430,8 @@ export default {
       this.queryParams.dwmcList = this.workPlace;
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
-      // 调用接口
-      this.getList();
+      // // 调用接口
+      // this.getList();
     },
     // 状态单选
     handleCheckedStatusChange(value) {
@@ -439,8 +443,8 @@ export default {
       this.queryParams.dwmcList = this.workPlace;
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
-      // 调用接口
-      this.getList();
+      // // 调用接口
+      // this.getList();
     },
     // 性别全选
     handleCheckAllSexChange(val) {
@@ -454,8 +458,8 @@ export default {
       this.queryParams.dwmcList = this.workPlace;
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
-      // 调用接口
-      this.getList();
+      // // 调用接口
+      // this.getList();
     },
     // 性别单选
     handleCheckedSexChange(value) {
@@ -467,8 +471,8 @@ export default {
       this.queryParams.dwmcList = this.workPlace;
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
-      // 调用接口
-      this.getList();
+      // // 调用接口
+      // this.getList();
     },
 
     // 多选
@@ -496,7 +500,7 @@ export default {
     // 点击详情
     hadleDetail(row, flag) {
       // getTeacherDetail()
-      this.detailGh = row.gh
+      this.detailGh = row.gh;
       var data = { gh: row.gh };
       getTeacherDetail(data).then((response) => {
         this.tableDataDetail = response.teacherDetailRes;
@@ -549,11 +553,11 @@ export default {
       if (this.multipleSelection.length > 0) {
         this.showRemove = true;
         this.title = "免去";
-      }else {
-          this.$message({
-            message: "请至少选择一名班主任！",
-            type: 'warning',
-          });
+      } else {
+        this.$message({
+          message: "请至少选择一名班主任！",
+          type: "warning",
+        });
       }
       // console.log(this.multipleSelection,'this.multipleSelection')
     },
@@ -609,30 +613,30 @@ export default {
       });
     },
     //工号查姓名
-    handleInput(){
-      let inputGh = this.importForm.gh
-      if(inputGh.length >=5){
+    handleInput() {
+      let inputGh = this.importForm.gh;
+      if (inputGh.length >= 5) {
         console.log("输入数大于等于5个");
-        getXm({gh: this.importForm.gh}).then((res) => {
-          this.nameOptions = res.XmGh
-          console.log("getXm成功");
-        })
-        .catch((err) => {});
-
+        getXm({ gh: this.importForm.gh })
+          .then((res) => {
+            this.nameOptions = res.XmGh;
+            console.log("getXm成功");
+          })
+          .catch((err) => {});
       }
     },
     //选中姓名，工号自动补充
-    selectClick(val){
-      for(var i in this.nameOptions){
-        if(this.nameOptions[i].xm == val){
-          this.importForm.gh = this.nameOptions[i].gh
+    selectClick(val) {
+      for (var i in this.nameOptions) {
+        if (this.nameOptions[i].xm == val) {
+          this.importForm.gh = this.nameOptions[i].gh;
 
           //打印看看
-          let a = this.importForm.gh
+          let a = this.importForm.gh;
           console.log("gh", a);
-          break
+          break;
         }
-      }     
+      }
     },
     /** 详细信息查询 */
     // handleGet(row) {

@@ -324,7 +324,13 @@ export default {
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
-      this.handleSearch();
+      if(this.queryParams.orderZd !== 'gwList'){
+        this.handleSearch();
+      }else{
+        this.queryParams.orderZd = ''
+        this.queryParams.orderPx = ''
+      }
+      
     },
     // 查询
     handleSearch() {

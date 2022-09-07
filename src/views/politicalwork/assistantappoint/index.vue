@@ -529,6 +529,7 @@ export default {
       this.queryParams.genderList = this.sex.choose;
       this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
+      this.getList();
     },
 
     // 多选

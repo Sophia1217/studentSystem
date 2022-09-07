@@ -744,10 +744,15 @@ export default {
     handleCommand(command) {
       let that = this;
       if (command == "EXCEL") {
+        let ids = [];
+        for (let item_row of this.multipleSelection) {
+         ids.push(item_row.id);
+        }
         this.exportParams.pageNum = 0;
+        this.$set(this.exportParams,'ids',ids)
         excelTest(this.exportParams)
           .then((res) => {
-            that.downloadFn(res, "学籍异动学生表.xlsx", "xlsx");
+            that.downloadFn(res, "学籍异动学生表.xls", "xls");
           })
           .catch((err) => {});
       }

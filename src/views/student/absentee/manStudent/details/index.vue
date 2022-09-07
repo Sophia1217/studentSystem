@@ -248,7 +248,7 @@
                 <div class="wrap">
                   <div class="title">籍贯</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfo.xsJbxx.jg_chinese }}
+                    {{ detailInfo.xsJbxx.jg }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
@@ -1652,7 +1652,7 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
-                      v-model="detailInfo.xsXjxx.yjfxm"
+                      v-model="detailInfo.xsXjxx.yjfx"
                       :disabled="detailInfo.xsXjxx.yjfxm_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"

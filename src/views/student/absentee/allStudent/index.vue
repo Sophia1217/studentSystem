@@ -274,7 +274,7 @@ export default {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
         dwh: this.moreIform.xydm,
-        zydm: this.moreIform.zydm,
+        zydm: this.moreIform.zydam,
         nj: this.moreIform.njVal,
         pyccm: this.training.choose,
         pageNum: this.queryParams.pageNum,

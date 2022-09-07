@@ -747,7 +747,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.hdxlfsm }}
+                    {{ detailInfo.xsXjxx.hdxlfsm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -762,7 +762,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.sfxfz }}
+                    {{ detailInfo.xsXjxx.sfxfz_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1027,7 +1027,7 @@
                       detailInfo.xsJbxx.xbm_approveFlag == 1 ? 'greenColor' : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.xbm }}
+                    {{ detailInfo.xsJbxx.xbm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1072,7 +1072,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.csdm }}
+                    {{ detailInfo.xsJbxx.csdm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1117,7 +1117,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.gjdqm }}
+                    {{ detailInfo.xsJbxx.gjdqm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1132,7 +1132,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.sfzjlxm }}
+                    {{ detailInfo.xsJbxx.sfzjlxm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1189,12 +1189,12 @@
                   <div
                     class="content"
                     :class="
-                      detailInfo.xsJbxx.yjbysj_approveFlag == 1
+                      detailInfo.xsXjxx.yjbysj_approveFlag == 1
                         ? 'greenColor'
                         : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.yjbysj }}
+                    {{ detailInfo.xsXjxx.yjbysj }}
                   </div>
                 </div>
               </el-col>
@@ -1211,7 +1211,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.sjbysj }}
+                    {{ detailInfo.xsXjxx.sjbysj }}
                   </div>
                 </div>
               </el-col>
@@ -1243,7 +1243,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.rxfsm }}
+                    {{ detailInfo.xsXjxx.rxfsm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1275,7 +1275,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.sfby }}
+                    {{ detailInfo.xsXjxx.sfby_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1307,7 +1307,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.gatqwm }}
+                    {{ detailInfo.xsJbxx.gatqwm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1322,7 +1322,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.hyzkm }}
+                    {{ detailInfo.xsJbxx.hyzkm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1354,7 +1354,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.lydqm }}
+                    {{ detailInfo.xsXjxx.lydqm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1371,7 +1371,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.xxfsm }}
+                    {{ detailInfo.xsXjxx.xxfsm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1386,7 +1386,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.jdfsm }}
+                    {{ detailInfo.xsXjxx.jdfsm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1418,7 +1418,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.yjfxm }}
+                    {{ detailInfo.xsXjxx.yjfx }}
                   </div>
                 </div>
               </el-col>
@@ -1467,7 +1467,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.hdxlfsm }}
+                    {{ detailInfo.xsXjxx.hdxlfsm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1482,7 +1482,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.sfxfz }}
+                    {{ detailInfo.xsXjxx.sfxfz_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1514,7 +1514,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.pyfsm }}
+                    {{ detailInfo.xsXjxx.pyfsm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1522,7 +1522,7 @@
             <el-row :gutter="20">
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">培养类别？？</div>
+                  <div class="title">培养类别</div>
                   <div class="content">3233440</div>
                 </div>
               </el-col>
@@ -1537,7 +1537,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.xslbm }}
+                    {{ detailInfo.xsXjxx.xslbm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -2571,24 +2571,25 @@ export default {
     },
     // 退回确认
     handleConfirm() {
-      if(this.textarea == ''){
+      if (this.textarea == "") {
         this.$message({
           message: "请输入退回理由!",
-          type: 'warning'
-        })
-      }
-      else{
-        this.dialogVisible = false
+          type: "warning",
+        });
+      } else {
+        this.dialogVisible = false;
         let data = {
           id: this.$route.query.id,
           approver: this.$route.query.approver,
-          rollbackReason: this.textarea
-        }
-        backFlow(data).then(res => {
-          this.textarea = ''
-          this.$emit('parendFn','th')
-        }).catch(err => { })
-      }     
+          rollbackReason: this.textarea,
+        };
+        backFlow(data)
+          .then((res) => {
+            this.textarea = "";
+            this.$emit("parendFn", "th");
+          })
+          .catch((err) => {});
+      }
     },
     // 通过确定
     handleConThrou() {

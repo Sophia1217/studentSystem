@@ -233,7 +233,7 @@
           </el-table-column>
           <el-table-column prop="xm" label="姓名" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zzmmmc" label="政治面貌" sortable="custom">
+          <el-table-column prop="zzmmc" label="政治面貌" sortable="custom">
           </el-table-column>
           <el-table-column prop="mzmc" label="民 族" sortable="custom">
           </el-table-column>

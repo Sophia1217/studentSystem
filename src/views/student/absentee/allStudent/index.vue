@@ -53,7 +53,6 @@
             <span>专 业：</span>
             <el-select
               v-model="moreIform.zydam"
-              @change="changeZY"
               multiple
               collapse-tags
               placeholder="请选择"
@@ -71,7 +70,6 @@
             <span>年 级：</span>
             <el-select
               v-model="moreIform.njVal"
-              @change="changeNJ"
               multiple
               collapse-tags
               placeholder="请选择"
@@ -226,13 +224,6 @@ export default {
         this.moreIform.zydam = []; // 专业
       }
       this.getZY(val);
-      this.handleSearch();
-    },
-    changeZY(val) {
-      this.handleSearch();
-    },
-    changeNJ(val) {
-      this.handleSearch();
     },
     // 学院找专业
     getZY(val) {
@@ -242,7 +233,6 @@ export default {
           this.zyOps = res.data;
         })
         .catch((err) => {});
-        this.handleSearch();
     },
     getCode(data) {
       this.getCodeInfoByEnglish(data);
@@ -312,7 +302,6 @@ export default {
       this.training.choose = val ? allCheck : [];
 
       this.training.isIndeterminate = false;
-      this.handleSearch();
     },
     // 培养层次单选
     handleCheckedCitiesChangeTraining(value) {
@@ -320,7 +309,6 @@ export default {
       this.training.checkAll = checkedCount === this.training.checkBox.length;
       this.training.isIndeterminate =
         checkedCount > 0 && checkedCount < this.training.checkBox.length;
-      this.handleSearch();
     },
     // 学制全选
     learnHeAll(val) {

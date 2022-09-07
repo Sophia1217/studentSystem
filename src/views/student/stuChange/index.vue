@@ -60,7 +60,6 @@
               v-model="moreIform.stuInfo"
               multiple
               collapse-tags
-              @change="changeZY"
               placeholder="请选择"
               size="small"
             >
@@ -78,7 +77,6 @@
               v-model="moreIform.pread"
               multiple
               collapse-tags
-              @change="changeBJ"
               placeholder="请选择"
               size="small"
             >
@@ -116,7 +114,6 @@
               v-model="moreIform.yzydm"
               multiple
               collapse-tags
-              @change="changeZYOld"
               placeholder="请选择"
               size="small"
             >
@@ -134,7 +131,6 @@
               v-model="moreIform.ybh"
               multiple
               collapse-tags
-              @change="changeBJOld"
               placeholder="请选择"
               size="small"
             >
@@ -419,13 +415,6 @@ export default {
       }
       this.getZY(val);
       this.getBJ(val);
-      this.handleSearch()
-    },
-    changeZY(val) {
-      this.handleSearch()
-    },
-    changeBJ(val) {
-      this.handleSearch()
     },
     changeXYOld(val) {
       if (val && val.length == 0) {
@@ -437,15 +426,6 @@ export default {
       }
       this.getZY(val);
       this.getBJ(val);
-      this.handleSearch()
-    },
-    changeZYOld(val) {
-      
-      this.handleSearch()
-    },
-    changeBJOld(val) {
-      
-      this.handleSearch()
     },
     // 学院找专业
     getZY(val) {
@@ -595,9 +575,6 @@ export default {
     handleMore() {
       this.isMore = !this.isMore;
     },
-    datePickerClick(){
-      this.handleSearch()
-    },
     clear() {
       this.searchVal = "";
     },
@@ -644,7 +621,6 @@ export default {
       this.studentStatus.choose = val ? allCheck : [];
 
       this.studentStatus.isIndeterminate = false;
-      this.handleSearch()
     },
     // 学籍单选
     studentStatusCheck(value) {
@@ -653,7 +629,6 @@ export default {
         checkedCount === this.studentStatus.checkBox.length;
       this.studentStatus.isIndeterminate =
         checkedCount > 0 && checkedCount < this.studentStatus.checkBox.length;
-        this.handleSearch()
     },
     // 民 族全选
     ethnicAll(val) {
@@ -699,7 +674,6 @@ export default {
       this.changType.choose = val ? allCheck : [];
 
       this.changType.isIndeterminate = false;
-      this.handleSearch()
     },
     // 异动类别：单选
     changTypeCheck(value) {
@@ -707,7 +681,6 @@ export default {
       this.changType.checkAll = checkedCount === this.changType.checkBox.length;
       this.changType.isIndeterminate =
         checkedCount > 0 && checkedCount < this.changType.checkBox.length;
-        this.handleSearch()
     },
     //异动原因全选
     changWhyAll(val) {
@@ -718,7 +691,6 @@ export default {
       this.changWhy.choose = val ? allCheck : [];
 
       this.changWhy.isIndeterminate = false;
-      this.handleSearch()
     },
     // 异动原因：单选
     changWhyCheck(value) {
@@ -726,7 +698,6 @@ export default {
       this.changWhy.checkAll = checkedCount === this.changWhy.checkBox.length;
       this.changWhy.isIndeterminate =
         checkedCount > 0 && checkedCount < this.changWhy.checkBox.length;
-        this.handleSearch()
       // console.log(this.changWhy.choose, "单选");
     },
     // 年级全选
@@ -737,7 +708,6 @@ export default {
       }
       this.njOps.choose = val ? allCheck : [];
       this.njOps.isIndeterminate = false;
-      this.handleSearch()
     },
     // 异年级：单选
     njCheck(value) {
@@ -745,7 +715,6 @@ export default {
       this.njOps.checkAll = checkedCount === this.njOps.checkBox.length;
       this.njOps.isIndeterminate =
         checkedCount > 0 && checkedCount < this.njOps.checkBox.length;
-        this.handleSearch()
       // console.log(this.njOps.choose, "单选");
     },
     // 性别：全选
@@ -757,7 +726,6 @@ export default {
       this.dmxbmOPs.choose = val ? allCheck : [];
 
       this.dmxbmOPs.isIndeterminate = false;
-      this.handleSearch()
     },
     // 性别：单选
     dmxbmCheck(value) {
@@ -765,7 +733,6 @@ export default {
       this.dmxbmOPs.checkAll = checkedCount === this.dmxbmOPs.checkBox.length;
       this.dmxbmOPs.isIndeterminate =
         checkedCount > 0 && checkedCount < this.dmxbmOPs.checkBox.length;
-        this.handleSearch()
       // console.log(this.dmxbmOPs.choose, "单选");
     },
     // 异动日期

@@ -61,6 +61,7 @@
               v-model="moreIform.stuInfo"
               multiple
               collapse-tags
+              @change="changeZY"
               placeholder="请选择"
               size="small"
             >
@@ -78,6 +79,7 @@
               v-model="moreIform.pread"
               multiple
               collapse-tags
+              @change="changeBJ"
               placeholder="请选择"
               size="small"
             >
@@ -95,6 +97,7 @@
               v-model="moreIform.grade"
               multiple
               collapse-tags
+              @change="changeNJ"
               placeholder="请选择"
               size="small"
             >
@@ -288,6 +291,16 @@ export default {
       }
       this.getZY(val);
       this.getBJ(val);
+      this.handleSearch();
+    },
+    changeZY(val) {
+      this.handleSearch();
+    },
+    changeNJ(val) {
+      this.handleSearch();
+    },
+    changeBJ(val) {
+      this.handleSearch();
     },
     // 学院找专业
     getZY(val) {
@@ -396,6 +409,7 @@ export default {
       }
       this.training.choose = val ? allCheck : [];
       this.training.isIndeterminate = false;
+      this.handleSearch();
     },
     // 培养层次单选
     handleCheckedCitiesChangeTraining(value) {
@@ -403,6 +417,7 @@ export default {
       this.training.checkAll = checkedCount === this.training.checkBox.length;
       this.training.isIndeterminate =
         checkedCount > 0 && checkedCount < this.training.checkBox.length;
+        this.handleSearch();
     },
     // 学制全选
     learnHeAll(val) {

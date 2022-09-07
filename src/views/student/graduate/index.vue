@@ -62,6 +62,7 @@
             <span>专 业：</span>
             <el-select
               v-model="moreIform.stuInfo"
+              @change="changeZY"
               multiple
               collapse-tags
               placeholder="请选择"
@@ -79,6 +80,7 @@
             <span>班 级：</span>
             <el-select
               v-model="moreIform.pread"
+              @change="changeBJ"
               multiple
               collapse-tags
               placeholder="请选择"
@@ -433,6 +435,13 @@ export default {
       }
       this.getZY(val);
       this.getBJ(val);
+      this.handleSearch()
+    },
+    changeZY(val) {
+      this.handleSearch()
+    },
+    changeBJ(val) {
+      this.handleSearch()
     },
     // 学院找专业
     getZY(val) {
@@ -551,6 +560,7 @@ export default {
       this.training.choose = val ? allCheck : [];
 
       this.training.isIndeterminate = false;
+      this.handleSearch()
     },
     // 培养层次单选
     handleCheckedCitiesChangeTraining(value) {
@@ -560,6 +570,7 @@ export default {
       this.training.checkAll = checkedCount === this.training.checkBox.length;
       this.training.isIndeterminate =
         checkedCount > 0 && checkedCount < this.training.checkBox.length;
+        this.handleSearch()
     },
     // 学制全选
     learnHeAll(val) {
@@ -569,6 +580,7 @@ export default {
       }
       this.learnHe.choose = val ? allCheck : [];
       this.learnHe.isIndeterminate = false;
+      this.handleSearch()
     },
     // 学制单选
     learnHeCheck(value) {
@@ -576,6 +588,7 @@ export default {
       this.learnHe.checkAll = checkedCount === this.learnHe.checkBox.length;
       this.learnHe.isIndeterminate =
         checkedCount > 0 && checkedCount < this.learnHe.checkBox.length;
+        this.handleSearch()
     },
     // 学籍全选
     studentStatusAll(val) {
@@ -585,6 +598,7 @@ export default {
       }
       this.studentStatus.choose = val ? allCheck : [];
       this.studentStatus.isIndeterminate = false;
+      this.handleSearch()
     },
     clear() {
       this.searchVal = "";
@@ -596,6 +610,7 @@ export default {
         checkedCount === this.studentStatus.checkBox.length;
       this.studentStatus.isIndeterminate =
         checkedCount > 0 && checkedCount < this.studentStatus.checkBox.length;
+        this.handleSearch()
     },
     // 民 族全选
     ethnicAll(val) {
@@ -605,6 +620,7 @@ export default {
       }
       this.ethnic.choose = val ? allCheck : [];
       this.ethnic.isIndeterminate = false;
+      this.handleSearch()
     },
     // 民 族单选
     ethnicCheck(value) {
@@ -612,6 +628,7 @@ export default {
       this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
       this.ethnic.isIndeterminate =
         checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
+        this.handleSearch()
     },
     // 政治面貌：全选
     politicaAll(val) {
@@ -621,6 +638,7 @@ export default {
       }
       this.politica.choose = val ? allCheck : [];
       this.politica.isIndeterminate = false;
+      this.handleSearch()
     },
     // 政治面貌：单选
     politicaCheck(value) {
@@ -628,6 +646,7 @@ export default {
       this.politica.checkAll = checkedCount === this.politica.checkBox.length;
       this.politica.isIndeterminate =
         checkedCount > 0 && checkedCount < this.politica.checkBox.length;
+        this.handleSearch()
     },
     // 性别：全选
     dmxbmAll(val) {
@@ -638,6 +657,7 @@ export default {
       this.dmxbmOPs.choose = val ? allCheck : [];
 
       this.dmxbmOPs.isIndeterminate = false;
+      this.handleSearch()
     },
     // 性别：单选
     dmxbmCheck(value) {
@@ -645,6 +665,7 @@ export default {
       this.dmxbmOPs.checkAll = checkedCount === this.dmxbmOPs.checkBox.length;
       this.dmxbmOPs.isIndeterminate =
         checkedCount > 0 && checkedCount < this.dmxbmOPs.checkBox.length;
+        this.handleSearch()
     },
     // 年级全选
     njAll(val) {
@@ -654,6 +675,7 @@ export default {
       }
       this.njOps.choose = val ? allCheck : [];
       this.njOps.isIndeterminate = false;
+      this.handleSearch()
     },
     // 异年级：单选
     njCheck(value) {
@@ -661,6 +683,7 @@ export default {
       this.njOps.checkAll = checkedCount === this.njOps.checkBox.length;
       this.njOps.isIndeterminate =
         checkedCount > 0 && checkedCount < this.njOps.checkBox.length;
+        this.handleSearch()
     },
     // 多选
     handleSelectionChange(val) {

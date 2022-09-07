@@ -1522,7 +1522,7 @@
             <el-row :gutter="20">
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">培养类别？？</div>
+                  <div class="title">培养类别</div>
                   <div class="content">3233440</div>
                 </div>
               </el-col>

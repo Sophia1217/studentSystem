@@ -124,7 +124,6 @@ export default {
 
   created() {
     this.formName = this.$route.query;
-    // console.log("this.for", !!this.formName.roleId);
   },
 
   mounted() {
@@ -176,7 +175,7 @@ export default {
                 var resData = res1.data.rows || [];
                 for (let x = 0; x < resData.length; x++) {
                   var nodeId = resData[x].orgType || "";
-                  element.checksedKeys.push(nodeId);
+                  // element.checksedKeys.push(nodeId); 初始化的不能推入最外层的字段，不然会全选
                 }
               })
               .catch((err) => {});
@@ -320,7 +319,6 @@ export default {
             for (let x = 0; x < rowData.length; x++) {
               rowData[x].label = rowData[x].bjmc;
               rowData[x].nodeId = rowData[x].bjdm;
-              rowData[x].dwdm = node.data.dwdm;
             }
             setTimeout(() => {
               for (let index = 0; index < this.roleData.length; index++) {
@@ -392,7 +390,6 @@ export default {
         return;
       }
       for (let a = 0; a < this.roleData.length; a++) {
-        console.log("his.defaultArr.length", this.defaultArr.length);
         if (this.defaultArr.length == 0 && !this.roleData[a].Edit) {
           console.log(" yuanyou", a);
           //如果是原有数据
@@ -423,23 +420,41 @@ export default {
             .then((res) => {
               var resData = res.data.rows || [];
               for (let x = 0; x < resData.length; x++) {
-                if (node.level == 0) {
-                  // 不同机构
-                  var nodeId = resData[x].orgType || "";
-                  this.roleData[index].checksedKeys.push(nodeId);
-                } else if (node.level == 1) {
+                if (node.level == 1) {
                   // 不同学院
                   var nodeId = resData[x].dwdm || "";
                   this.roleData[index].checksedKeys.push(nodeId);
                 } else if (node.level == 2) {
                   // 不同培养层次
+                  var data = this.roleData[index].checksedKeys;
+                  var xb = data.findIndex((value, index, arr) => {
+                    return value == resData[x].dwdm;
+                  });
+                  if (xb == 0) {
+                    //如果存在 就删除第一个字段 因为下一级的查询都会带上一级的字段，会导致全选，无法筛选出默认的值
+                    this.roleData[index].checksedKeys.splice(0, 1);
+                  }
                   var nodeId = resData[x].pycc || "";
                   this.roleData[index].checksedKeys.push(nodeId);
                 } else if (node.level == 3) {
+                  var data = this.roleData[index].checksedKeys;
+                  var xb = data.findIndex((value, index, arr) => {
+                    return value == resData[x].pycc;
+                  });
+                  if (xb == 0) {
+                    this.roleData[index].checksedKeys.splice(0, 1);
+                  }
                   // 不同班级
                   var nodeId = resData[x].bjdm || "";
                   this.roleData[index].checksedKeys.push(nodeId);
                 } else if (node.level == 4) {
+                  var data = this.roleData[index].checksedKeys;
+                  var xb = data.findIndex((value, index, arr) => {
+                    return value != resData[x].bjdm;
+                  });
+                  if (xb == 0) {
+                    this.roleData[index].checksedKeys.splice(0, 1);
+                  }
                   var nodeId = resData[x].xh || "";
                   this.roleData[index].checksedKeys = [];
                   this.roleData[index].checksedKeys.push(nodeId);
@@ -468,23 +483,41 @@ export default {
           }
           var resData = this.defaultArr[a] || [];
           for (let x = 0; x < resData.length; x++) {
-            if (node.level == 0) {
-              // 不同机构
-              var nodeId = resData[x].orgType || "";
-              this.roleData[index].checksedKeys.push(nodeId);
-            } else if (node.level == 1) {
+            if (node.level == 1) {
               // 不同学院
               var nodeId = resData[x].dwdm || "";
               this.roleData[index].checksedKeys.push(nodeId);
             } else if (node.level == 2) {
               // 不同培养层次
+              var data = this.roleData[index].checksedKeys;
+              var xb = data.findIndex((value, index, arr) => {
+                return value == resData[x].dwdm;
+              });
+              if (xb == 0) {
+                //如果存在 就删除第一个字段 因为下一级的查询都会带上一级的字段，会导致全选，无法筛选出默认的值
+                this.roleData[index].checksedKeys.splice(0, 1);
+              }
               var nodeId = resData[x].pycc || "";
               this.roleData[index].checksedKeys.push(nodeId);
             } else if (node.level == 3) {
+              var data = this.roleData[index].checksedKeys;
+              var xb = data.findIndex((value, index, arr) => {
+                return value == resData[x].pycc;
+              });
+              if (xb == 0) {
+                this.roleData[index].checksedKeys.splice(0, 1);
+              }
               // 不同班级
               var nodeId = resData[x].bjdm || "";
               this.roleData[index].checksedKeys.push(nodeId);
             } else if (node.level == 4) {
+              var data = this.roleData[index].checksedKeys;
+              var xb = data.findIndex((value, index, arr) => {
+                return value != resData[x].bjdm;
+              });
+              if (xb == 0) {
+                this.roleData[index].checksedKeys.splice(0, 1);
+              }
               var nodeId = resData[x].xh || "";
               this.roleData[index].checksedKeys = [];
               this.roleData[index].checksedKeys.push(nodeId);

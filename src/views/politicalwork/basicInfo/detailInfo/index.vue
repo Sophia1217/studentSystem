@@ -3812,9 +3812,9 @@ export default {
             message: res.errmsg,
             type: 'success'
           })
-          this.$router.push({
-            path: this.routerFrom
-          })
+          // this.$router.push({
+          //   path: this.routerFrom
+          // })
         })
         .catch((err) => {
           this.$message.error(err.errmsg)

@@ -3812,6 +3812,7 @@ export default {
             message: res.errmsg,
             type: 'success'
           })
+          this.isEdit = 1
           // this.$router.push({
           //   path: this.routerFrom
           // })

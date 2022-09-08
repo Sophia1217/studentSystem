@@ -753,7 +753,7 @@ export default {
         this.$set(this.exportParams,'ids',ids)
         excelTest(this.exportParams)
           .then((res) => {
-            that.downloadFn(res, "学籍异动学生表.xls", "xls");
+            that.downloadFn(res, "学籍异动学生表.xlsx", "xlsx");
           })
           .catch((err) => {});
       }

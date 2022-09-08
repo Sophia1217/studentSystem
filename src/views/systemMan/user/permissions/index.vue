@@ -50,7 +50,7 @@
           style="min-width: 200px"
           class="treeStyle"
           :load="loadNode"
-          :id="index"
+          
           ref="tree"
           show-checkbox
           lazy
@@ -60,6 +60,7 @@
           @node-click="nodeClick"
           @node-expand="nodeClick"
         >
+        <!-- :id="index" -->
           <!-- :expand-on-click-node="false" -->
           <!-- :data="role.cascaderOptions" -->
           <!-- :id="index" -->
@@ -175,7 +176,7 @@ export default {
                 var resData = res1.data.rows || [];
                 for (let x = 0; x < resData.length; x++) {
                   var nodeId = resData[x].orgType || "";
-                  // element.checksedKeys.push(nodeId); 初始化的不能推入最外层的字段，不然会全选
+                  element.checksedKeys.push(nodeId); //初始化的不能推入最外层的字段，不然会全选
                 }
               })
               .catch((err) => {});
@@ -209,15 +210,20 @@ export default {
         )
         .then(() => {
           // this.$modal.msgSuccess(text + "成功");
-          var param = {
-            userId: this.formName.userId,
-            roleId: role.roleId,
-          };
-          deleteRole(param)
-            .then(() => {
-              this.roleData.splice(index, 1);
-            })
-            .catch(() => {});
+            if (role.Edit == '1') {
+                this.roleData.splice(index, 1);
+            }else {
+                var param = {
+                    userId: this.formName.userId,
+                    roleId: role.roleId,
+                };
+                deleteRole(param)
+                    .then(() => {
+                    this.roleData.splice(index, 1);
+                    })
+                    .catch(() => {});
+            }
+          
         })
         .catch(function () {});
     },
@@ -426,24 +432,54 @@ export default {
                 } else if (node.level == 1) {
                   // 不同学院
                   var nodeId = resData[x].dwdm || "";
-                  this.roleData[index].checksedKeys.push(nodeId);
+                  
+                  if (nodeId.length > 0) {
+                    var idIndex = this.roleData[index].checksedKeys.indexOf(node.data.nodeId)
+                    if (idIndex > -1) {
+                        this.roleData[index].checksedKeys.splice(idIndex,1);
+                    }
+                    this.roleData[index].checksedKeys.push(nodeId);
+                  }
+                  
                 } else if (node.level == 2) {
                   var nodeId = resData[x].pycc || "";
-                  this.roleData[index].checksedKeys.push(nodeId);
+                  
+                  if (nodeId.length > 0) {
+                    var idIndex = this.roleData[index].checksedKeys.indexOf(node.data.nodeId)
+                    if (idIndex > -1) {
+                        this.roleData[index].checksedKeys.splice(idIndex,1);
+                    }
+                    this.roleData[index].checksedKeys.push(nodeId);
+                  }
+                //   this.roleData[index].checksedKeys.push(nodeId);
                 } else if (node.level == 3) {
                   // var three = [];
                   // 不同班级
                   var nodeId = resData[x].bjdm || "";
-                  this.roleData[index].checksedKeys.push(nodeId);
+                  
+                  if (nodeId.length > 0) {
+                    var idIndex = this.roleData[index].checksedKeys.indexOf(node.data.nodeId)
+                    if (idIndex > -1) {
+                        this.roleData[index].checksedKeys.splice(idIndex,1);
+                    }
+                    this.roleData[index].checksedKeys.push(nodeId);
+                  }
                 } else if (node.level == 4) {
                   var nodeId = resData[x].xh || "";
-                  this.roleData[index].checksedKeys = [];
-                  this.roleData[index].checksedKeys.push(nodeId);
+                  
+                  if (nodeId.length > 0) {
+                    var idIndex = this.roleData[index].checksedKeys.indexOf(node.data.nodeId)
+                    if (idIndex > -1) {
+                        this.roleData[index].checksedKeys.splice(idIndex,1);
+                    }
+                    this.roleData[index].checksedKeys.push(nodeId);
+                  }
                 }
-                this.$refs.tree[index].setCheckedKeys(
+              }
+
+              this.$refs.tree[index].setCheckedKeys(
                   this.roleData[index].checksedKeys
                 );
-              }
             })
             .catch((err) => {});
         } else {
@@ -463,33 +499,70 @@ export default {
             if (node.level == 0) {
               // 不同机构
               var nodeId = resData[x].orgType || "";
-              this.roleData[index].checksedKeys.push(nodeId);
+              
+                  if (nodeId.length > 0) {
+                    var idIndex = this.roleData[index].checksedKeys.indexOf(node.data.nodeId)
+                    if (idIndex > -1) {
+                        this.roleData[index].checksedKeys.splice(idIndex,1);
+                    }
+                    this.roleData[index].checksedKeys.push(nodeId);
+                  }
             } else if (node.level == 1) {
               // 不同学院
               var nodeId = resData[x].dwdm || "";
-              this.roleData[index].checksedKeys.push(nodeId);
+              
+                  if (nodeId.length > 0) {
+                    var idIndex = this.roleData[index].checksedKeys.indexOf(node.data.nodeId)
+                    if (idIndex > -1) {
+                        this.roleData[index].checksedKeys.splice(idIndex,1);
+                    }
+                    this.roleData[index].checksedKeys.push(nodeId);
+                  }
             } else if (node.level == 2) {
               var nodeId = resData[x].pycc || "";
-              this.roleData[index].checksedKeys.push(nodeId);
+              
+                  if (nodeId.length > 0) {
+                    var idIndex = this.roleData[index].checksedKeys.indexOf(node.data.nodeId)
+                    if (idIndex > -1) {
+                        this.roleData[index].checksedKeys.splice(idIndex,1);
+                    }
+                    this.roleData[index].checksedKeys.push(nodeId);
+                  }
             } else if (node.level == 3) {
               // var three = [];
               // 不同班级
               var nodeId = resData[x].bjdm || "";
-              this.roleData[index].checksedKeys.push(nodeId);
+              
+                  if (nodeId.length > 0) {
+                    var idIndex = this.roleData[index].checksedKeys.indexOf(node.data.nodeId)
+                    if (idIndex > -1) {
+                        this.roleData[index].checksedKeys.splice(idIndex,1);
+                    }
+                    this.roleData[index].checksedKeys.push(nodeId);
+                  }
             } else if (node.level == 4) {
               var nodeId = resData[x].xh || "";
-              this.roleData[index].checksedKeys = [];
-              this.roleData[index].checksedKeys.push(nodeId);
+            //   this.roleData[index].checksedKeys = [];
+              
+                  if (nodeId.length > 0) {
+                    var idIndex = this.roleData[index].checksedKeys.indexOf(node.data.nodeId)
+                    if (idIndex > -1) {
+                        this.roleData[index].checksedKeys.splice(idIndex,1);
+                    }
+                    this.roleData[index].checksedKeys.push(nodeId);
+                  }
             }
-            this.$refs.tree[index].setCheckedKeys(
+            
+          }
+          this.$refs.tree[index].setCheckedKeys(
               this.roleData[index].checksedKeys
             );
-          }
         }
       }
     },
 
     handleCheckChange(data, checked) {
+        // console.log('选中项变动')
       for (let index = 0; index < this.roleData.length; index++) {
         var role = this.roleData[index];
         var tree = this.$refs.tree[index];
@@ -517,7 +590,7 @@ export default {
       }
       // 数据筛选
       var dataArr = [];
-      console.log("开始筛选权限数据", nodes);
+    //   console.log("开始筛选权限数据", nodes);
       for (let index = 0; index < nodes.length; index++) {
         var element = nodes[index];
         if (element.visitId == "4") {
@@ -575,17 +648,17 @@ export default {
           dataArr.push(element);
         }
       }
-      console.log("dataArr", dataArr);
+    //   console.log("dataArr", dataArr);
       // 包装数据
       var dataList = [];
       for (let s = 0; s < dataArr.length; s++) {
         var node = dataArr[s];
         var data = {};
         if (node.visitId == "0") {
-          console.log("node", node);
+        //   console.log("node", node);
           data.orgType = node.orgType;
         } else if (node.visitId == "1") {
-          console.log("node", node);
+        //   console.log("node", node);
           //   data.orgType = node.orgType;
           data.orginazationCode = node.dwdm;
         } else if (node.visitId == "2") {

@@ -199,7 +199,6 @@
               <el-date-picker
                 v-model="datePicker"
                 unlink-panels
-                @change="datePickerClick"
                 type="daterange"
                 format="yyyy 年 MM 月 dd 日"
                 value-format="yyyyMMdd"

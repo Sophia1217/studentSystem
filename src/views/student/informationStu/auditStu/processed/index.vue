@@ -61,7 +61,6 @@
               v-model="moreIform.stuInfo"
               multiple
               collapse-tags
-              @change="changeZY"
               placeholder="请选择"
               size="small"
             >
@@ -79,7 +78,6 @@
               v-model="moreIform.pread"
               multiple
               collapse-tags
-              @change="changeBJ"
               placeholder="请选择"
               size="small"
             >
@@ -97,7 +95,6 @@
               v-model="moreIform.grade"
               multiple
               collapse-tags
-              @change="changeNJ"
               placeholder="请选择"
               size="small"
             >

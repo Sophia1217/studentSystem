@@ -200,7 +200,7 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
-                      v-model="detailInfo.xsXjxx.dwh"
+                      v-model="detailInfo.xsXjxx.dwh_chinese"
                       :disabled="detailInfo.xsXjxx.dwh_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
@@ -430,7 +430,7 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
-                      v-model="detailInfo.xsXjxx.zydm"
+                      v-model="detailInfo.xsXjxx.zydm_chinese"
                       :disabled="detailInfo.xsXjxx.zydm_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
@@ -1217,7 +1217,7 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
-                      v-model="detailInfo.xsXjxx.dwh"
+                      v-model="detailInfo.xsXjxx.dwh_chinese"
                       :disabled="detailInfo.xsXjxx.dwh_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
@@ -1636,7 +1636,7 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
-                      v-model="detailInfo.xsXjxx.zydm"
+                      v-model="detailInfo.xsXjxx.zydm_chinese"
                       :disabled="detailInfo.xsXjxx.zydm_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
@@ -2308,12 +2308,12 @@
                 <div class="wrap">
                   <div class="title">邮政编码</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfo.xsTxxx.jtyzbm }}
+                    {{ detailInfo.xsTxxx.yzbm }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
-                      v-model="detailInfo.xsTxxx.jtyzbm"
-                      :disabled="detailInfo.xsTxxx.jtyzbm_stuFlag == 2"
+                      v-model="detailInfo.xsTxxx.yzbm"
+                      :disabled="detailInfo.xsTxxx.yzbm_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
                     ></el-input>

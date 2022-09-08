@@ -22,7 +22,9 @@
 
         <el-form-item label="审核开放" prop="shkg">
           <el-switch v-model="form.shkg" active-color="#23AD6F" inactive-color="#E0E0E0"
-           active-value="1" inactive-value="0"></el-switch>
+           active-value="1" inactive-value="0"
+           :disabled = "true"
+           ></el-switch>
         </el-form-item>
         <el-form-item label="审核开放时间" prop="auditApplyDate">
           <el-date-picker 
@@ -32,6 +34,7 @@
             start-placeholder="起始年月日" 
             end-placeholder="结束年月日" 
             value-format="yyyy-MM-dd HH:mm:ss" 
+            :disabled = "true"
             :clearable="false">
           </el-date-picker>
         </el-form-item>

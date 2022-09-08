@@ -90,3 +90,13 @@ export function queryAllDwh() {
     // params: query
   })
 }
+
+// 所学专业接口
+
+export function getMajors() {
+  return request({
+    url: '/zg/getMajors',
+    method: 'post',
+    // params: query
+  })
+}

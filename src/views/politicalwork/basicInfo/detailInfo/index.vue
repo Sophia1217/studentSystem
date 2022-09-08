@@ -3391,7 +3391,8 @@ import {
   getDetailQueryPoliticalWorkList,
   updateDetailQueryPoliticalWorkList,
   getCodeInfoByEnglish,
-  queryAllDwh
+  queryAllDwh,
+  getMajors
 } from '@/api/politicalWork/basicInfo'
 export default {
   name: 'DetailInfo',
@@ -3523,6 +3524,7 @@ export default {
     this.getCode('dmrskhjgm') // 考核结果码
 
     this.getListWorkPlace() //单位码表
+    this.getSxzy()
   },
 
   methods: {
@@ -3538,6 +3540,12 @@ export default {
     //     })
     //     .catch((err) => {})
     // },
+    getSxzy(){
+      getMajors().then((res) => {
+          this.sxzymOps = res.data.rows
+        })
+        .catch((err) => {})
+    },
     getListWorkPlace() {
       queryAllDwh()
         .then((res) => {
@@ -3592,7 +3600,7 @@ export default {
               this.xklbmOps = res.data
               this.yjxkmOps = res.data
               this.ejxkmOps = res.data
-              this.sxzymOps = res.data
+              // this.sxzymOps = res.data
               break
             case 'dmrsxym':
               this.xyOps = res.data

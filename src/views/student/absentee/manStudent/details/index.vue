@@ -175,7 +175,7 @@
                   <div v-if="isEdit == 2" class="content">
                     <!-- <el-input v-model="detailInfo.xsJbxx.xbm" size="small" placeholder="请输入内容"></el-input> -->
                     <el-select
-                      v-model="detailInfo.xsJbxx.xbm"
+                      v-model="detailInfo.xsJbxx.xbm_chinese"
                       size="small"
                       :disabled="detailInfo.xsJbxx.xbm_stuFlag == 2"
                       placeholder="请选择"
@@ -268,7 +268,7 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-select
-                      v-model="detailInfo.xsJbxx.mzm"
+                      v-model="detailInfo.xsJbxx.mzm_chinese"
                       size="small"
                       :disabled="detailInfo.xsJbxx.mzm_stuFlag == 2"
                       placeholder="请选择"
@@ -294,7 +294,7 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
-                      v-model="detailInfo.xsJbxx.gjdqm"
+                      v-model="detailInfo.xsJbxx.gjdqm_chinese"
                       :disabled="detailInfo.xsJbxx.gjdqm_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
@@ -565,7 +565,7 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
-                      v-model="detailInfo.xsJbxx.hyzkm"
+                      v-model="detailInfo.xsJbxx.hyzkm_chinese"
                       :disabled="detailInfo.xsJbxx.hyzkm_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
@@ -1193,7 +1193,7 @@
                   <div v-if="isEdit == 2" class="content">
                     <!-- <el-input v-model="detailInfo.xsJbxx.xbm" :disabled="detailInfo.xsJbxx.xbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
                     <el-select
-                      v-model="detailInfo.xsJbxx.xbm"
+                      v-model="detailInfo.xsJbxx.xbm_chinese"
                       size="small"
                       :disabled="detailInfo.xsJbxx.xbm_stuFlag == 2"
                       placeholder="请选择"
@@ -1265,7 +1265,7 @@
                 <div class="wrap">
                   <div class="title">籍贯</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfo.xsJbxx.jg_chinese }}
+                    {{ detailInfo.xsJbxx.jg}}
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
@@ -1286,7 +1286,7 @@
                   <div v-if="isEdit == 2" class="content">
                     <!-- <el-input v-model="detailInfo.xsJbxx.mzm" :disabled="detailInfo.xsJbxx.mzm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
                     <el-select
-                      v-model="detailInfo.xsJbxx.mzm"
+                      v-model="detailInfo.xsJbxx.mzm_chinese"
                       size="small"
                       :disabled="detailInfo.xsJbxx.mzm_stuFlag == 2"
                       placeholder="请选择"
@@ -1312,7 +1312,7 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
-                      v-model="detailInfo.xsJbxx.gjdqm"
+                      v-model="detailInfo.xsJbxx.gjdqm_chinese"
                       :disabled="detailInfo.xsJbxx.gjdqm_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
@@ -1328,7 +1328,7 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
-                      v-model="detailInfo.xsJbxx.sfzjlxm"
+                      v-model="detailInfo.xsJbxx.sfzjlxm_chinese"
                       :disabled="detailInfo.xsJbxx.sfzjlxm_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
@@ -1396,8 +1396,8 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
-                      v-model="detailInfo.xsJbxx.yjbys"
-                      :disabled="detailInfo.xsJbxx.yjbys_stuFlag == 2"
+                      v-model="detailInfo.xsXjxx.yjbysj"
+                      :disabled="detailInfo.xsXjxx.yjbysj_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
                     ></el-input>
@@ -1414,8 +1414,8 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
-                      v-model="detailInfo.xsJbxx.sjbysj"
-                      :disabled="detailInfo.xsJbxx.sjbysj_stuFlag == 2"
+                      v-model="detailInfo.xsXjxx.sjbysj"
+                      :disabled="detailInfo.xsXjxx.sjbysj_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
                     ></el-input>
@@ -1541,7 +1541,7 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
-                      v-model="detailInfo.xsJbxx.hyzkm"
+                      v-model="detailInfo.xsJbxx.hyzkm_chinese"
                       :disabled="detailInfo.xsJbxx.hyzkm_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
@@ -1648,7 +1648,7 @@
                 <div class="wrap">
                   <div class="title">研究方向</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfo.xsXjxx.yjfxm }}
+                    {{ detailInfo.xsXjxx.yjfx}}
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input

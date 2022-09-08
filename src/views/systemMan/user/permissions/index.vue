@@ -426,7 +426,6 @@ export default {
                 } else if (node.level == 1) {
                   // 不同学院
                   var nodeId = resData[x].dwdm || "";
-                  one.push(nodeId);
                   this.roleData[index].checksedKeys.push(nodeId);
                 } else if (node.level == 2) {
                   var nodeId = resData[x].pycc || "";
@@ -468,7 +467,6 @@ export default {
             } else if (node.level == 1) {
               // 不同学院
               var nodeId = resData[x].dwdm || "";
-              one.push(nodeId);
               this.roleData[index].checksedKeys.push(nodeId);
             } else if (node.level == 2) {
               var nodeId = resData[x].pycc || "";

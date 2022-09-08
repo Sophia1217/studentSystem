@@ -1632,24 +1632,49 @@
                 <div class="wrap">
                   <div class="title">学制</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgXlxws.xz }}
+                    <el-select
+                        v-model="detailInfoData.zgXlxws.xz"
+                        placeholder=""
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="item in xzOps"
+                          :key="item.dm"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <div v-if="zgXlxwsAuth.XZ == 2">
-                      <el-input
+                      <el-select
                         v-model="detailInfoData.zgXlxws.xz"
+                        placeholder=""
                         size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
+                        disabled
+                      >
+                        <el-option
+                          v-for="item in xzOps"
+                          :key="item.dm"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
                     </div>
                     <div v-else>
-                      <el-input
+                      <el-select
                         v-model="detailInfoData.zgXlxws.xz"
+                        placeholder=""
                         size="small"
-                        placeholder="请输入内容"
-                        :disabled="false"
-                      />
+                      >
+                        <el-option
+                          v-for="item in xzOps"
+                          :key="item.dm"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
                     </div>
                   </div>
                 </div>
@@ -1764,24 +1789,50 @@
                 <div class="wrap">
                   <div class="title">是否当前最高学历</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgXlxws.sfdqzgxlm }}
+                    <!-- {{ detailInfoData.zgXlxws.sfdqzgxlm }} -->
+                    <el-select
+                        v-model="detailInfoData.zgXlxws.sfdqzgxlm"
+                        placeholder=""
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="item in sfdqzgxlmOps"
+                          :key="item.dm"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <div v-if="zgXlxwsAuth.SFDQZGXLM == 2">
-                      <el-input
+                      <el-select
                         v-model="detailInfoData.zgXlxws.sfdqzgxlm"
+                        placeholder=""
                         size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
+                        disabled
+                      >
+                        <el-option
+                          v-for="item in sfdqzgxlmOps"
+                          :key="item.dm"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
                     </div>
                     <div v-else>
-                      <el-input
+                      <el-select
                         v-model="detailInfoData.zgXlxws.sfdqzgxlm"
+                        placeholder=""
                         size="small"
-                        placeholder="请输入内容"
-                        :disabled="false"
-                      />
+                      >
+                        <el-option
+                          v-for="item in sfdqzgxlmOps"
+                          :key="item.dm"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
                     </div>
                   </div>
                 </div>
@@ -2484,7 +2535,7 @@
                       disabled
                     >
                       <el-option
-                        v-for="item in prgwdjmOps"
+                        v-for="item in gwdjOps"
                         :key="item.dm"
                         :label="item.mc"
                         :value="item.dm"
@@ -2500,7 +2551,7 @@
                       disabled
                     >
                       <el-option
-                        v-for="item in prgwdjmOps"
+                        v-for="item in gwdjOps"
                         :key="item.dm"
                         :label="item.mc"
                         :value="item.dm"
@@ -2514,7 +2565,7 @@
                       size="small"
                     >
                       <el-option
-                        v-for="item in prgwdjmOps"
+                        v-for="item in gwdjOps"
                         :key="item.dm"
                         :label="item.mc"
                         :value="item.dm"
@@ -3403,6 +3454,10 @@ export default {
   },
   data() {
     return {
+      sfdqzgxlmOps: [
+          { dm: 0, mc: "否"  },
+          { dm: 1, mc: "是"  },
+        ],
       xbmOps: [],
       mzmOps: [],
       zzmmmOps: [],
@@ -3423,6 +3478,7 @@ export default {
       gjdqmOps:[],
       sxzymOps:[],
       jgOps:[],
+      xzOps:[],
 
       crzyjszwmOps: [],
 
@@ -3432,6 +3488,7 @@ export default {
       zjzcdmOps: [],
       prgwxlmOps: [],
       prgwdjmOps: [],
+      gwdjmOps:[],
       khjgmOps: [],
 
       zgZgjbxxesAuth: {},
@@ -3509,7 +3566,7 @@ export default {
 
     this.getCode('dmxxfsm') // 学习方式码
     this.getCode('dmrsxxxsm') // 学习形式码
-    // this.getCode('dmrsxlm') // 学习方式码
+    this.getCode('dmxz') // 学制
     // this.getCode('dmrsxklbm') // 学习方式码
     // this.getCode('dmxwm') // 学习方式码
     // this.getCode('dmrsgjdqm') // 学习方式码
@@ -3518,7 +3575,7 @@ export default {
     this.getCode('dmkyzcm') // 专业职称码
     this.getCode('dmrsprgwxlm') // 聘任岗位系列码
     this.getCode('dmrsprgwdjm') // 聘任岗位等级码
-    // this.getCode('dmrsprgwdjm') // 岗位等级码
+    this.getCode('dmrsgwdjm') // 岗位等级码
     // this.getCode('dmrsprgwdjm') // 专技等级
 
     this.getCode('dmrskhjgm') // 考核结果码
@@ -3632,6 +3689,14 @@ export default {
               //籍贯
             case 'dmxzqhm':
               this.jgOps = res.data
+              break
+              //学制
+            case 'dmxz':
+              this.xzOps = res.data
+              break
+              //岗位等级
+              case 'dmrsgwdjm':
+              this.gwdjOps = res.data
               break
           }
         })

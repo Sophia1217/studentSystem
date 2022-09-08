@@ -167,27 +167,33 @@
         @sort-change="changeTableDetailSort"
       >
         <!-- <el-table-column type="selection" width="55" /> -->
-        <el-table-column label="在岗日期" width="180">
-          <template slot-scope="">
-            <div v-if="tableDataDetail.length > 0">
-              <div v-if="tableDataDetail[0].cxsj != null">
+        <el-table-column label="在岗日期" prop="rmsj,cxsj" width="180">
+          <template slot-scope="scope">
+            <!-- <div v-if="tableDataDetail.length > 0"> -->
+              <!-- <div v-for=" val in tableDataDetail" :key="tableDataDetail.gh">
                 <span
-                  >{{ tableDataDetail[0].rmsj }} 至
-                  {{ tableDataDetail[0].cxsj }}</span
+                  >{{ val.rmsj }} 至
+                  {{ val.cxsj }}</span>
+              </div> -->
+              <div v-if="scope.row.cxsj != null">
+                <span
+                  >{{ scope.row.rmsj }} 至
+                  {{ scope.row.cxsj }}</span
                 >
               </div>
               <div
                 v-if="
-                  tableDataDetail[0].cxsj == null &&
-                  tableDataDetail[0].rmsj != null
+                  scope.row.cxsj == null &&
+                  scope.row.rmsj != null
                 "
               >
-                <span>{{ tableDataDetail[0].rmsj }} 至今</span>
+                <span>{{ scope.row.rmsj }} 至今</span>
               </div>
-            </div>
+            <!-- </div> -->
             <!-- <div></div> -->
           </template>
         </el-table-column>
+        <!-- <el-table-column prop="bjbh" label="在岗日期" sortable="custom" /> -->
         <el-table-column prop="bjbh" label="班级编号" sortable="custom" />
         <el-table-column prop="bjmc" label="班级名称" sortable="custom" />
         <el-table-column prop="pycc" label="培养层次" sortable="custom" />

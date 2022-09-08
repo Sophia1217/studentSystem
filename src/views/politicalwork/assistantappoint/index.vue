@@ -232,16 +232,19 @@
         @sort-change="changeTableDetailSort"
       >
         <!-- <el-table-column type="index" label="在岗日期" width="50" /> -->
-        <el-table-column label="在岗日期" width="180">
-          <template slot-scope="">
-            <div v-if="tableData.length>0">
-            <div v-if="tableData[0].cxsj != null">
-              <span>{{ tableData[0].rmsj }} 至 {{ tableData[0].cxsj }}</span>
+        <el-table-column label="在岗日期" prop="rmsj,cxsj" width="180">
+          <template slot-scope="scope">
+            <!-- <template v-for="item in tableData">
+              <div :key="item.gh">
+                <span>{{ item.rmsj }} 至 {{ item.cxsj }}</span>
+              </div>
+            </template> -->
+            <div v-if="scope.row.cxsj != null">
+              <span>{{ scope.row.rmsj }} 至 {{ scope.row.cxsj }}</span>
             </div>
-            <div v-if="tableData[0].cxsj == null && tableData[0].rmsj != null">
-              <span>{{ tableData[0].rmsj }} 至今</span>
+            <div v-if="scope.row.cxsj == null && scope.row.rmsj != null">
+              <span>{{ scope.row.rmsj }} 至今</span>
             </div>
-          </div>
           </template>
         </el-table-column>
         <el-table-column prop="bjbh" label="班级编号" sortable="custom" />

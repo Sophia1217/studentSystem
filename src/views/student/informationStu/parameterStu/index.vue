@@ -107,21 +107,15 @@ export default {
       if (this.form.applyDate && this.form.applyDate.length>0) {
         sqkfsj = this.form.applyDate[0]
         sqjssj = this.form.applyDate[1]
-      }
-      //审核开放时间
-      // if (this.form.auditApplyDate && this.form.auditApplyDate.length > 0) {
-      //   shkfsj = this.form.auditApplyDate[0]
-      //   shjssj = this.form.auditApplyDate[1]
-      // }
 
-      let data = {
+        let data = {
         shkg:this.form.shkg,
         shkfsj:shkfsj,
         shjssj:shjssj,
         sqkg:this.form.sqkg,
         sqkfsj:sqkfsj,
         sqjssj:sqjssj
-      }
+        }
       //申请开放创建
       stuInfoModifyParamService(data).then(res => {
         if (res.errcode == '00') {
@@ -130,9 +124,25 @@ export default {
             type: 'success'
           })
           this.handleCel('ruleForm')
-        }
-        this.getParameterStu()
+          this.getParameterStu()
+        }      
+        
       }).catch(err=>{})
+      }
+      else{
+        this.$message({
+          message: "请选择申请开放时间!",
+          type: "warning",
+        });
+        }
+        
+      //审核开放时间
+      // if (this.form.auditApplyDate && this.form.auditApplyDate.length > 0) {
+      //   shkfsj = this.form.auditApplyDate[0]
+      //   shjssj = this.form.auditApplyDate[1]
+      // }
+
+      
     },
     handleCel(formName) {
       this.$refs[formName].resetFields();

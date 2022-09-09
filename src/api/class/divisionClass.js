@@ -34,7 +34,7 @@ export function getSyd() {
 // 查询所有专业
 export function getMajors(query) {
     return request({
-        url: '/class/getMajors',
+        url: '/regStuInfo/getZY',
         method: 'post',
         data: query
     })

@@ -622,10 +622,11 @@ export default {
         //  this.loading = false;
       });
       // 获取专业
-      getMajors({ pyccm: this.$route.query.pycc }).then((response) => {
+    var DWH =[this.$route.query.pydw]
+      getMajors({ DWH:DWH }).then((response) => {
         // 获取培养层次列表数据
         // console.log("Res", response);
-        this.majorOptions = response.data.rows;
+        this.majorOptions = response.data;
       });
       // 获取性别
       getSex().then((response) => {

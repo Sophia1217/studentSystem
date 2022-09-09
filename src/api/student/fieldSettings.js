@@ -16,7 +16,14 @@ export function updateStuColumns(data) {
     data: data
   })
 }
-
+//学生信息修改参数是否开放查询
+export function getModeifyTime(data) {
+  return request({
+    url: '/StuInfoModifyParam/getModeifyTime',
+    method: 'post',
+    data: data
+  })
+}
 // 学生信息修改参数
 export function stuInfoModifyParamService(data) {
   return request({

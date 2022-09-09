@@ -5,9 +5,11 @@
                 <img  src="~@/assets/images/logo.png" alt="">
             </div>
             <div class="tt-content">
-                <div class="titleTop1"><span class="nameTitle" >华中师范大学学工管理系统</span></div>
+                <div class="titleTop1">
+                    <span class="nameTitle" >华中师范大学学生事务服务平台</span>
+                </div>
             <div class="titleTop2">
-                <span class="inglishTitle" >CCNU Student Management System</span>
+                <span class="inglishTitle" >CCNU Student Affairs Service Platform</span>
             </div>
             </div>
         </div>
@@ -25,7 +27,7 @@
             </div> -->
             
             
-            <div class="titleTop3"><span class="welcomeTitle" >{{userName}}，欢迎使用华中师范大学学工系统！</span></div>
+            <div class="titleTop3"><span class="welcomeTitle" >{{userName}}，欢迎使用华中师范大学学生事务服务平台！</span></div>
         </div>
         <div class="right-menu">
         
@@ -206,7 +208,6 @@ export default {
     .medalImage{
         width: 60px;
         height: 60px;
-
         vertical-align: middle;
         margin-right: 12px;
     }
@@ -218,15 +219,15 @@ export default {
         // background-color: #005657;
     }
     .titleTop1{
-        width: 212px;
+        width: 260px;
         height: 26px;
     }
     .titleTop2{
-        width: 210px;
+        width: 260px;
         height: 20px;
     }
     .titleTop3{
-        width: 320px;
+        width: 400px;
         height: 24px;
         
     }
@@ -254,7 +255,6 @@ export default {
     float: right;
     height: 100%;
     line-height: 50px;
-
     &:focus {
       outline: none;
     }

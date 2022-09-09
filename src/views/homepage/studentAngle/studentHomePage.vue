@@ -8,7 +8,7 @@
                 <img  src="~@/assets/images/logo.png" alt="">
             </div>
             <div class="content">
-                <div class="titleTop1"><span class="nameTitle" >华中师范大学学工管理系统</span></div>
+                <div class="titleTop1"><span class="nameTitle" >华中师范大学学生事务服务平台</span></div>
             <div class="titleTop2">
                 <span class="inglishTitle" >CCNU Student Management System</span>
             </div>
@@ -21,7 +21,7 @@
                 </div>
             </div>
             
-            <div class="titleTop3"><span class="welcomeTitle" >林晓曼，欢迎使用华中师范大学学工系统！</span></div>
+            <div class="titleTop3"><span class="welcomeTitle" >林晓曼，欢迎使用华中师范大学学生事务服务平台！</span></div>
         </div>
     </div> -->
 

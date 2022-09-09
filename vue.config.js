@@ -7,7 +7,7 @@ function resolve(dir) {
 
 const CompressionPlugin = require("compression-webpack-plugin");
 
-const name = process.env.VUE_APP_TITLE || "华中师范大学学生工作服务系统"; // 网页标题
+const name = process.env.VUE_APP_TITLE || "华中师范大学学生事务服务平台"; // 网页标题
 
 const port = process.env.port || process.env.npm_config_port || 8081; // 端口
 

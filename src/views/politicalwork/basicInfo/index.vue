@@ -459,7 +459,9 @@ export default {
     handleExport() {
       var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
       var data = { ghList: arr };
-      Object.assign(data, this.queryParams);
+      var exportParams = this.queryParams
+      exportParams.pageSize = 0
+      Object.assign(data, this.exportParams);
       exportBasicInfo(data)
         .then((res) => this.downloadFn(res, "政工干部信息表", "xlsx"))
         .catch((err) => {});

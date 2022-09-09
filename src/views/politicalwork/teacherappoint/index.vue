@@ -277,6 +277,16 @@
         >
       </span>
     </el-dialog>
+    <!-- 导出确认对话框 -->
+    <el-dialog :title="title" :visible.sync="showExport" width="30%">
+      <span>确认导出？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="handleConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -488,12 +498,8 @@ export default {
     },
     // 打开导出弹窗
     handleExport() {
-      var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
-      var data = { ghList: arr };
-      Object.assign(data, this.queryParams);
-      exportTeacher(data)
-        .then((res) => this.downloadFn(res, "班主任任命表", "xlsx"))
-        .catch((err) => {});
+      this.showExport = true;
+      this.title = "导出";
     },
     // 导出取消
     handleCancel() {
@@ -502,6 +508,14 @@ export default {
     // 导出确认
     handleConfirm() {
       this.showExport = false;
+      var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
+      var data = { ghList: arr };
+      var exportParams = this.queryParams
+      exportParams.pageSize = 0
+      Object.assign(data, this.exportParams);
+      exportTeacher(data)
+        .then((res) => this.downloadFn(res, "班主任任命表", "xlsx"))
+        .catch((err) => {});
     },
     // 点击详情
     hadleDetail(row, flag) {

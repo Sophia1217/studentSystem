@@ -403,7 +403,7 @@ export default {
         xgh: "", // 学工号
         xy: "", // 学员代码
         xm: "", // 姓名
-        bjdm: this.$route.query.bjdm, //班级代码
+        bjdm: "", //班级代码
       },
       // 班级代码
       fdyList: [], // 辅导员数组
@@ -493,6 +493,10 @@ export default {
         ],
       },
     };
+  },
+  activated() {
+    this.queryParams.bjdm = this.$route.query.bjdm;
+    this.handleQuery();
   },
   methods: {
     getOptions() {

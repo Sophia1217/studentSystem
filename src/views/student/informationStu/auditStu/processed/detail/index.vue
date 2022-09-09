@@ -68,6 +68,20 @@
                 <div class="wrap">
                   <div class="title">学号</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.xh_approveFlag == 1 ||
+                      detailInfo.xsJbxx.xh_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsJbxx.xh"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.xh_approveFlag == 1 ? 'greenColor' : ''
@@ -81,6 +95,20 @@
                 <div class="wrap">
                   <div class="title">姓名</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.xm_approveFlag == 1 ||
+                      detailInfo.xsJbxx.xm_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsJbxx.xm"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.xm_approveFlag == 1 ? 'greenColor' : ''
@@ -154,6 +182,28 @@
                 <div class="wrap">
                   <div class="title">性别</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.XBM_approveFlag == 1 ||
+                      detailInfo.xsJbxx.XBM_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-select
+                      v-model="detailInfo.xsJbxx.xbm"
+                      size="small"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in dmxbmOPs"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.XBM_approveFlag == 1 ? 'greenColor' : ''
@@ -167,6 +217,20 @@
                 <div class="wrap">
                   <div class="title">单位</div>
                   <div
+                    v-if="
+                      detailInfo.xsXjxx.dwh_approveFlag == 1 ||
+                      detailInfo.xsXjxx.dwh_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsXjxx.dwh_chinese"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsXjxx.dwh_approveFlag == 1 ? 'greenColor' : ''
@@ -182,6 +246,20 @@
                 <div class="wrap">
                   <div class="title">出生日期</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.csrq_approveFlag == 1 ||
+                      detailInfo.xsJbxx.csrq_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsJbxx.csrq"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.csrq_approveFlag == 1
@@ -197,6 +275,20 @@
                 <div class="wrap">
                   <div class="title">出生地</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.csdm_approveFlag == 1 ||
+                      detailInfo.xsJbxx.csdm_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsJbxx.csdm_chinese"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.csdm_approveFlag == 1
@@ -204,7 +296,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.csdm }}
+                    {{ detailInfo.xsJbxx.csdm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -214,6 +306,20 @@
                 <div class="wrap">
                   <div class="title">籍贯</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.jg_approveFlag == 1 ||
+                      detailInfo.xsJbxx.jg_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsJbxx.jg"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.jg_approveFlag == 1 ? 'greenColor' : ''
@@ -227,6 +333,28 @@
                 <div class="wrap">
                   <div class="title">民族</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.MZM_approveFlag == 1 ||
+                      detailInfo.xsJbxx.MZM_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-select
+                      v-model="detailInfo.xsJbxx.MZM"
+                      size="small"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in dmmzmOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.MZM_approveFlag == 1 ? 'greenColor' : ''
@@ -242,6 +370,20 @@
                 <div class="wrap">
                   <div class="title">国籍/地区</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.gjdqm_approveFlag == 1 ||
+                      detailInfo.xsJbxx.gjdqm_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsJbxx.gjdqm_chinese"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.gjdqm_approveFlag == 1
@@ -274,6 +416,20 @@
                 <div class="wrap">
                   <div class="title">身份证件号</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.sfzjh_approveFlag == 1 ||
+                      detailInfo.xsJbxx.sfzjh_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsJbxx.sfzjh"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.sfzjh_approveFlag == 1
@@ -338,6 +494,20 @@
                 <div class="wrap">
                   <div class="title">年级</div>
                   <div
+                    v-if="
+                      detailInfo.xsXjxx.nj_approveFlag == 1 ||
+                      detailInfo.xsXjxx.nj_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsXjxx.nj"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsXjxx.nj_approveFlag == 1 ? 'greenColor' : ''
@@ -351,6 +521,20 @@
                 <div class="wrap">
                   <div class="title">班级</div>
                   <div
+                    v-if="
+                      detailInfo.xsXjxx.bjm_approveFlag == 1 ||
+                      detailInfo.xsXjxx.bjm_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsXjxx.bjm"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsXjxx.bjm_approveFlag == 1 ? 'greenColor' : ''
@@ -366,6 +550,20 @@
                 <div class="wrap">
                   <div class="title">专业</div>
                   <div
+                    v-if="
+                      detailInfo.xsXjxx.zydm_approveFlag == 1 ||
+                      detailInfo.xsXjxx.zydm_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsXjxx.zydm_chinese"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsXjxx.zydm_approveFlag == 1
@@ -381,6 +579,28 @@
                 <div class="wrap">
                   <div class="title">学制</div>
                   <div
+                    v-if="
+                      detailInfo.xsXjxx.xz_approveFlag == 1 ||
+                      detailInfo.xsXjxx.xz_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-select
+                      v-model="detailInfo.xsXjxx.xz"
+                      size="small"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in xzOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsXjxx.xz_approveFlag == 1 ? 'greenColor' : ''
@@ -428,6 +648,28 @@
                 <div class="wrap">
                   <div class="title">学籍状态</div>
                   <div
+                    v-if="
+                      detailInfo.xsXjxx.xjzt_approveFlag == 1 ||
+                      detailInfo.xsXjxx.xjzt_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-select
+                      v-model="detailInfo.xsXjxx.xjzt"
+                      size="small"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in dmxjztmOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsXjxx.xjzt_approveFlag == 1
@@ -506,6 +748,27 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">政治面貌</div>
+                  <div
+                    v-if="
+                      detailInfo.xsJbxx.zzmmm_approveFlag == 1 ||
+                      detailInfo.xsJbxx.zzmmm_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-select
+                      v-model="detailInfo.xsJbxx.zzmmm"
+                      size="small"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in zzmmOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
                   <div
                     class="content"
                     :class="
@@ -629,6 +892,20 @@
                 <div class="wrap">
                   <div class="title">原学号</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.yxh_approveFlag == 1 ||
+                      detailInfo.xsJbxx.yxh_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsJbxx.yxh"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.yxh_approveFlag == 1 ? 'greenColor' : ''
@@ -949,6 +1226,20 @@
                 <div class="wrap">
                   <div class="title">姓名</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.xm_approveFlag == 1 ||
+                      detailInfo.xsJbxx.xm_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsJbxx.xm"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.xm_approveFlag == 1 ? 'greenColor' : ''
@@ -1022,6 +1313,28 @@
                 <div class="wrap">
                   <div class="title">性别</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.xbm_approveFlag == 1 ||
+                      detailInfo.xsJbxx.xbm_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-select
+                      v-model="detailInfo.xsJbxx.xbm"
+                      size="small"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in dmxbmOPs"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.xbm_approveFlag == 1 ? 'greenColor' : ''
@@ -1035,6 +1348,20 @@
                 <div class="wrap">
                   <div class="title">单位</div>
                   <div
+                    v-if="
+                      detailInfo.xsXjxx.dwh_approveFlag == 1 ||
+                      detailInfo.xsXjxx.dwh_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsXjxx.dwh_chinese"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsXjxx.dwh_approveFlag == 1 ? 'greenColor' : ''
@@ -1049,6 +1376,19 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">出生日期</div>
+                  <div
+                    v-if="
+                      detailInfo.xsJbxx.csrq_approveFlag == 1 ||
+                      detailInfo.xsJbxx.csrq_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsJbxx.csrq"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
                   <div
                     class="content"
                     :class="
@@ -1065,6 +1405,20 @@
                 <div class="wrap">
                   <div class="title">出生地</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.csdm_approveFlag == 1 ||
+                      detailInfo.xsJbxx.csdm_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsJbxx.csdm_chinese"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.csdm_approveFlag == 1
@@ -1082,6 +1436,20 @@
                 <div class="wrap">
                   <div class="title">籍贯</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.jg_approveFlag == 1 ||
+                      detailInfo.xsJbxx.jg_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsJbxx.jg"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.jg_approveFlag == 1 ? 'greenColor' : ''
@@ -1095,6 +1463,28 @@
                 <div class="wrap">
                   <div class="title">民族</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.mzm_approveFlag == 1 ||
+                      detailInfo.xsJbxx.mzm_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-select
+                      v-model="detailInfo.xsJbxx.mzm_chinese"
+                      size="small"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in dmmzmOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.mzm_approveFlag == 1 ? 'greenColor' : ''
@@ -1110,6 +1500,20 @@
                 <div class="wrap">
                   <div class="title">国籍/地区</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.gjdqm_approveFlag == 1 ||
+                      detailInfo.xsJbxx.gjdqm_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsJbxx.gjdqm_chinese"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.gjdqm_approveFlag == 1
@@ -1142,6 +1546,20 @@
                 <div class="wrap">
                   <div class="title">身份证件号</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.sfzjh_approveFlag == 1 ||
+                      detailInfo.xsJbxx.sfzjh_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsJbxx.sfzjh"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.sfzjh_approveFlag == 1
@@ -1157,6 +1575,20 @@
                 <div class="wrap">
                   <div class="title">年级</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.nj_approveFlag == 1 ||
+                      detailInfo.xsJbxx.nj_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsXjxx.nj"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsXjxx.nj_approveFlag == 1 ? 'greenColor' : ''
@@ -1251,6 +1683,28 @@
                 <div class="wrap">
                   <div class="title">学籍状态</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.xjzt_approveFlag == 1 ||
+                      detailInfo.xsJbxx.xjzt_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-select
+                      v-model="detailInfo.xsXjxx.xjzt"
+                      size="small"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in dmxjztmOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsXjxx.xjzt_approveFlag == 1
@@ -1332,6 +1786,28 @@
                 <div class="wrap">
                   <div class="title">政治面貌</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.zzmmm_approveFlag == 1 ||
+                      detailInfo.xsJbxx.zzmmm_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-select
+                      v-model="detailInfo.xsJbxx.zzmmm"
+                      size="small"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in zzmmOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.zzmmm_approveFlag == 1
@@ -1396,6 +1872,20 @@
                 <div class="wrap">
                   <div class="title">专业</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.zydm_approveFlag == 1 ||
+                      detailInfo.xsJbxx.zydm_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsXjxx.zydm_chinese"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsXjxx.zydm_approveFlag == 1
@@ -1719,6 +2209,20 @@
                 <div class="wrap">
                   <div class="title">移动电话</div>
                   <div
+                    v-if="
+                      detailInfo.xsTxxx.yddh_approveFlag == 1 ||
+                      detailInfo.xsTxxx.yddh_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsTxxx.yddh"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsTxxx.yddh_approveFlag == 1
@@ -1733,6 +2237,19 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">电子邮箱</div>
+                  <div
+                    v-if="
+                      detailInfo.xsTxxx.dzyx_approveFlag == 1 ||
+                      detailInfo.xsTxxx.dzyx_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsTxxx.dzyx"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
                   <div
                     class="content"
                     :class="
@@ -1751,6 +2268,20 @@
                 <div class="wrap">
                   <div class="title">QQ号码</div>
                   <div
+                    v-if="
+                      detailInfo.xsTxxx.qqhm_approveFlag == 1 ||
+                      detailInfo.xsTxxx.qqhm_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsTxxx.qqhm"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsTxxx.qqhm_approveFlag == 1
@@ -1864,6 +2395,20 @@
                 <div class="wrap">
                   <div class="title">家庭邮编</div>
                   <div
+                    v-if="
+                      detailInfo.xsTxxx.jtyzbm_approveFlag == 1 ||
+                      detailInfo.xsTxxx.jtyzbm_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsTxxx.jtyzbm"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsTxxx.jtyzbm_approveFlag == 1
@@ -1879,6 +2424,20 @@
                 <div class="wrap">
                   <div class="title">家庭住址</div>
                   <div
+                    v-if="
+                      detailInfo.xsTxxx.jtzz_approveFlag == 1 ||
+                      detailInfo.xsTxxx.jtzz_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsTxxx.jtzz"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsTxxx.jtzz_approveFlag == 1
@@ -1918,6 +2477,20 @@
                 <div class="wrap">
                   <div class="title">移动电话</div>
                   <div
+                    v-if="
+                      detailInfo.xsTxxx.yddh_approveFlag == 1 ||
+                      detailInfo.xsTxxx.yddh_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsTxxx.yddh"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsTxxx.yddh_approveFlag == 1
@@ -1933,6 +2506,20 @@
                 <div class="wrap">
                   <div class="title">电子邮箱</div>
                   <div
+                    v-if="
+                      detailInfo.xsTxxx.dzyx_approveFlag == 1 ||
+                      detailInfo.xsTxxx.dzyx_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsTxxx.dzyx"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsTxxx.dzyx_approveFlag == 1
@@ -1950,6 +2537,20 @@
                 <div class="wrap">
                   <div class="title">QQ号码</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.csdm_approveFlag == 1 ||
+                      detailInfo.xsJbxx.csdm_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsTxxx.qqhm"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsTxxx.qqhm_approveFlag == 1
@@ -1997,6 +2598,20 @@
                 <div class="wrap">
                   <div class="title">邮政编码</div>
                   <div
+                    v-if="
+                      detailInfo.xsJbxx.csdm_approveFlag == 1 ||
+                      detailInfo.xsJbxx.csdm_approveFlag == 2
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsTxxx.jtyzbm"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsTxxx.jtyzbm_approveFlag == 1
@@ -2037,6 +2652,18 @@
             <el-table-column prop="cyxm" label="姓名">
               <template slot-scope="scope">
                 <div
+                  v-if="
+                    detailInfo.xsJbxx.csdm_approveFlag == 1 ||
+                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                  "
+                >
+                  <el-input
+                    v-model="scope.row.cyxm"
+                    placeholder="请输入"
+                  ></el-input>
+                </div>
+                <div
+                  v-else
                   :class="scope.row.cyxm_approveFlag == 1 ? 'greenColor' : ''"
                 >
                   {{ scope.row.cyxm }}
@@ -2055,6 +2682,19 @@
             <el-table-column prop="gxm" label="关系">
               <template slot-scope="scope">
                 <div
+                  v-if="
+                    detailInfo.xsJbxx.csdm_approveFlag == 1 ||
+                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                  "
+                >
+                  <el-input
+                    v-model="scope.row.gxm"
+                    :disabled="scope.row.gxm_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
+                </div>
+                <div
+                  v-else
                   :class="scope.row.gxm_approveFlag == 1 ? 'greenColor' : ''"
                 >
                   {{ scope.row.gxm }}
@@ -2091,6 +2731,18 @@
             <el-table-column prop="cygzdw" label="工作单位">
               <template slot-scope="scope">
                 <div
+                  v-if="
+                    detailInfo.xsJbxx.csdm_approveFlag == 1 ||
+                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                  "
+                >
+                  <el-input
+                    v-model="scope.row.cygzdw"
+                    placeholder="请输入"
+                  ></el-input>
+                </div>
+                <div
+                  v-else
                   :class="scope.row.cygzdw_approveFlag == 1 ? 'greenColor' : ''"
                 >
                   {{ scope.row.cygzdw }}
@@ -2111,6 +2763,19 @@
             <el-table-column prop="cysfzh" label="身份证号码">
               <template slot-scope="scope">
                 <div
+                  v-if="
+                    detailInfo.xsJbxx.csdm_approveFlag == 1 ||
+                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                  "
+                >
+                  <el-input
+                    v-model="scope.row.cysfzh"
+                    :disabled="scope.row.cysfzh_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
+                </div>
+                <div
+                  v-else
                   :class="scope.row.cysfzh_approveFlag == 1 ? 'greenColor' : ''"
                 >
                   {{ scope.row.cysfzh }}
@@ -2140,6 +2805,19 @@
             <el-table-column prop="yddh" label="移动电话">
               <template slot-scope="scope">
                 <div
+                  v-if="
+                    detailInfo.xsJbxx.csdm_approveFlag == 1 ||
+                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                  "
+                >
+                  <el-input
+                    v-model="scope.row.yddh"
+                    :disabled="scope.row.yddh_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
+                </div>
+                <div
+                  v-else
                   :class="scope.row.yddh_approveFlag == 1 ? 'greenColor' : ''"
                 >
                   {{ scope.row.yddh }}
@@ -2149,6 +2827,19 @@
             <el-table-column prop="dzyx" label="电子邮箱">
               <template slot-scope="scope">
                 <div
+                  v-if="
+                    detailInfo.xsJbxx.csdm_approveFlag == 1 ||
+                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                  "
+                >
+                  <el-input
+                    v-model="scope.row.dzyx"
+                    :disabled="scope.row.dzyx_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
+                </div>
+                <div
+                  v-else
                   :class="scope.row.dzyx_approveFlag == 1 ? 'greenColor' : ''"
                 >
                   {{ scope.row.dzyx }}
@@ -2193,6 +2884,19 @@
             <el-table-column prop="sxzymc" label="所学专业">
               <template slot-scope="scope">
                 <div
+                  v-if="
+                    detailInfo.xsJbxx.csdm_approveFlag == 1 ||
+                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                  "
+                >
+                  <el-input
+                    v-model="scope.row.sxzymc"
+                    :disabled="scope.row.sxzymc_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
+                </div>
+                <div
+                  v-else
                   :class="scope.row.sxzymc_approveFlag == 1 ? 'greenColor' : ''"
                 >
                   {{ scope.row.sxzymc }}
@@ -2211,6 +2915,19 @@
             <el-table-column prop="xxzmr" label="学习证明人">
               <template slot-scope="scope">
                 <div
+                  v-if="
+                    detailInfo.xsJbxx.csdm_approveFlag == 1 ||
+                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                  "
+                >
+                  <el-input
+                    v-model="scope.row.xxzmr"
+                    :disabled="scope.row.xxzmr_stuFlag == 2"
+                    placeholder="请输入"
+                  ></el-input>
+                </div>
+                <div
+                  v-else
                   :class="scope.row.xxzmr_approveFlag == 1 ? 'greenColor' : ''"
                 >
                   {{ scope.row.xxzmr }}
@@ -2264,6 +2981,18 @@
             <el-table-column prop="gzdw" label="工作单位">
               <template slot-scope="scope">
                 <div
+                  v-if="
+                    scope.row.gzdw_approveFlag == 1 ||
+                    scope.row.gzdw_approveFlag == 2
+                  "
+                >
+                  <el-input
+                    v-model="scope.row.gzdw"
+                    placeholder="请输入"
+                  ></el-input>
+                </div>
+                <div
+                  v-else
                   :class="scope.row.gzdw_approveFlag == 1 ? 'greenColor' : ''"
                 >
                   {{ scope.row.gzdw }}
@@ -2273,6 +3002,18 @@
             <el-table-column prop="gznr" label="工作内容">
               <template slot-scope="scope">
                 <div
+                  v-if="
+                    scope.row.gznr_approveFlag == 1 ||
+                    scope.row.gznr_approveFlag == 2
+                  "
+                >
+                  <el-input
+                    v-model="scope.row.gznr"
+                    placeholder="请输入"
+                  ></el-input>
+                </div>
+                <div
+                  v-else
                   :class="scope.row.gznr_approveFlag == 1 ? 'greenColor' : ''"
                 >
                   {{ scope.row.gznr }}
@@ -2313,6 +3054,17 @@
             <el-table-column prop="gzzmrdw" label="证明人在何处">
               <template slot-scope="scope">
                 <div
+                  v-if="
+                    detailInfo.xsJbxx.csdm_approveFlag == 1 ||
+                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                  "
+                >
+                  <el-input
+                    v-model="scope.row.gzzmrdw"
+                    placeholder="请输入"
+                  ></el-input>
+                </div>
+                <div
                   :class="
                     scope.row.gzzmrdw_approveFlag == 1 ? 'greenColor' : ''
                   "
@@ -2342,6 +3094,9 @@
       </div>
       <div class="btn confirm" @click="handleThrough">
         <i class="icon throughIcon"></i> 通过
+      </div>
+      <div class="btn confirm" @click="save">
+        <i class="icon throughIcon"></i> 保存
       </div>
     </div>
 
@@ -2377,6 +3132,7 @@
 
 <script>
 import { getDetailQueryPoliticalWorkList } from "../../../../../../api/politicalWork/basicInfo";
+import { updateRegStuInfo1 } from "@/api/student/index";
 import {
   getStuInfoFlowUpdatePage,
   passFlow,
@@ -2446,6 +3202,24 @@ export default {
   },
 
   methods: {
+    save() {
+      this.$set(this.detailInfo, "id", this.$route.query.id);
+      let data = this.detailInfo;
+      console.log("this.detailInfo", this.detailInfo);
+      updateRegStuInfo1(data)
+        .then((res) => {
+          this.$message({
+            message: res.errmsg,
+            type: "success",
+          });
+          // this.$router.push({
+          //   path: this.routerFrom,
+          // });
+        })
+        .catch((err) => {
+          this.$message.error(err.errmsg);
+        });
+    },
     getName(data, val) {
       if (data.length > 0 && val) {
         for (let x = 0; x < data.length; x++) {

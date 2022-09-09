@@ -174,7 +174,10 @@ export default {
     this.queryParams.bjdm = this.$route.query.bjdm;
     this.getList();
   },
-  activated() {},
+  activated() {
+    this.queryParams.bjdm = this.$route.query.bjdm;
+    this.getList();
+  },
   methods: {
     // 辅导员任命
     operate() {

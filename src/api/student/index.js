@@ -82,6 +82,14 @@ export function updateRegStuInfo(data) {
   })
 }
 
+export function updateRegStuInfo1(data) {
+  return request({
+    url: '/StuInfoFlow/updateStuInfo',
+    method: 'post',
+    data: data
+  })
+}
+
 // 审核导出
 export function StuInfoFlowExport(data) {
   return request({

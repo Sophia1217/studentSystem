@@ -407,25 +407,28 @@ export default {
 
     // 用户状态改变
     onSwitchChange(user) {
-
       let param = {
         userIdList: [user.userId],
         isUse: user.isUse ? "0" : "1",
       };
       disableUser(param)
-        .then((res) => {
-         
-        })
+        .then((res) => {})
         .catch(() => {
           user.isUse = !user.isUse;
         });
     },
     // 数据权限
     handlePermiss(row) {
+      var a = row.roleIds.split(",");
+      a.splice(
+        a.findIndex((item) => item === "01"),
+        1
+      );
+      var b = a.toString();
       this.$router.push({
         path: "/systems/dataPermis",
         query: {
-          roleId: row.roleIds,
+          roleId: b,
           userId: row.userId,
           xm: row.xm,
         },

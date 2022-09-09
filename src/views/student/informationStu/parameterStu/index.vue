@@ -48,16 +48,16 @@
 </template>
 
 <script>
-import { stuInfoModifyParamService } from '@/api/student/fieldSettings' 
+import { getModeifyTime, stuInfoModifyParamService } from '@/api/student/fieldSettings' 
 export default {
   name: 'parameterStu',
 
   data() {
     return {
       form: {
-        sqkg: '1',
+        sqkg: '',
         applyDate: [], // 申请开放时间
-        shkg: '1',
+        shkg: '0',
         auditApplyDate:[] //审核开放时间
       },
       rules: {
@@ -72,28 +72,47 @@ export default {
   },
 
   mounted() {
-    
+    this.getParameterStu()
   },
 
   methods: {
+    //学生信息修改参数开放查询
+    getParameterStu(){
+      getModeifyTime().then((res)=>{
+        this.form.sqkg = res.sqkg
+        console.log("dd",this.res)
+        var b = res.sqkfsj
+        var a= res.sqjssj       
+        var arr =[]
+        arr.push(b)
+        arr.push(a)
+        this.$set(this.form,"applyDate", arr)
+      })
+    },
+    //学生信息修改参数申请开放
     onSubmit() {
-      let start = this.form.applyDate&&this.form.applyDate[1]?this.form.applyDate[1]:''
-      let end = this.form.auditApplyDate && this.form.auditApplyDate[1] ? this.form.auditApplyDate[1] : ''
-      if (start > end) {
-        this.$message.error('审核开放结束时间需要晚于申请开放结束时间！');
-        return
-      }
-      let sqkfsj, sqjssj, shkfsj, shjssj = ''
+      let sqkfsj=''
+      let sqjssj=''
+      let shkfsj=''
+      let shjssj =''
+      // let start = this.form.applyDate&&this.form.applyDate[1]?this.form.applyDate[1]:''
+      // let end = this.form.auditApplyDate && this.form.auditApplyDate[1] ? this.form.auditApplyDate[1] : ''
+      // if (start > end) {
+      //   this.$message.error('审核开放结束时间需要晚于申请开放结束时间！');
+      //   return
+      // }
+      
       
       // 申请开放时间
       if (this.form.applyDate && this.form.applyDate.length>0) {
         sqkfsj = this.form.applyDate[0]
         sqjssj = this.form.applyDate[1]
       }
-      if (this.form.auditApplyDate && this.form.auditApplyDate.length > 0) {
-        shkfsj = this.form.auditApplyDate[0]
-        shjssj = this.form.auditApplyDate[1]
-      }
+      //审核开放时间
+      // if (this.form.auditApplyDate && this.form.auditApplyDate.length > 0) {
+      //   shkfsj = this.form.auditApplyDate[0]
+      //   shjssj = this.form.auditApplyDate[1]
+      // }
 
       let data = {
         shkg:this.form.shkg,
@@ -103,6 +122,7 @@ export default {
         sqkfsj:sqkfsj,
         sqjssj:sqjssj
       }
+      //申请开放创建
       stuInfoModifyParamService(data).then(res => {
         if (res.errcode == '00') {
           this.$message({
@@ -111,6 +131,7 @@ export default {
           })
           this.handleCel('ruleForm')
         }
+        this.getParameterStu()
       }).catch(err=>{})
     },
     handleCel(formName) {

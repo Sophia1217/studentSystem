@@ -248,11 +248,11 @@
                 <div class="wrap">
                   <div class="title">籍贯</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfo.xsJbxx.jg }}
+                    {{ detailInfo.xsJbxx.jg_chinese }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
-                      v-model="detailInfo.xsJbxx.jg"
+                      v-model="detailInfo.xsJbxx.jg_chinese"
                       :disabled="detailInfo.xsJbxx.jg_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
@@ -1265,11 +1265,11 @@
                 <div class="wrap">
                   <div class="title">籍贯</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfo.xsJbxx.jg}}
+                    {{ detailInfo.xsJbxx.jg_chinese }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
-                      v-model="detailInfo.xsJbxx.jg"
+                      v-model="detailInfo.xsJbxx.jg_chinese"
                       :disabled="detailInfo.xsJbxx.jg_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
@@ -1648,7 +1648,7 @@
                 <div class="wrap">
                   <div class="title">研究方向</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfo.xsXjxx.yjfx}}
+                    {{ detailInfo.xsXjxx.yjfx }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input

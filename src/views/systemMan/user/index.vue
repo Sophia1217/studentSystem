@@ -419,12 +419,16 @@ export default {
     },
     // 数据权限
     handlePermiss(row) {
-      var a = row.roleIds.split(",");
-      a.splice(
-        a.findIndex((item) => item === "01"),
-        1
-      );
-      var b = a.toString();
+        var ids = row.roleIds || ''
+        var a = ids.split(",") || [];
+        var c = []
+        for (let x = 0; x < a.length; x++) {
+            var item = a[x] || '';
+            if (typeof item == 'string' && item.length > 0 && item != '01') {
+                c.push(item)
+            }
+        }
+        var b = c.toString() || '';
       this.$router.push({
         path: "/systems/dataPermis",
         query: {

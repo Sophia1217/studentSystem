@@ -227,6 +227,11 @@ export default {
             deleteRole(param)
               .then(() => {
                 this.roleData.splice(index, 1);
+                this.getqueryRoleList();
+
+                this.$refs.tree[index].setCheckedKeys(
+                  this.roleData[index].checksedKeys
+                );
               })
               .catch(() => {});
           }

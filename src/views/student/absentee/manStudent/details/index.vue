@@ -325,7 +325,7 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-input
-                      v-model="detailInfo.xsJbxx.sfzjlxm"
+                      v-model="detailInfo.xsJbxx.sfzjlxm_chinese"
                       :disabled="detailInfo.xsJbxx.sfzjlxm_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
@@ -2896,7 +2896,7 @@ export default {
       pyccOps: [],
       zzmmOps: [],
       xzOps: [],
-      jgOps:[],
+      jgOps: [],
       allDwh: [],
       zyOps: [],
       xslbOps: [],
@@ -3013,8 +3013,8 @@ export default {
             case "dmxz":
               this.xzOps = res.data;
               break;
-            case 'dmxzqhm':
-              this.jgOps = res.data
+            case "dmxzqhm":
+              this.jgOps = res.data;
               break;
             case "dmxbm":
               this.dmxbmOPs = res.data;

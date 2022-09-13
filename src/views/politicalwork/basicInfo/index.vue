@@ -187,6 +187,7 @@ import {
   getCodeInfoByEnglish,
   exportBasicInfo,
   getListWorkPlace,
+  getGw,
 } from "@/api/politicalWork/basicInfo";
 import CheckboxCom from "../../components/checkboxCom";
 
@@ -221,6 +222,7 @@ export default {
       tableData: [],
       multipleSelection: [],
       gzdwOptions: [],
+
       list: [],
       gender: {
         // 性别
@@ -235,12 +237,12 @@ export default {
         checkAll: false,
         choose: [],
         checkBox: [
-          { mc: "学院书记", dm: "学院书记" },
-          { mc: "学院副书记", dm: "学院副书记" },
-          { mc: "组织员", dm: "组织员" },
-          { mc: "辅导员", dm: "辅导员" },
-          { mc: "班主任", dm: "班主任" },
-          { mc: "导师", dm: "导师" },
+          // { mc: "学院书记", dm: "学院书记" },
+          // { mc: "学院副书记", dm: "学院副书记" },
+          // { mc: "组织员", dm: "组织员" },
+          // { mc: "辅导员", dm: "辅导员" },
+          // { mc: "班主任", dm: "班主任" },
+          // { mc: "导师", dm: "导师" },
         ],
         isIndeterminate: true,
       },
@@ -266,7 +268,7 @@ export default {
     this.getCode("dmmzm"); // 民 族
     this.getCode("dmzzmmm"); // 政治面貌
     this.getListWorkPlace("dmdwmc"); // 工作单位  上面三个字段是用码表给的返回值，工作单位是用的公共的调学院的接口
-    // this.getListRole('dmgw') // 岗位  岗位去调用查询角色列表的接口
+    this.getGwList(); // 岗位  岗位去调用查询角色列表的接口
     this.handleSearch();
   },
   methods: {
@@ -320,17 +322,23 @@ export default {
         })
         .catch((err) => {});
     },
-
+    getGwList() {
+      getGw().then((res) => {
+        //console.log(res);
+        // this.GwOptions = res.data.rows;
+        // console.log(this.GwOptions);
+        this.position.checkBox = res.data.rows;
+      });
+    },
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
-      if(this.queryParams.orderZd !== 'gwList'){
+      if (this.queryParams.orderZd !== "gwList") {
         this.handleSearch();
-      }else{
-        this.queryParams.orderZd = ''
-        this.queryParams.orderPx = ''
+      } else {
+        this.queryParams.orderZd = "";
+        this.queryParams.orderPx = "";
       }
-      
     },
     // 查询
     handleSearch() {
@@ -362,9 +370,7 @@ export default {
       this.isMore = !this.isMore;
     },
     //工作地点勾选
-    workPlaceChange() {
-
-    },
+    workPlaceChange() {},
     // 性别全选
     genderAll(val) {
       const allCheck = [];
@@ -399,7 +405,6 @@ export default {
       this.position.checkAll = checkedCount === this.position.checkBox.length;
       this.position.isIndeterminate =
         checkedCount > 0 && checkedCount < this.position.checkBox.length;
-
     },
 
     // 民 族全选
@@ -421,7 +426,6 @@ export default {
       this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
       this.ethnic.isIndeterminate =
         checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
-
     },
     // 政治面貌：全选
     politicaAll(val) {
@@ -439,7 +443,6 @@ export default {
       this.politica.checkAll = checkedCount === this.politica.checkBox.length;
       this.politica.isIndeterminate =
         checkedCount > 0 && checkedCount < this.politica.checkBox.length;
-
     },
     // 多选
     handleSelectionChange(arr, index) {
@@ -459,8 +462,8 @@ export default {
     handleExport() {
       var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
       var data = { ghList: arr };
-      var exportParams = this.queryParams
-      exportParams.pageSize = 0
+      var exportParams = this.queryParams;
+      exportParams.pageSize = 0;
       Object.assign(data, this.exportParams);
       exportBasicInfo(data)
         .then((res) => this.downloadFn(res, "政工干部信息表", "xlsx"))

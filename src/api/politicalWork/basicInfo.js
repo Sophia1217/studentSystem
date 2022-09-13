@@ -100,3 +100,11 @@ export function getMajors() {
     // params: query
   })
 }
+//获取岗位接口
+export function getGw() {
+  return request({
+    url: '/zg/getGw',
+    method: 'post',
+    // params: query
+  })
+}

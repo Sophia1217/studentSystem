@@ -175,7 +175,7 @@
                   <div v-if="isEdit == 2" class="content">
                     <!-- <el-input v-model="detailInfo.xsJbxx.xbm" size="small" placeholder="请输入内容"></el-input> -->
                     <el-select
-                      v-model="detailInfo.xsJbxx.xbm_chinese"
+                      v-model="detailInfo.xsJbxx.xbm"
                       size="small"
                       :disabled="detailInfo.xsJbxx.xbm_stuFlag == 2"
                       placeholder="请选择"
@@ -251,12 +251,27 @@
                     {{ detailInfo.xsJbxx.jg_chinese }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <el-input
+                    <el-select
+                      v-model="detailInfo.xsJbxx.jg"
+                      size="small"
+                      :disabled="detailInfo.xsJbxx.jg_stuFlag == 2"
+                      placeholder="请选择"
+                      filterable
+                    >
+                      <el-option
+                        v-for="item in jgOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                    <!-- <el-input
                       v-model="detailInfo.xsJbxx.jg_chinese"
                       :disabled="detailInfo.xsJbxx.jg_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
-                    ></el-input>
+                    ></el-input> -->
                   </div>
                 </div>
               </el-col>
@@ -268,7 +283,7 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-select
-                      v-model="detailInfo.xsJbxx.mzm_chinese"
+                      v-model="detailInfo.xsJbxx.mzm"
                       size="small"
                       :disabled="detailInfo.xsJbxx.mzm_stuFlag == 2"
                       placeholder="请选择"
@@ -992,7 +1007,7 @@
                   <div v-if="isEdit == 2" class="content">
                     <!-- <el-input v-model="detailInfo.xsXjxx.xslbm" :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
                     <el-select
-                      v-model="detailInfo.xsXjxx.xslbm_chinese"
+                      v-model="detailInfo.xsXjxx.xslbm"
                       size="small"
                       :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2"
                       placeholder="请选择"
@@ -1193,7 +1208,7 @@
                   <div v-if="isEdit == 2" class="content">
                     <!-- <el-input v-model="detailInfo.xsJbxx.xbm" :disabled="detailInfo.xsJbxx.xbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
                     <el-select
-                      v-model="detailInfo.xsJbxx.xbm_chinese"
+                      v-model="detailInfo.xsJbxx.xbm"
                       size="small"
                       :disabled="detailInfo.xsJbxx.xbm_stuFlag == 2"
                       placeholder="请选择"
@@ -1268,12 +1283,27 @@
                     {{ detailInfo.xsJbxx.jg_chinese }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <el-input
+                    <el-select
+                      v-model="detailInfo.xsJbxx.jg"
+                      size="small"
+                      :disabled="detailInfo.xsJbxx.jg_stuFlag == 2"
+                      placeholder="请选择"
+                      filterable
+                    >
+                      <el-option
+                        v-for="item in jgOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                    <!-- <el-input
                       v-model="detailInfo.xsJbxx.jg_chinese"
                       :disabled="detailInfo.xsJbxx.jg_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
-                    ></el-input>
+                    ></el-input> -->
                   </div>
                 </div>
               </el-col>
@@ -1286,7 +1316,7 @@
                   <div v-if="isEdit == 2" class="content">
                     <!-- <el-input v-model="detailInfo.xsJbxx.mzm" :disabled="detailInfo.xsJbxx.mzm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
                     <el-select
-                      v-model="detailInfo.xsJbxx.mzm_chinese"
+                      v-model="detailInfo.xsJbxx.mzm"
                       size="small"
                       :disabled="detailInfo.xsJbxx.mzm_stuFlag == 2"
                       placeholder="请选择"
@@ -1798,7 +1828,7 @@
                   <div v-if="isEdit == 2" class="content">
                     <!-- <el-input v-model="detailInfo.xsXjxx.xslbm" :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
                     <el-select
-                      v-model="detailInfo.xsXjxx.xslbm_chinese"
+                      v-model="detailInfo.xsXjxx.xslbm"
                       size="small"
                       :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2"
                       placeholder="请选择"
@@ -2866,6 +2896,7 @@ export default {
       pyccOps: [],
       zzmmOps: [],
       xzOps: [],
+      jgOps:[],
       allDwh: [],
       zyOps: [],
       xslbOps: [],
@@ -2907,6 +2938,7 @@ export default {
       this.getCode("dmxz"); // 学 制
       this.getCode("dmxslbm"); // 学学生类别
       this.getCode("dmyjszxjhm"); // 专项计划码
+      this.getCode("dmxzqhm"); // 籍贯
       if (this.isEdit == 1) {
         this.getDetail();
       } else {
@@ -2981,12 +3013,18 @@ export default {
             case "dmxz":
               this.xzOps = res.data;
               break;
+            case 'dmxzqhm':
+              this.jgOps = res.data
+              break;
             case "dmxbm":
               this.dmxbmOPs = res.data;
+              break;
             case "dmxslbm":
               this.xslbOps = res.data;
+              break;
             case "dmyjszxjhm":
               this.zxjhmOps = res.data;
+              break;
           }
         })
         .catch((err) => {});

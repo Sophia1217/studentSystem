@@ -2082,7 +2082,7 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">是否当前最高学位</div>
-                  <div v-if="isEdit == 1" class="content">
+                  <!-- <div v-if="isEdit == 1" class="content">
                     {{ detailInfoData.zgXlxws.sfdqzgxwm }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
@@ -2101,6 +2101,53 @@
                         placeholder="请输入内容"
                         :disabled="false"
                       />
+                    </div>
+                  </div> -->
+                   <div v-if="isEdit == 1" class="content">
+                    <!-- {{ detailInfoData.zgXlxws.sfdqzgxlm }} -->
+                    <el-select
+                        v-model="detailInfoData.zgXlxws.sfdqzgxwm"
+                        placeholder=""
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="item in sfdqzgxlmOps"
+                          :key="item.dm"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <div v-if="zgXlxwsAuth.SFDQZGXLM == 2">
+                      <el-select
+                        v-model="detailInfoData.zgXlxws.sfdqzgxwm"
+                        placeholder=""
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="item in sfdqzgxlmOps"
+                          :key="item.dm"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                    </div>
+                    <div v-else>
+                      <el-select
+                        v-model="detailInfoData.zgXlxws.sfdqzgxwm"
+                        placeholder=""
+                        size="small"
+                      >
+                        <el-option
+                          v-for="item in sfdqzgxlmOps"
+                          :key="item.dm"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
                     </div>
                   </div>
                 </div>
@@ -2485,7 +2532,7 @@
                       v-model="scope.row.prgwdjm"
                       placeholder="请选择"
                       size="small"
-                      disabled
+                      
                     >
                       <el-option
                         v-for="item in prgwdjmOps"
@@ -2824,7 +2871,7 @@
                       v-model="scope.row.khjgm"
                       placeholder="请选择"
                       size="small"
-                      disabled
+                      
                     >
                       <el-option
                         v-for="item in khjgmOps"
@@ -3443,21 +3490,21 @@ import {
   updateDetailQueryPoliticalWorkList,
   getCodeInfoByEnglish,
   queryAllDwh,
-  getMajors
-} from '@/api/politicalWork/basicInfo'
+  getMajors,
+} from "@/api/politicalWork/basicInfo";
 export default {
-  name: 'DetailInfo',
+  name: "DetailInfo",
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.routerFrom = from.fullPath
-    })
+      vm.routerFrom = from.fullPath;
+    });
   },
   data() {
     return {
       sfdqzgxlmOps: [
-          { dm: 0, mc: "否"  },
-          { dm: 1, mc: "是"  },
-        ],
+        { dm: 0, mc: "否" },
+        { dm: 1, mc: "是" },
+      ],
       xbmOps: [],
       mzmOps: [],
       zzmmmOps: [],
@@ -3475,10 +3522,10 @@ export default {
       xyOps: [],
       cblbmOps: [],
       dwhOps: [],
-      gjdqmOps:[],
-      sxzymOps:[],
-      jgOps:[],
-      xzOps:[],
+      gjdqmOps: [],
+      sxzymOps: [],
+      jgOps: [],
+      xzOps: [],
 
       crzyjszwmOps: [],
 
@@ -3488,7 +3535,7 @@ export default {
       zjzcdmOps: [],
       prgwxlmOps: [],
       prgwdjmOps: [],
-      gwdjmOps:[],
+      gwdjmOps: [],
       khjgmOps: [],
 
       zgZgjbxxesAuth: {},
@@ -3503,7 +3550,7 @@ export default {
       zgJlbzsAuth: {},
       zgJxkyqksAuth: {},
       zgZzkyqksAuth: {},
-      routerFrom: '', // 跳转过来的路由
+      routerFrom: "", // 跳转过来的路由
       detailInfoData: {
         zgZgjbxxes: {},
         zgGzjls: [],
@@ -3516,72 +3563,72 @@ export default {
         zgLwkyqks: [],
         zgZzkyqks: [],
         zgJxkyqks: [],
-        zgZps: {}
+        zgZps: {},
       },
       dtailsList: [
-        '基本信息',
-        '工作简历',
-        '学历学位信息',
-        '专业技术职务',
-        '学习培训',
-        '年度考核',
-        '奖励表彰信息',
-        '科研情况（项目）',
-        '科研情况（论文）',
-        '科研情况（著作）',
-        '科研情况（教学情况）'
+        "基本信息",
+        "工作简历",
+        "学历学位信息",
+        "专业技术职务",
+        "学习培训",
+        "年度考核",
+        "奖励表彰信息",
+        "科研情况（项目）",
+        "科研情况（论文）",
+        "科研情况（著作）",
+        "科研情况（教学情况）",
       ],
       current: 0,
       tableData: [],
       isEdit: false,
-      value: ''
-    }
+      value: "",
+    };
   },
   created() {
     this.$nextTick(() => {
-      this.getDetail()
-    })
-    this.isEdit = this.$route.query.show
+      this.getDetail();
+    });
+    this.isEdit = this.$route.query.show;
   },
   mounted() {
-    this.getCode('dmxbm') // 性别码
-    this.getCode('dmmzm') // 民族码 
-    this.getCode('dmxzqhm') // 籍贯码
-    this.getCode('dmzzmmm') // 政治面貌码
-    this.getCode('dmrsgjdqm') // 国籍地区码
-    this.getCode('dmsfzjlxm') // 身份证件类型码
-    this.getCode('dmrshyzkm') // 婚姻状况码_公用
-    this.getCode('dmrsxlm') // 学历码
-    this.getCode('dmxwm') // 学位码
+    this.getCode("dmxbm"); // 性别码
+    this.getCode("dmmzm"); // 民族码
+    this.getCode("dmxzqhm"); // 籍贯码
+    this.getCode("dmzzmmm"); // 政治面貌码
+    this.getCode("dmrsgjdqm"); // 国籍地区码
+    this.getCode("dmsfzjlxm"); // 身份证件类型码
+    this.getCode("dmrshyzkm"); // 婚姻状况码_公用
+    this.getCode("dmrsxlm"); // 学历码
+    this.getCode("dmxwm"); // 学位码
     // this.getWorkPlace('dmdwmc') // 单位
 
-    this.getCode('dmrsrylbm') // 人员类别码
-    this.getCode('dmrsryflm') // 人员总分类
-    this.getCode('dmrsgwztm') // 人员岗位状态
-    this.getCode('dmrsxklbm') // 学科类别
-    this.getCode('dmrsxym') // 学缘
-    this.getCode('dmrscblbm') // 参保类别码
+    this.getCode("dmrsrylbm"); // 人员类别码
+    this.getCode("dmrsryflm"); // 人员总分类
+    this.getCode("dmrsgwztm"); // 人员岗位状态
+    this.getCode("dmrsxklbm"); // 学科类别
+    this.getCode("dmrsxym"); // 学缘
+    this.getCode("dmrscblbm"); // 参保类别码
 
-    this.getCode('dmrszyjszwm') // 曾任专业技术职务码
+    this.getCode("dmrszyjszwm"); // 曾任专业技术职务码
 
-    this.getCode('dmxxfsm') // 学习方式码
-    this.getCode('dmrsxxxsm') // 学习形式码
-    this.getCode('dmxz') // 学制
+    this.getCode("dmxxfsm"); // 学习方式码
+    this.getCode("dmrsxxxsm"); // 学习形式码
+    this.getCode("dmxz"); // 学制
     // this.getCode('dmrsxklbm') // 学习方式码
     // this.getCode('dmxwm') // 学习方式码
     // this.getCode('dmrsgjdqm') // 学习方式码
     // this.getCode('dmrsxym') // 学习方式码
 
-    this.getCode('dmkyzcm') // 专业职称码
-    this.getCode('dmrsprgwxlm') // 聘任岗位系列码
-    this.getCode('dmrsprgwdjm') // 聘任岗位等级码
-    this.getCode('dmrsgwdjm') // 岗位等级码
+    this.getCode("dmkyzcm"); // 专业职称码
+    this.getCode("dmrsprgwxlm"); // 聘任岗位系列码
+    this.getCode("dmrsprgwdjm"); // 聘任岗位等级码
+    this.getCode("dmrsgwdjm"); // 岗位等级码
     // this.getCode('dmrsprgwdjm') // 专技等级
 
-    this.getCode('dmrskhjgm') // 考核结果码
+    this.getCode("dmrskhjgm"); // 考核结果码
 
-    this.getListWorkPlace() //单位码表
-    this.getSxzy()
+    this.getListWorkPlace(); //单位码表
+    this.getSxzy();
   },
 
   methods: {
@@ -3597,110 +3644,110 @@ export default {
     //     })
     //     .catch((err) => {})
     // },
-    getSxzy(){
-      getMajors().then((res) => {
-          this.sxzymOps = res.data.rows
+    getSxzy() {
+      getMajors()
+        .then((res) => {
+          this.sxzymOps = res.data.rows;
         })
-        .catch((err) => {})
+        .catch((err) => {});
     },
     getListWorkPlace() {
       queryAllDwh()
         .then((res) => {
-          this.dwhOps = res.data.rows
+          this.dwhOps = res.data.rows;
         })
-        .catch((err) => {})
+        .catch((err) => {});
     },
     getCode(data) {
-      this.getCodeInfoByEnglish(data)
+      this.getCodeInfoByEnglish(data);
     },
     getCodeInfoByEnglish(paramsData) {
-      const data = { codeTableEnglish: paramsData }
+      const data = { codeTableEnglish: paramsData };
       getCodeInfoByEnglish(data)
         .then((res) => {
-         
           switch (paramsData) {
-            case 'dmxbm':
-              this.xbmOps = res.data
-              break
-            case 'dmmzm':
-              this.mzmOps = res.data
-              break
-            case 'dmzzmmm':
-              this.zzmmmOps = res.data
-              break
-            case 'dmrsgjdqm':
-              this.gjdqmOps = res.data
-              this.sxwgjdqmOps = res.data
-              break
-            case 'dmsfzjlxm':
-              this.sfzjlxmOps = res.data
-              break
-            case 'dmrshyzkm':
-              this.hyzkmOps = res.data
-              break
-            case 'dmrsxlm':
-              this.zgxlmOps = res.data
-              break
-            case 'dmxwm':
-              this.xwmOps = res.data
-              break
-            case 'dmrsrylbm':
-              this.jzgrylbmOps = res.data
-              break
-            case 'dmrsryflm':
-              this.rsryflmOps = res.data
-              break
-            case 'dmrsgwztm':
-              this.rygwztmOps = res.data
-              break
-            case 'dmrsxklbm':
-              this.xklbmOps = res.data
-              this.yjxkmOps = res.data
-              this.ejxkmOps = res.data
+            case "dmxbm":
+              this.xbmOps = res.data;
+              break;
+            case "dmmzm":
+              this.mzmOps = res.data;
+              break;
+            case "dmzzmmm":
+              this.zzmmmOps = res.data;
+              break;
+            case "dmrsgjdqm":
+              this.gjdqmOps = res.data;
+              this.sxwgjdqmOps = res.data;
+              break;
+            case "dmsfzjlxm":
+              this.sfzjlxmOps = res.data;
+              break;
+            case "dmrshyzkm":
+              this.hyzkmOps = res.data;
+              break;
+            case "dmrsxlm":
+              this.zgxlmOps = res.data;
+              break;
+            case "dmxwm":
+              this.xwmOps = res.data;
+              break;
+            case "dmrsrylbm":
+              this.jzgrylbmOps = res.data;
+              break;
+            case "dmrsryflm":
+              this.rsryflmOps = res.data;
+              break;
+            case "dmrsgwztm":
+              this.rygwztmOps = res.data;
+              break;
+            case "dmrsxklbm":
+              this.xklbmOps = res.data;
+              this.yjxkmOps = res.data;
+              this.ejxkmOps = res.data;
               // this.sxzymOps = res.data
-              break
-            case 'dmrsxym':
-              this.xyOps = res.data
-              break
-            case 'dmrscblbm':
-              this.cblbmOps = res.data
-              break
-            case 'dmrszyjszwm':
-              this.crzyjszwmOps = res.data
-              break
-            case 'dmxxfsm':
-              this.xxfsmOps = res.data
-              break
-            case 'dmrsxxxsm':
-              this.xxxsmOps = res.data
-              break
-            case 'dmkyzcm':
-              this.zjzcdmOps = res.data
-              break
-            case 'dmrsprgwxlm':
-              this.prgwxlmOps = res.data
-              break
-            case 'dmrsprgwdjm':
-              this.prgwdjmOps = res.data
-              break
-            case 'dmrskhjgm':
-              this.khjgmOps = res.data
-              break
-              //籍贯
-            case 'dmxzqhm':
-              this.jgOps = res.data
-              break
-              //学制
-            case 'dmxz':
-              this.xzOps = res.data
-              break
-              //岗位等级
-              case 'dmrsgwdjm':
-              this.gwdjOps = res.data
-              break
+              break;
+            case "dmrsxym":
+              this.xyOps = res.data;
+              break;
+            case "dmrscblbm":
+              this.cblbmOps = res.data;
+              break;
+            case "dmrszyjszwm":
+              this.crzyjszwmOps = res.data;
+              break;
+            case "dmxxfsm":
+              this.xxfsmOps = res.data;
+              break;
+            case "dmrsxxxsm":
+              this.xxxsmOps = res.data;
+              break;
+            case "dmkyzcm":
+              this.zjzcdmOps = res.data;
+              break;
+            case "dmrsprgwxlm":
+              this.prgwxlmOps = res.data;
+              break;
+            case "dmrsprgwdjm":
+              this.prgwdjmOps = res.data;
+              break;
+            case "dmrskhjgm":
+              this.khjgmOps = res.data;
+              break;
+            //籍贯
+            case "dmxzqhm":
+              this.jgOps = res.data;
+              break;
+            //学制
+            case "dmxz":
+              this.xzOps = res.data;
+              break;
+            //岗位等级
+            case "dmrsgwdjm":
+              this.gwdjOps = res.data;
+              break;
           }
         })
-        .catch((err) => {})
+        .catch((err) => {});
     },
     getDetail() {
       // 学历学位;
@@ -3714,188 +3761,187 @@ export default {
         .then((res) => {
           this.$set(
             this.detailInfoData,
-            'zgZgjbxxes',
+            "zgZgjbxxes",
             res.zgZgjbxxes[0] ? res.zgZgjbxxes[0] : {} // 基本信息  如果接受不到第一个对象，那么就给他一个空对象
-          )
+          );
           this.$set(
             this.detailInfoData,
-            'zgGzjls',
+            "zgGzjls",
             res.zgGzjls ? res.zgGzjls : {} // 工作简历
-          )
+          );
           this.$set(
             this.detailInfoData,
-            'zgXlxws',
+            "zgXlxws",
             res.zgXlxws[0] ? res.zgXlxws[0] : {} // 学历学位
-          )
+          );
           this.$set(
             this.detailInfoData,
-            'zgKycgs',
+            "zgKycgs",
             res.zgKycgs ? res.zgKycgs[0] : {} // 科研成果
-          )
+          );
           this.$set(
             this.detailInfoData,
-            'zgZyjszws',
+            "zgZyjszws",
             res.zgZyjszws ? res.zgZyjszws : {} // 专业技术职务
-          )
+          );
           this.$set(
             this.detailInfoData,
-            'zgXxpxes',
+            "zgXxpxes",
             res.zgXxpxes ? res.zgXxpxes : {} // 学习培训
-          )
+          );
           this.$set(
             this.detailInfoData,
-            'zgNdkhs',
+            "zgNdkhs",
             res.zgNdkhs ? res.zgNdkhs : {} // 年度考核
-          )
+          );
           this.$set(
             this.detailInfoData,
-            'zgJlbzs',
+            "zgJlbzs",
             res.zgJlbzs ? res.zgJlbzs : {} // 奖励表彰
-          )
+          );
           this.$set(
             this.detailInfoData,
-            'zgXmkyqks',
+            "zgXmkyqks",
             res.zgXmkyqks ? res.zgXmkyqks : {} // 项目科研情况
-          )
+          );
           this.$set(
             this.detailInfoData,
-            'zgLwkyqks',
+            "zgLwkyqks",
             res.zgLwkyqks ? res.zgLwkyqks : {} // 论文科研成果
-          )
+          );
           this.$set(
             this.detailInfoData,
-            'zgZzkyqks',
+            "zgZzkyqks",
             res.zgZzkyqks ? res.zgZzkyqks : {} // 著作科研情况
-          )
+          );
           this.$set(
             this.detailInfoData,
-            'zgJxkyqks',
+            "zgJxkyqks",
             res.zgJxkyqks ? res.zgJxkyqks : {} // 教学科研情况
           ),
-          this.$set(
-            this.detailInfoData,
-            'zgZps',
-            res.zgZps[0] ? res.zgZps[0] : {} // 照片
-          )
-          this.$set(this.detailInfoData, 'updateTime', res.updateTime)
-          this.$set(this.detailInfoData, 'createTime', res.createTime)
-          this.zgZgjbxxesAuth = res.auth.zg_zgjbxxAuth
-          this.zgGzjlsAuth = res.auth.zg_gzjlAuth
-          this.zgXxpxesAuth = res.auth.zg_xxpxAuth
-          this.zgXlxwsAuth = res.auth.zg_xlxwAuth
-          this.zgNdkhsAuth = res.auth.zg_ndkhAuth
-          this.zgKycgsAuth = res.auth.zg_kycgAuth
-          this.zgLwkyqksAuth = res.auth.zg_lwkyqkAuth
-          this.zgXmkyqksAuth = res.auth.zg_xmkyqkAuth
-          this.zgZyjszwsAuth = res.auth.zg_zyjszwAuth
-          this.zgJlbzsAuth = res.auth.zg_jlbzAuth
-          this.zgJxkyqksAuth = res.auth.zg_jxkyqkAuth
-          this.zgZzkyqksAuth = res.auth.zg_zzkyqkAuth
+            this.$set(
+              this.detailInfoData,
+              "zgZps",
+              res.zgZps[0] ? res.zgZps[0] : {} // 照片
+            );
+          this.$set(this.detailInfoData, "updateTime", res.updateTime);
+          this.$set(this.detailInfoData, "createTime", res.createTime);
+          this.zgZgjbxxesAuth = res.auth.zg_zgjbxxAuth;
+          this.zgGzjlsAuth = res.auth.zg_gzjlAuth;
+          this.zgXxpxesAuth = res.auth.zg_xxpxAuth;
+          this.zgXlxwsAuth = res.auth.zg_xlxwAuth;
+          this.zgNdkhsAuth = res.auth.zg_ndkhAuth;
+          this.zgKycgsAuth = res.auth.zg_kycgAuth;
+          this.zgLwkyqksAuth = res.auth.zg_lwkyqkAuth;
+          this.zgXmkyqksAuth = res.auth.zg_xmkyqkAuth;
+          this.zgZyjszwsAuth = res.auth.zg_zyjszwAuth;
+          this.zgJlbzsAuth = res.auth.zg_jlbzAuth;
+          this.zgJxkyqksAuth = res.auth.zg_jxkyqkAuth;
+          this.zgZzkyqksAuth = res.auth.zg_zzkyqkAuth;
         })
-        .catch((err) => {})
+        .catch((err) => {});
     },
     handleList(index, tag) {
-      this.current = index
-      var id = '#' + tag + '_' + index
-     
+      this.current = index;
+      var id = "#" + tag + "_" + index;
+
       document.querySelector(id).scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-        inline: 'nearest'
-      })
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
     },
     addDetailInfoData(index) {
       if (index == 1) {
         // 工作简历1
-        this.detailInfoData.zgGzjls.push({})
+        this.detailInfoData.zgGzjls.push({});
       } else if (index == 2) {
         // 专业技术职务
-        this.detailInfoData.zgZyjszws.push({})
+        this.detailInfoData.zgZyjszws.push({});
       } else if (index == 3) {
         // 学习培训
-        this.detailInfoData.zgXxpxes.push({})
+        this.detailInfoData.zgXxpxes.push({});
       } else if (index == 4) {
         // 年度考核
-        this.detailInfoData.zgNdkhs.push({})
+        this.detailInfoData.zgNdkhs.push({});
       } else if (index == 5) {
         // 奖励表彰信息
-        this.detailInfoData.zgJlbzs.push({})
+        this.detailInfoData.zgJlbzs.push({});
       } else if (index == 6) {
         // 政工科研情况（项目）
-        this.detailInfoData.zgXmkyqks.push({})
+        this.detailInfoData.zgXmkyqks.push({});
       } else if (index == 7) {
         // 政工科研情况（论文）
-        this.detailInfoData.zgLwkyqks.push({})
+        this.detailInfoData.zgLwkyqks.push({});
       } else if (index == 8) {
         // 政工科研情况（著作）
-        this.detailInfoData.zgZzkyqks.push({})
+        this.detailInfoData.zgZzkyqks.push({});
       } else if (index == 9) {
         // 政工科研情况（教学情况）
-        this.detailInfoData.zgJxkyqks.push({})
+        this.detailInfoData.zgJxkyqks.push({});
       }
     },
     deleteWorkBrifeData(row, index, flag) {
-      if (flag == 'a') {
+      if (flag == "a") {
         // 工作简历
-        this.detailInfoData.zgGzjls.splice(index, 1)
-      } else if (flag == 'b') {
+        this.detailInfoData.zgGzjls.splice(index, 1);
+      } else if (flag == "b") {
         // 专业技术职务
-        this.detailInfoData.zgZyjszws.splice(index, 1)
-      } else if (flag == 'c') {
+        this.detailInfoData.zgZyjszws.splice(index, 1);
+      } else if (flag == "c") {
         // 学习培训
-        this.detailInfoData.zgXxpxes.splice(index, 1)
-      } else if (flag == 'd') {
+        this.detailInfoData.zgXxpxes.splice(index, 1);
+      } else if (flag == "d") {
         // 年度考核是D
-        this.detailInfoData.zgNdkhs.splice(index, 1)
-      } else if (flag == 'e') {
+        this.detailInfoData.zgNdkhs.splice(index, 1);
+      } else if (flag == "e") {
         // 奖励是E
-        this.detailInfoData.zgJlbzs.splice(index, 1)
-      } else if (flag == 'f') {
+        this.detailInfoData.zgJlbzs.splice(index, 1);
+      } else if (flag == "f") {
         // 政工科研情况（项目）
-        this.detailInfoData.zgXmkyqks.splice(index, 1)
-      } else if (flag == 'g') {
+        this.detailInfoData.zgXmkyqks.splice(index, 1);
+      } else if (flag == "g") {
         // 政工科研情况（论文）
-        this.detailInfoData.zgLwkyqks.splice(index, 1)
-      } else if (flag == 'h') {
+        this.detailInfoData.zgLwkyqks.splice(index, 1);
+      } else if (flag == "h") {
         // 政工科研情况（著作）
-        this.detailInfoData.zgZzkyqks.splice(index, 1)
-      } else if (flag == 'i') {
+        this.detailInfoData.zgZzkyqks.splice(index, 1);
+      } else if (flag == "i") {
         // 政工科研情况（教学情况）
-        this.detailInfoData.zgJxkyqks.splice(index, 1)
+        this.detailInfoData.zgJxkyqks.splice(index, 1);
       }
-    
     },
     editButtonClick() {
-      this.isEdit = 2 // 控制是否可以编辑的字段
+      this.isEdit = 2; // 控制是否可以编辑的字段
     },
     // 取消
     handleCancle() {
       // this.$router.push({
       //   path: this.routerFrom,
       // });
-      this.isEdit = 1
-      this.getDetail()
+      this.isEdit = 1;
+      this.getDetail();
     },
     // 提交
     handlUpdata() {
-      var data = this.detailInfoData
+      var data = this.detailInfoData;
       updateDetailQueryPoliticalWorkList(data)
         .then((res) => {
           this.$message({
             message: res.errmsg,
-            type: 'success'
-          })
-          this.isEdit = 1
+            type: "success",
+          });
+          this.isEdit = 1;
           // this.$router.push({
           //   path: this.routerFrom
           // })
         })
         .catch((err) => {
-          this.$message.error(err.errmsg)
-        })
-    }
-  }
-}
+          this.$message.error(err.errmsg);
+        });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -3925,11 +3971,11 @@ export default {
         cursor: pointer;
         padding: 0 10px;
         box-sizing: border-box;
-        .ellipsis{
-          width:150px;
-          overflow: hidden;//溢出隐藏
-          white-space: nowrap;//禁止换行
-          text-overflow: ellipsis;//...
+        .ellipsis {
+          width: 150px;
+          overflow: hidden; //溢出隐藏
+          white-space: nowrap; //禁止换行
+          text-overflow: ellipsis; //...
         }
       }
       .active {
@@ -4022,7 +4068,7 @@ export default {
               background: #e0e0e0;
               text-align: right;
               padding-right: 5px;
-              margin:0 !important;
+              margin: 0 !important;
             }
             .content {
               font-weight: 400;
@@ -4072,5 +4118,4 @@ export default {
     }
   }
 }
-
 </style>

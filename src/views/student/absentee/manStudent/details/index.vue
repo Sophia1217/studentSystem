@@ -2890,17 +2890,29 @@ export default {
         xsGzjlList: [], // 学生工作经历
         xsXszpb: {}, // 学生信息照片
       },
-      dmxbmOPs: [],
-      dmmzmOps: [],
-      dmxjztmOps: [],
-      pyccOps: [],
-      zzmmOps: [],
-      xzOps: [],
-      jgOps: [],
+      dmxbmOPs: [], //性别
+      dmmzmOps: [], //民族
+      dmxjztmOps: [], //学籍状态
+      pyccOps: [], //培养层次
+      zzmmOps: [], //政治面貌
+      xzOps: [], //学制
+      jgOps: [], //籍贯和出生地
       allDwh: [],
       zyOps: [],
-      xslbOps: [],
-      zxjhmOps: [],
+      xslbOps: [], //;学生类别
+      zxjhmOps: [], // 专项计划码
+      gjdqm: [],
+      dmsfzjlxm: [], // 身份证类型
+      dmhyzkm: [], // 婚姻状况
+      gatqwm: [], // 港澳台侨外
+      dmpyccm: [], // 培养层次
+      dmrxfsm: [], // 入学方式
+      dmjdfsm: [], // 就读方式
+      hdxlfsm: [], // 获得学历方式
+      dmpyfsm: [], // 培养方式
+      dmxxfsm: [], // 学习方式
+      dmyjszyxwlbm: [], // 专业学位类别
+      dmsfbzm: [], //  是否毕业 是否学分制 是否师范生
     };
   },
   created() {
@@ -2935,10 +2947,23 @@ export default {
       this.getCode("dmxjztm"); // 学籍
       this.getCode("dmpyccm"); // 培养层次
       this.getCode("dmzzmmm"); // 政治面貌
-      this.getCode("dmxz"); // 学 制
-      this.getCode("dmxslbm"); // 学学生类别
+      this.getCode("dmxz"); // 学制
+      this.getCode("dmxslbm"); // 学生类别
       this.getCode("dmyjszxjhm"); // 专项计划码
       this.getCode("dmxzqhm"); // 籍贯
+      this.getCode("dmsjgghdqmcm"); // 国籍地区 来源地区
+      this.getCode("dmsfzjlxm"); // 身份证类型
+      this.getCode("dmhyzkm"); // 婚姻状况
+      this.getCode("gatqwm"); // 港澳台侨外
+      this.getCode("dmpyccm"); // 培养层次
+      this.getCode("dmxjztm"); // 学籍状态
+      this.getCode("dmsfbzm"); // 是否毕业 是否学分制 是否师范生
+      this.getCode("dmrxfsm"); // 入学方式
+      this.getCode("dmjdfsm"); // 就读方式
+      this.getCode("hdxlfsm"); // 获得学历方式
+      this.getCode("dmpyfsm"); // 培养方式
+      this.getCode("dmxxfsm"); // 学习方式
+      this.getCode("dmyjszyxwlbm"); // 专业学位类别
       if (this.isEdit == 1) {
         this.getDetail();
       } else {
@@ -2948,6 +2973,77 @@ export default {
   },
 
   methods: {
+    getCodeInfoByEnglish(paramsData) {
+      let data = { codeTableEnglish: paramsData };
+      getCodeInfoByEnglish(data)
+        .then((res) => {
+          switch (paramsData) {
+            case "dmxbm":
+              this.dmxbmOPs = res.data; //性别
+              break;
+            case "dmmzm": //民族
+              this.dmmzmOps = res.data;
+              break;
+            case "dmxjztm": //学籍状态
+              this.dmxjztmOps = res.data;
+              break;
+            case "dmpyccm": //培养层次
+              this.pyccOps = res.data;
+              break;
+            case "dmzzmmm": //政治面貌
+              this.zzmmOps = res.data;
+              break;
+            case "dmxz": //学制
+              this.xzOps = res.data;
+              break;
+            case "dmxzqhm": //籍贯和出生地
+              this.jgOps = res.data;
+              break;
+            case "dmxslbm": //;学生类别
+              this.xslbOps = res.data;
+              break;
+            case "dmyjszxjhm": // 专项计划码
+              this.zxjhmOps = res.data;
+              break;
+            //******************* */
+            //  newnew
+            case "dmsjgghdqmcm": //国籍地区 来源地区
+              this.gjdqm = res.data;
+              break;
+            case "dmsfzjlxm": //身份证类型
+              this.dmsfzjlxm = res.data;
+              break;
+            case "dmhyzkm": //婚姻状况
+              this.dmhyzkm = res.data;
+              break;
+            case "gatqwm": //港澳台侨外
+              this.gatqwm = res.data;
+              break;
+            case "dmsfbzm": //是否毕业 是否学分制 是否师范生
+              this.dmsfbzm = res.data;
+              break;
+            case "dmrxfsm": //入学方式
+              this.dmrxfsm = res.data;
+              break;
+            case "dmjdfsm": //就读方式
+              this.dmjdfsm = res.data;
+              break;
+            case "hdxlfsm": //获得学历方式
+              this.hdxlfsm = res.data;
+              break;
+            case "dmpyfsm": //培养方式
+              this.dmpyfsm = res.data;
+              break;
+            case "dmxxfsm": //;学习方式
+              this.dmxxfsm = res.data;
+              break;
+            case "dmyjszyxwlbm": //;专业学位类别
+              this.dmyjszyxwlbm = res.data;
+              break;
+          }
+        })
+        .catch((err) => {});
+    },
     // 查询学院
     getAllCollege() {
       getCollege()
@@ -2993,42 +3089,7 @@ export default {
     getCode(data) {
       this.getCodeInfoByEnglish(data);
     },
-    getCodeInfoByEnglish(paramsData) {
-      let data = { codeTableEnglish: paramsData };
-      getCodeInfoByEnglish(data)
-        .then((res) => {
-          switch (paramsData) {
-            case "dmpyccm":
-              this.pyccOps = res.data;
-              break;
-            case "dmxjztm":
-              this.dmxjztmOps = res.data;
-              break;
-            case "dmmzm":
-              this.dmmzmOps = res.data;
-              break;
-            case "dmzzmmm":
-              this.zzmmOps = res.data;
-              break;
-            case "dmxz":
-              this.xzOps = res.data;
-              break;
-            case "dmxzqhm":
-              this.jgOps = res.data;
-              break;
-            case "dmxbm":
-              this.dmxbmOPs = res.data;
-              break;
-            case "dmxslbm":
-              this.xslbOps = res.data;
-              break;
-            case "dmyjszxjhm":
-              this.zxjhmOps = res.data;
-              break;
-          }
-        })
-        .catch((err) => {});
-    },
+
     getloadRegStuInfoUpdatePage() {
       let data = { XH: this.xh };
       loadRegStuInfoUpdatePage(data)
@@ -3064,6 +3125,10 @@ export default {
       let data = { XH: this.$route.query.xh };
       getRegStuInfoDetailPage(data)
         .then((res) => {
+          // var arr = res.data.xsGzjlList || [];
+          // var arr1 = arr.filter(function (s) {
+          //   return s && s.trim();
+          // });
           this.$set(
             this.detailInfo,
             "xsJbxx",
@@ -3079,9 +3144,21 @@ export default {
             "xsXjxx",
             res.data.xsXjxx ? res.data.xsXjxx : {}
           );
-          this.$set(this.detailInfo, "xsJtcyxxList", res.data.xsJtcyxxList);
-          this.$set(this.detailInfo, "xsXxjlList", res.data.xsXxjlList);
-          this.$set(this.detailInfo, "xsGzjlList", res.data.xsGzjlList);
+          this.$set(
+            this.detailInfo,
+            "xsJtcyxxList",
+            res.data.xsJtcyxxList ? res.data.xsJtcyxxList : []
+          );
+          this.$set(
+            this.detailInfo,
+            "xsXxjlList",
+            res.data.xsXxjlList ? res.data.xsXxjlList : []
+          );
+          this.$set(
+            this.detailInfo,
+            "xsGzjlList",
+            res.data.xsGzjlList ? res.data.xsGzjlList : []
+          );
           this.$set(
             this.detailInfo,
             "xsXszpb",

@@ -172,11 +172,15 @@
             <el-input v-model="form.gh" @input="handleInput"></el-input>
           </el-form-item>
           <el-form-item label="姓 名" prop="name">
-            <el-select v-model="form.name" placeholder="未选择" @change="selectClick">
+            <el-select
+              v-model="form.name"
+              placeholder="未选择"
+              @change="selectClick"
+            >
               <el-option
                 v-for="(item, index) in nameOptions"
                 :key="index"
-                :label="item.xm +'（' + item.gh + '）'"
+                :label="item.xm + '（' + item.gh + '）'"
                 :value="item.xm"
               ></el-option
             ></el-select>
@@ -185,6 +189,16 @@
             <el-select v-model="form.type" placeholder="未选择">
               <el-option
                 v-for="(item, index) in this.category.checkBox"
+                :key="index"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option
+            ></el-select>
+          </el-form-item>
+          <el-form-item label="所辖培养层次" prop="type">
+            <el-select v-model="form.sxpycc" placeholder="未选择">
+              <el-option
+                v-for="(item, index) in this.Sxpycc"
                 :key="index"
                 :label="item.mc"
                 :value="item.dm"
@@ -247,11 +261,14 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="bjbh" label="班级编号" sortable="custom" />
-        <el-table-column prop="bjmc" label="班级名称" sortable="custom" />
-        <el-table-column prop="pycc" label="培养层次" sortable="custom" />
-        <el-table-column prop="pydw" label="培养单位" sortable="custom" />
-        <el-table-column prop="nj" label="年级" sortable="custom" />
+        <el-table-column prop="lb" label="类别" sortable="custom" />
+        <el-table-column
+          prop="sxpycc"
+          label="所辖培养层次"
+          width="150"
+          sortable="custom"
+        />
+        <el-table-column prop="gzdw" label="工作单位" sortable="custom" />
         <el-table-column prop="sfqy" label="任职状态" sortable="custom">
           <template slot-scope="scope">
             <div v-if="scope.row.sfqy == 0">
@@ -315,7 +332,6 @@ export default {
   props: [],
   data() {
     return {
-
       title: "",
       // // 总条数
       total: 0,
@@ -366,13 +382,15 @@ export default {
         gh: "",
         name: "",
         type: "",
+        sxpycc: "",
       },
       rules: {
         ghContent: [
           { required: true, message: "工号不能为空", trigger: "blur" },
         ],
       },
-      detailGh: '',
+      Sxpycc: [],
+      detailGh: "",
       basicInfoList: [],
       tableData: [],
       multipleSelection: [],
@@ -398,6 +416,7 @@ export default {
   mounted() {
     this.getList(this.queryParams);
     this.getCode("dmxbm");
+    this.getCode("dmpyccm");
     this.getOption();
   },
 
@@ -420,6 +439,10 @@ export default {
           switch (paramsData) {
             case "dmxbm":
               this.$set(this.sex, "checkBox", res.data);
+              break;
+            case "dmpyccm":
+              this.Sxpycc = res.data;
+              console.log(this.Sxpycc);
               break;
           }
         })
@@ -576,8 +599,8 @@ export default {
       this.showExport = false;
       var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
       var data = { ghList: arr };
-      var exportParams = this.queryParams
-      exportParams.pageSize = 0
+      var exportParams = this.queryParams;
+      exportParams.pageSize = 0;
       Object.assign(data, this.exportParams);
       outAssistant(data)
         .then((res) => this.downloadFn(res, "辅导员任命导出", "xlsx"))
@@ -617,6 +640,7 @@ export default {
         ghList: ghlist,
         xm: this.form.name,
         lb: this.form.type,
+        sxpycc: this.form.sxpycc,
       };
       addOneAssistant(data)
         .then((res) => {
@@ -633,7 +657,7 @@ export default {
     hadleDetail(row, flag) {
       this.open = true;
       this.title = "详情";
-      this.detailGh = row.gh
+      this.detailGh = row.gh;
       let ghdata = {
         gh: row.gh,
       };
@@ -659,11 +683,11 @@ export default {
       if (this.multipleSelection.length > 0) {
         this.showRemove = true;
         this.title = "免去";
-      }else {
-          this.$message({
-            message: "请至少选择一名辅导员！",
-            type: 'warning',
-          });
+      } else {
+        this.$message({
+          message: "请至少选择一名辅导员！",
+          type: "warning",
+        });
       }
     },
     /** 下载模板操作 */
@@ -726,6 +750,7 @@ export default {
         name: undefined,
         gh: undefined,
         type: undefined,
+        sxpycc: undefined,
       };
       //this.resetForm("form");
     },
@@ -743,7 +768,7 @@ export default {
         name = "";
         gonghao = "";
       }
-      this.queryParams.pageNum = 1
+      this.queryParams.pageNum = 1;
       this.queryParams.dwmcList = this.workPlace;
       this.queryParams.lbList = this.category.choose;
       this.queryParams.genderList = this.sex.choose;
@@ -761,7 +786,8 @@ export default {
       let orderZd = column.prop;
       let orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
       var data = { gh: this.detailGh, orderZd: orderZd, orderPx: orderPx };
-      lookDetail(data).then((res) => {
+      lookDetail(data)
+        .then((res) => {
           if (res.errcode == "00") {
             //console.log(res);
             this.tableData = res.assistantDetailRes;
@@ -772,30 +798,30 @@ export default {
         });
     },
     //工号查姓名
-    handleInput(){
-      let inputGh = this.form.gh
-      if(inputGh.length >=5){
+    handleInput() {
+      let inputGh = this.form.gh;
+      if (inputGh.length >= 5) {
         console.log("输入数大于等于5个");
-        getXm({gh: this.form.gh}).then((res) => {
-          this.nameOptions = res.XmGh
-          console.log("getXm成功");
-        })
-        .catch((err) => {});
-
+        getXm({ gh: this.form.gh })
+          .then((res) => {
+            this.nameOptions = res.XmGh;
+            console.log("getXm成功");
+          })
+          .catch((err) => {});
       }
     },
     //选中姓名，工号自动补充
-    selectClick(val){
-      for(var i in this.nameOptions){
-        if(this.nameOptions[i].xm == val){
-          this.form.gh = this.nameOptions[i].gh
+    selectClick(val) {
+      for (var i in this.nameOptions) {
+        if (this.nameOptions[i].xm == val) {
+          this.form.gh = this.nameOptions[i].gh;
 
           //打印看看
-          let a = this.form.gh
+          let a = this.form.gh;
           console.log("gh", a);
-          break
+          break;
         }
-      }     
+      }
     },
   },
 };

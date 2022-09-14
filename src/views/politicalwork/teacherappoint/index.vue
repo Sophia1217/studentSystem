@@ -170,46 +170,40 @@
         <el-table-column label="在岗日期" prop="rmsj,cxsj" width="180">
           <template slot-scope="scope">
             <!-- <div v-if="tableDataDetail.length > 0"> -->
-              <!-- <div v-for=" val in tableDataDetail" :key="tableDataDetail.gh">
+            <!-- <div v-for=" val in tableDataDetail" :key="tableDataDetail.gh">
                 <span
                   >{{ val.rmsj }} 至
                   {{ val.cxsj }}</span>
               </div> -->
-              <div v-if="scope.row.cxsj != null">
-                <span
-                  >{{ scope.row.rmsj }} 至
-                  {{ scope.row.cxsj }}</span
-                >
-              </div>
-              <div
-                v-if="
-                  scope.row.cxsj == null &&
-                  scope.row.rmsj != null
-                "
-              >
-                <span>{{ scope.row.rmsj }} 至今</span>
-              </div>
+            <div v-if="scope.row.cxsj != null">
+              <span>{{ scope.row.rmsj }} 至 {{ scope.row.cxsj }}</span>
+            </div>
+            <div v-if="scope.row.cxsj == null && scope.row.rmsj != null">
+              <span>{{ scope.row.rmsj }} 至今</span>
+            </div>
             <!-- </div> -->
             <!-- <div></div> -->
           </template>
         </el-table-column>
-        <!-- <el-table-column prop="bjbh" label="在岗日期" sortable="custom" /> -->
-        <el-table-column prop="bjbh" label="班级编号" sortable="custom" />
-        <el-table-column prop="bjmc" label="班级名称" sortable="custom" />
-        <el-table-column prop="pycc" label="培养层次" sortable="custom" />
-        <!-- <el-table-column prop="pydw" label="培养单位" sortable /> -->
-        <el-table-column prop="nj" label="年级" sortable="custom" />
+        <el-table-column prop="lb" label="类别" sortable="custom" />
+        <el-table-column
+          prop="sxpycc"
+          label="所辖培养层次"
+          width="150"
+          sortable="custom"
+        />
+        <el-table-column prop="gzdw" label="工作单位" sortable="custom" />
+
         <el-table-column prop="sfqy" label="任职状态" sortable="custom">
           <template slot-scope="scope">
             <div v-if="scope.row.sfqy == 0">
               <span class="greenDot">●</span><span>在岗</span>
             </div>
-            <!-- <span v-if="scope.row.dbzt == 1">是</span> -->
+
             <div v-else><span class="redDot">●</span><span>离岗</span></div>
-            <!-- <span v-else>否</span> -->
           </template>
         </el-table-column>
-        <!-- <el-table-column prop="rmztm" label="任职状态" sortable /> -->
+        <el-table-column prop="rmztm" label="任职状态" sortable />
         <el-table-column prop="rmrxm" label="任命人" sortable="custom" />
         <el-table-column prop="rmsj" label="任命时间" sortable="custom" />
         <el-table-column prop="cxrxm" label="免去人" sortable="custom" />
@@ -220,7 +214,7 @@
       </div>
     </el-dialog>
     <!-- 批量免去对话框 -->
-    <el-dialog :visible.sync="showRemove" width="30%">
+    <el-dialog :title="title" :visible.sync="showRemove" width="30%">
       <template v-for="item in multipleSelection">
         <div :key="item.gh">
           <span>确认免去【{{ item.gh }}】【{{ item.xm }}】班主任身份？</span>
@@ -235,7 +229,7 @@
       </span>
     </el-dialog>
     <!-- 导入对话框 -->
-    <el-dialog :visible.sync="showImport" width="30%">
+    <el-dialog :title="title" :visible.sync="showImport" width="30%">
       <el-form label-position="left" label-width="100px" :model="importForm">
         <el-form-item label="学工号" prop="gh">
           <el-input v-model="importForm.gh" @input="handleInput" />
@@ -253,6 +247,16 @@
               :value="item.xm"
             ></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="所辖培养层次" prop="type">
+          <el-select v-model="importForm.sxpycc" placeholder="未选择">
+            <el-option
+              v-for="(item, index) in this.Sxpycc"
+              :key="index"
+              :label="item.mc"
+              :value="item.dm"
+            ></el-option
+          ></el-select>
         </el-form-item>
       </el-form>
 
@@ -322,7 +326,7 @@ export default {
       total: 0,
       // 免任弹出
       showRemove: false,
-
+      title: "",
       // // 详情弹出层
       open: false,
       // // 查询参数
@@ -336,7 +340,7 @@ export default {
         gh: "",
         xm: "",
       },
-
+      Sxpycc: [],
       list: [],
       searchVal: "",
       select: "",
@@ -387,6 +391,7 @@ export default {
   mounted() {
     this.getListWorkPlace("dmdwmc"); // 工作单位
     this.getCode("dmxbm"); // 性别
+    this.getCode("dmpyccm");
   },
   methods: {
     //工作地点勾选
@@ -401,7 +406,15 @@ export default {
       const data = { codeTableEnglish: paramsData };
       getCodeInfoByEnglish(data)
         .then((res) => {
-          this.$set(this.sex, "checkBox", res.data);
+          switch (paramsData) {
+            case "dmxbm":
+              this.$set(this.sex, "checkBox", res.data);
+              break;
+            case "dmpyccm":
+              this.Sxpycc = res.data;
+
+              break;
+          }
         })
         .catch((err) => {});
     },
@@ -510,8 +523,8 @@ export default {
       this.showExport = false;
       var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
       var data = { ghList: arr };
-      var exportParams = this.queryParams
-      exportParams.pageSize = 0
+      var exportParams = this.queryParams;
+      exportParams.pageSize = 0;
       Object.assign(data, this.exportParams);
       exportTeacher(data)
         .then((res) => this.downloadFn(res, "班主任任命表", "xlsx"))
@@ -542,6 +555,7 @@ export default {
     /** 导入按钮操作 */
     handleImport() {
       this.showImport = true;
+      this.title = "导入班主任";
     },
 
     // /** 导入提交按钮 */
@@ -549,20 +563,24 @@ export default {
       // todo
       this.showImport = false;
       this.showConfirmImport = true;
+      this.resetImportForm();
     },
     // 取消导入提交按钮
     cancelImport() {
       this.showImport = false;
+      this.resetImportForm();
     },
 
     // 确认导入按钮
     confirmImport() {
       this.showConfirmImport = false;
-      addTeacher({ ghList: [this.importForm.gh], xm: this.importForm.xm }).then(
-        (res) => {
-          this.getList();
-        }
-      );
+      addTeacher({
+        ghList: [this.importForm.gh],
+        xm: this.importForm.xm,
+        sxpycc: this.importForm.sxpycc,
+      }).then((res) => {
+        this.getList();
+      });
     },
     // 取消导入按钮
     cancelConfirmImport() {
@@ -618,6 +636,14 @@ export default {
         roleIds: [],
       };
       this.resetForm("form");
+    },
+    resetImportForm() {
+      this.importForm = {
+        xm: undefined,
+        gh: undefined,
+        sxpycc: undefined,
+      };
+      console.log(1);
     },
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;

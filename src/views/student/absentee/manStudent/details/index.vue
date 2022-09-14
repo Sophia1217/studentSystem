@@ -1826,7 +1826,6 @@
                     {{ detailInfo.xsXjxx.xslbm_chinese }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <!-- <el-input v-model="detailInfo.xsXjxx.xslbm" :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2" size="small" placeholder="请输入内容"></el-input> -->
                     <el-select
                       v-model="detailInfo.xsXjxx.xslbm"
                       size="small"
@@ -3212,19 +3211,50 @@ export default {
     handlUpdata() {
       this.$set(this.detailInfo, "xh", this.$route.query.xh);
       let data = this.detailInfo;
-      updateRegStuInfo(data)
-        .then((res) => {
-          this.$message({
-            message: res.errmsg,
-            type: "success",
+      //0必填和空的校验
+      if (data.xsJbxx.xh_stuFlag == 0 && !data.xsJbxx.xh) {
+        this.$message.error("学号不能为空");
+      } else if (data.xsJbxx.xm_stuFlag == 0 && !data.xsJbxx.xm) {
+        this.$message.error("姓名不能为空");
+      } else if (data.xsTxxx.yddh_stuFlag == 0 && !data.xsTxxx.yddh) {
+        this.$message.error("移动电话不能为空");
+      } else if (data.xsTxxx.dzyx_stuFlag == 0 && !data.xsTxxx.dzyx) {
+        this.$message.error("电子邮箱不能为空");
+      } else if (data.xsTxxx.qqhm_stuFlag == 0 && !data.xsTxxx.qqhm) {
+        this.$message.error("QQ号码不能为空");
+      } else if (data.xsTxxx.wxhm_stuFlag == 0 && !data.xsTxxx.wxhm) {
+        this.$message.error("微信号不能为空");
+      } else if (data.xsTxxx.jtdh_stuFlag == 0 && !data.xsTxxx.jtdh) {
+        this.$message.error("家庭电话不能为空");
+      } else if (data.xsTxxx.yzbm_stuFlag == 0 && !data.xsTxxx.yzbm) {
+        this.$message.error("邮政编码不能为空");
+      } else if (data.xsTxxx.txdz_stuFlag == 0 && !data.xsTxxx.txdz) {
+        this.$message.error("通信地址不能为空");
+      } else if (data.xsTxxx.czdh_stuFlag == 0 && !data.xsTxxx.czdh) {
+        this.$message.error("传真电话不能为空");
+      } else if (data.xsTxxx.jtdzxx_stuFlag == 0 && !data.xsTxxx.jtdzxx) {
+        this.$message.error("家庭Email不能为空");
+      } else if (data.xsTxxx.jtyzbm_stuFlag == 0 && !data.xsTxxx.jtyzbm) {
+        this.$message.error("家庭邮编不能为空");
+      } else if (data.xsTxxx.jtzz_stuFlag == 0 && !data.xsTxxx.jtzz) {
+        this.$message.error("家庭住址不能为空");
+      } else if (data.xsTxxx.wldz_stuFlag == 0 && !data.xsTxxx.wldz) {
+        this.$message.error("网络地址不能为空");
+      } else {
+        updateRegStuInfo(data)
+          .then((res) => {
+            this.$message({
+              message: res.errmsg,
+              type: "success",
+            });
+            this.$router.push({
+              path: this.routerFrom,
+            });
+          })
+          .catch((err) => {
+            this.$message.error(err.errmsg);
           });
-          this.$router.push({
-            path: this.routerFrom,
-          });
-        })
-        .catch((err) => {
-          this.$message.error(err.errmsg);
-        });
+      }
     },
     // 毕业生登记表
     getGraStu() {

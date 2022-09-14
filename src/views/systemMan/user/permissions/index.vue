@@ -228,7 +228,6 @@ export default {
               .then(() => {
                 this.roleData.splice(index, 1);
                 this.getqueryRoleList();
-
                 this.$refs.tree[index].setCheckedKeys(
                   this.roleData[index].checksedKeys
                 );
@@ -393,6 +392,12 @@ export default {
           };
           defaultRoleAuth(data).then((res) => {
             this.defaultArr[i] = res.data.rows || []; //对应的新增放入对应的权限
+            var resD = res.data.rows || [];
+            for (let x = 0; x < resD.length; x++) {
+              var nodeId = resD[x].orgType || "";
+              this.roleData[i].checksedKeys.push(nodeId);
+            }
+            this.$refs.tree[i].setCheckedKeys(this.roleData[i].checksedKeys);
           });
         }
       }
@@ -517,7 +522,6 @@ export default {
             if (node.level == 0) {
               // 不同机构
               var nodeId = resData[x].orgType || "";
-
               if (nodeId.length > 0) {
                 var idIndex = this.roleData[index].checksedKeys.indexOf(
                   node.data.nodeId
@@ -530,7 +534,6 @@ export default {
             } else if (node.level == 1) {
               // 不同学院
               var nodeId = resData[x].dwdm || "";
-
               if (nodeId.length > 0) {
                 var idIndex = this.roleData[index].checksedKeys.indexOf(
                   node.data.nodeId

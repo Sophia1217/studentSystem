@@ -119,7 +119,18 @@
             </div>
           </el-col>
         </el-row>
-
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="3">是否在校：</el-col>
+          <el-col :span="20">
+            <div class="checkbox">
+              <checkboxCom
+                :objProp="inSchool"
+                @training="inSchoolAll"
+                @checkedTraining="inSchoolCheck"
+              ></checkboxCom>
+            </div>
+          </el-col>
+        </el-row>
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">性别：</el-col>
           <el-col :span="20">
@@ -232,8 +243,7 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" sortable>
-          </el-table-column>
+          <el-table-column prop="xh" label="学号" sortable> </el-table-column>
           <el-table-column prop="xm" label="姓名" sortable="custom">
           </el-table-column>
           <el-table-column prop="zzmmc" label="政治面貌" sortable="custom">
@@ -353,6 +363,22 @@ export default {
         checkAll: false,
         choose: [],
         checkBox: [],
+        isIndeterminate: true,
+      },
+      inSchool: {
+        //是否在校
+        checkAll: false,
+        choose: [],
+        checkBox: [
+          {
+            dm: "在校",
+            mc: "是",
+          },
+          {
+            dm: "不在校",
+            mc: "否",
+          },
+        ],
         isIndeterminate: true,
       },
       politica: {
@@ -500,11 +526,12 @@ export default {
         xz: this.learnHe.choose,
         xjzt: this.studentStatus.choose,
         zzmmm: this.politica.choose,
+        sfzx: this.inSchool.choose,
         mzm: this.ethnic.choose,
         bjm: this.moreIform.pread,
         dwh: this.moreIform.manageReg,
         zydm: this.moreIform.stuInfo,
-        pageNum: this.queryParams.pageNum,
+        pageNum: 1,
         pageSize: this.queryParams.pageSize,
         limitSql: "",
         orderZd: this.queryParams.orderZd,
@@ -609,7 +636,23 @@ export default {
         checkedCount > 0 && checkedCount < this.politica.checkBox.length;
       // console.log(this.politica.choose, "单选");
     },
+    //是否在校：全选
+    inSchoolAll(val) {
+      let allCheck = [];
+      for (let i in this.inSchool.checkBox) {
+        allCheck.push(this.inSchool.checkBox[i].dm);
+      }
+      this.inSchool.choose = val ? allCheck : [];
 
+      this.inSchool.isIndeterminate = false;
+    },
+    // 是否在校：单选
+    inSchoolCheck(value) {
+      let checkedCount = value.length;
+      this.inSchool.checkAll = checkedCount === this.inSchool.checkBox.length;
+      this.inSchool.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.inSchool.checkBox.length;
+    },
     // 性别：全选
     dmxbmAll(val) {
       let allCheck = [];

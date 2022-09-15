@@ -108,6 +108,18 @@
             </div>
           </el-col>
         </el-row>
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="3">是否在校：</el-col>
+          <el-col :span="20">
+            <div class="checkbox">
+              <checkboxCom
+                :objProp="inSchool"
+                @training="inSchoolAll"
+                @checkedTraining="inSchoolCheck"
+              ></checkboxCom>
+            </div>
+          </el-col>
+        </el-row>
       </div>
     </div>
     <!-- table -->
@@ -189,6 +201,22 @@ export default {
         checkAll: false,
         choose: [],
         checkBox: [],
+        isIndeterminate: true,
+      },
+      inSchool: {
+        //是否在校
+        checkAll: false,
+        choose: [],
+        checkBox: [
+          {
+            dm: "在校",
+            mc: "是",
+          },
+          {
+            dm: "不在校",
+            mc: "否",
+          },
+        ],
         isIndeterminate: true,
       },
       njOps: [],
@@ -277,7 +305,8 @@ export default {
         zydm: this.moreIform.zydam,
         nj: this.moreIform.njVal,
         pyccm: this.training.choose,
-        pageNum: this.queryParams.pageNum,
+        sfzx: this.inSchool.choose,
+        pageNum: 1,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
@@ -378,6 +407,23 @@ export default {
       this.politica.checkAll = checkedCount === this.politica.checkBox.length;
       this.politica.isIndeterminate =
         checkedCount > 0 && checkedCount < this.politica.checkBox.length;
+    },
+    //是否在校：全选
+    inSchoolAll(val) {
+      let allCheck = [];
+      for (let i in this.inSchool.checkBox) {
+        allCheck.push(this.inSchool.checkBox[i].dm);
+      }
+      this.inSchool.choose = val ? allCheck : [];
+
+      this.inSchool.isIndeterminate = false;
+    },
+    // 是否在校：单选
+    inSchoolCheck(value) {
+      let checkedCount = value.length;
+      this.inSchool.checkAll = checkedCount === this.inSchool.checkBox.length;
+      this.inSchool.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.inSchool.checkBox.length;
     },
     // 多选
     handleSelectionChange(val) {

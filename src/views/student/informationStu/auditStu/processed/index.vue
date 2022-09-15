@@ -230,7 +230,7 @@
               <el-button
                 type="text"
                 size="small"
-                @click="hadleDetail(scope.row)"
+                @click="hadleDetail(scope.row,1)"
               >
                 <i class="scopeIncon handledie"></i>
                 <span class="handleName">审核</span>
@@ -649,7 +649,7 @@ export default {
     handleConfirm() {
       this.showExport = false;
     },
-    hadleDetail(row) {
+    hadleDetail(row,flag) {
       let schooling = ""; // 3 4 5 是本科
       if (row.pyccm == 1 || row.pyccm == 2) {
         // 1 2 是研究生
@@ -666,6 +666,7 @@ export default {
           id: row.id,
           approveState: 2,
           approver: row.approver,
+          isSh:flag //1是审核，2是详情
         },
       });
     },

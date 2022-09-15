@@ -2,6 +2,7 @@
   <div class="detail">
     <div class="wrap">
       <div class="detail_left">
+        <div class="titlename">
         <div>
           <div v-for="(item, index) in dtailsList" :key="index"
             class="list"
@@ -11,6 +12,7 @@
             <div class="ellipsis">{{ item }}</div>
             <i :class="index == current ? 'el-icon-arrow-right' : ''" />
           </div>
+        </div>
         </div>
       </div>
       <!-- <div v-if="detailInfoData.zgZgjbxxes !== null && detailInfoData.zgZgjbxxes.length>0" class="detail_right"> -->
@@ -3959,28 +3961,31 @@ export default {
       // height: calc(100vh - 170px);
       padding: 20px;
       box-sizing: border-box;
-      .list {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        height: 36px;
-        line-height: 36px;
-        font-size: 14px;
-        color: #1f1f1f;
-        cursor: pointer;
-        padding: 0 10px;
-        box-sizing: border-box;
-        .ellipsis {
-          width: 150px;
-          overflow: hidden; //溢出隐藏
-          white-space: nowrap; //禁止换行
-          text-overflow: ellipsis; //...
+      .titlename {
+        position: fixed;
+        .list {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          height: 36px;
+          line-height: 36px;
+          font-size: 14px;
+          color: #1f1f1f;
+          cursor: pointer;
+          padding: 0 10px;
+          box-sizing: border-box;
+          .ellipsis {
+            width: 150px;
+            overflow: hidden; //溢出隐藏
+            white-space: nowrap; //禁止换行
+            text-overflow: ellipsis; //...
+          }
         }
-      }
-      .active {
-        background: #f0f0f0;
-        border-radius: 2px;
+        .active {
+          background: #f0f0f0;
+          border-radius: 2px;
+        }
       }
     }
     .detail_right {

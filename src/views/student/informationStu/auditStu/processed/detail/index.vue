@@ -70,7 +70,7 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.xh_approveFlag == 1 ||
-                      detailInfo.xsJbxx.xh_approveFlag == 2
+                      detailInfo.xsJbxx.xh_approveFlag == 0
                     "
                     class="content"
                   >
@@ -97,7 +97,7 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.xm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.xm_approveFlag == 2
+                      detailInfo.xsJbxx.xm_approveFlag == 0
                     "
                     class="content"
                   >
@@ -183,8 +183,8 @@
                   <div class="title">性别</div>
                   <div
                     v-if="
-                      detailInfo.xsJbxx.XBM_approveFlag == 1 ||
-                      detailInfo.xsJbxx.XBM_approveFlag == 2
+                      detailInfo.xsJbxx.xbm_approveFlag == 1 ||
+                      detailInfo.xsJbxx.xbm_approveFlag == 0
                     "
                     class="content"
                   >
@@ -219,7 +219,7 @@
                   <div
                     v-if="
                       detailInfo.xsXjxx.dwh_approveFlag == 1 ||
-                      detailInfo.xsXjxx.dwh_approveFlag == 2
+                      detailInfo.xsXjxx.dwh_approveFlag == 0
                     "
                     class="content"
                   >
@@ -248,7 +248,7 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.csrq_approveFlag == 1 ||
-                      detailInfo.xsJbxx.csrq_approveFlag == 2
+                      detailInfo.xsJbxx.csrq_approveFlag == 0
                     "
                     class="content"
                   >
@@ -277,15 +277,29 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.csdm_approveFlag == 2
+                      detailInfo.xsJbxx.csdm_approveFlag == 0
                     "
                     class="content"
                   >
-                    <el-input
+                    <el-select
+                      v-model="detailInfo.xsJbxx.csdm"
+                      size="small"
+                      placeholder="请选择"
+                      filterable
+                    >
+                      <el-option
+                        v-for="item in jgOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                    <!-- <el-input
                       v-model="detailInfo.xsJbxx.csdm_chinese"
                       size="small"
                       placeholder="请输入内容"
-                    ></el-input>
+                    ></el-input> -->
                   </div>
                   <div
                     v-else
@@ -308,15 +322,29 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.jg_approveFlag == 1 ||
-                      detailInfo.xsJbxx.jg_approveFlag == 2
+                      detailInfo.xsJbxx.jg_approveFlag == 0
                     "
                     class="content"
                   >
-                    <el-input
+                    <el-select
+                      v-model="detailInfo.xsJbxx.jg"
+                      size="small"
+                      placeholder="请选择"
+                      filterable
+                    >
+                      <el-option
+                        v-for="item in jgOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                    <!-- <el-input
                       v-model="detailInfo.xsJbxx.jg"
                       size="small"
                       placeholder="请输入内容"
-                    ></el-input>
+                    ></el-input> -->
                   </div>
                   <div
                     v-else
@@ -334,13 +362,13 @@
                   <div class="title">民族</div>
                   <div
                     v-if="
-                      detailInfo.xsJbxx.MZM_approveFlag == 1 ||
-                      detailInfo.xsJbxx.MZM_approveFlag == 2
+                      detailInfo.xsJbxx.mzm_approveFlag == 1 ||
+                      detailInfo.xsJbxx.mzm_approveFlag == 0
                     "
                     class="content"
                   >
                     <el-select
-                      v-model="detailInfo.xsJbxx.MZM"
+                      v-model="detailInfo.xsJbxx.mzm"
                       size="small"
                       placeholder="请选择"
                     >
@@ -372,15 +400,29 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.gjdqm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.gjdqm_approveFlag == 2
+                      detailInfo.xsJbxx.gjdqm_approveFlag == 0
                     "
                     class="content"
                   >
-                    <el-input
+                    <el-select
+                      v-model="detailInfo.xsJbxx.gjdqm"
+                      size="small"
+                      placeholder="请选择"
+                      filterable
+                    >
+                      <el-option
+                        v-for="item in gjdqOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                    <!-- <el-input
                       v-model="detailInfo.xsJbxx.gjdqm_chinese"
                       size="small"
                       placeholder="请输入内容"
-                    ></el-input>
+                    ></el-input> -->
                   </div>
                   <div
                     v-else
@@ -418,7 +460,7 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.sfzjh_approveFlag == 1 ||
-                      detailInfo.xsJbxx.sfzjh_approveFlag == 2
+                      detailInfo.xsJbxx.sfzjh_approveFlag == 0
                     "
                     class="content"
                   >
@@ -496,7 +538,7 @@
                   <div
                     v-if="
                       detailInfo.xsXjxx.nj_approveFlag == 1 ||
-                      detailInfo.xsXjxx.nj_approveFlag == 2
+                      detailInfo.xsXjxx.nj_approveFlag == 0
                     "
                     class="content"
                   >
@@ -523,7 +565,7 @@
                   <div
                     v-if="
                       detailInfo.xsXjxx.bjm_approveFlag == 1 ||
-                      detailInfo.xsXjxx.bjm_approveFlag == 2
+                      detailInfo.xsXjxx.bjm_approveFlag == 0
                     "
                     class="content"
                   >
@@ -552,7 +594,7 @@
                   <div
                     v-if="
                       detailInfo.xsXjxx.zydm_approveFlag == 1 ||
-                      detailInfo.xsXjxx.zydm_approveFlag == 2
+                      detailInfo.xsXjxx.zydm_approveFlag == 0
                     "
                     class="content"
                   >
@@ -581,7 +623,7 @@
                   <div
                     v-if="
                       detailInfo.xsXjxx.xz_approveFlag == 1 ||
-                      detailInfo.xsXjxx.xz_approveFlag == 2
+                      detailInfo.xsXjxx.xz_approveFlag == 0
                     "
                     class="content"
                   >
@@ -650,7 +692,7 @@
                   <div
                     v-if="
                       detailInfo.xsXjxx.xjzt_approveFlag == 1 ||
-                      detailInfo.xsXjxx.xjzt_approveFlag == 2
+                      detailInfo.xsXjxx.xjzt_approveFlag == 0
                     "
                     class="content"
                   >
@@ -751,7 +793,7 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.zzmmm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.zzmmm_approveFlag == 2
+                      detailInfo.xsJbxx.zzmmm_approveFlag == 0
                     "
                     class="content"
                   >
@@ -770,6 +812,7 @@
                     </el-select>
                   </div>
                   <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.zzmmm_approveFlag == 1
@@ -894,7 +937,7 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.yxh_approveFlag == 1 ||
-                      detailInfo.xsJbxx.yxh_approveFlag == 2
+                      detailInfo.xsJbxx.yxh_approveFlag == 0
                     "
                     class="content"
                   >
@@ -1083,9 +1126,7 @@
                   <div
                     class="content"
                     :class="
-                      detailInfo.xsXjxx.pyccm_approveFlag == 1
-                        ? 'greenColor'
-                        : ''
+                      detailInfo.xsXjxx.pyccm_approveFlag == 1 ? 'greenColor' : ''
                     "
                   >
                     {{ getName(pyccOps, detailInfo.xsXjxx.pyccm) }}
@@ -1228,7 +1269,7 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.xm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.xm_approveFlag == 2
+                      detailInfo.xsJbxx.xm_approveFlag == 0
                     "
                     class="content"
                   >
@@ -1314,8 +1355,8 @@
                   <div class="title">性别</div>
                   <div
                     v-if="
-                      detailInfo.xsJbxx.xbm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.xbm_approveFlag == 2
+                      detailInfo.xsJbxx.xbm_approveFlag == 0 ||
+                      detailInfo.xsJbxx.xbm_approveFlag == 1
                     "
                     class="content"
                   >
@@ -1350,7 +1391,7 @@
                   <div
                     v-if="
                       detailInfo.xsXjxx.dwh_approveFlag == 1 ||
-                      detailInfo.xsXjxx.dwh_approveFlag == 2
+                      detailInfo.xsXjxx.dwh_approveFlag == 0
                     "
                     class="content"
                   >
@@ -1379,7 +1420,7 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.csrq_approveFlag == 1 ||
-                      detailInfo.xsJbxx.csrq_approveFlag == 2
+                      detailInfo.xsJbxx.csrq_approveFlag == 0
                     "
                     class="content"
                   >
@@ -1390,6 +1431,7 @@
                     ></el-input>
                   </div>
                   <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsJbxx.csrq_approveFlag == 1
@@ -1407,15 +1449,29 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.csdm_approveFlag == 2
+                      detailInfo.xsJbxx.csdm_approveFlag == 0
                     "
                     class="content"
                   >
-                    <el-input
+                    <el-select
+                      v-model="detailInfo.xsJbxx.csdm"
+                      size="small"
+                      placeholder="请选择"
+                      filterable
+                    >
+                      <el-option
+                        v-for="item in jgOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                    <!-- <el-input
                       v-model="detailInfo.xsJbxx.csdm_chinese"
                       size="small"
                       placeholder="请输入内容"
-                    ></el-input>
+                    ></el-input> -->
                   </div>
                   <div
                     v-else
@@ -1438,15 +1494,29 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.jg_approveFlag == 1 ||
-                      detailInfo.xsJbxx.jg_approveFlag == 2
+                      detailInfo.xsJbxx.jg_approveFlag == 0
                     "
                     class="content"
                   >
-                    <el-input
+                    <el-select
+                      v-model="detailInfo.xsJbxx.jg"
+                      size="small"
+                      placeholder="请选择"
+                      filterable
+                    >
+                      <el-option
+                        v-for="item in jgOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                    <!-- <el-input
                       v-model="detailInfo.xsJbxx.jg"
                       size="small"
                       placeholder="请输入内容"
-                    ></el-input>
+                    ></el-input> -->
                   </div>
                   <div
                     v-else
@@ -1465,12 +1535,12 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.mzm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.mzm_approveFlag == 2
+                      detailInfo.xsJbxx.mzm_approveFlag == 0
                     "
                     class="content"
                   >
                     <el-select
-                      v-model="detailInfo.xsJbxx.mzm_chinese"
+                      v-model="detailInfo.xsJbxx.mzm"
                       size="small"
                       placeholder="请选择"
                     >
@@ -1502,15 +1572,29 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.gjdqm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.gjdqm_approveFlag == 2
+                      detailInfo.xsJbxx.gjdqm_approveFlag == 0
                     "
                     class="content"
                   >
-                    <el-input
+                    <el-select
+                      v-model="detailInfo.xsJbxx.gjdqm"
+                      size="small"
+                      placeholder="请选择"
+                      filterable
+                    >
+                      <el-option
+                        v-for="item in gjdqOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                    <!-- <el-input
                       v-model="detailInfo.xsJbxx.gjdqm_chinese"
                       size="small"
                       placeholder="请输入内容"
-                    ></el-input>
+                    ></el-input> -->
                   </div>
                   <div
                     v-else
@@ -1548,7 +1632,7 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.sfzjh_approveFlag == 1 ||
-                      detailInfo.xsJbxx.sfzjh_approveFlag == 2
+                      detailInfo.xsJbxx.sfzjh_approveFlag == 0
                     "
                     class="content"
                   >
@@ -1577,7 +1661,7 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.nj_approveFlag == 1 ||
-                      detailInfo.xsJbxx.nj_approveFlag == 2
+                      detailInfo.xsJbxx.nj_approveFlag == 0
                     "
                     class="content"
                   >
@@ -1685,7 +1769,7 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.xjzt_approveFlag == 1 ||
-                      detailInfo.xsJbxx.xjzt_approveFlag == 2
+                      detailInfo.xsJbxx.xjzt_approveFlag == 0
                     "
                     class="content"
                   >
@@ -1788,7 +1872,7 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.zzmmm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.zzmmm_approveFlag == 2
+                      detailInfo.xsJbxx.zzmmm_approveFlag == 0
                     "
                     class="content"
                   >
@@ -1873,8 +1957,8 @@
                   <div class="title">专业</div>
                   <div
                     v-if="
-                      detailInfo.xsJbxx.zydm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.zydm_approveFlag == 2
+                      detailInfo.xsXjxx.zydm_approveFlag == 1 ||
+                      detailInfo.xsXjxx.zydm_approveFlag == 0
                     "
                     class="content"
                   >
@@ -1984,9 +2068,7 @@
                   <div
                     class="content"
                     :class="
-                      detailInfo.xsXjxx.pyccm_approveFlag == 1
-                        ? 'greenColor'
-                        : ''
+                      detailInfo.xsXjxx.pyccm_approveFlag == 1 ? 'greenColor' : ''
                     "
                   >
                     {{ getName(pyccOps, detailInfo.xsXjxx.pyccm) }}
@@ -2211,7 +2293,7 @@
                   <div
                     v-if="
                       detailInfo.xsTxxx.yddh_approveFlag == 1 ||
-                      detailInfo.xsTxxx.yddh_approveFlag == 2
+                      detailInfo.xsTxxx.yddh_approveFlag == 0
                     "
                     class="content"
                   >
@@ -2240,7 +2322,7 @@
                   <div
                     v-if="
                       detailInfo.xsTxxx.dzyx_approveFlag == 1 ||
-                      detailInfo.xsTxxx.dzyx_approveFlag == 2
+                      detailInfo.xsTxxx.dzyx_approveFlag == 0
                     "
                     class="content"
                   >
@@ -2270,7 +2352,7 @@
                   <div
                     v-if="
                       detailInfo.xsTxxx.qqhm_approveFlag == 1 ||
-                      detailInfo.xsTxxx.qqhm_approveFlag == 2
+                      detailInfo.xsTxxx.qqhm_approveFlag == 0
                     "
                     class="content"
                   >
@@ -2346,6 +2428,20 @@
                 <div class="wrap">
                   <div class="title">通信地址</div>
                   <div
+                    v-if="
+                      detailInfo.xsTxxx.txdz_approveFlag == 1 ||
+                      detailInfo.xsTxxx.txdz_approveFlag == 0
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsTxxx.txdz"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsTxxx.txdz_approveFlag == 1
@@ -2378,6 +2474,20 @@
                 <div class="wrap">
                   <div class="title">家庭电话</div>
                   <div
+                    v-if="
+                      detailInfo.xsTxxx.jtdh_approveFlag == 1 ||
+                      detailInfo.xsTxxx.jtdh_approveFlag == 0
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsTxxx.jtdh"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsTxxx.jtdh_approveFlag == 1
@@ -2397,7 +2507,7 @@
                   <div
                     v-if="
                       detailInfo.xsTxxx.jtyzbm_approveFlag == 1 ||
-                      detailInfo.xsTxxx.jtyzbm_approveFlag == 2
+                      detailInfo.xsTxxx.jtyzbm_approveFlag == 0
                     "
                     class="content"
                   >
@@ -2426,7 +2536,7 @@
                   <div
                     v-if="
                       detailInfo.xsTxxx.jtzz_approveFlag == 1 ||
-                      detailInfo.xsTxxx.jtzz_approveFlag == 2
+                      detailInfo.xsTxxx.jtzz_approveFlag == 0
                     "
                     class="content"
                   >
@@ -2479,7 +2589,7 @@
                   <div
                     v-if="
                       detailInfo.xsTxxx.yddh_approveFlag == 1 ||
-                      detailInfo.xsTxxx.yddh_approveFlag == 2
+                      detailInfo.xsTxxx.yddh_approveFlag == 0
                     "
                     class="content"
                   >
@@ -2508,7 +2618,7 @@
                   <div
                     v-if="
                       detailInfo.xsTxxx.dzyx_approveFlag == 1 ||
-                      detailInfo.xsTxxx.dzyx_approveFlag == 2
+                      detailInfo.xsTxxx.dzyx_approveFlag == 0
                     "
                     class="content"
                   >
@@ -2539,7 +2649,7 @@
                   <div
                     v-if="
                       detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.csdm_approveFlag == 2
+                      detailInfo.xsJbxx.csdm_approveFlag == 0
                     "
                     class="content"
                   >
@@ -2583,6 +2693,20 @@
                 <div class="wrap">
                   <div class="title">家庭电话</div>
                   <div
+                    v-if="
+                      detailInfo.xsTxxx.jtdh_approveFlag == 1 ||
+                      detailInfo.xsTxxx.jtdh_approveFlag == 0
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsTxxx.jtdh"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsTxxx.jtdh_approveFlag == 1
@@ -2599,13 +2723,13 @@
                   <div class="title">邮政编码</div>
                   <div
                     v-if="
-                      detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.csdm_approveFlag == 2
+                      detailInfo.xsTxxx.yzbm_approveFlag == 1 ||
+                      detailInfo.xsTxxx.yzbm_approveFlag == 0
                     "
                     class="content"
                   >
                     <el-input
-                      v-model="detailInfo.xsTxxx.jtyzbm"
+                      v-model="detailInfo.xsTxxx.yzbm"
                       size="small"
                       placeholder="请输入内容"
                     ></el-input>
@@ -2614,7 +2738,7 @@
                     v-else
                     class="content"
                     :class="
-                      detailInfo.xsTxxx.jtyzbm_approveFlag == 1
+                      detailInfo.xsTxxx.yzbm_approveFlag == 1
                         ? 'greenColor'
                         : ''
                     "
@@ -2628,7 +2752,14 @@
               <el-col :span="24" class="rowStyle">
                 <div class="wrap">
                   <div class="title">通信地址</div>
-                  <div
+                  <div class="content">
+                    <el-input
+                      v-model="detailInfo.xsTxxx.txdz"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <!-- <div
                     class="content"
                     :class="
                       detailInfo.xsTxxx.txdz_approveFlag == 1
@@ -2637,7 +2768,7 @@
                     "
                   >
                     {{ detailInfo.xsTxxx.txdz }}
-                  </div>
+                  </div> -->
                 </div>
               </el-col>
             </el-row>
@@ -2654,7 +2785,7 @@
                 <div
                   v-if="
                     detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                    detailInfo.xsJbxx.csdm_approveFlag == 0
                   "
                 >
                   <el-input
@@ -2684,7 +2815,7 @@
                 <div
                   v-if="
                     detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                    detailInfo.xsJbxx.csdm_approveFlag == 0
                   "
                 >
                   <el-input
@@ -2733,7 +2864,7 @@
                 <div
                   v-if="
                     detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                    detailInfo.xsJbxx.csdm_approveFlag == 0
                   "
                 >
                   <el-input
@@ -2765,7 +2896,7 @@
                 <div
                   v-if="
                     detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                    detailInfo.xsJbxx.csdm_approveFlag == 0
                   "
                 >
                   <el-input
@@ -2807,7 +2938,7 @@
                 <div
                   v-if="
                     detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                    detailInfo.xsJbxx.csdm_approveFlag == 0
                   "
                 >
                   <el-input
@@ -2829,7 +2960,7 @@
                 <div
                   v-if="
                     detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                    detailInfo.xsJbxx.csdm_approveFlag == 0
                   "
                 >
                   <el-input
@@ -2886,7 +3017,7 @@
                 <div
                   v-if="
                     detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                    detailInfo.xsJbxx.csdm_approveFlag == 0
                   "
                 >
                   <el-input
@@ -2917,7 +3048,7 @@
                 <div
                   v-if="
                     detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                    detailInfo.xsJbxx.csdm_approveFlag == 0
                   "
                 >
                   <el-input
@@ -2983,7 +3114,7 @@
                 <div
                   v-if="
                     scope.row.gzdw_approveFlag == 1 ||
-                    scope.row.gzdw_approveFlag == 2
+                    scope.row.gzdw_approveFlag == 0
                   "
                 >
                   <el-input
@@ -3004,7 +3135,7 @@
                 <div
                   v-if="
                     scope.row.gznr_approveFlag == 1 ||
-                    scope.row.gznr_approveFlag == 2
+                    scope.row.gznr_approveFlag == 0
                   "
                 >
                   <el-input
@@ -3056,7 +3187,7 @@
                 <div
                   v-if="
                     detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 2
+                    detailInfo.xsJbxx.csdm_approveFlag == 0
                   "
                 >
                   <el-input
@@ -3065,6 +3196,7 @@
                   ></el-input>
                 </div>
                 <div
+                  v-else
                   :class="
                     scope.row.gzzmrdw_approveFlag == 1 ? 'greenColor' : ''
                   "
@@ -3178,6 +3310,18 @@ export default {
       allDwh: [],
       zyOps: [],
       bjOps: [],
+      jgOps: [], //籍贯 出生地
+      gjdqOps: [], //国籍地区 来源地区
+      dmsfzjlxm: [], // 身份证类型
+      dmhyzkm: [], // 婚姻状况
+      gatqwm: [], // 港澳台侨外
+      dmrxfsm: [], // 入学方式
+      dmjdfsm: [], // 就读方式
+      hdxlfsm: [], // 获得学历方式
+      dmpyfsm: [], // 培养方式
+      dmxxfsm: [], // 学习方式
+      dmyjszyxwlbm: [], // 专业学位类别
+      dmsfbzm: [], //  是否毕业 是否学分制 是否师范生
     };
   },
   props: {
@@ -3192,12 +3336,24 @@ export default {
   mounted() {
     this.getCode("dmxbm"); // 性别码
     this.getCode("dmmzm"); // 民 族
-    this.getCode("dmxjztm"); // 学籍
+    this.getCode("dmxjztm"); // 学籍状态
     this.getCode("dmpyccm"); // 培养层次
     this.getCode("dmzzmmm"); // 政治面貌
     this.getCode("dmxz"); // 学 制
-    this.getCode("dmxslbm"); // 学学生类别
+    this.getCode("dmxslbm"); // 学生类别
     this.getCode("dmyjszxjhm"); // 专项计划码
+    this.getCode("dmxzqhm"); // 籍贯
+    this.getCode("dmsjgghdqmcm"); // 国籍地区 来源地区
+    this.getCode("dmsfzjlxm"); // 身份证类型
+    this.getCode("dmhyzkm"); // 婚姻状况
+    this.getCode("gatqwm"); // 港澳台侨外
+    this.getCode("dmsfbzm"); // 是否毕业 是否学分制 是否师范生
+    this.getCode("dmrxfsm"); // 入学方式
+    this.getCode("dmjdfsm"); // 就读方式
+    this.getCode("hdxlfsm"); // 获得学历方式
+    this.getCode("dmpyfsm"); // 培养方式
+    this.getCode("dmxxfsm"); // 学习方式
+    this.getCode("dmyjszyxwlbm"); // 专业学位类别
     this.getDetailQueryPoliticalWorkList();
   },
 
@@ -3261,27 +3417,64 @@ export default {
       getCodeInfoByEnglish(data)
         .then((res) => {
           switch (paramsData) {
-            case "dmpyccm":
+            case "dmpyccm":// 培养层次
               this.pyccOps = res.data;
               break;
-            case "dmxjztm":
+            case "dmxjztm": //学籍状态
               this.dmxjztmOps = res.data;
               break;
-            case "dmmzm":
+            case "dmmzm":// 民族
               this.dmmzmOps = res.data;
               break;
-            case "dmzzmmm":
+            case "dmzzmmm": //政治面貌
               this.zzmmOps = res.data;
               break;
-            case "dmxz":
+            case "dmxz"://学制
               this.xzOps = res.data;
               break;
-            case "dmxbm":
+            case "dmxbm": //性别
               this.dmxbmOPs = res.data;
-            case "dmxslbm":
+            case "dmxslbm": //学生类别
               this.xslbOps = res.data;
-            case "dmyjszxjhm":
+            case "dmyjszxjhm": //专项计划码
               this.zxjhmOps = res.data;
+
+            case "dmxzqhm": //籍贯和出生地
+              this.jgOps = res.data;
+              break;
+            case "dmsjgghdqmcm": //国籍地区 来源地区
+              this.gjdqOps = res.data;
+              break;
+            case "dmsfzjlxm": //身份证类型
+              this.dmsfzjlxm = res.data;
+              break;
+            case "dmhyzkm": //婚姻状况
+              this.dmhyzkm = res.data;
+              break;
+            case "gatqwm": //港澳台侨外
+              this.gatqwm = res.data;
+              break;
+            case "dmsfbzm": //是否毕业 是否学分制 是否师范生
+              this.dmsfbzm = res.data;
+              break;
+            case "dmrxfsm": //入学方式
+              this.dmrxfsm = res.data;
+              break;
+            case "dmjdfsm": //就读方式
+              this.dmjdfsm = res.data;
+              break;
+            case "hdxlfsm": //获得学历方式
+              this.hdxlfsm = res.data;
+              break;
+            case "dmpyfsm": //培养方式
+              this.dmpyfsm = res.data;
+              break;
+            case "dmxxfsm": //学习方式
+              this.dmxxfsm = res.data;
+              break;
+            case "dmyjszyxwlbm": //专业学位类别
+              this.dmyjszyxwlbm = res.data;
+              break;
           }
         })
         .catch((err) => {});

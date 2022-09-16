@@ -577,12 +577,16 @@ export default {
           this.changType.choose && this.changType.choose.length > 0
             ? this.changType.choose.join(",")
             : "",
+        sfzx:
+          this.inSchool.choose && this.inSchool.choose.length > 0
+            ? this.inSchool.choose.join(",")
+            : "",
         // ydyy: this.changWhy.choose&&this.changWhy.choose.length>0?this.changWhy.choose.join(','):'',
         spwh: this.select == "spwh" ? this.searchVal : "",
         // ydrq: this.datePicker,
         ydrqst: YDRQST,
         ydrqend: YDRQEND,
-        sfzx: this.inSchool.choose,
+
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         limitSql: "",

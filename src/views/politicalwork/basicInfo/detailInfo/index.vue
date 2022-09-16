@@ -3761,6 +3761,7 @@ export default {
       this.isEdit = 1;
       getDetailQueryPoliticalWorkList(data)
         .then((res) => {
+          console.log(res);
           this.$set(
             this.detailInfoData,
             "zgZgjbxxes",
@@ -3769,7 +3770,7 @@ export default {
           this.$set(
             this.detailInfoData,
             "zgGzjls",
-            res.zgGzjls ? res.zgGzjls : {} // 工作简历
+            res.zgGzjls ? res.zgGzjls : [] // 工作简历
           );
           this.$set(
             this.detailInfoData,
@@ -3779,47 +3780,47 @@ export default {
           this.$set(
             this.detailInfoData,
             "zgKycgs",
-            res.zgKycgs ? res.zgKycgs[0] : {} // 科研成果
+            res.zgKycgs ? res.zgKycgs[0] : [] // 科研成果
           );
           this.$set(
             this.detailInfoData,
             "zgZyjszws",
-            res.zgZyjszws ? res.zgZyjszws : {} // 专业技术职务
+            res.zgZyjszws ? res.zgZyjszws : [] // 专业技术职务
           );
           this.$set(
             this.detailInfoData,
             "zgXxpxes",
-            res.zgXxpxes ? res.zgXxpxes : {} // 学习培训
+            res.zgXxpxes ? res.zgXxpxes : [] // 学习培训
           );
           this.$set(
             this.detailInfoData,
             "zgNdkhs",
-            res.zgNdkhs ? res.zgNdkhs : {} // 年度考核
+            res.zgNdkhs ? res.zgNdkhs : [] // 年度考核
           );
           this.$set(
             this.detailInfoData,
             "zgJlbzs",
-            res.zgJlbzs ? res.zgJlbzs : {} // 奖励表彰
+            res.zgJlbzs ? res.zgJlbzs : [] // 奖励表彰
           );
           this.$set(
             this.detailInfoData,
             "zgXmkyqks",
-            res.zgXmkyqks ? res.zgXmkyqks : {} // 项目科研情况
+            res.zgXmkyqks ? res.zgXmkyqks : [] // 项目科研情况
           );
           this.$set(
             this.detailInfoData,
             "zgLwkyqks",
-            res.zgLwkyqks ? res.zgLwkyqks : {} // 论文科研成果
+            res.zgLwkyqks ? res.zgLwkyqks : [] // 论文科研成果
           );
           this.$set(
             this.detailInfoData,
             "zgZzkyqks",
-            res.zgZzkyqks ? res.zgZzkyqks : {} // 著作科研情况
+            res.zgZzkyqks ? res.zgZzkyqks : [] // 著作科研情况
           );
           this.$set(
             this.detailInfoData,
             "zgJxkyqks",
-            res.zgJxkyqks ? res.zgJxkyqks : {} // 教学科研情况
+            res.zgJxkyqks ? res.zgJxkyqks : [] // 教学科研情况
           ),
             this.$set(
               this.detailInfoData,
@@ -3828,6 +3829,7 @@ export default {
             );
           this.$set(this.detailInfoData, "updateTime", res.updateTime);
           this.$set(this.detailInfoData, "createTime", res.createTime);
+
           this.zgZgjbxxesAuth = res.auth.zg_zgjbxxAuth;
           this.zgGzjlsAuth = res.auth.zg_gzjlAuth;
           this.zgXxpxesAuth = res.auth.zg_xxpxAuth;
@@ -3926,21 +3928,194 @@ export default {
     },
     // 提交
     handlUpdata() {
-      var data = this.detailInfoData;
-      updateDetailQueryPoliticalWorkList(data)
-        .then((res) => {
-          this.$message({
-            message: res.errmsg,
-            type: "success",
+      let data = this.detailInfoData;
+      // console.log("data.zgGzjls:", data.zgGzjls);
+      // console.log("data.zgGzjls.gzqsrq:", data.zgGzjls[0].gzqsrq);
+      // //0必填和空的校验
+      if (this.zgZgjbxxesAuth.YDDH == 0 && !data.zgZgjbxxes.yddh) {
+        this.$message.error("移动电话不能为空");
+        // } else if (this.zgGzjlsAuth.GZQSRQ == 0 && !data.zgGzjls.gzqsrq) {
+        //   this.$message.error("工作起始日期不能为空");
+        // } else if (this.zgGzjlsAuth.GZZZRQ == 0 && !data.zgGzjls.gzzzrq) {
+        //   this.$message.error("工作终止日期不能为空"); //
+        // } else if (this.zgGzjlsAuth.GZDW == 0 && !data.zgGzjls.gzdw) {
+        //   this.$message.error("工作单位不能为空"); //
+        // } else if (this.zgGzjlsAuth.GZNR == 0 && !data.zgGzjls.gznr) {
+        //   this.$message.error("工作内容不能为空"); //
+        // } else if (this.zgGzjlsAuth.BZ == 0 && !data.zgGzjls.bz) {
+        //   this.$message.error("备注不能为空"); //
+        // } else if (this.zgGzjlsAuth.ZW == 0 && !data.zgGzjls.zw) {
+        //   this.$message.error("职位不能为空"); //
+        // } else if (this.zgGzjlsAuth.CRDZZWMC == 0 && !data.zgGzjls.crdzzwmc) {
+        //   this.$message.error("曾任党务职位不能为空"); //
+        // } else if (this.zgGzjlsAuth.CRZYJSZWM == 0 && !data.zgGzjls.crzyjszwm) {
+        //   this.$message.error("曾任专业技术职务不能为空");
+        // } else if (this.zgGzjlsAuth.GZZMR == 0 && !data.zgGzjls.gzzmr) {
+        //   this.$message.error("工作证明人不能为空");
+      } else if (this.zgXlxwsAuth.RXSJ == 0 && !data.zgXlxws.rxsj) {
+        this.$message.error("入学时间不能为空");
+      } else if (this.zgXlxwsAuth.BYSJ == 0 && !data.zgXlxws.bysj) {
+        this.$message.error("毕业时间不能为空");
+      } else if (this.zgXlxwsAuth.XZ == 0 && !data.zgXlxws.xz) {
+        this.$message.error("学制不能为空");
+      } else if (this.zgXlxwsAuth.XXFSM == 0 && !data.zgXlxws.xxfsm) {
+        this.$message.error("学习方式码不能为空");
+      } else if (this.zgXlxwsAuth.XXXSM == 0 && !data.zgXlxws.xxxsm) {
+        this.$message.error("学习形式码不能为空");
+      } else if (this.zgXlxwsAuth.XLZSH == 0 && !data.zgXlxws.xlzsh) {
+        this.$message.error("学历证书号不能为空");
+      } else if (this.zgXlxwsAuth.XLHDSJ == 0 && !data.zgXlxws.xlhdsj) {
+        this.$message.error("学历获得时间不能为空");
+      } else if (this.zgXlxwsAuth.SXZYM == 0 && !data.zgXlxws.sxzys) {
+        this.$message.error("所学专业不能为空");
+      } else if (this.zgXlxwsAuth.SXZYSM == 0 && !data.zgXlxws.sxzyms) {
+        this.$message.error("所学专业描述不能为空");
+      } else if (this.zgXlxwsAuth.BYXXHDW == 0 && !data.zgXlxws.byxxhdw) {
+        this.$message.error("毕业学校或单位不能为空");
+      } else if (this.zgXlxwsAuth.XXZMR == 0 && !data.zgXlxws.xxzmr) {
+        this.$message.error("学习证明人不能为空");
+      } else if (this.zgXlxwsAuth.XWM == 0 && !data.zgXlxws.xwm) {
+        this.$message.error("学位码不能为空");
+      } else if (this.zgXlxwsAuth.SFDQZGXW == 0 && !data.zgXlxws.sfdqzgxw) {
+        this.$message.error("是否当前最高学位不能为空");
+      } else if (this.zgXlxwsAuth.SXWDWMC == 0 && !data.zgXlxws.sxwdwmc) {
+        this.$message.error("授学位单位名称不能为空");
+      } else if (this.zgXlxwsAuth.SXWGJDQM == 0 && !data.zgXlxws.scwgjdqm) {
+        this.$message.error("授学位国家/地区不能为空");
+      } else if (this.zgXlxwsAuth.XWSYSJ == 0 && !data.zgXlxws.xwsysj) {
+        this.$message.error("学位授予时间不能为空");
+      } else if (this.zgXlxwsAuth.XWZSH == 0 && !data.zgXlxws.xwzsh) {
+        this.$message.error("学位证书号不能为空");
+      } else if (this.zgXlxwsAuth.XY == 0 && !data.zgXlxws.xy) {
+        this.$message.error("学缘不能为空");
+      } else if (this.zgXlxwsAuth.BZ == 0 && !data.zgXlxws.bz) {
+        this.$message.error("备注不能为空");
+        // } else if (this.zgZyjszwsAuth.ZJZCDM == 0 && !data.zgZyjszws.zjzcdm) {
+        //   this.$message.error("专技职称代码不能为空");
+        // } else if (this.zgZyjszwsAuth.ZJZCSJ == 0 && !data.zgZyjszws.zjzcdm) {
+        //   this.$message.error("专技职称时间不能为空");
+        // } else if (this.zgZyjszwsAuth.PRGWXLM == 0 && !data.zgZyjszws.prgwxlm) {
+        //   this.$message.error("聘任岗位系列不能为空");
+        // } else if (this.zgZyjszwsAuth.PRGWDJM == 0 && !data.zgZyjszws.prgwdjm) {
+        //   this.$message.error("聘任岗位等级不能为空");
+        // } else if (this.zgZyjszwsAuth.PRRQ == 0 && !data.zgZyjszws.prrq) {
+        //   this.$message.error("聘任日期不能为空");
+        // } else if (this.zgZyjszwsAuth.PRWH == 0 && !data.zgZyjszws.prwh) {
+        //   this.$message.error("聘任文号不能为空");
+        // } else if (this.zgZyjszwsAuth.GWDJM == 0 && !data.zgZyjszws.gwdjm) {
+        //   this.$message.error("岗位等级不能为空");
+        // } else if (this.zgZyjszwsAuth.ZJDJ == 0 && !data.zgZyjszws.zjdj) {
+        //   this.$message.error("专技等级不能为空");
+        // } else if (this.zgXxpxesAuth.PXMC == 0 && !data.zgXxpxes.pxmc) {
+        //   this.$message.error("培训名称不能为空");
+        // } else if (this.zgXxpxesAuth.ZZDW == 0 && !data.zgXxpxes.zzdw) {
+        //   this.$message.error("组织单位不能为空");
+        // } else if (this.zgXxpxesAuth.PXDD == 0 && !data.zgXxpxes.pxdd) {
+        //   this.$message.error("培训地点不能为空");
+        // } else if (this.zgXxpxesAuth.QSSJ == 0 && !data.zgXxpxes.qssj) {
+        //   this.$message.error("起始时间不能为空");
+        // } else if (this.zgXxpxesAuth.JSSJ == 0 && !data.zgXxpxes.jssj) {
+        //   this.$message.error("结束时间不能为空");
+        // } else if (this.zgXxpxesAuth.PXXZ == 0 && !data.zgXxpxes.pxxz) {
+        //   this.$message.error("培训性质不能为空");
+        // } else if (this.zgXxpxesAuth.PXJB == 0 && !data.zgXxpxes.pxjb) {
+        //   this.$message.error("培训级别不能为空");
+        // } else if (this.zgNdkhsAuth.KHND == 0 && !data.zgNdkhs.khnd) {
+        //   this.$message.error("考核年度不能为空");
+        // } else if (this.zgNdkhsAuth.KHRQ == 0 && !data.zgNdkhs.khrq) {
+        //   this.$message.error("考核日期不能为空");
+        // } else if (this.zgNdkhsAuth.KHJGM == 0 && !data.zgNdkhs.khjgm) {
+        //   this.$message.error("考核结果不能为空");
+        // } else if (this.zgJlbzsAuth.ZSH == 0 && !data.zgJlbzs.zsh) {
+        //   this.$message.error("证书号不能为空");
+        // } else if (this.zgJlbzsAuth.HJLX == 0 && !data.zgJlbzs.hjlx) {
+        //   this.$message.error("获奖类型不能为空");
+        // } else if (this.zgJlbzsAuth.JXMC == 0 && !data.zgJlbzs.jxmc) {
+        //   this.$message.error("奖项名称不能为空");
+        // } else if (this.zgJlbzsAuth.HJCGMC == 0 && !data.zgJlbzs.hjcgmc) {
+        //   this.$message.error("获奖成果名称不能为空");
+        // } else if (this.zgJlbzsAuth.JXJB == 0 && !data.zgJlbzs.jxjb) {
+        //   this.$message.error("奖项级别不能为空");
+        // } else if (this.zgJlbzsAuth.HJDJ == 0 && !data.zgJlbzs.hjdj) {
+        //   this.$message.error("获奖等级不能为空");
+        // } else if (this.zgJlbzsAuth.HJSJ == 0 && !data.zgJlbzs.hjsj) {
+        //   this.$message.error("获奖时间不能为空");
+        // } else if (this.zgJlbzsAuth.BRWC == 0 && !data.zgJlbzs.brwc) {
+        //   this.$message.error("本人位次不能为空");
+        // } else if (this.zgJlbzsAuth.BZBM == 0 && !data.zgJlbzs.bzbm) {
+        //   this.$message.error("表彰部门不能为空");
+        // } else if (this.zgXmkyqksAuth.XMMC == 0 && !data.zgXmkyqks.xmmc) {
+        //   this.$message.error("项目名称不能为空");
+        // } else if (this.zgXmkyqksAuth.XMJB == 0 && !data.zgXmkyqks.xmjb) {
+        //   this.$message.error("项目级别不能为空");
+        // } else if (this.zgXmkyqksAuth.XMBH == 0 && !data.zgXmkyqks.xmbh) {
+        //   this.$message.error("项目编号不能为空");
+        // } else if (this.zgXmkyqksAuth.QSSJ == 0 && !data.zgXmkyqks.qssj) {
+        //   this.$message.error("起始时间不能为空");
+        // } else if (this.zgXmkyqksAuth.JSSJ == 0 && !data.zgXmkyqks.jssj) {
+        //   this.$message.error("结束时间不能为空");
+        // } else if (this.zgXmkyqksAuth.SDJF == 0 && !data.zgXmkyqks.sdjf) {
+        //   this.$message.error("实到经费不能为空");
+        // } else if (this.zgXmkyqksAuth.BRWC == 0 && !data.zgXmkyqks.brwc) {
+        //   this.$message.error("本人位次不能为空");
+        // } else if (this.zgXmkyqksAuth.PZBM == 0 && !data.zgXmkyqks.pzbm) {
+        //   this.$message.error("批准部门不能为空");
+        // } else if (this.zgLwkyqksAuth.LWMC == 0 && !data.zgLwkyqks.qkmc) {
+        //   this.$message.error("论文名称不能为空");
+        // } else if (this.zgLwkyqksAuth.QKMC == 0 && !data.zgLwkyqks.qkmc) {
+        //   this.$message.error("期刊名称不能为空");
+        // } else if (this.zgLwkyqksAuth.CNKH == 0 && !data.zgLwkyqks.cnkh) {
+        //   this.$message.error("期刊国内标准刊号不能为空");
+        // } else if (this.zgLwkyqksAuth.QKLX == 0 && !data.zgLwkyqks.qklx) {
+        //   this.$message.error("期刊类型不能为空");
+        // } else if (this.zgLwkyqksAuth.FBSJ == 0 && !data.zgLwkyqks.fbsj) {
+        //   this.$message.error("发表时间不能为空");
+        // } else if (this.zgLwkyqksAuth.BRWC == 0 && !data.zgLwkyqks.brwc) {
+        //   this.$message.error("本人位次不能为空");
+        // } else if (this.zgZzkyqksAuth.ZZMC == 0 && !data.zgZzkyqks.zzmc) {
+        //   this.$message.error("著作名称不能为空");
+        // } else if (this.zgZzkyqksAuth.ZZLX == 0 && !data.zgZzkyqks.zzlx) {
+        //   this.$message.error("著作类型不能为空");
+        // } else if (this.zgZzkyqksAuth.CGSSDW == 0 && !data.zgZzkyqks.cgssdw) {
+        //   this.$message.error("成果所属单位不能为空");
+        // } else if (this.zgZzkyqksAuth.ISBNNO == 0 && !data.zgZzkyqks.isbnno) {
+        //   this.$message.error("ISBN号不能为空");
+        // } else if (this.zgZzkyqksAuth.CBS == 0 && !data.zgZzkyqks.cbs) {
+        //   this.$message.error("出版社不能为空");
+        // } else if (this.zgZzkyqksAuth.CBSJ == 0 && !data.zgZzkyqks.cbsj) {
+        //   this.$message.error("出版时间不能为空");
+        // } else if (this.zgZzkyqksAuth.BRWC == 0 && !data.zgZzkyqks.brwc) {
+        //   this.$message.error("本人位次不能为空");
+        // } else if (this.zgJxkyqksAuth.KCMC == 0 && !data.zgJxkyqks.kcmc) {
+        //   this.$message.error("课程名称不能为空");
+        // } else if (this.zgJxkyqksAuth.KCLX == 0 && !data.zgJxkyqks.kclx) {
+        //   this.$message.error("课程类型不能为空");
+        // } else if (this.zgJxkyqksAuth.KCXZ == 0 && !data.zgJxkyqks.kcxz) {
+        //   this.$message.error("课程性质不能为空");
+        // } else if (this.zgJxkyqksAuth.KSL == 0 && !data.zgJxkyqks.ksl) {
+        //   this.$message.error("课时量不能为空");
+        // } else if (this.zgJxkyqksAuth.SKRS == 0 && !data.zgJxkyqks.skrs) {
+        //   this.$message.error("授课人数不能为空");
+        // } else if (this.zgJxkyqksAuth.QSSJ == 0 && !data.zgJxkyqks.qssj) {
+        //   this.$message.error("起始时间不能为空");
+        // } else if (this.zgJxkyqksAuth.JSSJ == 0 && !data.zgJxkyqks.jssj) {
+        //   this.$message.error("结束时间不能为空");
+      } else {
+        updateDetailQueryPoliticalWorkList(data)
+          .then((res) => {
+            this.$message({
+              message: res.errmsg,
+              type: "success",
+            });
+            this.isEdit = 1;
+            // this.$router.push({
+            //   path: this.routerFrom
+            // })
+          })
+          .catch((err) => {
+            this.$message.error(err.errmsg);
           });
-          this.isEdit = 1;
-          // this.$router.push({
-          //   path: this.routerFrom
-          // })
-        })
-        .catch((err) => {
-          this.$message.error(err.errmsg);
-        });
+      }
     },
   },
 };

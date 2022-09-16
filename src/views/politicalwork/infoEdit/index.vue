@@ -2,14 +2,16 @@
   <div class="detail">
     <div class="wrap">
       <div class="detail_left">
-        <div v-for="(item, index) in dtailsList" :key="index">
-          <div
-            class="list"
-            :class="index == current ? 'active' : ''"
-            @click="handleList(index, 'tag')"
-          >
-            <div>{{ item }}</div>
-            <i :class="index == current ? 'el-icon-arrow-right' : ''" />
+        <div class="titlename">
+          <div v-for="(item, index) in dtailsList" :key="index">
+            <div
+              class="list"
+              :class="index == current ? 'active' : ''"
+              @click="handleList(index, 'tag')"
+            >
+              <div>{{ item }}</div>
+              <i :class="index == current ? 'el-icon-arrow-right' : ''" />
+            </div>
           </div>
         </div>
       </div>
@@ -805,22 +807,25 @@ export default {
       // height: calc(100vh - 170px);
       padding: 20px;
       box-sizing: border-box;
-      .list {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        height: 36px;
-        line-height: 36px;
-        font-size: 14px;
-        color: #1f1f1f;
-        cursor: pointer;
-        padding: 0 10px;
-        box-sizing: border-box;
-      }
-      .active {
-        background: #f0f0f0;
-        border-radius: 2px;
+      .titlename {
+        position: fixed;
+        .list {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          height: 36px;
+          line-height: 36px;
+          font-size: 14px;
+          color: #1f1f1f;
+          cursor: pointer;
+          padding: 0 10px;
+          box-sizing: border-box;
+        }
+        .active {
+          background: #f0f0f0;
+          border-radius: 2px;
+        }
       }
     }
     .detail_right {

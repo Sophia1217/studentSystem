@@ -70,7 +70,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.xh_approveFlag == 1 ||
-                      detailInfo.xsJbxx.xh_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.xh_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -97,7 +98,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.xm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.xm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.xm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -184,7 +186,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.xbm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.xbm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.xbm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -247,7 +250,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.csrq_approveFlag == 1 ||
-                      detailInfo.xsJbxx.csrq_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.csrq_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -276,7 +280,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.csdm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.csdm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -321,7 +326,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.jg_approveFlag == 1 ||
-                      detailInfo.xsJbxx.jg_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.jg_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -362,7 +368,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.mzm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.mzm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.mzm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -399,7 +406,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.gjdqm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.gjdqm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.gjdqm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -459,7 +467,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.sfzjh_approveFlag == 1 ||
-                      detailInfo.xsJbxx.sfzjh_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.sfzjh_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -537,7 +546,8 @@
                   <div
                     v-if="
                       (detailInfo.xsXjxx.nj_approveFlag == 1 ||
-                      detailInfo.xsXjxx.nj_approveFlag == 0) && isSh == 1
+                        detailInfo.xsXjxx.nj_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -564,7 +574,8 @@
                   <div
                     v-if="
                       (detailInfo.xsXjxx.bjm_approveFlag == 1 ||
-                      detailInfo.xsXjxx.bjm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsXjxx.bjm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -593,7 +604,8 @@
                   <div
                     v-if="
                       (detailInfo.xsXjxx.zydm_approveFlag == 1 ||
-                      detailInfo.xsXjxx.zydm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsXjxx.zydm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -622,7 +634,8 @@
                   <div
                     v-if="
                       (detailInfo.xsXjxx.xz_approveFlag == 1 ||
-                      detailInfo.xsXjxx.xz_approveFlag == 0) && isSh == 1
+                        detailInfo.xsXjxx.xz_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -691,7 +704,8 @@
                   <div
                     v-if="
                       (detailInfo.xsXjxx.xjzt_approveFlag == 1 ||
-                      detailInfo.xsXjxx.xjzt_approveFlag == 0) && isSh == 1
+                        detailInfo.xsXjxx.xjzt_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -792,7 +806,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.zzmmm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.zzmmm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.zzmmm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -936,7 +951,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.yxh_approveFlag == 1 ||
-                      detailInfo.xsJbxx.yxh_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.yxh_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -1125,7 +1141,9 @@
                   <div
                     class="content"
                     :class="
-                      detailInfo.xsXjxx.pyccm_approveFlag == 1 ? 'greenColor' : ''
+                      detailInfo.xsXjxx.pyccm_approveFlag == 1
+                        ? 'greenColor'
+                        : ''
                     "
                   >
                     {{ getName(pyccOps, detailInfo.xsXjxx.pyccm) }}
@@ -1268,7 +1286,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.xm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.xm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.xm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -1355,7 +1374,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.xbm_approveFlag == 0 ||
-                      detailInfo.xsJbxx.xbm_approveFlag == 1) && isSh == 1
+                        detailInfo.xsJbxx.xbm_approveFlag == 1) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -1418,7 +1438,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.csrq_approveFlag == 1 ||
-                      detailInfo.xsJbxx.csrq_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.csrq_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -1447,7 +1468,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.csdm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.csdm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -1491,8 +1513,9 @@
                   <div class="title">籍贯</div>
                   <div
                     v-if="
-                     ( detailInfo.xsJbxx.jg_approveFlag == 1 ||
-                      detailInfo.xsJbxx.jg_approveFlag == 0) && isSh == 1
+                      (detailInfo.xsJbxx.jg_approveFlag == 1 ||
+                        detailInfo.xsJbxx.jg_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -1533,7 +1556,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.mzm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.mzm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.mzm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -1570,7 +1594,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.gjdqm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.gjdqm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.gjdqm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -1630,7 +1655,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.sfzjh_approveFlag == 1 ||
-                      detailInfo.xsJbxx.sfzjh_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.sfzjh_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -1659,7 +1685,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.nj_approveFlag == 1 ||
-                      detailInfo.xsJbxx.nj_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.nj_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -1767,7 +1794,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.xjzt_approveFlag == 1 ||
-                      detailInfo.xsJbxx.xjzt_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.xjzt_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -1870,7 +1898,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.zzmmm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.zzmmm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.zzmmm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -1956,7 +1985,8 @@
                   <div
                     v-if="
                       (detailInfo.xsXjxx.zydm_approveFlag == 1 ||
-                      detailInfo.xsXjxx.zydm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsXjxx.zydm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -2066,7 +2096,9 @@
                   <div
                     class="content"
                     :class="
-                      detailInfo.xsXjxx.pyccm_approveFlag == 1 ? 'greenColor' : ''
+                      detailInfo.xsXjxx.pyccm_approveFlag == 1
+                        ? 'greenColor'
+                        : ''
                     "
                   >
                     {{ getName(pyccOps, detailInfo.xsXjxx.pyccm) }}
@@ -2291,7 +2323,8 @@
                   <div
                     v-if="
                       (detailInfo.xsTxxx.yddh_approveFlag == 1 ||
-                      detailInfo.xsTxxx.yddh_approveFlag == 0) && isSh == 1
+                        detailInfo.xsTxxx.yddh_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -2320,7 +2353,8 @@
                   <div
                     v-if="
                       (detailInfo.xsTxxx.dzyx_approveFlag == 1 ||
-                      detailInfo.xsTxxx.dzyx_approveFlag == 0) && isSh == 1
+                        detailInfo.xsTxxx.dzyx_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -2350,7 +2384,8 @@
                   <div
                     v-if="
                       (detailInfo.xsTxxx.qqhm_approveFlag == 1 ||
-                      detailInfo.xsTxxx.qqhm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsTxxx.qqhm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -2428,7 +2463,8 @@
                   <div
                     v-if="
                       (detailInfo.xsTxxx.txdz_approveFlag == 1 ||
-                      detailInfo.xsTxxx.txdz_approveFlag == 0) && isSh == 1
+                        detailInfo.xsTxxx.txdz_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -2474,7 +2510,8 @@
                   <div
                     v-if="
                       (detailInfo.xsTxxx.jtdh_approveFlag == 1 ||
-                      detailInfo.xsTxxx.jtdh_approveFlag == 0) && isSh == 1
+                        detailInfo.xsTxxx.jtdh_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -2505,7 +2542,8 @@
                   <div
                     v-if="
                       (detailInfo.xsTxxx.jtyzbm_approveFlag == 1 ||
-                      detailInfo.xsTxxx.jtyzbm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsTxxx.jtyzbm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -2534,7 +2572,8 @@
                   <div
                     v-if="
                       (detailInfo.xsTxxx.jtzz_approveFlag == 1 ||
-                      detailInfo.xsTxxx.jtzz_approveFlag == 0) && isSh == 1
+                        detailInfo.xsTxxx.jtzz_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -2586,8 +2625,9 @@
                   <div class="title">移动电话</div>
                   <div
                     v-if="
-                     ( detailInfo.xsTxxx.yddh_approveFlag == 1 ||
-                      detailInfo.xsTxxx.yddh_approveFlag == 0) && isSh == 1
+                      (detailInfo.xsTxxx.yddh_approveFlag == 1 ||
+                        detailInfo.xsTxxx.yddh_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -2616,7 +2656,8 @@
                   <div
                     v-if="
                       (detailInfo.xsTxxx.dzyx_approveFlag == 1 ||
-                      detailInfo.xsTxxx.dzyx_approveFlag == 0) && isSh == 1
+                        detailInfo.xsTxxx.dzyx_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -2647,7 +2688,8 @@
                   <div
                     v-if="
                       (detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                      detailInfo.xsJbxx.csdm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsJbxx.csdm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -2693,7 +2735,8 @@
                   <div
                     v-if="
                       (detailInfo.xsTxxx.jtdh_approveFlag == 1 ||
-                      detailInfo.xsTxxx.jtdh_approveFlag == 0) && isSh == 1
+                        detailInfo.xsTxxx.jtdh_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -2722,7 +2765,8 @@
                   <div
                     v-if="
                       (detailInfo.xsTxxx.yzbm_approveFlag == 1 ||
-                      detailInfo.xsTxxx.yzbm_approveFlag == 0) && isSh == 1
+                        detailInfo.xsTxxx.yzbm_approveFlag == 0) &&
+                      isSh == 1
                     "
                     class="content"
                   >
@@ -2783,7 +2827,8 @@
                 <div
                   v-if="
                     (detailInfo.xsJtcyxxList.cyxm_approveFlag == 1 ||
-                    detailInfo.xsJtcyxxList.cyxm_approveFlag == 0) && isSh == 1
+                      detailInfo.xsJtcyxxList.cyxm_approveFlag == 0) &&
+                    isSh == 1
                   "
                 >
                   <el-input
@@ -2813,7 +2858,8 @@
                 <div
                   v-if="
                     (detailInfo.xsJtcyxxList.csdm_approveFlag == 1 ||
-                    detailInfo.xsJtcyxxList.csdm_approveFlag == 0) && isSh == 1
+                      detailInfo.xsJtcyxxList.csdm_approveFlag == 0) &&
+                    isSh == 1
                   "
                 >
                   <el-input
@@ -2861,7 +2907,8 @@
                 <div
                   v-if="
                     (detailInfo.xsJtcyxxList.cygzdw_approveFlag == 1 ||
-                    detailInfo.xsJtcyxxList.cygzdw_approveFlag == 0) && isSh == 1
+                      detailInfo.xsJtcyxxList.cygzdw_approveFlag == 0) &&
+                    isSh == 1
                   "
                 >
                   <el-input
@@ -2893,7 +2940,8 @@
                 <div
                   v-if="
                     (detailInfo.xsJtcyxxList.cysfzh_approveFlag == 1 ||
-                    detailInfo.xsJtcyxxList.cysfzh_approveFlag == 0) && isSh == 1
+                      detailInfo.xsJtcyxxList.cysfzh_approveFlag == 0) &&
+                    isSh == 1
                   "
                 >
                   <el-input
@@ -2934,7 +2982,8 @@
                 <div
                   v-if="
                     (detailInfo.xsJtcyxxList.yddh_approveFlag == 1 ||
-                    detailInfo.xsJtcyxxList.yddh_approveFlag == 0) && isSh == 1
+                      detailInfo.xsJtcyxxList.yddh_approveFlag == 0) &&
+                    isSh == 1
                   "
                 >
                   <el-input
@@ -3010,7 +3059,8 @@
                 <div
                   v-if="
                     (detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 0) && isSh == 1
+                      detailInfo.xsJbxx.csdm_approveFlag == 0) &&
+                    isSh == 1
                   "
                 >
                   <el-input
@@ -3040,7 +3090,8 @@
                 <div
                   v-if="
                     (detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 0) && isSh == 1
+                      detailInfo.xsJbxx.csdm_approveFlag == 0) &&
+                    isSh == 1
                   "
                 >
                   <el-input
@@ -3105,7 +3156,8 @@
                 <div
                   v-if="
                     (scope.row.gzdw_approveFlag == 1 ||
-                    scope.row.gzdw_approveFlag == 0) && isSh == 1
+                      scope.row.gzdw_approveFlag == 0) &&
+                    isSh == 1
                   "
                 >
                   <el-input
@@ -3126,7 +3178,8 @@
                 <div
                   v-if="
                     (scope.row.gznr_approveFlag == 1 ||
-                    scope.row.gznr_approveFlag == 0) && isSh == 1
+                      scope.row.gznr_approveFlag == 0) &&
+                    isSh == 1
                   "
                 >
                   <el-input
@@ -3178,7 +3231,8 @@
                 <div
                   v-if="
                     (detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 0) && isSh == 1
+                      detailInfo.xsJbxx.csdm_approveFlag == 0) &&
+                    isSh == 1
                   "
                 >
                   <el-input
@@ -3347,7 +3401,7 @@ export default {
     // this.getCode("dmyjszyxwlbm"); // 专业学位类别
     this.getDetailQueryPoliticalWorkList();
     this.isSh = this.$route.query.isSh ? this.$route.query.isSh : 2;
-  console.log("this.isSh",this.isSh)
+    console.log("this.isSh", this.isSh);
   },
 
   methods: {
@@ -3366,8 +3420,11 @@ export default {
         this.$message.error("电子邮箱不能为空"); //
       } else if (data.xsTxxx.qqhm_approveFlag == 0 && !data.xsTxxx.qqhm) {
         this.$message.error("QQ号码不能为空"); //
-      } else if (data.xsTxxx.jtzz_approveFlag == 0 && !data.xsTxxx.jtzz &&
-        this.schooling == 1) {
+      } else if (
+        data.xsTxxx.jtzz_approveFlag == 0 &&
+        !data.xsTxxx.jtzz &&
+        this.schooling == 1
+      ) {
         this.$message.error("家庭住址不能为空"); //
       } else if (data.xsTxxx.jtdh_approveFlag == 0 && !data.xsTxxx.jtdh) {
         this.$message.error("家庭电话不能为空"); //
@@ -3377,8 +3434,8 @@ export default {
         this.schooling == 1
       ) {
         this.$message.error("家庭邮编不能为空"); //
-      } else if (data.xsTxxx.yzbm_approveFlag == 0 && !data.xsTxxx.yzbm) {
-        this.$message.error("邮政编码不能为空");
+        // } else if (data.xsTxxx.yzbm_approveFlag == 0 && !data.xsTxxx.yzbm) {
+        //   this.$message.error("邮政编码不能为空");
       } else if (data.xsJbxx.csdm_approveFlag == 0 && !data.xsJbxx.csdm) {
         this.$message.error("生源地区不能为空");
       } else if (data.xsJbxx.csrq_approveFlag == 0 && !data.xsJbxx.csrq) {
@@ -3393,37 +3450,37 @@ export default {
         this.$message.error("身份证件号不能为空");
       } else if (data.xsJbxx.xbm_approveFlag == 0 && !data.xsJbxx.xbm) {
         this.$message.error("性别不能为空");
-      // } else if (data.xsGzjlList.gzdw_approveFlag == 0 && !data.xsGzjlList.gzdw) {
-      //   this.$message.error("工作单位不能为空");
-      // } else if (data.xsGzjlList.gznr_approveFlag == 0 && !data.xsGzjlList.gznr) {
-      //   this.$message.error("工作内容不能为空");
-      // } else if (
-      //   data.xsGzjlList.gzzmrdw_approveFlag == 0 &&
-      //   !data.xsGzjlList.gzzmrdw
-      // ) {
-      //   this.$message.error("工作证明人单位不能为空");
-      // } else if (
-      //   data.xsJtcyxxList.cygzdw_approveFlag == 0 &&
-      //   !data.xsJtcyxxList.cygzdw
-      // ) {
-      //   this.$message.error("成员工作单位不能为空");
-      // } else if (
-      //   data.xsJtcyxxList.cysfzh_approveFlag == 0 &&
-      //   !data.xsJtcyxxList.cysfzh
-      // ) {
-      //   this.$message.error("成员身份证号不能为空");
-      // } else if (
-      //   data.xsJtcyxxList.cyxm_approveFlag == 0 &&
-      //   !data.xsJtcyxxList.cyxm
-      // ) {
-      //   this.$message.error("家庭成员不能为空");
-      // } else if (data.xsJtcyxxList.gxm_approveFlag == 0 && !data.xsJtcyxxList.gxm) {
-      //   this.$message.error("关系不能为空");
-      // } else if (
-      //   data.xsJtcyxxList.yddh_approveFlag == 0 &&
-      //   !data.xsJtcyxxList.yddh
-      // ) {
-      //   this.$message.error("单位电话不能为空");
+        // } else if (data.xsGzjlList.gzdw_approveFlag == 0 && !data.xsGzjlList.gzdw) {
+        //   this.$message.error("工作单位不能为空");
+        // } else if (data.xsGzjlList.gznr_approveFlag == 0 && !data.xsGzjlList.gznr) {
+        //   this.$message.error("工作内容不能为空");
+        // } else if (
+        //   data.xsGzjlList.gzzmrdw_approveFlag == 0 &&
+        //   !data.xsGzjlList.gzzmrdw
+        // ) {
+        //   this.$message.error("工作证明人单位不能为空");
+        // } else if (
+        //   data.xsJtcyxxList.cygzdw_approveFlag == 0 &&
+        //   !data.xsJtcyxxList.cygzdw
+        // ) {
+        //   this.$message.error("成员工作单位不能为空");
+        // } else if (
+        //   data.xsJtcyxxList.cysfzh_approveFlag == 0 &&
+        //   !data.xsJtcyxxList.cysfzh
+        // ) {
+        //   this.$message.error("成员身份证号不能为空");
+        // } else if (
+        //   data.xsJtcyxxList.cyxm_approveFlag == 0 &&
+        //   !data.xsJtcyxxList.cyxm
+        // ) {
+        //   this.$message.error("家庭成员不能为空");
+        // } else if (data.xsJtcyxxList.gxm_approveFlag == 0 && !data.xsJtcyxxList.gxm) {
+        //   this.$message.error("关系不能为空");
+        // } else if (
+        //   data.xsJtcyxxList.yddh_approveFlag == 0 &&
+        //   !data.xsJtcyxxList.yddh
+        // ) {
+        //   this.$message.error("单位电话不能为空");
       } else if (data.xsXjxx.bjm_approveFlag == 0 && !data.xsXjxx.bjm) {
         this.$message.error("班级不能为空");
       } else if (data.xsXjxx.dwh_approveFlag == 0 && !data.xsXjxx.dwh) {
@@ -3436,7 +3493,7 @@ export default {
         this.$message.error("学制不能为空");
       } else if (data.xsXjxx.zydm_approveFlag == 0 && !data.xsXjxx.zydm) {
         this.$message.error("专业不能为空");
-      } 
+      }
       // else if (
       //   data.xsXxjlList.sxzymc_approveFlag == 0 &&
       //   !data.xsXxjlList.sxzymc
@@ -3458,20 +3515,20 @@ export default {
       // } // else if (data.xsTxxx.wldz_approveFlag == 0 && !data.xsTxxx.wldz) {
       //   this.$message.error("网络地址不能为空");
       // }
-      else{
+      else {
         updateRegStuInfo1(data)
-        .then((res) => {
-          this.$message({
-            message: res.errmsg,
-            type: "success",
+          .then((res) => {
+            this.$message({
+              message: res.errmsg,
+              type: "success",
+            });
+            // this.$router.push({
+            //   path: this.routerFrom,
+            // });
+          })
+          .catch((err) => {
+            this.$message.error(err.errmsg);
           });
-          // this.$router.push({
-          //   path: this.routerFrom,
-          // });
-        })
-        .catch((err) => {
-          this.$message.error(err.errmsg);
-        });
       }
     },
     getName(data, val) {
@@ -3515,19 +3572,19 @@ export default {
       getCodeInfoByEnglish(data)
         .then((res) => {
           switch (paramsData) {
-            case "dmpyccm":// 培养层次
+            case "dmpyccm": // 培养层次
               this.pyccOps = res.data;
               break;
             case "dmxjztm": //学籍状态
               this.dmxjztmOps = res.data;
               break;
-            case "dmmzm":// 民族
+            case "dmmzm": // 民族
               this.dmmzmOps = res.data;
               break;
             case "dmzzmmm": //政治面貌
               this.zzmmOps = res.data;
               break;
-            case "dmxz"://学制
+            case "dmxz": //学制
               this.xzOps = res.data;
               break;
             case "dmxbm": //性别

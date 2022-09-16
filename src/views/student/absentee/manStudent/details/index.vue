@@ -3333,8 +3333,8 @@ export default {
         this.schooling == 1
       ) {
         this.$message.error("家庭邮编不能为空"); //
-      } else if (data.xsTxxx.yzbm_stuFlag == 0 && !data.xsTxxx.yzbm) {
-        this.$message.error("邮政编码不能为空");
+        // } else if (data.xsTxxx.yzbm_stuFlag == 0 && !data.xsTxxx.yzbm) {
+        //   this.$message.error("邮政编码不能为空");
       } else if (data.xsJbxx.csdm_stuFlag == 0 && !data.xsJbxx.csdm) {
         this.$message.error("出生地不能为空");
       } else if (data.xsJbxx.csrq_stuFlag == 0 && !data.xsJbxx.csrq) {

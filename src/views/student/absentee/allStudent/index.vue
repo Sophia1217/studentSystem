@@ -309,7 +309,7 @@ export default {
         nj: this.moreIform.njVal,
         pyccm: this.training.choose,
         sfzx: this.inSchool.choose,
-        pageNum: 1,
+        pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,

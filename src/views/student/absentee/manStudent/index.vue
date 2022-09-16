@@ -565,7 +565,7 @@ export default {
         dwh: this.moreIform.manageReg,
         zydm: this.moreIform.stuInfo,
         nj: this.moreIform.grade,
-        pageNum: 1,
+        pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         limitSql: "",
         orderZd: this.queryParams.orderZd,

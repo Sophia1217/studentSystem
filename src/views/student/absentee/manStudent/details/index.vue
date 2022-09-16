@@ -198,11 +198,11 @@
                   <div class="title">单位</div>
                   <!-- <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.dwh}}</div> -->
                   <div v-if="isEdit == 1" class="content">
-                    {{detailInfo.xsXjxx.dwh_chinese}}
+                    {{ detailInfo.xsXjxx.dwh_chinese }}
                     <!-- {{ getName(allDwh, detailInfo.xsXjxx.dwh) }} -->
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    {{detailInfo.xsXjxx.dwh_chinese}}
+                    {{ detailInfo.xsXjxx.dwh_chinese }}
                     <!-- <el-input
                       v-model="detailInfo.xsXjxx.dwh_chinese"
                       :disabled="detailInfo.xsXjxx.dwh_stuFlag == 2"
@@ -234,7 +234,7 @@
                 <div class="wrap">
                   <div class="title">出生地</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfo.xsJbxx.csdm_chinese }}
+                    {{ detailInfo.xsJbxx.csdm }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-select
@@ -253,6 +253,7 @@
                       </el-option>
                     </el-select>
                     <!-- <el-input
+                    <el-input
                       v-model="detailInfo.xsJbxx.csdm"
                       :disabled="detailInfo.xsJbxx.csdm_stuFlag == 2"
                       size="small"
@@ -1261,11 +1262,11 @@
                 <div class="wrap">
                   <div class="title">单位</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{detailInfo.xsXjxx.dwh_chinese}}
+                    {{ detailInfo.xsXjxx.dwh_chinese }}
                     <!-- {{ getName(allDwh, detailInfo.xsXjxx.dwh) }} -->
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    {{detailInfo.xsXjxx.dwh_chinese}}
+                    {{ detailInfo.xsXjxx.dwh_chinese }}
                     <!-- <el-input
                       v-model="detailInfo.xsXjxx.dwh_chinese"
                       :disabled="detailInfo.xsXjxx.dwh_stuFlag == 2"
@@ -2740,6 +2741,34 @@
         </div>
 
         <div class="headline" id="tag_4">
+          <div>学籍异动信息</div>
+          <!-- <div class="editBtn" v-if="isEdit == 2" @click="addDetailTable(2)">
+            <i class="addIcon"></i> 添加学籍异动信息
+          </div> -->
+        </div>
+        <div class="tableStyle">
+          <el-table :data="detailInfo.xsXjydList" style="width: 100%">
+            <el-table-column prop="ydwmc" label="原学院"> </el-table-column>
+            <el-table-column prop="ybjmc" label="原班级"> </el-table-column>
+            <el-table-column prop="ydlbm" label="异动类别"> </el-table-column>
+            <el-table-column prop="spwh" label="异动文号"> </el-table-column>
+            <el-table-column prop="ydrq" label="异动时间"> </el-table-column>
+            <el-table-column prop="ynj" label="原年级"> </el-table-column>
+            <el-table-column prop="yzymc" label="原专业"> </el-table-column>
+            <el-table-column label="" v-if="isEdit == 2">
+              <template slot-scope="scope">
+                <div
+                  class="deteleBtn"
+                  @click="deteleItem(scope.row, scope.$index, 'b')"
+                >
+                  <i class="el-icon-close"></i>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+
+        <div class="headline" id="tag_5">
           <div>工作经历</div>
           <div class="editBtn" v-if="isEdit == 2" @click="addDetailTable(3)">
             <i class="addIcon"></i> 添加工作经历
@@ -2936,6 +2965,7 @@ export default {
         "联系方式",
         "家庭成员信息",
         "学习经历",
+        "学籍异动信息",
         "工作经历",
       ],
       current: 0,
@@ -3225,6 +3255,11 @@ export default {
             "xsXszpb",
             res.data.xsXszpb ? res.data.xsXszpb : {}
           );
+          this.$set(
+            this.detailInfo,
+            "xsXjydList",
+            res.data.xsXjydList ? res.data.xsXjydList : {} //学籍异动信息
+          );
           this.getAllCollege(this.detailInfo.xsXjxx.dwh);
           this.getZY([this.detailInfo.xsXjxx.dwh]);
           this.getBJ([this.detailInfo.xsXjxx.dwh]);
@@ -3284,8 +3319,11 @@ export default {
         this.$message.error("电子邮箱不能为空"); //
       } else if (data.xsTxxx.qqhm_stuFlag == 0 && !data.xsTxxx.qqhm) {
         this.$message.error("QQ号码不能为空"); //
-      } else if (data.xsTxxx.jtzz_stuFlag == 0 && !data.xsTxxx.jtzz &&
-        this.schooling == 1) {
+      } else if (
+        data.xsTxxx.jtzz_stuFlag == 0 &&
+        !data.xsTxxx.jtzz &&
+        this.schooling == 1
+      ) {
         this.$message.error("家庭住址不能为空"); //
       } else if (data.xsTxxx.jtdh_stuFlag == 0 && !data.xsTxxx.jtdh) {
         this.$message.error("家庭电话不能为空"); //
@@ -3298,7 +3336,7 @@ export default {
       } else if (data.xsTxxx.yzbm_stuFlag == 0 && !data.xsTxxx.yzbm) {
         this.$message.error("邮政编码不能为空");
       } else if (data.xsJbxx.csdm_stuFlag == 0 && !data.xsJbxx.csdm) {
-        this.$message.error("生源地区不能为空");
+        this.$message.error("出生地不能为空");
       } else if (data.xsJbxx.csrq_stuFlag == 0 && !data.xsJbxx.csrq) {
         this.$message.error("出生日期不能为空");
       } else if (data.xsJbxx.gjdqm_stuFlag == 0 && !data.xsJbxx.gjdqm) {
@@ -3311,37 +3349,37 @@ export default {
         this.$message.error("身份证件号不能为空");
       } else if (data.xsJbxx.xbm_stuFlag == 0 && !data.xsJbxx.xbm) {
         this.$message.error("性别不能为空");
-      // } else if (data.xsGzjlList.gzdw_stuFlag == 0 && !data.xsGzjlList.gzdw) {
-      //   this.$message.error("工作单位不能为空");
-      // } else if (data.xsGzjlList.gznr_stuFlag == 0 && !data.xsGzjlList.gznr) {
-      //   this.$message.error("工作内容不能为空");
-      // } else if (
-      //   data.xsGzjlList.gzzmrdw_stuFlag == 0 &&
-      //   !data.xsGzjlList.gzzmrdw
-      // ) {
-      //   this.$message.error("工作证明人单位不能为空");
-      // } else if (
-      //   data.xsJtcyxxList.cygzdw_stuFlag == 0 &&
-      //   !data.xsJtcyxxList.cygzdw
-      // ) {
-      //   this.$message.error("成员工作单位不能为空");
-      // } else if (
-      //   data.xsJtcyxxList.cysfzh_stuFlag == 0 &&
-      //   !data.xsJtcyxxList.cysfzh
-      // ) {
-      //   this.$message.error("成员身份证号不能为空");
-      // } else if (
-      //   data.xsJtcyxxList.cyxm_stuFlag == 0 &&
-      //   !data.xsJtcyxxList.cyxm
-      // ) {
-      //   this.$message.error("家庭成员不能为空");
-      // } else if (data.xsJtcyxxList.gxm_stuFlag == 0 && !data.xsJtcyxxList.gxm) {
-      //   this.$message.error("关系不能为空");
-      // } else if (
-      //   data.xsJtcyxxList.yddh_stuFlag == 0 &&
-      //   !data.xsJtcyxxList.yddh
-      // ) {
-      //   this.$message.error("单位电话不能为空");
+        // } else if (data.xsGzjlList.gzdw_stuFlag == 0 && !data.xsGzjlList.gzdw) {
+        //   this.$message.error("工作单位不能为空");
+        // } else if (data.xsGzjlList.gznr_stuFlag == 0 && !data.xsGzjlList.gznr) {
+        //   this.$message.error("工作内容不能为空");
+        // } else if (
+        //   data.xsGzjlList.gzzmrdw_stuFlag == 0 &&
+        //   !data.xsGzjlList.gzzmrdw
+        // ) {
+        //   this.$message.error("工作证明人单位不能为空");
+        // } else if (
+        //   data.xsJtcyxxList.cygzdw_stuFlag == 0 &&
+        //   !data.xsJtcyxxList.cygzdw
+        // ) {
+        //   this.$message.error("成员工作单位不能为空");
+        // } else if (
+        //   data.xsJtcyxxList.cysfzh_stuFlag == 0 &&
+        //   !data.xsJtcyxxList.cysfzh
+        // ) {
+        //   this.$message.error("成员身份证号不能为空");
+        // } else if (
+        //   data.xsJtcyxxList.cyxm_stuFlag == 0 &&
+        //   !data.xsJtcyxxList.cyxm
+        // ) {
+        //   this.$message.error("家庭成员不能为空");
+        // } else if (data.xsJtcyxxList.gxm_stuFlag == 0 && !data.xsJtcyxxList.gxm) {
+        //   this.$message.error("关系不能为空");
+        // } else if (
+        //   data.xsJtcyxxList.yddh_stuFlag == 0 &&
+        //   !data.xsJtcyxxList.yddh
+        // ) {
+        //   this.$message.error("单位电话不能为空");
       } else if (data.xsXjxx.bjm_stuFlag == 0 && !data.xsXjxx.bjm) {
         this.$message.error("班级不能为空");
       } else if (data.xsXjxx.dwh_stuFlag == 0 && !data.xsXjxx.dwh) {
@@ -3354,7 +3392,7 @@ export default {
         this.$message.error("学制不能为空");
       } else if (data.xsXjxx.zydm_stuFlag == 0 && !data.xsXjxx.zydm) {
         this.$message.error("专业不能为空");
-      } 
+      }
       // else if (
       //   data.xsXxjlList.sxzymc_stuFlag == 0 &&
       //   !data.xsXxjlList.sxzymc

@@ -235,7 +235,7 @@
                       detailInfo.xsXjxx.dwh_approveFlag == 1 ? 'greenColor' : ''
                     "
                   >
-                    {{ getName(allDwh, detailInfo.xsXjxx.dwh) }}
+                    {{ detailInfo.xsXjxx.dwh_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1406,7 +1406,7 @@
                       detailInfo.xsXjxx.dwh_approveFlag == 1 ? 'greenColor' : ''
                     "
                   >
-                    {{ getName(allDwh, detailInfo.xsXjxx.dwh) }}
+                    {{ detailInfo.xsXjxx.dwh_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -2741,7 +2741,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsTxxx.jtyzbm }}
+                    {{ detailInfo.xsTxxx.yzbm }}
                   </div>
                 </div>
               </el-col>
@@ -2782,8 +2782,8 @@
               <template slot-scope="scope">
                 <div
                   v-if="
-                    (detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 0) && isSh == 1
+                    (detailInfo.xsJtcyxxList.cyxm_approveFlag == 1 ||
+                    detailInfo.xsJtcyxxList.cyxm_approveFlag == 0) && isSh == 1
                   "
                 >
                   <el-input
@@ -2812,13 +2812,12 @@
               <template slot-scope="scope">
                 <div
                   v-if="
-                    (detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 0) && isSh == 1
+                    (detailInfo.xsJtcyxxList.csdm_approveFlag == 1 ||
+                    detailInfo.xsJtcyxxList.csdm_approveFlag == 0) && isSh == 1
                   "
                 >
                   <el-input
                     v-model="scope.row.gxm"
-                    :disabled="scope.row.gxm_stuFlag == 2"
                     placeholder="请输入"
                   ></el-input>
                 </div>
@@ -2861,8 +2860,8 @@
               <template slot-scope="scope">
                 <div
                   v-if="
-                    (detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 0) && isSh == 1
+                    (detailInfo.xsJtcyxxList.cygzdw_approveFlag == 1 ||
+                    detailInfo.xsJtcyxxList.cygzdw_approveFlag == 0) && isSh == 1
                   "
                 >
                   <el-input
@@ -2893,13 +2892,12 @@
               <template slot-scope="scope">
                 <div
                   v-if="
-                    (detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 0) && isSh == 1
+                    (detailInfo.xsJtcyxxList.cysfzh_approveFlag == 1 ||
+                    detailInfo.xsJtcyxxList.cysfzh_approveFlag == 0) && isSh == 1
                   "
                 >
                   <el-input
                     v-model="scope.row.cysfzh"
-                    :disabled="scope.row.cysfzh_stuFlag == 2"
                     placeholder="请输入"
                   ></el-input>
                 </div>
@@ -2935,13 +2933,12 @@
               <template slot-scope="scope">
                 <div
                   v-if="
-                    (detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 0) && isSh == 1
+                    (detailInfo.xsJtcyxxList.yddh_approveFlag == 1 ||
+                    detailInfo.xsJtcyxxList.yddh_approveFlag == 0) && isSh == 1
                   "
                 >
                   <el-input
                     v-model="scope.row.yddh"
-                    :disabled="scope.row.yddh_stuFlag == 2"
                     placeholder="请输入"
                   ></el-input>
                 </div>
@@ -2955,20 +2952,18 @@
             </el-table-column>
             <el-table-column prop="dzyx" label="电子邮箱">
               <template slot-scope="scope">
-                <div
+                <!-- <div
                   v-if="
-                    (detailInfo.xsJbxx.csdm_approveFlag == 1 ||
-                    detailInfo.xsJbxx.csdm_approveFlag == 0) && isSh == 1
+                    (detailInfo.xsJtcyxxList.dzyx_approveFlag == 1 ||
+                    detailInfo.xsJtcyxxList.dzyx_approveFlag == 0) && isSh == 1
                   "
                 >
                   <el-input
                     v-model="scope.row.dzyx"
-                    :disabled="scope.row.dzyx_stuFlag == 2"
                     placeholder="请输入"
                   ></el-input>
-                </div>
+                </div> -->
                 <div
-                  v-else
                   :class="scope.row.dzyx_approveFlag == 1 ? 'greenColor' : ''"
                 >
                   {{ scope.row.dzyx }}
@@ -3020,7 +3015,6 @@
                 >
                   <el-input
                     v-model="scope.row.sxzymc"
-                    :disabled="scope.row.sxzymc_stuFlag == 2"
                     placeholder="请输入"
                   ></el-input>
                 </div>
@@ -3051,7 +3045,6 @@
                 >
                   <el-input
                     v-model="scope.row.xxzmr"
-                    :disabled="scope.row.xxzmr_stuFlag == 2"
                     placeholder="请输入"
                   ></el-input>
                 </div>
@@ -3346,12 +3339,12 @@ export default {
     this.getCode("dmhyzkm"); // 婚姻状况
     this.getCode("gatqwm"); // 港澳台侨外
     this.getCode("dmsfbzm"); // 是否毕业 是否学分制 是否师范生
-    this.getCode("dmrxfsm"); // 入学方式
-    this.getCode("dmjdfsm"); // 就读方式
-    this.getCode("hdxlfsm"); // 获得学历方式
-    this.getCode("dmpyfsm"); // 培养方式
-    this.getCode("dmxxfsm"); // 学习方式
-    this.getCode("dmyjszyxwlbm"); // 专业学位类别
+    // this.getCode("dmrxfsm"); // 入学方式
+    // this.getCode("dmjdfsm"); // 就读方式
+    // this.getCode("hdxlfsm"); // 获得学历方式
+    // this.getCode("dmpyfsm"); // 培养方式
+    // this.getCode("dmxxfsm"); // 学习方式
+    // this.getCode("dmyjszyxwlbm"); // 专业学位类别
     this.getDetailQueryPoliticalWorkList();
     this.isSh = this.$route.query.isSh ? this.$route.query.isSh : 2;
   console.log("this.isSh",this.isSh)
@@ -3362,7 +3355,111 @@ export default {
       this.$set(this.detailInfo, "id", this.$route.query.id);
       let data = this.detailInfo;
       console.log("this.detailInfo", this.detailInfo);
-      updateRegStuInfo1(data)
+      //0必填和空的校验
+      if (data.xsJbxx.xh_approveFlag == 0 && !data.xsJbxx.xh) {
+        this.$message.error("学号不能为空");
+      } else if (data.xsJbxx.xm_approveFlag == 0 && !data.xsJbxx.xm) {
+        this.$message.error("姓名不能为空");
+      } else if (data.xsTxxx.yddh_approveFlag == 0 && !data.xsTxxx.yddh) {
+        this.$message.error("移动电话不能为空"); //
+      } else if (data.xsTxxx.dzyx_approveFlag == 0 && !data.xsTxxx.dzyx) {
+        this.$message.error("电子邮箱不能为空"); //
+      } else if (data.xsTxxx.qqhm_approveFlag == 0 && !data.xsTxxx.qqhm) {
+        this.$message.error("QQ号码不能为空"); //
+      } else if (data.xsTxxx.jtzz_approveFlag == 0 && !data.xsTxxx.jtzz &&
+        this.schooling == 1) {
+        this.$message.error("家庭住址不能为空"); //
+      } else if (data.xsTxxx.jtdh_approveFlag == 0 && !data.xsTxxx.jtdh) {
+        this.$message.error("家庭电话不能为空"); //
+      } else if (
+        data.xsTxxx.jtyzbm_approveFlag == 0 &&
+        !data.xsTxxx.jtyzbm &&
+        this.schooling == 1
+      ) {
+        this.$message.error("家庭邮编不能为空"); //
+      } else if (data.xsTxxx.yzbm_approveFlag == 0 && !data.xsTxxx.yzbm) {
+        this.$message.error("邮政编码不能为空");
+      } else if (data.xsJbxx.csdm_approveFlag == 0 && !data.xsJbxx.csdm) {
+        this.$message.error("生源地区不能为空");
+      } else if (data.xsJbxx.csrq_approveFlag == 0 && !data.xsJbxx.csrq) {
+        this.$message.error("出生日期不能为空");
+      } else if (data.xsJbxx.gjdqm_approveFlag == 0 && !data.xsJbxx.gjdqm) {
+        this.$message.error("户口所在地不能为空");
+      } else if (data.xsJbxx.jg_approveFlag == 0 && !data.xsJbxx.jg) {
+        this.$message.error("籍贯不能为空");
+      } else if (data.xsJbxx.mzm_approveFlag == 0 && !data.xsJbxx.mzm) {
+        this.$message.error("民族不能为空");
+      } else if (data.xsJbxx.sfzjh_approveFlag == 0 && !data.xsJbxx.sfzjh) {
+        this.$message.error("身份证件号不能为空");
+      } else if (data.xsJbxx.xbm_approveFlag == 0 && !data.xsJbxx.xbm) {
+        this.$message.error("性别不能为空");
+      // } else if (data.xsGzjlList.gzdw_approveFlag == 0 && !data.xsGzjlList.gzdw) {
+      //   this.$message.error("工作单位不能为空");
+      // } else if (data.xsGzjlList.gznr_approveFlag == 0 && !data.xsGzjlList.gznr) {
+      //   this.$message.error("工作内容不能为空");
+      // } else if (
+      //   data.xsGzjlList.gzzmrdw_approveFlag == 0 &&
+      //   !data.xsGzjlList.gzzmrdw
+      // ) {
+      //   this.$message.error("工作证明人单位不能为空");
+      // } else if (
+      //   data.xsJtcyxxList.cygzdw_approveFlag == 0 &&
+      //   !data.xsJtcyxxList.cygzdw
+      // ) {
+      //   this.$message.error("成员工作单位不能为空");
+      // } else if (
+      //   data.xsJtcyxxList.cysfzh_approveFlag == 0 &&
+      //   !data.xsJtcyxxList.cysfzh
+      // ) {
+      //   this.$message.error("成员身份证号不能为空");
+      // } else if (
+      //   data.xsJtcyxxList.cyxm_approveFlag == 0 &&
+      //   !data.xsJtcyxxList.cyxm
+      // ) {
+      //   this.$message.error("家庭成员不能为空");
+      // } else if (data.xsJtcyxxList.gxm_approveFlag == 0 && !data.xsJtcyxxList.gxm) {
+      //   this.$message.error("关系不能为空");
+      // } else if (
+      //   data.xsJtcyxxList.yddh_approveFlag == 0 &&
+      //   !data.xsJtcyxxList.yddh
+      // ) {
+      //   this.$message.error("单位电话不能为空");
+      } else if (data.xsXjxx.bjm_approveFlag == 0 && !data.xsXjxx.bjm) {
+        this.$message.error("班级不能为空");
+      } else if (data.xsXjxx.dwh_approveFlag == 0 && !data.xsXjxx.dwh) {
+        this.$message.error("学院不能为空");
+      } else if (data.xsXjxx.nj_approveFlag == 0 && !data.xsXjxx.nj) {
+        this.$message.error("年级不能为空");
+      } else if (data.xsXjxx.xjzt_approveFlag == 0 && !data.xsXjxx.xjzt) {
+        this.$message.error("学籍状态不能为空");
+      } else if (data.xsXjxx.xz_approveFlag == 0 && !data.xsXjxx.xz) {
+        this.$message.error("学制不能为空");
+      } else if (data.xsXjxx.zydm_approveFlag == 0 && !data.xsXjxx.zydm) {
+        this.$message.error("专业不能为空");
+      } 
+      // else if (
+      //   data.xsXxjlList.sxzymc_approveFlag == 0 &&
+      //   !data.xsXxjlList.sxzymc
+      // ) {
+      //   this.$message.error("所学专业名称不能为空");
+      // } else if (data.xsXxjlList.xxnr_approveFlag == 0 && !data.xsXxjlList.xxnr) {
+      //   this.$message.error("学习内容不能为空");
+      // } else if (data.xsXxjlList.xxzmr_approveFlag == 0 && !data.xsXxjlList.xxzmr) {
+      //   this.$message.error("学习证明人不能为空");
+      // }
+      // else if (data.xsTxxx.wxhm_approveFlag == 0 && !data.xsTxxx.wxhm) {
+      //   this.$message.error("微信号不能为空");
+      // } else if (data.xsTxxx.txdz_approveFlag == 0 && !data.xsTxxx.txdz) {
+      //   this.$message.error("通信地址不能为空");
+      // } else if (data.xsTxxx.czdh_approveFlag == 0 && !data.xsTxxx.czdh) {
+      //   this.$message.error("传真电话不能为空");
+      // } else if (data.xsTxxx.jtdzxx_approveFlag == 0 && !data.xsTxxx.jtdzxx) {
+      //   this.$message.error("家庭Email不能为空");
+      // } // else if (data.xsTxxx.wldz_approveFlag == 0 && !data.xsTxxx.wldz) {
+      //   this.$message.error("网络地址不能为空");
+      // }
+      else{
+        updateRegStuInfo1(data)
         .then((res) => {
           this.$message({
             message: res.errmsg,
@@ -3375,6 +3472,7 @@ export default {
         .catch((err) => {
           this.$message.error(err.errmsg);
         });
+      }
     },
     getName(data, val) {
       if (data.length > 0 && val) {

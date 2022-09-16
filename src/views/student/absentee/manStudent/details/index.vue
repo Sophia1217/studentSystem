@@ -198,15 +198,17 @@
                   <div class="title">单位</div>
                   <!-- <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.dwh}}</div> -->
                   <div v-if="isEdit == 1" class="content">
-                    {{ getName(allDwh, detailInfo.xsXjxx.dwh) }}
+                    {{detailInfo.xsXjxx.dwh_chinese}}
+                    <!-- {{ getName(allDwh, detailInfo.xsXjxx.dwh) }} -->
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <el-input
+                    {{detailInfo.xsXjxx.dwh_chinese}}
+                    <!-- <el-input
                       v-model="detailInfo.xsXjxx.dwh_chinese"
                       :disabled="detailInfo.xsXjxx.dwh_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
-                    ></el-input>
+                    ></el-input> -->
                   </div>
                 </div>
               </el-col>
@@ -235,12 +237,27 @@
                     {{ detailInfo.xsJbxx.csdm_chinese }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <el-input
-                      v-model="detailInfo.xsJbxx.csdm_chinese"
+                    <el-select
+                      v-model="detailInfo.xsJbxx.csdm"
+                      size="small"
+                      :disabled="detailInfo.xsJbxx.csdm_stuFlag == 2"
+                      placeholder="请选择"
+                      filterable
+                    >
+                      <el-option
+                        v-for="item in jgOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                    <!-- <el-input
+                      v-model="detailInfo.xsJbxx.csdm"
                       :disabled="detailInfo.xsJbxx.csdm_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
-                    ></el-input>
+                    ></el-input> -->
                   </div>
                 </div>
               </el-col>
@@ -310,12 +327,26 @@
                     {{ detailInfo.xsJbxx.gjdqm_chinese }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <el-input
+                    <el-select
+                      v-model="detailInfo.xsJbxx.gjdqm"
+                      size="small"
+                      placeholder="请选择"
+                      filterable
+                    >
+                      <el-option
+                        v-for="item in gjdqm"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                    <!-- <el-input
                       v-model="detailInfo.xsJbxx.gjdqm_chinese"
                       :disabled="detailInfo.xsJbxx.gjdqm_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
-                    ></el-input>
+                    ></el-input> -->
                   </div>
                 </div>
               </el-col>
@@ -948,8 +979,8 @@
                     {{ getName(pyccOps, detailInfo.xsXjxx.pyccm) }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <!-- <el-input v-model="detailInfo.xsXjxx.pyccm" size="small" placeholder="请输入内容"></el-input> -->
-                    <el-select
+                    {{ getName(pyccOps, detailInfo.xsXjxx.pyccm) }}
+                    <!-- <el-select
                       v-model="detailInfo.xsXjxx.pyccm"
                       size="small"
                       :disabled="detailInfo.xsXjxx.pyccm_stuFlag == 2"
@@ -962,7 +993,7 @@
                         :value="item.dm"
                       >
                       </el-option>
-                    </el-select>
+                    </el-select> -->
                   </div>
                 </div>
               </el-col>
@@ -1011,7 +1042,7 @@
                     <el-select
                       v-model="detailInfo.xsXjxx.xslbm"
                       size="small"
-                      :disabled="detailInfo.xsXjxx.xslbm_stuFlag == 2"
+                      disabled
                       placeholder="请选择"
                     >
                       <el-option
@@ -1230,15 +1261,17 @@
                 <div class="wrap">
                   <div class="title">单位</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ getName(allDwh, detailInfo.xsXjxx.dwh) }}
+                    {{detailInfo.xsXjxx.dwh_chinese}}
+                    <!-- {{ getName(allDwh, detailInfo.xsXjxx.dwh) }} -->
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <el-input
+                    {{detailInfo.xsXjxx.dwh_chinese}}
+                    <!-- <el-input
                       v-model="detailInfo.xsXjxx.dwh_chinese"
                       :disabled="detailInfo.xsXjxx.dwh_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
-                    ></el-input>
+                    ></el-input> -->
                   </div>
                 </div>
               </el-col>
@@ -1267,12 +1300,27 @@
                     {{ detailInfo.xsJbxx.csdm_chinese }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <el-input
-                      v-model="detailInfo.xsJbxx.csdm_chinese"
+                    <el-select
+                      v-model="detailInfo.xsJbxx.csdm"
+                      size="small"
+                      :disabled="detailInfo.xsJbxx.csdm_stuFlag == 2"
+                      placeholder="请选择"
+                      filterable
+                    >
+                      <el-option
+                        v-for="item in jgOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                    <!-- <el-input
+                      v-model="detailInfo.xsJbxx.csdm_"
                       :disabled="detailInfo.xsJbxx.csdm_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
-                    ></el-input>
+                    ></el-input> -->
                   </div>
                 </div>
               </el-col>
@@ -1343,12 +1391,26 @@
                     {{ detailInfo.xsJbxx.gjdqm_chinese }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <el-input
+                    <el-select
+                      v-model="detailInfo.xsJbxx.gjdqm"
+                      size="small"
+                      placeholder="请选择"
+                      filterable
+                    >
+                      <el-option
+                        v-for="item in gjdqm"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                    <!-- <el-input
                       v-model="detailInfo.xsJbxx.gjdqm_chinese"
                       :disabled="detailInfo.xsJbxx.gjdqm_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
-                    ></el-input>
+                    ></el-input> -->
                   </div>
                 </div>
               </el-col>
@@ -1765,12 +1827,12 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">培养层次</div>
-                  <!-- <div v-if="isEdit ==1" class="content">{{detailInfo.xsXjxx.pyccm}}</div> -->
                   <div v-if="isEdit == 1" class="content">
                     {{ getName(pyccOps, detailInfo.xsXjxx.pyccm) }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <el-select
+                    {{ getName(pyccOps, detailInfo.xsXjxx.pyccm) }}
+                    <!-- <el-select
                       v-model="detailInfo.xsXjxx.pyccm"
                       size="small"
                       :disabled="detailInfo.xsXjxx.pyccm_stuFlag == 2"
@@ -1783,7 +1845,7 @@
                         :value="item.dm"
                       >
                       </el-option>
-                    </el-select>
+                    </el-select> -->
                   </div>
                 </div>
               </el-col>
@@ -2902,11 +2964,10 @@ export default {
       zyOps: [],
       xslbOps: [], //;学生类别
       zxjhmOps: [], // 专项计划码
-      gjdqm: [],
+      gjdqm: [], //国籍
       dmsfzjlxm: [], // 身份证类型
       dmhyzkm: [], // 婚姻状况
       gatqwm: [], // 港澳台侨外
-      dmpyccm: [], // 培养层次
       dmrxfsm: [], // 入学方式
       dmjdfsm: [], // 就读方式
       hdxlfsm: [], // 获得学历方式
@@ -2956,7 +3017,6 @@ export default {
       this.getCode("dmsfzjlxm"); // 身份证类型
       this.getCode("dmhyzkm"); // 婚姻状况
       this.getCode("gatqwm"); // 港澳台侨外
-      this.getCode("dmpyccm"); // 培养层次
       this.getCode("dmxjztm"); // 学籍状态
       this.getCode("dmsfbzm"); // 是否毕业 是否学分制 是否师范生
       this.getCode("dmrxfsm"); // 入学方式
@@ -3224,7 +3284,8 @@ export default {
         this.$message.error("电子邮箱不能为空"); //
       } else if (data.xsTxxx.qqhm_stuFlag == 0 && !data.xsTxxx.qqhm) {
         this.$message.error("QQ号码不能为空"); //
-      } else if (data.xsTxxx.jtzz_stuFlag == 0 && !data.xsTxxx.jtzz) {
+      } else if (data.xsTxxx.jtzz_stuFlag == 0 && !data.xsTxxx.jtzz &&
+        this.schooling == 1) {
         this.$message.error("家庭住址不能为空"); //
       } else if (data.xsTxxx.jtdh_stuFlag == 0 && !data.xsTxxx.jtdh) {
         this.$message.error("家庭电话不能为空"); //
@@ -3250,37 +3311,37 @@ export default {
         this.$message.error("身份证件号不能为空");
       } else if (data.xsJbxx.xbm_stuFlag == 0 && !data.xsJbxx.xbm) {
         this.$message.error("性别不能为空");
-      } else if (data.xsGzjlList.gzdw_stuFlag == 0 && !data.xsGzjlList.gzdw) {
-        this.$message.error("工作单位不能为空");
-      } else if (data.xsGzjlList.gznr_stuFlag == 0 && !data.xsGzjlList.gznr) {
-        this.$message.error("工作内容不能为空");
-      } else if (
-        data.xsGzjlList.gzzmrdw_stuFlag == 0 &&
-        !data.xsGzjlList.gzzmrdw
-      ) {
-        this.$message.error("工作证明人单位不能为空");
-      } else if (
-        data.xsJtcyxxList.cygzdw_stuFlag == 0 &&
-        !data.xsJtcyxxList.cygzdw
-      ) {
-        this.$message.error("成员工作单位不能为空");
-      } else if (
-        data.xsJtcyxxList.cysfzh_stuFlag == 0 &&
-        !data.xsJtcyxxList.cysfzh
-      ) {
-        this.$message.error("成员身份证号不能为空");
-      } else if (
-        data.xsJtcyxxList.cyxm_stuFlag == 0 &&
-        !data.xsJtcyxxList.cyxm
-      ) {
-        this.$message.error("家庭成员不能为空");
-      } else if (data.xsJtcyxxList.gxm_stuFlag == 0 && !data.xsJtcyxxList.gxm) {
-        this.$message.error("关系不能为空");
-      } else if (
-        data.xsJtcyxxList.yddh_stuFlag == 0 &&
-        !data.xsJtcyxxList.yddh
-      ) {
-        this.$message.error("单位电话不能为空");
+      // } else if (data.xsGzjlList.gzdw_stuFlag == 0 && !data.xsGzjlList.gzdw) {
+      //   this.$message.error("工作单位不能为空");
+      // } else if (data.xsGzjlList.gznr_stuFlag == 0 && !data.xsGzjlList.gznr) {
+      //   this.$message.error("工作内容不能为空");
+      // } else if (
+      //   data.xsGzjlList.gzzmrdw_stuFlag == 0 &&
+      //   !data.xsGzjlList.gzzmrdw
+      // ) {
+      //   this.$message.error("工作证明人单位不能为空");
+      // } else if (
+      //   data.xsJtcyxxList.cygzdw_stuFlag == 0 &&
+      //   !data.xsJtcyxxList.cygzdw
+      // ) {
+      //   this.$message.error("成员工作单位不能为空");
+      // } else if (
+      //   data.xsJtcyxxList.cysfzh_stuFlag == 0 &&
+      //   !data.xsJtcyxxList.cysfzh
+      // ) {
+      //   this.$message.error("成员身份证号不能为空");
+      // } else if (
+      //   data.xsJtcyxxList.cyxm_stuFlag == 0 &&
+      //   !data.xsJtcyxxList.cyxm
+      // ) {
+      //   this.$message.error("家庭成员不能为空");
+      // } else if (data.xsJtcyxxList.gxm_stuFlag == 0 && !data.xsJtcyxxList.gxm) {
+      //   this.$message.error("关系不能为空");
+      // } else if (
+      //   data.xsJtcyxxList.yddh_stuFlag == 0 &&
+      //   !data.xsJtcyxxList.yddh
+      // ) {
+      //   this.$message.error("单位电话不能为空");
       } else if (data.xsXjxx.bjm_stuFlag == 0 && !data.xsXjxx.bjm) {
         this.$message.error("班级不能为空");
       } else if (data.xsXjxx.dwh_stuFlag == 0 && !data.xsXjxx.dwh) {
@@ -3293,16 +3354,17 @@ export default {
         this.$message.error("学制不能为空");
       } else if (data.xsXjxx.zydm_stuFlag == 0 && !data.xsXjxx.zydm) {
         this.$message.error("专业不能为空");
-      } else if (
-        data.xsXxjlList.sxzymc_stuFlag == 0 &&
-        !data.xsXxjlList.sxzymc
-      ) {
-        this.$message.error("所学专业名称不能为空");
-      } else if (data.xsXxjlList.xxnr_stuFlag == 0 && !data.xsXxjlList.xxnr) {
-        this.$message.error("学习内容不能为空");
-      } else if (data.xsXxjlList.xxzmr_stuFlag == 0 && !data.xsXxjlList.xxzmr) {
-        this.$message.error("学习证明人不能为空");
-      }
+      } 
+      // else if (
+      //   data.xsXxjlList.sxzymc_stuFlag == 0 &&
+      //   !data.xsXxjlList.sxzymc
+      // ) {
+      //   this.$message.error("所学专业名称不能为空");
+      // } else if (data.xsXxjlList.xxnr_stuFlag == 0 && !data.xsXxjlList.xxnr) {
+      //   this.$message.error("学习内容不能为空");
+      // } else if (data.xsXxjlList.xxzmr_stuFlag == 0 && !data.xsXxjlList.xxzmr) {
+      //   this.$message.error("学习证明人不能为空");
+      // }
       // else if (data.xsTxxx.wxhm_stuFlag == 0 && !data.xsTxxx.wxhm) {
       //   this.$message.error("微信号不能为空");
       // } else if (data.xsTxxx.txdz_stuFlag == 0 && !data.xsTxxx.txdz) {

@@ -203,7 +203,7 @@
             <div v-else><span class="redDot">●</span><span>离岗</span></div>
           </template>
         </el-table-column>
-        <el-table-column prop="rmztm" label="任职状态" sortable />
+
         <el-table-column prop="rmrxm" label="任命人" sortable="custom" />
         <el-table-column prop="rmsj" label="任命时间" sortable="custom" />
         <el-table-column prop="cxrxm" label="免去人" sortable="custom" />

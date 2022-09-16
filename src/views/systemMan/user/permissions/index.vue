@@ -683,6 +683,7 @@ export default {
       var dataList = [];
       for (let s = 0; s < dataArr.length; s++) {
         var node = dataArr[s];
+        // console.log("node", node);
         var data = {};
         if (node.visitId == "0") {
           //   console.log("node", node);
@@ -707,7 +708,15 @@ export default {
           data.classNo = node.bjdm;
           data.stuId = node.xh;
         }
+
         dataList.push(data);
+      }
+      var orgTypeFlag = dataList.some((item) => !!item.orgType);
+      var orginazationCodeFlag = dataList.some(
+        (item) => !!item.orginazationCode
+      );
+      if (orgTypeFlag && orginazationCodeFlag) {
+        dataList.shift();
       }
 
       // 网络请求

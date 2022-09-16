@@ -395,20 +395,26 @@ export default {
     },
     // 学院找专业
     getZY(val) {
+      this.zyOps = [];
       let data = { DWH: val };
-      getZY(data)
-        .then((res) => {
-          this.zyOps = res.data;
-        })
-        .catch((err) => {});
+      if (Object.keys(val).length !== 0) {
+        getZY(data)
+          .then((res) => {
+            this.zyOps = res.data;
+          })
+          .catch((err) => {});
+      }
     },
     getBJ(val) {
+      this.bjOps = [];
       let data = { DWH: val };
-      getBJ(data)
-        .then((res) => {
-          this.bjOps = res.data;
-        })
-        .catch((err) => {});
+      if (Object.keys(val).length !== 0) {
+        getBJ(data)
+          .then((res) => {
+            this.bjOps = res.data;
+          })
+          .catch((err) => {});
+      }
     },
     //查询年级
     getAllGrade() {

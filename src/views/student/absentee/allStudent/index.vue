@@ -76,10 +76,10 @@
               size="small"
             >
               <el-option
-                v-for="item in njOps"
-                :key="item.dm"
-                :label="item.mc"
-                :value="item.dm"
+                v-for="(item, index) in njOps"
+                :key="index"
+                :label="item"
+                :value="item"
               ></el-option>
             </el-select>
           </el-col>
@@ -175,7 +175,7 @@ import {
 } from "@/api/student/index";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getZY, getBJ } from "@/api/student/index";
-import { getCollege } from "@/api/class/maintenanceClass";
+import { getCollege,getGrade } from "@/api/class/maintenanceClass";
 export default {
   name: "manStudent",
   components: { CheckboxCom },
@@ -234,6 +234,7 @@ export default {
   mounted() {
     this.getSpread();
     this.getAllCollege();
+    this.getAllGrade(); //年级
     this.getCode("dmpyccm"); // 培养层次
     this.handleSearch();
   },
@@ -286,18 +287,26 @@ export default {
         .then((res) => {
           this.manageRegOps = res.data.dwhbj;
           this.zymOps = res.data.zym;
-          let data = res.data.nj;
-          let nj = [];
-          for (let x = 0; x < data.length; x++) {
-            nj.push({ dm: data[x], mc: data[x] });
-          }
-          // this.$set(this.learnHe, "checkBox", nj);
-          this.njOps = nj;
+          // let data = res.data.nj;
+          // let nj = [];
+          // for (let x = 0; x < data.length; x++) {
+          //   nj.push({ dm: data[x], mc: data[x] });
+          // }
+          // // this.$set(this.learnHe, "checkBox", nj);
+          // this.njOps = nj;
         })
         .catch((err) => {});
     },
     changeSelect() {
       this.searchVal = "";
+    },
+    //获取年级
+    getAllGrade() {
+      getGrade()
+        .then((res) => {
+          this.njOps = res.data.rows;
+        })
+        .catch((err) => {});
     },
     // 查询
     handleSearch() {

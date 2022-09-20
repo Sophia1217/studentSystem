@@ -94,6 +94,17 @@
         <div class="headerLeft">
           <span class="title">谈话记录列表</span> <i class="Updataicon"></i>
         </div>
+        <div class="headerRight">
+          <div class="btns borderOrange">
+            <i class="icon orangeIcon"></i><span class="title">导出</span>
+          </div>
+          <div class="btns borderLight">
+            <i class="icon lightIcon"></i><span class="title">删除</span>
+          </div>
+          <div class="btns borderGreen">
+            <i class="icon greenIcon"></i><span class="title1">新增</span>
+          </div>
+        </div>
       </div>
       <div class="mt15">
         <el-table
@@ -376,6 +387,7 @@ export default {
       background: #fafafa;
     }
   }
+
   .tableWrap {
     background: #fff;
     padding: 20px;
@@ -398,6 +410,65 @@ export default {
           width: 20px;
           height: 20px;
           background: url("../../../../assets/images/updata.png") no-repeat;
+        }
+      }
+      .headerRight {
+        display: flex;
+        align-items: center;
+        .borderBlue {
+          background: #fff;
+          border: 1px solid grey;
+        }
+        .borderOrange {
+          border: 1px solid grey;
+          background: #fff;
+        }
+        .borderLight {
+          border: 1px solid grey;
+          color: red;
+          background: #fff;
+        }
+        .borderGreen {
+          border: 1px solid grey;
+          background: #005657;
+        }
+        .btns {
+          margin-right: 15px;
+          padding: 0px 10px;
+          cursor: pointer;
+          border-radius: 4px;
+          .title {
+            font-size: 14px;
+            text-align: center;
+            line-height: 32px;
+            // vertical-align: middle;
+          }
+          .title1 {
+            font-size: 14px;
+            text-align: center;
+            line-height: 32px;
+            color: #fff;
+            // vertical-align: middle;
+          }
+          .icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            vertical-align: top;
+            margin-right: 5px;
+          }
+          .orangeIcon {
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/out.png") no-repeat;
+          }
+          .lightIcon {
+            margin-top: 9px;
+            background: url("~@/assets/assistantPng/delete.png") no-repeat;
+          }
+          .greenIcon {
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/add.png") no-repeat;
+          }
         }
       }
     }

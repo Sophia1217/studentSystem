@@ -35,29 +35,7 @@
       <!-- 更多选择 -->
       <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3"> 工作单位 ： </el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <el-select
-                v-model="moreIform.xydm"
-                @change="changeXY"
-                multiple
-                collapse-tags
-                placeholder="请选择"
-                size="small"
-              >
-                <el-option
-                  v-for="item in allDwh"
-                  :key="item.dm"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">岗位和类型</el-col>
+          <el-col :span="3">险种类型：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -69,7 +47,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">谈话时间：</el-col>
+          <el-col :span="3">购买起止时间：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <el-date-picker
@@ -92,7 +70,15 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">谈话记录列表</span> <i class="Updataicon"></i>
+          <span class="title">学平险查询列表</span> <i class="Updataicon"></i>
+        </div>
+        <div class="headerRight">
+          <div class="btns borderBlue">
+            <i class="icon blueIcon"></i><span class="title">导入</span>
+          </div>
+          <div class="btns borderOrange">
+            <i class="icon orangeIcon"></i><span class="title">导出</span>
+          </div>
         </div>
       </div>
       <div class="mt15">
@@ -110,21 +96,23 @@
           ></el-table-column>
           <el-table-column prop="xh" label="学号" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xm" label="谈话对象" sortable="custom">
+          <el-table-column prop="gmr" label="购买人" sortable="custom">
           </el-table-column>
-          <el-table-column prop="dwmc" label="谈话人" sortable="custom">
+          <el-table-column prop="xzmc" label="险种名称" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zydmc" label="工号" sortable="custom">
+          <el-table-column prop="bdh" label="保单号" sortable="custom">
           </el-table-column>
-          <el-table-column prop="nj" label="工作单位" sortable="custom">
+          <el-table-column prop="xzlx" label="险种类型" sortable="custom">
           </el-table-column>
-          <el-table-column prop="pyccmc" label="谈话主题" sortable="custom">
+          <el-table-column prop="cbgs" label="承保公司" sortable="custom">
+          </el-table-column
+          ><el-table-column prop="xlr" label="联系人" sortable="custom">
+          </el-table-column
+          ><el-table-column prop="lxdh" label="联系电话" sortable="custom">
           </el-table-column>
-          <el-table-column
-            prop="status"
-            label="记录状态"
-            sortable="custom"
-          ></el-table-column>
+          <el-table-column prop="gmsj" label="购买时间" sortable="custom">
+          </el-table-column>
+
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
               <el-button
@@ -133,7 +121,7 @@
                 @click="hadleDetail(scope.row, 1)"
               >
                 <i class="scopeIncon handledie"></i>
-                <span class="handleName">谈话详情</span>
+                <span class="handleName">保险详情</span>
               </el-button>
             </template>
           </el-table-column>
@@ -395,6 +383,45 @@ export default {
           width: 20px;
           height: 20px;
           background: url("../../../assets/images/updata.png") no-repeat;
+        }
+      }
+      .headerRight {
+        display: flex;
+        align-items: center;
+        .borderBlue {
+          background: #fff;
+          border: 1px solid grey;
+        }
+        .borderOrange {
+          border: 1px solid grey;
+          background: #fff;
+        }
+        .btns {
+          margin-right: 15px;
+          padding: 0px 10px;
+          cursor: pointer;
+          border-radius: 4px;
+          .title {
+            font-size: 14px;
+            text-align: center;
+            line-height: 32px;
+            // vertical-align: middle;
+          }
+          .icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            vertical-align: top;
+            margin-right: 5px;
+          }
+          .blueIcon {
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/in.png") no-repeat;
+          }
+          .orangeIcon {
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/out.png") no-repeat;
+          }
         }
       }
     }

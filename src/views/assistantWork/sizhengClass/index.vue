@@ -123,6 +123,20 @@
           <span class="title">思政课程授课记录列表</span>
           <i class="Updataicon"></i>
         </div>
+        <div class="headerRight">
+          <div class="btns borderBlue">
+            <i class="icon blueIcon"></i><span class="title">导入</span>
+          </div>
+          <div class="btns borderOrange">
+            <i class="icon orangeIcon"></i><span class="title">导出</span>
+          </div>
+          <div class="btns borderLight">
+            <i class="icon lightIcon"></i><span class="title">删除</span>
+          </div>
+          <div class="btns borderGreen">
+            <i class="icon greenIcon"></i><span class="title1">新增</span>
+          </div>
+        </div>
       </div>
       <div class="mt15">
         <el-table
@@ -137,21 +151,36 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" sortable="custom">
+          <el-table-column prop="gh" label="工号" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xm" label="谈话对象" sortable="custom">
+          <el-table-column prop="xm" label="姓名" sortable="custom">
           </el-table-column>
-          <el-table-column prop="dwmc" label="谈话人" sortable="custom">
+          <el-table-column prop="dwmc" label="工作单位" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zydmc" label="工号" sortable="custom">
+          <el-table-column prop="gw" label="岗位" sortable="custom">
           </el-table-column>
-          <el-table-column prop="nj" label="工作单位" sortable="custom">
+          <el-table-column prop="lx" label="类型" sortable="custom">
           </el-table-column>
-          <el-table-column prop="pyccmc" label="谈话主题" sortable="custom">
+          <el-table-column prop="kcmc" label="课程名称" sortable="custom">
           </el-table-column>
           <el-table-column
-            prop="status"
-            label="记录状态"
+            prop="kkxn"
+            label="开课学年"
+            sortable="custom"
+          ></el-table-column>
+          <el-table-column
+            prop="kkxq"
+            label="开课学期"
+            sortable="custom"
+          ></el-table-column>
+          <el-table-column
+            prop="xs"
+            label="学时"
+            sortable="custom"
+          ></el-table-column>
+          <el-table-column
+            prop="rs"
+            label="人数"
             sortable="custom"
           ></el-table-column>
         </el-table>
@@ -393,6 +422,7 @@ export default {
       background: #fafafa;
     }
   }
+
   .tableWrap {
     background: #fff;
     padding: 20px;
@@ -415,6 +445,69 @@ export default {
           width: 20px;
           height: 20px;
           background: url("../../../assets/images/updata.png") no-repeat;
+        }
+      }
+      .headerRight {
+        display: flex;
+        align-items: center;
+        .borderBlue {
+          background: #fff;
+          border: 1px solid grey;
+        }
+        .borderOrange {
+          border: 1px solid grey;
+          background: #fff;
+        }
+        .borderLight {
+          border: 1px solid grey;
+          color: red;
+          background: #fff;
+        }
+        .borderGreen {
+          border: 1px solid grey;
+          background: #005657;
+        }
+        .btns {
+          margin-right: 15px;
+          padding: 0px 10px;
+          cursor: pointer;
+          border-radius: 4px;
+          .title {
+            font-size: 14px;
+            text-align: center;
+            line-height: 32px;
+            // vertical-align: middle;
+          }
+          .title1 {
+            font-size: 14px;
+            text-align: center;
+            line-height: 32px;
+            color: #fff;
+            // vertical-align: middle;
+          }
+          .icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            vertical-align: top;
+            margin-right: 5px;
+          }
+          .blueIcon {
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/in.png") no-repeat;
+          }
+          .orangeIcon {
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/out.png") no-repeat;
+          }
+          .lightIcon {
+            margin-top: 9px;
+            background: url("~@/assets/assistantPng/delete.png") no-repeat;
+          }
+          .greenIcon {
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/add.png") no-repeat;
+          }
         }
       }
     }

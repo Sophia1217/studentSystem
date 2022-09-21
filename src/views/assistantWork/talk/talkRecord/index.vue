@@ -101,7 +101,7 @@
           <div class="btns borderLight">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
-          <div class="btns borderGreen">
+          <div class="btns borderGreen" @click="hadleDetail(1)">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
         </div>
@@ -138,11 +138,7 @@
           ></el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
-              <el-button
-                type="text"
-                size="small"
-                @click="hadleDetail(scope.row, 1)"
-              >
+              <el-button type="text" size="small" @click="hadleDetail(2)">
                 <i class="scopeIncon handledie"></i>
                 <span class="handleName">谈话详情</span>
               </el-button>
@@ -167,9 +163,6 @@ import {
   getSchoolRegStuInfoPageList,
   getManageRegStuInfoSearchSpread,
 } from "@/api/student/index";
-import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { getZY, getBJ } from "@/api/student/index";
-import { getCollege } from "@/api/class/maintenanceClass";
 export default {
   name: "manStudent",
   components: { CheckboxCom },
@@ -230,15 +223,16 @@ export default {
   },
 
   methods: {
-    hadleDetail() {
-      //     this.$router.push({
-      //     path: "/politicalwork/detailInfo",
-      //     query: {
-      //       gh: row.gh,
-      //       id: row.date,
-      //       show: flag,
-      //     },
-      //   });
+    hadleDetail(type) {
+      if (type == 1) {
+        this.$router.push({
+          path: "/assistantWork/addTalk",
+        });
+      } else {
+        this.$router.push({
+          path: "/assistantWork/detailTalk",
+        });
+      }
     },
     changeSelect() {
       this.searchVal = "";

@@ -1,23 +1,23 @@
 <template>
   <div class="addRole">
     <div class="permissions">
-      <div>
-        <span class="title">谈话对象</span>
+      <div class="headTop">
+        <div class="headRight">
+          <span class="title">谈话对象</span>
+        </div>
+        <div class="headLeft">
+          <button class="span1" @click="addDate">新增谈话</button>
+        </div>
       </div>
       <div class="wai-container">
         <div class="roleWrap" v-for="(role, index) in renshu" :key="index">
           <div class="roleStyle">
             <div class="name">{{ index + 1 }}:</div>
             <div>
-              <el-select
-                v-model="role.value"
-                @change="hold"
-                size="small"
-                placeholder="请选择"
-              >
+              <el-select v-model="role.value" size="small" placeholder="请选择">
                 <el-option
-                  v-for="(item, index) in stuData"
-                  :key="index"
+                  v-for="(item, i) in stuData"
+                  :key="i"
                   :label="item.label"
                   :value="item.value"
                 >
@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-    <div class="permissions">
+    <div class="permissions1" v-for="(ele, index) in talkDate" :key="index">
       <div>
         <span class="title">谈话内容</span>
       </div>
@@ -46,20 +46,108 @@
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="谈话主题">
-              <el-input v-model="name" placeholder="请输入"></el-input>
+              <el-input
+                v-model="ele.zhutiValue"
+                placeholder="请输入"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-tag
-              v-for="tag in tags"
-              :key="tag.name"
+              v-for="(item, i) in ele.tag.tags.themeTags"
+              :key="i"
+              @click="pushData(item, 1, index)"
               closable
-              :type="tag.type"
+              @close="handleClose(item)"
             >
-              {{ tag.name }}
+              {{ item.cyMsg }}
             </el-tag>
+            <el-input
+              class="input-new-tag"
+              v-if="ele.inputVisible"
+              v-model="ele.inputValue"
+              ref="saveTagInput"
+              size="small"
+              @keyup.enter.native="$event.target.blur"
+              @blur="handleInputConfirm(1, index)"
+            >
+            </el-input>
+            <el-button
+              icon="el-icon-plus"
+              style="margin-left: 15px"
+              @click="showInput(1, index)"
+              >新增常用主题</el-button
+            >
           </el-col>
         </el-row>
+        <el-row :gutter="20">
+          <el-col :span="6">
+            <el-form-item label="谈话地点">
+              <el-input
+                v-model="ele.addressValue"
+                placeholder="请输入"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-tag
+              v-for="(item, i) in ele.tag.tags.addressTags"
+              :key="i"
+              closable
+              @click="pushData(item, 2, index)"
+              @close="handleClose(item)"
+            >
+              {{ item.cyMsg }}
+            </el-tag>
+            <el-input
+              class="input-new-tag"
+              v-if="ele.inputVisible1"
+              v-model="ele.inputValue1"
+              ref="saveTagInput1"
+              size="small"
+              @keyup.enter.native="$event.target.blur"
+              @blur="handleInputConfirm(2, index)"
+            >
+            </el-input>
+            <el-button
+              icon="el-icon-plus"
+              style="margin-left: 15px"
+              @click="showInput(2, index)"
+              >新增常用地点</el-button
+            >
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col el-col :span="5.5">
+            <el-form-item label="谈话时间">
+              <el-date-picker
+                v-model="ele.value1"
+                type="date"
+                placeholder="选择日期"
+              >
+              </el-date-picker> </el-form-item
+          ></el-col>
+          <el-col el-col :span="5.5">
+            <el-form-item label="开始时间">
+              <el-time-picker v-model="ele.value1" placeholder="选择开始时间">
+              </el-time-picker> </el-form-item
+          ></el-col>
+          <el-col el-col :span="5.5">
+            <el-form-item label="结束时间">
+              <el-time-picker v-model="ele.value2" placeholder="选择结束时间">
+              </el-time-picker> </el-form-item
+          ></el-col>
+        </el-row>
+        <el-form-item label="谈话内容">
+          <el-input
+            type="textarea"
+            :autosize="{ minRows: 10, maxRows: 10 }"
+            style="height: 150px"
+            placeholder="请输入内容"
+            v-model="ele.textarea1"
+          >
+          </el-input>
+        </el-form-item>
       </el-form>
     </div>
 
@@ -75,28 +163,11 @@
 </template>
 
 <script>
-import {
-  queryTreeList,
-  queryTreeListJ,
-  savaTreeList,
-  savaEditList,
-} from "@/api/systemMan/role";
+import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
 export default {
   data() {
     return {
-      tags: [
-        { name: "标签一", type: "" },
-        { name: "标签二", type: "success" },
-        { name: "标签三", type: "info" },
-        { name: "标签四", type: "warning" },
-        { name: "标签五", type: "danger" },
-        { name: "标签一", type: "" },
-        { name: "标签二", type: "success" },
-        { name: "标签三", type: "info" },
-        { name: "标签四", type: "warning" },
-        { name: "标签五", type: "danger" },
-      ],
-      renshu: ["", "", "", "", "", "", "", "", "", ""],
+      renshu: ["", "", "", "", ""],
       stuData: [
         {
           value: "选项1",
@@ -120,82 +191,163 @@ export default {
           label: "北京烤鸭",
         },
       ],
-      modId: "",
-      // 查询参数
-      queryParams: {
-        roleRem: "",
-        roleName: this.isEdit == "1" ? "" : this.$route.query.roleNameEdit, // 编辑是2
-      },
-      treeData: [],
-      defaultProps: {
-        children: "children",
-        label: "title",
-      },
-      isEdit: "",
-      savaData: [], //新增提交所需要的menuList
-      roleId1: "", ////编辑请求的id,
-      arr: [],
-      arr1: ["01"],
+      talkDate: [
+        {
+          tag: {
+            tags: {
+              themeTags: [],
+              addressTags: [],
+            },
+          },
+          zhutiValue: "",
+          addressValue: "",
+          inputVisible: false,
+          inputValue: "",
+          inputVisible1: false,
+          inputValue1: "",
+          date: "",
+          value1: "",
+          value2: "",
+          textarea1: "",
+        },
+      ],
+      //   tag: {
+      //     tags: {
+      //       themeTags: [],
+      //       addressTags: [],
+      //     },
+
+      //   },
+      //   zhutiValue: "",
+      //   addressValue: "",
+      //   inputVisible: false,
+      //   inputValue: "",
+      //   inputVisible1: false,
+      //   inputValue1: "",
+      //   date: "",
+      //   value1: "",
+      //   value2: "",
+      //   textarea1: "",
     };
   },
 
   mounted() {
-    this.isEdit = this.$route.query.isEdit;
-    this.roleId1 = this.$route.query?.UpId;
-    this.roleName1 = this.$route.query?.roleNameEdit;
-    this.queryParams.roleRem = this.$route.query?.rem;
-    this.handleTree();
+    (this.talkDate[0].value2 = new Date()), this.transTime(new Date());
+    this.queryTag();
   },
 
   methods: {
-    cancel() {
-      window.history.go(-1);
+    addDate() {
+      this.talkDate.push({
+        tag: {
+          tags: {
+            themeTags: this.talkDate[0].tag.tags.themeTags,
+            addressTags: this.talkDate[0].tag.tags.addressTags,
+          },
+        },
+        zhutiValue: "",
+        addressValue: "",
+        inputVisible: false,
+        inputValue: "",
+        inputVisible1: false,
+        inputValue1: "",
+        date: this.talkDate[0].value2,
+        value1: this.talkDate[0].value2,
+        value2: this.talkDate[0].value1,
+        textarea1: "",
+      });
     },
-    handleTree() {
-      if (this.isEdit == 2) {
-        let data = { roleId: this.roleId1 };
-        let dataALL = { roleId: this.$store.state.user.roleId };
-        queryTreeListJ(data)
-          .then((res) => {
-            var result = res.data;
-            this.arr = result;
-            // this.getData(result); //
-          })
-          .catch((err) => {});
-        queryTreeList(dataALL)
-          .then((res) => {
-            this.treeData = res.data;
-            this.setkeys();
-          })
-          .catch((err) => {});
+    transTime(date) {
+      var min = date.getMinutes();
+      date.setMinutes(min - 30);
+      this.talkDate[0].value1 = date;
+    },
+    queryTag() {
+      var data = {
+        cyType: "1", //1主题,2地点,3组织单位
+        userId: this.$store.getters.userId,
+      };
+      var data1 = {
+        cyType: "2", //1主题,2地点,3组织单位
+        userId: this.$store.getters.userId,
+      };
+      queryTag(data).then((res) => {
+        this.$set(this.talkDate[0].tag.tags, "themeTags", res.data);
+      });
+      queryTag(data1).then((res) => {
+        this.$set(this.talkDate[0].tag.tags, "addressTags", res.data);
+      });
+    },
+    showInput(type, index) {
+      if (type == 1) {
+        this.talkDate[index].inputVisible = true;
+        // console.log("this.$refs", this.$refs);
+        // this.$nextTick((_) => {
+        //   this.$refs.saveTagInput.$refs.input.focus();
+        // });
       } else {
-        let data = { roleId: this.$store.state.user.roleId };
-        queryTreeList(data)
-          .then((res) => {
-            this.treeData = res.data;
-          })
-          .catch((err) => {});
+        this.talkDate[index].inputVisible1 = true;
+        // this.$nextTick((_) => {
+        //   this.$refs.saveTagInput1.$refs.input.focus();
+        // });
       }
     },
-    setkeys() {
-      this.$refs.tree.setCheckedKeys(this.arr);
+    handleInputConfirm(type, index) {
+      if (type == 1) {
+        var obj = {
+          cyMsg: "",
+          cyType: type.toString(),
+          userId: this.$store.getters.userId,
+        };
+        obj.cyMsg = this.talkDate[index].inputValue;
+        addTag(obj).then((res) => {
+          this.queryTag();
+        });
+        this.talkDate[index].inputVisible = false;
+        this.talkDate[index].inputValue = "";
+      } else {
+        var obj = {
+          cyMsg: "",
+          cyType: type.toString(),
+          userId: this.$store.getters.userId,
+        };
+        obj.cyMsg = this.talkDate[index].inputValue1;
+        addTag(obj).then((res) => {
+          this.queryTag();
+          this.talkDate[index].inputVisible1 = false;
+          this.talkDate[index].inputValue1 = "";
+        });
+      }
     },
-    getData(data) {
-      for (var i in data) {
-        this.arr.push(data[i].modId); //将第一层的保存出来，
-        if (data[i].children) {
-          // if(data[i].length >)
-          this.getData(data[i].children);
+    handleClose(item) {
+      var param = { id: "" };
+      param.id = item.id;
+      delTag(param).then((_) => this.queryTag());
+    },
+    addRoles() {
+      this.renshu.push("");
+    },
+    deleRoles(role, index) {
+      this.renshu.splice(index, 1);
+    },
+    pushData(item, type, index) {
+      if (type == 1) {
+        if (this.talkDate[index].zhutiValue == "") {
+          this.talkDate[index].zhutiValue =
+            this.talkDate[index].zhutiValue + item.cyMsg;
+        } else {
+          this.talkDate[index].zhutiValue =
+            this.talkDate[index].zhutiValue + "," + item.cyMsg;
+        }
+      } else {
+        if (this.talkDate[index].addressValue == "") {
+          this.talkDate[index].addressValue =
+            this.talkDate[index].addressValue + item.cyMsg;
+        } else {
+          this.talkDate[index].addressValue =
+            this.talkDate[index].addressValue + "," + item.cyMsg;
         }
       }
-      return this.arr;
-    },
-    //elementUi中自带的方法，可以获取到所有选中的节点
-    currentChecked(nodeObj, SelectedObj) {
-      var that = this;
-      const { checkedNodes, halfCheckedKeys } = SelectedObj;
-      var menuList = checkedNodes.map((item) => item.modId);
-      that.savaData = menuList.concat(halfCheckedKeys); //要获取上级根节点
     },
     sava() {
       if (this.isEdit === "1") {
@@ -253,10 +405,6 @@ export default {
       background: url("~@/assets/images/addicon.png") no-repeat center;
     }
   }
-  .greenIcon {
-    margin-top: 10px;
-    background: url("~@/assets/assistantPng/add.png") no-repeat;
-  }
   .roleWrap {
     background: #fff;
     margin-top: 20px;
@@ -308,12 +456,51 @@ export default {
       color: #1f1f1f;
       line-height: 28px;
     }
-    .perName {
+  }
+  .permissions1 {
+    margin-top: 20px;
+    flex-direction: row;
+    background: #fff;
+    padding: 20px;
+    height: 750px;
+    // height: calc(100vh - 230px);
+    .title {
       font-weight: 600;
-      font-size: 14px;
+      font-size: 20px;
       color: #1f1f1f;
       line-height: 28px;
-      margin-right: 20px;
+    }
+  }
+  .input-new-tag {
+    width: 90px;
+    margin-left: 10px;
+    vertical-align: bottom;
+  }
+  .headTop {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    .headRight {
+      display: flex;
+      align-items: center;
+      .title {
+        font-weight: 600;
+        font-size: 20px;
+        color: #1f1f1f;
+        line-height: 28px;
+      }
+    }
+    .headLeft {
+      display: flex;
+      align-items: center;
+      .span1 {
+        cursor: pointer;
+        color: #fff;
+        background: #005657;
+        border: 1px solid #005657;
+        padding: 10px;
+      }
     }
   }
   .editBottom {
@@ -357,9 +544,6 @@ export default {
     .confirm {
       background: #005657;
       color: #fff;
-    }
-    .shishi {
-      width: 10px;
     }
   }
 }

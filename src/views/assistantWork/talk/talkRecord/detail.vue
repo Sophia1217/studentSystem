@@ -1,18 +1,23 @@
 <template>
   <div class="addRole">
-    <div class="permissions">
+    <div class="permissions1">
       <div class="headTop">
         <div class="headRight">
-          <span class="title">谈话对象</span>
+          <span class="title">谈话详情</span>
         </div>
         <div class="headLeft">
-          <button class="span1" @click="addDate">新增谈话</button>
+          <button class="span1" v-if="edit == 1" @click="editClick()">
+            编辑
+          </button>
+          <button class="span1" v-if="edit == 2" @click="cancal()">取消</button>
+          <button class="span2" v-if="edit == 2" @click="sava">保存</button>
         </div>
       </div>
       <div class="wai-container">
+        <span class="thr">谈话人</span>
         <div class="roleWrap" v-for="(role, index) in renshu" :key="index">
           <div class="roleStyle">
-            <div class="name">{{ index + 1 }}:</div>
+            <!-- <div class="name">{{ index + 1 }}:</div> -->
             <div>
               <el-select v-model="role.value" size="small" placeholder="请选择">
                 <el-option
@@ -37,26 +42,18 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="permissions1" v-for="(ele, index) in talkDate" :key="index">
-      <div>
-        <span class="title">谈话内容</span>
-      </div>
       <el-form ref="form" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="谈话主题">
-              <el-input
-                v-model="ele.zhutiValue"
-                placeholder="请输入"
-              ></el-input>
+              <el-input v-model="zhutiValue" placeholder="请输入"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-tag
-              v-for="(item, i) in ele.tag.tags.themeTags"
+              v-for="(item, i) in tags.themeTags"
               :key="i"
-              @click="pushData(item, 1, index)"
+              @click="pushData(item, 1)"
               closable
               @close="handleClose(item)"
             >
@@ -64,8 +61,8 @@
             </el-tag>
             <el-input
               class="input-new-tag"
-              v-if="ele.inputVisible"
-              v-model="ele.inputValue"
+              v-if="inputVisible"
+              v-model="inputValue"
               ref="saveTagInput"
               size="small"
               @keyup.enter.native="$event.target.blur"
@@ -83,26 +80,23 @@
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="谈话地点">
-              <el-input
-                v-model="ele.addressValue"
-                placeholder="请输入"
-              ></el-input>
+              <el-input v-model="addressValue" placeholder="请输入"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-tag
-              v-for="(item, i) in ele.tag.tags.addressTags"
+              v-for="(item, i) in tags.addressTags"
               :key="i"
               closable
-              @click="pushData(item, 2, index)"
+              @click="pushData(item, 2)"
               @close="handleClose(item)"
             >
               {{ item.cyMsg }}
             </el-tag>
             <el-input
               class="input-new-tag"
-              v-if="ele.inputVisible1"
-              v-model="ele.inputValue1"
+              v-if="inputVisible1"
+              v-model="inputValue1"
               ref="saveTagInput1"
               size="small"
               @keyup.enter.native="$event.target.blur"
@@ -119,22 +113,18 @@
         </el-row>
         <el-row :gutter="20">
           <el-col el-col :span="5.5">
-            <el-form-item label="谈话时间">
-              <el-date-picker
-                v-model="ele.value1"
-                type="date"
-                placeholder="选择日期"
-              >
+            <el-form-item label="谈话日期">
+              <el-date-picker v-model="date" type="date" placeholder="选择日期">
               </el-date-picker> </el-form-item
           ></el-col>
           <el-col el-col :span="5.5">
             <el-form-item label="开始时间">
-              <el-time-picker v-model="ele.value1" placeholder="选择开始时间">
+              <el-time-picker v-model="value1" placeholder="选择开始时间">
               </el-time-picker> </el-form-item
           ></el-col>
           <el-col el-col :span="5.5">
             <el-form-item label="结束时间">
-              <el-time-picker v-model="ele.value2" placeholder="选择结束时间">
+              <el-time-picker v-model="value2" placeholder="选择结束时间">
               </el-time-picker> </el-form-item
           ></el-col>
         </el-row>
@@ -142,11 +132,28 @@
           <el-input
             type="textarea"
             :autosize="{ minRows: 10, maxRows: 10 }"
-            style="height: 150px"
             placeholder="请输入内容"
-            v-model="ele.textarea1"
+            v-model="textarea1"
           >
           </el-input>
+        </el-form-item>
+        <el-form-item label="添加附件">
+          <el-upload
+            drag
+            action="https://jsonplaceholder.typicode.com/posts/"
+            multiple
+            class="el-upload"
+          >
+            <div class="el-upload-dragger">
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">
+                <em>点击</em>或<em>拖拽</em>上传附件
+              </div>
+              <div class="el-upload__text">
+                支持格式：PNG、JPG、WORD、PDF、PPT、ZIP或RAR等主流格，压缩包10M以内，图片2M以内
+              </div>
+            </div>
+          </el-upload>
         </el-form-item>
       </el-form>
     </div>
@@ -167,6 +174,7 @@ import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
 export default {
   data() {
     return {
+      edit: 1,
       renshu: ["", "", "", "", ""],
       stuData: [
         {
@@ -191,77 +199,31 @@ export default {
           label: "北京烤鸭",
         },
       ],
-      talkDate: [
-        {
-          tag: {
-            tags: {
-              themeTags: [],
-              addressTags: [],
-            },
-          },
-          zhutiValue: "",
-          addressValue: "",
-          inputVisible: false,
-          inputValue: "",
-          inputVisible1: false,
-          inputValue1: "",
-          date: "",
-          value1: "",
-          value2: "",
-          textarea1: "",
-        },
-      ],
-      //   tag: {
-      //     tags: {
-      //       themeTags: [],
-      //       addressTags: [],
-      //     },
-
-      //   },
-      //   zhutiValue: "",
-      //   addressValue: "",
-      //   inputVisible: false,
-      //   inputValue: "",
-      //   inputVisible1: false,
-      //   inputValue1: "",
-      //   date: "",
-      //   value1: "",
-      //   value2: "",
-      //   textarea1: "",
+      tags: {
+        themeTags: [],
+        addressTags: [],
+      },
+      zhutiValue: "",
+      addressValue: "",
+      inputVisible: false,
+      inputValue: "",
+      inputVisible1: false,
+      inputValue1: "",
+      date: "",
+      value1: "",
+      value2: "",
+      textarea1: "",
     };
   },
 
   mounted() {
-    (this.talkDate[0].value2 = new Date()), this.transTime(new Date());
+    this.date = new Date();
+    this.value2 = new Date();
+    this.value1 = this.transTime(new Date());
     this.queryTag();
   },
 
   methods: {
-    addDate() {
-      this.talkDate.push({
-        tag: {
-          tags: {
-            themeTags: this.talkDate[0].tag.tags.themeTags,
-            addressTags: this.talkDate[0].tag.tags.addressTags,
-          },
-        },
-        zhutiValue: "",
-        addressValue: "",
-        inputVisible: false,
-        inputValue: "",
-        inputVisible1: false,
-        inputValue1: "",
-        date: this.talkDate[0].value2,
-        value1: this.talkDate[0].value2,
-        value2: this.talkDate[0].value1,
-        textarea1: "",
-      });
-    },
-    transTime(date) {
-      var min = date.getMinutes();
-      date.setMinutes(min - 30);
-      this.talkDate[0].value1 = date;
-    },
     queryTag() {
       var data = {
         cyType: "1", //1主题,2地点,3组织单位
@@ -272,50 +234,50 @@ export default {
         userId: this.$store.getters.userId,
       };
       queryTag(data).then((res) => {
-        this.$set(this.talkDate[0].tag.tags, "themeTags", res.data);
+        this.$set(this.tags, "themeTags", res.data);
       });
       queryTag(data1).then((res) => {
-        this.$set(this.talkDate[0].tag.tags, "addressTags", res.data);
+        this.$set(this.tags, "addressTags", res.data);
       });
     },
-    showInput(type, index) {
+    showInput(type) {
       if (type == 1) {
-        this.talkDate[index].inputVisible = true;
+        this.inputVisible = true;
         // console.log("this.$refs", this.$refs);
         // this.$nextTick((_) => {
         //   this.$refs.saveTagInput.$refs.input.focus();
         // });
       } else {
-        this.talkDate[index].inputVisible1 = true;
+        this.inputVisible1 = true;
         // this.$nextTick((_) => {
         //   this.$refs.saveTagInput1.$refs.input.focus();
         // });
       }
     },
-    handleInputConfirm(type, index) {
+    handleInputConfirm(type) {
       if (type == 1) {
         var obj = {
           cyMsg: "",
           cyType: type.toString(),
           userId: this.$store.getters.userId,
         };
-        obj.cyMsg = this.talkDate[index].inputValue;
+        obj.cyMsg = this.inputValue;
         addTag(obj).then((res) => {
           this.queryTag();
         });
-        this.talkDate[index].inputVisible = false;
-        this.talkDate[index].inputValue = "";
+        this.inputVisible = false;
+        this.inputValue = "";
       } else {
         var obj = {
           cyMsg: "",
           cyType: type.toString(),
           userId: this.$store.getters.userId,
         };
-        obj.cyMsg = this.talkDate[index].inputValue1;
+        obj.cyMsg = this.inputValue1;
         addTag(obj).then((res) => {
           this.queryTag();
-          this.talkDate[index].inputVisible1 = false;
-          this.talkDate[index].inputValue1 = "";
+          this.inputVisible1 = false;
+          this.inputValue1 = "";
         });
       }
     },
@@ -330,24 +292,27 @@ export default {
     deleRoles(role, index) {
       this.renshu.splice(index, 1);
     },
-    pushData(item, type, index) {
+    pushData(item, type) {
       if (type == 1) {
-        if (this.talkDate[index].zhutiValue == "") {
-          this.talkDate[index].zhutiValue =
-            this.talkDate[index].zhutiValue + item.cyMsg;
+        if (this.zhutiValue == "") {
+          this.zhutiValue = this.zhutiValue + item.cyMsg;
         } else {
-          this.talkDate[index].zhutiValue =
-            this.talkDate[index].zhutiValue + "," + item.cyMsg;
+          this.zhutiValue = this.zhutiValue + "," + item.cyMsg;
         }
       } else {
-        if (this.talkDate[index].addressValue == "") {
-          this.talkDate[index].addressValue =
-            this.talkDate[index].addressValue + item.cyMsg;
+        if (this.addressValue == "") {
+          this.addressValue = this.addressValue + item.cyMsg;
         } else {
-          this.talkDate[index].addressValue =
-            this.talkDate[index].addressValue + "," + item.cyMsg;
+          this.addressValue = this.addressValue + "," + item.cyMsg;
         }
       }
+    },
+    editClick() {
+      this.edit = 2;
+    },
+    cancal() {
+      this.edit = 1;
+      //然后
     },
     sava() {
       if (this.isEdit === "1") {
@@ -389,6 +354,47 @@ export default {
 
 <style lang="scss" scoped>
 .addRole {
+  .thr {
+    color: #606266;
+    margin-top: 30px;
+    margin-left: 16px;
+    margin-right: 20px;
+    font-size: 15px;
+    font-weight: 900;
+  }
+  .el-tag {
+    background: #fafafa;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    display: inline-block;
+    height: 32px;
+    padding: 0 10px;
+    line-height: 30px;
+    font-size: 12px;
+    color: black;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    white-space: nowrap;
+    ::v-deep .el-tag__close {
+      color: #303133;
+    }
+  }
+  ::v-deep .el-upload-dragger {
+    background-color: #fff;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 360px;
+    height: 210px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
   .editBtn {
     padding: 0 10px;
     margin-left: 22px;
@@ -443,26 +449,14 @@ export default {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-  }
-  .permissions {
-    margin-top: 20px;
-    flex-direction: row;
-    background: #fff;
-    padding: 20px;
-    // height: calc(100vh - 250px);
-    .title {
-      font-weight: 600;
-      font-size: 20px;
-      color: #1f1f1f;
-      line-height: 28px;
-    }
+    margin-bottom: 20px;
   }
   .permissions1 {
-    margin-top: 20px;
+    margin-top: 10px;
     flex-direction: row;
     background: #fff;
     padding: 20px;
-    height: 750px;
+    height: 100%;
     // height: calc(100vh - 230px);
     .title {
       font-weight: 600;
@@ -500,6 +494,14 @@ export default {
         background: #005657;
         border: 1px solid #005657;
         padding: 10px;
+      }
+      .span2 {
+        cursor: pointer;
+        color: #fff;
+        background: #005657;
+        border: 1px solid #005657;
+        padding: 10px;
+        margin-left: 15px;
       }
     }
   }

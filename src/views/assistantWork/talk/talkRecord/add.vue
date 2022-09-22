@@ -142,11 +142,28 @@
           <el-input
             type="textarea"
             :autosize="{ minRows: 10, maxRows: 10 }"
-            style="height: 150px"
             placeholder="请输入内容"
             v-model="ele.textarea1"
           >
           </el-input>
+        </el-form-item>
+        <el-form-item label="添加附件">
+          <el-upload
+            drag
+            action="https://jsonplaceholder.typicode.com/posts/"
+            multiple
+            class="el-upload"
+          >
+            <div class="el-upload-dragger">
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">
+                <em>点击</em>或<em>拖拽</em>上传附件
+              </div>
+              <div class="el-upload__text">
+                支持格式：PNG、JPG、WORD、PDF、PPT、ZIP或RAR等主流格，压缩包10M以内，图片2M以内
+              </div>
+            </div>
+          </el-upload>
         </el-form-item>
       </el-form>
     </div>
@@ -211,28 +228,13 @@ export default {
           textarea1: "",
         },
       ],
-      //   tag: {
-      //     tags: {
-      //       themeTags: [],
-      //       addressTags: [],
-      //     },
-
-      //   },
-      //   zhutiValue: "",
-      //   addressValue: "",
-      //   inputVisible: false,
-      //   inputValue: "",
-      //   inputVisible1: false,
-      //   inputValue1: "",
-      //   date: "",
-      //   value1: "",
-      //   value2: "",
-      //   textarea1: "",
     };
   },
 
   mounted() {
-    (this.talkDate[0].value2 = new Date()), this.transTime(new Date());
+    this.talkDate[0].date = new Date();
+    this.talkDate[0].value2 = new Date();
+    this.talkDate[0].value1 = this.transTime(new Date());
     this.queryTag();
   },
 
@@ -256,11 +258,6 @@ export default {
         value2: this.talkDate[0].value1,
         textarea1: "",
       });
-    },
-    transTime(date) {
-      var min = date.getMinutes();
-      date.setMinutes(min - 30);
-      this.talkDate[0].value1 = date;
     },
     queryTag() {
       var data = {
@@ -389,6 +386,39 @@ export default {
 
 <style lang="scss" scoped>
 .addRole {
+  .el-tag {
+    background: #fafafa;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    display: inline-block;
+    height: 32px;
+    padding: 0 10px;
+    line-height: 30px;
+    font-size: 12px;
+    color: black;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    white-space: nowrap;
+    ::v-deep .el-tag__close {
+      color: #303133;
+    }
+  }
+  ::v-deep .el-upload-dragger {
+    background-color: #fff;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 360px;
+    height: 210px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
   .editBtn {
     padding: 0 10px;
     margin-left: 22px;

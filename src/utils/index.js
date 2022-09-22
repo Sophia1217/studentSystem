@@ -421,6 +421,6 @@ var ls = ""
 export function  transTime(date) {
   var min = date.getMinutes();
   date.setMinutes(min - 30);
-  this.talkDate[0].value1 = date;
+ return date;
 }
  

@@ -16,13 +16,22 @@ export function addTag(query) {
 }
 
 export function delTag(query) {
-    console.log("query",query);
     return request({
         url: '/fdyCyTable/fdyCyTableDelete',
         method: 'delete',
         params: query
     })
 }
+
+export function getXmXgh(query) {
+    return request({
+        url: '/commonMethod/getXmXgh',
+        method: 'post',
+        data: query
+    })
+}
+
+
 
 
 

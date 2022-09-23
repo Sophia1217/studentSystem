@@ -10,29 +10,49 @@
         </div>
       </div>
       <div class="wai-container">
-        <div class="roleWrap" v-for="(role, index) in renshu" :key="index">
+        <div class="roleWrap" v-for="(ele, index) in renshu" :key="index">
           <div class="roleStyle">
             <div class="name">{{ index + 1 }}:</div>
             <div>
-              <el-select v-model="role.value" size="small" placeholder="请选择">
+              <el-autocomplete
+                v-model="ele.acceptVlaue"
+                :fetch-suggestions="querySearch"
+                placeholder="请输入内容"
+                :trigger-on-focus="false"
+                @select="
+                  (item) => {
+                    handleSelect(item, index);
+                  }
+                "
+                size="small"
+              ></el-autocomplete>
+              <!-- <el-select
+                v-model="ele.label"
+                :value-key="ele.value"
+                size="small"
+                remote       这个如果遍历层级较多，会有显示覆盖bug
+                filterable
+                :remote-method="querySearchAsync"
+                placeholder="请选择"
+              >
                 <el-option
                   v-for="(item, i) in stuData"
                   :key="i"
-                  :label="item.label"
-                  :value="item.value"
+                  :label="`${item.xm}(${item.gh})`"
+                  :value="item.gh"
                 >
                 </el-option>
-              </el-select>
+              </el-select> -->
             </div>
           </div>
           <div
             v-if="index == renshu.length - 1"
             class="editBtn"
-            @click="addRoles(role, index)"
+            @click="addStu(ele, index)"
           >
             <i class="addIcon"></i>
           </div>
-          <div v-else class="deleIcon" @click="deleRoles(role, index)">
+          <div v-else class="deleIcon" @click="delStu(ele, index)">
             <i></i>
           </div>
         </div>
@@ -69,7 +89,6 @@
               ref="saveTagInput"
               size="small"
               @keyup.enter.native="$event.target.blur"
-              @blur="handleInputConfirm(1, index)"
             >
             </el-input>
             <el-button
@@ -180,34 +199,20 @@
 </template>
 
 <script>
-import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
+import { queryTag, addTag, delTag, getXmXgh } from "@/api/assistantWork/talk";
 export default {
   data() {
     return {
-      renshu: ["", "", "", "", ""],
-      stuData: [
+      info: "",
+      renshu: [
         {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-          disabled: true,
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
+          acceptVlaue: "",
+          value: "",
+          label: "",
         },
       ],
+      addParams: [],
+      stuData: [],
       talkDate: [
         {
           tag: {
@@ -239,6 +244,43 @@ export default {
   },
 
   methods: {
+    querySearch(queryString, cb) {
+      if (queryString != "") {
+        let callBackArr = [];
+        var XmXgh = { xm: queryString };
+        var result = [];
+        var resultNew = [];
+        getXmXgh(XmXgh).then((res) => {
+          result = res.data;
+          resultNew = result.map((ele) => {
+            //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
+            //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
+            return {
+              value: `${ele.xm}(${ele.gh})`,
+              label: ele.gh,
+              xm: ele.xm,
+            };
+          });
+          resultNew.forEach((item) => {
+            if (item.value.indexOf(queryString) > -1) {
+              callBackArr.push(item);
+            }
+          });
+          if (callBackArr.length == 0) {
+            cb([{ value: "暂无数据", price: "暂无数据" }]);
+          } else {
+            console.log("callBackArr", callBackArr);
+            cb(callBackArr);
+          }
+        });
+      }
+    },
+    // 点击谁，就把谁放进去
+    handleSelect(item, index) {
+      //可以在点击时候动态添加参数，免得拼接,单独设计一个参数作为提交参数，免得各种复杂的截取和判断
+      this.addParams[index] = item;
+      console.log("this.addParams", this.addParams);
+    },
     addDate() {
       this.talkDate.push({
         tag: {
@@ -321,10 +363,10 @@ export default {
       param.id = item.id;
       delTag(param).then((_) => this.queryTag());
     },
-    addRoles() {
-      this.renshu.push("");
+    addStu() {
+      this.renshu.push({ value: "", label: "" });
     },
-    deleRoles(role, index) {
+    delStu(role, index) {
       this.renshu.splice(index, 1);
     },
     pushData(item, type, index) {

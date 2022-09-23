@@ -13,36 +13,75 @@
           <button class="span2" v-if="edit == 2" @click="sava">保存</button>
         </div>
       </div>
-      <div class="wai-container">
-        <span class="thr">谈话人</span>
-        <div class="roleWrap" v-for="(role, index) in renshu" :key="index">
-          <div class="roleStyle">
-            <!-- <div class="name">{{ index + 1 }}:</div> -->
-            <div>
-              <el-select v-model="role.value" size="small" placeholder="请选择">
-                <el-option
-                  v-for="(item, i) in stuData"
-                  :key="i"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-            </div>
-          </div>
-          <div
-            v-if="index == renshu.length - 1"
-            class="editBtn"
-            @click="addRoles(role, index)"
-          >
-            <i class="addIcon"></i>
-          </div>
-          <div v-else class="deleIcon" @click="deleRoles(role, index)">
-            <i></i>
-          </div>
-        </div>
-      </div>
       <el-form ref="form" label-width="80px">
+        <el-row :gutter="20">
+          <el-col :span="5.5">
+            <el-form-item label="谈话人">
+              <el-input
+                v-model="zhutiValue"
+                placeholder="请输入"
+              ></el-input> </el-form-item
+          ></el-col>
+          <el-col :span="5.5">
+            <el-form-item label="姓名">
+              <el-input
+                v-model="zhutiValue"
+                placeholder="请输入"
+              ></el-input> </el-form-item></el-col
+          ><el-col :span="5.5">
+            <el-form-item label="单位">
+              <el-input
+                v-model="zhutiValue"
+                placeholder="请输入"
+              ></el-input> </el-form-item></el-col
+          ><el-col :span="5.5">
+            <el-form-item label="岗位">
+              <el-input
+                v-model="zhutiValue"
+                placeholder="请输入"
+              ></el-input> </el-form-item
+          ></el-col>
+          <el-col :span="5.5">
+            <el-form-item label="类型">
+              <el-input
+                v-model="zhutiValue"
+                placeholder="请输入"
+              ></el-input> </el-form-item
+          ></el-col>
+        </el-row>
+
+        <el-form-item label="学生姓名">
+          <!-- <div class="name">{{ index + 1 }}:</div> -->
+          <el-row :gutters="20">
+            <div v-for="(role, index) in renshu" :key="index">
+              <el-col :span="2.5">
+                <el-select
+                  size="small"
+                  v-model="role.value"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="(item, i) in stuData"
+                    :key="i"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="0.2" v-if="index == renshu.length - 1">
+                <div class="editBtn" @click="addRoles(role, index)">
+                  <i class="addIcon"></i>
+                </div>
+              </el-col>
+              <el-col :span="0.2" v-else>
+                <div class="deleIcon" @click="deleRoles(role, index)">
+                  <i></i>
+                </div>
+              </el-col>
+            </div>
+          </el-row>
+        </el-form-item>
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="谈话主题">
@@ -112,17 +151,17 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col el-col :span="5.5">
+          <el-col :span="5.5">
             <el-form-item label="谈话日期">
               <el-date-picker v-model="date" type="date" placeholder="选择日期">
               </el-date-picker> </el-form-item
           ></el-col>
-          <el-col el-col :span="5.5">
+          <el-col :span="5.5">
             <el-form-item label="开始时间">
               <el-time-picker v-model="value1" placeholder="选择开始时间">
               </el-time-picker> </el-form-item
           ></el-col>
-          <el-col el-col :span="5.5">
+          <el-col :span="5.5">
             <el-form-item label="结束时间">
               <el-time-picker v-model="value2" placeholder="选择结束时间">
               </el-time-picker> </el-form-item
@@ -217,6 +256,7 @@ export default {
   },
 
   mounted() {
+    console.log(" process.env.VUE_APP_BASE_API", process.env.VUE_APP_BASE_API);
     this.date = new Date();
     this.value2 = new Date();
     this.value1 = this.transTime(new Date());
@@ -370,6 +410,7 @@ export default {
     height: 32px;
     padding: 0 10px;
     line-height: 30px;
+    margin-left: 18px;
     font-size: 12px;
     color: black;
     border-width: 1px;
@@ -403,7 +444,7 @@ export default {
     font-size: 14px;
     color: #005657;
     cursor: pointer;
-    line-height: 32px;
+    line-height: 38px;
     .addIcon {
       display: inline-block;
       width: 15px;
@@ -435,7 +476,7 @@ export default {
     }
   }
   .deleIcon {
-    margin-left: 30px;
+    padding-inline: 15px;
     cursor: pointer;
     i {
       display: inline-block;

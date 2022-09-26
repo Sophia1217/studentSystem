@@ -52,7 +52,11 @@
           >
             <i class="addIcon"></i>
           </div>
-          <div v-else class="deleIcon" @click="delStu(ele, index)">
+          <div
+            v-if="renshu.length == 6 || index < renshu.length - 1"
+            class="deleIcon"
+            @click="delStu(ele, index)"
+          >
             <i></i>
           </div>
         </div>
@@ -89,6 +93,7 @@
               ref="saveTagInput"
               size="small"
               @keyup.enter.native="$event.target.blur"
+              @blur="handleInputConfirm(1, index)"
             >
             </el-input>
             <el-button
@@ -108,7 +113,7 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="17">
             <el-tag
               v-for="(item, i) in ele.tag.tags.addressTags"
               :key="i"
@@ -172,6 +177,10 @@
             action="https://jsonplaceholder.typicode.com/posts/"
             multiple
             class="el-upload"
+            ref="upload"
+            :file-list="ele.fileList"
+            :on-change="change"
+            :on-remove="handleRemove"
           >
             <div class="el-upload-dragger">
               <i class="el-icon-upload"></i>
@@ -184,26 +193,27 @@
             </div>
           </el-upload>
         </el-form-item>
+        <div class="buttonStle">
+          <el-button @click="cancel(index)">取消</el-button>
+          <el-button class="saveButton" @click="save(index)">保存</el-button>
+          <el-button @click="test(index)">测试文件</el-button>
+        </div>
       </el-form>
     </div>
-
-    <!-- <div class="editBottom">
-      <div class="btn cancel" @click="cancel()">
-        <i class="icon noIcon"></i> 取消
-      </div>
-      <div class="btn confirm" @click="sava()">
-        <i class="icon yesIcon"></i> 提交
-      </div>
-    </div> -->
   </div>
 </template>
 
 <script>
-import { queryTag, addTag, delTag, getXmXgh } from "@/api/assistantWork/talk";
+import {
+  queryTag,
+  addTag,
+  delTag,
+  getXmXgh,
+  addTalk,
+} from "@/api/assistantWork/talk";
 export default {
   data() {
     return {
-      info: "",
       renshu: [
         {
           acceptVlaue: "",
@@ -231,6 +241,16 @@ export default {
           value1: "",
           value2: "",
           textarea1: "",
+          fileList: [
+            {
+              name: "food.jpeg",
+              url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
+            },
+            {
+              name: "food2.jpeg",
+              url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
+            },
+          ],
         },
       ],
     };
@@ -241,9 +261,73 @@ export default {
     this.talkDate[0].value2 = new Date();
     this.talkDate[0].value1 = this.transTime(new Date());
     this.queryTag();
+    this.test1();
   },
 
   methods: {
+    cancel(index) {},
+    save(index) {
+      var list = [];
+      var list2 = [];
+      for (var i = 0; i < this.addParams.length; i++) {
+        list.push(this.addParams[i].xm);
+        list2.push(this.addParams[i].label);
+      }
+      var data = {
+        thdd: this.talkDate[index].addressValue,
+        thnr: this.talkDate[index].textarea1,
+        thsj: this.talkDate[index].date,
+        startTime: this.talkDate[index].value1,
+        endTime: this.talkDate[index].value2,
+        thzt: this.talkDate[index].zhutiValue,
+        xhList: list2,
+        xmList: list,
+      };
+      addTalk(data).then((res) => {});
+    },
+    test1() {
+      var array1 = [{ Num: "A " }, { Num: "B" }];
+      var array2 = [
+        { Num: "A ", Name: "t1 " },
+        { Num: "B", Name: "t2" },
+        { Num: "C ", Name: "t3 " },
+        { Num: "D", Name: "t4 " },
+      ];
+      var result = [];
+      for (var i = 0; i < array2.length; i++) {
+        var obj = array2[i];
+        var num = obj.Num;
+        var isExist = false;
+        for (var j = 0; j < array1.length; j++) {
+          var aj = array1[j];
+          var n = aj.Num;
+          if (n == num) {
+            isExist = true;
+            break;
+          }
+        }
+        if (!isExist) {
+          result.push(obj);
+        }
+      }
+      console.log(result);
+    },
+    test(index) {
+      console.log(
+        "this.$refs.upload.submit();",
+        this.$refs.upload[index].uploadFiles
+      );
+      console.log("this.$refs.upload.submit()", this.$refs);
+    },
+
+    change(file, fileList) {
+      console.log("file", file);
+      console.log("fileList", fileList);
+    },
+    handleRemove(file, fileList) {
+      console.log("file", file);
+      console.log("fileList", fileList);
+    },
     querySearch(queryString, cb) {
       if (queryString != "") {
         let callBackArr = [];
@@ -251,14 +335,15 @@ export default {
         var result = [];
         var resultNew = [];
         getXmXgh(XmXgh).then((res) => {
-          result = res.data;
+          console.log("res", res);
+          result = res.data.stuList;
           resultNew = result.map((ele) => {
             //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
             //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
             return {
-              value: `${ele.xm}(${ele.gh})`,
-              label: ele.gh,
-              xm: ele.xm,
+              value: `${ele.dm}(${ele.mc})`,
+              label: ele.dm,
+              xm: ele.mc,
             };
           });
           resultNew.forEach((item) => {
@@ -269,7 +354,6 @@ export default {
           if (callBackArr.length == 0) {
             cb([{ value: "暂无数据", price: "暂无数据" }]);
           } else {
-            console.log("callBackArr", callBackArr);
             cb(callBackArr);
           }
         });
@@ -279,7 +363,6 @@ export default {
     handleSelect(item, index) {
       //可以在点击时候动态添加参数，免得拼接,单独设计一个参数作为提交参数，免得各种复杂的截取和判断
       this.addParams[index] = item;
-      console.log("this.addParams", this.addParams);
     },
     addDate() {
       this.talkDate.push({
@@ -311,24 +394,27 @@ export default {
         userId: this.$store.getters.userId,
       };
       queryTag(data).then((res) => {
-        this.$set(this.talkDate[0].tag.tags, "themeTags", res.data);
+        for (var i = 0; i < this.talkDate.length; i++) {
+          this.$set(this.talkDate[i].tag.tags, "themeTags", res.data);
+        }
       });
       queryTag(data1).then((res) => {
-        this.$set(this.talkDate[0].tag.tags, "addressTags", res.data);
+        for (var j = 0; j < this.talkDate.length; j++) {
+          this.$set(this.talkDate[j].tag.tags, "addressTags", res.data);
+        }
       });
     },
     showInput(type, index) {
       if (type == 1) {
         this.talkDate[index].inputVisible = true;
-        // console.log("this.$refs", this.$refs);
-        // this.$nextTick((_) => {
-        //   this.$refs.saveTagInput.$refs.input.focus();
-        // });
+        this.$nextTick((_) => {
+          this.$refs.saveTagInput[index].$refs.input.focus();
+        });
       } else {
         this.talkDate[index].inputVisible1 = true;
-        // this.$nextTick((_) => {
-        //   this.$refs.saveTagInput1.$refs.input.focus();
-        // });
+        this.$nextTick((_) => {
+          this.$refs.saveTagInput1[index].$refs.input.focus();
+        });
       }
     },
     handleInputConfirm(type, index) {
@@ -388,40 +474,6 @@ export default {
         }
       }
     },
-    sava() {
-      if (this.isEdit === "1") {
-        let data = {
-          userId: this.$store.getters.userId,
-          menuList: this.savaData,
-          roleName: this.queryParams.roleName,
-          loginRoleId: this.$store.getters.roleId,
-          roleRem: this.queryParams.roleRem,
-        };
-        savaTreeList(data)
-          .then(() => {
-            this.$router.push({
-              path: "/systems/role",
-            });
-          })
-          .catch((err) => {});
-      } else {
-        let data = {
-          userId: this.$store.getters.userId,
-          menuList: this.savaData.length > 0 ? this.savaData : this.arr, //如果用户进来没编辑，默认前一次筛选出来的树
-          roleName: this.queryParams.roleName,
-          roleId: this.roleId1,
-          roleRem: this.queryParams.roleRem,
-        };
-        savaEditList(data)
-          .then(() => {
-            this.$router.push({
-              path: "/systems/role",
-            });
-          })
-          .catch((err) => {});
-      }
-    },
-    savaEditList() {},
   },
 };
 </script>
@@ -436,6 +488,7 @@ export default {
     height: 32px;
     padding: 0 10px;
     line-height: 30px;
+    margin-left: 18px;
     font-size: 12px;
     color: black;
     border-width: 1px;
@@ -534,7 +587,7 @@ export default {
     flex-direction: row;
     background: #fff;
     padding: 20px;
-    height: 750px;
+    height: 900px;
     // height: calc(100vh - 230px);
     .title {
       font-weight: 600;
@@ -575,47 +628,11 @@ export default {
       }
     }
   }
-  .editBottom {
-    width: 100%;
-    height: 60px;
-    background: #fff;
-    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 -2px 6px -1px rgba(0, 0, 0, 0.2);
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    .btn {
-      width: 84px;
-      height: 36px;
-      line-height: 36px;
-      text-align: center;
-      cursor: pointer;
-      border: 1px solid #005657;
-      border-radius: 2px;
-      margin-right: 20px;
-      .icon {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        vertical-align: middle;
-        margin-right: 5px;
-      }
-      .noIcon {
-        background: url("~@/assets/images/no.png");
-      }
-      .yesIcon {
-        background: url("~@/assets/images/yesW.png");
-      }
-    }
-    .cancel {
-      color: #005657;
-    }
-    .confirm {
+  .buttonStle {
+    float: right;
+    .saveButton {
       background: #005657;
-      color: #fff;
+      color: #ffffff;
     }
   }
 }

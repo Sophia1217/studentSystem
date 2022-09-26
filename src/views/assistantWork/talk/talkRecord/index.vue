@@ -16,11 +16,11 @@
             placeholder="查询条件"
           >
             <el-option label="学号" value="xh"></el-option>
-            <el-option label="谈话对象" value="dx"></el-option>
-            <el-option label="谈话人" value="thr"></el-option>
-            <el-option label="工号" value="gh"></el-option>
-            <el-option label="谈话地点" value="dd"></el-option>
-            <el-option label="谈话主题" value="zt"></el-option>
+            <el-option label="谈话对象" value="xm"></el-option>
+            <el-option label="谈话人" value="thrxm"></el-option>
+            <el-option label="工号" value="thrgh"></el-option>
+            <el-option label="谈话地点" value="thdd"></el-option>
+            <el-option label="谈话主题" value="thzt"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
             >查询</el-button
@@ -40,11 +40,10 @@
             <div class="checkbox">
               <el-select
                 v-model="moreIform.xydm"
-                @change="changeXY"
                 multiple
                 collapse-tags
                 placeholder="请选择"
-                size="small"
+                size="medium"
               >
                 <el-option
                   v-for="item in allDwh"
@@ -61,9 +60,9 @@
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
-                :objProp="training"
-                @training="handleCheckAllChangeTraining"
-                @checkedTraining="handleCheckedCitiesChangeTraining"
+                :objProp="ztjl"
+                @training="ztjlAll"
+                @checkedTraining="ztjlCheck"
               ></checkboxCom>
             </div>
           </el-col>
@@ -73,7 +72,7 @@
           <el-col :span="20">
             <div class="checkbox">
               <el-date-picker
-                v-model="datePicker"
+                v-model="dateArray"
                 unlink-panels
                 type="daterange"
                 format="yyyy 年 MM 月 dd 日"
@@ -98,10 +97,10 @@
           <div class="btns borderOrange">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns borderLight">
+          <div class="btns borderLight" @click="del()">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
-          <div class="btns borderGreen" @click="hadleDetail(1)">
+          <div class="btns borderGreen" @click="hadleDetail1()">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
         </div>
@@ -111,9 +110,11 @@
           :data="tableData"
           ref="multipleTable"
           style="width: 100%"
+          @selection-change="handleSelectionChange"
           :default-sort="{ prop: 'date', order: 'descending' }"
           @sort-change="changeTableSort"
         >
+          <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
             type="index"
             label="序号"
@@ -123,22 +124,33 @@
           </el-table-column>
           <el-table-column prop="xm" label="谈话对象" sortable="custom">
           </el-table-column>
-          <el-table-column prop="dwmc" label="谈话人" sortable="custom">
+          <el-table-column prop="thrxm" label="谈话人" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zydmc" label="工号" sortable="custom">
+          <el-table-column prop="thrgh" label="工号" sortable="custom">
           </el-table-column>
-          <el-table-column prop="nj" label="工作单位" sortable="custom">
+          <el-table-column prop="gzdw" label="工作单位" sortable="custom">
           </el-table-column>
-          <el-table-column prop="pyccmc" label="谈话主题" sortable="custom">
+          <el-table-column prop="thzt" label="谈话主题" sortable="custom">
           </el-table-column>
-          <el-table-column
-            prop="status"
-            label="记录状态"
-            sortable="custom"
-          ></el-table-column>
+          <el-table-column prop="zt" label="记录状态" sortable="custom">
+            <template slot-scope="scope">
+              <div v-if="scope.row.sfjl == 1">
+                <i class="scopeIncon1 ywc"></i>
+                <span class="handleName">已完成</span>
+              </div>
+              <div v-if="scope.row.sfjl == 2">
+                <i class="scopeIncon1 djl"></i>
+                <span class="handleName">待记录</span>
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="hadleDetail(2)">
+              <el-button
+                type="text"
+                size="small"
+                @click="hadleDetail2(scope.row)"
+              >
                 <i class="scopeIncon handledie"></i>
                 <span class="handleName">谈话详情</span>
               </el-button>
@@ -159,30 +171,20 @@
 
 <script>
 import CheckboxCom from "../../../components/checkboxCom";
-import {
-  getSchoolRegStuInfoPageList,
-  getManageRegStuInfoSearchSpread,
-} from "@/api/student/index";
+import { talkTable, delTalk } from "@/api/assistantWork/talk";
+import { getCollege } from "@/api/class/maintenanceClass";
 export default {
-  name: "manStudent",
   components: { CheckboxCom },
   data() {
     return {
+      delArr: [],
       searchVal: "",
       select: "",
       isMore: false,
       moreIform: {
         xydm: [],
-        zydm: [],
-        bjdm: [],
       },
-      options: [
-        { value: "选项2", label: "双皮奶" },
-        { value: "选项3", label: "蚵仔煎" },
-      ],
       allDwh: [], // 学院下拉框
-      zyOps: [], // 专业下拉
-      bjOps: [], // 班级下拉
       training: {
         // 培养层次
         checkAll: false,
@@ -190,26 +192,24 @@ export default {
         checkBox: [],
         isIndeterminate: true,
       },
-      inSchool: {
+      ztjl: {
         //是否在校
         checkAll: false,
         choose: [],
         checkBox: [
           {
-            dm: "在校",
+            dm: "0",
             mc: "是",
           },
           {
-            dm: "不在校",
+            dm: "1",
             mc: "否",
           },
         ],
         isIndeterminate: true,
       },
-      njOps: [],
+      dateArray: [],
       tableData: [],
-      manageRegOps: [],
-      zymOps: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -220,19 +220,38 @@ export default {
 
   mounted() {
     this.handleSearch();
+    this.getAllCollege();
+  },
+  activated() {
+    this.handleSearch();
   },
 
   methods: {
-    hadleDetail(type) {
-      if (type == 1) {
-        this.$router.push({
-          path: "/assistantWork/addTalk",
-        });
+    del() {
+      if (this.delArr && this.delArr.length > 0) {
+        delTalk({ ids: this.delArr }).then((res) => this.handleSearch());
       } else {
-        this.$router.push({
-          path: "/assistantWork/detailTalk",
-        });
+        this.$message.error("请先勾选数据");
       }
+    },
+    getAllCollege() {
+      getCollege()
+        .then((res) => {
+          this.allDwh = res.data.rows;
+        })
+        .catch((err) => {});
+    },
+    hadleDetail1() {
+      this.$router.push({
+        path: "/assistantWork/addTalk",
+      });
+    },
+    hadleDetail2(row) {
+      const { id } = row;
+      this.$router.push({
+        path: "/assistantWork/detailTalk",
+        query: { id: id },
+      });
     },
     changeSelect() {
       this.searchVal = "";
@@ -242,19 +261,22 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
+        thzt: this.select == "thzt" ? this.searchVal : null,
+        thrxm: this.select == "thrxm" ? this.searchVal : null,
+        thrgh: this.select == "thrgh" ? this.searchVal : null,
+        thdd: this.select == "thdd" ? this.searchVal : null,
         dwh: this.moreIform.xydm,
-        zydm: this.moreIform.zydam,
-        nj: this.moreIform.njVal,
-        pyccm: this.training.choose,
-        sfzx: this.inSchool.choose,
+        ztjlList: this.ztjl.choose,
+        starttime: this.dateArray[0],
+        endtime: this.dateArray[1],
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      getSchoolRegStuInfoPageList(data)
+      talkTable(data)
         .then((res) => {
-          this.tableData = res.data.data;
+          this.tableData = res.data.records;
           this.queryParams.total = res.data.total;
         })
         .catch((err) => {});
@@ -263,56 +285,30 @@ export default {
     handleMore() {
       this.isMore = !this.isMore;
     },
-    // 培养层次全选
-
-    // 民 族单选
-    ethnicCheck(value) {
-      let checkedCount = value.length;
-      this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
-      this.ethnic.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
-    },
-    // 政治面貌：全选
-    politicaAll(val) {
+    //记录状态：全选
+    ztjlAll(val) {
       let allCheck = [];
-      for (let i in this.politica.checkBox) {
-        allCheck.push(this.politica.checkBox[i].val);
+      for (let i in this.ztjl.checkBox) {
+        allCheck.push(this.ztjl.checkBox[i].dm);
       }
-      this.politica.choose = val ? allCheck : [];
+      this.ztjl.choose = val ? allCheck : [];
 
-      this.politica.isIndeterminate = false;
-    },
-    // 政治面貌：单选
-    politicaCheck(value) {
-      let checkedCount = value.length;
-      this.politica.checkAll = checkedCount === this.politica.checkBox.length;
-      this.politica.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.politica.checkBox.length;
-    },
-    //是否在校：全选
-    inSchoolAll(val) {
-      let allCheck = [];
-      for (let i in this.inSchool.checkBox) {
-        allCheck.push(this.inSchool.checkBox[i].dm);
-      }
-      this.inSchool.choose = val ? allCheck : [];
-
-      this.inSchool.isIndeterminate = false;
+      this.ztjl.isIndeterminate = false;
     },
     // 是否在校：单选
-    inSchoolCheck(value) {
+    ztjlCheck(value) {
       let checkedCount = value.length;
-      this.inSchool.checkAll = checkedCount === this.inSchool.checkBox.length;
-      this.inSchool.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.inSchool.checkBox.length;
+      this.ztjl.checkAll = checkedCount === this.ztjl.checkBox.length;
+      this.ztjl.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.ztjl.checkBox.length;
     },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
+      this.delArr = this.multipleSelection.map((item) => item.id);
     },
     //排序
     changeTableSort(column) {
-      //console.log(1);
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
@@ -332,6 +328,19 @@ export default {
   .handledie {
     background: url("~@/assets/images/details.png");
   }
+  .scopeIncon1 {
+    display: inline-block;
+    width: 20px;
+    height: 16px;
+    vertical-align: middle;
+  }
+  .ywc {
+    background: url("~@/assets/assistantPng/blue.png") no-repeat;
+  }
+  .djl {
+    background: url("~@/assets/assistantPng/red.png") no-repeat;
+  }
+
   .handleName {
     font-weight: 400;
     font-size: 14px;

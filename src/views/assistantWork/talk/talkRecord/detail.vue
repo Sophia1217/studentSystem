@@ -10,85 +10,105 @@
             编辑
           </button>
           <button class="span1" v-if="edit == 2" @click="cancal()">取消</button>
-          <button class="span2" v-if="edit == 2" @click="sava">保存</button>
+          <button class="span2" v-if="edit == 2" @click="save()">保存</button>
         </div>
       </div>
       <el-form ref="form" label-width="80px">
         <el-row :gutter="20">
-          <el-col :span="5.5">
+          <el-col :span="4">
             <el-form-item label="谈话人">
               <el-input
-                v-model="zhutiValue"
+                :disabled="true"
+                v-model="xgh"
                 placeholder="请输入"
               ></el-input> </el-form-item
           ></el-col>
-          <el-col :span="5.5">
+          <el-col :span="4">
             <el-form-item label="姓名">
               <el-input
-                v-model="zhutiValue"
+                :disabled="true"
+                v-model="thrxm"
                 placeholder="请输入"
               ></el-input> </el-form-item></el-col
-          ><el-col :span="5.5">
+          ><el-col :span="4">
             <el-form-item label="单位">
               <el-input
-                v-model="zhutiValue"
+                :disabled="true"
+                v-model="rzdw"
                 placeholder="请输入"
               ></el-input> </el-form-item></el-col
-          ><el-col :span="5.5">
+          ><el-col :span="4">
             <el-form-item label="岗位">
               <el-input
-                v-model="zhutiValue"
+                :disabled="true"
+                v-model="thrgw"
                 placeholder="请输入"
               ></el-input> </el-form-item
           ></el-col>
-          <el-col :span="5.5">
+          <el-col :span="4">
             <el-form-item label="类型">
               <el-input
-                v-model="zhutiValue"
+                :disabled="true"
+                v-model="thrlb"
                 placeholder="请输入"
               ></el-input> </el-form-item
           ></el-col>
         </el-row>
 
         <el-form-item label="学生姓名">
-          <!-- <div class="name">{{ index + 1 }}:</div> -->
-          <el-row :gutters="20">
-            <div v-for="(role, index) in renshu" :key="index">
-              <el-col :span="2.5">
-                <el-select
-                  size="small"
-                  v-model="role.value"
-                  placeholder="请选择"
+          <el-row :gutters="20" class="suibian">
+            <div v-for="(ele, index) in stuDate" v-if="edit == 1">
+              <el-input
+                :disabled="edit == 2 ? false : true"
+                v-model="ele.value"
+                placeholder="请输入内容"
+              ></el-input>
+            </div>
+            <div v-for="(ele, index) in stuDate" v-if="edit == 2" :key="index">
+              <!-- <div v-for=""> -->
+              <el-autocomplete
+                v-model="stuDate[index].value"
+                :fetch-suggestions="querySearch"
+                placeholder="请输入内容"
+                :trigger-on-focus="false"
+                @select="
+                  (item) => {
+                    handleSelect(item, index);
+                  }
+                "
+                size="small"
+              ></el-autocomplete>
+              <!-- </div> -->
+              <!-- <div>
+                <div
+                  v-if="index < stuDate.length"
+                  class="editBtn"
+                  @click="addStu(ele, index)"
                 >
-                  <el-option
-                    v-for="(item, i) in stuData"
-                    :key="i"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                  </el-option>
-                </el-select>
-              </el-col>
-              <el-col :span="0.2" v-if="index == renshu.length - 1">
-                <div class="editBtn" @click="addRoles(role, index)">
                   <i class="addIcon"></i>
                 </div>
-              </el-col>
-              <el-col :span="0.2" v-else>
-                <div class="deleIcon" @click="deleRoles(role, index)">
+                <div
+                  v-if="(stuDate.length = index + 1)"
+                  class="deleIcon"
+                  @click="delStu(ele, index)"
+                >
                   <i></i>
                 </div>
-              </el-col>
+              </div> -->
             </div>
           </el-row>
         </el-form-item>
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="谈话主题">
-              <el-input v-model="zhutiValue" placeholder="请输入"></el-input>
+              <el-input
+                :disabled="edit == 2 ? false : true"
+                v-model="zhutiValue"
+                placeholder="请输入"
+              ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" v-if="edit == 2">
             <el-tag
               v-for="(item, i) in tags.themeTags"
               :key="i"
@@ -105,13 +125,14 @@
               ref="saveTagInput"
               size="small"
               @keyup.enter.native="$event.target.blur"
-              @blur="handleInputConfirm(1, index)"
+              @blur="handleInputConfirm(1)"
             >
             </el-input>
             <el-button
               icon="el-icon-plus"
               style="margin-left: 15px"
-              @click="showInput(1, index)"
+              @click="showInput(1)"
+              :disabled="edit == 2 ? false : true"
               >新增常用主题</el-button
             >
           </el-col>
@@ -119,10 +140,14 @@
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="谈话地点">
-              <el-input v-model="addressValue" placeholder="请输入"></el-input>
+              <el-input
+                v-model="addressValue"
+                :disabled="edit == 2 ? false : true"
+                placeholder="请输入"
+              ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" v-if="edit == 2">
             <el-tag
               v-for="(item, i) in tags.addressTags"
               :key="i"
@@ -139,13 +164,13 @@
               ref="saveTagInput1"
               size="small"
               @keyup.enter.native="$event.target.blur"
-              @blur="handleInputConfirm(2, index)"
+              @blur="handleInputConfirm(2)"
             >
             </el-input>
             <el-button
               icon="el-icon-plus"
               style="margin-left: 15px"
-              @click="showInput(2, index)"
+              @click="showInput(2)"
               >新增常用地点</el-button
             >
           </el-col>
@@ -153,22 +178,36 @@
         <el-row :gutter="20">
           <el-col :span="5.5">
             <el-form-item label="谈话日期">
-              <el-date-picker v-model="date" type="date" placeholder="选择日期">
+              <el-date-picker
+                v-model="date"
+                :disabled="edit == 2 ? false : true"
+                type="date"
+                placeholder="选择日期"
+              >
               </el-date-picker> </el-form-item
           ></el-col>
           <el-col :span="5.5">
             <el-form-item label="开始时间">
-              <el-time-picker v-model="value1" placeholder="选择开始时间">
+              <el-time-picker
+                v-model="value1"
+                :disabled="edit == 2 ? false : true"
+                placeholder="选择开始时间"
+              >
               </el-time-picker> </el-form-item
           ></el-col>
           <el-col :span="5.5">
             <el-form-item label="结束时间">
-              <el-time-picker v-model="value2" placeholder="选择结束时间">
+              <el-time-picker
+                v-model="value2"
+                :disabled="edit == 2 ? false : true"
+                placeholder="选择结束时间"
+              >
               </el-time-picker> </el-form-item
           ></el-col>
         </el-row>
         <el-form-item label="谈话内容">
           <el-input
+            :disabled="edit == 2 ? false : true"
             type="textarea"
             :autosize="{ minRows: 10, maxRows: 10 }"
             placeholder="请输入内容"
@@ -196,52 +235,34 @@
         </el-form-item>
       </el-form>
     </div>
-
-    <!-- <div class="editBottom">
-      <div class="btn cancel" @click="cancel()">
-        <i class="icon noIcon"></i> 取消
-      </div>
-      <div class="btn confirm" @click="sava()">
-        <i class="icon yesIcon"></i> 提交
-      </div>
-    </div> -->
   </div>
 </template>
 
 <script>
-import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
+import {
+  queryTag,
+  addTag,
+  delTag,
+  detailTalk,
+  updateTalk,
+  getXmXgh,
+} from "@/api/assistantWork/talk";
 export default {
   data() {
     return {
+      lgnSn: "", //逻辑主键
       edit: 1,
-      renshu: ["", "", "", "", ""],
-      stuData: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-          disabled: true,
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
+      stuDate: [],
       tags: {
         themeTags: [],
         addressTags: [],
       },
+      thrgw: "",
+      rzdw: "",
+      thrlb: "",
+      thrxm: "",
+      xgh: "",
+      addParams: [],
       zhutiValue: "",
       addressValue: "",
       inputVisible: false,
@@ -252,18 +273,125 @@ export default {
       value1: "",
       value2: "",
       textarea1: "",
+      arr: [],
     };
   },
 
   mounted() {
-    console.log(" process.env.VUE_APP_BASE_API", process.env.VUE_APP_BASE_API);
+    this.lgnSn = this.$route.query.id; //逻辑主键
     this.date = new Date();
     this.value2 = new Date();
     this.value1 = this.transTime(new Date());
     this.queryTag();
+    this.$nextTick((_) => {
+      this.queryDetail();
+    });
   },
 
   methods: {
+    querySearch(queryString, cb) {
+      console.log("queerstu", queryString);
+      if (queryString != "") {
+        let callBackArr = [];
+        var XmXgh = { xm: queryString };
+        var result = [];
+        var resultNew = [];
+        getXmXgh(XmXgh).then((res) => {
+          result = res.data.stuList;
+          resultNew = result.map((ele) => {
+            //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
+            //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
+            return {
+              value: `${ele.dm}(${ele.mc})`,
+              label: ele.dm,
+              xm: ele.mc,
+            };
+          });
+          resultNew.forEach((item) => {
+            if (item.value.indexOf(queryString) > -1) {
+              callBackArr.push(item);
+            }
+          });
+          if (callBackArr.length == 0) {
+            cb([{ value: "暂无数据", price: "暂无数据" }]);
+          } else {
+            console.log("callBackArr", callBackArr);
+            cb(callBackArr);
+          }
+        });
+      }
+    },
+    addStu() {
+      this.stuDate.push({ value: "", xm: "", gh: "" });
+    },
+    delStu(ele, index) {
+      this.stuDate.splice(index, 1);
+    },
+    handleSelect(item, index) {
+      console.log("item", item);
+      console.log("index", index);
+      //可以在点击时候动态添加参数，免得拼接,单独设计一个参数作为提交参数，免得各种复杂的截取和判断
+      this.addParams[index] = item;
+      console.log("this.addParams", this.addParams);
+    },
+    save() {
+      var list = [];
+      var list2 = [];
+      for (var i = 0; i < this.stuDate.length; i++) {
+        list.push(this.stuDate[i].xm);
+        list2.push(this.stuDate[i].xh);
+      }
+      var data = {
+        thdd: this.addressValue,
+        thnr: this.textarea1,
+        thsj: this.date,
+        id: this.lgnSn,
+        startTime: this.value1,
+        endTime: this.value2,
+        thzt: this.zhutiValue,
+        xhList: list2,
+        xmList: list,
+      };
+
+      updateTalk(data).then((res) => {
+        console.log("res", res);
+      });
+    },
+
+    queryDetail() {
+      detailTalk({ id: this.lgnSn }).then((res) => {
+        const { list, stuList, fdyMain } = res.data;
+        this.zhutiValue = list.thzt;
+        this.addressValue = list.thdd;
+        this.date = list.thsj;
+        this.value1 = list.startTime;
+        this.value2 = list.endTime;
+        this.textarea1 = list.thnr;
+        this.stuDate = stuList;
+        this.arr = stuList;
+        this.thrgw = fdyMain.thrgw;
+        this.xxxx = stuList;
+        this.rzdw = fdyMain.rzdw;
+        this.thrlb = fdyMain.thrlb;
+        this.thrxm = fdyMain.thrxm;
+        this.xgh = fdyMain.xgh;
+        console.log("xxxx", this.xxxx);
+        for (var i = 0; i < this.stuDate.length; i++) {
+          if (this.stuDate[i].xm !== "") {
+            this.stuDate[
+              i
+            ].value = `${this.stuDate[i].xm}(${this.stuDate[i].xh}) `;
+          } else {
+            this.stuDate[i].value = "";
+          }
+        }
+      });
+    },
+    editClick() {
+      this.edit = 2;
+
+      console.log("this.stuDate", this.stuDate);
+    },
     queryTag() {
       var data = {
         cyType: "1", //1主题,2地点,3组织单位
@@ -284,14 +412,14 @@ export default {
       if (type == 1) {
         this.inputVisible = true;
         // console.log("this.$refs", this.$refs);
-        // this.$nextTick((_) => {
-        //   this.$refs.saveTagInput.$refs.input.focus();
-        // });
+        this.$nextTick((_) => {
+          this.$refs.saveTagInput.$refs.input.focus();
+        });
       } else {
         this.inputVisible1 = true;
-        // this.$nextTick((_) => {
-        //   this.$refs.saveTagInput1.$refs.input.focus();
-        // });
+        this.$nextTick((_) => {
+          this.$refs.saveTagInput1.$refs.input.focus();
+        });
       }
     },
     handleInputConfirm(type) {
@@ -326,12 +454,6 @@ export default {
       param.id = item.id;
       delTag(param).then((_) => this.queryTag());
     },
-    addRoles() {
-      this.renshu.push("");
-    },
-    deleRoles(role, index) {
-      this.renshu.splice(index, 1);
-    },
     pushData(item, type) {
       if (type == 1) {
         if (this.zhutiValue == "") {
@@ -347,47 +469,11 @@ export default {
         }
       }
     },
-    editClick() {
-      this.edit = 2;
-    },
+
     cancal() {
       this.edit = 1;
       //然后
     },
-    sava() {
-      if (this.isEdit === "1") {
-        let data = {
-          userId: this.$store.getters.userId,
-          menuList: this.savaData,
-          roleName: this.queryParams.roleName,
-          loginRoleId: this.$store.getters.roleId,
-          roleRem: this.queryParams.roleRem,
-        };
-        savaTreeList(data)
-          .then(() => {
-            this.$router.push({
-              path: "/systems/role",
-            });
-          })
-          .catch((err) => {});
-      } else {
-        let data = {
-          userId: this.$store.getters.userId,
-          menuList: this.savaData.length > 0 ? this.savaData : this.arr, //如果用户进来没编辑，默认前一次筛选出来的树
-          roleName: this.queryParams.roleName,
-          roleId: this.roleId1,
-          roleRem: this.queryParams.roleRem,
-        };
-        savaEditList(data)
-          .then(() => {
-            this.$router.push({
-              path: "/systems/role",
-            });
-          })
-          .catch((err) => {});
-      }
-    },
-    savaEditList() {},
   },
 };
 </script>
@@ -444,7 +530,7 @@ export default {
     font-size: 14px;
     color: #005657;
     cursor: pointer;
-    line-height: 38px;
+    line-height: 32px;
     .addIcon {
       display: inline-block;
       width: 15px;
@@ -476,7 +562,7 @@ export default {
     }
   }
   .deleIcon {
-    padding-inline: 15px;
+    margin-left: 30px;
     cursor: pointer;
     i {
       display: inline-block;
@@ -505,6 +591,19 @@ export default {
       color: #1f1f1f;
       line-height: 28px;
     }
+  }
+  .suibian {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 14px;
+    color: #1f1f1f;
+  }
+  .el-input {
+    position: relative;
+    font-size: 14px;
+    display: inline-block;
+    width: 90%;
   }
   .input-new-tag {
     width: 90px;

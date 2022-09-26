@@ -25,11 +25,52 @@ export function delTag(query) {
 
 export function getXmXgh(query) {
     return request({
-        url: '/commonMethod/getXmXgh',
+        url: '/fdyTalk/showStuListByXm',
         method: 'post',
         data: query
     })
 }
+
+export function talkTable(query) {
+    return request({
+        url: '/fdyTalk/queryFdyTalkTable',
+        method: 'post',
+        data: query
+    })
+}
+
+export function addTalk(query) {
+    return request({
+        url: '/fdyTalk/addTxth',
+        method: 'post',
+        data: query
+    })
+}
+
+export function detailTalk(query) {
+    return request({
+        url: '/fdyTalk/showFdyTalkTableById',
+        method: 'get',
+        params: query
+    })
+}
+export function updateTalk(query) {
+    return request({
+        url: '/fdyTalk/updateTxth',
+        method: 'post',
+        data: query
+    })
+}
+
+export function delTalk(query) {
+    return request({
+        url: '/fdyTalk/deleteTxth',
+        method: 'post',
+        data: query
+    })
+}
+
+
 
 
 

@@ -133,7 +133,7 @@
           <div class="btns borderLight">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
-          <div class="btns borderGreen">
+          <div class="btns borderGreen" @click="addClass">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
         </div>
@@ -193,6 +193,25 @@
         @pagination="handleSearch"
       />
     </div>
+    <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+      <el-form :model="form">
+        <el-form-item label="活动名称" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="活动区域" :label-width="formLabelWidth">
+          <el-select v-model="form.region" placeholder="请选择活动区域">
+            <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false"
+          >确 定</el-button
+        >
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -210,6 +229,18 @@ export default {
   components: { CheckboxCom },
   data() {
     return {
+      dialogFormVisible: false,
+      form: {
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: "",
+      },
+      formLabelWidth: "120px",
       searchVal: "",
       select: "",
       isMore: false,
@@ -265,15 +296,8 @@ export default {
   },
 
   methods: {
-    hadleDetail() {
-      //     this.$router.push({
-      //     path: "/politicalwork/detailInfo",
-      //     query: {
-      //       gh: row.gh,
-      //       id: row.date,
-      //       show: flag,
-      //     },
-      //   });
+    addClass() {
+      this.dialogFormVisible = true;
     },
     changeSelect() {
       this.searchVal = "";
@@ -303,32 +327,6 @@ export default {
     // 点击更多
     handleMore() {
       this.isMore = !this.isMore;
-    },
-    // 培养层次全选
-
-    // 民 族单选
-    ethnicCheck(value) {
-      let checkedCount = value.length;
-      this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
-      this.ethnic.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
-    },
-    // 政治面貌：全选
-    politicaAll(val) {
-      let allCheck = [];
-      for (let i in this.politica.checkBox) {
-        allCheck.push(this.politica.checkBox[i].val);
-      }
-      this.politica.choose = val ? allCheck : [];
-
-      this.politica.isIndeterminate = false;
-    },
-    // 政治面貌：单选
-    politicaCheck(value) {
-      let checkedCount = value.length;
-      this.politica.checkAll = checkedCount === this.politica.checkBox.length;
-      this.politica.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.politica.checkBox.length;
     },
     //是否在校：全选
     inSchoolAll(val) {

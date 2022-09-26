@@ -57,44 +57,52 @@
 
         <el-form-item label="学生姓名">
           <el-row :gutters="20" class="suibian">
-            <div v-for="(ele, index) in stuDate" v-if="edit == 1">
-              <el-input
-                :disabled="edit == 2 ? false : true"
-                v-model="ele.value"
-                placeholder="请输入内容"
-              ></el-input>
+            <div v-for="(ele, index) in stuDate">
+              <div v-if="edit == 1">
+                <el-input
+                  :disabled="edit == 2 ? false : true"
+                  v-model="ele.value"
+                  placeholder="请输入内容"
+                ></el-input>
+              </div>
             </div>
-            <div v-for="(ele, index) in stuDate" v-if="edit == 2" :key="index">
-              <!-- <div v-for=""> -->
-              <el-autocomplete
-                v-model="stuDate[index].value"
-                :fetch-suggestions="querySearch"
-                placeholder="请输入内容"
-                :trigger-on-focus="false"
-                @select="
-                  (item) => {
-                    handleSelect(item, index);
-                  }
-                "
-                size="small"
-              ></el-autocomplete>
-              <!-- </div> -->
-              <!-- <div>
+            <div v-for="(ele, index) in stuDate" :key="index">
+              <div v-if="edit == 2" style="display: flex">
+                <el-autocomplete
+                  v-model="stuDate[index].value"
+                  :fetch-suggestions="querySearch"
+                  placeholder="请输入内容"
+                  :trigger-on-focus="false"
+                  @select="
+                    (item) => {
+                      handleSelect(item, index);
+                    }
+                  "
+                  size="small"
+                ></el-autocomplete>
                 <div
-                  v-if="index < stuDate.length"
+                  v-if="
+                    index == stuDate.length - 1 &&
+                    stuDate.length !== 6 &&
+                    edit == 2
+                  "
                   class="editBtn"
                   @click="addStu(ele, index)"
                 >
                   <i class="addIcon"></i>
                 </div>
                 <div
-                  v-if="(stuDate.length = index + 1)"
+                  v-if="
+                    stuDate.length == 6 ||
+                    (index < stuDate.length - 1 && edit == 2)
+                  "
                   class="deleIcon"
                   @click="delStu(ele, index)"
                 >
                   <i></i>
                 </div>
-              </div> -->
+                <div></div>
+              </div>
             </div>
           </el-row>
         </el-form-item>
@@ -262,7 +270,6 @@ export default {
       thrlb: "",
       thrxm: "",
       xgh: "",
-      addParams: [],
       zhutiValue: "",
       addressValue: "",
       inputVisible: false,
@@ -289,8 +296,47 @@ export default {
   },
 
   methods: {
+    queryDetail() {
+      detailTalk({ id: this.lgnSn }).then((res) => {
+        const { list, stuList, fdyMain } = res.data;
+        this.zhutiValue = list.thzt;
+        this.addressValue = list.thdd;
+        this.date = list.thsj;
+        this.value1 = list.startTime;
+        this.value2 = list.endTime;
+        this.textarea1 = list.thnr;
+        this.stuDate = stuList;
+        this.arr = stuList;
+        this.thrgw = fdyMain.thrgw;
+        this.rzdw = fdyMain.rzdw;
+        this.thrlb = fdyMain.thrlb;
+        this.thrxm = fdyMain.thrxm;
+        this.xgh = fdyMain.xgh;
+        for (var i = 0; i < this.stuDate.length; i++) {
+          if (this.stuDate[i].xm !== "") {
+            //此处找后台约定好
+            this.$set(
+              this.stuDate[i],
+              "value",
+              `${this.stuDate[i].xm}(${this.stuDate[i].xh}) `
+            );
+            this.$set(this.stuDate[i], "xm", `${this.stuDate[i].xm} `);
+            this.$set(this.stuDate[i], "xh", `${this.stuDate[i].xh} `);
+          } else {
+            this.stuDate[i].value = "";
+          }
+        }
+      });
+    },
+    addStu(ele, index) {
+      console.log(index);
+      if (this.stuDate.length > 5) {
+        this.$message.error("最多六条数据");
+      } else {
+        this.stuDate.push({});
+      }
+    },
     querySearch(queryString, cb) {
-      console.log("queerstu", queryString);
       if (queryString != "") {
         let callBackArr = [];
         var XmXgh = { xm: queryString };
@@ -301,9 +347,10 @@ export default {
           resultNew = result.map((ele) => {
             //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
             //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
+            //此处找后台约定好
             return {
-              value: `${ele.dm}(${ele.mc})`,
-              label: ele.dm,
+              value: `${ele.mc}(${ele.dm})`,
+              xh: ele.dm,
               xm: ele.mc,
             };
           });
@@ -315,24 +362,17 @@ export default {
           if (callBackArr.length == 0) {
             cb([{ value: "暂无数据", price: "暂无数据" }]);
           } else {
-            console.log("callBackArr", callBackArr);
             cb(callBackArr);
           }
         });
       }
     },
-    addStu() {
-      this.stuDate.push({ value: "", xm: "", gh: "" });
-    },
+
     delStu(ele, index) {
       this.stuDate.splice(index, 1);
     },
     handleSelect(item, index) {
-      console.log("item", item);
-      console.log("index", index);
-      //可以在点击时候动态添加参数，免得拼接,单独设计一个参数作为提交参数，免得各种复杂的截取和判断
-      this.addParams[index] = item;
-      console.log("this.addParams", this.addParams);
+      this.stuDate[index] = item;
     },
     save() {
       var list = [];
@@ -353,44 +393,11 @@ export default {
         xmList: list,
       };
 
-      updateTalk(data).then((res) => {
-        console.log("res", res);
-      });
+      updateTalk(data).then((res) => {});
     },
 
-    queryDetail() {
-      detailTalk({ id: this.lgnSn }).then((res) => {
-        const { list, stuList, fdyMain } = res.data;
-        this.zhutiValue = list.thzt;
-        this.addressValue = list.thdd;
-        this.date = list.thsj;
-        this.value1 = list.startTime;
-        this.value2 = list.endTime;
-        this.textarea1 = list.thnr;
-        this.stuDate = stuList;
-        this.arr = stuList;
-        this.thrgw = fdyMain.thrgw;
-        this.xxxx = stuList;
-        this.rzdw = fdyMain.rzdw;
-        this.thrlb = fdyMain.thrlb;
-        this.thrxm = fdyMain.thrxm;
-        this.xgh = fdyMain.xgh;
-        console.log("xxxx", this.xxxx);
-        for (var i = 0; i < this.stuDate.length; i++) {
-          if (this.stuDate[i].xm !== "") {
-            this.stuDate[
-              i
-            ].value = `${this.stuDate[i].xm}(${this.stuDate[i].xh}) `;
-          } else {
-            this.stuDate[i].value = "";
-          }
-        }
-      });
-    },
     editClick() {
       this.edit = 2;
-
-      console.log("this.stuDate", this.stuDate);
     },
     queryTag() {
       var data = {
@@ -411,7 +418,6 @@ export default {
     showInput(type) {
       if (type == 1) {
         this.inputVisible = true;
-        // console.log("this.$refs", this.$refs);
         this.$nextTick((_) => {
           this.$refs.saveTagInput.$refs.input.focus();
         });
@@ -523,14 +529,14 @@ export default {
     overflow: hidden;
   }
   .editBtn {
-    padding: 0 10px;
-    margin-left: 22px;
+    padding: 0 12px;
+    margin-left: 4px;
     border-radius: 4px;
     font-weight: 400;
     font-size: 14px;
     color: #005657;
     cursor: pointer;
-    line-height: 32px;
+    line-height: 38px;
     .addIcon {
       display: inline-block;
       width: 15px;
@@ -562,14 +568,20 @@ export default {
     }
   }
   .deleIcon {
-    margin-left: 30px;
+    padding: 0 12px;
+    margin-left: 4px;
+    border-radius: 4px;
+    font-weight: 400;
+    font-size: 14px;
+    color: #005657;
     cursor: pointer;
+    line-height: 38px;
     i {
       display: inline-block;
       vertical-align: middle;
       width: 20px;
       height: 20px;
-      background: url("~@/assets/images/detelIcon.png");
+      background: url("~@/assets/images/detelIcon.png") no-repeat center;
     }
   }
   .wai-container {
@@ -674,10 +686,10 @@ export default {
         margin-right: 5px;
       }
       .noIcon {
-        background: url("~@/assets/images/no.png");
+        background: url("~@/assets/images/no.png") no-repeat center;
       }
       .yesIcon {
-        background: url("~@/assets/images/yesW.png");
+        background: url("~@/assets/images/yesW.png") no-repeat center;
       }
     }
     .cancel {

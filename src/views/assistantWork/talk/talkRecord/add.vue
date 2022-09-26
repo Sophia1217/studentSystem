@@ -46,7 +46,7 @@
             </div>
           </div>
           <div
-            v-if="index == renshu.length - 1"
+            v-if="index == renshu.length - 1 && renshu.length !== 6"
             class="editBtn"
             @click="addStu(ele, index)"
           >
@@ -76,7 +76,7 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="18">
             <el-tag
               v-for="(item, i) in ele.tag.tags.themeTags"
               :key="i"
@@ -313,10 +313,7 @@ export default {
       console.log(result);
     },
     test(index) {
-      console.log(
-        "this.$refs.upload.submit();",
-        this.$refs.upload[index].uploadFiles
-      );
+      console.log(this.$refs.upload[index].uploadFiles);
       console.log("this.$refs.upload.submit()", this.$refs);
     },
 
@@ -406,10 +403,14 @@ export default {
     },
     showInput(type, index) {
       if (type == 1) {
-        this.talkDate[index].inputVisible = true;
-        this.$nextTick((_) => {
-          this.$refs.saveTagInput[index].$refs.input.focus();
-        });
+        if (this.talkDate[index].tag.tags.themeTags.length > 9) {
+          this.$message.error("最多九条");
+        } else {
+          this.talkDate[index].inputVisible = true;
+          this.$nextTick((_) => {
+            this.$refs.saveTagInput[index].$refs.input.focus();
+          });
+        }
       } else {
         this.talkDate[index].inputVisible1 = true;
         this.$nextTick((_) => {
@@ -450,7 +451,11 @@ export default {
       delTag(param).then((_) => this.queryTag());
     },
     addStu() {
-      this.renshu.push({ value: "", label: "" });
+      if (this.renshu.length > 5) {
+        this.$message.error("最多六条数据");
+      } else {
+        this.renshu.push({ value: "", label: "" });
+      }
     },
     delStu(role, index) {
       this.renshu.splice(index, 1);

@@ -13,14 +13,14 @@
           </el-col>
           <el-col :span="2">
             <el-form-item label="自定义单位" label-width="90px"></el-form-item>
-            </el-col>
-            <el-col :span="12">
+          </el-col>
+          <el-col :span="12">
             <el-tag
               v-for="item in tag.unitTags"
               :key="item.cyMsg"
-              @click="pushData(item,3)"
+              @click="pushData(item, 3)"
               @close="handleClose(item)"
-              closable 
+              closable
             >
               {{ item.cyMsg }}
             </el-tag>
@@ -75,22 +75,19 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="活动地址" prop="place">
-              <el-input 
-                v-model="form.place" 
-                placeholder="请输入"
-                ></el-input>
+              <el-input v-model="form.place" placeholder="请输入"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="2">
             <el-form-item label="常用地址" label-width="90px"></el-form-item>
-            </el-col>
-            <el-col :span="12">
+          </el-col>
+          <el-col :span="12">
             <el-tag
               v-for="item in tag.addressTags"
               :key="item.cyMsg"
-              @click="pushData(item,2)"
+              @click="pushData(item, 2)"
               @close="handleClose(item)"
-              closable 
+              closable
             >
               {{ item.cyMsg }}
             </el-tag>
@@ -115,33 +112,37 @@
         <el-row :gutter="20">
           <el-col :span="22">
             <el-form-item label="活动内容" prop="detail">
-              <el-input 
-                v-model="form.detail" 
+              <el-input
+                v-model="form.detail"
                 :autosize="{ minRows: 4, maxRows: 10 }"
                 type="textarea"
                 placeholder="请输入"
-                ></el-input>
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="22">
             <el-form-item label="参与体会" prop="cyth">
-              <el-input 
-                v-model="form.cyth" 
+              <el-input
+                v-model="form.cyth"
                 :autosize="{ minRows: 4, maxRows: 10 }"
                 type="textarea"
                 placeholder="请输入"
-                ></el-input>
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="添加附件">
           <el-upload
             drag
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="#"
             multiple
             class="el-upload"
+            :auto-upload="false"
+            ref="upload"
+            :file-list="fileList"
+            :on-change="change"
           >
             <div class="el-upload-dragger">
               <i class="el-icon-upload"></i>
@@ -154,23 +155,12 @@
             </div>
           </el-upload>
         </el-form-item>
-
-
       </el-form>
       <div class="headLeft">
-        <button class="span1"  @click="cancel()">取消</button>
-        <button class="span2"  @click="sava">保存</button>
+        <button class="span1" @click="cancel()">取消</button>
+        <button class="span2" @click="sava">保存</button>
       </div>
     </div>
-
-    <!-- <div class="editBottom">
-      <div class="btn cancel" @click="cancel()">
-        <i class="icon noIcon"></i> 取消
-      </div>
-      <div class="btn confirm" @click="sava()">
-        <i class="icon yesIcon"></i> 提交
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -181,13 +171,12 @@ import {
   savaTreeList,
   savaEditList,
 } from "@/api/systemMan/role";
-import { 
-  insertFdyBthd,
- } from "@/api/assistantWork/classEvent";
+import { insertFdyBthd } from "@/api/assistantWork/classEvent";
 import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
 export default {
   data() {
     return {
+      fileList: [],
       renshu: ["", "", "", "", ""],
       stuData: [
         {
@@ -212,9 +201,9 @@ export default {
           label: "北京烤鸭",
         },
       ],
-      modelOps:[
-        { dm:"1",xm:"线上" },
-        { dm:"2",xm:"线下" },
+      modelOps: [
+        { dm: "1", xm: "线上" },
+        { dm: "2", xm: "线下" },
       ],
       modId: "",
       // 查询参数
@@ -234,42 +223,37 @@ export default {
       arr1: ["01"],
       tag: {
         unitTags: [],
-        addressTags: []
+        addressTags: [],
       },
       form: {
-        orgUnit: "",//组织单位
-        theme:"",
+        orgUnit: "", //组织单位
+        theme: "",
         date: "",
         begTime: "",
         endTime: "",
 
-        
         inputVisible: false,
         inputValue: "",
         inputVisible1: false,
         inputValue: "",
-        place:"",
-        detail:"",
-        cyth:"",
-        
+        place: "",
+        detail: "",
+        cyth: "",
       },
     };
   },
 
   mounted() {
-    // this.isEdit = this.$route.query.isEdit;
-    // this.roleId1 = this.$route.query?.UpId;
-    // this.roleName1 = this.$route.query?.roleNameEdit;
-    // this.queryParams.roleRem = this.$route.query?.rem;
-    // this.handleTree();
-
-   
-    (this.form.date = new Date()), 
-    (this.form.endTime = new Date()), this.transTime(new Date());
+    (this.form.date = new Date()),
+      (this.form.endTime = new Date()),
+      this.transTime(new Date());
     this.queryTag();
   },
 
   methods: {
+    change(file, fileList) {
+      this.fileList = fileList;
+    },
     transTime(date) {
       var min = date.getMinutes();
       date.setMinutes(min - 30);
@@ -296,64 +280,18 @@ export default {
     cancel() {
       window.history.go(-1);
     },
-    handleTree() {
-      if (this.isEdit == 2) {
-        let data = { roleId: this.roleId1 };
-        let dataALL = { roleId: this.$store.state.user.roleId };
-        queryTreeListJ(data)
-          .then((res) => {
-            var result = res.data;
-            this.arr = result;
-            // this.getData(result); //
-          })
-          .catch((err) => {});
-        queryTreeList(dataALL)
-          .then((res) => {
-            this.treeData = res.data;
-            this.setkeys();
-          })
-          .catch((err) => {});
-      } else {
-        let data = { roleId: this.$store.state.user.roleId };
-        queryTreeList(data)
-          .then((res) => {
-            this.treeData = res.data;
-          })
-          .catch((err) => {});
-      }
-    },
-    setkeys() {
-      this.$refs.tree.setCheckedKeys(this.arr);
-    },
-    getData(data) {
-      for (var i in data) {
-        this.arr.push(data[i].modId); //将第一层的保存出来，
-        if (data[i].children) {
-          // if(data[i].length >)
-          this.getData(data[i].children);
-        }
-      }
-      return this.arr;
-    },
-    //elementUi中自带的方法，可以获取到所有选中的节点
-    currentChecked(nodeObj, SelectedObj) {
-      var that = this;
-      const { checkedNodes, halfCheckedKeys } = SelectedObj;
-      var menuList = checkedNodes.map((item) => item.modId);
-      that.savaData = menuList.concat(halfCheckedKeys); //要获取上级根节点
-    },
     showInput(type) {
-      if (type == 3){
+      if (type == 3) {
         this.form.inputVisible = true;
       } else {
         this.form.inputVisible1 = true;
       }
     },
     handleInputConfirm(type) {
-      if (type == 3){
+      if (type == 3) {
         var obj = {
           cyMsg: "",
-          cyType:type.toString(),
+          cyType: type.toString(),
           userId: this.$store.getters.userId,
         };
         obj.cyMsg = this.form.inputValue;
@@ -362,10 +300,10 @@ export default {
         });
         this.form.inputVisible = false;
         this.form.inputValue = "";
-      }else {
+      } else {
         var obj = {
           cyMsg: "",
-          cyType:type.toString(),
+          cyType: type.toString(),
           userId: this.$store.getters.userId,
         };
         obj.cyMsg = this.form.inputValue1;
@@ -383,81 +321,39 @@ export default {
       delTag(param).then((_) => this.queryTag());
     },
     //选中标签
-    pushData(item,type) {
-      if (type ==3){
+    pushData(item, type) {
+      if (type == 3) {
         if (this.form.orgUnit == "") {
-            this.form.orgUnit =
-              this.form.orgUnit + item.cyMsg;
-          } else {
-            this.form.orgUnit =
-              this.form.orgUnit + "," + item.cyMsg;
-          }
-      }else{
+          this.form.orgUnit = this.form.orgUnit + item.cyMsg;
+        } else {
+          this.form.orgUnit = this.form.orgUnit + "," + item.cyMsg;
+        }
+      } else {
         if (this.form.place == "") {
-            this.form.place =
-              this.form.place + item.cyMsg;
-          } else {
-            this.form.place =
-              this.form.place + "," + item.cyMsg;
-          }
-    }
+          this.form.place = this.form.place + item.cyMsg;
+        } else {
+          this.form.place = this.form.place + "," + item.cyMsg;
+        }
+      }
     },
     sava() {
-      let data ={
-        id: this.id,
-        cyth: this.form.cyth,
-        hddz: this.form.place,
-        hdksrq: this.form.date,
-        hdjssj: this.form.endTime,
-        hdkssj: this.form.begTime,
-        hdnr: this.form.detail,
-        hdzt: this.form.theme,
-        zzdw: this.form.orgUnit,    
-        hddz: this.form.place,
-        uploadList:[]
-
-      }
-      insertFdyBthd(data).then((res) => {
-        this.$message({
-          message: res.errmsg,
-          type: "success",
-        })
-        window.history.go(-1);
-        
+      let formData = new FormData();
+      formData.append("id", "");
+      formData.append("cyth", this.form.cyth);
+      formData.append("hddz", this.form.place);
+      formData.append("hdksrq", this.form.date);
+      formData.append("hdjssj", this.form.endTime);
+      formData.append("hdkssj", this.form.begTime);
+      formData.append("hdnr", this.form.detail);
+      formData.append("hdzt", this.form.theme);
+      formData.append("zzdw", this.form.orgUnit);
+      this.fileList.map((ele) => {
+        formData.append("files", ele.raw);
       });
-      // if (this.isEdit === "1") {
-      //   let data = {
-      //     userId: this.$store.getters.userId,
-      //     menuList: this.savaData,
-      //     roleName: this.queryParams.roleName,
-      //     loginRoleId: this.$store.getters.roleId,
-      //     roleRem: this.queryParams.roleRem,
-      //   };
-      //   savaTreeList(data)
-      //     .then(() => {
-      //       this.$router.push({
-      //         path: "/systems/role",
-      //       });
-      //     })
-      //     .catch((err) => {});
-      // } else {
-      //   let data = {
-      //     userId: this.$store.getters.userId,
-      //     menuList: this.savaData.length > 0 ? this.savaData : this.arr, //如果用户进来没编辑，默认前一次筛选出来的树
-      //     roleName: this.queryParams.roleName,
-      //     roleId: this.roleId1,
-      //     roleRem: this.queryParams.roleRem,
-      //   };
-      //   savaEditList(data)
-      //     .then(() => {
-      //       this.$router.push({
-      //         path: "/systems/role",
-      //       });
-      //     })
-      //     .catch((err) => {});
-      // }
+      insertFdyBthd(formData).then((res) => {
+        window.history.go(-1);
+      });
     },
-    // savaEditList() {},
   },
 };
 </script>
@@ -470,7 +366,7 @@ export default {
     background: #fff;
     padding: 20px;
     // height: calc(100vh - 250px);
-    
+
     .title {
       display: flex;
       font-weight: 600;
@@ -486,16 +382,16 @@ export default {
       line-height: 28px;
       margin-right: 20px;
     }
-    .search{
+    .search {
       background: #005657;
       align-items: center;
     }
     .input-new-tag {
-    width: 90px;
-    margin-left: 10px;
-    vertical-align: bottom;
+      width: 90px;
+      margin-left: 10px;
+      vertical-align: bottom;
     }
-}
+  }
   .editBottom {
     width: 100%;
     height: 60px;
@@ -543,24 +439,24 @@ export default {
     }
   }
   .headLeft {
-      display: flex;
-      align-items: center;
-      justify-content:flex-end;
-      .span1 {
-        cursor: pointer;
-        color: #fff;
-        background: #005657;
-        border: 1px solid #005657;
-        padding: 10px;
-      }
-      .span2 {
-        cursor: pointer;
-        color: #fff;
-        background: #005657;
-        border: 1px solid #005657;
-        padding: 10px;
-        margin-left: 15px;
-      }
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .span1 {
+      cursor: pointer;
+      color: #fff;
+      background: #005657;
+      border: 1px solid #005657;
+      padding: 10px;
+    }
+    .span2 {
+      cursor: pointer;
+      color: #fff;
+      background: #005657;
+      border: 1px solid #005657;
+      padding: 10px;
+      margin-left: 15px;
+    }
   }
   ::v-deep .el-upload-dragger {
     background-color: #fff;

@@ -18,9 +18,10 @@ export function queryFdyBthdById(query) {
 //班团活动新增修改
 export function insertFdyBthd(query) {
   return request({
-      url: '/fdyBthd/insertFdyBthd',
+      url: '/fdyBthd/importiInsertFdyBthd',
       method: 'post',
-      data: query
+      responseType: 'blob',
+      data: query,
   })
 }
 //班团活动列表导出
@@ -40,3 +41,34 @@ export function deleteFdyBthd(query) {
       data: query
   })
 }
+
+//公用查附件
+export function querywj(query) {
+  return request({
+      url: '/fileCommon/queryBFileInfoByBusId',
+      method: 'get',
+      params: query
+  })
+}
+
+
+
+//公用删除附件
+export function delwj(query) {
+  return request({
+      url: '/fileCommon/deleteFileByPath',
+      method: 'get',
+      params: query
+  })
+}
+
+//公用下载附件
+export function Exportwj(query) {
+  return request({
+      url: '/fileCommon/downloadFile',
+      method: 'get',
+      params: query,
+      responseType:'blob'
+  })
+}
+

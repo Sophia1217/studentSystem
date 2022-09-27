@@ -8,53 +8,51 @@
         <el-row :gutter="20">
           <el-col :span="4.5">
             <el-form-item label="姓名" prop="recordName">
-              <el-input 
-                v-model="formTop.recordName" 
+              <el-input
+                v-model="formTop.recordName"
                 placeholder="请输入"
-                :disabled= true
-                ></el-input>
+                :disabled="true"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="4.5">
             <el-form-item label="工号" prop="recordGh">
-              <el-input 
-                v-model="formTop.recordGh" 
+              <el-input
+                v-model="formTop.recordGh"
                 placeholder="请输入"
-                :disabled= true
-                ></el-input>
+                :disabled="true"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="4.5">
             <el-form-item label="单位" prop="dwh">
-              <el-input 
-                v-model="formTop.dwh" 
+              <el-input
+                v-model="formTop.dwh"
                 placeholder="请输入"
-                :disabled= true
-                ></el-input>
+                :disabled="true"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="4.5">
             <el-form-item label="岗位" prop="job">
-              <el-input 
-                v-model="formTop.job" 
+              <el-input
+                v-model="formTop.job"
                 placeholder="请输入"
-                :disabled= true
-                ></el-input>
+                :disabled="true"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="4.5">
             <el-form-item label="类型" prop="lxm">
-              <el-input 
-                v-model="formTop.lxm" 
+              <el-input
+                v-model="formTop.lxm"
                 placeholder="请输入"
-                :disabled= true
-                ></el-input>
+                :disabled="true"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
-
       </el-form>
-  
     </div>
     <div class="permissions">
       <div>
@@ -64,23 +62,23 @@
         <el-row :gutter="20">
           <el-col :span="5">
             <el-form-item label="组织单位" prop="orgUnit">
-              <el-input 
-                v-model="form.orgUnit" 
+              <el-input
+                v-model="form.orgUnit"
                 placeholder="请输入"
                 :disabled="edit == '1' ? true : false"
-                ></el-input>
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="2">
             <el-form-item label="自定义单位" label-width="90px"></el-form-item>
-            </el-col>
-            <el-col :span="12">
+          </el-col>
+          <el-col :span="12">
             <el-tag
               v-for="item in tag.unitTags"
               :key="item.cyMsg"
-              @click="pushData(item,3)"
+              @click="pushData(item, 3)"
               @close="handleClose(item)"
-              closable 
+              closable
             >
               {{ item.cyMsg }}
             </el-tag>
@@ -105,8 +103,11 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="活动主题">
-              <el-input v-model="form.theme" placeholder="请输入" 
-                :disabled="edit == '1' ? true : false"></el-input>
+              <el-input
+                v-model="form.theme"
+                placeholder="请输入"
+                :disabled="edit == '1' ? true : false"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -123,18 +124,20 @@
           ></el-col>
           <el-col :span="5.5">
             <el-form-item label="开始时间">
-              <el-time-picker v-model="form.begTime" 
+              <el-time-picker
+                v-model="form.begTime"
                 placeholder="选择开始时间"
                 :disabled="edit == '1' ? true : false"
-                >
+              >
               </el-time-picker> </el-form-item
           ></el-col>
           <el-col :span="5.5">
             <el-form-item label="结束时间">
-              <el-time-picker v-model="form.endTime" 
+              <el-time-picker
+                v-model="form.endTime"
                 placeholder="选择结束时间"
                 :disabled="edit == '1' ? true : false"
-                >
+              >
               </el-time-picker> </el-form-item
           ></el-col>
         </el-row>
@@ -142,23 +145,23 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="活动地址" prop="place">
-              <el-input 
-                v-model="form.place" 
+              <el-input
+                v-model="form.place"
                 placeholder="请输入"
                 :disabled="edit == '1' ? true : false"
-                ></el-input>
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="2">
             <el-form-item label="常用地址" label-width="90px"></el-form-item>
-            </el-col>
-            <el-col :span="12">
+          </el-col>
+          <el-col :span="12">
             <el-tag
               v-for="item in tag.addressTags"
               :key="item.cyMsg"
-              @click="pushData(item,2)"
+              @click="pushData(item, 2)"
               @close="handleClose(item)"
-              closable 
+              closable
             >
               {{ item.cyMsg }}
             </el-tag>
@@ -183,36 +186,41 @@
         <el-row :gutter="20">
           <el-col :span="22">
             <el-form-item label="活动内容" prop="detail">
-              <el-input 
-                v-model="form.detail" 
+              <el-input
+                v-model="form.detail"
                 :autosize="{ minRows: 4, maxRows: 10 }"
                 type="textarea"
                 placeholder="请输入"
                 :disabled="edit == '1' ? true : false"
-                ></el-input>
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="22">
             <el-form-item label="参与体会" prop="cyth">
-              <el-input 
-                v-model="form.cyth" 
+              <el-input
+                v-model="form.cyth"
                 :autosize="{ minRows: 4, maxRows: 10 }"
                 type="textarea"
                 placeholder="请输入"
                 :disabled="edit == '1' ? true : false"
-                ></el-input>
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="添加附件">
           <el-upload
             drag
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="#"
             multiple
+            :file-list="fileList"
+            :auto-upload="false"
             class="el-upload"
+            :on-preview="handlePreview"
+            :on-change="change"
             :disabled="edit == '1' ? true : false"
+            :before-remove="beforeRemove"
           >
             <div class="el-upload-dragger">
               <i class="el-icon-upload"></i>
@@ -225,45 +233,32 @@
             </div>
           </el-upload>
         </el-form-item>
-
-
       </el-form>
       <div class="headLeft">
-          <button class="span1" v-if="edit == 1" @click="editClick()">
-            编辑
-          </button>
-          <button class="span1" v-if="edit == 2" @click="cancel()">取消</button>
-          <button class="span2" v-if="edit == 2" @click="sava">保存</button>
+        <button class="span1" v-if="edit == 1" @click="editClick()">
+          编辑
+        </button>
+        <button class="span1" v-if="edit == 2" @click="cancel()">取消</button>
+        <button class="span2" v-if="edit == 2" @click="sava">保存</button>
       </div>
-
     </div>
-
-    <!-- <div class="editBottom">
-      <div class="btn cancel" @click="cancel()">
-        <i class="icon noIcon"></i> 取消
-      </div>
-      <div class="btn confirm" @click="sava()">
-        <i class="icon yesIcon"></i> 提交
-      </div>
-    </div> -->
   </div>
 </template>
 
 <script>
 import {
-  queryTreeList,
-  queryTreeListJ,
-  savaTreeList,
-  savaEditList,
-} from "@/api/systemMan/role";
-import { 
   queryFdyBthdById,
   insertFdyBthd,
- } from "@/api/assistantWork/classEvent";
+  querywj,
+  delwj,
+  Exportwj,
+} from "@/api/assistantWork/classEvent";
 import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
 export default {
   data() {
     return {
+      fileList: [],
+      fileListAdd: [],
       edit: 1,
       renshu: ["", "", "", "", ""],
       stuData: [
@@ -289,79 +284,73 @@ export default {
           label: "北京烤鸭",
         },
       ],
-      modelOps:[
-        { dm:"1",xm:"线上" },
-        { dm:"2",xm:"线下" },
+      modelOps: [
+        { dm: "1", xm: "线上" },
+        { dm: "2", xm: "线下" },
       ],
-      modId: "",
-      // 查询参数
-      queryParams: {
-        roleRem: "",
-        roleName: this.isEdit == "1" ? "" : this.$route.query.roleNameEdit, // 编辑是2
-      },
-      treeData: [],
-      defaultProps: {
-        children: "children",
-        label: "title",
-      },
-      isEdit: "",//没有用到
-      savaData: [], //新增提交所需要的menuList
-      roleId1: "", ////编辑请求的id,
       arr: [],
       arr1: ["01"],
       tag: {
         unitTags: [],
         addressTags: [],
       },
-      formTop:{
-        recordName:"",
-        dwh:"",
-        job:"",
-        lxm:"",
-        recordGh:"",
-
+      formTop: {
+        recordName: "",
+        dwh: "",
+        job: "",
+        lxm: "",
+        recordGh: "",
       },
       form: {
-        orgUnit: "",//组织单位
-        theme:"",
+        orgUnit: "", //组织单位
+        theme: "",
         date: "",
         begTime: "",
         endTime: "",
-        
+
         inputVisible: false,
         inputValue: "",
-        place:"",
-        detail:"",
-        cyth:"",
+        place: "",
+        detail: "",
+        cyth: "",
       },
       detailInfoList: [],
     };
   },
 
   mounted() {
-    // this.edit = this.$route.query.id;
     this.id = this.$route.query.id;
-    // console.log("this.Edit",this.edit)
-    // this.roleId1 = this.$route.query?.UpId;
-    // this.roleName1 = this.$route.query?.roleNameEdit;
-    // this.queryParams.roleRem = this.$route.query?.rem;
-    // this.handleTree();
-
-   
-    (this.form.date = new Date()), 
-    (this.form.endTime = new Date()), this.transTime(new Date());
+    (this.form.date = new Date()),
+      (this.form.endTime = new Date()),
+      this.transTime(new Date());
     this.queryTag();
 
     this.getDetail();
-
+    this.querywj();
   },
 
   methods: {
+    change(file, fileList) {
+      this.fileListAdd.push(file);
+      this.fileList = fileList;
+    },
+    handlePreview(file) {
+      Exportwj({ id: file.id.toString() }).then((res) =>
+        this.downloadFn(res, file.fileName, file.fileSuffix)
+      );
+    },
+    beforeRemove(file, fileList) {
+      delwj({ id: file.id.toString() }).then((res) => console.log("res", res));
+    },
+    querywj() {
+      querywj({ businesId: this.id }).then((res) => (this.fileList = res.data));
+    },
     transTime(date) {
       var min = date.getMinutes();
       date.setMinutes(min - 30);
       this.form.begTime = date;
     },
+
     //标签查询
     queryTag() {
       var data = {
@@ -380,10 +369,9 @@ export default {
       });
     },
     //详情
-    getDetail(){
+    getDetail() {
       let data = { id: this.id };
-      queryFdyBthdById(data).then((res)=>{
-        // this.detailInfoList = res.data.rows;
+      queryFdyBthdById(data).then((res) => {
         this.formTop.recordName = res.data.createXm;
         this.formTop.dwh = res.data.createDwhMc;
         this.formTop.job = res.data.createJsidMc;
@@ -391,13 +379,13 @@ export default {
         this.formTop.recordGh = res.data.createXh;
         this.form.orgUnit = res.data.zzdw;
         this.form.theme = res.data.hdzt;
-        this.form.date = res.data.hdksrq
-        this.form.begTime = res.data.hdkssj
-        this.form.endTime = res.data.hdjssj
-        this.form.place = res.data.hddz
-        this.form.detail = res.data.hdnr
-        this.form.cyth = res.data.cyth
-      })
+        this.form.date = res.data.hdksrq;
+        this.form.begTime = res.data.hdkssj;
+        this.form.endTime = res.data.hdjssj;
+        this.form.place = res.data.hddz;
+        this.form.detail = res.data.hdnr;
+        this.form.cyth = res.data.cyth;
+      });
     },
     //编辑
     editClick() {
@@ -407,64 +395,18 @@ export default {
     cancel() {
       this.edit = 1;
     },
-    handleTree() {
-      if (this.isEdit == 2) {
-        let data = { roleId: this.roleId1 };
-        let dataALL = { roleId: this.$store.state.user.roleId };
-        queryTreeListJ(data)
-          .then((res) => {
-            var result = res.data;
-            this.arr = result;
-            // this.getData(result); //
-          })
-          .catch((err) => {});
-        queryTreeList(dataALL)
-          .then((res) => {
-            this.treeData = res.data;
-            this.setkeys();
-          })
-          .catch((err) => {});
-      } else {
-        let data = { roleId: this.$store.state.user.roleId };
-        queryTreeList(data)
-          .then((res) => {
-            this.treeData = res.data;
-          })
-          .catch((err) => {});
-      }
-    },
-    setkeys() {
-      this.$refs.tree.setCheckedKeys(this.arr);
-    },
-    getData(data) {
-      for (var i in data) {
-        this.arr.push(data[i].modId); //将第一层的保存出来，
-        if (data[i].children) {
-          // if(data[i].length >)
-          this.getData(data[i].children);
-        }
-      }
-      return this.arr;
-    },
-    //elementUi中自带的方法，可以获取到所有选中的节点
-    currentChecked(nodeObj, SelectedObj) {
-      var that = this;
-      const { checkedNodes, halfCheckedKeys } = SelectedObj;
-      var menuList = checkedNodes.map((item) => item.modId);
-      that.savaData = menuList.concat(halfCheckedKeys); //要获取上级根节点
-    },
     showInput(type) {
-      if (type == 3){
+      if (type == 3) {
         this.form.inputVisible = true;
       } else {
         this.form.inputVisible1 = true;
       }
     },
     handleInputConfirm(type) {
-      if (type == 3){
+      if (type == 3) {
         var obj = {
           cyMsg: "",
-          cyType:type.toString(),
+          cyType: type.toString(),
           userId: this.$store.getters.userId,
         };
         obj.cyMsg = this.form.inputValue;
@@ -473,10 +415,10 @@ export default {
         });
         this.form.inputVisible = false;
         this.form.inputValue = "";
-      }else {
+      } else {
         var obj = {
           cyMsg: "",
-          cyType:type.toString(),
+          cyType: type.toString(),
           userId: this.$store.getters.userId,
         };
         obj.cyMsg = this.form.inputValue1;
@@ -486,7 +428,6 @@ export default {
         this.form.inputVisible1 = false;
         this.form.inputValue1 = "";
       }
-      
     },
     //关闭标签
     handleClose(item) {
@@ -495,83 +436,40 @@ export default {
       delTag(param).then((_) => this.queryTag());
     },
     //选中标签
-    pushData(item,type) {
-    if (type ==3){
-      if (this.form.orgUnit == "") {
-          this.form.orgUnit =
-            this.form.orgUnit + item.cyMsg;
+    pushData(item, type) {
+      if (type == 3) {
+        if (this.form.orgUnit == "") {
+          this.form.orgUnit = this.form.orgUnit + item.cyMsg;
         } else {
-          this.form.orgUnit =
-            this.form.orgUnit + "," + item.cyMsg;
+          this.form.orgUnit = this.form.orgUnit + "," + item.cyMsg;
         }
-    }else{
-      if (this.form.place == "") {
-          this.form.place =
-            this.form.place + item.cyMsg;
+      } else {
+        if (this.form.place == "") {
+          this.form.place = this.form.place + item.cyMsg;
         } else {
-          this.form.place =
-            this.form.place + "," + item.cyMsg;
+          this.form.place = this.form.place + "," + item.cyMsg;
         }
-    }
-     
+      }
     },
     //保存
     sava() {
-      let data ={
-        id: this.id,
-        cyth: this.form.cyth,
-        hddz: this.form.place,
-        hdksrq: this.form.date,
-        hdjssj: this.form.endTime,
-        hdkssj: this.form.begTime,
-        hdnr: this.form.detail,
-        hdzt: this.form.theme,
-        zzdw: this.form.orgUnit,    
-        hddz: this.form.place,
-        uploadList:[]
-
-      }
-      insertFdyBthd(data).then((res) => {
-        this.$message({
-          message: res.errmsg,
-          type: "success",
-        })
-        window.history.go(-1);
-        
+      let formData = new FormData();
+      formData.append("id", this.$route.query.id.toString());
+      formData.append("cyth", this.form.cyth);
+      formData.append("hddz", this.form.place);
+      formData.append("hdksrq", this.form.date);
+      formData.append("hdjssj", this.form.endTime);
+      formData.append("hdkssj", this.form.begTime);
+      formData.append("hdnr", this.form.detail);
+      formData.append("hdzt", this.form.theme);
+      formData.append("zzdw", this.form.orgUnit);
+      this.fileListAdd.map((ele) => {
+        formData.append("files", ele.raw);
       });
-      // if (this.isEdit === "1") {
-      //   let data = {
-      //     userId: this.$store.getters.userId,
-      //     menuList: this.savaData,
-      //     roleName: this.queryParams.roleName,
-      //     loginRoleId: this.$store.getters.roleId,
-      //     roleRem: this.queryParams.roleRem,
-      //   };
-      //   savaTreeList(data)
-      //     .then(() => {
-      //       this.$router.push({
-      //         path: "/systems/role",
-      //       });
-      //     })
-      //     .catch((err) => {});
-      // } else {
-      //   let data = {
-      //     userId: this.$store.getters.userId,
-      //     menuList: this.savaData.length > 0 ? this.savaData : this.arr, //如果用户进来没编辑，默认前一次筛选出来的树
-      //     roleName: this.queryParams.roleName,
-      //     roleId: this.roleId1,
-      //     roleRem: this.queryParams.roleRem,
-      //   };
-      //   savaEditList(data)
-      //     .then(() => {
-      //       this.$router.push({
-      //         path: "/systems/role",
-      //       });
-      //     })
-      //     .catch((err) => {});
-      // }
+      insertFdyBthd(formData).then((res) => {
+        window.history.go(-1);
+      });
     },
-    // savaEditList() {},
   },
 };
 </script>
@@ -584,7 +482,7 @@ export default {
     background: #fff;
     padding: 20px;
     // height: calc(100vh - 250px);
-    
+
     .title {
       display: flex;
       font-weight: 600;
@@ -600,16 +498,16 @@ export default {
       line-height: 28px;
       margin-right: 20px;
     }
-    .search{
+    .search {
       background: #005657;
       align-items: center;
     }
     .input-new-tag {
-    width: 90px;
-    margin-left: 10px;
-    vertical-align: bottom;
+      width: 90px;
+      margin-left: 10px;
+      vertical-align: bottom;
     }
-}
+  }
   .editBottom {
     width: 100%;
     height: 60px;
@@ -657,24 +555,24 @@ export default {
     }
   }
   .headLeft {
-      display: flex;
-      align-items: center;
-      justify-content:flex-end;
-      .span1 {
-        cursor: pointer;
-        color: #fff;
-        background: #005657;
-        border: 1px solid #005657;
-        padding: 10px;
-      }
-      .span2 {
-        cursor: pointer;
-        color: #fff;
-        background: #005657;
-        border: 1px solid #005657;
-        padding: 10px;
-        margin-left: 15px;
-      }
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .span1 {
+      cursor: pointer;
+      color: #fff;
+      background: #005657;
+      border: 1px solid #005657;
+      padding: 10px;
+    }
+    .span2 {
+      cursor: pointer;
+      color: #fff;
+      background: #005657;
+      border: 1px solid #005657;
+      padding: 10px;
+      margin-left: 15px;
+    }
   }
   ::v-deep .el-upload-dragger {
     background-color: #fff;

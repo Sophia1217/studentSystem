@@ -402,6 +402,8 @@ var ls = ""
     ls ="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
   } else if (type == 'zip') {
     ls ="application/zip"
+  }else if (type == '.png') {
+    ls ="image/png"
   } else{
     ls ="text/plain;charset=utf-8"
   }

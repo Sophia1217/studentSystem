@@ -78,7 +78,7 @@
             <el-tag
               v-for="item in tag.unitTags"
               :key="item.cyMsg"
-              @click="pushData(item)"
+              @click="pushData(item,3)"
               @close="handleClose(item)"
               closable 
             >
@@ -91,13 +91,13 @@
               ref="saveTagInput"
               size="small"
               @keyup.enter.native="$event.target.blur"
-              @blur="handleInputConfirm"
+              @blur="handleInputConfirm(3)"
             >
             </el-input>
             <el-button
               icon="el-icon-plus"
               style="margin-left: 15px"
-              @click="showInput"
+              @click="showInput(3)"
               >新增单位</el-button
             >
           </el-col>
@@ -148,6 +148,36 @@
                 :disabled="edit == '1' ? true : false"
                 ></el-input>
             </el-form-item>
+          </el-col>
+          <el-col :span="2">
+            <el-form-item label="常用地址" label-width="90px"></el-form-item>
+            </el-col>
+            <el-col :span="12">
+            <el-tag
+              v-for="item in tag.addressTags"
+              :key="item.cyMsg"
+              @click="pushData(item,2)"
+              @close="handleClose(item)"
+              closable 
+            >
+              {{ item.cyMsg }}
+            </el-tag>
+            <el-input
+              class="input-new-tag"
+              v-if="form.inputVisible1"
+              v-model="form.inputValue1"
+              ref="saveTagInput1"
+              size="small"
+              @keyup.enter.native="$event.target.blur"
+              @blur="handleInputConfirm(2)"
+            >
+            </el-input>
+            <el-button
+              icon="el-icon-plus"
+              style="margin-left: 15px"
+              @click="showInput(2)"
+              >新增地址</el-button
+            >
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -281,6 +311,7 @@ export default {
       arr1: ["01"],
       tag: {
         unitTags: [],
+        addressTags: [],
       },
       formTop:{
         recordName:"",
@@ -337,8 +368,15 @@ export default {
         cyType: "3", //1主题,2地点,3组织单位
         userId: this.$store.getters.userId,
       };
+      var data1 = {
+        cyType: "2", //1主题,2地点,3组织单位
+        userId: this.$store.getters.userId,
+      };
       queryTag(data).then((res) => {
         this.$set(this.tag, "unitTags", res.data);
+      });
+      queryTag(data1).then((res) => {
+        this.$set(this.tag, "addressTags", res.data);
       });
     },
     //详情
@@ -415,21 +453,40 @@ export default {
       var menuList = checkedNodes.map((item) => item.modId);
       that.savaData = menuList.concat(halfCheckedKeys); //要获取上级根节点
     },
-    showInput() {
-      this.form.inputVisible = true;
+    showInput(type) {
+      if (type == 3){
+        this.form.inputVisible = true;
+      } else {
+        this.form.inputVisible1 = true;
+      }
     },
-    handleInputConfirm() {
-      var obj = {
-        cyMsg: "",
-        cyType:"3",
-        userId: this.$store.getters.userId,
-      };
-      obj.cyMsg = this.form.inputValue;
-      addTag(obj).then((res) => {
-        this.queryTag();
-      });
-      this.form.inputVisible = false;
-      this.form.inputValue = "";
+    handleInputConfirm(type) {
+      if (type == 3){
+        var obj = {
+          cyMsg: "",
+          cyType:type.toString(),
+          userId: this.$store.getters.userId,
+        };
+        obj.cyMsg = this.form.inputValue;
+        addTag(obj).then((res) => {
+          this.queryTag();
+        });
+        this.form.inputVisible = false;
+        this.form.inputValue = "";
+      }else {
+        var obj = {
+          cyMsg: "",
+          cyType:type.toString(),
+          userId: this.$store.getters.userId,
+        };
+        obj.cyMsg = this.form.inputValue1;
+        addTag(obj).then((res) => {
+          this.queryTag();
+        });
+        this.form.inputVisible1 = false;
+        this.form.inputValue1 = "";
+      }
+      
     },
     //关闭标签
     handleClose(item) {
@@ -438,15 +495,24 @@ export default {
       delTag(param).then((_) => this.queryTag());
     },
     //选中标签
-    pushData(item) {
-    
-        if (this.form.orgUnit == "") {
+    pushData(item,type) {
+    if (type ==3){
+      if (this.form.orgUnit == "") {
           this.form.orgUnit =
             this.form.orgUnit + item.cyMsg;
         } else {
           this.form.orgUnit =
             this.form.orgUnit + "," + item.cyMsg;
         }
+    }else{
+      if (this.form.place == "") {
+          this.form.place =
+            this.form.place + item.cyMsg;
+        } else {
+          this.form.place =
+            this.form.place + "," + item.cyMsg;
+        }
+    }
      
     },
     //保存

@@ -189,6 +189,7 @@
               <el-date-picker
                 v-model="date"
                 :disabled="edit == 2 ? false : true"
+                format="yyyy 年 MM 月 dd 日"
                 type="date"
                 placeholder="选择日期"
               >
@@ -198,6 +199,7 @@
             <el-form-item label="开始时间">
               <el-time-picker
                 v-model="value1"
+                format="HH:MM"
                 :disabled="edit == 2 ? false : true"
                 placeholder="选择开始时间"
               >
@@ -207,6 +209,7 @@
             <el-form-item label="结束时间">
               <el-time-picker
                 v-model="value2"
+                format="HH:MM"
                 :disabled="edit == 2 ? false : true"
                 placeholder="选择结束时间"
               >

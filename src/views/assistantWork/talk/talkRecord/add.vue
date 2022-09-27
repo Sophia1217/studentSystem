@@ -147,18 +147,27 @@
               <el-date-picker
                 v-model="ele.value1"
                 type="date"
+                format="yyyy 年 MM 月 dd 日"
                 placeholder="选择日期"
               >
               </el-date-picker> </el-form-item
           ></el-col>
           <el-col el-col :span="5.5">
             <el-form-item label="开始时间">
-              <el-time-picker v-model="ele.value1" placeholder="选择开始时间">
+              <el-time-picker
+                format="HH:MM"
+                v-model="ele.value1"
+                placeholder="选择开始时间"
+              >
               </el-time-picker> </el-form-item
           ></el-col>
           <el-col el-col :span="5.5">
             <el-form-item label="结束时间">
-              <el-time-picker v-model="ele.value2" placeholder="选择结束时间">
+              <el-time-picker
+                format="HH:MM"
+                v-model="ele.value2"
+                placeholder="选择结束时间"
+              >
               </el-time-picker> </el-form-item
           ></el-col>
         </el-row>
@@ -267,23 +276,40 @@ export default {
   methods: {
     cancel(index) {},
     save(index) {
-      var list = [];
-      var list2 = [];
-      for (var i = 0; i < this.addParams.length; i++) {
-        list.push(this.addParams[i].xm);
-        list2.push(this.addParams[i].label);
+      if (this.renshu[0].acceptVlaue == "") {
+        this.$message.error("请至少选择一名学生");
+      } else {
+        // let formData = new FormData();
+        // formData.append("id", "");
+        // formData.append("cyth", this.form.cyth);
+        // formData.append("hddz", this.form.place);
+        // formData.append("hdksrq", this.form.date);
+        // formData.append("hdjssj", this.form.endTime);
+        // formData.append("hdkssj", this.form.begTime);
+        // formData.append("hdnr", this.form.detail);
+        // formData.append("hdzt", this.form.theme);
+        // formData.append("zzdw", this.form.orgUnit);
+        // this.fileList.map((file) => {
+        //   formData.append("files", file.raw);
+        // });
+        var list = [];
+        var list2 = [];
+        for (var i = 0; i < this.addParams.length; i++) {
+          list.push(this.addParams[i].xm);
+          list2.push(this.addParams[i].label);
+        }
+        var data = {
+          thdd: this.talkDate[index].addressValue,
+          thnr: this.talkDate[index].textarea1,
+          thsj: this.talkDate[index].date,
+          startTime: this.talkDate[index].value1,
+          endTime: this.talkDate[index].value2,
+          thzt: this.talkDate[index].zhutiValue,
+          xhList: list2,
+          xmList: list,
+        };
+        addTalk(data).then((res) => {});
       }
-      var data = {
-        thdd: this.talkDate[index].addressValue,
-        thnr: this.talkDate[index].textarea1,
-        thsj: this.talkDate[index].date,
-        startTime: this.talkDate[index].value1,
-        endTime: this.talkDate[index].value2,
-        thzt: this.talkDate[index].zhutiValue,
-        xhList: list2,
-        xmList: list,
-      };
-      addTalk(data).then((res) => {});
     },
     test1() {
       var array1 = [{ Num: "A " }, { Num: "B" }];

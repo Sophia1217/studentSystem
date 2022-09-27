@@ -199,11 +199,11 @@ export default {
         checkBox: [
           {
             dm: "0",
-            mc: "是",
+            mc: "已完成",
           },
           {
             dm: "1",
-            mc: "否",
+            mc: "待记录",
           },
         ],
         isIndeterminate: true,

@@ -122,7 +122,7 @@
           <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderBlue">
+          <div class="btns borderBlue" @click="mbDown">
             <i class="icon blueIcon"></i><span class="title">模板下载</span>
           </div>
           <div class="btns borderBlue">
@@ -169,9 +169,9 @@
           </el-table-column>
           <el-table-column prop="gzdw" label="工作单位" sortable="custom">
           </el-table-column>
-          <el-table-column prop="gw" label="岗位" sortable="custom">
+          <el-table-column prop="gwmc" label="岗位" sortable="custom">
           </el-table-column>
-          <el-table-column prop="lx" label="类型" sortable="custom">
+          <el-table-column prop="lxmc" label="类型" sortable="custom">
           </el-table-column>
           <el-table-column prop="kcmc" label="课程名称" sortable="custom">
           </el-table-column>
@@ -205,12 +205,16 @@
         @pagination="handleSearch"
       />
     </div>
-    <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
+    <el-dialog title="新增思政课程" :visible.sync="dialogFormVisible">
+      <el-form :model="form" :rules="rules">
         <el-row :gutter="20">
-          <el-form-item label="授课人员" :label-width="formLabelWidth">
+          <el-form-item
+            label="授课人员"
+            :label-width="formLabelWidth"
+            prop="xm"
+          >
             <el-input
-              v-model="form.name"
+              v-model="form.xm"
               style="width: 520px"
               placeholder="请输入"
             ></el-input>
@@ -218,9 +222,13 @@
         </el-row>
 
         <el-row :gutter="20">
-          <el-form-item label="课程名称" :label-width="formLabelWidth">
+          <el-form-item
+            label="课程名称"
+            :label-width="formLabelWidth"
+            prop="kcmc"
+          >
             <el-input
-              v-model="form.name"
+              v-model="form.kcmc"
               style="width: 520px"
               placeholder="请输入"
             ></el-input>
@@ -229,10 +237,13 @@
 
         <el-row :gutter="20">
           <el-col :span="10">
-            <el-form-item label="开课时间" :label-width="formLabelWidth">
+            <el-form-item
+              label="开课时间"
+              :label-width="formLabelWidth"
+              prop="kxxn"
+            >
               <el-select
-                v-model="form.kkxn"
-                multiple
+                v-model="form.kxxn"
                 collapse-tags
                 placeholder="请选择"
                 size="small"
@@ -245,10 +256,13 @@
                 ></el-option> </el-select></el-form-item
           ></el-col>
           <el-col :span="10">
-            <el-form-item label="学期" :label-width="formLabelWidth">
+            <el-form-item
+              label="学期"
+              :label-width="formLabelWidth"
+              prop="kxxq"
+            >
               <el-select
-                v-model="form.kkxq"
-                multiple
+                v-model="form.kxxq"
                 collapse-tags
                 placeholder="请选择"
                 size="small"
@@ -263,17 +277,21 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="10">
-            <el-form-item label="课程学时" :label-width="formLabelWidth">
+            <el-form-item
+              label="课程学时"
+              :label-width="formLabelWidth"
+              prop="xs"
+            >
               <el-input
                 placeholder="请输入"
-                v-model="form.name"
+                v-model="form.xs"
                 style="width: 240px"
               ></el-input> </el-form-item
           ></el-col>
           <el-col :span="10">
-            <el-form-item label="人数" :label-width="formLabelWidth">
+            <el-form-item label="人数" :label-width="formLabelWidth" prop="rs">
               <el-input
-                v-model="form.name"
+                v-model="form.rs"
                 placeholder="请输入"
                 style="width: 180px"
               ></el-input> </el-form-item
@@ -317,17 +335,47 @@ export default {
   },
   data() {
     return {
+      form: {
+        rs: "",
+        xm: "赵雪莲",
+        gh: "20040710",
+        kcmc: "",
+        kxxq: "",
+        kxxn: "",
+        xs: "",
+      },
+      rules: {
+        xm: [
+          { required: true, message: "请输入名称", trigger: "blur" },
+          { min: 2, message: "长度在 3 到 5 个字符", trigger: "blur" },
+        ],
+        rs: [{ required: true, message: "请选择人数", trigger: "change" }],
+        kcmc: [
+          {
+            required: true,
+            message: "请输入开课名称",
+            trigger: "change",
+          },
+        ],
+        kxxq: [
+          {
+            required: true,
+            message: "请输入开课学期",
+            trigger: "change",
+          },
+        ],
+        kxxn: [
+          {
+            required: true,
+            message: "请输入开课时间",
+            trigger: "change",
+          },
+        ],
+        xs: [{ required: true, message: "请输入学时", trigger: "change" }],
+      },
       uploadUrl: process.env.VUE_APP_BASE_API + "/fdySzkcs/import",
       dialogFormVisible: false,
-      form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        resource: "",
-        desc: "",
-      },
+
       formLabelWidth: "120px",
       searchVal: "",
       select: "",
@@ -374,6 +422,10 @@ export default {
     addData() {
       //////////
       this.dialogFormVisible = false;
+      var FdySzkcskEntityReq = this.form;
+      add(FdySzkcskEntityReq).then((res) => {
+        console.log("res", res);
+      });
     },
     mbDown() {
       mbDown().then((res) => {
@@ -398,7 +450,7 @@ export default {
         orderPx: this.queryParams.orderPx,
       };
       if (this.multipleSelection.length > 0) {
-        expor(idList).then((res) =>
+        expor({ idList: idList }).then((res) =>
           this.downloadFn(res, "思政課程授課列表下载", "xlsx")
         );
       } else {

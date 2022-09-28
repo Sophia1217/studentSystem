@@ -16,7 +16,7 @@
             placeholder="查询条件"
           >
             <el-option label="学号" value="xh"></el-option>
-            <el-option label="购买人" value="gmr"></el-option>
+            <el-option label="购买人" value="xm"></el-option>
             <el-option label="险种名称" value="xzmc"></el-option>
             <el-option label="承保公司" value="cbgs"></el-option>
             <el-option label="联系人" value="lxr"></el-option>
@@ -38,11 +38,20 @@
           <el-col :span="3">险种类型：</el-col>
           <el-col :span="20">
             <div class="checkbox">
-              <checkboxCom
-                :objProp="training"
-                @training="handleCheckAllChangeTraining"
-                @checkedTraining="handleCheckedCitiesChangeTraining"
-              ></checkboxCom>
+              <el-select
+                v-model="moreIform.xzlx"
+                multiple
+                collapse-tags
+                placeholder="请选择"
+                size="small"
+              >
+                <el-option
+                  v-for="item in xzlx"
+                  :key="item.dm"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
             </div>
           </el-col>
         </el-row>
@@ -73,8 +82,21 @@
           <span class="title">学平险查询列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
+          <div class="btns borderBlue" @click="mbDown">
+            <i class="icon blueIcon"></i><span class="title">模板下载</span>
+          </div>
           <div class="btns borderBlue">
-            <i class="icon blueIcon"></i><span class="title">导入</span>
+            <el-upload
+              accept=".xlsx,.xls"
+              :auto-upload="true"
+              :action="uploadUrl"
+              :show-file-list="false"
+              :headers="fileHeader"
+              :on-success="upLoadSuccess"
+              :on-error="upLoadError"
+            >
+              <i class="icon blueIcon"></i><span class="title">导入</span>
+            </el-upload>
           </div>
           <div class="btns borderOrange">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
@@ -89,6 +111,7 @@
           :default-sort="{ prop: 'date', order: 'descending' }"
           @sort-change="changeTableSort"
         >
+          <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
             type="index"
             label="序号"
@@ -140,57 +163,39 @@
 
 <script>
 import CheckboxCom from "../../components/checkboxCom";
+import { getToken } from "@/utils/auth";
 import {
-  getSchoolRegStuInfoPageList,
-  getManageRegStuInfoSearchSpread,
-} from "@/api/student/index";
+  expor,
+  mbDown,
+  queryXzlx,
+  queryList,
+} from "@/api/assistantWork/baoxian";
 export default {
   name: "manStudent",
   components: { CheckboxCom },
+  computed: {
+    fileHeader: {
+      get() {
+        return {
+          accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
+          uuid: new Date().getTime(),
+          clientId: "111",
+        };
+      },
+    },
+  },
   data() {
     return {
+      uploadUrl: process.env.VUE_APP_BASE_API + "/fdyXpx/import",
       searchVal: "",
       select: "",
       isMore: false,
       moreIform: {
-        xydm: [],
-        zydm: [],
-        bjdm: [],
+        xzlx: [],
       },
-      options: [
-        { value: "选项2", label: "双皮奶" },
-        { value: "选项3", label: "蚵仔煎" },
-      ],
-      allDwh: [], // 学院下拉框
-      zyOps: [], // 专业下拉
-      bjOps: [], // 班级下拉
-      training: {
-        // 培养层次
-        checkAll: false,
-        choose: [],
-        checkBox: [],
-        isIndeterminate: true,
-      },
-      inSchool: {
-        //是否在校
-        checkAll: false,
-        choose: [],
-        checkBox: [
-          {
-            dm: "在校",
-            mc: "是",
-          },
-          {
-            dm: "不在校",
-            mc: "否",
-          },
-        ],
-        isIndeterminate: true,
-      },
-      njOps: [],
+      xzlx: [], // 学院下拉框
       tableData: [],
       manageRegOps: [],
-      zymOps: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -201,9 +206,41 @@ export default {
 
   mounted() {
     this.handleSearch();
+    this.queryXzlx();
   },
 
   methods: {
+    queryXzlx() {
+      queryXzlx().then((res) => {
+        this.xzlx = res.data;
+      });
+    },
+
+    upLoadError(err, file, fileList) {
+      this.$message({
+        type: "error",
+        message: "上传失败",
+      });
+    },
+    upLoadSuccess(res, file, fileList) {
+      if (res.errcode == "00") {
+        this.handleSearch();
+        this.$message({
+          type: "success",
+          message: res.errmsg,
+        });
+      } else {
+        this.$message({
+          type: "error",
+          message: res.errmsg,
+        });
+      }
+    },
+    mbDown() {
+      mbDown().then((res) => {
+        this.downloadFn(res, "学平险模板下载", "xlsx");
+      });
+    },
     hadleDetail() {
       //     this.$router.push({
       //     path: "/politicalwork/detailInfo",
@@ -222,17 +259,17 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        dwh: this.moreIform.xydm,
-        zydm: this.moreIform.zydam,
-        nj: this.moreIform.njVal,
-        pyccm: this.training.choose,
-        sfzx: this.inSchool.choose,
+        xzmc: this.select == "xzmc" ? this.xzmc : null,
+        cbgs: this.select == "cbgs" ? this.cbgs : null,
+        lxr: this.select == "lxr" ? this.lxr : null,
+        lxdh: this.select == "lxdh" ? this.lxdh : null,
+        xzlx: this.moreIform.xzlx,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      getSchoolRegStuInfoPageList(data)
+      queryList(data)
         .then((res) => {
           this.tableData = res.data.data;
           this.queryParams.total = res.data.total;
@@ -243,56 +280,12 @@ export default {
     handleMore() {
       this.isMore = !this.isMore;
     },
-    // 培养层次全选
-
-    // 民 族单选
-    ethnicCheck(value) {
-      let checkedCount = value.length;
-      this.ethnic.checkAll = checkedCount === this.ethnic.checkBox.length;
-      this.ethnic.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.ethnic.checkBox.length;
-    },
-    // 政治面貌：全选
-    politicaAll(val) {
-      let allCheck = [];
-      for (let i in this.politica.checkBox) {
-        allCheck.push(this.politica.checkBox[i].val);
-      }
-      this.politica.choose = val ? allCheck : [];
-
-      this.politica.isIndeterminate = false;
-    },
-    // 政治面貌：单选
-    politicaCheck(value) {
-      let checkedCount = value.length;
-      this.politica.checkAll = checkedCount === this.politica.checkBox.length;
-      this.politica.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.politica.checkBox.length;
-    },
-    //是否在校：全选
-    inSchoolAll(val) {
-      let allCheck = [];
-      for (let i in this.inSchool.checkBox) {
-        allCheck.push(this.inSchool.checkBox[i].dm);
-      }
-      this.inSchool.choose = val ? allCheck : [];
-
-      this.inSchool.isIndeterminate = false;
-    },
-    // 是否在校：单选
-    inSchoolCheck(value) {
-      let checkedCount = value.length;
-      this.inSchool.checkAll = checkedCount === this.inSchool.checkBox.length;
-      this.inSchool.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.inSchool.checkBox.length;
-    },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
     //排序
     changeTableSort(column) {
-      //console.log(1);
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();

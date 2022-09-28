@@ -218,6 +218,17 @@
               ></el-image>
             </div>
           </div>
+          <el-upload
+            action="#"
+            multiple
+            :file-list="fileList"
+            :auto-upload="false"
+            class="el-upload"
+            :on-preview="handlePreview"
+            :before-remove="beforeRemove"
+            :disabled="edit == '1' ? true : false"
+          >
+          </el-upload>
         </el-form-item>
         <el-form-item label="添加附件" v-if="edit == '2'">
           <el-upload
@@ -229,7 +240,6 @@
             class="el-upload"
             :on-preview="handlePreview"
             :on-change="change"
-            :before-remove="beforeRemove"
             :disabled="edit == '1' ? true : false"
           >
             <div class="el-upload-dragger">

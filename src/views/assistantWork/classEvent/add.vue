@@ -165,62 +165,16 @@
 </template>
 
 <script>
-import {
-  queryTreeList,
-  queryTreeListJ,
-  savaTreeList,
-  savaEditList,
-} from "@/api/systemMan/role";
 import { insertFdyBthd } from "@/api/assistantWork/classEvent";
 import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
 export default {
   data() {
     return {
       fileList: [],
-      renshu: ["", "", "", "", ""],
-      stuData: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-          disabled: true,
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
       modelOps: [
         { dm: "1", xm: "线上" },
         { dm: "2", xm: "线下" },
       ],
-      modId: "",
-      // 查询参数
-      queryParams: {
-        roleRem: "",
-        roleName: this.isEdit == "1" ? "" : this.$route.query.roleNameEdit, // 编辑是2
-      },
-      treeData: [],
-      defaultProps: {
-        children: "children",
-        label: "title",
-      },
-      isEdit: "",
-      savaData: [], //新增提交所需要的menuList
-      roleId1: "", ////编辑请求的id,
-      arr: [],
-      arr1: ["01"],
       tag: {
         unitTags: [],
         addressTags: [],
@@ -244,16 +198,13 @@ export default {
   },
 
   mounted() {
-    (this.form.date = new Date()),
-      (this.form.endTime = new Date()),
-      this.transTime(new Date());
+    this.form.date = new Date();
+    this.form.endTime = new Date();
+    this.transTime(new Date());
     this.queryTag();
   },
 
   methods: {
-    change(file, fileList) {
-      this.fileList = fileList;
-    },
     transTime(date) {
       var min = date.getMinutes();
       date.setMinutes(min - 30);
@@ -336,6 +287,11 @@ export default {
         }
       }
     },
+    change(file, fileList) {
+      this.fileList = fileList;
+      console.log("file", file);
+      console.log("fileList", fileList);
+    },
     sava() {
       let formData = new FormData();
       formData.append("id", "");
@@ -347,9 +303,11 @@ export default {
       formData.append("hdnr", this.form.detail);
       formData.append("hdzt", this.form.theme);
       formData.append("zzdw", this.form.orgUnit);
-      this.fileList.map((ele) => {
-        formData.append("files", ele.raw);
-      });
+      if (this.fileList.length > 0) {
+        this.fileList.map((ele) => {
+          formData.append("files", ele.raw);
+        });
+      }
       insertFdyBthd(formData).then((res) => {
         window.history.go(-1);
       });

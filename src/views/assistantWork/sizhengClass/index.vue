@@ -37,7 +37,6 @@
             <div class="checkbox">
               <el-select
                 v-model="moreIform.xydm"
-                @change="changeXY"
                 multiple
                 collapse-tags
                 placeholder="请选择"
@@ -58,10 +57,10 @@
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
-                :objProp="training"
-                @training="handleCheckAllChangeTraining"
-                @checkedTraining="handleCheckedCitiesChangeTraining"
-              ></checkboxCom>
+                :obj-prop="position"
+                @training="positionAll"
+                @checkedTraining="positionCheck"
+              />
             </div>
           </el-col>
         </el-row>
@@ -70,9 +69,9 @@
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
-                :objProp="training"
-                @training="handleCheckAllChangeTraining"
-                @checkedTraining="handleCheckedCitiesChangeTraining"
+                :objProp="Type"
+                @training="TypeAll"
+                @checkedTraining="TypeCheck"
               ></checkboxCom>
             </div>
           </el-col>
@@ -81,15 +80,14 @@
           <el-col :span="8">
             <span>开课学年：</span>
             <el-select
-              v-model="moreIform.xydm"
-              @change="changeXY"
+              v-model="moreIform.kkxn"
               multiple
               collapse-tags
               placeholder="请选择"
               size="small"
             >
               <el-option
-                v-for="item in allDwh"
+                v-for="item in kkxn"
                 :key="item.dm"
                 :label="item.mc"
                 :value="item.dm"
@@ -99,14 +97,14 @@
           <el-col :span="8">
             <span>开课学期：</span>
             <el-select
-              v-model="moreIform.zydam"
+              v-model="moreIform.kkxq"
               multiple
               collapse-tags
               placeholder="请选择"
               size="small"
             >
               <el-option
-                v-for="item in zyOps"
+                v-for="item in kkxq"
                 :key="item.id"
                 :label="item.mc"
                 :value="item.dm"
@@ -125,12 +123,25 @@
         </div>
         <div class="headerRight">
           <div class="btns borderBlue">
-            <i class="icon blueIcon"></i><span class="title">导入</span>
+            <i class="icon blueIcon"></i><span class="title">模板下载</span>
           </div>
-          <div class="btns borderOrange">
+          <div class="btns borderBlue">
+            <el-upload
+              accept=".xlsx,.xls"
+              :auto-upload="true"
+              :action="uploadUrl"
+              :show-file-list="false"
+              :headers="fileHeader"
+              :on-success="upLoadSuccess"
+              :on-error="upLoadError"
+            >
+              <i class="icon blueIcon"></i><span class="title">导入</span>
+            </el-upload>
+          </div>
+          <div class="btns borderOrange" @click="daochu">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns borderLight">
+          <div class="btns borderLight" @click="del">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
           <div class="btns borderGreen" @click="addClass">
@@ -142,10 +153,11 @@
         <el-table
           :data="tableData"
           ref="multipleTable"
+          @selection-change="handleSelectionChange"
           style="width: 100%"
-          :default-sort="{ prop: 'date', order: 'descending' }"
           @sort-change="changeTableSort"
         >
+          <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
             type="index"
             label="序号"
@@ -155,7 +167,7 @@
           </el-table-column>
           <el-table-column prop="xm" label="姓名" sortable="custom">
           </el-table-column>
-          <el-table-column prop="dwmc" label="工作单位" sortable="custom">
+          <el-table-column prop="gzdw" label="工作单位" sortable="custom">
           </el-table-column>
           <el-table-column prop="gw" label="岗位" sortable="custom">
           </el-table-column>
@@ -164,12 +176,12 @@
           <el-table-column prop="kcmc" label="课程名称" sortable="custom">
           </el-table-column>
           <el-table-column
-            prop="kkxn"
+            prop="kxxn"
             label="开课学年"
             sortable="custom"
           ></el-table-column>
           <el-table-column
-            prop="kkxq"
+            prop="kxxq"
             label="开课学期"
             sortable="custom"
           ></el-table-column>
@@ -195,21 +207,82 @@
     </div>
     <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-        <el-form-item label="活动名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="活动区域" :label-width="formLabelWidth">
-          <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
+        <el-row :gutter="20">
+          <el-form-item label="授课人员" :label-width="formLabelWidth">
+            <el-input
+              v-model="form.name"
+              style="width: 520px"
+              placeholder="请输入"
+            ></el-input>
+          </el-form-item>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-form-item label="课程名称" :label-width="formLabelWidth">
+            <el-input
+              v-model="form.name"
+              style="width: 520px"
+              placeholder="请输入"
+            ></el-input>
+          </el-form-item>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <el-form-item label="开课时间" :label-width="formLabelWidth">
+              <el-select
+                v-model="form.kkxn"
+                multiple
+                collapse-tags
+                placeholder="请选择"
+                size="small"
+              >
+                <el-option
+                  v-for="item in kkxn"
+                  :key="item.dm"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option> </el-select></el-form-item
+          ></el-col>
+          <el-col :span="10">
+            <el-form-item label="学期" :label-width="formLabelWidth">
+              <el-select
+                v-model="form.kkxq"
+                multiple
+                collapse-tags
+                placeholder="请选择"
+                size="small"
+              >
+                <el-option
+                  v-for="item in kkxq"
+                  :key="item.id"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option> </el-select></el-form-item
+          ></el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <el-form-item label="课程学时" :label-width="formLabelWidth">
+              <el-input
+                placeholder="请输入"
+                v-model="form.name"
+                style="width: 240px"
+              ></el-input> </el-form-item
+          ></el-col>
+          <el-col :span="10">
+            <el-form-item label="人数" :label-width="formLabelWidth">
+              <el-input
+                v-model="form.name"
+                placeholder="请输入"
+                style="width: 180px"
+              ></el-input> </el-form-item
+          ></el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false"
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="addData">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -218,17 +291,33 @@
 <script>
 import CheckboxCom from "../../components/checkboxCom";
 import {
-  getSchoolRegStuInfoPageList,
-  getManageRegStuInfoSearchSpread,
-} from "@/api/student/index";
-import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { getZY, getBJ } from "@/api/student/index";
+  querySelect,
+  add,
+  expor,
+  mbDown,
+  del,
+  queryList,
+} from "@/api/assistantWork/sizheng";
+import { getToken } from "@/utils/auth";
 import { getCollege } from "@/api/class/maintenanceClass";
+import { getGw } from "@/api/politicalWork/basicInfo";
 export default {
-  name: "manStudent",
+  name: "sizheng",
   components: { CheckboxCom },
+  computed: {
+    fileHeader: {
+      get() {
+        return {
+          accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
+          uuid: new Date().getTime(),
+          clientId: "111",
+        };
+      },
+    },
+  },
   data() {
     return {
+      uploadUrl: process.env.VUE_APP_BASE_API + "/fdySzkcs/import",
       dialogFormVisible: false,
       form: {
         name: "",
@@ -236,7 +325,6 @@ export default {
         date1: "",
         date2: "",
         delivery: false,
-        type: [],
         resource: "",
         desc: "",
       },
@@ -246,81 +334,169 @@ export default {
       isMore: false,
       moreIform: {
         xydm: [],
-        zydm: [],
-        bjdm: [],
+        kkxq: [],
+        kkxn: [],
       },
-      options: [
-        { value: "选项2", label: "双皮奶" },
-        { value: "选项3", label: "蚵仔煎" },
-      ],
       allDwh: [], // 学院下拉框
-      zyOps: [], // 专业下拉
-      bjOps: [], // 班级下拉
-      training: {
-        // 培养层次
+      kkxn: [],
+      kkxq: [],
+      position: {
+        // 岗位：
         checkAll: false,
         choose: [],
         checkBox: [],
         isIndeterminate: true,
       },
-      inSchool: {
-        //是否在校
+      Type: {
         checkAll: false,
         choose: [],
-        checkBox: [
-          {
-            dm: "在校",
-            mc: "是",
-          },
-          {
-            dm: "不在校",
-            mc: "否",
-          },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
-      njOps: [],
       tableData: [],
-      manageRegOps: [],
-      zymOps: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
         total: 0,
       },
+      multipleSelection: [],
     };
   },
 
   mounted() {
     this.handleSearch();
+    this.querySelect();
+    this.getAllCollege();
+    this.getGwList();
   },
 
   methods: {
+    addData() {
+      //////////
+      this.dialogFormVisible = false;
+    },
+    mbDown() {
+      mbDown().then((res) => {
+        this.downloadFn(res, "思政模板下载", "xlsx");
+      });
+    },
+    daochu() {
+      var idList = [];
+      this.multipleSelection.map((item) => idList.push(item.id));
+      var data = {
+        gh: this.select == "gh" ? this.searchVal : null,
+        xm: this.select == "xm" ? this.searchVal : null,
+        kcmc: this.select == "kcmc" ? this.searchVal : null,
+        gzdwList: this.moreIform.xydm || [],
+        kkxnList: this.moreIform.kkxn || [],
+        kkxqList: this.moreIform.kkxq || [],
+        gwList: this.position.choose || [],
+        lxList: this.Type.choose || [],
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+      };
+      if (this.multipleSelection.length > 0) {
+        expor(idList).then((res) =>
+          this.downloadFn(res, "思政課程授課列表下载", "xlsx")
+        );
+      } else {
+        expor(data).then((res) =>
+          this.downloadFn(res, "思政課程授課列表下载", "xlsx")
+        );
+      }
+    },
+    del() {
+      var arr = [];
+      this.multipleSelection.map((item) => arr.push(item.id));
+      del(arr).then((res) => {
+        this.handleSearch();
+      });
+    },
+    getAllCollege() {
+      getCollege()
+        .then((res) => {
+          this.allDwh = res.data.rows;
+        })
+        .catch((err) => {});
+    },
+    getGwList() {
+      getGw().then((res) => {
+        this.position.checkBox = res.data.rows;
+      });
+    },
+    querySelect() {
+      //0类型  1学年 2学期
+      var queryType0 = "0";
+      var queryType1 = "1";
+      var queryType2 = "2";
+      querySelect(queryType0).then((res) => {
+        this.Type.checkBox = res.data;
+      });
+      querySelect(queryType1).then((res) => {
+        this.kkxn = res.data;
+      });
+      querySelect(queryType2).then((res) => {
+        this.kkxq = res.data;
+      });
+    },
     addClass() {
       this.dialogFormVisible = true;
     },
     changeSelect() {
       this.searchVal = "";
     },
+    positionAll(val) {
+      const allCheck = [];
+      for (const i in this.position.checkBox) {
+        allCheck.push(this.position.checkBox[i].dm);
+      }
+      this.position.choose = val ? allCheck : [];
+
+      this.position.isIndeterminate = false;
+    },
+    positionCheck(value) {
+      const checkedCount = value.length;
+      this.position.checkAll = checkedCount === this.position.checkBox.length;
+      this.position.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.position.checkBox.length;
+    },
+    TypeAll(val) {
+      const allCheck = [];
+      for (const i in this.Type.checkBox) {
+        allCheck.push(this.Type.checkBox[i].dm);
+      }
+      this.Type.choose = val ? allCheck : [];
+      this.Type.isIndeterminate = false;
+    },
+    TypeCheck(value) {
+      const checkedCount = value.length;
+      this.Type.checkAll = checkedCount === this.Type.checkBox.length;
+      this.Type.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.Type.checkBox.length;
+    },
+
     // 查询
     handleSearch() {
       let data = {
+        gh: this.select == "gh" ? this.searchVal : null,
         xm: this.select == "xm" ? this.searchVal : null,
-        xh: this.select == "xh" ? this.searchVal : null,
-        dwh: this.moreIform.xydm,
-        zydm: this.moreIform.zydam,
-        nj: this.moreIform.njVal,
-        pyccm: this.training.choose,
-        sfzx: this.inSchool.choose,
+        kcmc: this.select == "kcmc" ? this.searchVal : null,
+        gzdwList: this.moreIform.xydm || [],
+        kkxnList: this.moreIform.kkxn || [],
+        kkxqList: this.moreIform.kkxq || [],
+        gwList: this.position.choose || [],
+        lxList: this.Type.choose || [],
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      getSchoolRegStuInfoPageList(data)
+      queryList(data)
         .then((res) => {
-          this.tableData = res.data.data;
-          this.queryParams.total = res.data.total;
+          this.tableData = res.data;
+          this.queryParams.total = res.totalCount;
         })
         .catch((err) => {});
     },
@@ -345,8 +521,29 @@ export default {
       this.inSchool.isIndeterminate =
         checkedCount > 0 && checkedCount < this.inSchool.checkBox.length;
     },
+    upLoadError(err, file, fileList) {
+      this.$message({
+        type: "error",
+        message: "上传失败",
+      });
+    },
+    upLoadSuccess(res, file, fileList) {
+      if (res.errcode == "00") {
+        this.handleSearch();
+        this.$message({
+          type: "success",
+          message: res.errmsg,
+        });
+      } else {
+        this.$message({
+          type: "error",
+          message: res.errmsg,
+        });
+      }
+    },
     // 多选
     handleSelectionChange(val) {
+      console.log("val", val);
       this.multipleSelection = val;
     },
     //排序
@@ -362,6 +559,11 @@ export default {
 
 <style lang="scss" scoped>
 .talkRec {
+  .el-dialog:not(.is-fullscreen) {
+    margin-top: 6vh !important;
+    height: 400px;
+    width: 800px;
+  }
   .scopeIncon {
     display: inline-block;
     width: 20px;

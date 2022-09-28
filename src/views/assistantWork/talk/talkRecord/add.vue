@@ -176,7 +176,9 @@
             type="textarea"
             :autosize="{ minRows: 10, maxRows: 10 }"
             placeholder="请输入内容"
+            maxlength="2000"
             v-model="ele.textarea1"
+            show-word-limit
           >
           </el-input>
         </el-form-item>
@@ -205,7 +207,6 @@
         <div class="buttonStle">
           <el-button @click="cancel(index)">取消</el-button>
           <el-button class="saveButton" @click="save(index)">保存</el-button>
-          <el-button @click="test(index)">测试文件</el-button>
         </div>
       </el-form>
     </div>
@@ -270,7 +271,6 @@ export default {
     this.talkDate[0].value2 = new Date();
     this.talkDate[0].value1 = this.transTime(new Date());
     this.queryTag();
-    this.test1();
   },
 
   methods: {
@@ -311,38 +311,6 @@ export default {
         addTalk(data).then((res) => {});
       }
     },
-    test1() {
-      var array1 = [{ Num: "A " }, { Num: "B" }];
-      var array2 = [
-        { Num: "A ", Name: "t1 " },
-        { Num: "B", Name: "t2" },
-        { Num: "C ", Name: "t3 " },
-        { Num: "D", Name: "t4 " },
-      ];
-      var result = [];
-      for (var i = 0; i < array2.length; i++) {
-        var obj = array2[i];
-        var num = obj.Num;
-        var isExist = false;
-        for (var j = 0; j < array1.length; j++) {
-          var aj = array1[j];
-          var n = aj.Num;
-          if (n == num) {
-            isExist = true;
-            break;
-          }
-        }
-        if (!isExist) {
-          result.push(obj);
-        }
-      }
-      console.log(result);
-    },
-    test(index) {
-      console.log(this.$refs.upload[index].uploadFiles);
-      console.log("this.$refs.upload.submit()", this.$refs);
-    },
-
     change(file, fileList) {
       console.log("file", file);
       console.log("fileList", fileList);

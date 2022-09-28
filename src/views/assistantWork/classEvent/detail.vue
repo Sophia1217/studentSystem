@@ -209,7 +209,17 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="添加附件">
+        <el-form-item label="添加附件" v-if="edit == '1'">
+          <div v-if="urlArr.length > 0" class="block">
+            <div v-for="(item, i) in urlArr">
+              <el-image
+                style="margin-left: 20px; width: 300px; height: 300px"
+                :src="item"
+              ></el-image>
+            </div>
+          </div>
+        </el-form-item>
+        <el-form-item label="添加附件" v-if="edit == '2'">
           <el-upload
             drag
             action="#"
@@ -219,8 +229,8 @@
             class="el-upload"
             :on-preview="handlePreview"
             :on-change="change"
-            :disabled="edit == '1' ? true : false"
             :before-remove="beforeRemove"
+            :disabled="edit == '1' ? true : false"
           >
             <div class="el-upload-dragger">
               <i class="el-icon-upload"></i>
@@ -257,6 +267,7 @@ import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
 export default {
   data() {
     return {
+      urlArr: [],
       fileList: [],
       fileListAdd: [],
       edit: 1,
@@ -324,33 +335,63 @@ export default {
       (this.form.endTime = new Date()),
       this.transTime(new Date());
     this.queryTag();
-
+    this.getUrl();
     this.getDetail();
     this.querywj();
   },
 
   methods: {
+    getUrl() {
+      querywj({ businesId: this.id }).then((res) => {
+        var arr = res.data || [];
+        var arr1 = [];
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i].fileSuffix == ".png" || arr[i].fileSuffix == ".jpg") {
+            arr1.push(arr[i]);
+          }
+        }
+        var arr2 = arr1.slice(0, 3) || [];
+        for (var j = 0; j < arr2.length; j++) {
+          Exportwj({ id: arr[j].id.toString() }).then((res) => {
+            this.urlArr.push(window.URL.createObjectURL(res));
+          });
+        }
+      });
+    },
     change(file, fileList) {
+      console.log("file", file);
+      //用于文件先保存
       this.fileListAdd.push(file);
       this.fileList = fileList;
     },
     handlePreview(file) {
-      Exportwj({ id: file.id.toString() }).then((res) =>
-        this.downloadFn(res, file.fileName, file.fileSuffix)
-      );
+      //用于文件下载
+      Exportwj({ id: file.id.toString() }).then((res) => {
+        this.url = window.URL.createObjectURL(res);
+        this.downloadFn(res, file.fileName, file.fileSuffix);
+      });
     },
     beforeRemove(file, fileList) {
+      //用于文件删除
       delwj({ id: file.id.toString() }).then((res) => console.log("res", res));
     },
     querywj() {
-      querywj({ businesId: this.id }).then((res) => (this.fileList = res.data));
+      //用于文件查询
+      querywj({ businesId: this.id }).then((res) => {
+        this.fileList = res.data;
+        this.fileList = this.fileList.map((ele) => {
+          return {
+            name: ele.fileName,
+            ...ele,
+          };
+        });
+      });
     },
     transTime(date) {
       var min = date.getMinutes();
       date.setMinutes(min - 30);
       this.form.begTime = date;
     },
-
     //标签查询
     queryTag() {
       var data = {
@@ -507,6 +548,9 @@ export default {
       margin-left: 10px;
       vertical-align: bottom;
     }
+  }
+  .block {
+    display: flex;
   }
   .editBottom {
     width: 100%;

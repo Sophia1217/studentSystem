@@ -18,17 +18,16 @@ export function selectJxlxDetail(query) {
 //家校联系新增联系
 export function insertJxlx(query) {
   return request({
-      url: '/fdyJxlx/insertJxlx',
+      url: '/fdyJxlx/importInsertJxlx',
       method: 'post',
       data: query
   })
 }
 
-
 //家校联系详情编辑
 export function updateJxlxDetail(query) {
   return request({
-      url: '/fdyJxlx/updateJxlxDetail',
+      url: '/fdyJxlx/importUpdateJxlxDetail',
       method: 'post',
       data: query
   })
@@ -38,6 +37,7 @@ export function excelExport(query) {
   return request({
       url: '/fdyJxlx/excelExport',
       method: 'post',
+      responseType: 'blob',
       data: query
   })
 }
@@ -49,12 +49,29 @@ export function deleteJxlx(query) {
       data: query
   })
 }
-
+//家校联系学生查询
+export function queryStuList(query) {
+  return request({
+      url: '/fdyCommon/queryStuList',
+      method: 'post',
+      data: query
+  })
+}
 
 //省市区列表查询
 export function getCityList(query) {
   return request({
       url: '/commonMethod/getCityList',
+      method: 'post',
+      data: query
+  })
+}
+
+
+//参与人工号姓名模糊查询
+export function getXmXgh(query) {
+  return request({
+      url: '/commonMethod/getXmXgh',
       method: 'post',
       data: query
   })

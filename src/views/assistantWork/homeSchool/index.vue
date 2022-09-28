@@ -61,11 +61,15 @@
         <el-row :gutter="20" class="mt15">
           <el-col :span="20">
             <span>家访时间：</span>
-              <el-date-picker 
-                type="date" 
+            <el-date-picker 
+                type="daterange" 
                 placeholder="选择日期" 
                 v-model="datePicker" 
+                format="yyyy 年 MM 月 dd 日"
                 value-format="yyyy-MM-dd"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
                 style="width= 60px;"
               ></el-date-picker>
           </el-col>
@@ -152,7 +156,7 @@
       </template>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="rmAssistant"
+        <el-button type="primary" class="confirm" @click="rmRecord"
           >确 定</el-button
         >
       </span>
@@ -167,7 +171,6 @@ import {
 import CheckboxCom from "../../components/checkboxCom";
 import { 
   queryJxlxList,
-  insertJxlx,
   excelExport,
   deleteJxlx,
 } from "@/api/assistantWork/homeSchool";
@@ -210,7 +213,8 @@ export default {
         pageSize: 10,
         jfsj:"",  
         jfxsList:[],//家访形式
-        // lbList: [],
+        hdksrqEnd:"",
+        hdksrqStrat:"",
         orderZd: "",
         orderPx: "",
         xm: "",
@@ -224,7 +228,8 @@ export default {
       jfxsOps:[
         {label:"线下实地"},
         {label:"线上视频"}
-      ]
+      ],
+      exportParams: {},//导出数据
       
     };
   },
@@ -262,7 +267,6 @@ export default {
     },
     //获取数据列表
     getList() {
-      // console.log(this.select, "select");
       this.queryParams.xm = this.select == 1 ? this.searchVal : "";
       this.queryParams.xh = this.select == 2 ? this.searchVal : "";
       this.queryParams.sbrxm = this.select == 3 ? this.searchVal : "";
@@ -272,6 +276,7 @@ export default {
         .then((response) => {
           this.basicInfoList = response.data; // 根据状态码接收数据
           this.total = response.totalCount; //总条数
+          // this.exportParams = this.queryParams;
         })
         .catch((err) => {
           // this.$message.error(err.errmsg);
@@ -305,31 +310,45 @@ export default {
     // 导出确认
     handleConfirm() {
       this.showExport = false;
-      var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
-      var data = { ghList: arr };
-      var exportParams = this.queryParams;
-      exportParams.pageSize = 0;
-      Object.assign(data, this.exportParams);
-      outAssistant(data)
-        .then((res) => this.downloadFn(res, "辅导员任命导出", "xlsx"))
+      let exportParams = this.queryParams;
+      var arr = this.list.length > 0 ? this.list.map((item) => item.id) : [];            
+      // console.log(this.queryParams);
+
+      exportParams.orderZd = "";
+      exportParams.orderPx = "";
+      this.$set(this.exportParams,"ids",arr)
+
+
+      excelExport(this.exportParams)
+        .then((res) => this.downloadFn(res, "家校联系记录导出", "xlsx"))
         .catch((err) => {});
+      // this.showExport = false;
+      // var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
+      // var data = { ghList: arr };
+      // var exportParams = this.queryParams;
+      // exportParams.pageSize = 0;
+      // Object.assign(data, this.exportParams);
+      // outAssistant(data)
+      //   .then((res) => this.downloadFn(res, "辅导员任命导出", "xlsx"))
+      //   .catch((err) => {});
     },
     //批量移除
-    rmAssistant() {
+    rmRecord() {
       this.showDelete = false;
-      let ghlist = [];
+      let ids = [];
       for (let item_row of this.multipleSelection) {
-        ghlist.push(item_row.gh);
+        ids.push(item_row.id);
       }
       let data = {
-        ghList: ghlist,
-      };
-
-      removeMoreAssistant(data)
+        ids: ids
+      }
+      deleteJxlx(data)
         .then((res) => {
-          if (res.errcode == "00") {
-            this.getList();
-          }
+          this.$message({
+            message: res.errmsg,
+            type: "success",
+          })
+          this.getList();
         })
         .catch((err) => {
           //this.$message.error(err.errmsg);
@@ -409,7 +428,13 @@ export default {
       }
       this.queryParams.pageNum = 1;
       this.queryParams.jfxsList = this.homeModel;
-      this.queryParams.hdksrqEnd = this.datePicker;
+      let rqs,rqe = "";
+      if (this.datePicker && this.datePicker.length > 0) {
+        rqs = this.datePicker[0];
+        rqe = this.datePicker[1];
+      }
+      this.queryParams.hdksrqStrat = rqs;
+      this.queryParams.hdksrqEnd = rqe;
 
       this.queryParams.xm = name;
       this.queryParams.xh = xuehao;

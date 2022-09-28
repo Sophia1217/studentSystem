@@ -293,7 +293,7 @@ export default {
         .then((response) => {
             this.basicInfoList = response.data; // 根据状态码接收数据
             this.total = response.totalCount; //总条数
-            this.exportParams = this.queryParams;
+            // this.exportParams = this.queryParams;
         })
         .catch((err) => {
           // this.$message.error(err.errmsg);
@@ -383,11 +383,10 @@ export default {
       this.showExport = false;
       var arr = this.list.length > 0 ? this.list.map((item) => item.id) : [];                
       let exportParams = this.queryParams;
-      console.log(this.queryParams);
+      // console.log(this.queryParams);
       exportParams.orderZd = "";
       exportParams.orderPx = "";
       this.$set(this.exportParams,"ids",arr)
-      // Object.assign(data, this.exportParams);
 
       excelFdyBthd(this.exportParams)
         .then((res) => this.downloadFn(res, "活动记录导出", "xlsx"))

@@ -5,33 +5,36 @@
         <span class="title">家访人员</span>
       </div>
       <div class="wai-container">
-        <div class="roleWrap" v-for="(role, index) in renshu" :key="index">
+        <div class="roleWrap" v-for="(ele, index) in renshu" :key="index">
           <div class="roleStyle">
-            <div class="name">姓名{{ index + 1 }}:</div>
+            <div class="name">参与人{{ index + 1 }}:</div>
             <div>
-              <el-select
-                v-model="role.value"
+              <el-autocomplete
+                v-model="ele.acceptVlaue"
+                :fetch-suggestions="querySearchPart"
+                placeholder="请输入内容"
+                :trigger-on-focus="false"
+                @select="
+                  (item) => {
+                    handleSelectPart(item, index);
+                  }
+                "
                 size="small"
-                placeholder="请选择"
-              >
-                <el-option
-                  v-for="(item, index) in stuData"
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
+              ></el-autocomplete>
             </div>
           </div>
           <div
-            v-if="index == renshu.length - 1"
+            v-if="index == renshu.length - 1 && renshu.length !== 6"
             class="editBtn"
-            @click="addRoles(role, index)"
+            @click="addPart(ele, index)"
           >
             <i class="addIcon"></i>
           </div>
-          <div v-else class="deleIcon" @click="deleRoles(role, index)">
+          <div
+            v-if="renshu.length == 6 || index < renshu.length - 1"
+            class="deleIcon"
+            @click="delPart(ele, index)"
+          >
             <i></i>
           </div>
         </div>
@@ -42,19 +45,43 @@
         <span class="title">家访详情</span>
       </div>
       <el-form ref="form" label-width="80px">
-        <el-row :gutter="20">
-          <el-col :span="5">
-            <el-form-item label="学生姓名" prop="stuName">
-              <el-input v-model="form.stuName" placeholder="请输入"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-button
-            type="primary"
-            size="mini"
-            class="search"
-            @click="handleQuery"
-            >查询</el-button>
-        </el-row>
+        <el-form-item label="学生姓名">
+          <el-row :gutters="20" class="suibian">
+            <div v-for="(ele, index) in renshuStu" :key="index">
+              <!-- <div class="name">{{ index + 1 }}:</div> -->
+              <div style="display: flex">
+                <el-autocomplete
+                v-model="ele.acceptVlaue"
+                :fetch-suggestions="querySearchStu"
+                placeholder="请输入内容"
+                :trigger-on-focus="false"
+                @select="
+                  (item) => {
+                    handleSelectStu(item, index);
+                  }
+                "
+                size="small"
+                ></el-autocomplete>
+                <div
+                  v-if="index == renshuStu.length - 1 && renshuStu.length !== 6"
+                  class="editBtn"
+                  @click="addStu(ele, index)"
+                >
+                  <i class="addIcon"></i>
+                </div>
+                <div
+                  v-if="renshuStu.length == 6 || index < renshuStu.length - 1"
+                  class="deleIcon"
+                  @click="delStu(ele, index)"
+                >
+                  <i></i>
+                </div>
+              </div>
+            </div>
+          </el-row>
+          
+        </el-form-item>
+
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="家访主题">
@@ -99,6 +126,8 @@
                 type="date" 
                 placeholder="选择日期" 
                 v-model="form.date" 
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
                 style="width: 100%;"
               ></el-date-picker>
             </el-form-item>
@@ -107,49 +136,59 @@
         <el-row :gutter="20">
           <el-col :span="5">
             <el-form-item label="家访形式" prop="homeModel">
-              <el-select v-model="form.homeModel" placeholder="请选择">
+              <el-select 
+                v-model="form.homeModel" 
+                placeholder="请选择"
+                @change="changeModel"
+                >
                 <el-option
                   v-for="item in modelOps"
-                  :key="item.dm"
+                  :key="item.xm"
                   :label="item.xm"
-                  :value="item.dm"
+                  :value="item.xm"
                 />
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="4">
-            <el-form-item label="家访地点" prop="placePro">
-              <el-select v-model="form.placePro" placeholder="省">
+          <el-col :span="16">
+            <el-form-item label="家访地点">
+              <el-select 
+                v-model="form.proPlace" 
+                @change="changeX"
+                :disabled="xianshang == '1' ? true : false"
+                placeholder="省"
+                >
                 <el-option
-                  v-for="item in modelOps"
-                  :key="item.dm"
-                  :label="item.xm"
+                  v-for="(item, index) in proOps"
+                  :key="index"
+                  :label="item.mc"
                   :value="item.dm"
                 />
               </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item  prop="placeCity">
-              <el-select v-model="form.placeCity" placeholder="市">
+              <el-select 
+                v-model="form.cityPlace" 
+                @change="changeY"
+                :disabled="xianshang == '1' ? true : false"
+                placeholder="市"
+                >
                 <el-option
-                  v-for="item in modelOps"
-                  :key="item.dm"
-                  :label="item.xm"
+                  v-for="(item, index) in cityOps"
+                  :key="index"
+                  :label="item.mc"
                   :value="item.dm"
                 />
               </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item  prop="placeCounty">
-              <el-select v-model="form.placeCounty" placeholder="县">
+              <el-select 
+                v-model="form.countryPlace" 
+                :disabled="xianshang == '1' ? true : false"
+                placeholder="县"
+                >
                 <el-option
-                  v-for="item in modelOps"
-                  :key="item.dm"
-                  :label="item.xm"
+                  v-for="(item, index) in xianOps"
+                  :key="index"
+                  :label="item.mc"
                   :value="item.dm"
                 />
               </el-select>
@@ -204,77 +243,6 @@
         <button class="span2"  @click="sava">保存</button>
       </div>
     </div>
-
-    <!-- <div class="editBottom">
-      <div class="btn cancel" @click="cancel()">
-        <i class="icon noIcon"></i> 取消
-      </div>
-      <div class="btn confirm" @click="sava()">
-        <i class="icon yesIcon"></i> 提交
-      </div>
-    </div> -->
-    <!-- 查询学生对话框 -->
-    <el-dialog
-      title="学生查询"
-      :visible.sync="openStuSearch"
-      width="800px"
-      height="243px"
-      append-to-body
-    >
-      <el-form
-        :inline="true"
-        ref="formSearch"
-        :model="formSearch"
-        label-width="40px"
-      >
-        <el-row :gutter="20">
-          <el-col :span="5">
-            <el-form-item label="学院" prop="dwhStu">
-              <el-select v-model="formSearch.dwhStu" placeholder="请选择" clearable>
-                <el-option
-                  v-for="(item, index) in modelOps"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="5">
-            <el-form-item label="年级" prop="grade">
-              <el-select v-model="formSearch.grade" placeholder="请选择" clearable>
-                <el-option
-                  v-for="(item, index) in modelOps"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="5">
-            <el-form-item label="班级" prop="class">
-              <el-select v-model="formSearch.class" placeholder="请选择" clearable>
-                <el-option
-                  v-for="(item, index) in modelOps"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-radio v-model="formSearch.radio" label="1">备选项</el-radio>
-        <el-radio v-model="formSearch.radio" label="2">备选项</el-radio>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="cancelSearch">取消</el-button>
-        <el-button type="primary" @click="searchConfirm" class="confirm"
-          >确定</el-button
-        >
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -285,62 +253,49 @@ import {
   savaTreeList,
   savaEditList,
 } from "@/api/systemMan/role";
+import { 
+  insertJxlx,
+  getXmXgh,
+  queryStuList,
+  getCityList,
+} from "@/api/assistantWork/homeSchool";
 import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
 export default {
   data() {
     return {
-      tags: [
-        { name: "标签一", type: "" },
-        { name: "标签二", type: "success" },
-        { name: "标签三", type: "info" },
-        { name: "标签四", type: "warning" },
-        { name: "标签五", type: "danger" },
-        { name: "标签一", type: "" },
-        { name: "标签二", type: "success" },
-        { name: "标签三", type: "info" },
-        { name: "标签四", type: "warning" },
-        // { name: "标签五", type: "danger" },
-      ],
-      renshu: ["", "", "", "", ""],
-      stuData: [
+      xianshang: 0,
+      renshu: [
         {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-          disabled: true,
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
+          acceptVlaue: "",
+          value: "",
+          label: "",
         },
       ],
+      renshuStu: [
+        {
+          acceptVlaue: "",
+          value: "",
+          label: "",
+        },
+      ],
+      partDate: [],
+      stuDate:[],
       modelOps:[
-        { dm:"1",xm:"线上" },
-        { dm:"2",xm:"线下" },
+        { dm:"1",xm:"线上视频" },
+        { dm:"2",xm:"线下实地" },
       ],
       modId: "",
       // 查询参数
-      queryParams: {
-        roleRem: "",
-        roleName: this.isEdit == "1" ? "" : this.$route.query.roleNameEdit, // 编辑是2
-      },
+      // queryParams: {
+      //   roleRem: "",
+      //   roleName: this.isEdit == "1" ? "" : this.$route.query.roleNameEdit, // 编辑是2
+      // },
       treeData: [],
       defaultProps: {
         children: "children",
         label: "title",
       },
-      isEdit: "",
+
       savaData: [], //新增提交所需要的menuList
       roleId1: "", ////编辑请求的id,
       arr: [],
@@ -349,38 +304,39 @@ export default {
         themeTags: [],
       },
       form: {
-        stuName: "",
         theme: "",//家访主题
         date:"",
         homeModel:"",
-        placePro:"",//省
-        placeCity:"",//市
-        placeCounty:"",//县
+        proPlace:"",//省
+        cityPlace:"",//市
+        countryPlace:"",//县
         detailPlace:"",
         state:"",
 
         inputVisible: false,
         inputValue: "",
       },
-      formSearch: {
-        dwhStu:"",
-        grade:"",
-        class:"",
-        radio: "",
-      },
-      openStuSearch: false,
+      //地区筛选框数据
+      proOps: [],//省
+      cityOps:[],
+      xianOps:[],
+      //表单校验
+      rules: {
+        required: true, message: '请选择家访地点', trigger: 'blur'
+    }
     };
   },
 
   mounted() {
-    this.isEdit = this.$route.query.isEdit;
-    this.roleId1 = this.$route.query?.UpId;
-    this.roleName1 = this.$route.query?.roleNameEdit;
-    this.queryParams.roleRem = this.$route.query?.rem;
-    this.handleTree();
+    // this.isEdit = this.$route.query.isEdit;
+    // this.roleId1 = this.$route.query?.UpId;
+    // this.roleName1 = this.$route.query?.roleNameEdit;
+    // this.queryParams.roleRem = this.$route.query?.rem;
+    // this.handleTree();
 
     (this.form.date = new Date());
     this.queryTag();
+    this.getProOps();
   },
 
   methods: {
@@ -397,52 +353,52 @@ export default {
     cancel() {
       window.history.go(-1);
     },
-    handleTree() {
-      if (this.isEdit == 2) {
-        let data = { roleId: this.roleId1 };
-        let dataALL = { roleId: this.$store.state.user.roleId };
-        queryTreeListJ(data)
-          .then((res) => {
-            var result = res.data;
-            this.arr = result;
-            // this.getData(result); //
-          })
-          .catch((err) => {});
-        queryTreeList(dataALL)
-          .then((res) => {
-            this.treeData = res.data;
-            this.setkeys();
-          })
-          .catch((err) => {});
-      } else {
-        let data = { roleId: this.$store.state.user.roleId };
-        queryTreeList(data)
-          .then((res) => {
-            this.treeData = res.data;
-          })
-          .catch((err) => {});
-      }
-    },
-    setkeys() {
-      this.$refs.tree.setCheckedKeys(this.arr);
-    },
-    getData(data) {
-      for (var i in data) {
-        this.arr.push(data[i].modId); //将第一层的保存出来，
-        if (data[i].children) {
-          // if(data[i].length >)
-          this.getData(data[i].children);
-        }
-      }
-      return this.arr;
-    },
+    // handleTree() {
+    //   if (this.isEdit == 2) {
+    //     let data = { roleId: this.roleId1 };
+    //     let dataALL = { roleId: this.$store.state.user.roleId };
+    //     queryTreeListJ(data)
+    //       .then((res) => {
+    //         var result = res.data;
+    //         this.arr = result;
+    //         // this.getData(result); //
+    //       })
+    //       .catch((err) => {});
+    //     queryTreeList(dataALL)
+    //       .then((res) => {
+    //         this.treeData = res.data;
+    //         this.setkeys();
+    //       })
+    //       .catch((err) => {});
+    //   } else {
+    //     let data = { roleId: this.$store.state.user.roleId };
+    //     queryTreeList(data)
+    //       .then((res) => {
+    //         this.treeData = res.data;
+    //       })
+    //       .catch((err) => {});
+    //   }
+    // },
+    // setkeys() {
+    //   this.$refs.tree.setCheckedKeys(this.arr);
+    // },
+    // getData(data) {
+    //   for (var i in data) {
+    //     this.arr.push(data[i].modId); //将第一层的保存出来，
+    //     if (data[i].children) {
+    //       // if(data[i].length >)
+    //       this.getData(data[i].children);
+    //     }
+    //   }
+    //   return this.arr;
+    // },
     //elementUi中自带的方法，可以获取到所有选中的节点
-    currentChecked(nodeObj, SelectedObj) {
-      var that = this;
-      const { checkedNodes, halfCheckedKeys } = SelectedObj;
-      var menuList = checkedNodes.map((item) => item.modId);
-      that.savaData = menuList.concat(halfCheckedKeys); //要获取上级根节点
-    },
+    // currentChecked(nodeObj, SelectedObj) {
+    //   var that = this;
+    //   const { checkedNodes, halfCheckedKeys } = SelectedObj;
+    //   var menuList = checkedNodes.map((item) => item.modId);
+    //   that.savaData = menuList.concat(halfCheckedKeys); //要获取上级根节点
+    // },
     showInput() {
       this.form.inputVisible = true;
     },
@@ -476,66 +432,186 @@ export default {
         }
      
     },
-    addRoles() {
-      this.renshu.push("");
+    //共同参与人
+    querySearchPart(queryString, cb) {
+      if (queryString != "") {
+        let callBackArr = [];
+        var Xm = { xm: queryString };
+        var result = [];
+        var resultNew = [];
+        getXmXgh(Xm).then((res) => {
+          console.log("res",res.data);
+          result = res.data.length > 0 ? res.data:[];
+          resultNew = result.map((ele) => {
+            //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
+            //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
+            //此处找后台约定好
+            return {
+              value: `${ele.xm}(${ele.gh})`,
+              gh: ele.gh,
+              xm: ele.xm,
+            };
+          });
+          resultNew.forEach((item) => {
+            if (item.value.indexOf(queryString) > -1) {
+              callBackArr.push(item);
+            }
+          });
+          if (callBackArr.length == 0) {
+            cb([{ value: "暂无数据", price: "暂无数据" }]);
+          } else {
+            cb(callBackArr);
+          }
+        });
+      }
     },
-    deleRoles(role, index) {
+    // 点击谁，就把谁放进去
+    handleSelectPart(item, index) {
+      //可以在点击时候动态添加参数，免得拼接,单独设计一个参数作为提交参数，免得各种复杂的截取和判断
+      this.partDate[index] = item;
+    },
+    addPart() {
+      if (this.renshu.length > 5) {
+        this.$message.error("最多六条数据");
+      } else {
+        this.renshu.push({ value: "", label: "" });
+      }
+    },
+    delPart(role, index) {
       this.renshu.splice(index, 1);
     },
-    sava() {
-      if (this.isEdit === "1") {
-        let data = {
-          userId: this.$store.getters.userId,
-          menuList: this.savaData,
-          roleName: this.queryParams.roleName,
-          loginRoleId: this.$store.getters.roleId,
-          roleRem: this.queryParams.roleRem,
-        };
-        savaTreeList(data)
-          .then(() => {
-            this.$router.push({
-              path: "/systems/role",
-            });
-          })
-          .catch((err) => {});
+    //学生
+    querySearchStu(queryString, cb) {
+      if (queryString != "") {
+        let callBackArr = [];
+        var Xm = { xm: queryString };
+        var result = [];
+        var resultNew = [];
+        queryStuList(Xm).then((res) => {
+          console.log("res",res.data);
+          result = res.data.length > 0 ? res.data:[];
+          resultNew = result.map((ele) => {
+            //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
+            //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
+            //此处找后台约定好
+            return {
+              value: `${ele.xm}(${ele.gh})`,
+              gh: ele.gh,
+              xm: ele.xm,
+            };
+          });
+          resultNew.forEach((item) => {
+            if (item.value.indexOf(queryString) > -1) {
+              callBackArr.push(item);
+            }
+          });
+          if (callBackArr.length == 0) {
+            cb([{ value: "暂无数据", price: "暂无数据" }]);
+          } else {
+            cb(callBackArr);
+          }
+        });
+      }
+    },
+    // 点击谁，就把谁放进去
+    handleSelectStu(item, index) {
+      //可以在点击时候动态添加参数，免得拼接,单独设计一个参数作为提交参数，免得各种复杂的截取和判断
+      this.stuDate[index] = item;
+    },
+    addStu() {
+      if (this.renshu.length > 5) {
+        this.$message.error("最多六条数据");
       } else {
-        let data = {
-          userId: this.$store.getters.userId,
-          menuList: this.savaData.length > 0 ? this.savaData : this.arr, //如果用户进来没编辑，默认前一次筛选出来的树
-          roleName: this.queryParams.roleName,
-          roleId: this.roleId1,
-          roleRem: this.queryParams.roleRem,
-        };
-        savaEditList(data)
-          .then(() => {
-            this.$router.push({
-              path: "/systems/role",
-            });
+        this.renshuStu.push({ value: "", label: "" });
+      }
+    },
+    delStu(role, index) {
+      this.renshuStu.splice(index, 1);
+    },
+    //改变家访形式
+    changeModel(val){
+      if (val =="线上视频"){
+        this.xianshang = 1;
+        this.form.proPlace = [];
+        this.form.cityPlace = []; // 市
+        this.form.countryPlace = []; 
+      }else{
+        this.xianshang = 0;
+      }
+    },
+    //获取省列表
+    getProOps(){
+      getCityList({}).then((res) => {
+          this.proOps = res.data;
+      });
+    },
+    // 省找市
+    getCity(val) {
+      this.cityOps = [];
+      let data = { dm: val };
+      if (Object.keys(val).length !== 0) {
+        getCityList(data)
+          .then((res) => {
+            this.cityOps = res.data;
           })
           .catch((err) => {});
       }
     },
-    savaEditList() {},
-
-    //查询
-    handleQuery(){
-      console.log(1);
-      this.openStuSearch = true;
+    // 市找县
+    getXian(val) {
+      this.xianOps = [];
+      let data = { dm: val };
+      if (Object.keys(val).length !== 0) {
+        getCityList(data)
+          .then((res) => {
+            this.xianOps = res.data;
+          })
+          .catch((err) => {});
+      }
     },
-    //查询确认
-    searchConfirm(){
-      console.log(2);
-      let stus = "";
-      stus = this.formSearch.radio;
-
-
+    changeX(val) {
+      if (val) {
+        this.form.cityPlace = []; // 市
+        this.form.countryPlace = []; 
+      }
+      this.getCity(val);
     },
-    //查询取消
-    cancelSearch(){
-      console.log(3);
-      this.openStuSearch = false;
+    changeY(val) {
+      if (val) {
+        this.form.countryPlace = []; //县
+      }
+      this.getXian(val);
     },
+    sava() {
+      let data ={
+        jfdd: this.form.countryPlace,
+        jfqk: this.form.state,
+        jfsj: this.form.date,
+        jfxs: this.form.homeModel,
+        jfzt: this.form.theme,
+        xxdz: this.form.detailPlace,
 
+        xsXmXgh: this.stuDate,
+        gtcyrXmXgh: this.partDate,
+
+      }
+      // var data = {
+      //   thdd: this.talkDate[index].addressValue,
+      //   thnr: this.talkDate[index].textarea1,
+      //   thsj: this.talkDate[index].date,
+      //   startTime: this.talkDate[index].value1,
+      //   endTime: this.talkDate[index].value2,
+      //   thzt: this.talkDate[index].zhutiValue,
+      //   XmXgh: this.form.XmXgh,
+      // };
+      insertJxlx(data).then((res) => {
+        this.$message({
+          message: res.errmsg,
+          type: "success",
+        })
+        window.history.go(-1);
+      });
+    },
   },
 };
 </script>
@@ -557,6 +633,13 @@ export default {
       height: 15px;
       background: url("~@/assets/images/addicon.png") no-repeat center;
     }
+  }
+  .suibian {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 14px;
+    color: #1f1f1f;
   }
   .greenIcon {
     margin-top: 10px;
@@ -585,6 +668,10 @@ export default {
       }
     }
   }
+  .name {
+        margin-right: 20px;
+        font-weight: 600;
+      }
   .deleIcon {
     margin-left: 30px;
     cursor: pointer;

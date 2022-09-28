@@ -6,7 +6,7 @@
       </div>
       <el-form ref="formTop" label-width="80px">
         <el-row :gutter="20">
-          <el-col :span="4.1">
+          <el-col :span="4">
             <el-form-item label="工号" prop="applyGh">
               <el-input 
                 v-model="formTop.applyGh" 
@@ -53,26 +53,57 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="4">
-            <el-form-item label="参与人" prop="joinName">
-              <el-input 
-                v-model="formTop.joinName" 
-                placeholder="请输入"
-                :disabled="edit == '1' ? true : false"
+        <el-form-item label="参与人">
+          <el-row :gutters="20" class="suibian">
+            <div v-for="(ele, index) in partDate">
+              <div v-if="edit == 1">
+                <el-input
+                  :disabled="edit == 2 ? false : true"
+                  v-model="ele.value"
+                  placeholder="请输入内容"
                 ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="参与人" prop="joinName">
-              <el-input 
-                v-model="formTop.joinName" 
-                placeholder="请输入"
-                :disabled="edit == '1' ? true : false"
-                ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
+              </div>
+            </div>
+            <div v-for="(ele, index) in partDate" :key="index">
+              <div v-if="edit == 2" style="display: flex">
+                <el-autocomplete
+                  v-model="partDate[index].value"
+                  :fetch-suggestions="querySearchPart"
+                  placeholder="请输入内容"
+                  :trigger-on-focus="false"
+                  @select="
+                    (item) => {
+                      handleSelectPart(item, index);
+                    }
+                  "
+                  size="small"
+                ></el-autocomplete>
+                <div
+                  v-if="
+                    index == partDate.length - 1 &&
+                    partDate.length !== 6 &&
+                    edit == 2
+                  "
+                  class="editBtn"
+                  @click="addPart(ele, index)"
+                >
+                  <i class="addIcon"></i>
+                </div>
+                <div
+                  v-if="
+                    partDate.length == 6 ||
+                    (index < partDate.length - 1 && edit == 2)
+                  "
+                  class="deleIcon"
+                  @click="delPart(ele, index)"
+                >
+                  <i></i>
+                </div>
+                <div></div>
+              </div>
+            </div>
+          </el-row>
+        </el-form-item>
 
       </el-form>
   
@@ -82,44 +113,71 @@
         <span class="title">家访详情</span>
       </div>
       <el-form ref="form" label-width="80px">
-        <el-row :gutter="20">
-          <el-col :span="5">
-            <!-- <el-form-item label="姓 名" prop="stuName">
-              <el-select
-                v-model="form.stuName"
-                placeholder="未选择"
-                @change="selectClick"
-              >
-                <el-option
-                  v-for="(item, index) in nameOptions"
-                  :key="index"
-                  :label="item.xm + '（' + item.gh + '）'"
-                  :value="item.xm"
-                ></el-option
-              ></el-select>
-          </el-form-item> -->
-            <el-form-item label="学生姓名" prop="stuName">
-              <el-input 
-                v-model="form.stuName" 
-                :disabled="edit == '1' ? true : false"
-                placeholder="请输入"
+        <el-form-item label="学生姓名">
+          <el-row :gutters="20" class="suibian">
+            <div v-for="(ele, index) in stuDate">
+              <div v-if="edit == 1">
+                <el-input
+                  :disabled="edit == 2 ? false : true"
+                  v-model="ele.value"
+                  placeholder="请输入内容"
                 ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
+              </div>
+            </div>
+            <div v-for="(ele, index) in stuDate" :key="index">
+              <div v-if="edit == 2" style="display: flex">
+                <el-autocomplete
+                  v-model="stuDate[index].value"
+                  :fetch-suggestions="querySearch"
+                  placeholder="请输入内容"
+                  :trigger-on-focus="false"
+                  @select="
+                    (item) => {
+                      handleSelect(item, index);
+                    }
+                  "
+                  size="small"
+                ></el-autocomplete>
+                <div
+                  v-if="
+                    index == stuDate.length - 1 &&
+                    stuDate.length !== 6 &&
+                    edit == 2
+                  "
+                  class="editBtn"
+                  @click="addStu(ele, index)"
+                >
+                  <i class="addIcon"></i>
+                </div>
+                <div
+                  v-if="
+                    stuDate.length == 6 ||
+                    (index < stuDate.length - 1 && edit == 2)
+                  "
+                  class="deleIcon"
+                  @click="delStu(ele, index)"
+                >
+                  <i></i>
+                </div>
+                <div></div>
+              </div>
+            </div>
+          </el-row>
+        </el-form-item>
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="家访主题" prop="theme">
               <el-input 
               v-model="form.theme" 
               placeholder="请输入"
+              :disabled="edit == '1' ? true : false"
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="2">
+          <el-col :span="2"  v-if="edit == 2">
             <el-form-item label="常用主题" label-width="90px"></el-form-item>
             </el-col>
-          <el-col :span="15">
+          <el-col :span="15" v-if="edit == 2">
             <el-tag
               v-for="item in tag.themeTags"
               :key="item.cyMsg"
@@ -153,7 +211,10 @@
               <el-date-picker 
                 type="date" 
                 placeholder="选择日期" 
+                :disabled="edit == '1' ? true : false"
                 v-model="form.date" 
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
                 style="width: 100%;"
               ></el-date-picker>
             </el-form-item>
@@ -162,54 +223,66 @@
         <el-row :gutter="20">
           <el-col :span="5">
             <el-form-item label="家访形式" prop="model">
-              <el-select v-model="form.model" placeholder="请选择">
+              <el-select 
+                v-model="form.model" 
+                @change="changeModel"
+                placeholder="请选择"
+                :disabled="edit == '1' ? true : false"
+                >
                 <el-option
                   v-for="item in modelOps"
-                  :key="item.dm"
+                  :key="item.xm"
                   :label="item.xm"
-                  :value="item.dm"
+                  :value="item.xm"
                 />
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="4">
-            <el-form-item label="家访地点" prop="placePro">
-              <el-select v-model="form.placePro" placeholder="省">
+          <el-col :span="16">
+            <el-form-item label="家访地点">
+              <el-select 
+                v-model="form.proPlace" 
+                @change="changeX"
+                placeholder="省"
+                :disabled="(edit == '1' ? true : false) ||(xianshang == '1' ? true : false)"
+                >
                 <el-option
-                  v-for="item in proOps"
-                  :key="item.dm"
+                  v-for="(item, index) in proOps"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                />
+              </el-select>
+              <el-select 
+                v-model="form.cityPlace" 
+                @change="changeY"
+                placeholder="市"
+                :disabled="(edit == '1' ? true : false) ||(xianshang == '1' ? true : false)"
+                >
+                <el-option
+                  v-for="(item, index) in cityOps"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                />
+              </el-select>
+              <el-select 
+                v-model="form.countryPlace" 
+                placeholder="县"
+                :disabled="(edit == '1' ? true : false) ||(xianshang == '1' ? true : false)"
+                >
+                <el-option
+                  v-for="(item, index) in xianOps"
+                  :key="index"
                   :label="item.mc"
                   :value="item.dm"
                 />
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
-            <el-form-item  prop="placeCity">
-              <el-select v-model="form.placeCity" placeholder="市">
-                <el-option
-                  v-for="item in modelOps"
-                  :key="item.dm"
-                  :label="item.mc"
-                  :value="item.dm"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item  prop="placeCounty">
-              <el-select v-model="form.placeCounty" placeholder="县">
-                <el-option
-                  v-for="item in modelOps"
-                  :key="item.dm"
-                  :label="item.mc"
-                  :value="item.dm"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
+
         </el-row>
         <el-row :gutter="20">
           <el-col :span="8">
@@ -217,6 +290,7 @@
               <el-input 
                 v-model="form.detailPlace" 
                 placeholder="请输入"
+                :disabled="edit == '1' ? true : false"
                 ></el-input>
             </el-form-item>
           </el-col>
@@ -229,6 +303,7 @@
                 :autosize="{ minRows: 4, maxRows: 10 }"
                 type="textarea"
                 placeholder="请输入"
+                :disabled="edit == '1' ? true : false"
                 ></el-input>
             </el-form-item>
           </el-col>
@@ -239,6 +314,7 @@
             action="https://jsonplaceholder.typicode.com/posts/"
             multiple
             class="el-upload"
+            :disabled="edit == '1' ? true : false"
           >
             <div class="el-upload-dragger">
               <i class="el-icon-upload"></i>
@@ -261,15 +337,6 @@
       </div>
     </div>
     
-
-    <!-- <div class="editBottom">
-      <div class="btn cancel" @click="cancel()">
-        <i class="icon noIcon"></i> 取消
-      </div>
-      <div class="btn confirm" @click="sava()">
-        <i class="icon yesIcon"></i> 提交
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -284,39 +351,20 @@ import {
   selectJxlxDetail,
   getCityList,
   updateJxlxDetail,
+  queryStuList,
+  getXmXgh,
 } from "@/api/assistantWork/homeSchool";
 import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
 export default {
   data() {
     return {
+      xianshang: 0,
       edit: 1,
-      renshu: ["", "", "", "", ""],
-      stuData: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-          disabled: true,
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
+      stuDate: [],
+      partDate: [],
       modelOps:[
-        { dm:"1",xm:"线上" },
-        { dm:"2",xm:"线下" },
+        { dm:"1",xm:"线上视频" },
+        { dm:"2",xm:"线下实地" },
       ],
       modId: "",
       // 查询参数
@@ -342,20 +390,17 @@ export default {
         applyXm:"",
         dwh:"",
         job:"",
-        joinName:"",
-        gtcyrXmXgh:[],
         jfdd:"",//家访地点名称，暂定
 
       },
       form: {
         stuName: "",
-        xsXmXgh:[],
         theme: "",//家访主题
         date:"",
         model:"",
-        placePro:"",//省
-        placeCity:"",//市
-        placeCounty:"",//县
+        proPlace:[],//省
+        cityPlace:[],
+        countryPlace:[],
         detailPlace:"",
         state:"",
         
@@ -367,7 +412,7 @@ export default {
       //地区筛选框数据
       proOps: [],//省
       cityOps:[],
-      countryOps:[],
+      xianOps:[],
     };
   },
 
@@ -382,8 +427,8 @@ export default {
     (this.form.date = new Date());
     this.queryTag();
     this.getDetail();
-    
 
+    this.getProOps();
   },
 
   methods: {
@@ -398,53 +443,8 @@ export default {
       });
     },
     cancel() {
-      window.history.go(-1);
-    },
-    handleTree() {
-      if (this.isEdit == 2) {
-        let data = { roleId: this.roleId1 };
-        let dataALL = { roleId: this.$store.state.user.roleId };
-        queryTreeListJ(data)
-          .then((res) => {
-            var result = res.data;
-            this.arr = result;
-            // this.getData(result); //
-          })
-          .catch((err) => {});
-        queryTreeList(dataALL)
-          .then((res) => {
-            this.treeData = res.data;
-            this.setkeys();
-          })
-          .catch((err) => {});
-      } else {
-        let data = { roleId: this.$store.state.user.roleId };
-        queryTreeList(data)
-          .then((res) => {
-            this.treeData = res.data;
-          })
-          .catch((err) => {});
-      }
-    },
-    setkeys() {
-      this.$refs.tree.setCheckedKeys(this.arr);
-    },
-    getData(data) {
-      for (var i in data) {
-        this.arr.push(data[i].modId); //将第一层的保存出来，
-        if (data[i].children) {
-          // if(data[i].length >)
-          this.getData(data[i].children);
-        }
-      }
-      return this.arr;
-    },
-    //elementUi中自带的方法，可以获取到所有选中的节点
-    currentChecked(nodeObj, SelectedObj) {
-      var that = this;
-      const { checkedNodes, halfCheckedKeys } = SelectedObj;
-      var menuList = checkedNodes.map((item) => item.modId);
-      that.savaData = menuList.concat(halfCheckedKeys); //要获取上级根节点
+      this.edit = 1;
+      this.getDetail();
     },
     showInput() {
       this.form.inputVisible = true;
@@ -481,64 +481,236 @@ export default {
     },
     editClick() {
       this.edit = 2;
-      this.getAreaOps();
+
     },
     cancel() {
       this.edit = 1;
       //然后
     },
+    //学生
+    querySearch(queryString, cb) {
+      if (queryString != "") {
+        let callBackArr = [];
+        var Xm = { xm: queryString };
+        var result = [];
+        var resultNew = [];
+        queryStuList(Xm).then((res) => {
+          // console.log("res",res.data);
+          result = res.data.length > 0 ? res.data:[];
+          resultNew = result.map((ele) => {
+            //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
+            //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
+            //此处找后台约定好
+            return {
+              value: `${ele.xm}(${ele.gh})`,
+              gh: ele.gh,
+              xm: ele.xm,
+            };
+          });
+          resultNew.forEach((item) => {
+            if (item.value.indexOf(queryString) > -1) {
+              callBackArr.push(item);
+            }
+          });
+          if (callBackArr.length == 0) {
+            cb([{ value: "暂无数据", price: "暂无数据" }]);
+          } else {
+            cb(callBackArr);
+          }
+        });
+      }
+    },
+    addStu(ele, index) {
+      // console.log(index);
+      if (this.stuDate.length > 5) {
+        this.$message.error("最多六条数据");
+      } else {
+        this.stuDate.push({});
+      }
+    },
+    delStu(ele, index) {
+      this.stuDate.splice(index, 1);
+    },
+    handleSelect(item, index) {
+      this.stuDate[index] = item;
+    },
+    //共同参与人
+    querySearchPart(queryString, cb) {
+      if (queryString != "") {
+        let callBackArr = [];
+        var Xm = { xm: queryString };
+        var result = [];
+        var resultNew = [];
+        getXmXgh(Xm).then((res) => {
+          // console.log("res",res.data);
+          result = res.data.length > 0 ? res.data:[];
+          resultNew = result.map((ele) => {
+            //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
+            //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
+            //此处找后台约定好
+            return {
+              value: `${ele.xm}(${ele.gh})`,
+              gh: ele.gh,
+              xm: ele.xm,
+            };
+          });
+          resultNew.forEach((item) => {
+            if (item.value.indexOf(queryString) > -1) {
+              callBackArr.push(item);
+            }
+          });
+          if (callBackArr.length == 0) {
+            cb([{ value: "暂无数据", price: "暂无数据" }]);
+          } else {
+            cb(callBackArr);
+          }
+        });
+      }
+    },
+    addPart(ele, index) {
+      // console.log(index);
+      if (this.partDate.length > 5) {
+        this.$message.error("最多六条数据");
+      } else {
+        this.partDate.push({});
+      }
+    },
+    delPart(ele, index) {
+      this.partDate.splice(index, 1);
+    },
+    handleSelectPart(item, index) {
+      this.partDate[index] = item;
+    },
     //详情
     getDetail(){
       let data = { id: this.id };
       selectJxlxDetail(data).then((res)=>{
+        
         // this.detailInfoList = res.data.rows;
         this.formTop.applyGh = res.data.sbrgh;
         this.formTop.applyXm = res.data.sbrxm;
         this.formTop.dwh = res.data.sbrdw;
         this.formTop.job = res.data.sbrgw;
         this.formTop.lxm = res.data.sbrlb;
-        this.formTop.joinName = res.data.gtcyrxm;
 
-        this.form.stuName = res.data.xm;
         this.form.theme = res.data.jfzt;
         this.form.date = res.data.jfsj
         this.form.model = res.data.jfxs
-        this.form.placePro = res.data.jfddList[0].mc
-        this.form.placeCity = res.data.jfddList[1].mc
-        this.form.placeCounty = res.data.jfddList[2].mc
+          this.form.proPlace = (res.data.jfddList.length >0) ?(res.data.jfddList[0].dm):[]
+          this.form.cityPlace = (res.data.jfddList.length >0) ?(res.data.jfddList[1].dm):[]
+          this.form.countryPlace = (res.data.jfddList.length >0) ?(res.data.jfddList[2].dm):[]
+        
         this.form.detailPlace = res.data.xxdz
         this.form.state = res.data.jfqk
-
-        this.formTop.xsXmXgh = res.data.xsXmXgh//暂时固定
-        this.form.gtcyrXmXgh = res.data.gtcyrXmXgh//暂时固定
-        this.form.jfdd = res.data.jfdd//暂时固定
-
+        this.stuDate = res.data.xsXmXgh;
+        this.partDate = res.data.gtcyrXmXgh;
+        for (var i = 0; i < this.stuDate.length; i++) {
+          if (this.stuDate[i].xm !== "") {
+            //此处找后台约定好
+            this.$set(
+              this.stuDate[i],
+              "value",
+              `${this.stuDate[i].xm}(${this.stuDate[i].gh}) `
+            );
+            this.$set(this.stuDate[i], "xm", `${this.stuDate[i].xm} `);
+            this.$set(this.stuDate[i], "gh", `${this.stuDate[i].gh} `);
+          } else {
+            this.stuDate[i].value = "";
+          }
+        }
+        for (var i = 0; i < this.partDate.length; i++) {
+          if (this.partDate[i].xm !== "") {
+            //此处找后台约定好
+            this.$set(
+              this.partDate[i],
+              "value",
+              `${this.partDate[i].xm}(${this.partDate[i].gh}) `
+            );
+            this.$set(this.partDate[i], "xm", `${this.partDate[i].xm} `);
+            this.$set(this.partDate[i], "gh", `${this.partDate[i].gh} `);
+          } else {
+            this.partDate[i].value = "";
+          }
+        }
+        if (this.form.model =="线下实地"){
+          this.getCity(this.form.proPlace);
+          this.getXian(this.form.cityPlace);
+        }
+        
       })
-      // let data =  { id: this.$route.query.id };
-      // selectJxlxDetail(data).then((res)=>{
-      //   console.log(2);
-      // })
     },
-    //获取省市区列表
-    getAreaOps(){
-      getCityList({}).then((response) => {
-        // 获取省列表数据
-          this.proOps = response.data.rows;
+    //改变家访形式
+    changeModel(val){
+      if (val =="线上视频"){
+        this.xianshang = 1;
+        this.form.proPlace = [];
+        this.form.cityPlace = []; // 市
+        this.form.countryPlace = []; 
+      }else{
+        this.xianshang = 0;
+      }
+    },
+    //获取省列表
+    getProOps(){
+      getCityList({}).then((res) => {
+          this.proOps = res.data;
       });
+    },
+    // 省找市
+    getCity(val) {
+      this.cityOps = [];
+      let data = { dm: val };
+      getCityList(data)
+          .then((res) => {
+            this.cityOps = res.data;
+          })
+          .catch((err) => {});
+      // if (Object.keys(val).length !== 0) {
+      //   getCityList(data)
+      //     .then((res) => {
+      //       this.cityOps = res.data;
+      //     })
+      //     .catch((err) => {});
+      // }
+    },
+    // 市找县
+    getXian(val) {
+      this.xianOps = [];
+      let data = { dm: val };
+      if (Object.keys(val).length !== 0) {
+        getCityList(data)
+          .then((res) => {
+            this.xianOps = res.data;
+          })
+          .catch((err) => {});
+      }
+    },
+    changeX(val) {
+      if (val) {
+        this.form.cityPlace = []; // 市
+        this.form.countryPlace = []; 
+      }
+      this.getCity(val);
+    },
+    changeY(val) {
+      if (val) {
+        this.form.countryPlace = []; //县
+      }
+      this.getXian(val);
     },
     //保存
     sava() {
       let data ={
         id: this.id,
-        jfdd: this.form.jfdd,//暂
+        jfdd: this.form.countryPlace,
         jfqk: this.form.state,
         jfsj: this.form.date,
         jfxs: this.form.model,
         jfzt: this.form.theme,
         xxdz: this.form.detailPlace,
 
-        xsXmXgh: this.form.xsXmXgh,
-        gtcyrXmXgh: this.formTop.gtcyrXmXgh
+        xsXmXgh: this.stuDate,
+        gtcyrXmXgh: this.partDate
 
       }
       updateJxlxDetail(data).then((res) => {
@@ -590,14 +762,14 @@ export default {
 <style lang="scss" scoped>
 .addHomeSchool {
   .editBtn {
-    padding: 0 10px;
-    margin-left: 22px;
+    padding: 0 12px;
+    margin-left: 4px;
     border-radius: 4px;
     font-weight: 400;
     font-size: 14px;
     color: #005657;
     cursor: pointer;
-    line-height: 32px;
+    line-height: 38px;
     .addIcon {
       display: inline-block;
       width: 15px;
@@ -649,8 +821,14 @@ export default {
     }
   }
   .deleIcon {
-    margin-left: 30px;
+    padding: 0 12px;
+    margin-left: 4px;
+    border-radius: 4px;
+    font-weight: 400;
+    font-size: 14px;
+    color: #005657;
     cursor: pointer;
+    line-height: 38px;
     i {
       display: inline-block;
       vertical-align: middle;
@@ -658,6 +836,13 @@ export default {
       height: 20px;
       background: url("~@/assets/images/detelIcon.png");
     }
+  }
+  .suibian {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 14px;
+    color: #1f1f1f;
   }
   .wai-container {
     display: flex;

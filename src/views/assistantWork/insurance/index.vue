@@ -119,7 +119,7 @@
           ></el-table-column>
           <el-table-column prop="xh" label="学号" sortable="custom">
           </el-table-column>
-          <el-table-column prop="gmr" label="购买人" sortable="custom">
+          <el-table-column prop="xm" label="购买人" sortable="custom">
           </el-table-column>
           <el-table-column prop="xzmc" label="险种名称" sortable="custom">
           </el-table-column>
@@ -129,7 +129,7 @@
           </el-table-column>
           <el-table-column prop="cbgs" label="承保公司" sortable="custom">
           </el-table-column
-          ><el-table-column prop="xlr" label="联系人" sortable="custom">
+          ><el-table-column prop="lxr" label="联系人" sortable="custom">
           </el-table-column
           ><el-table-column prop="lxdh" label="联系电话" sortable="custom">
           </el-table-column>
@@ -201,6 +201,7 @@ export default {
         pageSize: 10,
         total: 0,
       },
+      datePicker: [],
     };
   },
 
@@ -256,14 +257,22 @@ export default {
     },
     // 查询
     handleSearch() {
+      var rqs = "";
+      var rqe = "";
+      if (this.datePicker && this.datePicker.length > 0) {
+        var rqs = this.datePicker[0];
+        rqe = this.datePicker[1];
+      }
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
         xzmc: this.select == "xzmc" ? this.xzmc : null,
+        buyEndTime: rqs,
+        buyStartTime: rqe,
         cbgs: this.select == "cbgs" ? this.cbgs : null,
         lxr: this.select == "lxr" ? this.lxr : null,
         lxdh: this.select == "lxdh" ? this.lxdh : null,
-        xzlx: this.moreIform.xzlx,
+        xzlxList: this.moreIform.xzlx,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
@@ -271,7 +280,7 @@ export default {
       };
       queryList(data)
         .then((res) => {
-          this.tableData = res.data.data;
+          this.tableData = res.data;
           this.queryParams.total = res.data.total;
         })
         .catch((err) => {});

@@ -44,7 +44,7 @@
       <div>
         <span class="title">家访详情</span>
       </div>
-      <el-form ref="form" label-width="80px">
+      <el-form ref="queryForm" label-width="80px" :rules="rules">
         <el-form-item label="学生姓名">
           <el-row :gutters="20" class="suibian">
             <div v-for="(ele, index) in renshuStu" :key="index">
@@ -84,7 +84,7 @@
 
         <el-row :gutter="20">
           <el-col :span="6">
-            <el-form-item label="家访主题">
+            <el-form-item label="家访主题" prop="theme">
               <el-input v-model="form.theme" placeholder="请输入"></el-input>
             </el-form-item>
           </el-col>
@@ -153,7 +153,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="16">
-            <el-form-item label="家访地点">
+            <el-form-item label="家访地点" prop="didian">
               <el-select 
                 v-model="form.proPlace" 
                 @change="changeX"
@@ -220,9 +220,13 @@
         <el-form-item label="添加附件">
           <el-upload
             drag
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="#"
             multiple
             class="el-upload"
+            :auto-upload="false"
+            ref="upload"
+            :file-list="fileList"
+            :on-change="change"
           >
             <div class="el-upload-dragger">
               <i class="el-icon-upload"></i>
@@ -263,6 +267,7 @@ import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
 export default {
   data() {
     return {
+      fileList: [],
       xianshang: 0,
       renshu: [
         {
@@ -322,7 +327,18 @@ export default {
       xianOps:[],
       //表单校验
       rules: {
-        required: true, message: '请选择家访地点', trigger: 'blur'
+        // theme: [
+        //   { required: true, message: "家访主题为空", trigger: "change" },
+        // ],
+        // homeModel: [
+        //   { required: true, message: "家访形式为空", trigger: "change" },
+        // ],
+        // date: [
+        //   { required: true, message: "家访日期为空", trigger: "change" },
+        // ],
+        // didian: [
+        //   { required: true, message: "请选择家访地点", trigger: "change" },
+        // ],
     }
     };
   },
@@ -343,7 +359,7 @@ export default {
     //标签查询
     queryTag() {
       var data = {
-        cyType: "1", //1主题,2地点,3组织单位
+        cyType: "4", //1家校主题,2地点,3组织单位，4班团主题
         userId: this.$store.getters.userId,
       };
       queryTag(data).then((res) => {
@@ -353,59 +369,14 @@ export default {
     cancel() {
       window.history.go(-1);
     },
-    // handleTree() {
-    //   if (this.isEdit == 2) {
-    //     let data = { roleId: this.roleId1 };
-    //     let dataALL = { roleId: this.$store.state.user.roleId };
-    //     queryTreeListJ(data)
-    //       .then((res) => {
-    //         var result = res.data;
-    //         this.arr = result;
-    //         // this.getData(result); //
-    //       })
-    //       .catch((err) => {});
-    //     queryTreeList(dataALL)
-    //       .then((res) => {
-    //         this.treeData = res.data;
-    //         this.setkeys();
-    //       })
-    //       .catch((err) => {});
-    //   } else {
-    //     let data = { roleId: this.$store.state.user.roleId };
-    //     queryTreeList(data)
-    //       .then((res) => {
-    //         this.treeData = res.data;
-    //       })
-    //       .catch((err) => {});
-    //   }
-    // },
-    // setkeys() {
-    //   this.$refs.tree.setCheckedKeys(this.arr);
-    // },
-    // getData(data) {
-    //   for (var i in data) {
-    //     this.arr.push(data[i].modId); //将第一层的保存出来，
-    //     if (data[i].children) {
-    //       // if(data[i].length >)
-    //       this.getData(data[i].children);
-    //     }
-    //   }
-    //   return this.arr;
-    // },
-    //elementUi中自带的方法，可以获取到所有选中的节点
-    // currentChecked(nodeObj, SelectedObj) {
-    //   var that = this;
-    //   const { checkedNodes, halfCheckedKeys } = SelectedObj;
-    //   var menuList = checkedNodes.map((item) => item.modId);
-    //   that.savaData = menuList.concat(halfCheckedKeys); //要获取上级根节点
-    // },
+
     showInput() {
       this.form.inputVisible = true;
     },
     handleInputConfirm() {
       var obj = {
         cyMsg: "",
-        cyType:"1",
+        cyType:"4",
         userId: this.$store.getters.userId,
       };
       obj.cyMsg = this.form.inputValue;
@@ -582,29 +553,50 @@ export default {
       }
       this.getXian(val);
     },
-    sava() {
-      let data ={
-        jfdd: this.form.countryPlace,
-        jfqk: this.form.state,
-        jfsj: this.form.date,
-        jfxs: this.form.homeModel,
-        jfzt: this.form.theme,
-        xxdz: this.form.detailPlace,
-
-        xsXmXgh: this.stuDate,
-        gtcyrXmXgh: this.partDate,
-
+    //上传文件
+    change(file, fileList) {
+      this.fileList = fileList;
+      console.log("file", file);
+      console.log("fileList", fileList);
+    },
+    // 表单校验
+    checkForm() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.queryForm.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
       }
-      // var data = {
-      //   thdd: this.talkDate[index].addressValue,
-      //   thnr: this.talkDate[index].textarea1,
-      //   thsj: this.talkDate[index].date,
-      //   startTime: this.talkDate[index].value1,
-      //   endTime: this.talkDate[index].value2,
-      //   thzt: this.talkDate[index].zhutiValue,
-      //   XmXgh: this.form.XmXgh,
-      // };
-      insertJxlx(data).then((res) => {
+      return true;
+    },
+    //保存
+    sava() {
+      //校验
+      //  if (!this.checkForm()) {
+      //   this.$message.error("请完善家访信息！");
+      //   return;
+      // }
+      let formData = new FormData();
+      formData.append("jfdd", this.form.countryPlace);
+      formData.append("jfqk", this.form.state);
+      formData.append("jfsj", this.form.date);
+      formData.append("jfxs", this.form.homeModel);
+      formData.append("jfzt", this.form.theme);
+      formData.append("xxdz", this.form.detailPlace);
+      for(let i=0,len= this.stuDate.length;i<len;i++){
+        let locationInfo = this.stuDate[i];
+        formData.append('xsXmXgh['+i+'].xm',locationInfo.xm);
+        formData.append('xsXmXgh['+i+'].gh',locationInfo.gh);
+      }
+      for(let j=0,leng= this.partDate.length;j<leng;j++){
+        let locationInfo = this.partDate[j];
+        formData.append('gtcyrXmXgh['+j+'].xm',locationInfo.xm);
+        formData.append('gtcyrXmXgh['+j+'].gh',locationInfo.gh);
+      }
+
+      insertJxlx(formData).then((res) => {
         this.$message({
           message: res.errmsg,
           type: "success",
@@ -763,6 +755,27 @@ export default {
     }
     .shishi {
       width: 10px;
+    }
+  }
+  .el-tag {
+    background: #fafafa;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    display: inline-block;
+    height: 32px;
+    padding: 0 10px;
+    line-height: 30px;
+    margin-left: 18px;
+    font-size: 12px;
+    color: black;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    white-space: nowrap;
+    ::v-deep .el-tag__close {
+      color: #303133;
     }
   }
   ::v-deep .el-upload-dragger {

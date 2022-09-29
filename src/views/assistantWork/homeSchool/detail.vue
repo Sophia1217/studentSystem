@@ -222,9 +222,9 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="5">
-            <el-form-item label="家访形式" prop="model">
+            <el-form-item label="家访形式" prop="homeModel">
               <el-select 
-                v-model="form.model" 
+                v-model="form.homeModel" 
                 @change="changeModel"
                 placeholder="请选择"
                 :disabled="edit == '1' ? true : false"
@@ -308,12 +308,37 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="添加附件">
+        <el-form-item label="添加附件" v-if="edit == '1'">
+          <div v-if="urlArr.length > 0" class="block">
+            <div v-for="(item, i) in urlArr">
+              <el-image
+                style="margin-left: 20px; width: 300px; height: 300px"
+                :src="item"
+              ></el-image>
+            </div>
+          </div>
+          <el-upload
+            action="#"
+            multiple
+            :file-list="fileList"
+            :auto-upload="false"
+            class="el-upload"
+            :on-preview="handlePreview"
+            :disabled="edit == '1' ? true : false"
+          >
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="添加附件" v-if="edit == '2'">
           <el-upload
             drag
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="#"
             multiple
+            :file-list="fileList"
+            :auto-upload="false"
             class="el-upload"
+            :on-preview="handlePreview"
+            :on-change="change"
+            :before-remove="beforeRemove"
             :disabled="edit == '1' ? true : false"
           >
             <div class="el-upload-dragger">
@@ -354,10 +379,18 @@ import {
   queryStuList,
   getXmXgh,
 } from "@/api/assistantWork/homeSchool";
+import { 
+  Exportwj,
+  querywj,
+  delwj, 
+} from "@/api/assistantWork/classEvent";
 import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
 export default {
   data() {
     return {
+      urlArr: [],
+      fileList: [],
+      fileListAdd: [],
       xianshang: 0,
       edit: 1,
       stuDate: [],
@@ -394,13 +427,12 @@ export default {
 
       },
       form: {
-        stuName: "",
         theme: "",//家访主题
         date:"",
-        model:"",
-        proPlace:[],//省
-        cityPlace:[],
-        countryPlace:[],
+        homeModel:"",
+        proPlace:"",//省
+        cityPlace:"",
+        countryPlace:"",
         detailPlace:"",
         state:"",
         
@@ -427,15 +459,64 @@ export default {
     (this.form.date = new Date());
     this.queryTag();
     this.getDetail();
-
     this.getProOps();
+    this.getUrl();
+    this.querywj();
   },
 
   methods: {
+    getUrl() {
+      querywj({ businesId: this.id }).then((res) => {
+        var arr = res.data || [];
+        var arr1 = [];
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i].fileSuffix == ".png" || arr[i].fileSuffix == ".jpg") {
+            arr1.push(arr[i]);
+          }
+        }
+        var arr2 = arr1.slice(0, 3) || [];
+        for (var j = 0; j < arr2.length; j++) {
+          Exportwj({ id: arr[j].id.toString() }).then((res) => {
+            this.urlArr.push(window.URL.createObjectURL(res));
+            console.log("this.araa",this.urlArr);
+          });
+        }
+      });
+    },
+    change(file, fileList) {
+      console.log("file", file);
+      //用于文件先保存
+      this.fileListAdd.push(file);
+      this.fileList = fileList;
+    },
+    handlePreview(file) {
+      console.log("file",file);
+      //用于文件下载
+      Exportwj({ id: file.id.toString() }).then((res) => {
+        this.url = window.URL.createObjectURL(res);
+        this.downloadFn(res, file.fileName, file.fileSuffix);
+      });
+    },
+    beforeRemove(file, fileList) {
+      //用于文件删除
+      delwj({ id: file.id.toString() }).then((res) => console.log("res", res));
+    },
+    querywj() {
+      //用于文件查询
+      querywj({ businesId: this.id }).then((res) => {
+        this.fileList = res.data;
+        this.fileList = this.fileList.map((ele) => {
+          return {
+            name: ele.fileName,
+            ...ele,
+          };
+        });
+      });
+    },
     //标签查询
     queryTag() {
       var data = {
-        cyType: "1", //1主题,2地点,3组织单位
+        cyType: "4", //1家校主题,2地点,3组织单位，4班团主题
         userId: this.$store.getters.userId,
       };
       queryTag(data).then((res) => {
@@ -452,7 +533,7 @@ export default {
     handleInputConfirm() {
       var obj = {
         cyMsg: "",
-        cyType:"1",
+        cyType:"4",
         userId: this.$store.getters.userId,
       };
       obj.cyMsg = this.form.inputValue;
@@ -595,7 +676,7 @@ export default {
 
         this.form.theme = res.data.jfzt;
         this.form.date = res.data.jfsj
-        this.form.model = res.data.jfxs
+        this.form.homeModel = res.data.jfxs
           this.form.proPlace = (res.data.jfddList.length >0) ?(res.data.jfddList[0].dm):[]
           this.form.cityPlace = (res.data.jfddList.length >0) ?(res.data.jfddList[1].dm):[]
           this.form.countryPlace = (res.data.jfddList.length >0) ?(res.data.jfddList[2].dm):[]
@@ -632,7 +713,7 @@ export default {
             this.partDate[i].value = "";
           }
         }
-        if (this.form.model =="线下实地"){
+        if (this.form.homeModel =="线下实地"){
           this.getCity(this.form.proPlace);
           this.getXian(this.form.cityPlace);
         }
@@ -643,9 +724,9 @@ export default {
     changeModel(val){
       if (val =="线上视频"){
         this.xianshang = 1;
-        this.form.proPlace = [];
-        this.form.cityPlace = []; // 市
-        this.form.countryPlace = []; 
+        this.form.proPlace = " ";
+        this.form.cityPlace = " "; // 市
+        this.form.countryPlace = " "; 
       }else{
         this.xianshang = 0;
       }
@@ -660,18 +741,13 @@ export default {
     getCity(val) {
       this.cityOps = [];
       let data = { dm: val };
-      getCityList(data)
+      if (Object.keys(val).length !== 0) {
+        getCityList(data)
           .then((res) => {
             this.cityOps = res.data;
           })
           .catch((err) => {});
-      // if (Object.keys(val).length !== 0) {
-      //   getCityList(data)
-      //     .then((res) => {
-      //       this.cityOps = res.data;
-      //     })
-      //     .catch((err) => {});
-      // }
+      }
     },
     // 市找县
     getXian(val) {
@@ -687,73 +763,63 @@ export default {
     },
     changeX(val) {
       if (val) {
-        this.form.cityPlace = []; // 市
-        this.form.countryPlace = []; 
+        this.form.cityPlace = ""; // 市
+        this.form.countryPlace = ""; 
       }
       this.getCity(val);
     },
     changeY(val) {
       if (val) {
-        this.form.countryPlace = []; //县
+        this.form.countryPlace = ""; //县
       }
       this.getXian(val);
     },
+    // 表单校验
+    checkForm() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.queryForm3.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
+    
     //保存
     sava() {
-      let data ={
-        id: this.id,
-        jfdd: this.form.countryPlace,
-        jfqk: this.form.state,
-        jfsj: this.form.date,
-        jfxs: this.form.model,
-        jfzt: this.form.theme,
-        xxdz: this.form.detailPlace,
-
-        xsXmXgh: this.stuDate,
-        gtcyrXmXgh: this.partDate
-
+      let formData = new FormData();
+      formData.append("id", this.$route.query.id.toString());
+      formData.append("jfdd", this.form.countryPlace);
+      //this.form.countryPlace
+      formData.append("jfqk", this.form.state);
+      formData.append("jfsj", this.form.date);
+      formData.append("jfxs", this.form.homeModel);
+      formData.append("jfzt", this.form.theme);
+      formData.append("xxdz", this.form.detailPlace);
+      for(let i=0,len= this.stuDate.length;i<len;i++){
+        let locationInfo = this.stuDate[i];
+        formData.append('xsXmXgh['+i+'].xm',locationInfo.xm);
+        formData.append('xsXmXgh['+i+'].gh',locationInfo.gh);
       }
-      updateJxlxDetail(data).then((res) => {
+      for(let j=0,leng= this.partDate.length;j<leng;j++){
+        let locationInfo = this.partDate[j];
+        formData.append('gtcyrXmXgh['+j+'].xm',locationInfo.xm);
+        formData.append('gtcyrXmXgh['+j+'].gh',locationInfo.gh);
+      }
+      this.fileListAdd.map((ele) => {
+        formData.append("files", ele.raw);
+      });
+      updateJxlxDetail(formData).then((res) => {
         this.$message({
           message: res.errmsg,
           type: "success",
         })
         window.history.go(-1);
-        
       });
-      // if (this.isEdit === "1") {
-      //   let data = {
-      //     userId: this.$store.getters.userId,
-      //     menuList: this.savaData,
-      //     roleName: this.queryParams.roleName,
-      //     loginRoleId: this.$store.getters.roleId,
-      //     roleRem: this.queryParams.roleRem,
-      //   };
-      //   savaTreeList(data)
-      //     .then(() => {
-      //       this.$router.push({
-      //         path: "/systems/role",
-      //       });
-      //     })
-      //     .catch((err) => {});
-      // } else {
-      //   let data = {
-      //     userId: this.$store.getters.userId,
-      //     menuList: this.savaData.length > 0 ? this.savaData : this.arr, //如果用户进来没编辑，默认前一次筛选出来的树
-      //     roleName: this.queryParams.roleName,
-      //     roleId: this.roleId1,
-      //     roleRem: this.queryParams.roleRem,
-      //   };
-      //   savaEditList(data)
-      //     .then(() => {
-      //       this.$router.push({
-      //         path: "/systems/role",
-      //       });
-      //     })
-      //     .catch((err) => {});
-      // }
+
     },
-    // savaEditList() {},
 
   },
 };
@@ -775,6 +841,27 @@ export default {
       width: 15px;
       height: 15px;
       background: url("~@/assets/images/addicon.png") no-repeat center;
+    }
+  }
+  .el-tag {
+    background: #fafafa;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    display: inline-block;
+    height: 32px;
+    padding: 0 10px;
+    line-height: 30px;
+    margin-left: 18px;
+    font-size: 12px;
+    color: black;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    white-space: nowrap;
+    ::v-deep .el-tag__close {
+      color: #303133;
     }
   }
   .greenIcon {

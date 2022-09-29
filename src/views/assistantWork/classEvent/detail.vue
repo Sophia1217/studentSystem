@@ -69,10 +69,10 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="2">
+          <el-col :span="2" v-if="edit == 2">
             <el-form-item label="自定义单位" label-width="90px"></el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" v-if="edit == 2">
             <el-tag
               v-for="item in tag.unitTags"
               :key="item.cyMsg"
@@ -117,6 +117,8 @@
               <el-date-picker
                 v-model="form.date"
                 type="date"
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
                 placeholder="选择日期"
                 :disabled="edit == '1' ? true : false"
               >
@@ -126,6 +128,8 @@
             <el-form-item label="开始时间">
               <el-time-picker
                 v-model="form.begTime"
+                format="HH:MM"
+                value-format="HH:MM"
                 placeholder="选择开始时间"
                 :disabled="edit == '1' ? true : false"
               >
@@ -135,6 +139,8 @@
             <el-form-item label="结束时间">
               <el-time-picker
                 v-model="form.endTime"
+                format="HH:MM"
+                value-format="HH:MM"
                 placeholder="选择结束时间"
                 :disabled="edit == '1' ? true : false"
               >
@@ -152,10 +158,10 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="2">
+          <el-col :span="2" v-if="edit == 2">
             <el-form-item label="常用地址" label-width="90px"></el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" v-if="edit == 2">
             <el-tag
               v-for="item in tag.addressTags"
               :key="item.cyMsg"
@@ -282,33 +288,6 @@ export default {
       fileListAdd: [],
       edit: 1,
       renshu: ["", "", "", "", ""],
-      stuData: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-          disabled: true,
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
-      modelOps: [
-        { dm: "1", xm: "线上" },
-        { dm: "2", xm: "线下" },
-      ],
       arr: [],
       arr1: ["01"],
       tag: {
@@ -364,6 +343,7 @@ export default {
         for (var j = 0; j < arr2.length; j++) {
           Exportwj({ id: arr[j].id.toString() }).then((res) => {
             this.urlArr.push(window.URL.createObjectURL(res));
+            console.log("this.araa",this.urlArr);
           });
         }
       });
@@ -375,6 +355,7 @@ export default {
       this.fileList = fileList;
     },
     handlePreview(file) {
+      console.log("file",file);
       //用于文件下载
       Exportwj({ id: file.id.toString() }).then((res) => {
         this.url = window.URL.createObjectURL(res);
@@ -557,6 +538,27 @@ export default {
       width: 90px;
       margin-left: 10px;
       vertical-align: bottom;
+    }
+  }
+  .el-tag {
+    background: #fafafa;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    display: inline-block;
+    height: 32px;
+    padding: 0 10px;
+    line-height: 30px;
+    margin-left: 18px;
+    font-size: 12px;
+    color: black;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    white-space: nowrap;
+    ::v-deep .el-tag__close {
+      color: #303133;
     }
   }
   .block {

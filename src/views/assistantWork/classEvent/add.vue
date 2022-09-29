@@ -51,10 +51,11 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="5.5">
-            <el-form-item label="活动时间">
+            <el-form-item label="活动日期">
               <el-date-picker
                 v-model="form.date"
                 type="date"
+                format="yyyy 年 MM 月 dd 日"
                 value-format="yyyy-MM-dd"
                 placeholder="选择日期"
               >
@@ -62,12 +63,18 @@
           ></el-col>
           <el-col :span="5.5">
             <el-form-item label="开始时间">
-              <el-time-picker v-model="form.begTime" placeholder="选择开始时间">
+              <el-time-picker 
+                v-model="form.begTime" 
+                
+                placeholder="选择开始时间">
               </el-time-picker> </el-form-item
           ></el-col>
           <el-col :span="5.5">
             <el-form-item label="结束时间">
-              <el-time-picker v-model="form.endTime" placeholder="选择结束时间">
+              <el-time-picker 
+                v-model="form.endTime" 
+                
+                placeholder="选择结束时间">
               </el-time-picker> </el-form-item
           ></el-col>
         </el-row>
@@ -348,6 +355,27 @@ export default {
       width: 90px;
       margin-left: 10px;
       vertical-align: bottom;
+    }
+  }
+  .el-tag {
+    background: #fafafa;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    display: inline-block;
+    height: 32px;
+    padding: 0 10px;
+    line-height: 30px;
+    margin-left: 18px;
+    font-size: 12px;
+    color: black;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    white-space: nowrap;
+    ::v-deep .el-tag__close {
+      color: #303133;
     }
   }
   .editBottom {

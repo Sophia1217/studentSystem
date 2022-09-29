@@ -250,7 +250,7 @@ export default {
       // this.getList(this.queryParams);
     },
     //查询条件
-    selectChange(val) {
+    selectChange() {
       this.searchVal = "";
     },
     getOption() {
@@ -310,27 +310,30 @@ export default {
     // 导出确认
     handleConfirm() {
       this.showExport = false;
-      let exportParams = this.queryParams;
-      var arr = this.list.length > 0 ? this.list.map((item) => item.id) : [];            
+      var arr = this.list.length > 0 ? this.list.map((item) => item.id) : []; 
+      let data ={
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        jfsj: this.queryParams.jfsj,
+        jfxsList: this.queryParams.jfxsList,
+        hdksrqEnd: this.queryParams.hdksrqEnd,
+        hdksrqStrat: this.queryParams.hdksrqStrat,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+        xm: this.queryParams.xm,
+        xh: this.queryParams.xh,
+        sbrxm: this.queryParams.sbrxm,
+        sbrgh: this.queryParams.sbrgh,
+        gtcyrxm: this.queryParams.gtcyrxm,
+        ids: arr,
+      }
+      // let exportParams = this.queryParams;        
       // console.log(this.queryParams);
+      // this.$set(this.exportParams,"ids",arr)
 
-      exportParams.orderZd = "";
-      exportParams.orderPx = "";
-      this.$set(this.exportParams,"ids",arr)
-
-
-      excelExport(this.exportParams)
+      excelExport(data)
         .then((res) => this.downloadFn(res, "家校联系记录导出", "xlsx"))
         .catch((err) => {});
-      // this.showExport = false;
-      // var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
-      // var data = { ghList: arr };
-      // var exportParams = this.queryParams;
-      // exportParams.pageSize = 0;
-      // Object.assign(data, this.exportParams);
-      // outAssistant(data)
-      //   .then((res) => this.downloadFn(res, "辅导员任命导出", "xlsx"))
-      //   .catch((err) => {});
     },
     //批量移除
     rmRecord() {
@@ -394,38 +397,38 @@ export default {
 
     // 搜索查询按钮
     searchClick() {
-      let name, xuehao, sbrname,sbrgh,gtcy;
-      if (this.select == "1") {
-        name = this.searchVal;
-        xuehao = "";
-        sbrname = "",
-        sbrgh = "",
-        gtcy = ""
-      } else if (this.select == "2") {
-        name = "";
-        xuehao = this.searchVal;
-        sbrname = "",
-        sbrgh = "",
-        gtcy = ""
-      } else if (this.select == "3") {
-        name = "";
-        xuehao = "";
-        sbrname = this.searchVal
-        sbrgh = "",
-        gtcy = ""
-      } else if (this.select == "4") {
-        name = "";
-        xuehao = "";
-        sbrname = "",
-        sbrgh = this.searchVal
-        gtcy = ""
-      } else {
-        name = "";
-        xuehao = "";
-        sbrname = "",
-        sbrgh = "",
-        gtcy = this.searchVal
-      }
+      // let name, xuehao, sbrname,sbrgh,gtcy;
+      // if (this.select == "1") {
+      //   name = this.searchVal;
+      //   xuehao = "";
+      //   sbrname = "",
+      //   sbrgh = "",
+      //   gtcy = ""
+      // } else if (this.select == "2") {
+      //   name = "";
+      //   xuehao = this.searchVal;
+      //   sbrname = "",
+      //   sbrgh = "",
+      //   gtcy = ""
+      // } else if (this.select == "3") {
+      //   name = "";
+      //   xuehao = "";
+      //   sbrname = this.searchVal
+      //   sbrgh = "",
+      //   gtcy = ""
+      // } else if (this.select == "4") {
+      //   name = "";
+      //   xuehao = "";
+      //   sbrname = "",
+      //   sbrgh = this.searchVal
+      //   gtcy = ""
+      // } else {
+      //   name = "";
+      //   xuehao = "";
+      //   sbrname = "",
+      //   sbrgh = "",
+      //   gtcy = this.searchVal
+      // }
       this.queryParams.pageNum = 1;
       this.queryParams.jfxsList = this.homeModel;
       let rqs,rqe = "";
@@ -436,11 +439,11 @@ export default {
       this.queryParams.hdksrqStrat = rqs;
       this.queryParams.hdksrqEnd = rqe;
 
-      this.queryParams.xm = name;
-      this.queryParams.xh = xuehao;
-      this.queryParams.sbrxm = sbrname;
-      this.queryParams.sbrgh = sbrgh;
-      this.queryParams.gtcyrxm = gtcy;
+      // this.queryParams.xm = name;
+      // this.queryParams.xh = xuehao;
+      // this.queryParams.sbrxm = sbrname;
+      // this.queryParams.sbrgh = sbrgh;
+      // this.queryParams.gtcyrxm = gtcy;
       this.getList(this.queryParams);
     },
     //排序

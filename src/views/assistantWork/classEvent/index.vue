@@ -266,7 +266,7 @@ export default {
       this.queryParams.createDwh = this.workPlace;
       // this.getList(this.queryParams);
     },
-    selectChange(val) {
+    selectChange() {
       this.searchVal = "";
     },
     getOption() {
@@ -354,41 +354,29 @@ export default {
     },
     // 导出确认
     handleConfirm() {
-      // if (this.multipleSelection.length <= 0) {
-      //   let stuInfoFlowExportParam = this.queryParams;
-      //   // this.queryExport = data;
-      //   let data = { stuInfoFlowExportParam, exportStyle: "EXCEL" };
-      //   console.log("stuInfoFlowExportParam", stuInfoFlowExportParam);
-      //   StuInfoFlowExport(data)
-      //     .then((res) => {
-      //       this.downloadFn(res, "学生信息审核导出", "xls");
-
-      //       this.$message.success("学生信息审核已导出");
-      //       return;
-      //     })
-      //     .catch((err) => {});
-      // } else {
-      //   console.log("有勾选");
-      //   let ids = [];
-      //   this.multipleSelection.forEach((item) => {
-      //     ids.push(item.id);
-      //   });
-      //   let data = { idList: ids, exportStyle: "EXCEL" };
-      //   StuInfoFlowExport(data)
-      //     .then((res) => {
-      //       this.downloadFn(res, "学生信息审核导出", "xls");
-      //     })
-      //     .catch((err) => {});
-      // }
       this.showExport = false;
-      var arr = this.list.length > 0 ? this.list.map((item) => item.id) : [];                
-      let exportParams = this.queryParams;
+      var arr = this.list.length > 0 ? this.list.map((item) => item.id) : [];   
+      let data ={
+        hdksrqStrat: this.queryParams.hdksrqStrat,
+        hdksrqEnd: this.queryParams.hdksrqEnd, 
+        createXm: this.queryParams.createXm,
+        createXh: this.queryParams.createXh,
+        hddz: this.queryParams.hddz,
+        hdzt: this.queryParams.hdzt,
+        zzdw: this.queryParams.zzdw,
+        pageNum: this.queryParams.pageNum,
+        createDwh: this.queryParams.createDwh,
+        createSfjzfdy: this.queryParams.createSfjzfdy,
+        pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+        ids: arr,
+      }             
+      // var exportParams = this.queryParams;
       // console.log(this.queryParams);
-      exportParams.orderZd = "";
-      exportParams.orderPx = "";
-      this.$set(this.exportParams,"ids",arr)
+      // this.$set(this.exportParams,"ids",arr)
 
-      excelFdyBthd(this.exportParams)
+      excelFdyBthd(data)
         .then((res) => this.downloadFn(res, "活动记录导出", "xlsx"))
         .catch((err) => {});
     },
@@ -451,38 +439,40 @@ export default {
     },
     // 搜索查询按钮
     searchClick() {
-      let name, gonghao,place,topic,zzdwh;
-      if (this.select == "1") {
-        name = this.searchVal;
-        gonghao = "";
-        place = "";
-        topic = "";
-        zzdwh = "";
-      } else if (this.select == "2") {
-        name = "";
-        gonghao = this.searchVal
-        place = "";
-        topic = "";
-        zzdwh = "";
-      } else if (this.select == "3") {
-        name = "";
-        gonghao = "";
-        place = this.searchVal
-        topic = "";
-        zzdwh = "";
-      } else if (this.select == "4") {
-        name = "";
-        gonghao = "";
-        place = "";
-        topic = this.searchVal
-        zzdwh = "";
-      } else {
-        name = "";
-        gonghao = "";
-        place = "";
-        topic = "";
-        zzdwh = this.searchVal
-      }
+      // let name, gonghao,place,topic,zzdwh;
+      // if (this.select == "1") {
+      //   name = this.searchVal;
+      //   gonghao = "";
+      //   place = "";
+      //   topic = "";
+      //   zzdwh = "";
+      // } else if (this.select == "2") {
+      //   name = "";
+      //   gonghao = this.searchVal
+      //   place = "";
+      //   topic = "";
+      //   zzdwh = "";
+      // } else if (this.select == "3") {
+      //   name = "";
+      //   gonghao = "";
+      //   place = this.searchVal
+      //   topic = "";
+      //   zzdwh = "";
+      // } else if (this.select == "4") {
+      //   name = "";
+      //   gonghao = "";
+      //   place = "";
+      //   topic = this.searchVal
+      //   zzdwh = "";
+      // } else {
+      //   name = "";
+      //   gonghao = "";
+      //   place = "";
+      //   topic = "";
+      //   zzdwh = this.searchVal
+      // }
+      
+
       this.queryParams.pageNum = 1;
       this.queryParams.createDwh = this.workPlace;//工作单位
       this.queryParams.createSfjzfdy = this.category.choose;//类别
@@ -495,11 +485,11 @@ export default {
       this.queryParams.hdksrqStrat = rqs;
       this.queryParams.hdksrqEnd = rqe;
 
-      this.queryParams.createXm = name;
-      this.queryParams.createXh = gonghao;
-      this.queryParams.hddz = place;
-      this.queryParams.hdzt = topic;
-      this.queryParams.zzdw = zzdwh;
+      // this.queryParams.createXm = name;
+      // this.queryParams.createXh = gonghao;
+      // this.queryParams.hddz = place;
+      // this.queryParams.hdzt = topic;
+      // this.queryParams.zzdw = zzdwh;
       this.getList(this.queryParams);
     },
     //排序

@@ -41,7 +41,7 @@ export function talkTable(query) {
 
 export function addTalk(query) {
     return request({
-        url: '/fdyTalk/addTxth',
+        url: '/fdyTalk/importaddTxth',
         method: 'post',
         data: query
     })
@@ -56,7 +56,7 @@ export function detailTalk(query) {
 }
 export function updateTalk(query) {
     return request({
-        url: '/fdyTalk/updateTxth',
+        url: '/fdyTalk/importupdateTxth',
         method: 'post',
         data: query
     })
@@ -65,6 +65,14 @@ export function updateTalk(query) {
 export function delTalk(query) {
     return request({
         url: '/fdyTalk/deleteTxth',
+        method: 'post',
+        data: query
+    })
+}
+
+export function expTalk(query) {
+    return request({
+        url: '/fdyTalk/excelTxth',
         method: 'post',
         data: query
     })

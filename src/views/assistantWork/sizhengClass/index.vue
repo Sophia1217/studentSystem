@@ -213,11 +213,20 @@
             :label-width="formLabelWidth"
             prop="xm"
           >
-            <el-input
+            <el-autocomplete
+              v-model="form.xm"
+              :fetch-suggestions="querySearch"
+              style="width: 520px"
+              placeholder="请输入内容"
+              :trigger-on-focus="false"
+              @select="handleSelect"
+              size="small"
+            ></el-autocomplete>
+            <!-- <el-input
               v-model="form.xm"
               style="width: 520px"
               placeholder="请输入"
-            ></el-input>
+            ></el-input> -->
           </el-form-item>
         </el-row>
 
@@ -299,7 +308,7 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="cancelModal(form)">取 消</el-button>
         <el-button type="primary" @click="addData">确 定</el-button>
       </div>
     </el-dialog>
@@ -319,6 +328,7 @@ import {
 import { getToken } from "@/utils/auth";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getGw } from "@/api/politicalWork/basicInfo";
+import { getXmXgh } from "@/api/assistantWork/talk";
 export default {
   name: "sizheng",
   components: { CheckboxCom },
@@ -337,7 +347,7 @@ export default {
     return {
       form: {
         rs: "",
-        xm: "赵雪莲",
+        xm: "",
         gh: "20040710",
         kcmc: "",
         kxxq: "",
@@ -346,32 +356,52 @@ export default {
       },
       rules: {
         xm: [
-          { required: true, message: "请输入名称", trigger: "blur" },
-          { min: 2, message: "长度在 3 到 5 个字符", trigger: "blur" },
+          {
+            required: true,
+            message: "请输入名称",
+            trigger: ["blur", "change"],
+          },
+          {
+            min: 2,
+            message: "长度在 2 到 5 个字符",
+            trigger: ["blur", "change"],
+          },
         ],
-        rs: [{ required: true, message: "请选择人数", trigger: "change" }],
+        rs: [
+          {
+            required: true,
+            message: "请选择人数",
+            trigger: ["blur", "change"],
+          },
+        ],
         kcmc: [
           {
             required: true,
             message: "请输入开课名称",
-            trigger: "change",
+            trigger: ["blur", "change"],
           },
         ],
         kxxq: [
           {
             required: true,
             message: "请输入开课学期",
-            trigger: "change",
+            trigger: ["blur", "change"],
           },
         ],
         kxxn: [
           {
             required: true,
             message: "请输入开课时间",
-            trigger: "change",
+            trigger: ["blur", "change"],
           },
         ],
-        xs: [{ required: true, message: "请输入学时", trigger: "change" }],
+        xs: [
+          {
+            required: true,
+            message: "请输入学时",
+            trigger: ["blur", "change"],
+          },
+        ],
       },
       uploadUrl: process.env.VUE_APP_BASE_API + "/fdySzkcs/import",
       dialogFormVisible: false,
@@ -408,6 +438,7 @@ export default {
         total: 0,
       },
       multipleSelection: [],
+      addParams: {},
     };
   },
 
@@ -419,12 +450,55 @@ export default {
   },
 
   methods: {
-    addData() {
-      //////////
+    handleSelect(item) {
+      this.addParams = item;
+    },
+    querySearch(queryString, cb) {
+      if (queryString != "") {
+        let callBackArr = [];
+        var XmXgh = { xm: queryString };
+        var result = [];
+        var resultNew = [];
+        getXmXgh(XmXgh).then((res) => {
+          result = res.data.stuList;
+          resultNew = result.map((ele) => {
+            return {
+              value: `${ele.dm}(${ele.mc})`,
+              label: ele.dm,
+              xm: ele.mc,
+            };
+          });
+          resultNew.forEach((item) => {
+            if (item.value.indexOf(queryString) > -1) {
+              callBackArr.push(item);
+            }
+          });
+          if (callBackArr.length == 0) {
+            cb([{ value: "暂无数据", price: "暂无数据" }]);
+          } else {
+            cb(callBackArr);
+          }
+        });
+      }
+    },
+    cancelModal(form) {
       this.dialogFormVisible = false;
-      var FdySzkcskEntityReq = this.form;
+      this.form = {};
+    },
+
+    addData() {
+      var FdySzkcskEntityReq = {
+        rs: this.form.rs,
+        xm: this.addParams.xm,
+        gh: this.addParams.label,
+        kcmc: this.form.kcmc,
+        kxxq: this.form.kxxq,
+        kxxn: this.form.kxxn,
+        xs: this.form.xs,
+      };
       add(FdySzkcskEntityReq).then((res) => {
-        console.log("res", res);
+        this.dialogFormVisible = false;
+        this.form = {};
       });
     },
     mbDown() {

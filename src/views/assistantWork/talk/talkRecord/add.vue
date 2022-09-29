@@ -145,7 +145,7 @@
           <el-col el-col :span="5.5">
             <el-form-item label="谈话时间">
               <el-date-picker
-                v-model="ele.value1"
+                v-model="ele.date"
                 type="date"
                 format="yyyy 年 MM 月 dd 日"
                 placeholder="选择日期"
@@ -154,20 +154,12 @@
           ></el-col>
           <el-col el-col :span="5.5">
             <el-form-item label="开始时间">
-              <el-time-picker
-                format="HH:MM"
-                v-model="ele.value1"
-                placeholder="选择开始时间"
-              >
+              <el-time-picker v-model="ele.value1" placeholder="选择开始时间">
               </el-time-picker> </el-form-item
           ></el-col>
           <el-col el-col :span="5.5">
             <el-form-item label="结束时间">
-              <el-time-picker
-                format="HH:MM"
-                v-model="ele.value2"
-                placeholder="选择结束时间"
-              >
+              <el-time-picker v-model="ele.value2" placeholder="选择结束时间">
               </el-time-picker> </el-form-item
           ></el-col>
         </el-row>
@@ -185,13 +177,17 @@
         <el-form-item label="添加附件">
           <el-upload
             drag
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="#"
             multiple
             class="el-upload"
+            :auto-upload="false"
             ref="upload"
             :file-list="ele.fileList"
-            :on-change="change"
-            :on-remove="handleRemove"
+            :on-change="
+              (item, item1) => {
+                change(item, item1, index);
+              }
+            "
           >
             <div class="el-upload-dragger">
               <i class="el-icon-upload"></i>
@@ -251,16 +247,7 @@ export default {
           value1: "",
           value2: "",
           textarea1: "",
-          fileList: [
-            {
-              name: "food.jpeg",
-              url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
-            },
-            {
-              name: "food2.jpeg",
-              url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
-            },
-          ],
+          fileList: [],
         },
       ],
     };
@@ -279,19 +266,6 @@ export default {
       if (this.renshu[0].acceptVlaue == "") {
         this.$message.error("请至少选择一名学生");
       } else {
-        // let formData = new FormData();
-        // formData.append("id", "");
-        // formData.append("cyth", this.form.cyth);
-        // formData.append("hddz", this.form.place);
-        // formData.append("hdksrq", this.form.date);
-        // formData.append("hdjssj", this.form.endTime);
-        // formData.append("hdkssj", this.form.begTime);
-        // formData.append("hdnr", this.form.detail);
-        // formData.append("hdzt", this.form.theme);
-        // formData.append("zzdw", this.form.orgUnit);
-        // this.fileList.map((file) => {
-        //   formData.append("files", file.raw);
-        // });
         var list = [];
         var list2 = [];
         for (var i = 0; i < this.addParams.length; i++) {
@@ -308,16 +282,25 @@ export default {
           xhList: list2,
           xmList: list,
         };
-        addTalk(data).then((res) => {});
+        let formData = new FormData();
+        formData.append("thdd", data.thdd);
+        formData.append("thnr", data.thnr);
+        formData.append("thsj", data.thsj);
+        formData.append("startTime", data.startTime);
+        formData.append("endTime", data.endTime);
+        formData.append("thzt", data.thzt);
+        formData.append("xhList", data.xhList);
+        formData.append("xmList", data.xmList);
+        this.talkDate[index].fileList.map((file) => {
+          formData.append("files", file.raw);
+        });
+        addTalk(formData).then((res) => {
+          this.$message.success("保存成功");
+        });
       }
     },
-    change(file, fileList) {
-      console.log("file", file);
-      console.log("fileList", fileList);
-    },
-    handleRemove(file, fileList) {
-      console.log("file", file);
-      console.log("fileList", fileList);
+    change(file, fileList, index) {
+      this.talkDate[index].fileList = fileList;
     },
     querySearch(queryString, cb) {
       if (queryString != "") {
@@ -326,7 +309,6 @@ export default {
         var result = [];
         var resultNew = [];
         getXmXgh(XmXgh).then((res) => {
-          console.log("res", res);
           result = res.data.stuList;
           resultNew = result.map((ele) => {
             //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示

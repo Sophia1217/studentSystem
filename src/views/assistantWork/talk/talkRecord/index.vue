@@ -94,7 +94,7 @@
           <span class="title">谈话记录列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderOrange">
+          <div class="btns borderOrange" @click="expTalk">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
           <div class="btns borderLight" @click="del()">
@@ -171,7 +171,7 @@
 
 <script>
 import CheckboxCom from "../../../components/checkboxCom";
-import { talkTable, delTalk } from "@/api/assistantWork/talk";
+import { talkTable, delTalk, expTalk } from "@/api/assistantWork/talk";
 import { getCollege } from "@/api/class/maintenanceClass";
 export default {
   components: { CheckboxCom },
@@ -219,6 +219,7 @@ export default {
   },
 
   mounted() {
+    // console.log("this.shijian",this.formatDate(new Date()));
     this.handleSearch();
     this.getAllCollege();
   },
@@ -227,6 +228,36 @@ export default {
   },
 
   methods: {
+    expTalk() {
+      if (this.delArr && this.delArr.length > 0) {
+        var ids = this.delArr;
+        expTalk({ ids: ids }).then((res) => {
+          this.downloadFn(res, "谈心谈话下载", "xlsx");
+          this.handleSearch();
+        });
+      } else {
+        let data = {
+          xm: this.select == "xm" ? this.searchVal : null,
+          xh: this.select == "xh" ? this.searchVal : null,
+          thzt: this.select == "thzt" ? this.searchVal : null,
+          thrxm: this.select == "thrxm" ? this.searchVal : null,
+          thrgh: this.select == "thrgh" ? this.searchVal : null,
+          thdd: this.select == "thdd" ? this.searchVal : null,
+          dwh: this.moreIform.xydm,
+          ztjlList: this.ztjl.choose,
+          starttime: this.dateArray[0],
+          endtime: this.dateArray[1],
+          pageNum: this.queryParams.pageNum,
+          pageSize: this.queryParams.pageSize,
+          orderZd: this.queryParams.orderZd,
+          orderPx: this.queryParams.orderPx,
+        };
+        expTalk({ ...data }).then((res) => {
+          this.downloadFn(res, "谈心谈话下载", "xlsx");
+          this.handleSearch();
+        });
+      }
+    },
     del() {
       if (this.delArr && this.delArr.length > 0) {
         delTalk({ ids: this.delArr }).then((res) => this.handleSearch());

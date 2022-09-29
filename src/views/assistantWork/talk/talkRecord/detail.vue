@@ -226,12 +226,38 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item label="添加附件">
+        <el-form-item label="添加附件" v-if="edit == '1'">
+          <div v-if="urlArr.length > 0" class="block">
+            <div v-for="(item, i) in urlArr">
+              <el-image
+                style="margin-left: 20px; width: 300px; height: 300px"
+                :src="item"
+              ></el-image>
+            </div>
+          </div>
+          <el-upload
+            action="#"
+            multiple
+            :file-list="fileList"
+            :auto-upload="false"
+            class="el-upload"
+            :on-preview="handlePreview"
+            :disabled="edit == '1' ? true : false"
+          >
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="添加附件" v-if="edit == '2'">
           <el-upload
             drag
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="#"
             multiple
+            :file-list="fileList"
+            :auto-upload="false"
             class="el-upload"
+            :on-preview="handlePreview"
+            :before-remove="beforeRemove"
+            :on-change="change"
+            :disabled="edit == '1' ? true : false"
           >
             <div class="el-upload-dragger">
               <i class="el-icon-upload"></i>
@@ -258,9 +284,13 @@ import {
   updateTalk,
   getXmXgh,
 } from "@/api/assistantWork/talk";
+import { querywj, delwj, Exportwj } from "@/api/assistantWork/classEvent";
 export default {
   data() {
     return {
+      urlArr: [],
+      fileList: [],
+      fileListAdd: [],
       lgnSn: "", //逻辑主键
       edit: 1,
       stuDate: [],
@@ -293,12 +323,59 @@ export default {
     this.value2 = new Date();
     this.value1 = this.transTime(new Date());
     this.queryTag();
+    this.getUrl();
+    this.querywj();
     this.$nextTick((_) => {
       this.queryDetail();
     });
   },
 
   methods: {
+    getUrl() {
+      querywj({ businesId: this.lgnSn }).then((res) => {
+        var arr = res.data || [];
+        var arr1 = [];
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i].fileSuffix == ".png" || arr[i].fileSuffix == ".jpg") {
+            arr1.push(arr[i]);
+          }
+        }
+        var arr2 = arr1.slice(0, 3) || [];
+        for (var j = 0; j < arr2.length; j++) {
+          Exportwj({ id: arr[j].id.toString() }).then((res) => {
+            this.urlArr.push(window.URL.createObjectURL(res));
+          });
+        }
+      });
+    },
+    change(file, fileList) {
+      //用于文件先保存
+      this.fileListAdd.push(file);
+      this.fileList = fileList;
+    },
+    handlePreview(file) {
+      //用于文件下载
+      Exportwj({ id: file.id.toString() }).then((res) => {
+        this.url = window.URL.createObjectURL(res);
+        this.downloadFn(res, file.fileName, file.fileSuffix);
+      });
+    },
+    beforeRemove(file, fileList) {
+      //用于文件删除
+      delwj({ id: file.id.toString() }).then();
+    },
+    querywj() {
+      //用于文件查询
+      querywj({ businesId: this.lgnSn }).then((res) => {
+        this.fileList = res.data;
+        this.fileList = this.fileList.map((ele) => {
+          return {
+            name: ele.fileName,
+            ...ele,
+          };
+        });
+      });
+    },
     queryDetail() {
       detailTalk({ id: this.lgnSn }).then((res) => {
         const { list, stuList, fdyMain } = res.data;
@@ -395,8 +472,20 @@ export default {
         xhList: list2,
         xmList: list,
       };
-
-      updateTalk(data).then((res) => {});
+      let formData = new FormData();
+      formData.append("id", this.lgnSn.toString());
+      formData.append("thdd", data.thdd);
+      formData.append("thnr", data.thnr);
+      formData.append("thsj", data.thsj);
+      formData.append("startTime", data.startTime);
+      formData.append("endTime", data.endTime);
+      formData.append("thzt", data.thzt);
+      formData.append("xhList", data.xhList);
+      formData.append("xmList", data.xmList);
+      this.fileListAdd.map((file) => {
+        formData.append("files", file.raw);
+      });
+      updateTalk(formData).then((res) => {});
     },
 
     editClick() {
@@ -489,6 +578,9 @@ export default {
 
 <style lang="scss" scoped>
 .addRole {
+  .block {
+    display: flex;
+  }
   .thr {
     color: #606266;
     margin-top: 30px;
@@ -698,6 +790,7 @@ export default {
     .cancel {
       color: #005657;
     }
+
     .confirm {
       background: #005657;
       color: #fff;

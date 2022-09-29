@@ -273,8 +273,10 @@ export default {
 
       getThemeEduList(this.queryParams)
         .then((response) => {
-          this.basicInfoList = response.data; // 根据状态码接收数据
-          this.total = response.total; //总条数
+          if (response.errcode == "00") {
+            this.basicInfoList = response.data; // 根据状态码接收数据
+            this.total = response.totalCount; //总条数
+          }
         })
         .catch((err) => {
           // this.$message.error(err.errmsg);
@@ -315,10 +317,16 @@ export default {
         let data = {
           ids: idlist,
         };
-        delDetail(data).then((res) => {
-          // console.log(res);
-          this.getList();
-        });
+        delDetail(data)
+          .then((res) => {
+            // console.log(res);
+            if (res.errcode == "00") {
+              this.getList();
+            }
+          })
+          .catch((err) => {
+            // this.$message.error(err.errmsg);
+          });
       } else {
         this.$message.error("请至少选择一条记录");
       }
@@ -415,18 +423,30 @@ export default {
     // 导出确认
     handleConfirm() {
       this.showExport = false;
-      let idlist = [];
 
-      // if (this.multipleSelection.length > 0) {
-      //   for (let i = 0; i < this.multipleSelection.length; i++) {
-      //     idlist.push(this.multipleSelection[i].id);
-      //   }
-      // }
-      var exportParams = this.queryParams;
-      // var arr = this.list.length > 0 ? this.list.map((item) => item.id) : [];
       var arr = this.list.length > 0 ? this.list.map((item) => item.id) : [];
-      this.$set(exportParams, "ids", arr);
-      // exportParams.ids = idlist;
+
+      let exportParams = {
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        gjc: this.queryParams.gjc,
+        hddd: this.queryParams.hddd,
+        hdksrq: this.queryParams.hdksrq,
+        jlrgh: this.queryParams.jlrgh,
+        jlrlxList: this.queryParams.jlrlxList,
+        jlrxm: this.queryParams.jlrxm,
+        jydx: this.queryParams.jydx,
+        jyzt: this.queryParams.jyzt,
+        orderPx: this.queryParams.orderPx,
+        orderZd: this.queryParams.orderZd,
+        ssdwdmList: this.queryParams.ssdwdmList,
+        ssdwmc: this.queryParams.ssdwmc,
+
+        hdsjEnd: this.queryParams.hdsjEnd,
+        hdsjStsrt: this.queryParams.hdsjStsrt,
+        ids: arr,
+      };
+
       outThemeEdu(exportParams)
         .then((res) => this.downloadFn(res, "主题教育列表导出", "xlsx"))
         .catch((err) => {});

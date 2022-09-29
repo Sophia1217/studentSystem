@@ -57,18 +57,21 @@
       </div>
     </div>
     <div class="contextDetail">
-      <span class="title">走访详情</span>
+      <div class="headight">
+        <span class="title">走访详情</span>
+      </div>
       <div class="detailForm">
         <el-form
           :model="visitDetailForm"
           ref="queryForm3"
           size="small"
           :inline="true"
-          label-width="68px"
+          label-width="100px"
+          :rules="rules"
         >
           <el-row :gutter="10">
             <el-col :span="4">
-              <el-form-item label="走访主题">
+              <el-form-item label="走访主题" prop="zfzt">
                 <el-input v-model="visitDetailForm.zfzt" clearable />
               </el-form-item>
             </el-col>
@@ -77,7 +80,7 @@
               <el-tag
                 v-for="(item, i) in tags.themeTags"
                 :key="i"
-                @click="pushData(item, 1)"
+                @click="pushData(item, 6)"
                 closable
                 @close="handleClose(item)"
               >
@@ -90,19 +93,19 @@
                 ref="saveTagInput"
                 size="small"
                 @keyup.enter.native="$event.target.blur"
-                @blur="handleInputConfirm(1)"
+                @blur="handleInputConfirm(6)"
               >
               </el-input>
               <el-button
                 icon="el-icon-plus"
                 style="margin-left: 15px"
-                @click="showInput(1)"
+                @click="showInput(6)"
                 >新增常用主题</el-button
               >
             </el-col>
           </el-row>
           <el-row>
-            <el-form-item label="走访时间"
+            <el-form-item label="走访时间" prop="beginDate"
               ><el-date-picker
                 type="date"
                 placeholder="Pick a day"
@@ -130,12 +133,16 @@
             </el-form-item>
           </el-row>
           <el-row>
-            <el-form-item label="添加附件" prop="activity">
+            <el-form-item label="走访附件" prop="activity">
               <el-upload
                 drag
-                action="https://jsonplaceholder.typicode.com/posts/"
+                action="#"
                 multiple
                 class="el-upload"
+                :auto-upload="false"
+                ref="upload"
+                :file-list="fileList"
+                :on-change="change"
               >
                 <div class="el-upload-dragger">
                   <i class="el-icon-upload"></i>
@@ -170,7 +177,14 @@ export default {
       gzdwOptions: [],
       gwOptions: [],
       lxOptions: [],
-
+      rules: {
+        zfzt: [
+          { required: true, message: "走访主题不能为空", trigger: "change" },
+        ],
+        beginDate: [
+          { required: true, message: "走访日期不能为空", trigger: "change" },
+        ],
+      },
       tags: {
         themeTags: [], //主题标签
         addressTags: [],
@@ -214,6 +228,7 @@ export default {
           label: "北京烤鸭",
         },
       ],
+      fileList: [],
     };
   },
   computed: {},
@@ -223,6 +238,7 @@ export default {
     ((this.visitDetailForm.beginDate = new Date()),
     (this.visitDetailForm.endTime = new Date())),
       this.transTime(new Date());
+    this.queryTag();
   },
 
   methods: {
@@ -238,20 +254,65 @@ export default {
       date.setMinutes(min - 30);
       this.visitDetailForm.beginTime = date;
     },
+
+    //上传文件
+    change(file, fileList) {
+      this.fileList = fileList;
+      console.log("file", file);
+      console.log("fileList", fileList);
+    },
+    // 表单校验
+    checkForm() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.queryForm3.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+
+      return true;
+    },
     //保存
     handleUpdata() {
-      let data = {
-        // fjh: "",
-        jssj: this.visitDetailForm.endTime,
-        kssj: this.visitDetailForm.beginTime,
-        // ly: "",
-        zfLyFjh: this.dormitoryList,
-        zfqk: this.visitDetailForm.situation,
-        zfrq: this.visitDetailForm.beginDate,
-        zfzt: this.visitDetailForm.zfzt,
-        userId: this.$store.getters.userId,
-      };
-      addDetail(data).then((res) => {
+      if (!this.checkForm()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      }
+      let formData = new FormData();
+
+      formData.append("jssj ", this.visitDetailForm.endTime);
+      formData.append("kssj", this.visitDetailForm.beginTime);
+      // formData.append("zfLyFjh", this.dormitoryList);
+      for (let i = 0, len = this.dormitoryList.length; i < len; i++) {
+        let locationInfo = this.dormitoryList[i];
+        formData.append("zfLyFjh[" + i + "].ly", locationInfo.ly);
+        formData.append("zfLyFjh[" + i + "].fjh", locationInfo.fjh);
+      }
+      // dormitoryList: [{ ly: "", fjh: "" }],
+
+      formData.append("zfqk ", this.visitDetailForm.situation);
+      formData.append("zfrq", this.visitDetailForm.beginDate);
+      formData.append("zfzt ", this.visitDetailForm.zfzt);
+      formData.append("userId", this.$store.getters.userId);
+      if (this.fileList.length > 0) {
+        this.fileList.map((ele) => {
+          formData.append("files", ele.raw);
+        });
+      }
+      // let data = {
+      //   // fjh: "",
+      //   jssj: this.visitDetailForm.endTime,
+      //   kssj: this.visitDetailForm.beginTime,
+      //   // ly: "",
+      //   zfLyFjh: this.dormitoryList,
+      //   zfqk: this.visitDetailForm.situation,
+      //   zfrq: this.visitDetailForm.beginDate,
+      //   zfzt: this.visitDetailForm.zfzt,
+      //   userId: this.$store.getters.userId,
+      // };
+      addDetail(formData).then((res) => {
         this.$router.push({
           path: "/assistantWork/dormitory",
         });
@@ -260,7 +321,7 @@ export default {
 
     //新增主题确认
     handleInputConfirm(type) {
-      if (type == 1) {
+      if (type == 6) {
         var obj = {
           cyMsg: "",
           cyType: type.toString(),
@@ -289,7 +350,7 @@ export default {
     //获取标签
     queryTag() {
       var data = {
-        cyType: "1", //1主题,2地点,3组织单位
+        cyType: "6", //1主题,2地点,3组织单位6走访主题
         userId: this.$store.getters.userId,
       };
       var data1 = {
@@ -311,7 +372,7 @@ export default {
     },
     //是否展示标签
     showInput(type) {
-      if (type == 1) {
+      if (type == 6) {
         this.inputVisible = true;
       } else {
         this.inputVisible1 = true;
@@ -319,7 +380,7 @@ export default {
     },
     //标签添加
     pushData(item, type) {
-      if (type == 1) {
+      if (type == 6) {
         if (this.visitDetailForm.zfzt == "") {
           this.visitDetailForm.zfzt = this.visitDetailForm.zfzt + item.cyMsg;
         } else {

@@ -15,7 +15,7 @@
             @change="selectChange"
             placeholder="查询条件"
           >
-            <el-option label="走访目的" value="1" />
+            <el-option label="走访主题" value="1" />
             <el-option label="走访人" value="2" />
             <el-option label="工号" value="3" />
           </el-select>
@@ -323,9 +323,6 @@ export default {
     //获取数据列表
     getList() {
       // console.log(this.select, "select");
-      this.queryParams.zfmd = this.select == 1 ? this.searchVal : "";
-      this.queryParams.xm = this.select == 2 ? this.searchVal : "";
-      this.queryParams.gh = this.select == 3 ? this.searchVal : "";
 
       getDormitoryVisitList(this.queryParams)
         .then((response) => {
@@ -346,6 +343,9 @@ export default {
       //   csrqs = this.datePicker[0];
       //   csrqe = this.datePicker[1];
       // }
+      this.queryParams.zfzt = this.select == 1 ? this.searchVal : "";
+      this.queryParams.xm = this.select == 2 ? this.searchVal : "";
+      this.queryParams.gh = this.select == 3 ? this.searchVal : "";
       this.queryParams.pageNum = 1;
       this.queryParams.fdylxList = this.status.choose;
       // this.queryParams.hdsjStsrt = csrqs;
@@ -418,17 +418,25 @@ export default {
     // 导出确认
     handleConfirm() {
       this.showExport = false;
-      // let idlist = [];
-
-      // if (this.multipleSelection.length > 0) {
-      //   for (let i = 0; i < this.multipleSelection.length; i++) {
-      //     idlist.push(this.multipleSelection[i].id);
-      //   }
-      // }
-      //  exportParams.idList = idlist;
-      var exportParams = this.queryParams;
       var arr = this.list.length > 0 ? this.list.map((item) => item.id) : [];
-      this.$set(exportParams, "idList", arr);
+
+      let exportParams = {
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+
+        orderPx: this.queryParams.orderPx,
+        orderZd: this.queryParams.orderZd,
+        dwmcList: this.queryParams.dwmcList,
+        fdylxList: this.queryParams.fdylxList,
+        idList: arr,
+        roleId: this.$store.getters.roleId,
+        userId: this.$store.getters.userId,
+        xm: this.queryParams.xm,
+        gh: this.queryParams.gh,
+        zfss: this.queryParams.zfss,
+        zfzt: this.queryParams.zfzt,
+        zfrq: this.queryParams.zfrq,
+      };
 
       outDormitory(exportParams)
         .then((res) => this.downloadFn(res, "寝室走访列表导出", "xlsx"))

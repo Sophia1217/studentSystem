@@ -12,30 +12,31 @@
           ref="queryForm2"
           size="small"
           :inline="true"
-          label-width="68px"
+          label-width="100px"
+          :rules="rules"
         >
           <el-row :gutter="10">
-            <el-col :span="3.5"
-              ><el-form-item label="教育主题">
+            <el-col :span="4"
+              ><el-form-item label="教育主题" prop="jyzt">
                 <el-input
                   v-model="eduDetailForm.jyzt"
                   clearable
                 /> </el-form-item
             ></el-col>
             <el-col :span="4"
-              ><el-form-item label="关键词">
+              ><el-form-item label="关键词" prop="keyword">
                 <el-input
                   v-model="eduDetailForm.keyword"
                   clearable
                 /> </el-form-item
             ></el-col>
 
-            <el-col :span="12">
+            <el-col :span="15">
               <span class="tagtitle">常用关键词</span>
               <el-tag
                 v-for="(item, i) in tags.themeTags"
                 :key="i"
-                @click="pushData(item, 1)"
+                @click="pushData(item, 5)"
                 closable
                 @close="handleClose(item)"
               >
@@ -48,19 +49,19 @@
                 ref="saveTagInput"
                 size="small"
                 @keyup.enter.native="$event.target.blur"
-                @blur="handleInputConfirm(1)"
+                @blur="handleInputConfirm(5)"
               >
               </el-input>
               <el-button
                 icon="el-icon-plus"
                 style="margin-left: 15px"
-                @click="showInput(1)"
+                @click="showInput(5)"
                 >新增常用关键词</el-button
               >
             </el-col>
           </el-row>
           <el-row>
-            <el-form-item label="教育对象">
+            <el-form-item label="教育对象" prop="xy">
               <el-row :gutter="20">
                 <el-col :span="4">
                   <el-select
@@ -147,32 +148,32 @@
             <el-form-item label="其他">
               <el-input v-model="eduDetailForm.other"></el-input
             ></el-form-item>
-            <el-form-item label="人数">
+            <el-form-item label="人数" prop="peopleNum">
               <el-input v-model="eduDetailForm.peopleNum"></el-input
             ></el-form-item>
           </el-row>
           <el-row>
-            <el-form-item label="开展时间"
+            <el-form-item label="开展时间" prop="beginDate"
               ><el-date-picker
                 type="date"
                 placeholder="Pick a day"
                 v-model="eduDetailForm.beginDate"
               />
             </el-form-item>
-            <el-form-item label="开始时间">
+            <el-form-item label="开始时间" prop="beginTime">
               <el-time-picker v-model="eduDetailForm.beginTime"
             /></el-form-item>
-            <el-form-item label="结束时间">
+            <el-form-item label="结束时间" prop="endTime">
               <el-time-picker v-model="eduDetailForm.endTime"
             /></el-form-item>
           </el-row>
           <el-row>
             <el-col :span="4">
-              <el-form-item label="开展地点">
+              <el-form-item label="开展地点" prop="place">
                 <el-input v-model="eduDetailForm.place"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="15">
               <span class="tagtitle">常用地点</span>
 
               <el-tag
@@ -206,9 +207,13 @@
             <el-form-item label="活动资料" prop="activity"> </el-form-item>
             <el-upload
               drag
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action="#"
               multiple
               class="el-upload"
+              :auto-upload="false"
+              ref="upload"
+              :file-list="fileList"
+              :on-change="change"
             >
               <div class="el-upload-dragger">
                 <i class="el-icon-upload"></i>
@@ -250,7 +255,19 @@ export default {
         themeTags: [],
         addressTags: [],
       },
-
+      rules: {
+        jyzt: [
+          { required: true, message: "教育主题不能为空", trigger: "change" },
+        ],
+        keyword: [
+          { required: true, message: "关键词不能为空", trigger: "change" },
+        ],
+        xy: [{ required: true, message: "学院不能为空", trigger: "change" }],
+        beginDate: [
+          { required: true, message: "日期不能为空", trigger: "change" },
+        ],
+        place: [{ required: true, message: "地点不能为空", trigger: "change" }],
+      },
       inputVisible: false,
       inputValue: "",
       inputVisible1: false,
@@ -281,6 +298,7 @@ export default {
         endTime: "",
       },
       classList: [],
+      fileList: [],
     };
   },
   computed: {},
@@ -313,37 +331,81 @@ export default {
         query: {},
       });
     },
+    //上传文件
+    change(file, fileList) {
+      this.fileList = fileList;
+      console.log("file", file);
+      console.log("fileList", fileList);
+    },
+
+    // 表单校验
+    checkForm() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.queryForm2.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+
+      return true;
+    },
     //保存按钮
     handleUpdata() {
+      if (!this.checkForm()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      }
       var bjstr = "";
       var zystr = "";
 
       zystr = this.eduDetailForm.zy ? this.eduDetailForm.zy.join() : "";
       bjstr = this.eduDetailForm.bj ? this.eduDetailForm.bj.join() : "";
-      let data = {
-        gjc: this.eduDetailForm.keyword,
-        hddd: this.eduDetailForm.place,
-        hdjssj: this.eduDetailForm.endTime,
-        hdksrq: this.eduDetailForm.beginDate,
-        hdkssj: this.eduDetailForm.beginTime,
-        hdrs: this.eduDetailForm.peopleNum,
-        jyzt: this.eduDetailForm.jyzt,
-        pycc: this.eduDetailForm.pycc,
-        // ssbj: this.eduDetailForm.bj,
-        ssbj: bjstr,
-        ssdwdm: this.eduDetailForm.xy,
-        ssnj: this.eduDetailForm.nj,
-        ssxz: this.eduDetailForm.other,
-        // sszy: this.eduDetailForm.zy,
-        sszy: zystr,
-        //userId: this.$store.getters.userId,
-      };
-      //console.log("shijian", data.hdjssj, data.hdksrq);
-      addDetail(data)
-        .then(() => {
-          this.$router.push({
-            path: "/assistantWork/themeEdu",
-          });
+      let formData = new FormData();
+      formData.append("gjc", this.eduDetailForm.keyword);
+      formData.append("hddd", this.eduDetailForm.place);
+      formData.append(" hdjssj", this.eduDetailForm.endTime);
+      formData.append("hdksrq", this.eduDetailForm.beginDate);
+      formData.append("hdkssj", this.eduDetailForm.beginTime);
+      formData.append("hdrs", this.eduDetailForm.peopleNum);
+      formData.append("jyzt", this.eduDetailForm.jyzt);
+      formData.append("pycc", this.eduDetailForm.pycc);
+      formData.append("ssbj", bjstr);
+      formData.append("ssdwdm", this.eduDetailForm.xy);
+      formData.append("ssnj", this.eduDetailForm.nj);
+      formData.append("ssxz", this.eduDetailForm.other);
+      formData.append("sszy", zystr);
+      // let data = {
+      //   gjc: this.eduDetailForm.keyword,
+      //   hddd: this.eduDetailForm.place,
+      //   hdjssj: this.eduDetailForm.endTime,
+      //   hdksrq: this.eduDetailForm.beginDate,
+      //   hdkssj: this.eduDetailForm.beginTime,
+      //   hdrs: this.eduDetailForm.peopleNum,
+      //   jyzt: this.eduDetailForm.jyzt,
+      //   pycc: this.eduDetailForm.pycc,
+      //   // ssbj: this.eduDetailForm.bj,
+      //   ssbj: bjstr,
+      //   ssdwdm: this.eduDetailForm.xy,
+      //   ssnj: this.eduDetailForm.nj,
+      //   ssxz: this.eduDetailForm.other,
+      //   // sszy: this.eduDetailForm.zy,
+      //   sszy: zystr,
+      //userId: this.$store.getters.userId,
+
+      if (this.fileList.length > 0) {
+        this.fileList.map((ele) => {
+          formData.append("files", ele.raw);
+        });
+      }
+      addDetail(formData)
+        .then((res) => {
+          if (res.errcode == "00") {
+            this.$router.push({
+              path: "/assistantWork/themeEdu",
+            });
+          }
         })
         .catch((err) => {});
     },
@@ -353,8 +415,9 @@ export default {
       this.eduDetailForm.beginTime = date;
     },
 
+    ////标签
     handleInputConfirm(type) {
-      if (type == 1) {
+      if (type == 5) {
         var obj = {
           cyMsg: "",
           cyType: type.toString(),
@@ -382,7 +445,7 @@ export default {
     },
     queryTag() {
       var data = {
-        cyType: "1", //1主题,2地点,3组织单位
+        cyType: "5", //1主题,2地点,3组织单位，5主题教育关键字
         userId: this.$store.getters.userId,
       };
       var data1 = {
@@ -402,14 +465,14 @@ export default {
       delTag(param).then((_) => this.queryTag());
     },
     showInput(type) {
-      if (type == 1) {
+      if (type == 5) {
         this.inputVisible = true;
       } else {
         this.inputVisible1 = true;
       }
     },
     pushData(item, type) {
-      if (type == 1) {
+      if (type == 5) {
         if (this.eduDetailForm.keyword == "") {
           this.eduDetailForm.keyword = this.eduDetailForm.keyword + item.cyMsg;
         } else {
@@ -425,6 +488,7 @@ export default {
         }
       }
     },
+    //下拉框
     getOptions() {
       getCollege().then((response) => {
         // 获取培养单位列表数据
@@ -446,6 +510,7 @@ export default {
       });
     },
 
+    ////教育对象逻辑
     //查询班级
     getBj(val) {
       this.bjOptions = [];
@@ -478,24 +543,26 @@ export default {
 
       //获取专业
 
-      getMajor(query).then((response) => {
-        this.zyOptions = response.data;
-      });
+      getMajor(query)
+        .then((response) => {
+          if (response.errcode == "00") {
+            this.zyOptions = response.data;
+          }
+        })
+        .catch((err) => {});
 
       classList(data).then((response) => {
         // 获取班级列表数据
         if (response.errcode == "00") {
           this.classList = response.data.rows; // 根据状态码接收数据
-          //console.log("班级", this.classList);
 
           for (var i = 0; i < this.classList.length; i++) {
             let bj = { dm: "", mc: "" };
             bj.dm = this.classList[i].bjdm;
             bj.mc = this.classList[i].bjmc;
-            //console.log(bj);
+
             this.bjOptions.push(bj);
           }
-          //console.log("班级选项", this.bjOptions);
         }
       });
     },
@@ -527,16 +594,21 @@ export default {
         userId: "",
         ztm: "",
       };
-      getNum(Opt).then((response) => {
-        this.eduDetailForm.peopleNum = response;
-      });
+      getNum(Opt)
+        .then((response) => {
+          if (response.errcode == "00") {
+            this.eduDetailForm.peopleNum = response.data.toString();
+          }
+        })
+        .catch((err) => {});
     },
+    //培养层次改变
     changePYCC() {
       //console.log("pycc", this.pyccval);
       if (this.eduDetailForm.xy == "" || this.eduDetailForm.pycc == "") {
         this.eduDetailForm.zy = []; // 专业
         this.eduDetailForm.bj = []; // 班级
-        console.log("列表是否空");
+        //console.log("列表是否空");
         this.bjOptions = [];
         this.zyOptions = [];
       } else {
@@ -544,15 +616,20 @@ export default {
       }
       this.getPeopleNum();
     },
-    //学院培养层次改变
+    //学院改变
     xyChange() {
-      if (this.eduDetailForm.pycc != "") {
+      if (this.eduDetailForm.pycc != "" && this.eduDetailForm.xy != "") {
         this.getBj();
-        console.log("是否为空");
+        //console.log("是否为空");
       }
+
+      this.eduDetailForm.zy = []; // 专业
+      this.eduDetailForm.bj = []; // 班级
+
+      this.bjOptions = [];
+      this.zyOptions = [];
       this.getPeopleNum();
     },
-
     //专业和班级改变
     bjChange() {
       this.getPeopleNum();

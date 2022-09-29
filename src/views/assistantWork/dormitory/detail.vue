@@ -105,14 +105,15 @@
       <div class="detailForm">
         <el-form
           :model="visitDetailForm"
-          ref="queryForm2"
+          ref="queryForm3"
           size="small"
           :inline="true"
-          label-width="68px"
+          label-width="100px"
+          :rules="rules"
         >
           <el-row :gutter="10">
             <el-col :span="4">
-              <el-form-item label="走访主题">
+              <el-form-item label="走访主题" prop="zfzt">
                 <el-input
                   v-model="visitDetailForm.zfzt"
                   :disabled="isEdit == '1' ? true : false"
@@ -126,7 +127,7 @@
                 <el-tag
                   v-for="(item, i) in tags.themeTags"
                   :key="i"
-                  @click="pushData(item, 1)"
+                  @click="pushData(item, 6)"
                   closable
                   @close="handleClose(item)"
                 >
@@ -139,20 +140,20 @@
                   ref="saveTagInput"
                   size="small"
                   @keyup.enter.native="$event.target.blur"
-                  @blur="handleInputConfirm(1)"
+                  @blur="handleInputConfirm(6)"
                 >
                 </el-input>
                 <el-button
                   icon="el-icon-plus"
                   style="margin-left: 15px"
-                  @click="showInput(1)"
+                  @click="showInput(6)"
                   >新增常用主题</el-button
                 >
               </div>
             </el-col>
           </el-row>
           <el-row>
-            <el-form-item label="走访时间"
+            <el-form-item label="走访时间" prop="beginDate"
               ><el-date-picker
                 type="date"
                 placeholder="Pick a day"
@@ -186,12 +187,38 @@
             </el-form-item>
           </el-row>
           <el-row>
-            <el-form-item label="添加附件">
+            <el-form-item label="走访附件" v-if="isEdit == '1'">
+              <div v-if="urlArr.length > 0" class="block">
+                <div v-for="(item, i) in urlArr">
+                  <el-image
+                    style="margin-left: 20px; width: 300px; height: 300px"
+                    :src="item"
+                  ></el-image>
+                </div>
+              </div>
+              <el-upload
+                action="#"
+                multiple
+                :file-list="fileList"
+                :auto-upload="false"
+                class="el-upload"
+                :on-preview="handlePreview"
+                :disabled="isEdit == '1' ? true : false"
+              >
+              </el-upload>
+            </el-form-item>
+            <el-form-item label="走访附件" v-if="isEdit == '2'">
               <el-upload
                 drag
-                action="https://jsonplaceholder.typicode.com/posts/"
+                action="#"
                 multiple
+                :file-list="fileList"
+                :auto-upload="false"
                 class="el-upload"
+                :on-preview="handlePreview"
+                :on-change="change"
+                :before-remove="beforeRemove"
+                :disabled="isEdit == '1' ? true : false"
               >
                 <div class="el-upload-dragger">
                   <i class="el-icon-upload"></i>
@@ -225,6 +252,7 @@ import {
   seeDetail,
 } from "@/api/assistantWork/dormitory";
 import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
+import { querywj, delwj, Exportwj } from "@/api/assistantWork/classEvent";
 export default {
   name: "dormitoryVisit",
 
@@ -234,7 +262,14 @@ export default {
       gzdwOptions: [],
       gwOptions: [],
       lxOptions: [],
-
+      rules: {
+        zfzt: [
+          { required: true, message: "走访主题不能为空", trigger: "change" },
+        ],
+        beginDate: [
+          { required: true, message: "走访日期不能为空", trigger: "change" },
+        ],
+      },
       isEdit: 1, //1详情 2编辑
       dormitoryList: [],
       stuData: [
@@ -286,7 +321,10 @@ export default {
         endTime: "",
         situation: "",
       },
-      //走访宿舍表单
+      id: this.$route.query.id,
+      urlArr: [],
+      fileList: [],
+      fileListAdd: [],
     };
   },
   computed: {},
@@ -297,6 +335,8 @@ export default {
     ((this.visitDetailForm.beginDate = new Date()),
     (this.visitDetailForm.endTime = new Date())),
       this.transTime(new Date());
+    this.getUrl();
+    this.querywj();
   },
 
   methods: {
@@ -323,20 +363,54 @@ export default {
       date.setMinutes(min - 30);
       this.visitDetailForm.beginTime = date;
     },
+    // 表单校验
+    checkForm() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.queryForm3.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+
+      return true;
+    },
     //保存
     handleUpdata() {
-      let data = {
-        // fdylx: "string",
-        // files: [null],
-        id: this.$route.query.id,
-        jssj: this.visitDetailForm.endTime,
-        kssj: this.visitDetailForm.beginTime,
-        zfLyFjh: this.dormitoryList,
-        zfqk: this.visitDetailForm.situation,
-        zfrq: this.visitDetailForm.beginDate,
-        zfzt: this.visitDetailForm.zfzt,
-      };
-      editDetail(data).then((res) => {
+      if (!this.checkForm()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      }
+      let formData = new FormData();
+
+      formData.append("jssj ", this.visitDetailForm.endTime);
+      formData.append("kssj", this.visitDetailForm.beginTime);
+      formData.append("id", this.id);
+      for (let i = 0, len = this.dormitoryList.length; i < len; i++) {
+        let locationInfo = this.dormitoryList[i];
+        formData.append("zfLyFjh[" + i + "].ly", locationInfo.ly);
+        formData.append("zfLyFjh[" + i + "].fjh", locationInfo.fjh);
+      }
+      formData.append("zfqk ", this.visitDetailForm.situation);
+      formData.append("zfrq", this.visitDetailForm.beginDate);
+      formData.append("zfzt ", this.visitDetailForm.zfzt);
+      this.fileListAdd.map((ele) => {
+        formData.append("files", ele.raw);
+      });
+      // let data = {
+      //   // fdylx: "string",
+      //   // files: [null],
+
+      //   id: this.$route.query.id,
+      //   jssj: this.visitDetailForm.endTime,
+      //   kssj: this.visitDetailForm.beginTime,
+      //   zfLyFjh: this.dormitoryList,
+      //   zfqk: this.visitDetailForm.situation,
+      //   zfrq: this.visitDetailForm.beginDate,
+      //   zfzt: this.visitDetailForm.zfzt,
+      // };
+      editDetail(formData).then((res) => {
         this.$router.push({
           path: "/assistantWork/dormitory",
         });
@@ -352,7 +426,7 @@ export default {
     },
     //新增主题确认
     handleInputConfirm(type) {
-      if (type == 1) {
+      if (type == 6) {
         var obj = {
           cyMsg: "",
           cyType: type.toString(),
@@ -381,7 +455,7 @@ export default {
     //获取标签
     queryTag() {
       var data = {
-        cyType: "1", //1主题,2地点,3组织单位
+        cyType: "6", //1主题,2地点,3组织单位
         userId: this.$store.getters.userId,
       };
       var data1 = {
@@ -403,7 +477,7 @@ export default {
     },
     //是否展示标签
     showInput(type) {
-      if (type == 1) {
+      if (type == 6) {
         this.inputVisible = true;
       } else {
         this.inputVisible1 = true;
@@ -411,7 +485,7 @@ export default {
     },
     //标签添加
     pushData(item, type) {
-      if (type == 1) {
+      if (type == 6) {
         if (this.visitDetailForm.zfzt == "") {
           this.visitDetailForm.zfzt = this.visitDetailForm.zfzt + item.cyMsg;
         } else {
@@ -425,6 +499,54 @@ export default {
           this.addressValue = this.addressValue + "," + item.cyMsg;
         }
       }
+    },
+    //////上传附件
+    getUrl() {
+      querywj({ businesId: this.id }).then((res) => {
+        var arr = res.data || [];
+        var arr1 = [];
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i].fileSuffix == ".png" || arr[i].fileSuffix == ".jpg") {
+            arr1.push(arr[i]);
+          }
+        }
+        var arr2 = arr1.slice(0, 3) || [];
+        for (var j = 0; j < arr2.length; j++) {
+          Exportwj({ id: arr[j].id.toString() }).then((res) => {
+            this.urlArr.push(window.URL.createObjectURL(res));
+          });
+        }
+      });
+    },
+    change(file, fileList) {
+      console.log("file", file);
+      //用于文件先保存
+      this.fileListAdd.push(file);
+      this.fileList = fileList;
+    },
+    handlePreview(file) {
+      //用于文件下载
+      Exportwj({ id: file.id.toString() }).then((res) => {
+        this.url = window.URL.createObjectURL(res);
+        this.downloadFn(res, file.fileName, file.fileSuffix);
+      });
+    },
+    beforeRemove(file, fileList) {
+      //用于文件删除
+      console.log("jinlai");
+      delwj({ id: file.id.toString() }).then((res) => console.log("res", res));
+    },
+    querywj() {
+      //用于文件查询
+      querywj({ businesId: this.id }).then((res) => {
+        this.fileList = res.data;
+        this.fileList = this.fileList.map((ele) => {
+          return {
+            name: ele.fileName,
+            ...ele,
+          };
+        });
+      });
     },
     //新增宿舍
     addRoles() {

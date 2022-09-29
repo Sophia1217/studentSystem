@@ -28,7 +28,7 @@ export function delDetail(query) {
 export function addDetail(query) {
    
     return request({
-        url: '/fdyThemeEducation/fdyThemeEduAdd',
+        url: '/fdyThemeEducation//importfdyThemeEduAdd',
         method: 'post',
         data: query
     })
@@ -46,7 +46,7 @@ export function getMajor(query) {
 export function editDetail(query) {
    
     return request({
-        url: '/fdyThemeEducation/fdyThemeEduChange',
+        url: '/fdyThemeEducation/importfdyThemeEduChange',
         method: 'post',
         data: query
     })

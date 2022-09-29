@@ -8,7 +8,7 @@
       </div>
       <div class="peopleForm">
         <el-row :gutter="10">
-          <el-col :span="1"> <span>记录人</span></el-col>
+          <el-col :span="0.5"> <span class="tagtitle">记录人</span></el-col>
           <el-col :span="23">
             <el-form
               :model="peopleDetailForm"
@@ -48,11 +48,12 @@
           ref="queryForm2"
           size="small"
           :inline="true"
-          label-width="68px"
+          label-width="100px"
+          :rules="rules"
         >
-          <el-row :gutter="10">
-            <el-col :span="3.5"
-              ><el-form-item label="教育主题">
+          <el-row :gutter="20">
+            <el-col :span="4"
+              ><el-form-item label="教育主题" prop="jyzt">
                 <el-input
                   :disabled="isEdit == '1' ? true : false"
                   v-model="eduDetailForm.jyzt"
@@ -60,7 +61,7 @@
                 /> </el-form-item
             ></el-col>
             <el-col :span="4"
-              ><el-form-item label="关键词">
+              ><el-form-item label="关键词" prop="keyword">
                 <el-input
                   :disabled="isEdit == '1' ? true : false"
                   v-model="eduDetailForm.keyword"
@@ -68,13 +69,13 @@
                 /> </el-form-item
             ></el-col>
 
-            <el-col :span="12">
+            <el-col :span="15">
               <div v-show="isEdit == '2' ? true : false">
                 <span class="tagtitle">常用关键词</span>
                 <el-tag
                   v-for="(item, i) in tags.themeTags"
                   :key="i"
-                  @click="pushData(item, 1)"
+                  @click="pushData(item, 5)"
                   closable
                   @close="handleClose(item)"
                 >
@@ -87,20 +88,20 @@
                   ref="saveTagInput"
                   size="small"
                   @keyup.enter.native="$event.target.blur"
-                  @blur="handleInputConfirm(1)"
+                  @blur="handleInputConfirm(5)"
                 >
                 </el-input>
                 <el-button
                   icon="el-icon-plus"
                   style="margin-left: 15px"
-                  @click="showInput(1)"
+                  @click="showInput(5)"
                   >新增常用关键词</el-button
                 >
               </div>
             </el-col>
           </el-row>
           <el-row>
-            <el-form-item label="教育对象">
+            <el-form-item label="教育对象" prop="xy">
               <el-row :gutter="20">
                 <el-col :span="4">
                   <el-select
@@ -198,7 +199,7 @@
                 </el-col>
               </el-row>
             </el-form-item>
-            <el-form-item label="人数">
+            <el-form-item label="人数" prop="peopleNum">
               <el-input
                 :disabled="isEdit == '1' ? true : false"
                 v-model="eduDetailForm.peopleNum"
@@ -206,7 +207,7 @@
             ></el-form-item>
           </el-row>
           <el-row>
-            <el-form-item label="开展时间"
+            <el-form-item label="开展时间" prop="beginDate"
               ><el-date-picker
                 type="date"
                 placeholder="Pick a day"
@@ -229,14 +230,14 @@
           </el-row>
           <el-row>
             <el-col :span="4">
-              <el-form-item label="开展地点">
+              <el-form-item label="开展地点" prop="place">
                 <el-input
                   :disabled="isEdit == '1' ? true : false"
                   v-model="eduDetailForm.place"
                 ></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="15">
               <div v-show="isEdit == '2' ? true : false">
                 <span class="tagtitle">常用地点</span>
 
@@ -269,38 +270,65 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-form-item label="活动资料">
-              <div v-if="isEdit == '1'"></div>
-              <div v-else>
-                <el-upload
-                  drag
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  multiple
-                  class="el-upload"
-                >
-                  <div class="el-upload-dragger">
-                    <i class="el-icon-upload"></i>
-                    <div class="el-upload__text">
-                      <em>点击</em>或<em>拖拽</em>上传附件
-                    </div>
-                    <div class="el-upload__text">
-                      支持格式：PNG、JPG、WORD、PDF、PPT、ZIP或RAR等主流格，压缩包10M以内，图片2M以内
-                    </div>
-                  </div>
-                </el-upload>
+            <el-form-item label="添加附件" v-if="isEdit == '1'">
+              <div v-if="urlArr.length > 0" class="block">
+                <div v-for="(item, i) in urlArr">
+                  <el-image
+                    style="margin-left: 20px; width: 300px; height: 300px"
+                    :src="item"
+                  ></el-image>
+                </div>
               </div>
+              <el-upload
+                action="#"
+                multiple
+                :file-list="fileList"
+                :auto-upload="false"
+                class="el-upload"
+                :on-preview="handlePreview"
+                :disabled="isEdit == '1' ? true : false"
+              >
+              </el-upload>
+            </el-form-item>
+            <el-form-item label="添加附件" v-if="isEdit == '2'">
+              <el-upload
+                drag
+                action="#"
+                multiple
+                :file-list="fileList"
+                :auto-upload="false"
+                class="el-upload"
+                :on-preview="handlePreview"
+                :on-change="change"
+                :before-remove="beforeRemove"
+                :disabled="isEdit == '1' ? true : false"
+              >
+                <div class="el-upload-dragger">
+                  <i class="el-icon-upload"></i>
+                  <div class="el-upload__text">
+                    <em>点击</em>或<em>拖拽</em>上传附件
+                  </div>
+                  <div class="el-upload__text">
+                    支持格式：PNG、JPG、WORD、PDF、PPT、ZIP或RAR等主流格，压缩包10M以内，图片2M以内
+                  </div>
+                </div>
+              </el-upload>
             </el-form-item>
           </el-row>
+          <el-form-item
+            ><div v-if="isEdit != 2" class="editBottom">
+              <div class="btn editIcon" @click="editButtonClick">编辑</div>
+            </div>
+
+            <div v-if="isEdit == 2" class="editBottom">
+              <div class="btn cancel" @click="handleCancle">取消</div>
+              <div class="btn confirm" @click="handleUpdata('queryForm2')">
+                保存
+              </div>
+            </div></el-form-item
+          >
         </el-form>
       </div>
-    </div>
-    <div v-if="isEdit != 2" class="editBottom">
-      <div class="btn editIcon" @click="editButtonClick">编辑</div>
-    </div>
-
-    <div v-if="isEdit == 2" class="editBottom">
-      <div class="btn cancel" @click="handleCancle">取消</div>
-      <div class="btn confirm" @click="handleUpdata">保存</div>
     </div>
   </div>
 </template>
@@ -318,18 +346,17 @@ import {
   getLevel,
   getGrade,
 } from "@/api/class/maintenanceClass";
+import { querywj, delwj, Exportwj } from "@/api/assistantWork/classEvent";
 export default {
   name: "eduDetail",
 
   data() {
     return {
-      pyccval: "",
-      xyval: "",
       xmOptions: [],
       gzdwOptions: [],
       gwOptions: [],
       lxOptions: [],
-
+      id: this.$route.query.id,
       tags: {
         themeTags: [],
         addressTags: [],
@@ -344,7 +371,9 @@ export default {
       value1: "",
       value2: "",
       textarea1: "",
-
+      urlArr: [],
+      fileList: [],
+      fileListAdd: [],
       isEdit: 1,
       eduDetailForm: {
         jyzt: "",
@@ -373,6 +402,20 @@ export default {
       njOptions: [],
       zyOptions: [],
       bjOptions: [],
+      //表单校验
+      rules: {
+        jyzt: [
+          { required: true, message: "教育主题不能为空", trigger: "change" },
+        ],
+        keyword: [
+          { required: true, message: "关键词不能为空", trigger: "change" },
+        ],
+        xy: [{ required: true, message: "学院不能为空", trigger: "change" }],
+        beginDate: [
+          { required: true, message: "日期不能为空", trigger: "change" },
+        ],
+        place: [{ required: true, message: "地点不能为空", trigger: "change" }],
+      },
     };
   },
   computed: {},
@@ -382,6 +425,9 @@ export default {
     this.getDetailPage();
     this.queryTag();
     this.getOptions();
+    this.getUrl();
+    this.querywj();
+    this.getBj();
   },
 
   methods: {
@@ -431,6 +477,7 @@ export default {
       });
     },
 
+    ///教育对象
     //查询班级
     getBj(val) {
       this.bjOptions = [];
@@ -448,7 +495,7 @@ export default {
       }
       let data = {
         pageNum: 1, // 默认请求第一页数据
-        pageSize: 10, // 默认一页10条数据
+        pageSize: 9999,
         ssdwdmList: ssdwdmList, // 培养单位
         pyccList: pyccList, // 培养层次
         ssnjList: ssnjList, // 年级
@@ -463,24 +510,28 @@ export default {
 
       //获取专业
 
-      getMajor(query).then((response) => {
-        this.zyOptions = response.data;
-      });
+      getMajor(query)
+        .then((response) => {
+          if (response.errcode == "00") {
+            this.zyOptions = response.data;
+          }
+        })
+        .catch((err) => {});
 
       classList(data).then((response) => {
         // 获取班级列表数据
         if (response.errcode == "00") {
           this.classList = response.data.rows; // 根据状态码接收数据
-          //console.log("班级", this.classList);
 
           for (var i = 0; i < this.classList.length; i++) {
-            let bj = { dm: "", mc: "" };
+            // let bj = { dm: "", mc: "" };
+            let bj = {};
             bj.dm = this.classList[i].bjdm;
             bj.mc = this.classList[i].bjmc;
-            //console.log(bj);
+
             this.bjOptions.push(bj);
           }
-          //console.log("班级选项", this.bjOptions);
+          console.log("banji", this.bjOptions);
         }
       });
     },
@@ -505,89 +556,188 @@ export default {
         ssbjList: this.eduDetailForm.bj, //班级
         ssdwdm: this.eduDetailForm.xy, //学院
         ssdwmc: "",
-        //ssnj: "",
+        ssnj: this.eduDetailForm.nj,
         ssxz: "",
         sszyList: this.eduDetailForm.zy, //专业
         updateTime: "",
         userId: "",
         ztm: "",
       };
-      getNum(Opt).then((response) => {
-        this.eduDetailForm.peopleNum = response;
-      });
+      getNum(Opt)
+        .then((response) => {
+          if (response.errcode == "00") {
+            this.eduDetailForm.peopleNum = response.data.toString();
+          }
+        })
+        .catch((err) => {});
     },
+    //培养层次改变
     changePYCC() {
       //console.log("pycc", this.pyccval);
       if (this.eduDetailForm.xy == "" || this.eduDetailForm.pycc == "") {
         this.eduDetailForm.zy = []; // 专业
         this.eduDetailForm.bj = []; // 班级
-        console.log("列表是否空");
+        //console.log("列表是否空");
         this.bjOptions = [];
         this.zyOptions = [];
-      }
-      //this.getZY(val);
-      else {
+      } else {
         this.getBj();
       }
       this.getPeopleNum();
     },
-    //学院培养层次改变
+    //学院改变
     xyChange() {
-      if (this.eduDetailForm.pycc != "") {
+      if (this.eduDetailForm.pycc != "" && this.eduDetailForm.xy != "") {
         this.getBj();
+        //console.log("是否为空");
       }
+
+      this.eduDetailForm.zy = []; // 专业
+      this.eduDetailForm.bj = []; // 班级
+
+      this.bjOptions = [];
+      this.zyOptions = [];
       this.getPeopleNum();
     },
+
     //专业和班级改变
     bjChange() {
       this.getPeopleNum();
     },
-
     handleCancle() {
       this.isEdit = 1;
       this.$router.push({
         path: "/assistantWork/themeEdu",
       });
     },
+    // 表单校验
+    checkForm() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.queryForm2.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+
+      return true;
+    },
+
     //保存
     handleUpdata() {
+      //console.log("???", this.$refs[parma]);
+      if (!this.checkForm()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      }
       var bjstr = "";
       var zystr = "";
 
       zystr = this.eduDetailForm.zy ? this.eduDetailForm.zy.join() : "";
       bjstr = this.eduDetailForm.bj ? this.eduDetailForm.bj.join() : "";
-
-      let data = {
-        gjc: this.eduDetailForm.keyword,
-        hddd: this.eduDetailForm.place,
-        hdjssj: this.eduDetailForm.endTime,
-        hdksrq: this.eduDetailForm.beginDate,
-        hdkssj: this.eduDetailForm.beginTime,
-        hdrs: this.eduDetailForm.peopleNum,
-        jyzt: this.eduDetailForm.jyzt,
-        pycc: this.eduDetailForm.pycc,
-        id: this.$route.query.id,
-        ssbj: bjstr,
-        ssdwdm: this.eduDetailForm.xy,
-        ssnj: this.eduDetailForm.nj,
-        ssxz: this.eduDetailForm.other,
-        sszy: zystr,
-        userId: this.$store.getters.userId,
-      };
-      editDetail(data).then((res) => {
+      let formData = new FormData();
+      formData.append("gjc", this.eduDetailForm.keyword);
+      formData.append("hddd", this.eduDetailForm.place);
+      formData.append(" hdjssj", this.eduDetailForm.endTime);
+      formData.append("hdksrq", this.eduDetailForm.beginDate);
+      formData.append("hdkssj", this.eduDetailForm.beginTime);
+      formData.append("hdrs", this.eduDetailForm.peopleNum);
+      formData.append("jyzt", this.eduDetailForm.jyzt);
+      formData.append("pycc", this.eduDetailForm.pycc);
+      formData.append("ssbj", bjstr);
+      formData.append("ssdwdm", this.eduDetailForm.xy);
+      formData.append("ssnj", this.eduDetailForm.nj);
+      formData.append("ssxz", this.eduDetailForm.other);
+      formData.append("sszy", zystr);
+      formData.append("id", this.$route.query.id);
+      this.fileListAdd.map((ele) => {
+        formData.append("files", ele.raw);
+      });
+      // let data = {
+      //   gjc: this.eduDetailForm.keyword,
+      //   hddd: this.eduDetailForm.place,
+      //   hdjssj: this.eduDetailForm.endTime,
+      //   hdksrq: this.eduDetailForm.beginDate,
+      //   hdkssj: this.eduDetailForm.beginTime,
+      //   hdrs: this.eduDetailForm.peopleNum,
+      //   jyzt: this.eduDetailForm.jyzt,
+      //   pycc: this.eduDetailForm.pycc,
+      //   id: this.$route.query.id,
+      //   ssbj: bjstr,
+      //   ssdwdm: this.eduDetailForm.xy,
+      //   ssnj: this.eduDetailForm.nj,
+      //   ssxz: this.eduDetailForm.other,
+      //   sszy: zystr,
+      //   userId: this.$store.getters.userId,
+      // };
+      editDetail(formData).then((res) => {
+        if (res.errcode == "00") {
+          this.$router
+            .push({
+              path: "/assistantWork/themeEdu",
+            })
+            .catch((err) => {
+              // this.$message.error(err.errmsg);
+            });
+        }
         //console.log(res);
-        this.$router.push({
-          path: "/assistantWork/themeEdu",
+      });
+    },
+    /////上传下载附件
+    getUrl() {
+      querywj({ businesId: this.id }).then((res) => {
+        var arr = res.data || [];
+        var arr1 = [];
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i].fileSuffix == ".png" || arr[i].fileSuffix == ".jpg") {
+            arr1.push(arr[i]);
+          }
+        }
+        var arr2 = arr1.slice(0, 3) || [];
+        for (var j = 0; j < arr2.length; j++) {
+          Exportwj({ id: arr[j].id.toString() }).then((res) => {
+            this.urlArr.push(window.URL.createObjectURL(res));
+          });
+        }
+      });
+    },
+    change(file, fileList) {
+      console.log("file", file);
+      //用于文件先保存
+      this.fileListAdd.push(file);
+      this.fileList = fileList;
+    },
+    handlePreview(file) {
+      //用于文件下载
+      Exportwj({ id: file.id.toString() }).then((res) => {
+        this.url = window.URL.createObjectURL(res);
+        this.downloadFn(res, file.fileName, file.fileSuffix);
+      });
+    },
+    beforeRemove(file, fileList) {
+      //用于文件删除
+      console.log("jinlai");
+      delwj({ id: file.id.toString() }).then((res) => console.log("res", res));
+    },
+    querywj() {
+      //用于文件查询
+      querywj({ businesId: this.id }).then((res) => {
+        this.fileList = res.data;
+        this.fileList = this.fileList.map((ele) => {
+          return {
+            name: ele.fileName,
+            ...ele,
+          };
         });
       });
-
-      //console.log("shijian", data.hdjssj, data.hdksrq);
     },
     editButtonClick() {
       this.isEdit = 2; // 控制是否可以编辑的字段
     },
+    //标签
     handleInputConfirm(type) {
-      if (type == 1) {
+      if (type == 5) {
         var obj = {
           cyMsg: "",
           cyType: type.toString(),
@@ -615,7 +765,7 @@ export default {
     },
     queryTag() {
       var data = {
-        cyType: "1", //1主题,2地点,3组织单位
+        cyType: "5", //1主题,2地点,3组织单位
         userId: this.$store.getters.userId,
       };
       var data1 = {
@@ -635,14 +785,14 @@ export default {
       delTag(param).then((_) => this.queryTag());
     },
     showInput(type) {
-      if (type == 1) {
+      if (type == 5) {
         this.inputVisible = true;
       } else {
         this.inputVisible1 = true;
       }
     },
     pushData(item, type) {
-      if (type == 1) {
+      if (type == 5) {
         if (this.eduDetailForm.keyword == "") {
           this.eduDetailForm.keyword = this.eduDetailForm.keyword + item.cyMsg;
         } else {
@@ -661,6 +811,7 @@ export default {
   },
 };
 </script>
+
 <style lang="scss" scoped>
 .eduDetail {
   .writePeople {

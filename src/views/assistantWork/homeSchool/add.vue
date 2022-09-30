@@ -327,18 +327,15 @@ export default {
       xianOps:[],
       //表单校验
       rules: {
-        // theme: [
-        //   { required: true, message: "家访主题为空", trigger: "change" },
-        // ],
-        // homeModel: [
-        //   { required: true, message: "家访形式为空", trigger: "change" },
-        // ],
-        // date: [
-        //   { required: true, message: "家访日期为空", trigger: "change" },
-        // ],
-        // didian: [
-        //   { required: true, message: "请选择家访地点", trigger: "change" },
-        // ],
+        theme: [
+          { required: true, message: "请输入家访主题", trigger: "blur" },
+        ],
+        homeModel: [
+          { required: true, message: "家访形式不能为空", trigger: "change" },
+        ],
+        didian: [
+          { required: true, message: "请选择家访地点", trigger: "change" },
+        ],
     }
     };
   },

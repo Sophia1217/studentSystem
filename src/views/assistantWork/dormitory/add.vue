@@ -18,12 +18,13 @@
                   v-model="role.ly"
                   size="small"
                   placeholder="请选择楼栋"
+                  @change="lyChange(index)"
                 >
                   <el-option
-                    v-for="(item, index) in stuData"
-                    :key="index"
-                    :label="item.label"
-                    :value="item.value"
+                    v-for="(ele1, ind1) in zfssOptions"
+                    :key="ind1"
+                    :label="ele1.mc"
+                    :value="ele1.dm"
                   >
                   </el-option>
                 </el-select>
@@ -33,10 +34,10 @@
                   placeholder="请选择宿舍号"
                 >
                   <el-option
-                    v-for="(item, index) in stuData"
-                    :key="index"
-                    :label="item.label"
-                    :value="item.value"
+                    v-for="(ele, ind) in role.fjhOptions"
+                    :key="ind"
+                    :label="ele.mc"
+                    :value="ele.dm"
                   >
                   </el-option>
                 </el-select>
@@ -110,13 +111,23 @@
                 type="date"
                 placeholder="Pick a day"
                 v-model="visitDetailForm.beginDate"
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
               />
             </el-form-item>
             <el-form-item label="开始时间">
-              <el-time-picker v-model="visitDetailForm.beginTime"
+              <el-time-picker
+                v-model="visitDetailForm.beginTime"
+                format="hh时mm分"
+                value-format="HH:mm"
+                :clearable="false"
             /></el-form-item>
             <el-form-item label="结束时间">
-              <el-time-picker v-model="visitDetailForm.endTime"
+              <el-time-picker
+                v-model="visitDetailForm.endTime"
+                format="hh时mm分"
+                value-format="HH:mm"
+                :clearable="false"
             /></el-form-item>
           </el-row>
           <el-row>
@@ -150,7 +161,7 @@
                     <em>点击</em>或<em>拖拽</em>上传附件
                   </div>
                   <div class="el-upload__text">
-                    支持格式：PNG、JPG、WORD、PDF、PPT、ZIP或RAR等主流格，压缩包10M以内，图片2M以内
+                    支持格式：PNG、JPG、WORD、PDF、PPT、ZIP或RAR等主流格式，压缩包10M以内，图片2M以内
                   </div>
                 </div>
               </el-upload>
@@ -167,16 +178,16 @@
 </template>
 <script>
 import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
-import { addDetail } from "@/api/assistantWork/dormitory";
+import {
+  addDetail,
+  queryRelatedLd,
+  queryRelatedFj,
+} from "@/api/assistantWork/dormitory";
 export default {
   name: "dormitoryAdd",
 
   data() {
     return {
-      xmOptions: [],
-      gzdwOptions: [],
-      gwOptions: [],
-      lxOptions: [],
       rules: {
         zfzt: [
           { required: true, message: "走访主题不能为空", trigger: "change" },
@@ -205,29 +216,9 @@ export default {
       },
 
       dormitoryList: [{ ly: "", fjh: "" }],
-      stuData: [
-        {
-          value: "选项1",
-          label: "黄金糕",
-        },
-        {
-          value: "选项2",
-          label: "双皮奶",
-          disabled: true,
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
+      zfssOptions: [],
+      fjhOptions: [],
+      zfssOptions: [],
       fileList: [],
     };
   },
@@ -235,9 +226,13 @@ export default {
   watch: {},
   created() {},
   mounted() {
-    ((this.visitDetailForm.beginDate = new Date()),
-    (this.visitDetailForm.endTime = new Date())),
-      this.transTime(new Date());
+    this.getOptions();
+    this.visitDetailForm.beginDate = this.formatDate(new Date()).slice(0, 10);
+    this.visitDetailForm.endTime = this.formatDate(new Date()).slice(-8, -3);
+    this.visitDetailForm.beginTime = this.formatDate(
+      this.transTime(new Date())
+    ).slice(-8, -3);
+    //this.transTime(new Date());
     this.queryTag();
   },
 
@@ -249,17 +244,44 @@ export default {
       });
     },
     //时间设置
-    transTime(date) {
-      var min = date.getMinutes();
-      date.setMinutes(min - 30);
-      this.visitDetailForm.beginTime = date;
-    },
+    // transTime(date) {
+    //   var min = date.getMinutes();
+    //   date.setMinutes(min - 30);
+    //   //this.visitDetailForm.beginTime = this.formatDate(date).slice(-8, -3);
+    // },
 
     //上传文件
     change(file, fileList) {
-      this.fileList = fileList;
+      const index = file.name.lastIndexOf(".");
+      const ext = file.name.substr(index + 1);
+      console.log("ext", ext);
+      //获取后缀 判断文件格式
+      // 图片 2M 文件10M 视频50M
       console.log("file", file);
-      console.log("fileList", fileList);
+      console.log(
+        "Number(file.size / 1024 / 1024)",
+        Number(file.size / 1024 / 1024)
+      );
+      if (
+        Number(file.size / 1024 / 1024) > 2 &&
+        (ext == "jpg" || ext == "png")
+      ) {
+        let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+        let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+        fileList.splice(idx, 1);
+        this.fileList = fileList;
+        console.log("图片", fileList);
+        this.$message.error("图片大小超过2M,上传失败");
+      } else if (Number(file.size / 1024 / 1024) > 10) {
+        let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+        let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+        fileList.splice(idx, 1);
+        this.fileList = fileList;
+        console.log("文件", fileList);
+        this.$message.error("文件大小超过10M,上传失败");
+      } else {
+        this.fileList = fileList;
+      }
     },
     // 表单校验
     checkForm() {
@@ -285,12 +307,15 @@ export default {
       formData.append("jssj ", this.visitDetailForm.endTime);
       formData.append("kssj", this.visitDetailForm.beginTime);
       // formData.append("zfLyFjh", this.dormitoryList);
+      let lyList = [];
       for (let i = 0, len = this.dormitoryList.length; i < len; i++) {
         let locationInfo = this.dormitoryList[i];
+
         formData.append("zfLyFjh[" + i + "].ly", locationInfo.ly);
         formData.append("zfLyFjh[" + i + "].fjh", locationInfo.fjh);
+        lyList.push(locationInfo.ly);
       }
-      // dormitoryList: [{ ly: "", fjh: "" }],
+      formData.append("zflyList", lyList);
 
       formData.append("zfqk ", this.visitDetailForm.situation);
       formData.append("zfrq", this.visitDetailForm.beginDate);
@@ -396,12 +421,38 @@ export default {
       }
     },
     //新增宿舍
-    addRoles() {
+    addRoles(role, index) {
+      console.log(role, index);
       this.dormitoryList.push({});
     },
     //删除宿舍
     deleRoles(role, index) {
       this.dormitoryList.splice(index, 1);
+    },
+    //获取楼栋
+    getOptions() {
+      queryRelatedLd().then((response) => {
+        // 获取走访宿舍列表数据
+        if (response.errcode == "00") {
+          this.zfssOptions = response.data;
+        }
+      });
+    },
+    lyChange(index) {
+      this.getFjh(index);
+    },
+    //获取房间号
+    getFjh(index) {
+      console.log(index);
+      let data = { dm: this.dormitoryList[index].ly };
+      queryRelatedFj(data).then((response) => {
+        // 获取走访宿舍列表数据
+        if (response.errcode == "00") {
+          // this.fjhOptions = response.data;
+          this.$set(this.dormitoryList[index], "fjhOptions", response.data);
+          //console.log(this.dormitoryList);
+        }
+      });
     },
   },
 };

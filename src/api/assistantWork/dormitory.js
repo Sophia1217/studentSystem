@@ -49,3 +49,21 @@ export function outDormitory(query) {
         responseType: 'blob',
         data: query
     })}
+//楼栋列表
+    
+export function queryRelatedLd(query) {
+        return request({
+            url: '/fdyQszf/queryRelatedLd',
+            method: 'post',
+            
+            data: query
+        })}
+// 楼栋查宿舍
+   
+export function queryRelatedFj(query) {
+    return request({
+        url: '/fdyQszf/queryRelatedFj',
+        method: 'post',
+        
+        data: query
+    })}

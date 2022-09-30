@@ -48,7 +48,7 @@
               @change="dormitoryChange"
             >
               <el-option
-                v-for="(item, index) in gzdwOptions"
+                v-for="(item, index) in zfssOptions"
                 :key="index"
                 :label="item.mc"
                 :value="item.dm"
@@ -198,6 +198,7 @@ import {
   delDetail,
   seeDetail,
   outDormitory,
+  queryRelatedLd,
 } from "@/api/assistantWork/dormitory";
 import CheckboxCom from "../../components/checkboxCom";
 
@@ -218,9 +219,10 @@ export default {
       select: "",
       isMore: false,
       gzdwOptions: [],
-      nameOptions: [],
+      zfssOptions: [],
       datePicker: "",
       workPlace: [],
+      dormitory: [],
       status: {
         // 状态
         checkAll: false,
@@ -238,6 +240,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        dwhList: [],
         dwmcList: [],
         fdylxList: [],
         idList: [],
@@ -247,9 +250,11 @@ export default {
         orderPx: "",
         xm: "",
         gh: "",
-        zfss: "",
+        zflyList: [],
         zfzt: "",
         zfrq: "",
+        zfrqEnd: "",
+        zfrqStart: "",
       },
       list: [],
     };
@@ -289,7 +294,7 @@ export default {
           idList: idlist,
         };
         delDetail(data).then((res) => {
-          this.getList(this.queryParams);
+          this.getList();
         });
 
         // console.log(res);
@@ -299,17 +304,24 @@ export default {
     },
     //工作地点勾选
     workPlaceChange() {
-      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.dwhList = this.workPlace;
     },
     selectChange(val) {
       this.searchVal = "";
     },
     getOption() {
       this.gzdwOptions = [];
+      this.zfssOptions = [];
       getCollege().then((response) => {
         // 获取培养单位列表数据
         if (response.errcode == "00") {
           this.gzdwOptions = response.data.rows;
+        }
+      });
+      queryRelatedLd().then((response) => {
+        // 获取走访宿舍列表数据
+        if (response.errcode == "00") {
+          this.zfssOptions = response.data;
         }
       });
     },
@@ -326,7 +338,7 @@ export default {
 
       getDormitoryVisitList(this.queryParams)
         .then((response) => {
-          console.log(response);
+          //console.log(response);
 
           this.basicInfoList = response.data; // 根据状态码接收数据
           this.total = response.totalCount; //总条数
@@ -337,20 +349,21 @@ export default {
     },
     //查询
     searchClick() {
-      // let csrqs,
-      //   csrqe = "";
-      // if (this.datePicker && this.datePicker.length > 0) {
-      //   csrqs = this.datePicker[0];
-      //   csrqe = this.datePicker[1];
-      // }
+      let rqs,
+        rqe = "";
+      if (this.datePicker && this.datePicker.length > 0) {
+        rqs = this.datePicker[0];
+        rqe = this.datePicker[1];
+      }
       this.queryParams.zfzt = this.select == 1 ? this.searchVal : "";
       this.queryParams.xm = this.select == 2 ? this.searchVal : "";
       this.queryParams.gh = this.select == 3 ? this.searchVal : "";
       this.queryParams.pageNum = 1;
       this.queryParams.fdylxList = this.status.choose;
-      // this.queryParams.hdsjStsrt = csrqs;
-      // this.queryParams.hdsjEnd = csrqe;
-      this.queryParams.dwmcList = this.workPlace;
+      this.queryParams.zfrqStart = rqs;
+      this.queryParams.zfrqEnd = rqe;
+      this.queryParams.dwhList = this.workPlace;
+      this.queryParams.zflyList = this.dormitory;
       this.getList(this.queryParams);
     },
     // 点击更多
@@ -394,7 +407,7 @@ export default {
     ///
 
     dormitoryChange() {
-      //this.queryParams.List = this.dormitory;
+      this.queryParams.zflyList = this.dormitory;
     },
     //删除对话框关闭
 

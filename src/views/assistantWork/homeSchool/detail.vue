@@ -551,7 +551,11 @@ export default {
       this.getDetail();
     },
     showInput() {
-      this.form.inputVisible = true;
+      if (this.tag.themeTags.length > 8) {
+          this.$message.error("最多九条");
+        } else{
+            this.form.inputVisible = true;
+        } 
     },
     handleInputConfirm() {
       var obj = {

@@ -263,9 +263,17 @@ export default {
     },
     showInput(type) {
       if (type == 3) {
-        this.form.inputVisible = true;
+        if (this.tag.unitTags.length > 8) {
+          this.$message.error("最多九条");
+        } else{
+            this.form.inputVisible = true;
+        } 
       } else {
-        this.form.inputVisible1 = true;
+        if (this.tag.addressTags.length > 8) {
+          this.$message.error("最多九条");
+        } else{
+            this.form.inputVisible1 = true;
+        } 
       }
     },
     handleInputConfirm(type) {

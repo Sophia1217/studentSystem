@@ -364,7 +364,7 @@ export default {
     //标签查询
     queryTag() {
       var data = {
-        cyType: "4", //1家校主题,2地点,3组织单位，4班团主题
+        cyType: "4", //1家校主题,2地点,3组织单位，4家校主题
         userId: this.$store.getters.userId,
       };
       queryTag(data).then((res) => {
@@ -376,7 +376,11 @@ export default {
     },
 
     showInput() {
-      this.form.inputVisible = true;
+      if (this.tag.themeTags.length > 8) {
+          this.$message.error("最多九条");
+        } else{
+            this.form.inputVisible = true;
+        } 
     },
     handleInputConfirm() {
       var obj = {

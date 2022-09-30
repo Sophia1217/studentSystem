@@ -203,6 +203,20 @@ export default {
         detail: "",
         cyth: "",
       },
+      rules: {
+        orgUnit: [
+          { required: true, message: "组织单位不能为空", trigger: "change" },
+        ],
+        // homeModel: [
+        //   { required: true, message: "家访形式为空", trigger: "change" },
+        // ],
+        // date: [
+        //   { required: true, message: "家访日期为空", trigger: "change" },
+        // ],
+        // didian: [
+        //   { required: true, message: "请选择家访地点", trigger: "change" },
+        // ],
+    }
     };
   },
 
@@ -331,6 +345,18 @@ export default {
        else {
         this.fileList = fileList;
       }
+    },
+    // 表单校验
+    checkForm() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.queryForm.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
     },
     sava() {
       let formData = new FormData();

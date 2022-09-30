@@ -352,7 +352,9 @@
         </el-form-item>
       </el-form>
       <div class="headLeft">
-          <button class="span1" v-if="edit == 1" 
+          <button class="span1" v-if="edit == 1 && 
+          (this.formTop.applyGh == this.$store.getters.userId ||
+          this.$store.getters.roleId=='01') "
           @click="editClick()">
             编辑
           </button>
@@ -398,12 +400,6 @@ export default {
         { dm:"1",xm:"线上视频" },
         { dm:"2",xm:"线下实地" },
       ],
-      modId: "",
-      // 查询参数
-      queryParams: {
-        roleRem: "",
-        roleName: this.isEdit == "1" ? "" : this.$route.query.roleNameEdit, // 编辑是2
-      },
       treeData: [],
       defaultProps: {
         children: "children",
@@ -435,7 +431,6 @@ export default {
         detailPlace:"",
         state:"",
         
-
         inputVisible: false,
         inputValue: "",
         
@@ -444,15 +439,12 @@ export default {
       proOps: [],//省
       cityOps:[],
       xianOps:[],
-      createId:"",
-      jueseOpen: 0,
     };
   },
 
   mounted() {
     this.id = this.$route.query.id;
 
-    // (this.form.date = new Date());
     this.queryTag();
     this.getDetail();
     this.getProOps();
@@ -719,6 +711,7 @@ export default {
         this.form.state = res.data.jfqk
         this.stuDate = res.data.xsXmXgh;
         this.partDate = res.data.gtcyrXmXgh;
+ 
         for (var i = 0; i < this.stuDate.length; i++) {
           if (this.stuDate[i].xm !== "") {
             //此处找后台约定好
@@ -751,9 +744,6 @@ export default {
           this.getCity(this.form.proPlace);
           this.getXian(this.form.cityPlace);
         }
-        // if (this.form.applyGh == this.$store.getters.userId){
-        //   this.jueseOpen = 1
-        // }
         
       })
     },

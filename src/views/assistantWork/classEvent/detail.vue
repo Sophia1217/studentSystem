@@ -261,7 +261,10 @@
         </el-form-item>
       </el-form>
       <div class="headLeft">
-        <button class="span1" v-if="edit == 1" @click="editClick()">
+        <button class="span1" v-if="edit == 1 && 
+          (this.formTop.recordGh == this.$store.getters.userId ||
+          this.$store.getters.roleId=='01')"
+        @click="editClick()">
           编辑
         </button>
         <button class="span1" v-if="edit == 2" @click="cancel()">取消</button>

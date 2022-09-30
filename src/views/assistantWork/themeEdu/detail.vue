@@ -213,18 +213,26 @@
                 placeholder="Pick a day"
                 :disabled="isEdit == '1' ? true : false"
                 v-model="eduDetailForm.beginDate"
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
               ></el-date-picker>
             </el-form-item>
             <el-form-item label="开始时间" prop="beginTime">
               <el-time-picker
                 :disabled="isEdit == '1' ? true : false"
                 v-model="eduDetailForm.beginTime"
+                format="HH时mm分"
+                value-format="HH:mm"
+                :clearable="false"
               ></el-time-picker
             ></el-form-item>
             <el-form-item label="结束时间" prop="endTime">
               <el-time-picker
                 :disabled="isEdit == '1' ? true : false"
                 v-model="eduDetailForm.endTime"
+                format="HH时mm分"
+                value-format="HH:mm"
+                :clearable="false"
               ></el-time-picker
             ></el-form-item>
           </el-row>
@@ -309,13 +317,18 @@
                     <em>点击</em>或<em>拖拽</em>上传附件
                   </div>
                   <div class="el-upload__text">
-                    支持格式：PNG、JPG、WORD、PDF、PPT、ZIP或RAR等主流格，压缩包10M以内，图片2M以内
+                    支持格式：PNG、JPG、WORD、PDF、PPT、ZIP或RAR等主流格式，压缩包10M以内，图片2M以内
                   </div>
                 </div>
               </el-upload>
             </el-form-item>
           </el-row>
           <el-form-item
+            v-if="
+              (this.$store.getters.roleId == '06' &&
+                this.peopleDetailForm.gh == this.$store.getters.userId) ||
+              this.$store.getters.roleId == '01'
+            "
             ><div v-if="isEdit != 2" class="editBottom">
               <div class="btn editIcon" @click="editButtonClick">编辑</div>
             </div>
@@ -703,10 +716,37 @@ export default {
       });
     },
     change(file, fileList) {
-      console.log("file", file);
-      //用于文件先保存
-      this.fileListAdd.push(file);
-      this.fileList = fileList;
+      const index = file.name.lastIndexOf(".");
+      const ext = file.name.substr(index + 1);
+      //console.log("ext", ext);
+      //获取后缀 判断文件格式
+      // 图片 2M 文件10M 视频50M
+      // console.log("file", file);
+      console.log(
+        "Number(file.size / 1024 / 1024)",
+        Number(file.size / 1024 / 1024)
+      );
+      if (
+        Number(file.size / 1024 / 1024) > 2 &&
+        (ext == "jpg" || ext == "png")
+      ) {
+        let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+        let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+        fileList.splice(idx, 1);
+        this.fileList = fileList;
+        console.log("图片", fileList);
+        this.$message.error("图片大小超过2M,上传失败");
+      } else if (Number(file.size / 1024 / 1024) > 10) {
+        let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+        let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+        fileList.splice(idx, 1);
+        this.fileList = fileList;
+        console.log("文件", fileList);
+        this.$message.error("文件大小超过10M,上传失败");
+      } else {
+        this.fileListAdd.push(file);
+        this.fileList = fileList;
+      }
     },
     handlePreview(file) {
       //用于文件下载

@@ -103,7 +103,14 @@
           <div class="btns borderOrange" @click="handleExport">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns borderLight" @click="handleRemoveDialog">
+          <div
+            class="btns borderLight"
+            @click="handleRemoveDialog"
+            v-if="
+              this.$store.getters.roleId == '06' ||
+              this.$store.getters.roleId == '01'
+            "
+          >
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
           <div

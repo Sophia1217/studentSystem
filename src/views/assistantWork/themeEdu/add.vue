@@ -158,13 +158,23 @@
                 type="date"
                 placeholder="Pick a day"
                 v-model="eduDetailForm.beginDate"
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
               />
             </el-form-item>
             <el-form-item label="开始时间" prop="beginTime">
-              <el-time-picker v-model="eduDetailForm.beginTime"
+              <el-time-picker
+                v-model="eduDetailForm.beginTime"
+                format="HH时mm分"
+                value-format="HH:mm"
+                :clearable="false"
             /></el-form-item>
             <el-form-item label="结束时间" prop="endTime">
-              <el-time-picker v-model="eduDetailForm.endTime"
+              <el-time-picker
+                v-model="eduDetailForm.endTime"
+                format="HH时mm分"
+                value-format="HH:mm"
+                :clearable="false"
             /></el-form-item>
           </el-row>
           <el-row>
@@ -221,7 +231,7 @@
                   <em>点击</em>或<em>拖拽</em>上传附件
                 </div>
                 <div class="el-upload__text">
-                  支持格式：PNG、JPG、WORD、PDF、PPT、ZIP或RAR等主流格，压缩包10M以内，图片2M以内
+                  支持格式：PNG、JPG、WORD、PDF、PPT、ZIP或RAR等主流格式，压缩包10M以内，图片2M以内
                 </div>
               </div>
             </el-upload>
@@ -314,11 +324,16 @@ export default {
 
     this.eduDetailForm.beginDate = new Date();
     //   this.transTime(new Date());
-    this.eduDetailForm.beginTime = new Date(0, 0, 0, 18, 0, 0);
-    this.eduDetailForm.endTime = new Date(0, 0, 0, 20, 0, 0);
+    // this.eduDetailForm.beginTime = new Date(0, 0, 0, 18, 0, 0);
+    // this.eduDetailForm.endTime = new Date(0, 0, 0, 20, 0, 0);
+    this.eduDetailForm.beginDate = this.formatDate(new Date()).slice(0, 10);
+    this.eduDetailForm.endTime = this.formatDate(
+      new Date(0, 0, 0, 20, 0, 0)
+    ).slice(-8, -3);
+    this.eduDetailForm.beginTime = this.formatDate(
+      new Date(0, 0, 0, 18, 0, 0)
+    ).slice(-8, -3);
 
-    // this.eduDetailForm.beginTime = timeobj.setHours(18, 0, 0);
-    // this.eduDetailForm.endTime = timeobj.setHours(20, 0, 0);
     //教育对象
     this.getOptions();
   },
@@ -333,9 +348,40 @@ export default {
     },
     //上传文件
     change(file, fileList) {
-      this.fileList = fileList;
+      // this.fileList = fileList;
+      // console.log("file", file);
+      // console.log("fileList", fileList);
+
+      const index = file.name.lastIndexOf(".");
+      const ext = file.name.substr(index + 1);
+      console.log("ext", ext);
+      //获取后缀 判断文件格式
+      // 图片 2M 文件10M 视频50M
       console.log("file", file);
-      console.log("fileList", fileList);
+      console.log(
+        "Number(file.size / 1024 / 1024)",
+        Number(file.size / 1024 / 1024)
+      );
+      if (
+        Number(file.size / 1024 / 1024) > 2 &&
+        (ext == "jpg" || ext == "png")
+      ) {
+        let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+        let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+        fileList.splice(idx, 1);
+        this.fileList = fileList;
+        console.log("图片", fileList);
+        this.$message.error("图片大小超过2M,上传失败");
+      } else if (Number(file.size / 1024 / 1024) > 10) {
+        let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+        let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+        fileList.splice(idx, 1);
+        this.fileList = fileList;
+        console.log("文件", fileList);
+        this.$message.error("文件大小超过10M,上传失败");
+      } else {
+        this.fileList = fileList;
+      }
     },
 
     // 表单校验

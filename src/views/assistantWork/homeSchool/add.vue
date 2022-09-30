@@ -24,14 +24,14 @@
             </div>
           </div>
           <div
-            v-if="index == renshu.length - 1 && renshu.length !== 6"
+            v-if="index == renshu.length - 1 "
             class="editBtn"
             @click="addPart(ele, index)"
           >
             <i class="addIcon"></i>
           </div>
           <div
-            v-if="renshu.length == 6 || index < renshu.length - 1"
+            v-if=" index < renshu.length - 1"
             class="deleIcon"
             @click="delPart(ele, index)"
           >
@@ -63,14 +63,14 @@
                 size="small"
                 ></el-autocomplete>
                 <div
-                  v-if="index == renshuStu.length - 1 && renshuStu.length !== 6"
+                  v-if="index == renshuStu.length - 1"
                   class="editBtn"
                   @click="addStu(ele, index)"
                 >
                   <i class="addIcon"></i>
                 </div>
                 <div
-                  v-if="renshuStu.length == 6 || index < renshuStu.length - 1"
+                  v-if="index < renshuStu.length - 1"
                   class="deleIcon"
                   @click="delStu(ele, index)"
                 >
@@ -234,7 +234,7 @@
                 <em>点击</em>或<em>拖拽</em>上传附件
               </div>
               <div class="el-upload__text">
-                支持格式：PNG、JPG、WORD、PDF、PPT、ZIP或RAR等主流格，压缩包10M以内，图片2M以内
+                支持格式：PNG、JPG、WORD、PDF、PPT、ZIP或RAR等主流格式，压缩包10M以内，图片2M以内
               </div>
             </div>
           </el-upload>
@@ -351,6 +351,12 @@ export default {
     // this.handleTree();
 
     (this.form.date = new Date());
+    this.form.date = this.formatDate(new Date()).slice(0, 10);
+    // this.talkDate[0].value2 = this.formatDate(new Date()).slice(-8, -3);
+    // this.talkDate[0].value1 = this.formatDate(this.transTime(new Date())).slice(
+    //   -8,
+    //   -3
+    // );
     this.queryTag();
     this.getProOps();
   },
@@ -442,11 +448,12 @@ export default {
       this.partDate[index] = item;
     },
     addPart() {
-      if (this.renshu.length > 5) {
-        this.$message.error("最多六条数据");
-      } else {
-        this.renshu.push({ value: "", label: "" });
-      }
+      // if (this.renshu.length > 5) {
+      //   this.$message.error("最多六条数据");
+      // } else {
+      //   this.renshu.push({ value: "", label: "" });
+      // }
+      this.renshu.push({ value: "", label: "" });
     },
     delPart(role, index) {
       this.renshu.splice(index, 1);
@@ -490,11 +497,7 @@ export default {
       this.stuDate[index] = item;
     },
     addStu() {
-      if (this.renshu.length > 5) {
-        this.$message.error("最多六条数据");
-      } else {
         this.renshuStu.push({ value: "", label: "" });
-      }
     },
     delStu(role, index) {
       this.renshuStu.splice(index, 1);
@@ -555,9 +558,38 @@ export default {
     },
     //上传文件
     change(file, fileList) {
-      this.fileList = fileList;
+      
       console.log("file", file);
       console.log("fileList", fileList);
+
+      const index1 = file.name.lastIndexOf(".");
+      const ext = file.name.substr(index1 + 1);
+      console.log("ext", ext);
+      //获取后缀 判断文件格式
+      // 图片 2M  文件10M  视频50M
+      console.log("file", file);
+      console.log(
+        "Number(file.size / 1024 / 1024)",
+        Number(file.size / 1024 / 1024)
+      );
+      if (Number(file.size / 1024 / 1024)>2  && (ext == "jpg" || ext == "png"|| ext == "png")) {
+         let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+         fileList.splice(idx, 1);
+         this.fileList = fileList;
+         console.log("fileList", fileList);
+         this.$message.error("图片超过2M,上传失败");
+       } else if(Number(file.size / 1024 / 1024) > 10){
+         let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+         fileList.splice(idx, 1);
+         this.fileList = fileList;
+         console.log("fileList", fileList);
+         this.$message.error("文件超过10M,上传失败");
+       }
+       else {
+        this.fileList = fileList;
+      }
     },
     // 表单校验
     checkForm() {
@@ -611,20 +643,34 @@ export default {
 <style lang="scss" scoped>
 .addHomeSchool {
   .editBtn {
-    padding: 0 10px;
-    margin-left: 22px;
+    padding: 0 12px;
+    margin-left: 4px;
     border-radius: 4px;
     font-weight: 400;
     font-size: 14px;
     color: #005657;
     cursor: pointer;
-    line-height: 32px;
+    line-height: 38px;
     .addIcon {
       display: inline-block;
       width: 15px;
       height: 15px;
       background: url("~@/assets/images/addicon.png") no-repeat center;
     }
+    // padding: 0 10px;
+    // margin-left: 22px;
+    // border-radius: 4px;
+    // font-weight: 400;
+    // font-size: 14px;
+    // color: #005657;
+    // cursor: pointer;
+    // line-height: 32px;
+    // .addIcon {
+    //   display: inline-block;
+    //   width: 15px;
+    //   height: 15px;
+    //   background: url("~@/assets/images/addicon.png") no-repeat center;
+    // }
   }
   .suibian {
     display: flex;
@@ -665,8 +711,14 @@ export default {
         font-weight: 600;
       }
   .deleIcon {
-    margin-left: 30px;
+    padding: 0 12px;
+    margin-left: 4px;
+    border-radius: 4px;
+    font-weight: 400;
+    font-size: 14px;
+    color: #005657;
     cursor: pointer;
+    line-height: 38px;
     i {
       display: inline-block;
       vertical-align: middle;

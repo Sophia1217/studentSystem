@@ -151,7 +151,7 @@
     <el-dialog :title="title" :visible.sync="showDelete" width="30%">
       <template v-for="item in multipleSelection">
         <div :key="item.gh">
-          <span>确认删除【{{ item.gh }}】【{{ item.xm }}】的家访记录？</span>
+          <span>确认删除【{{ item.xh }}】【{{ item.xm }}】的家访记录？</span>
         </div>
       </template>
       <span slot="footer" class="dialog-footer">

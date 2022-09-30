@@ -81,7 +81,7 @@
                 <div
                   v-if="
                     index == partDate.length - 1 &&
-                    partDate.length !== 6 &&
+
                     edit == 2
                   "
                   class="editBtn"
@@ -91,7 +91,7 @@
                 </div>
                 <div
                   v-if="
-                    partDate.length == 6 ||
+
                     (index < partDate.length - 1 && edit == 2)
                   "
                   class="deleIcon"
@@ -141,7 +141,6 @@
                 <div
                   v-if="
                     index == stuDate.length - 1 &&
-                    stuDate.length !== 6 &&
                     edit == 2
                   "
                   class="editBtn"
@@ -151,7 +150,6 @@
                 </div>
                 <div
                   v-if="
-                    stuDate.length == 6 ||
                     (index < stuDate.length - 1 && edit == 2)
                   "
                   class="deleIcon"
@@ -354,7 +352,8 @@
         </el-form-item>
       </el-form>
       <div class="headLeft">
-          <button class="span1" v-if="edit == 1" @click="editClick()">
+          <button class="span1" v-if="edit == 1" 
+          @click="editClick()">
             编辑
           </button>
           <button class="span1" v-if="edit == 2" @click="cancel()">取消</button>
@@ -445,23 +444,21 @@ export default {
       proOps: [],//省
       cityOps:[],
       xianOps:[],
+      createId:"",
+      jueseOpen: 0,
     };
   },
 
   mounted() {
     this.id = this.$route.query.id;
-    // this.isEdit = this.$route.query.isEdit;
-    // this.roleId1 = this.$route.query?.UpId;
-    // this.roleName1 = this.$route.query?.roleNameEdit;
-    // this.queryParams.roleRem = this.$route.query?.rem;
-    // this.handleTree();
 
-    (this.form.date = new Date());
+    // (this.form.date = new Date());
     this.queryTag();
     this.getDetail();
     this.getProOps();
     this.getUrl();
     this.querywj();
+    
   },
 
   methods: {
@@ -485,9 +482,38 @@ export default {
     },
     change(file, fileList) {
       console.log("file", file);
-      //用于文件先保存
-      this.fileListAdd.push(file);
-      this.fileList = fileList;
+      console.log("fileList", fileList);
+
+      const index1 = file.name.lastIndexOf(".");
+      const ext = file.name.substr(index1 + 1);
+      console.log("ext", ext);
+      //获取后缀 判断文件格式
+      // 图片 2M  文件10M  视频50M
+      console.log("file", file);
+      console.log(
+        "Number(file.size / 1024 / 1024)",
+        Number(file.size / 1024 / 1024)
+      );
+      if (Number(file.size / 1024 / 1024)>2 && (ext == "jpg" || ext == "png"|| ext == "png")) {
+         let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+         fileList.splice(idx, 1);
+         this.fileList = fileList;
+         console.log("fileList", fileList);
+         this.$message.error("图片超过2M,上传失败");
+       } else if(Number(file.size / 1024 / 1024) > 10){
+         let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+         fileList.splice(idx, 1);
+         this.fileList = fileList;
+         console.log("fileList", fileList);
+         this.$message.error("文件超过10M,上传失败");
+       }
+       else {
+        //用于文件先保存
+        this.fileListAdd.push(file);
+        this.fileList = fileList;
+      }
     },
     handlePreview(file) {
       console.log("file",file);
@@ -562,6 +588,15 @@ export default {
     },
     editClick() {
       this.edit = 2;
+      if (this.form.homeModel =="线上视频"){
+        this.xianshang = 1;
+        // this.form.proPlace = " ";
+        // this.form.cityPlace = " "; // 市
+        // this.form.countryPlace = " "; 
+      }else{
+        this.xianshang = 0;
+      }
+      
 
     },
     cancel() {
@@ -602,12 +637,12 @@ export default {
       }
     },
     addStu(ele, index) {
-      // console.log(index);
-      if (this.stuDate.length > 5) {
-        this.$message.error("最多六条数据");
-      } else {
-        this.stuDate.push({});
-      }
+      // if (this.stuDate.length > 5) {
+      //   this.$message.error("最多六条数据");
+      // } else {
+      //   this.stuDate.push({});
+      // }
+      this.stuDate.push({});
     },
     delStu(ele, index) {
       this.stuDate.splice(index, 1);
@@ -649,12 +684,12 @@ export default {
       }
     },
     addPart(ele, index) {
-      // console.log(index);
-      if (this.partDate.length > 5) {
-        this.$message.error("最多六条数据");
-      } else {
-        this.partDate.push({});
-      }
+      // if (this.partDate.length > 5) {
+      //   this.$message.error("最多六条数据");
+      // } else {
+      //   this.partDate.push({});
+      // }
+      this.partDate.push({});
     },
     delPart(ele, index) {
       this.partDate.splice(index, 1);
@@ -666,8 +701,7 @@ export default {
     getDetail(){
       let data = { id: this.id };
       selectJxlxDetail(data).then((res)=>{
-        
-        // this.detailInfoList = res.data.rows;
+
         this.formTop.applyGh = res.data.sbrgh;
         this.formTop.applyXm = res.data.sbrxm;
         this.formTop.dwh = res.data.sbrdw;
@@ -691,10 +725,10 @@ export default {
             this.$set(
               this.stuDate[i],
               "value",
-              `${this.stuDate[i].xm}(${this.stuDate[i].gh}) `
+              `${this.stuDate[i].xm}(${this.stuDate[i].gh})`
             );
-            this.$set(this.stuDate[i], "xm", `${this.stuDate[i].xm} `);
-            this.$set(this.stuDate[i], "gh", `${this.stuDate[i].gh} `);
+            this.$set(this.stuDate[i], "xm", `${this.stuDate[i].xm}`);
+            this.$set(this.stuDate[i], "gh", `${this.stuDate[i].gh}`);
           } else {
             this.stuDate[i].value = "";
           }
@@ -705,10 +739,10 @@ export default {
             this.$set(
               this.partDate[i],
               "value",
-              `${this.partDate[i].xm}(${this.partDate[i].gh}) `
+              `${this.partDate[i].xm}(${this.partDate[i].gh})`
             );
-            this.$set(this.partDate[i], "xm", `${this.partDate[i].xm} `);
-            this.$set(this.partDate[i], "gh", `${this.partDate[i].gh} `);
+            this.$set(this.partDate[i], "xm", `${this.partDate[i].xm}`);
+            this.$set(this.partDate[i], "gh", `${this.partDate[i].gh}`);
           } else {
             this.partDate[i].value = "";
           }
@@ -717,6 +751,9 @@ export default {
           this.getCity(this.form.proPlace);
           this.getXian(this.form.cityPlace);
         }
+        // if (this.form.applyGh == this.$store.getters.userId){
+        //   this.jueseOpen = 1
+        // }
         
       })
     },

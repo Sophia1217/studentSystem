@@ -65,7 +65,8 @@
             <el-form-item label="开始时间">
               <el-time-picker 
                 v-model="form.begTime" 
-                
+                format="hh时mm分"
+                value-format="HH:mm"
                 placeholder="选择开始时间">
               </el-time-picker> </el-form-item
           ></el-col>
@@ -73,7 +74,8 @@
             <el-form-item label="结束时间">
               <el-time-picker 
                 v-model="form.endTime" 
-                
+                format="hh时mm分"
+                value-format="HH:mm"
                 placeholder="选择结束时间">
               </el-time-picker> </el-form-item
           ></el-col>
@@ -205,18 +207,21 @@ export default {
   },
 
   mounted() {
-    this.form.date = new Date();
-    this.form.endTime = new Date();
-    this.transTime(new Date());
+    this.form.date = this.formatDate(new Date()).slice(0, 10);
+    this.form.endTime = this.formatDate(new Date()).slice(-8, -3);
+    this.form.begTime = this.formatDate(this.transTime(new Date())).slice(
+      -8,
+      -3
+    );
     this.queryTag();
   },
 
   methods: {
-    transTime(date) {
-      var min = date.getMinutes();
-      date.setMinutes(min - 30);
-      this.form.begTime = date;
-    },
+    // transTime(date) {
+    //   var min = date.getMinutes();
+    //   date.setMinutes(min - 30);
+    //   this.form.begTime = date;
+    // },
     //标签查询
     queryTag() {
       var data = {
@@ -295,9 +300,37 @@ export default {
       }
     },
     change(file, fileList) {
-      this.fileList = fileList;
       console.log("file", file);
       console.log("fileList", fileList);
+
+      const index1 = file.name.lastIndexOf(".");
+      const ext = file.name.substr(index1 + 1);
+      console.log("ext", ext);
+      //获取后缀 判断文件格式
+      // 图片 2M  文件10M  视频50M
+      console.log("file", file);
+      console.log(
+        "Number(file.size / 1024 / 1024)",
+        Number(file.size / 1024 / 1024)
+      );
+      if (Number(file.size / 1024 / 1024)>2  && (ext == "jpg" || ext == "png"|| ext == "png")) {
+         let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+         fileList.splice(idx, 1);
+         this.fileList = fileList;
+         console.log("fileList", fileList);
+         this.$message.error("图片超过2M,上传失败");
+       } else if(Number(file.size / 1024 / 1024) > 10){
+         let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+         fileList.splice(idx, 1);
+         this.fileList = fileList;
+         console.log("fileList", fileList);
+         this.$message.error("文件超过10M,上传失败");
+       }
+       else {
+        this.fileList = fileList;
+      }
     },
     sava() {
       let formData = new FormData();

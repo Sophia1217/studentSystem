@@ -480,7 +480,11 @@ export default {
     //是否展示标签
     showInput(type) {
       if (type == 6) {
-        this.inputVisible = true;
+        if (this.tags.themeTags.length > 8) {
+          this.$message.error("最多九条");
+        } else {
+          this.inputVisible = true;
+        }
       } else {
         this.inputVisible1 = true;
       }

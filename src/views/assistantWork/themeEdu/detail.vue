@@ -826,9 +826,17 @@ export default {
     },
     showInput(type) {
       if (type == 5) {
-        this.inputVisible = true;
+        if (this.tags.themeTags.length > 8) {
+          this.$message.error("最多九条");
+        } else {
+          this.inputVisible = true;
+        }
       } else {
-        this.inputVisible1 = true;
+        if (this.tags.addressTags.length > 8) {
+          this.$message.error("最多九条");
+        } else {
+          this.inputVisible1 = true;
+        }
       }
     },
     pushData(item, type) {

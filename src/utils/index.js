@@ -404,7 +404,9 @@ var ls = ""
     ls ="application/zip"
   }else if (type == '.png') {
     ls ="image/png"
-  } else if (type == '.jpe' ||type == '.jpeg'  || type == '.jpg'  ) {
+  } else if (type == '.pdf') {
+    ls ="application/pdf"
+  }else if (type == '.jpe' ||type == '.jpeg'  || type == '.jpg'  ) {
     ls ="image/jpeg"
   } else{
     ls ="text/plain;charset=utf-8"

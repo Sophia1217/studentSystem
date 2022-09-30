@@ -74,7 +74,8 @@ export function expTalk(query) {
     return request({
         url: '/fdyTalk/excelTxth',
         method: 'post',
-        data: query
+        data: query,
+      responseType:'blob'
     })
 }
 

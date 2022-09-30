@@ -219,7 +219,6 @@ export default {
   },
 
   mounted() {
-    // console.log("this.shijian",this.formatDate(new Date()));
     this.handleSearch();
     this.getAllCollege();
   },

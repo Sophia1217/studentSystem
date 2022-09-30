@@ -11,7 +11,7 @@ import request from "@/utils/request.js"
   //导出
   export function expor(query) {
     return request({
-        url: '/fdySzkcs/excelExport',
+        url: '/fdyXpx/excelExport',
         method: 'post',
         data: query,
         responseType:'blob'

@@ -6,7 +6,14 @@
           <span class="title">谈话详情</span>
         </div>
         <div class="headLeft">
-          <button class="span1" v-if="edit == 1" @click="editClick()">
+          <button
+            class="span1"
+            v-if="
+              edit == 1 &&
+              (xgh == $store.getters.userId || $store.getters.roleId == '01')
+            "
+            @click="editClick()"
+          >
             编辑
           </button>
           <button class="span1" v-if="edit == 2" @click="cancal()">取消</button>
@@ -321,7 +328,6 @@ export default {
 
   mounted() {
     this.lgnSn = this.$route.query.id; //逻辑主键
-
     this.queryTag();
     this.getUrl();
     this.querywj();
@@ -350,7 +356,40 @@ export default {
     },
     change(file, fileList) {
       //用于文件先保存
-      this.fileListAdd.push(file);
+      const ind = file.name.lastIndexOf(".");
+      const ext = file.name.substr(ind + 1);
+      if (
+        Number(file.size / 1024 / 1024) > 2 &&
+        ["jpe", "jpeg", "jpg", "png"].indexOf(ext) != -1
+      ) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
+        this.$message.error("图片大小不超过2M,上传失败");
+      } else if (
+        Number(file.size / 1024 / 1024) > 10 &&
+        ["zip", "pdf", "word", "ppt"].indexOf(ext) != -1
+      ) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
+        this.$message.error("常见文件格式大小不超过10M,上传失败");
+      } else if (
+        Number(file.size / 1024 / 1024) > 50 &&
+        ["mp3", "mp2", "mpe", "mpeg", "mpg"].indexOf(ext) != -1
+      ) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
+        this.$message.error("视频大小不超过50M,上传失败");
+      } else if (Number(file.size / 1024 / 1024) > 50) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
+        this.$message.error("文件大小不超过50M,上传失败");
+      } else {
+        this.fileListAdd.push(file);
+      }
       this.fileList = fileList;
     },
     handlePreview(file) {
@@ -362,6 +401,9 @@ export default {
     },
     beforeRemove(file, fileList) {
       //用于文件删除
+      let uid = file.uid;
+      let idx = fileList.findIndex((item) => item.uid === uid);
+      this.fileListAdd.splice(idx, 1);
       delwj({ id: file.id.toString() }).then();
     },
     querywj() {
@@ -409,7 +451,6 @@ export default {
       });
     },
     addStu(ele, index) {
-      console.log(index);
       if (this.stuDate.length > 5) {
         this.$message.error("最多六条数据");
       } else {
@@ -453,7 +494,6 @@ export default {
     },
     handleSelect(item, index) {
       this.stuDate[index] = item;
-      console.log("this.studa", this.stuDate);
     },
     save() {
       var list = [];

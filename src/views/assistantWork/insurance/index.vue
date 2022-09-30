@@ -277,14 +277,12 @@ export default {
         this.downloadFn(res, "学平险模板下载", "xlsx");
       });
     },
-    hadleDetail() {
+    hadleDetail(row) {
       this.$router.push({
         path: "/assistantWork/detailBX",
-        // query: {
-        //   gh: row.gh,
-        //   id: row.date,
-        //   show: flag,
-        // },
+        query: {
+          id: row.id,
+        },
       });
     },
     changeSelect() {

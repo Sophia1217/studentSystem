@@ -76,6 +76,7 @@
             <div v-for="(ele, index) in stuDate" :key="index">
               <div v-if="edit == 2" style="display: flex">
                 <el-autocomplete
+                  @input="gaib($event)"
                   v-model="stuDate[index].value"
                   :fetch-suggestions="querySearch"
                   placeholder="请输入内容"
@@ -198,6 +199,7 @@
                 :disabled="edit == 2 ? false : true"
                 format="yyyy 年 MM 月 dd 日"
                 type="date"
+                :clearable="false"
                 placeholder="选择日期"
               >
               </el-date-picker> </el-form-item
@@ -206,7 +208,8 @@
             <el-form-item label="开始时间">
               <el-time-picker
                 v-model="value1"
-                format="hh时mm分"
+                :clearable="false"
+                format="HH时mm分"
                 value-format="HH:mm"
                 :disabled="edit == 2 ? false : true"
                 placeholder="选择开始时间"
@@ -217,7 +220,8 @@
             <el-form-item label="结束时间">
               <el-time-picker
                 v-model="value2"
-                format="hh时mm分"
+                :clearable="false"
+                format="HH时mm分"
                 value-format="HH:mm"
                 :disabled="edit == 2 ? false : true"
                 placeholder="选择结束时间"
@@ -323,6 +327,7 @@ export default {
       value2: "",
       textarea1: "",
       arr: [],
+      val: "",
     };
   },
 
@@ -457,6 +462,9 @@ export default {
         this.stuDate.push({});
       }
     },
+    gaib(e) {
+      this.val = e;
+    },
     querySearch(queryString, cb) {
       if (queryString != "") {
         let callBackArr = [];
@@ -496,37 +504,48 @@ export default {
       this.stuDate[index] = item;
     },
     save() {
-      var list = [];
-      var list2 = [];
-      for (var i = 0; i < this.stuDate.length; i++) {
-        list.push(this.stuDate[i].xm);
-        list2.push(this.stuDate[i].xh);
+      if (
+        (this.val == "" && this.stuDate.length == 1) ||
+        this.stuDate.length < 1
+      ) {
+        this.$message.error("请至少选择一名学生");
+      } else if (this.addressValue == "") {
+        this.$message.error("请至少选择一个谈话地点");
+      } else if (this.zhutiValue == "") {
+        this.$message.error("请至少选择一个谈话主题");
+      } else {
+        var list = [];
+        var list2 = [];
+        for (var i = 0; i < this.stuDate.length; i++) {
+          list.push(this.stuDate[i].xm);
+          list2.push(this.stuDate[i].xh);
+        }
+        var data = {
+          thdd: this.addressValue,
+          thnr: this.textarea1,
+          thsj: this.date,
+          id: this.lgnSn,
+          startTime: this.value1,
+          endTime: this.value2,
+          thzt: this.zhutiValue,
+          xhList: list2,
+          xmList: list,
+        };
+        let formData = new FormData();
+        formData.append("id", this.lgnSn.toString());
+        formData.append("thdd", data.thdd);
+        formData.append("thnr", data.thnr);
+        formData.append("thsj", data.thsj);
+        formData.append("startTime", data.startTime);
+        formData.append("endTime", data.endTime);
+        formData.append("thzt", data.thzt);
+        formData.append("xhList", data.xhList);
+        formData.append("xmList", data.xmList);
+        this.fileListAdd.map((file) => {
+          formData.append("files", file.raw);
+        });
+        updateTalk(formData).then((res) => {});
       }
-      var data = {
-        thdd: this.addressValue,
-        thnr: this.textarea1,
-        thsj: this.date,
-        id: this.lgnSn,
-        startTime: this.value1,
-        endTime: this.value2,
-        thzt: this.zhutiValue,
-        xhList: list2,
-        xmList: list,
-      };
-      let formData = new FormData();
-      formData.append("id", this.lgnSn.toString());
-      formData.append("thdd", data.thdd);
-      formData.append("thnr", data.thnr);
-      formData.append("thsj", data.thsj);
-      formData.append("startTime", data.startTime);
-      formData.append("endTime", data.endTime);
-      formData.append("thzt", data.thzt);
-      formData.append("xhList", data.xhList);
-      formData.append("xmList", data.xmList);
-      this.fileListAdd.map((file) => {
-        formData.append("files", file.raw);
-      });
-      updateTalk(formData).then((res) => {});
     },
 
     editClick() {

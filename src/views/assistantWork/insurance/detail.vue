@@ -6,29 +6,117 @@
       </div>
       <el-form ref="formTop" label-width="80px">
         <el-row :gutter="20">
-          <el-col :span="4">
-            <el-form-item label="工号" prop="applyGh">
-              <el-input placeholder="请输入" :disabled="true"></el-input>
-            </el-form-item>
+          <el-col :span="1.5">
+            <el-form-item label="学生信息"> </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="申报人" prop="applyXm">
-              <el-input placeholder="请输入" :disabled="true"></el-input>
+            <el-form-item label="学号">
+              <el-input
+                placeholder="请输入"
+                v-model="form.xh"
+                :disabled="true"
+              ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
-            <el-form-item label="单位" prop="dwh">
-              <el-input placeholder="请输入" :disabled="true"></el-input>
+          <el-col :span="3.5">
+            <el-form-item label="姓名">
+              <el-input
+                placeholder="请输入"
+                v-model="form.xm"
+                :disabled="true"
+              ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
-            <el-form-item label="岗位" prop="job">
-              <el-input placeholder="请输入" :disabled="true"></el-input>
+          <el-col :span="3.5">
+            <el-form-item label="培养单位">
+              <el-input
+                placeholder="请输入"
+                v-model="form.dwmc"
+                :disabled="true"
+              ></el-input>
             </el-form-item>
           </el-col>
+          <el-col :span="3.5">
+            <el-form-item label="年级">
+              <el-input
+                placeholder="请输入"
+                v-model="form.nj"
+                :disabled="true"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="3.5">
+            <el-form-item label="专业">
+              <el-input
+                placeholder="请输入"
+                v-model="form.zymc"
+                :disabled="true"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="1.5">
+            <el-form-item label="保险信息"> </el-form-item>
+          </el-col>
           <el-col :span="4">
-            <el-form-item label="类型" prop="lxm">
-              <el-input placeholder="请输入" :disabled="true"></el-input>
+            <el-form-item label="名称">
+              <el-input
+                placeholder="请输入"
+                v-model="form.xzmc"
+                :disabled="true"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="3.5">
+            <el-form-item label="类型">
+              <el-input
+                placeholder="请输入"
+                v-model="form.xzlx"
+                :disabled="true"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="3.5">
+            <el-form-item label="保险单号">
+              <el-input
+                placeholder="请输入"
+                v-model="form.bdh"
+                :disabled="true"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="3.5">
+            <el-form-item label="时间">
+              <el-date-picker
+                v-model="form.createTime"
+                :disabled="true"
+                format="yyyy 年 MM 月 dd 日"
+                type="date"
+                placeholder="选择日期"
+              >
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="3.5">
+            <el-form-item label="至">
+              <el-date-picker
+                v-model="form.updateTime"
+                :disabled="true"
+                format="yyyy 年 MM 月 dd 日"
+                type="date"
+                placeholder="选择日期"
+              >
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="3.5">
+            <el-form-item label="金额">
+              <el-input
+                placeholder="请输入"
+                v-model="form.jr"
+                :disabled="true"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -83,6 +171,7 @@
 <script>
 import { fjsc } from "@/api/assistantWork/baoxian";
 import { getToken } from "@/utils/auth";
+import { queryList } from "@/api/assistantWork/baoxian";
 import { querywj, delwj, Exportwj } from "@/api/assistantWork/classEvent";
 
 export default {
@@ -92,10 +181,10 @@ export default {
       fileList: [],
       form: {
         xh: "",
-        xm: "", //家访主题
+        xm: "",
         pycc: "",
         nj: "",
-        mc: [], //省
+        mc: [],
         lx: [],
         bxdh: [],
         startSj: [],
@@ -106,8 +195,17 @@ export default {
   },
   mounted() {
     this.querywj();
+    this.getDatail();
   },
   methods: {
+    getDatail() {
+      queryList({ id: this.$route.query.id })
+        .then((res) => {
+          this.form = res.data[0];
+          console.log("this", this.form);
+        })
+        .catch((err) => {});
+    },
     handleExceed() {
       this.$message.warning(`当前限制选择 1 个文件`);
     },

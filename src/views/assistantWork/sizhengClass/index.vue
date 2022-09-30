@@ -107,7 +107,7 @@
                 v-for="item in kkxq"
                 :key="item.id"
                 :label="item.mc"
-                :value="item.dm"
+                :value="item.mc"
               ></el-option>
             </el-select>
           </el-col>
@@ -515,7 +515,7 @@ export default {
         kcmc: this.select == "kcmc" ? this.searchVal : null,
         gzdwhList: this.moreIform.xydm || [],
         kkxnList: this.moreIform.kkxn || [],
-        kkxqList: this.moreIform.kkxq || [],
+        kxxqList: this.moreIform.kkxq || [],
         gwList: this.position.choose || [],
         lxList: this.Type.choose || [],
         pageNum: this.queryParams.pageNum,

@@ -148,6 +148,7 @@
                 v-model="ele.date"
                 type="date"
                 format="yyyy 年 MM 月 dd 日"
+                :clearable="false"
                 value-format="yyyy-MM-dd"
                 placeholder="选择日期"
               >
@@ -156,8 +157,9 @@
           <el-col el-col :span="5.5">
             <el-form-item label="开始时间">
               <el-time-picker
-                format="hh时mm分"
+                format="HH时mm分"
                 v-model="ele.value1"
+                :clearable="false"
                 value-format="HH:mm"
                 placeholder="选择开始时间"
               >
@@ -166,7 +168,8 @@
           <el-col el-col :span="5.5">
             <el-form-item label="结束时间">
               <el-time-picker
-                format="hh时mm分"
+                format="HH时mm分"
+                clearable="false"
                 v-model="ele.value2"
                 value-format="HH:mm"
                 placeholder="选择结束时间"
@@ -284,6 +287,10 @@ export default {
     save(index) {
       if (this.renshu[0].acceptVlaue == "") {
         this.$message.error("请至少选择一名学生");
+      } else if (this.talkDate[index].addressValue == "") {
+        this.$message.error("请至少选择一个谈话地点");
+      } else if (this.talkDate[index].zhutiValue == "") {
+        this.$message.error("请至少选择一个谈话主题");
       } else {
         var list = [];
         var list2 = [];

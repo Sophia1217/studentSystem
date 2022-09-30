@@ -98,7 +98,7 @@
               <i class="icon blueIcon"></i><span class="title">导入</span>
             </el-upload>
           </div>
-          <div class="btns borderOrange">
+          <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
         </div>
@@ -202,6 +202,7 @@ export default {
         total: 0,
       },
       datePicker: [],
+      multipleSelection: [],
     };
   },
 
@@ -211,6 +212,40 @@ export default {
   },
 
   methods: {
+    expor() {
+      var rqs = "";
+      var rqe = "";
+      if (this.datePicker && this.datePicker.length > 0) {
+        var rqs = this.datePicker[0];
+        rqe = this.datePicker[1];
+      }
+      var idList = [];
+      this.multipleSelection.map((item) => idList.push(item.id));
+      var data = {
+        xm: this.select == "xm" ? this.searchVal : null,
+        xh: this.select == "xh" ? this.searchVal : null,
+        xzmc: this.select == "xzmc" ? this.xzmc : null,
+        buyEndTime: rqs,
+        buyStartTime: rqe,
+        cbgs: this.select == "cbgs" ? this.cbgs : null,
+        lxr: this.select == "lxr" ? this.lxr : null,
+        lxdh: this.select == "lxdh" ? this.lxdh : null,
+        xzlxList: this.moreIform.xzlx,
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+      };
+      if (this.multipleSelection.length > 0) {
+        expor({ idList: idList }).then((res) =>
+          this.downloadFn(res, "学平险列表下载", "xlsx")
+        );
+      } else {
+        expor(data).then((res) =>
+          this.downloadFn(res, "学平险列表下载", "xlsx")
+        );
+      }
+    },
     queryXzlx() {
       queryXzlx().then((res) => {
         this.xzlx = res.data;
@@ -243,14 +278,14 @@ export default {
       });
     },
     hadleDetail() {
-      //     this.$router.push({
-      //     path: "/politicalwork/detailInfo",
-      //     query: {
-      //       gh: row.gh,
-      //       id: row.date,
-      //       show: flag,
-      //     },
-      //   });
+      this.$router.push({
+        path: "/assistantWork/detailBX",
+        // query: {
+        //   gh: row.gh,
+        //   id: row.date,
+        //   show: flag,
+        // },
+      });
     },
     changeSelect() {
       this.searchVal = "";
@@ -281,7 +316,7 @@ export default {
       queryList(data)
         .then((res) => {
           this.tableData = res.data;
-          this.queryParams.total = res.data.total;
+          this.queryParams.total = res.totalCount;
         })
         .catch((err) => {});
     },

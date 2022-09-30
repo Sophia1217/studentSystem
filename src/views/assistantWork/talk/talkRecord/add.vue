@@ -148,18 +148,29 @@
                 v-model="ele.date"
                 type="date"
                 format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
                 placeholder="选择日期"
               >
               </el-date-picker> </el-form-item
           ></el-col>
           <el-col el-col :span="5.5">
             <el-form-item label="开始时间">
-              <el-time-picker v-model="ele.value1" placeholder="选择开始时间">
+              <el-time-picker
+                format="hh时mm分"
+                v-model="ele.value1"
+                value-format="HH:mm"
+                placeholder="选择开始时间"
+              >
               </el-time-picker> </el-form-item
           ></el-col>
           <el-col el-col :span="5.5">
             <el-form-item label="结束时间">
-              <el-time-picker v-model="ele.value2" placeholder="选择结束时间">
+              <el-time-picker
+                format="hh时mm分"
+                v-model="ele.value2"
+                value-format="HH:mm"
+                placeholder="选择结束时间"
+              >
               </el-time-picker> </el-form-item
           ></el-col>
         </el-row>
@@ -254,14 +265,17 @@ export default {
   },
 
   mounted() {
-    this.talkDate[0].date = new Date();
-    this.talkDate[0].value2 = new Date();
-    this.talkDate[0].value1 = this.transTime(new Date());
+    this.talkDate[0].date = this.formatDate(new Date()).slice(0, 10);
+    this.talkDate[0].value2 = this.formatDate(new Date()).slice(-8, -3);
+    this.talkDate[0].value1 = this.formatDate(this.transTime(new Date())).slice(
+      -8,
+      -3
+    );
     this.queryTag();
+    this.sfwk();
   },
 
   methods: {
-    cancel(index) {},
     save(index) {
       if (this.renshu[0].acceptVlaue == "") {
         this.$message.error("请至少选择一名学生");
@@ -291,15 +305,37 @@ export default {
         formData.append("thzt", data.thzt);
         formData.append("xhList", data.xhList);
         formData.append("xmList", data.xmList);
-        this.talkDate[index].fileList.map((file) => {
-          formData.append("files", file.raw);
-        });
+        if (this.talkDate[index].fileList.length > 0) {
+          this.talkDate[index].fileList.map((file) => {
+            formData.append("files", file.raw);
+          });
+        }
         addTalk(formData).then((res) => {
           this.$message.success("保存成功");
         });
       }
     },
     change(file, fileList, index) {
+      // const index1 = file.name.lastIndexOf(".");
+      // const ext = file.name.substr(index1 + 1);
+      // console.log("ext", ext);
+      // //获取后缀 判断文件格式
+      // // 图片 2M  文件10M  视频50M
+      // console.log("file", file);
+      // console.log(
+      //   "Number(file.size / 1024 / 1024)",
+      //   Number(file.size / 1024 / 1024)
+      // );
+      // if (Number(file.size / 1024 / 1024) > 1.5) {
+      //   let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+      //   let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+      //   fileList.splice(idx, 1);
+      //   this.talkDate[index].fileList = fileList;
+      //   console.log("fileList", fileList);
+      //   this.$message.error("图片大小不超过2M,上传失败");
+      // } else {
+      //   this.talkDate[index].fileList = fileList;
+      // }
       this.talkDate[index].fileList = fileList;
     },
     querySearch(queryString, cb) {
@@ -338,6 +374,7 @@ export default {
       this.addParams[index] = item;
     },
     addDate() {
+      console.log("this.talkDate[0].value2", this.talkDate[0].value2);
       this.talkDate.push({
         tag: {
           tags: {
@@ -351,10 +388,38 @@ export default {
         inputValue: "",
         inputVisible1: false,
         inputValue1: "",
-        date: this.talkDate[0].value2,
+        date: this.talkDate[0].date,
         value1: this.talkDate[0].value2,
         value2: this.talkDate[0].value1,
         textarea1: "",
+      });
+    },
+    sfwk() {
+      var data = {
+        cyType: "1", //1主题,2地点,3组织单位
+        userId: this.$store.getters.userId,
+      };
+      queryTag(data).then((res) => {
+        if (res.data && res.data.length > 0) {
+          for (var i = 0; i < this.talkDate.length; i++) {
+            this.$set(this.talkDate[i].tag.tags, "themeTags", res.data);
+          }
+        } else {
+          var arr = ["谈学业", "谈亲情", "谈交往", "谈就业", "谈感情"];
+          for (let j = 0; j < arr.length; j++) {
+            var obj = {
+              cyMsg: arr[j],
+              cyType: "1",
+              userId: this.$store.getters.userId,
+            };
+            addTag(obj).then((res) => {
+              if (j > 3) {
+                //默认加五个
+                this.queryTag();
+              }
+            });
+          }
+        }
       });
     },
     queryTag() {
@@ -371,6 +436,7 @@ export default {
           this.$set(this.talkDate[i].tag.tags, "themeTags", res.data);
         }
       });
+
       queryTag(data1).then((res) => {
         for (var j = 0; j < this.talkDate.length; j++) {
           this.$set(this.talkDate[j].tag.tags, "addressTags", res.data);

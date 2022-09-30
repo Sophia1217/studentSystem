@@ -36,6 +36,15 @@ import request from "@/utils/request.js"
         data: query
     })
   }
+  export function fjsc(query) {
+    return request({
+        url: ' /fdyXpx/importAppend',
+        method: 'post',
+        data: query
+    })
+  }
+
+ 
 
 
  

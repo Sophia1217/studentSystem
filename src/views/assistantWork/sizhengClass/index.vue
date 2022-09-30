@@ -328,7 +328,7 @@ import {
 import { getToken } from "@/utils/auth";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getGw } from "@/api/politicalWork/basicInfo";
-import { getXmXgh } from "@/api/assistantWork/talk";
+import { getXmXgh } from "@/api/assistantWork/homeSchool";
 export default {
   name: "sizheng",
   components: { CheckboxCom },
@@ -460,12 +460,12 @@ export default {
         var result = [];
         var resultNew = [];
         getXmXgh(XmXgh).then((res) => {
-          result = res.data.stuList;
+          result = res.data;
           resultNew = result.map((ele) => {
             return {
-              value: `${ele.dm}(${ele.mc})`,
-              label: ele.dm,
-              xm: ele.mc,
+              value: `${ele.xm}(${ele.gh})`,
+              label: ele.xm,
+              xm: ele.gh,
             };
           });
           resultNew.forEach((item) => {
@@ -513,7 +513,7 @@ export default {
         gh: this.select == "gh" ? this.searchVal : null,
         xm: this.select == "xm" ? this.searchVal : null,
         kcmc: this.select == "kcmc" ? this.searchVal : null,
-        gzdwList: this.moreIform.xydm || [],
+        gzdwhList: this.moreIform.xydm || [],
         kkxnList: this.moreIform.kkxn || [],
         kkxqList: this.moreIform.kkxq || [],
         gwList: this.position.choose || [],
@@ -609,7 +609,7 @@ export default {
         gh: this.select == "gh" ? this.searchVal : null,
         xm: this.select == "xm" ? this.searchVal : null,
         kcmc: this.select == "kcmc" ? this.searchVal : null,
-        gzdwList: this.moreIform.xydm || [],
+        gzdwhList: this.moreIform.xydm || [],
         kkxnList: this.moreIform.kkxn || [],
         kkxqList: this.moreIform.kkxq || [],
         gwList: this.position.choose || [],

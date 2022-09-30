@@ -199,7 +199,8 @@
             <el-form-item label="开始时间">
               <el-time-picker
                 v-model="value1"
-                format="HH:MM"
+                format="hh时mm分"
+                value-format="HH:mm"
                 :disabled="edit == 2 ? false : true"
                 placeholder="选择开始时间"
               >
@@ -209,7 +210,8 @@
             <el-form-item label="结束时间">
               <el-time-picker
                 v-model="value2"
-                format="HH:MM"
+                format="hh时mm分"
+                value-format="HH:mm"
                 :disabled="edit == 2 ? false : true"
                 placeholder="选择结束时间"
               >
@@ -319,9 +321,7 @@ export default {
 
   mounted() {
     this.lgnSn = this.$route.query.id; //逻辑主键
-    this.date = new Date();
-    this.value2 = new Date();
-    this.value1 = this.transTime(new Date());
+
     this.queryTag();
     this.getUrl();
     this.querywj();
@@ -398,10 +398,10 @@ export default {
             this.$set(
               this.stuDate[i],
               "value",
-              `${this.stuDate[i].xm}(${this.stuDate[i].xh}) `
+              `${this.stuDate[i].xm}(${this.stuDate[i].xh})`
             );
-            this.$set(this.stuDate[i], "xm", `${this.stuDate[i].xm} `);
-            this.$set(this.stuDate[i], "xh", `${this.stuDate[i].xh} `);
+            this.$set(this.stuDate[i], "xm", `${this.stuDate[i].xm}`);
+            this.$set(this.stuDate[i], "xh", `${this.stuDate[i].xh}`);
           } else {
             this.stuDate[i].value = "";
           }
@@ -429,9 +429,9 @@ export default {
             //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
             //此处找后台约定好
             return {
-              value: `${ele.mc}(${ele.dm})`,
-              xh: ele.dm,
-              xm: ele.mc,
+              value: `${ele.mc}(${ele.dm})`.trim(),
+              xh: ele.dm.trim(),
+              xm: ele.mc.trim(),
             };
           });
           resultNew.forEach((item) => {
@@ -453,6 +453,7 @@ export default {
     },
     handleSelect(item, index) {
       this.stuDate[index] = item;
+      console.log("this.studa", this.stuDate);
     },
     save() {
       var list = [];

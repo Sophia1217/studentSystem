@@ -298,6 +298,8 @@
             <el-form-item label="走访情况" prop="state">
               <el-input 
                 v-model="form.state" 
+                maxlength="2000"
+                show-word-limit
                 :autosize="{ minRows: 4, maxRows: 10 }"
                 type="textarea"
                 placeholder="请输入"
@@ -517,6 +519,9 @@ export default {
     },
     beforeRemove(file, fileList) {
       //用于文件删除
+      let uid = file.uid;
+      let idx = fileList.findIndex((item) => item.uid === uid);
+      this.fileListAdd.splice(idx, 1);
       delwj({ id: file.id.toString() }).then((res) => console.log("res", res));
     },
     querywj() {
@@ -838,13 +843,29 @@ export default {
       this.fileListAdd.map((ele) => {
         formData.append("files", ele.raw);
       });
-      updateJxlxDetail(formData).then((res) => {
+      if (this.stuDate[0].acceptVlaue=="") {
+        this.$message.error("请选择家访学生！");
+      } else if (this.form.theme=="") {
+        this.$message.error("家访主题不能为空!");
+      } else if (this.form.date=="") {
+        this.$message.error("走访日期不能为空!");
+      } else if (this.form.homeModel=="") {
+        this.$message.error("家访形式不能为空!");
+      } else if (this.form.homeModel =="线下实地" && this.form.countryPlace=="") {
+        this.$message.error("家访地点不能为空!");
+      } else if (this.form.homeModel =="线下实地" && this.form.detailPlace=="") {
+        this.$message.error("详细地址不能为空!");
+      } else if (this.form.state=="") {
+        this.$message.error("走访情况不能为空!");
+      } else{
+        updateJxlxDetail(formData).then((res) => {
         this.$message({
           message: res.errmsg,
           type: "success",
         })
         window.history.go(-1);
       });
+      }
 
     },
 

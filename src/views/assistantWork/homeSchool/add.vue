@@ -44,7 +44,7 @@
       <div>
         <span class="title">家访详情</span>
       </div>
-      <el-form ref="queryForm" label-width="80px" :rules="rules">
+      <el-form ref="queryForm" label-width="80px">
         <el-form-item label="学生姓名">
           <el-row :gutters="20" class="suibian">
             <div v-for="(ele, index) in renshuStu" :key="index">
@@ -210,6 +210,8 @@
             <el-form-item label="走访情况" prop="state">
               <el-input 
                 v-model="form.state" 
+                maxlength="2000"
+                show-word-limit
                 :autosize="{ minRows: 4, maxRows: 10 }"
                 type="textarea"
                 placeholder="请输入"
@@ -331,10 +333,10 @@ export default {
           { required: true, message: "请输入家访主题", trigger: "blur" },
         ],
         homeModel: [
-          { required: true, message: "家访形式不能为空", trigger: "change" },
+          { required: true, message: "家访形式不能为空", trigger: "blur" },
         ],
         didian: [
-          { required: true, message: "请选择家访地点", trigger: "change" },
+          { required: true, message: "请选择家访地点", trigger: "blur" },
         ],
     }
     };
@@ -602,8 +604,8 @@ export default {
     },
     //保存
     sava() {
-      //校验
-      //  if (!this.checkForm()) {
+      // 校验
+      // if (!this.checkForm()) {
       //   this.$message.error("请完善家访信息！");
       //   return;
       // }
@@ -625,13 +627,34 @@ export default {
         formData.append('gtcyrXmXgh['+j+'].gh',locationInfo.gh);
       }
 
-      insertJxlx(formData).then((res) => {
+      if (this.renshuStu[0].acceptVlaue=="") {
+        this.$message.error("请选择家访学生！");
+      } else if (this.form.theme=="") {
+        this.$message.error("家访主题不能为空!");
+      } else if (this.form.date=="") {
+        this.$message.error("走访日期不能为空!");
+      } else if (this.form.homeModel=="") {
+        this.$message.error("家访形式不能为空!");
+      } else if (this.form.homeModel =="线下实地" && this.form.countryPlace=="") {
+        this.$message.error("家访地点不能为空!");
+      } else if (this.form.homeModel =="线下实地" && this.form.detailPlace=="") {
+        this.$message.error("详细地址不能为空!");
+      } else if (this.form.state=="") {
+        this.$message.error("走访情况不能为空!");
+      } 
+      else{
+        insertJxlx(formData).then((res) => {
         this.$message({
           message: res.errmsg,
           type: "success",
         })
         window.history.go(-1);
       });
+      }
+      if (this.form.homeModel =="线下实地"){
+          this.getCity(this.form.proPlace);
+          this.getXian(this.form.cityPlace);
+        }
     },
   },
 };

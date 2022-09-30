@@ -123,6 +123,8 @@
             <el-form-item label="活动内容" prop="detail">
               <el-input
                 v-model="form.detail"
+                maxlength="2000"
+                show-word-limit
                 :autosize="{ minRows: 4, maxRows: 10 }"
                 type="textarea"
                 placeholder="请输入"
@@ -135,6 +137,8 @@
             <el-form-item label="参与体会" prop="cyth">
               <el-input
                 v-model="form.cyth"
+                maxlength="2000"
+                show-word-limit
                 :autosize="{ minRows: 4, maxRows: 10 }"
                 type="textarea"
                 placeholder="请输入"
@@ -374,9 +378,24 @@ export default {
           formData.append("files", ele.raw);
         });
       }
-      insertFdyBthd(formData).then((res) => {
-        window.history.go(-1);
+      if (this.form.orgUnit=="") {
+        this.$message.error("组织单位不能为空！");
+      } else if (this.form.theme=="") {
+        this.$message.error("活动主题不能为空!");
+      } else if (this.form.date=="") {
+        this.$message.error("活动日期不能为空!");
+      } else if (this.form.place=="") {
+        this.$message.error("活动地址不能为空!");
+      } else if (this.form.detail=="") {
+        this.$message.error("活动内容不能为空!");
+      } else if (this.form.cyth=="") {
+        this.$message.error("参与体会不能为空!");
+      } else{
+          insertFdyBthd(formData).then((res) => {
+          window.history.go(-1);
       });
+      }
+      
     },
   },
 };

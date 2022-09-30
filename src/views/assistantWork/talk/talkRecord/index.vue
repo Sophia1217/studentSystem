@@ -297,8 +297,8 @@ export default {
         thdd: this.select == "thdd" ? this.searchVal : null,
         dwh: this.moreIform.xydm,
         ztjlList: this.ztjl.choose,
-        starttime: this.dateArray[0],
-        endtime: this.dateArray[1],
+        starttime: this.dateArray[0] || "",
+        endtime: this.dateArray[1] || "",
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
@@ -306,8 +306,8 @@ export default {
       };
       talkTable(data)
         .then((res) => {
-          this.tableData = res.data.records;
-          this.queryParams.total = res.data.total;
+          this.tableData = res.data;
+          this.queryParams.total = res.totalCount;
         })
         .catch((err) => {});
     },

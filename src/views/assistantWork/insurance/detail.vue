@@ -124,7 +124,39 @@
     </div>
     <div class="permissions">
       <div>
+        <div>
+          <span class="title">保险内容</span>
+        </div>
         <el-form>
+          <el-row :gutter="20">
+            <el-col :span="5">
+              <el-form-item label="承包公司">
+                <el-input
+                  placeholder="请输入"
+                  v-model="form.cbgs"
+                  :disabled="true"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="联系人">
+                <el-input
+                  placeholder="请输入"
+                  v-model="form.lxr"
+                  :disabled="true"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="联系电话">
+                <el-input
+                  placeholder="请输入"
+                  v-model="form.lxdh"
+                  :disabled="true"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
           <span class="title">保险内容</span>
           <el-form-item label="附件">
             <!-- <div v-if="urlArr.length > 0" class="block">

@@ -90,7 +90,7 @@
                 v-for="item in kkxn"
                 :key="item.dm"
                 :label="item.mc"
-                :value="item.dm"
+                :value="item.mc"
               ></el-option>
             </el-select>
           </el-col>
@@ -489,8 +489,8 @@ export default {
     addData() {
       var FdySzkcskEntityReq = {
         rs: this.form.rs,
-        xm: this.addParams.xm,
-        gh: this.addParams.label,
+        xm: this.addParams.label,
+        gh: this.addParams.xm,
         kcmc: this.form.kcmc,
         kxxq: this.form.kxxq,
         kxxn: this.form.kxxn,
@@ -610,8 +610,8 @@ export default {
         xm: this.select == "xm" ? this.searchVal : null,
         kcmc: this.select == "kcmc" ? this.searchVal : null,
         gzdwhList: this.moreIform.xydm || [],
-        kkxnList: this.moreIform.kkxn || [],
-        kkxqList: this.moreIform.kkxq || [],
+        kxxnList: this.moreIform.kkxn || [],
+        kxxqList: this.moreIform.kkxq || [],
         gwList: this.position.choose || [],
         lxList: this.Type.choose || [],
         pageNum: this.queryParams.pageNum,

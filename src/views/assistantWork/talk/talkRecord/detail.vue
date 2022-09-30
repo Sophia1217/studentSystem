@@ -462,9 +462,7 @@ export default {
         this.stuDate.push({});
       }
     },
-    gaib(e) {
-      this.val = e;
-    },
+
     querySearch(queryString, cb) {
       if (queryString != "") {
         let callBackArr = [];
@@ -489,7 +487,7 @@ export default {
             }
           });
           if (callBackArr.length == 0) {
-            cb([{ value: "暂无数据", price: "暂无数据" }]);
+            this.$message.error("请输入正确模糊值");
           } else {
             cb(callBackArr);
           }
@@ -503,9 +501,14 @@ export default {
     handleSelect(item, index) {
       this.stuDate[index] = item;
     },
+    gaib(e) {
+      this.val = e;
+    },
     save() {
       if (
-        (this.val == "" && this.stuDate.length == 1) ||
+        (this.val == "" &&
+          this.stuDate[0].xm == "" &&
+          this.stuDate.length == 1) ||
         this.stuDate.length < 1
       ) {
         this.$message.error("请至少选择一名学生");
@@ -544,7 +547,13 @@ export default {
         this.fileListAdd.map((file) => {
           formData.append("files", file.raw);
         });
-        updateTalk(formData).then((res) => {});
+        updateTalk(formData).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("保存成功");
+          } else {
+            this.$message.error("保存失败");
+          }
+        });
       }
     },
 

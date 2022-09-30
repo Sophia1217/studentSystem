@@ -49,7 +49,7 @@
                   v-for="item in xzlx"
                   :key="item.dm"
                   :label="item.mc"
-                  :value="item.dm"
+                  :value="item.mc"
                 ></el-option>
               </el-select>
             </div>

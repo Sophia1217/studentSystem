@@ -3756,7 +3756,7 @@ export default {
       const data = {
         gh: this.$route.query.gh
           ? this.$route.query.gh
-          : this.$store.getters.gh,
+          : this.$store.getters.userId,
       };
       this.isEdit = 1;
       getDetailQueryPoliticalWorkList(data)

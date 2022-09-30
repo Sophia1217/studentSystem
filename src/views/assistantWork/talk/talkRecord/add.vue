@@ -169,7 +169,7 @@
             <el-form-item label="结束时间">
               <el-time-picker
                 format="HH时mm分"
-                clearable="false"
+                :clearable="false"
                 v-model="ele.value2"
                 value-format="HH:mm"
                 placeholder="选择结束时间"
@@ -323,7 +323,11 @@ export default {
           });
         }
         addTalk(formData).then((res) => {
-          this.$message.success("保存成功");
+          if (res.errcode == "00") {
+            this.$message.success("保存成功");
+          } else {
+            this.$message.error("保存失败");
+          }
         });
       }
     },
@@ -393,7 +397,7 @@ export default {
             }
           });
           if (callBackArr.length == 0) {
-            cb([{ value: "暂无数据", price: "暂无数据" }]);
+            this.$message.error("请输入正确模糊值");
           } else {
             cb(callBackArr);
           }
@@ -476,7 +480,7 @@ export default {
     },
     showInput(type, index) {
       if (type == 1) {
-        if (this.talkDate[index].tag.tags.themeTags.length > 9) {
+        if (this.talkDate[index].tag.tags.themeTags.length > 8) {
           this.$message.error("最多九条");
         } else {
           this.talkDate[index].inputVisible = true;

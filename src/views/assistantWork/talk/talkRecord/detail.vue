@@ -76,7 +76,6 @@
             <div v-for="(ele, index) in stuDate" :key="index">
               <div v-if="edit == 2" style="display: flex">
                 <el-autocomplete
-                  @input="gaib($event)"
                   v-model="stuDate[index].value"
                   :fetch-suggestions="querySearch"
                   placeholder="请输入内容"
@@ -501,17 +500,27 @@ export default {
     handleSelect(item, index) {
       this.stuDate[index] = item;
     },
-    gaib(e) {
-      this.val = e;
-    },
     save() {
-      if (
-        (this.val == "" &&
-          this.stuDate[0].xm == "" &&
-          this.stuDate.length == 1) ||
-        this.stuDate.length < 1
-      ) {
-        this.$message.error("请至少选择一名学生");
+      var flag = false;
+      if (this.stuDate.length > 1) {
+        for (var i = 0; i < this.stuDate.length; i++) {
+          for (var j = i + 1; j < this.stuDate.length; j++) {
+            if (
+              this.stuDate[i].value === this.stuDate[j].value &&
+              !!this.stuDate[i].value &&
+              !!this.stuDate[j].value
+            ) {
+              flag = true;
+            }
+          }
+        }
+      } else {
+        flag = false;
+      }
+      if (flag) {
+        this.$message.error("存在相同谈话对象，请重新选择");
+      } else if (this.stuDate.some((val) => val.xh == undefined)) {
+        this.$message.error("所添加谈话对象存在空值或未选择学生信息");
       } else if (this.addressValue == "") {
         this.$message.error("请至少选择一个谈话地点");
       } else if (this.zhutiValue == "") {

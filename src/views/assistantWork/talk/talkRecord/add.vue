@@ -285,8 +285,26 @@ export default {
 
   methods: {
     save(index) {
-      if (this.renshu[0].acceptVlaue == "") {
-        this.$message.error("请至少选择一名学生");
+      var flag = false;
+      if (this.renshu.length > 1) {
+        for (var i = 0; i < this.renshu.length; i++) {
+          for (var j = i + 1; j < this.renshu.length; j++) {
+            if (
+              this.renshu[i].acceptVlaue == this.renshu[j].acceptVlaue &&
+              !!this.renshu[i].acceptVlaue &&
+              !!this.renshu[j].acceptVlaue
+            ) {
+              flag = true;
+            }
+          }
+        }
+      } else {
+        flag = false;
+      }
+      if (flag) {
+        this.$message.error("存在相同谈话对象，请重新选择");
+      } else if (this.renshu.some((val) => val.acceptVlaue !== undefined)) {
+        this.$message.error("所添加谈话对象存在空值或未选择学生信息");
       } else if (this.talkDate[index].addressValue == "") {
         this.$message.error("请至少选择一个谈话地点");
       } else if (this.talkDate[index].zhutiValue == "") {
@@ -333,8 +351,8 @@ export default {
     },
     beforeRemove(file, fileList, index) {
       let uid = file.uid;
-      let idx = fileList.findIndex((item) => item.uid === uid);
-      fileList.splice(idx, 1);
+      let idx = fileList.findIndex((item) => item.uid == uid);
+      fileList.splice(idx, 0);
       this.talkDate[index].fileList = fileList;
     },
 
@@ -386,7 +404,7 @@ export default {
             //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
             //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
             return {
-              value: `${ele.dm}(${ele.mc})`,
+              value: `${ele.mc}(${ele.dm})`,
               label: ele.dm,
               xm: ele.mc,
             };

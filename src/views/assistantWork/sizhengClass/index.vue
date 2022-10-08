@@ -261,7 +261,7 @@
                   v-for="item in kkxn"
                   :key="item.dm"
                   :label="item.mc"
-                  :value="item.dm"
+                  :value="item.mc"
                 ></el-option> </el-select></el-form-item
           ></el-col>
           <el-col :span="10">
@@ -280,7 +280,7 @@
                   v-for="item in kkxq"
                   :key="item.id"
                   :label="item.mc"
-                  :value="item.dm"
+                  :value="item.mc"
                 ></el-option> </el-select></el-form-item
           ></el-col>
         </el-row>
@@ -328,7 +328,7 @@ import {
 import { getToken } from "@/utils/auth";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getGw } from "@/api/politicalWork/basicInfo";
-import { getXmXgh } from "@/api/assistantWork/homeSchool";
+import { getXmXgh } from "@/api/assistantWork/sizheng";
 export default {
   name: "sizheng",
   components: { CheckboxCom },
@@ -373,6 +373,11 @@ export default {
             message: "请选择人数",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(0|[1-9][0-9]*)$/,
+            message: "请输入数字",
+            trigger: "blur",
+          },
         ],
         kcmc: [
           {
@@ -400,6 +405,11 @@ export default {
             required: true,
             message: "请输入学时",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(0|[1-9][0-9]*)$/,
+            message: "请输入数字",
+            trigger: "blur",
           },
         ],
       },

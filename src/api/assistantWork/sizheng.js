@@ -64,3 +64,11 @@ export function querySelect(query) {
     })
   }
 
+  export function getXmXgh(query) {
+    return request({
+        url: '/fdyCommon/queryZgXmXh ',
+        method: 'post',
+        data: query
+    })
+  }
+

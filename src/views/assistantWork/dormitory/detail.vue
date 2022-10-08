@@ -113,7 +113,7 @@
           :rules="rules"
         >
           <el-row :gutter="10">
-            <el-col :span="4">
+            <el-col :span="6">
               <el-form-item label="走访主题" prop="zfzt">
                 <el-input
                   v-model="visitDetailForm.zfzt"
@@ -122,7 +122,7 @@
                 />
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="18">
               <div v-show="isEdit == '2' ? true : false">
                 <span class="tagtitle">常用主题</span>
                 <el-tag
@@ -185,9 +185,9 @@
             <el-form-item label="走访情况">
               <el-input
                 maxlength="2000"
-                placeholder="Please input"
+                placeholder="请输入..."
                 show-word-limit
-                style="width: 2000px"
+                style="width: 1000px"
                 v-model="visitDetailForm.situation"
                 :disabled="isEdit == '1' ? true : false"
                 :autosize="{ minRows: 10 }"
@@ -375,48 +375,70 @@ export default {
     },
     //保存
     handleUpdata() {
-      if (!this.checkForm()) {
-        this.$message.error("请完善表单相关信息！");
+      var flag = false;
+      if (this.dormitoryList.length > 1) {
+        for (var i = 0; i < this.dormitoryList.length; i++) {
+          for (var j = i + 1; j < this.dormitoryList.length; j++) {
+            if (
+              this.dormitoryList[i].ly === this.dormitoryList[j].ly &&
+              !!this.dormitoryList[i].ly &&
+              !!this.dormitoryList[j].ly &&
+              (this.dormitoryList[i].fjh === this.dormitoryList[j].fjh ||
+                this.dormitoryList[i].fjh == undefined ||
+                this.dormitoryList[j].fjh == undefined)
+            ) {
+              flag = true;
+            }
+          }
+        }
+      } else {
+        flag = false;
+      }
+      if (flag) {
+        this.$message.error("存在相同走访宿舍，请重新选择");
+      } else if (this.dormitoryList.some((val) => val.ly == undefined)) {
+        this.$message.error("所添加走访宿舍存在空值或未选择楼栋");
+      } else if (!this.checkForm()) {
+        this.$message.error("请完善表单其他相关信息！");
         return;
-      } else if ((this.dormitoryList[0].ly = "")) {
-        this.$message.error("楼栋不能为空！");
-      }
-      let formData = new FormData();
+      } else {
+        let formData = new FormData();
 
-      formData.append("jssj ", this.visitDetailForm.endTime.slice(-8, -3));
-      formData.append("kssj", this.visitDetailForm.beginTime.slice(-8, -3));
-      formData.append("id", this.id);
-      //let lyList = [];
-      for (let i = 0, len = this.dormitoryList.length; i < len; i++) {
-        let locationInfo = this.dormitoryList[i];
-        formData.append("zfLyFjh[" + i + "].ly", locationInfo.ly);
-        formData.append("zfLyFjh[" + i + "].fjh", locationInfo.fjh);
-        //lyList.push(locationInfo.ly);
-      }
-      // formData.append("lyList", lyList);
-      formData.append("zfqk ", this.visitDetailForm.situation);
-      formData.append("zfrq", this.visitDetailForm.beginDate.slice(0, 10));
-      formData.append("zfzt ", this.visitDetailForm.zfzt);
-      this.fileListAdd.map((ele) => {
-        formData.append("files", ele.raw);
-      });
-      // let data = {
-      //   // fdylx: "string",
-      //   // files: [null],
-
-      //   id: this.$route.query.id,
-      //   jssj: this.visitDetailForm.endTime,
-      //   kssj: this.visitDetailForm.beginTime,
-      //   zfLyFjh: this.dormitoryList,
-      //   zfqk: this.visitDetailForm.situation,
-      //   zfrq: this.visitDetailForm.beginDate,
-      //   zfzt: this.visitDetailForm.zfzt,
-      // };
-      editDetail(formData).then((res) => {
-        this.$router.push({
-          path: "/assistantWork/dormitory",
+        formData.append("jssj ", this.visitDetailForm.endTime.slice(-8, -3));
+        formData.append("kssj", this.visitDetailForm.beginTime.slice(-8, -3));
+        formData.append("id", this.id);
+        //let lyList = [];
+        for (let i = 0, len = this.dormitoryList.length; i < len; i++) {
+          let locationInfo = this.dormitoryList[i];
+          formData.append("zfLyFjh[" + i + "].ly", locationInfo.ly);
+          formData.append("zfLyFjh[" + i + "].fjh", locationInfo.fjh);
+          //lyList.push(locationInfo.ly);
+        }
+        // formData.append("lyList", lyList);
+        formData.append("zfqk ", this.visitDetailForm.situation);
+        formData.append("zfrq", this.visitDetailForm.beginDate.slice(0, 10));
+        formData.append("zfzt ", this.visitDetailForm.zfzt);
+        this.fileListAdd.map((ele) => {
+          formData.append("files", ele.raw);
         });
-      });
+        // let data = {
+        //   // fdylx: "string",
+        //   // files: [null],
+
+        //   id: this.$route.query.id,
+        //   jssj: this.visitDetailForm.endTime,
+        //   kssj: this.visitDetailForm.beginTime,
+        //   zfLyFjh: this.dormitoryList,
+        //   zfqk: this.visitDetailForm.situation,
+        //   zfrq: this.visitDetailForm.beginDate,
+        //   zfzt: this.visitDetailForm.zfzt,
+        // };
+        editDetail(formData).then((res) => {
+          this.$router.push({
+            path: "/assistantWork/dormitory",
+          });
+        });
+      }
     },
     //取消
     handleCancle() {

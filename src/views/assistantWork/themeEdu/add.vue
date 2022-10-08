@@ -15,15 +15,13 @@
           label-width="100px"
           :rules="rules"
         >
-          <el-row :gutter="10">
-            <el-col :span="4"
-              ><el-form-item label="教育主题" prop="jyzt">
-                <el-input
-                  v-model="eduDetailForm.jyzt"
-                  clearable
-                /> </el-form-item
-            ></el-col>
-            <el-col :span="4"
+          <el-row>
+            <el-form-item label="教育主题" prop="jyzt">
+              <el-input v-model="eduDetailForm.jyzt" clearable />
+            </el-form-item>
+          </el-row>
+          <el-row>
+            <el-col :span="6"
               ><el-form-item label="关键词" prop="keyword">
                 <el-input
                   v-model="eduDetailForm.keyword"
@@ -31,7 +29,7 @@
                 /> </el-form-item
             ></el-col>
 
-            <el-col :span="15">
+            <el-col :span="18">
               <span class="tagtitle">常用关键词</span>
               <el-tag
                 v-for="(item, i) in tags.themeTags"
@@ -149,7 +147,7 @@
               <el-input v-model="eduDetailForm.other"></el-input
             ></el-form-item>
             <el-form-item label="人数" prop="peopleNum">
-              <el-input v-model="eduDetailForm.peopleNum"></el-input
+              <el-input v-model.number="eduDetailForm.peopleNum"></el-input
             ></el-form-item>
           </el-row>
           <el-row>
@@ -178,12 +176,12 @@
             /></el-form-item>
           </el-row>
           <el-row>
-            <el-col :span="4">
+            <el-col :span="6">
               <el-form-item label="开展地点" prop="place">
                 <el-input v-model="eduDetailForm.place"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="15">
+            <el-col :span="18">
               <span class="tagtitle">常用地点</span>
 
               <el-tag
@@ -277,6 +275,16 @@ export default {
           { required: true, message: "日期不能为空", trigger: "change" },
         ],
         place: [{ required: true, message: "地点不能为空", trigger: "change" }],
+        peopleNum: [
+          {
+            type: "number",
+            message: "人数必须为数字值",
+            trigger: "blur",
+            transform(value) {
+              return Number(value);
+            },
+          },
+        ],
       },
       inputVisible: false,
       inputValue: "",

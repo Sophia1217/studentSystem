@@ -51,16 +51,17 @@
           label-width="100px"
           :rules="rules"
         >
-          <el-row :gutter="20">
-            <el-col :span="4"
-              ><el-form-item label="教育主题" prop="jyzt">
-                <el-input
-                  :disabled="isEdit == '1' ? true : false"
-                  v-model="eduDetailForm.jyzt"
-                  clearable
-                /> </el-form-item
-            ></el-col>
-            <el-col :span="4"
+          <el-row>
+            <el-form-item label="教育主题" prop="jyzt">
+              <el-input
+                :disabled="isEdit == '1' ? true : false"
+                v-model="eduDetailForm.jyzt"
+                clearable
+              />
+            </el-form-item>
+          </el-row>
+          <el-row>
+            <el-col :span="6"
               ><el-form-item label="关键词" prop="keyword">
                 <el-input
                   :disabled="isEdit == '1' ? true : false"
@@ -69,7 +70,7 @@
                 /> </el-form-item
             ></el-col>
 
-            <el-col :span="15">
+            <el-col :span="18">
               <div v-show="isEdit == '2' ? true : false">
                 <span class="tagtitle">常用关键词</span>
                 <el-tag
@@ -202,7 +203,7 @@
             <el-form-item label="人数" prop="peopleNum">
               <el-input
                 :disabled="isEdit == '1' ? true : false"
-                v-model="eduDetailForm.peopleNum"
+                v-model.number="eduDetailForm.peopleNum"
               ></el-input
             ></el-form-item>
           </el-row>
@@ -237,7 +238,7 @@
             ></el-form-item>
           </el-row>
           <el-row>
-            <el-col :span="4">
+            <el-col :span="6">
               <el-form-item label="开展地点" prop="place">
                 <el-input
                   :disabled="isEdit == '1' ? true : false"
@@ -245,7 +246,7 @@
                 ></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="15">
+            <el-col :span="18">
               <div v-show="isEdit == '2' ? true : false">
                 <span class="tagtitle">常用地点</span>
 
@@ -428,6 +429,16 @@ export default {
           { required: true, message: "日期不能为空", trigger: "change" },
         ],
         place: [{ required: true, message: "地点不能为空", trigger: "change" }],
+        peopleNum: [
+          {
+            type: "number",
+            message: "人数必须为数字值",
+            trigger: "blur",
+            transform(value) {
+              return Number(value);
+            },
+          },
+        ],
       },
     };
   },

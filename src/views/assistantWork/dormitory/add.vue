@@ -71,12 +71,12 @@
           :rules="rules"
         >
           <el-row :gutter="10">
-            <el-col :span="4">
+            <el-col :span="6">
               <el-form-item label="走访主题" prop="zfzt">
                 <el-input v-model="visitDetailForm.zfzt" clearable />
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="18">
               <span class="tagtitle">常用主题</span>
               <el-tag
                 v-for="(item, i) in tags.themeTags"
@@ -134,10 +134,10 @@
             <el-form-item label="走访情况">
               <el-input
                 maxlength="2000"
-                placeholder="Please input"
+                placeholder="请输入..."
                 show-word-limit
-                style="width: 2000px"
                 v-model="visitDetailForm.situation"
+                style="width: 1000px"
                 :autosize="{ minRows: 10 }"
                 type="textarea"
               ></el-input>
@@ -215,7 +215,7 @@ export default {
         situation: "",
       },
 
-      dormitoryList: [{ ly: "", fjh: "" }],
+      dormitoryList: [{ ly: undefined, fjh: undefined }],
       zfssOptions: [],
       fjhOptions: [],
       zfssOptions: [],
@@ -298,50 +298,79 @@ export default {
     },
     //保存
     handleUpdata() {
-      if (!this.checkForm()) {
-        this.$message.error("请完善表单相关信息！");
+      // for (let j = 0, len = this.dormitoryList.length; j < len; j++) {
+      //   if (this.dormitoryList[j].ly == "") {
+      //     this.$message.error("走访楼栋不能为空！");
+      //     break;
+      //   }
+      var flag = false;
+      if (this.dormitoryList.length > 1) {
+        for (var i = 0; i < this.dormitoryList.length; i++) {
+          for (var j = i + 1; j < this.dormitoryList.length; j++) {
+            if (
+              this.dormitoryList[i].ly === this.dormitoryList[j].ly &&
+              !!this.dormitoryList[i].ly &&
+              !!this.dormitoryList[j].ly &&
+              (this.dormitoryList[i].fjh === this.dormitoryList[j].fjh ||
+                this.dormitoryList[i].fjh == undefined ||
+                this.dormitoryList[j].fjh == undefined)
+            ) {
+              flag = true;
+            }
+          }
+        }
+      } else {
+        flag = false;
+      }
+      if (flag) {
+        this.$message.error("存在相同走访宿舍，请重新选择");
+      } else if (this.dormitoryList.some((val) => val.ly == undefined)) {
+        this.$message.error("所添加走访宿舍存在空值或未选择楼栋");
+      } else if (!this.checkForm()) {
+        this.$message.error("请完善表单其他相关信息！");
         return;
-      }
-      let formData = new FormData();
+      } else {
+        let formData = new FormData();
 
-      formData.append("jssj ", this.visitDetailForm.endTime);
-      formData.append("kssj", this.visitDetailForm.beginTime);
-      // formData.append("zfLyFjh", this.dormitoryList);
-      let lyList = [];
-      for (let i = 0, len = this.dormitoryList.length; i < len; i++) {
-        let locationInfo = this.dormitoryList[i];
+        formData.append("jssj ", this.visitDetailForm.endTime);
+        formData.append("kssj", this.visitDetailForm.beginTime);
+        // formData.append("zfLyFjh", this.dormitoryList);
+        let lyList = [];
+        for (let i = 0, len = this.dormitoryList.length; i < len; i++) {
+          let locationInfo = this.dormitoryList[i];
 
-        formData.append("zfLyFjh[" + i + "].ly", locationInfo.ly);
-        formData.append("zfLyFjh[" + i + "].fjh", locationInfo.fjh);
-        lyList.push(locationInfo.ly);
-      }
-      formData.append("zflyList", lyList);
+          formData.append("zfLyFjh[" + i + "].ly", locationInfo.ly);
+          formData.append("zfLyFjh[" + i + "].fjh", locationInfo.fjh);
+          lyList.push(locationInfo.ly);
+        }
+        formData.append("zflyList", lyList);
 
-      formData.append("zfqk ", this.visitDetailForm.situation);
-      formData.append("zfrq", this.visitDetailForm.beginDate);
-      formData.append("zfzt ", this.visitDetailForm.zfzt);
-      formData.append("userId", this.$store.getters.userId);
-      if (this.fileList.length > 0) {
-        this.fileList.map((ele) => {
-          formData.append("files", ele.raw);
+        formData.append("zfqk ", this.visitDetailForm.situation);
+        formData.append("zfrq", this.visitDetailForm.beginDate);
+        formData.append("zfzt ", this.visitDetailForm.zfzt);
+        formData.append("userId", this.$store.getters.userId);
+        if (this.fileList.length > 0) {
+          this.fileList.map((ele) => {
+            formData.append("files", ele.raw);
+          });
+        }
+        // let data = {
+        //   // fjh: "",
+        //   jssj: this.visitDetailForm.endTime,
+        //   kssj: this.visitDetailForm.beginTime,
+        //   // ly: "",
+        //   zfLyFjh: this.dormitoryList,
+        //   zfqk: this.visitDetailForm.situation,
+        //   zfrq: this.visitDetailForm.beginDate,
+        //   zfzt: this.visitDetailForm.zfzt,
+        //   userId: this.$store.getters.userId,
+        // };
+        addDetail(formData).then((res) => {
+          this.$router.push({
+            path: "/assistantWork/dormitory",
+          });
         });
       }
-      // let data = {
-      //   // fjh: "",
-      //   jssj: this.visitDetailForm.endTime,
-      //   kssj: this.visitDetailForm.beginTime,
-      //   // ly: "",
-      //   zfLyFjh: this.dormitoryList,
-      //   zfqk: this.visitDetailForm.situation,
-      //   zfrq: this.visitDetailForm.beginDate,
-      //   zfzt: this.visitDetailForm.zfzt,
-      //   userId: this.$store.getters.userId,
-      // };
-      addDetail(formData).then((res) => {
-        this.$router.push({
-          path: "/assistantWork/dormitory",
-        });
-      });
     },
 
     //新增主题确认
@@ -443,11 +472,12 @@ export default {
       });
     },
     lyChange(index) {
+      this.dormitoryList[index].fjh = undefined;
       this.getFjh(index);
     },
     //获取房间号
     getFjh(index) {
-      console.log(index);
+      //console.log(index);
       let data = { dm: this.dormitoryList[index].ly };
       queryRelatedFj(data).then((response) => {
         // 获取走访宿舍列表数据

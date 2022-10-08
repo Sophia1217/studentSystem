@@ -150,11 +150,11 @@
           <el-table-column prop="xm" label="姓名" sortable />
           <el-table-column prop="xb" label="性别" sortable> </el-table-column>
           <el-table-column prop="lxdh" label="联系方式" sortable />
-          <el-table-column prop="gzdw" label="工作单位" sortable />
+          <el-table-column prop="gzdwListString" label="工作单位" sortable />
           <el-table-column prop="zgxl" label="最高学历" sortable />
           <el-table-column prop="zgxlbyxx" label="最高学历毕业学校" sortable />
           <el-table-column prop="zybj" label="专业背景" sortable />
-          <el-table-column prop="gwList" label="职务" sortable />
+          <el-table-column prop="gwListString" label="职务" sortable />
           <el-table-column prop="cjgzsj" label="参加工作时间" sortable />
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
@@ -333,11 +333,14 @@ export default {
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
-      if (this.queryParams.orderZd !== "gwList") {
-        this.handleSearch();
-      } else {
+      if (
+        this.queryParams.orderZd == "gwListString" ||
+        this.queryParams.orderZd == "gzdwListString"
+      ) {
         this.queryParams.orderZd = "";
         this.queryParams.orderPx = "";
+      } else {
+        this.handleSearch();
       }
     },
     // 查询

@@ -303,7 +303,10 @@ export default {
       }
       if (flag) {
         this.$message.error("存在相同谈话对象，请重新选择");
-      } else if (this.renshu.some((val) => val.acceptVlaue !== undefined)) {
+      } else if (
+        this.renshu.some((val) => val.acceptVlaue == undefined) ||
+        this.renshu[0].acceptVlaue == ""
+      ) {
         this.$message.error("所添加谈话对象存在空值或未选择学生信息");
       } else if (this.talkDate[index].addressValue == "") {
         this.$message.error("请至少选择一个谈话地点");
@@ -357,10 +360,19 @@ export default {
     },
 
     change(file, fileList, index) {
+      var totalSize = 0;
+      for (var i = 0; i < fileList.length; i++) {
+        totalSize += fileList[i].raw.size;
+      }
       //获取后缀 判断文件格式 图片 2M  文件10M  视频50M
       const ind = file.name.lastIndexOf(".");
       const ext = file.name.substr(ind + 1);
-      if (
+      if (Number(totalSize / 1024 / 1024) > 50) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
+        this.$message.error("总共文件大小超过50M，当前文件上传失败");
+      } else if (
         Number(file.size / 1024 / 1024) > 2 &&
         ["jpe", "jpeg", "jpg", "png"].indexOf(ext) != -1
       ) {

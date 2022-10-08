@@ -198,11 +198,11 @@ export default {
         choose: [],
         checkBox: [
           {
-            dm: "0",
+            dm: "1",
             mc: "已完成",
           },
           {
-            dm: "1",
+            dm: "0",
             mc: "待记录",
           },
         ],

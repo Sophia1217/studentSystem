@@ -359,6 +359,7 @@ export default {
       });
     },
     change(file, fileList) {
+      console.log("fileList", fileList);
       //用于文件先保存
       const ind = file.name.lastIndexOf(".");
       const ext = file.name.substr(ind + 1);
@@ -519,7 +520,10 @@ export default {
       }
       if (flag) {
         this.$message.error("存在相同谈话对象，请重新选择");
-      } else if (this.stuDate.some((val) => val.xh == undefined)) {
+      } else if (
+        this.stuDate.some((val) => val.xh == undefined) ||
+        this.stuDate[0].xh == ""
+      ) {
         this.$message.error("所添加谈话对象存在空值或未选择学生信息");
       } else if (this.addressValue == "") {
         this.$message.error("请至少选择一个谈话地点");

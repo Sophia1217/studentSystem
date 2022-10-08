@@ -91,7 +91,7 @@
             <i class="icon removeButton" /><span class="title">批量免去</span>
           </div>
           <div class="btns borderGreen" @click="handleImport">
-            <i class="icon greenIcon" /><span class="title">导入</span>
+            <i class="icon greenIcon" /><span class="title">添加班主任</span>
           </div>
           <div class="btns borderGreen" @click="handleExport">
             <i class="icon greenIcon" /><span class="title">导出</span>
@@ -258,6 +258,17 @@
             ></el-option
           ></el-select>
         </el-form-item>
+
+        <el-form-item label="工作单位" prop="ssxy">
+          <el-select v-model="importForm.ssxy" placeholder="未选择">
+            <el-option
+              v-for="(item, index) in ssxyOptions"
+              :key="index"
+              :label="item.mc"
+              :value="item.dm"
+            ></el-option
+          ></el-select>
+        </el-form-item>
       </el-form>
 
       <span slot="footer" class="dialog-footer">
@@ -305,7 +316,7 @@ import {
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import CheckboxCom from "@/views/components/checkboxCom";
 import { getXm } from "@/api/politicalWork/assistantappoint";
-
+import { getCollege } from "@/api/class/maintenanceClass";
 export default {
   name: "Teacherappoint",
   components: { CheckboxCom },
@@ -317,6 +328,8 @@ export default {
       importForm: {
         gh: "",
         xm: "",
+        ssxy: "",
+        sxpycc: "",
       },
       // 确认导入弹出
       showConfirmImport: false,
@@ -350,6 +363,7 @@ export default {
       },
       gzdwOptions: [],
       nameOptions: [],
+      ssxyOptions: [],
       status: {
         // 状态
         checkAll: false,
@@ -384,16 +398,22 @@ export default {
   watch: {},
   created() {
     this.getList();
-    // this.getConfigKey('sys.user.initPassword').then(response => {
-    //   this.initPassword = response.msg
-    // })
   },
   mounted() {
     this.getListWorkPlace("dmdwmc"); // 工作单位
     this.getCode("dmxbm"); // 性别
     this.getCode("dmpyccm");
+    this.getOptions();
   },
   methods: {
+    getOptions() {
+      getCollege().then((response) => {
+        // 获取培养单位列表数据
+        if (response.errcode == "00") {
+          this.ssxyOptions = response.data.rows;
+        }
+      });
+    },
     //工作地点勾选
     workPlaceChange() {
       this.queryParams.dwmcList = this.workPlace;
@@ -555,15 +575,15 @@ export default {
     /** 导入按钮操作 */
     handleImport() {
       this.showImport = true;
-      this.title = "导入班主任";
+      this.title = "添加班主任";
     },
 
-    // /** 导入提交按钮 */
+    // // /** 导入提交按钮 */
     submitImport: function () {
       // todo
       this.showImport = false;
       this.showConfirmImport = true;
-      this.resetImportForm();
+      //this.resetImportForm();
     },
     // 取消导入提交按钮
     cancelImport() {
@@ -574,13 +594,16 @@ export default {
     // 确认导入按钮
     confirmImport() {
       this.showConfirmImport = false;
-      addTeacher({
+      let data = {
         ghList: [this.importForm.gh],
         xm: this.importForm.xm,
         sxpycc: this.importForm.sxpycc,
-      }).then((res) => {
+        rzdwh: this.importForm.ssxy,
+      };
+      addTeacher(data).then((res) => {
         this.getList();
       });
+      this.resetImportForm();
     },
     // 取消导入按钮
     cancelConfirmImport() {
@@ -642,8 +665,8 @@ export default {
         xm: undefined,
         gh: undefined,
         sxpycc: undefined,
+        ssxy: undefined,
       };
-      console.log(1);
     },
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;

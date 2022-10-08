@@ -105,7 +105,7 @@
             <i class="icon removeButton" /><span class="title">批量免去</span>
           </div>
           <div class="btns borderGreen" @click="handleImport">
-            <i class="icon greenIcon" /><span class="title">导入</span>
+            <i class="icon greenIcon" /><span class="title">添加辅导员</span>
           </div>
           <div class="btns borderGreen" @click="handleExport">
             <i class="icon greenIcon" /><span class="title">导出</span>
@@ -199,6 +199,18 @@
             <el-select v-model="form.sxpycc" placeholder="未选择">
               <el-option
                 v-for="(item, index) in this.Sxpycc"
+                :key="index"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option
+            ></el-select>
+          </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item label="工作单位" prop="ssxy">
+            <el-select v-model="form.ssxy" placeholder="未选择">
+              <el-option
+                v-for="(item, index) in ssxyOptions"
                 :key="index"
                 :label="item.mc"
                 :value="item.dm"
@@ -326,6 +338,7 @@ import {
   getXm,
 } from "@/api/politicalWork/assistantappoint";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
+import { getCollege } from "@/api/class/maintenanceClass";
 export default {
   name: "BasicInfo",
   components: { CheckboxCom },
@@ -350,6 +363,7 @@ export default {
       isMore: false,
       gzdwOptions: [],
       nameOptions: [],
+      ssxyOptions: [],
       category: {
         // 类别
         checkAll: false,
@@ -383,10 +397,12 @@ export default {
         name: "",
         type: "",
         sxpycc: "",
+        ssxy: "",
       },
       rules: {
-        ghContent: [
-          { required: true, message: "工号不能为空", trigger: "blur" },
+        gh: [{ required: true, message: "工号不能为空", trigger: "blur" }],
+        ssxy: [
+          { required: true, message: "工作单位不能为空", trigger: "blur" },
         ],
       },
       Sxpycc: [],
@@ -450,6 +466,7 @@ export default {
     },
     getOption() {
       this.gzdwOptions = [];
+      this.ssxyOptions = [];
       getGzdw()
         .then((res) => {
           if (res.errcode == "00") {
@@ -459,6 +476,12 @@ export default {
         .catch((err) => {
           //this.$message.error(err.errmsg);
         });
+      getCollege().then((response) => {
+        // 获取培养单位列表数据
+        if (response.errcode == "00") {
+          this.ssxyOptions = response.data.rows;
+        }
+      });
     },
     //获取数据列表
     getList() {
@@ -641,6 +664,7 @@ export default {
         xm: this.form.name,
         lb: this.form.type,
         sxpycc: this.form.sxpycc,
+        rzdwh: this.form.ssxy,
       };
       addOneAssistant(data)
         .then((res) => {
@@ -676,7 +700,7 @@ export default {
     /** 导入按钮操作 */
     handleImport() {
       this.openInput = true;
-      this.title = "导入辅导员";
+      this.title = "添加辅导员";
     },
     /**批量免去按钮*/
     handleRemove() {

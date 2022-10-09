@@ -510,6 +510,7 @@ export default {
       add(FdySzkcskEntityReq).then((res) => {
         this.dialogFormVisible = false;
         this.form = {};
+        this.handleSearch();
       });
     },
     mbDown() {
@@ -536,11 +537,11 @@ export default {
       };
       if (this.multipleSelection.length > 0) {
         expor({ idList: idList }).then((res) =>
-          this.downloadFn(res, "思政課程授課列表下载", "xlsx")
+          this.downloadFn(res, "思政课程授課列表下载", "xlsx")
         );
       } else {
         expor(data).then((res) =>
-          this.downloadFn(res, "思政課程授課列表下载", "xlsx")
+          this.downloadFn(res, "思政课程授課列表下载", "xlsx")
         );
       }
     },

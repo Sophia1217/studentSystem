@@ -17,7 +17,7 @@
               <el-autocomplete
                 v-model="ele.acceptVlaue"
                 :fetch-suggestions="querySearch"
-                placeholder="请输入内容"
+                placeholder="请输入姓名"
                 :trigger-on-focus="false"
                 @select="
                   (item) => {

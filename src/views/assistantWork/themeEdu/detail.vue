@@ -156,7 +156,9 @@
                   <el-select
                     :disabled="
                       isEdit == '1' ||
-                      (isEdit == '2' && this.eduDetailForm.bj != '')
+                      (isEdit == '2' &&
+                        !!this.eduDetailForm.bj &&
+                        this.eduDetailForm.bj.length !== 0)
                         ? true
                         : false
                     "
@@ -164,7 +166,7 @@
                     placeholder="专业"
                     clearable
                     multiple
-                    @change="bjChange"
+                    @change="zyChange"
                     style="width: 250px"
                   >
                     <el-option
@@ -179,7 +181,9 @@
                   <el-select
                     :disabled="
                       isEdit == '1' ||
-                      (isEdit == '2' && this.eduDetailForm.zy != '')
+                      (isEdit == '2' &&
+                        !!this.eduDetailForm.zy &&
+                        this.eduDetailForm.zy.length !== 0)
                         ? true
                         : false
                     "
@@ -555,7 +559,6 @@ export default {
 
             this.bjOptions.push(bj);
           }
-          console.log("banji", this.bjOptions);
         }
       });
     },
@@ -598,15 +601,15 @@ export default {
     //培养层次改变
     changePYCC() {
       //console.log("pycc", this.pyccval);
-      if (this.eduDetailForm.xy == "" || this.eduDetailForm.pycc == "") {
-        this.eduDetailForm.zy = []; // 专业
-        this.eduDetailForm.bj = []; // 班级
-        //console.log("列表是否空");
-        this.bjOptions = [];
-        this.zyOptions = [];
-      } else {
+      if (this.eduDetailForm.xy != "" || this.eduDetailForm.pycc != "") {
         this.getBj();
       }
+
+      this.eduDetailForm.zy = []; // 专业
+      this.eduDetailForm.bj = []; // 班级
+      //console.log("列表是否空");
+      this.bjOptions = [];
+      this.zyOptions = [];
       this.getPeopleNum();
     },
     //学院改变
@@ -624,7 +627,11 @@ export default {
       this.getPeopleNum();
     },
 
-    //专业和班级改变
+    //专业改变
+    zyChange() {
+      this.getPeopleNum();
+    },
+    //班级改变
     bjChange() {
       this.getPeopleNum();
     },
@@ -768,7 +775,9 @@ export default {
     },
     beforeRemove(file, fileList) {
       //用于文件删除
-      console.log("jinlai");
+      let uid = file.uid;
+      let idx = fileList.findIndex((item) => item.uid === uid);
+      this.fileListAdd.splice(idx, 1);
       delwj({ id: file.id.toString() }).then((res) => console.log("res", res));
     },
     querywj() {
@@ -785,6 +794,7 @@ export default {
     },
     editButtonClick() {
       this.isEdit = 2; // 控制是否可以编辑的字段
+      this.getBj();
     },
     //标签
     handleInputConfirm(type) {

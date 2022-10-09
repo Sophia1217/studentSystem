@@ -46,6 +46,7 @@
               placeholder="请选择"
               collapse-tags
               @change="dormitoryChange"
+              filterable
             >
               <el-option
                 v-for="(item, index) in zfssOptions"
@@ -201,7 +202,7 @@ import {
   queryRelatedLd,
 } from "@/api/assistantWork/dormitory";
 import CheckboxCom from "../../components/checkboxCom";
-
+import { getGzdw } from "@/api/politicalWork/assistantappoint";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getCollege } from "@/api/class/maintenanceClass";
 export default {
@@ -312,7 +313,7 @@ export default {
     getOption() {
       this.gzdwOptions = [];
       this.zfssOptions = [];
-      getCollege().then((response) => {
+      getGzdw().then((response) => {
         // 获取培养单位列表数据
         if (response.errcode == "00") {
           this.gzdwOptions = response.data.rows;

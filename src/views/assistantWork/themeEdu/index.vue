@@ -198,7 +198,7 @@ import {
   outThemeEdu,
 } from "@/api/assistantWork/themeEdu";
 import CheckboxCom from "../../components/checkboxCom";
-
+import { getGzdw } from "@/api/politicalWork/assistantappoint";
 import { getCollege } from "@/api/class/maintenanceClass"; // 引入班级列表查询、修改班级名称接口
 export default {
   name: "themework",

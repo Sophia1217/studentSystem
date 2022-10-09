@@ -19,6 +19,7 @@
                   size="small"
                   placeholder="请选择楼栋"
                   @change="lyChange(index)"
+                  filterable
                 >
                   <el-option
                     v-for="(ele1, ind1) in zfssOptions"
@@ -32,6 +33,7 @@
                   v-model="role.fjh"
                   size="small"
                   placeholder="请选择宿舍号"
+                  filterable
                 >
                   <el-option
                     v-for="(ele, ind) in role.fjhOptions"

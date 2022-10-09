@@ -667,15 +667,15 @@ export default {
     //培养层次改变
     changePYCC() {
       //console.log("pycc", this.pyccval);
-      if (this.eduDetailForm.xy == "" || this.eduDetailForm.pycc == "") {
-        this.eduDetailForm.zy = []; // 专业
-        this.eduDetailForm.bj = []; // 班级
-        //console.log("列表是否空");
-        this.bjOptions = [];
-        this.zyOptions = [];
-      } else {
+      if (this.eduDetailForm.xy != "" || this.eduDetailForm.pycc != "") {
         this.getBj();
       }
+
+      this.eduDetailForm.zy = []; // 专业
+      this.eduDetailForm.bj = []; // 班级
+      //console.log("列表是否空");
+      this.bjOptions = [];
+      this.zyOptions = [];
       this.getPeopleNum();
     },
     //学院改变

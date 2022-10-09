@@ -420,7 +420,7 @@ export default {
         var result = [];
         var resultNew = [];
         getXmXgh(Xm).then((res) => {
-          console.log("res",res.data);
+          // console.log("res",res.data);
           result = res.data.length > 0 ? res.data:[];
           resultNew = result.map((ele) => {
             //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
@@ -460,6 +460,7 @@ export default {
     },
     delPart(role, index) {
       this.renshu.splice(index, 1);
+      this.partDate.splice(index, 1);
     },
     //学生
     querySearchStu(queryString, cb) {
@@ -469,7 +470,7 @@ export default {
         var result = [];
         var resultNew = [];
         queryStuList(Xm).then((res) => {
-          console.log("res",res.data);
+          // console.log("res",res.data);
           result = res.data.length > 0 ? res.data:[];
           resultNew = result.map((ele) => {
             //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
@@ -504,6 +505,7 @@ export default {
     },
     delStu(role, index) {
       this.renshuStu.splice(index, 1);
+      this.stuDate.splice(index, 1);
     },
     //改变家访形式
     changeModel(val){
@@ -580,14 +582,14 @@ export default {
          let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
          fileList.splice(idx, 1);
          this.fileList = fileList;
-         console.log("fileList", fileList);
+        //  console.log("fileList", fileList);
          this.$message.error("图片超过2M,上传失败");
        } else if(Number(file.size / 1024 / 1024) > 10){
          let uid = file.uid; // 关键作用代码，去除文件列表失败文件
          let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
          fileList.splice(idx, 1);
          this.fileList = fileList;
-         console.log("fileList", fileList);
+        //  console.log("fileList", fileList);
          this.$message.error("文件超过10M,上传失败");
        }
        else {
@@ -613,26 +615,55 @@ export default {
       //   this.$message.error("请完善家访信息！");
       //   return;
       // }
-      let formData = new FormData();
-      formData.append("jfdd", this.form.countryPlace);
-      formData.append("jfqk", this.form.state);
-      formData.append("jfsj", this.form.date);
-      formData.append("jfxs", this.form.homeModel);
-      formData.append("jfzt", this.form.theme);
-      formData.append("xxdz", this.form.detailPlace);
-      for(let i=0,len= this.stuDate.length;i<len;i++){
-        let locationInfo = this.stuDate[i];
-        formData.append('xsXmXgh['+i+'].xm',locationInfo.xm);
-        formData.append('xsXmXgh['+i+'].gh',locationInfo.gh);
+      // console.log("this.partDate",this.partDate[0]);
+      // console.log("this.partDate长度",this.partDate.length);
+      
+      //参与人重复校验
+      var flag = false;
+      if (this.renshu.length > 1) {
+        for (var i = 0; i < this.renshu.length; i++) {
+          for (var j = i + 1; j < this.renshu.length; j++) {
+            if (
+              this.renshu[i].acceptVlaue == this.renshu[j].acceptVlaue &&
+              !!this.renshu[i].acceptVlaue &&
+              !!this.renshu[j].acceptVlaue
+            ) {
+              flag = true;
+            }
+          }
+        } 
+      } else {
+        flag = false;
       }
-      for(let j=0,leng= this.partDate.length;j<leng;j++){
-        let locationInfo = this.partDate[j];
-        formData.append('gtcyrXmXgh['+j+'].xm',locationInfo.xm);
-        formData.append('gtcyrXmXgh['+j+'].gh',locationInfo.gh);
+      //学生重复校验
+      var flagB = false;
+      if (this.renshuStu.length > 1) {
+        for (var i = 0; i < this.renshuStu.length; i++) {
+          for (var j = i + 1; j < this.renshuStu.length; j++) {
+            if (
+              this.renshuStu[i].acceptVlaue == this.renshuStu[j].acceptVlaue &&
+              !!this.renshuStu[i].acceptVlaue &&
+              !!this.renshuStu[j].acceptVlaue
+            ) {
+              flagB = true;
+            }
+          }
+        } 
+      } else {
+        flagB = false;
       }
-
-      if (this.renshuStu[0].acceptVlaue=="") {
-        this.$message.error("请选择家访学生！");
+      if (flag) {
+        this.$message.error("存在相同参与人，请重新选择！");
+      } else if (flagB) {
+        this.$message.error("存在相同学生，请重新选择！");
+      } else if (this.renshu.some((val) => val.acceptVlaue == undefined) &&       
+            this.renshu[0].acceptVlaue !== undefined) {
+        this.$message.error("所添加参与人存在空值！");
+      } else if (this.renshuStu.some((val) => val.acceptVlaue == undefined) ||
+            this.renshuStu[0].acceptVlaue == "") {
+        this.$message.error("所添加学生存在空值！");
+      } else if (this.renshuStu[0].acceptVlaue =="") {
+        this.$message.error("未选择学生！");
       } else if (this.form.theme=="") {
         this.$message.error("家访主题不能为空!");
       } else if (this.form.date=="") {
@@ -647,13 +678,36 @@ export default {
         this.$message.error("走访情况不能为空!");
       } 
       else{
-        insertJxlx(formData).then((res) => {
-        this.$message({
-          message: res.errmsg,
-          type: "success",
-        })
-        window.history.go(-1);
-      });
+        let formData = new FormData();
+        formData.append("jfdd", this.form.countryPlace);
+        formData.append("jfqk", this.form.state);
+        formData.append("jfsj", this.form.date);
+        formData.append("jfxs", this.form.homeModel);
+        formData.append("jfzt", this.form.theme);
+        formData.append("xxdz", this.form.detailPlace);
+        for(let i=0,len= this.stuDate.length;i<len;i++){
+          let locationInfo = this.stuDate[i];
+          formData.append('xsXmXgh['+i+'].xm',locationInfo.xm);
+          formData.append('xsXmXgh['+i+'].gh',locationInfo.gh);
+        }
+        for(let j=0,leng= this.partDate.length;j<leng;j++){
+          let locationInfo = this.partDate[j];
+          formData.append('gtcyrXmXgh['+j+'].xm',locationInfo.xm);
+          formData.append('gtcyrXmXgh['+j+'].gh',locationInfo.gh);
+        }
+        if (this.fileList.length > 0) {
+          this.fileList.map((ele) => {
+            formData.append("files", ele.raw);
+          });
+        }
+        insertJxlx(formData).then((res) => { 
+        if (res.errcode == "00") {
+            this.$message.success("保存成功");
+            window.history.go(-1);
+          } else {
+            this.$message.error("保存失败");
+          }
+        });
       }
       if (this.form.homeModel =="线下实地"){
           this.getCity(this.form.proPlace);

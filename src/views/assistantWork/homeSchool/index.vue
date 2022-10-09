@@ -91,7 +91,7 @@
             <i class="icon lightIcon" /><span class="title">删除</span>
           </div>
           <div class="btns fullGreen" @click="handleNew">
-            <i class="icon greenIcon" /><span class="title">新增</span>
+            <i class="icon greenIcon" /><span class="title1">新增</span>
           </div>
         </div>
       </div>
@@ -561,6 +561,13 @@ export default {
             font-size: 14px;
             text-align: center;
             line-height: 32px;
+            // vertical-align: middle;
+          }
+          .title1 {
+            font-size: 14px;
+            text-align: center;
+            line-height: 32px;
+            color: #fff;
             // vertical-align: middle;
           }
           .icon {

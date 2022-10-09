@@ -753,7 +753,9 @@ export default {
           this.getCity(this.form.proPlace);
           this.getXian(this.form.cityPlace);
         }
-        
+      })
+      .catch((err) => {
+        // this.$message.error(err.errmsg);
       })
     },
     //改变家访形式
@@ -825,30 +827,55 @@ export default {
     
     //保存
     sava() {
-      let formData = new FormData();
-      formData.append("id", this.$route.query.id.toString());
-      formData.append("jfdd", this.form.countryPlace);
-      //this.form.countryPlace
-      formData.append("jfqk", this.form.state);
-      formData.append("jfsj", this.form.date);
-      formData.append("jfxs", this.form.homeModel);
-      formData.append("jfzt", this.form.theme);
-      formData.append("xxdz", this.form.detailPlace);
-      for(let i=0,len= this.stuDate.length;i<len;i++){
-        let locationInfo = this.stuDate[i];
-        formData.append('xsXmXgh['+i+'].xm',locationInfo.xm);
-        formData.append('xsXmXgh['+i+'].gh',locationInfo.gh);
+      
+      ////参与人重复校验
+      var flag = false;
+      if (this.partDate.length > 1) {
+        for (var i = 0; i < this.partDate.length; i++) {
+          for (var j = i + 1; j < this.partDate.length; j++) {
+            if (
+              this.partDate[i].value === this.partDate[j].value &&
+              !!this.partDate[i].value &&
+              !!this.partDate[j].value
+            ) {
+              flag = true;
+            }
+          }
+        }
+      } else {
+        flag = false;
       }
-      for(let j=0,leng= this.partDate.length;j<leng;j++){
-        let locationInfo = this.partDate[j];
-        formData.append('gtcyrXmXgh['+j+'].xm',locationInfo.xm);
-        formData.append('gtcyrXmXgh['+j+'].gh',locationInfo.gh);
+      //学生重复校验
+      var flagB = false;
+      if (this.stuDate.length > 1) {
+        for (var i = 0; i < this.stuDate.length; i++) {
+          for (var j = i + 1; j < this.stuDate.length; j++) {
+            if (
+              this.stuDate[i].value === this.stuDate[j].value &&
+              !!this.stuDate[i].value &&
+              !!this.stuDate[j].value
+            ) {
+              flagB = true;
+            }
+          }
+        }
+      } else {
+        flagB = false;
       }
-      this.fileListAdd.map((ele) => {
-        formData.append("files", ele.raw);
-      });
-      if (this.stuDate[0].acceptVlaue=="") {
-        this.$message.error("请选择家访学生！");
+
+      if (flag) {
+        this.$message.error("存在相同参与人，请重新选择！");
+      } else if (flagB) {
+        this.$message.error("存在相同学生，请重新选择！");
+      } 
+      else if (this.partDate.some((val) => val.gh == undefined) && 
+              this.partDate[0].gh !== "") {
+        this.$message.error("所添加参与人存在空值！");
+      } else if (this.stuDate.some((val) => val.gh == undefined) ||
+            this.stuDate.some((val) => val.gh == "")) {
+        this.$message.error("所添加学生存在空值！");
+      } else if (this.stuDate[0].gh =="") {
+        this.$message.error("未选择学生！");
       } else if (this.form.theme=="") {
         this.$message.error("家访主题不能为空!");
       } else if (this.form.date=="") {
@@ -861,15 +888,43 @@ export default {
         this.$message.error("详细地址不能为空!");
       } else if (this.form.state=="") {
         this.$message.error("走访情况不能为空!");
-      } else{
+      } 
+      else{
+        let formData = new FormData();
+        formData.append("id", this.$route.query.id.toString());
+        formData.append("jfdd", this.form.countryPlace);
+        //this.form.countryPlace
+        formData.append("jfqk", this.form.state);
+        formData.append("jfsj", this.form.date);
+        formData.append("jfxs", this.form.homeModel);
+        formData.append("jfzt", this.form.theme);
+        formData.append("xxdz", this.form.detailPlace);
+        for(let i=0,len= this.stuDate.length;i<len;i++){
+          let locationInfo = this.stuDate[i];
+          formData.append('xsXmXgh['+i+'].xm',locationInfo.xm);
+          formData.append('xsXmXgh['+i+'].gh',locationInfo.gh);
+        }
+        if (this.partDate !== null){
+          for(let j=0,leng= this.partDate.length;j<leng;j++){
+            let locationInfo = this.partDate[j];
+            formData.append('gtcyrXmXgh['+j+'].xm',locationInfo.xm);
+            formData.append('gtcyrXmXgh['+j+'].gh',locationInfo.gh);
+          }
+        }
+        this.fileListAdd.map((ele) => {
+          formData.append("files", ele.raw);
+        });
         updateJxlxDetail(formData).then((res) => {
-        this.$message({
-          message: res.errmsg,
-          type: "success",
+          this.$message({
+            message: res.errmsg,
+            type: "success",
+          })
+          window.history.go(-1);
         })
-        window.history.go(-1);
+      .catch((err) => {
+        // this.$message.error(err.errmsg);
       });
-      }
+    }
 
     },
 

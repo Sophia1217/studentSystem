@@ -218,6 +218,7 @@ export default {
         ],
         isIndeterminate: true,
       },
+      title: "",
       dateArray: [],
       tableData: [],
       queryParams: {

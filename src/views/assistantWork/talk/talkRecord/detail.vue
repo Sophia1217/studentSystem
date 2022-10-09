@@ -239,6 +239,14 @@
           </el-input>
         </el-form-item>
         <el-form-item label="添加附件" v-if="edit == '1'">
+          <!-- <div v-if="urlArr.length > 0" class="block">
+            <video
+              :src="videoSrc"
+              controls="controls"
+              :custom-cache="false"
+              style="margin-left: 20px; width: 300px; height: 300px"
+            ></video>
+          </div> -->
           <div v-if="urlArr.length > 0" class="block">
             <div v-for="(item, i) in urlArr">
               <el-image
@@ -300,6 +308,8 @@ import { querywj, delwj, Exportwj } from "@/api/assistantWork/classEvent";
 export default {
   data() {
     return {
+      // videoSrc:
+      //   "https://hzypt.oss-cn-hangzhou.aliyuncs.com/web/course/videocoursevideo1651113800000",
       urlArr: [],
       fileList: [],
       fileListAdd: [],
@@ -344,18 +354,38 @@ export default {
     getUrl() {
       querywj({ businesId: this.lgnSn }).then((res) => {
         var arr = res.data || [];
+        // console.log("arr", arr);
         var arr1 = [];
+        // var ship = [];
         for (var i = 0; i < arr.length; i++) {
           if (arr[i].fileSuffix == ".png" || arr[i].fileSuffix == ".jpg") {
             arr1.push(arr[i]);
           }
+          // else if (arr[i].fileSuffix == ".mp4") {
+          //   ship.push(arr[i]);
+          // }
         }
         var arr2 = arr1.slice(0, 3) || [];
+        // if (arr2.length > 0) {
+        // console.log("arr2", arr2);
         for (var j = 0; j < arr2.length; j++) {
           Exportwj({ id: arr[j].id.toString() }).then((res) => {
+            // console.log("res", res);
             this.urlArr.push(window.URL.createObjectURL(res));
+            // console.log("this.urlArr", this.urlArr);
           });
         }
+        // } else {
+        //视频
+        // console.log("shipinliyu", ship);
+        // Exportwj({ id: ship[0].id.toString() }).then((res) => {
+        //   console.log("res", res);
+        //   this.videoSrc =
+        //     "https://hzypt.oss-cn-hangzhou.aliyuncs.com/web/course/videocoursevideo1651113800000";
+        //   // this.videoSrc = window.URL.createObjectURL(res);
+        //   console.log("this.viedeo", this.videoSrc);
+        // });
+        // }
       });
     },
     change(file, fileList) {
@@ -459,7 +489,7 @@ export default {
       if (this.stuDate.length > 5) {
         this.$message.error("最多六条数据");
       } else {
-        this.stuDate.push({});
+        this.stuDate.push({ value: "" });
       }
     },
 
@@ -472,9 +502,6 @@ export default {
         getXmXgh(XmXgh).then((res) => {
           result = res.data.stuList;
           resultNew = result.map((ele) => {
-            //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
-            //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
-            //此处找后台约定好
             return {
               value: `${ele.mc}(${ele.dm})`.trim(),
               xh: ele.dm.trim(),
@@ -520,10 +547,7 @@ export default {
       }
       if (flag) {
         this.$message.error("存在相同谈话对象，请重新选择");
-      } else if (
-        this.stuDate.some((val) => val.xh == undefined) ||
-        this.stuDate[0].xh == ""
-      ) {
+      } else if (this.stuDate.some((val) => val.value == "")) {
         this.$message.error("所添加谈话对象存在空值或未选择学生信息");
       } else if (this.addressValue == "") {
         this.$message.error("请至少选择一个谈话地点");

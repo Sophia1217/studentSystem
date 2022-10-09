@@ -340,13 +340,13 @@ export default {
             formData.append("files", file.raw);
           });
         }
-        // addTalk(formData).then((res) => {
-        //   if (res.errcode == "00") {
-        //     this.$message.success("保存成功");
-        //   } else {
-        //     this.$message.error("保存失败");
-        //   }
-        // });
+        addTalk(formData).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("保存成功");
+          } else {
+            this.$message.error("保存失败");
+          }
+        });
       }
     },
     beforeRemove(file, fileList, index) {

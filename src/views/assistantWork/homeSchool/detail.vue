@@ -827,10 +827,9 @@ export default {
     
     //保存
     sava() {
-      
       ////参与人重复校验
       var flag = false;
-      if (this.partDate.length > 1) {
+      if (this.partDate !== null && this.partDate.length > 1) {
         for (var i = 0; i < this.partDate.length; i++) {
           for (var j = i + 1; j < this.partDate.length; j++) {
             if (
@@ -845,6 +844,7 @@ export default {
       } else {
         flag = false;
       }
+      
       //学生重复校验
       var flagB = false;
       if (this.stuDate.length > 1) {
@@ -868,8 +868,9 @@ export default {
       } else if (flagB) {
         this.$message.error("存在相同学生，请重新选择！");
       } 
-      else if (this.partDate.some((val) => val.gh == undefined) && 
-              this.partDate[0].gh !== "") {
+      else if ( this.partDate !== null &&
+          this.partDate.some((val) => val.gh == undefined) && 
+          this.partDate[0].gh !== "") {
         this.$message.error("所添加参与人存在空值！");
       } else if (this.stuDate.some((val) => val.gh == undefined) ||
             this.stuDate.some((val) => val.gh == "")) {

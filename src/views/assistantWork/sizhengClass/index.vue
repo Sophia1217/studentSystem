@@ -328,6 +328,7 @@ import {
 import { getToken } from "@/utils/auth";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getGw } from "@/api/politicalWork/basicInfo";
+import { getGzdw } from "@/api/politicalWork/assistantappoint";
 import { getXmXgh } from "@/api/assistantWork/sizheng";
 export default {
   name: "sizheng",
@@ -551,7 +552,7 @@ export default {
       });
     },
     getAllCollege() {
-      getCollege()
+      getGzdw()
         .then((res) => {
           this.allDwh = res.data.rows;
         })

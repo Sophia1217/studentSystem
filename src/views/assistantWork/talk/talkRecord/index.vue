@@ -94,7 +94,7 @@
           <span class="title">谈话记录列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderOrange" @click="expTalk">
+          <div class="btns borderOrange" @click="handleExport">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
           <div class="btns borderLight" @click="del()">
@@ -166,13 +166,22 @@
         @pagination="handleSearch"
       />
     </div>
+    <el-dialog :title="title" :visible.sync="showExport" width="30%">
+      <span>确认导出？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="expTalk"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import CheckboxCom from "../../../components/checkboxCom";
 import { talkTable, delTalk, expTalk } from "@/api/assistantWork/talk";
-import { getCollege } from "@/api/class/maintenanceClass";
+import { getGzdw } from "@/api/politicalWork/assistantappoint";
 export default {
   components: { CheckboxCom },
   data() {
@@ -181,6 +190,7 @@ export default {
       searchVal: "",
       select: "",
       isMore: false,
+      showExport: false,
       moreIform: {
         xydm: [],
       },
@@ -227,6 +237,13 @@ export default {
   },
 
   methods: {
+    handleExport() {
+      this.showExport = true;
+      this.title = "导出";
+    },
+    handleCancel() {
+      this.showExport = false;
+    },
     expTalk() {
       if (this.delArr && this.delArr.length > 0) {
         var ids = this.delArr;
@@ -265,7 +282,7 @@ export default {
       }
     },
     getAllCollege() {
-      getCollege()
+      getGzdw()
         .then((res) => {
           this.allDwh = res.data.rows;
         })

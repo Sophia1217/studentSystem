@@ -303,10 +303,7 @@ export default {
       }
       if (flag) {
         this.$message.error("存在相同谈话对象，请重新选择");
-      } else if (
-        this.renshu.some((val) => val.acceptVlaue == undefined) ||
-        this.renshu[0].acceptVlaue == ""
-      ) {
+      } else if (this.renshu.some((val) => val.acceptVlaue == "")) {
         this.$message.error("所添加谈话对象存在空值或未选择学生信息");
       } else if (this.talkDate[index].addressValue == "") {
         this.$message.error("请至少选择一个谈话地点");
@@ -343,13 +340,13 @@ export default {
             formData.append("files", file.raw);
           });
         }
-        addTalk(formData).then((res) => {
-          if (res.errcode == "00") {
-            this.$message.success("保存成功");
-          } else {
-            this.$message.error("保存失败");
-          }
-        });
+        // addTalk(formData).then((res) => {
+        //   if (res.errcode == "00") {
+        //     this.$message.success("保存成功");
+        //   } else {
+        //     this.$message.error("保存失败");
+        //   }
+        // });
       }
     },
     beforeRemove(file, fileList, index) {
@@ -561,11 +558,12 @@ export default {
       if (this.renshu.length > 5) {
         this.$message.error("最多六条数据");
       } else {
-        this.renshu.push({ value: "", label: "" });
+        this.renshu.push({ value: "", label: "", acceptVlaue: "" });
       }
     },
     delStu(role, index) {
       this.renshu.splice(index, 1);
+      this.addParams.splice(index, 1); //此处代码可以优化,addParams可以和renshu写一起
     },
     pushData(item, type, index) {
       if (type == 1) {

@@ -230,7 +230,14 @@
     </el-dialog>
     <!-- 导入对话框 -->
     <el-dialog :title="title" :visible.sync="showImport" width="30%">
-      <el-form label-position="left" label-width="100px" :model="importForm">
+      <el-form
+        label-position="left"
+        label-width="100px"
+        :model="importForm"
+        :inline="true"
+        ref="importform"
+        :rules="rules"
+      >
         <el-form-item label="学工号" prop="gh">
           <el-input v-model="importForm.gh" @input="handleInput" />
         </el-form-item>
@@ -249,7 +256,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="所辖培养层次" prop="type">
-          <el-select v-model="importForm.sxpycc" placeholder="未选择">
+          <el-select v-model="importForm.sxpycc" placeholder="未选择" multiple>
             <el-option
               v-for="(item, index) in this.Sxpycc"
               :key="index"
@@ -329,7 +336,13 @@ export default {
         gh: "",
         xm: "",
         ssxy: "",
-        sxpycc: "",
+        sxpycc: [],
+      },
+      rules: {
+        gh: [{ required: true, message: "工号不能为空", trigger: "blur" }],
+        ssxy: [
+          { required: true, message: "工作单位不能为空", trigger: "change" },
+        ],
       },
       // 确认导入弹出
       showConfirmImport: false,
@@ -597,7 +610,7 @@ export default {
       let data = {
         ghList: [this.importForm.gh],
         xm: this.importForm.xm,
-        sxpycc: this.importForm.sxpycc,
+        sxpyccList: this.importForm.sxpycc,
         rzdwh: this.importForm.ssxy,
       };
       addTeacher(data).then((res) => {

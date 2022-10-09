@@ -196,7 +196,7 @@
             ></el-select>
           </el-form-item>
           <el-form-item label="所辖培养层次" prop="type">
-            <el-select v-model="form.sxpycc" placeholder="未选择">
+            <el-select v-model="form.sxpycc" placeholder="未选择" multiple>
               <el-option
                 v-for="(item, index) in this.Sxpycc"
                 :key="index"
@@ -663,7 +663,7 @@ export default {
         ghList: ghlist,
         xm: this.form.name,
         lb: this.form.type,
-        sxpycc: this.form.sxpycc,
+        sxpyccList: this.form.sxpycc,
         rzdwh: this.form.ssxy,
       };
       addOneAssistant(data)

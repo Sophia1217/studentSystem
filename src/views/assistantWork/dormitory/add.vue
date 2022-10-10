@@ -34,6 +34,7 @@
                   size="small"
                   placeholder="请选择宿舍号"
                   filterable
+                  clearable
                 >
                   <el-option
                     v-for="(ele, ind) in role.fjhOptions"
@@ -254,11 +255,14 @@ export default {
 
     //上传文件
     change(file, fileList) {
-      const index = file.name.lastIndexOf(".");
-      const ext = file.name.substr(index + 1);
+      console.log("file", file);
+      console.log("fileList", fileList);
+
+      const index1 = file.name.lastIndexOf(".");
+      const ext = file.name.substr(index1 + 1);
       console.log("ext", ext);
       //获取后缀 判断文件格式
-      // 图片 2M 文件10M 视频50M
+      // 图片 2M  文件10M  视频50M
       console.log("file", file);
       console.log(
         "Number(file.size / 1024 / 1024)",
@@ -266,21 +270,21 @@ export default {
       );
       if (
         Number(file.size / 1024 / 1024) > 2 &&
-        (ext == "jpg" || ext == "png")
+        (ext == "jpg" || ext == "png" || ext == "png")
       ) {
         let uid = file.uid; // 关键作用代码，去除文件列表失败文件
         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
         fileList.splice(idx, 1);
         this.fileList = fileList;
-        console.log("图片", fileList);
-        this.$message.error("图片大小超过2M,上传失败");
+        console.log("fileList", fileList);
+        this.$message.error("图片超过2M,上传失败");
       } else if (Number(file.size / 1024 / 1024) > 10) {
         let uid = file.uid; // 关键作用代码，去除文件列表失败文件
         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
         fileList.splice(idx, 1);
         this.fileList = fileList;
-        console.log("文件", fileList);
-        this.$message.error("文件大小超过10M,上传失败");
+        console.log("fileList", fileList);
+        this.$message.error("文件超过10M,上传失败");
       } else {
         this.fileList = fileList;
       }
@@ -474,12 +478,17 @@ export default {
       });
     },
     lyChange(index) {
-      this.dormitoryList[index].fjh = undefined;
+      this.dormitoryList[index].fjh
+        ? (this.dormitoryList[index].fjh = undefined)
+        : undefined;
+      //this.dormitoryList[index].fjh = "";
       this.getFjh(index);
     },
+
     //获取房间号
     getFjh(index) {
       //console.log(index);
+
       let data = { dm: this.dormitoryList[index].ly };
       queryRelatedFj(data).then((response) => {
         // 获取走访宿舍列表数据

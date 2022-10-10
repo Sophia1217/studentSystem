@@ -67,6 +67,7 @@
                   size="small"
                   :disabled="isEdit == '1' ? true : false"
                   placeholder="请选择宿舍号"
+                  clearable
                 >
                   <el-option
                     v-for="(ele, ind) in dormitory.fjhOptions"
@@ -581,6 +582,8 @@ export default {
     },
     handlePreview(file) {
       //用于文件下载
+      console.log("file", file);
+      console.log("dayin", file.id);
       Exportwj({ id: file.id.toString() }).then((res) => {
         this.url = window.URL.createObjectURL(res);
         this.downloadFn(res, file.fileName, file.fileSuffix);
@@ -588,7 +591,12 @@ export default {
     },
     beforeRemove(file, fileList) {
       //用于文件删除
-      console.log("jinlai");
+      console.log("file", file);
+      console.log("dayin", file.id);
+      let uid = file.uid;
+      let idx = fileList.findIndex((item) => item.uid === uid);
+      this.fileListAdd.splice(idx, 1);
+
       delwj({ id: file.id.toString() }).then((res) => console.log("res", res));
     },
     querywj() {
@@ -621,6 +629,9 @@ export default {
       });
     },
     lyChange(index) {
+      this.dormitoryList[index].fjh
+        ? (this.dormitoryList[index].fjh = undefined)
+        : undefined;
       this.getFjh(index);
     },
     //获取房间号

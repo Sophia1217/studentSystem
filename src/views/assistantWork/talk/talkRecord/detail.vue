@@ -666,13 +666,21 @@ export default {
         if (this.zhutiValue == "") {
           this.zhutiValue = this.zhutiValue + item.cyMsg;
         } else {
-          this.zhutiValue = this.zhutiValue + "," + item.cyMsg;
+          if (this.zhutiValue.length < 30) {
+            this.zhutiValue = this.zhutiValue + "," + item.cyMsg;
+          } else {
+            this.$message.error("常用主题总长度不应该超过三十个字符长度");
+          }
         }
       } else {
         if (this.addressValue == "") {
           this.addressValue = this.addressValue + item.cyMsg;
         } else {
-          this.addressValue = this.addressValue + "," + item.cyMsg;
+          if (this.addressValue.length < 30) {
+            this.addressValue = this.addressValue + "," + item.cyMsg;
+          } else {
+            this.$message.error("常用地点总长度不应该超过三十个字符长度");
+          }
         }
       }
     },

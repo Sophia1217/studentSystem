@@ -351,7 +351,7 @@ export default {
     },
     beforeRemove(file, fileList, index) {
       let uid = file.uid;
-      let idx = fileList.findIndex((item) => item.uid == uid);
+      let idx = fileList.findIndex((item) => item.uid === uid);
       fileList.splice(idx, 0);
       this.talkDate[index].fileList = fileList;
     },
@@ -365,9 +365,11 @@ export default {
       const ind = file.name.lastIndexOf(".");
       const ext = file.name.substr(ind + 1);
       if (Number(totalSize / 1024 / 1024) > 50) {
+        console.log("flieaist111", fileList);
         let uid = file.uid;
         let idx = fileList.findIndex((item) => item.uid === uid);
         fileList.splice(idx, 1);
+        console.log("flieaist", fileList);
         this.$message.error("总共文件大小超过50M，当前文件上传失败");
       } else if (
         Number(file.size / 1024 / 1024) > 2 &&
@@ -571,16 +573,24 @@ export default {
           this.talkDate[index].zhutiValue =
             this.talkDate[index].zhutiValue + item.cyMsg;
         } else {
-          this.talkDate[index].zhutiValue =
-            this.talkDate[index].zhutiValue + "," + item.cyMsg;
+          if (this.talkDate[index].zhutiValue.length < 30) {
+            this.talkDate[index].zhutiValue =
+              this.talkDate[index].zhutiValue + "," + item.cyMsg;
+          } else {
+            this.$message.error("常用主题总长度不应该超过三十个字符长度");
+          }
         }
       } else {
         if (this.talkDate[index].addressValue == "") {
           this.talkDate[index].addressValue =
             this.talkDate[index].addressValue + item.cyMsg;
         } else {
-          this.talkDate[index].addressValue =
-            this.talkDate[index].addressValue + "," + item.cyMsg;
+          if (this.talkDate[index].addressValue.length < 30) {
+            this.talkDate[index].addressValue =
+              this.talkDate[index].addressValue + "," + item.cyMsg;
+          } else {
+            this.$message.error("常用地点总长度不应该超过三十个字符长度");
+          }
         }
       }
     },

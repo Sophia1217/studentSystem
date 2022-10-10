@@ -61,7 +61,7 @@
             </el-form-item>
           </el-row>
           <el-row>
-            <el-col :span="6"
+            <el-col :span="6.5"
               ><el-form-item label="关键词" prop="keyword">
                 <el-input
                   :disabled="isEdit == '1' ? true : false"
@@ -70,7 +70,7 @@
                 /> </el-form-item
             ></el-col>
 
-            <el-col :span="18">
+            <el-col :span="15">
               <div v-show="isEdit == '2' ? true : false">
                 <span class="tagtitle">常用关键词</span>
                 <el-tag
@@ -152,7 +152,7 @@
                     ></el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="5">
+                <el-col :span="4">
                   <el-select
                     :disabled="
                       isEdit == '1' ||
@@ -167,7 +167,6 @@
                     clearable
                     multiple
                     @change="zyChange"
-                    style="width: 250px"
                   >
                     <el-option
                       v-for="(item, index) in zyOptions"
@@ -177,7 +176,7 @@
                     ></el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="5">
+                <el-col :span="4">
                   <el-select
                     :disabled="
                       isEdit == '1' ||
@@ -192,7 +191,6 @@
                     clearable
                     @change="bjChange"
                     multiple
-                    style="width: 250px"
                   >
                     <el-option
                       v-for="(item, index) in bjOptions"
@@ -204,6 +202,7 @@
                 </el-col>
               </el-row>
             </el-form-item>
+
             <el-form-item label="人数" prop="peopleNum">
               <el-input
                 :disabled="isEdit == '1' ? true : false"
@@ -242,7 +241,7 @@
             ></el-form-item>
           </el-row>
           <el-row>
-            <el-col :span="6">
+            <el-col :span="6.5">
               <el-form-item label="开展地点" prop="place">
                 <el-input
                   :disabled="isEdit == '1' ? true : false"
@@ -250,7 +249,7 @@
                 ></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="15">
               <div v-show="isEdit == '2' ? true : false">
                 <span class="tagtitle">常用地点</span>
 
@@ -778,7 +777,10 @@ export default {
       let uid = file.uid;
       let idx = fileList.findIndex((item) => item.uid === uid);
       this.fileListAdd.splice(idx, 1);
-      delwj({ id: file.id.toString() }).then((res) => console.log("res", res));
+      if (file.id) {
+        //如果是后端返回的文件就走删除接口，不然前端自我删除
+        delwj({ id: file.id.toString() }).then();
+      }
     },
     querywj() {
       //用于文件查询
@@ -860,20 +862,29 @@ export default {
         }
       }
     },
+
     pushData(item, type) {
       if (type == 5) {
         if (this.eduDetailForm.keyword == "") {
           this.eduDetailForm.keyword = this.eduDetailForm.keyword + item.cyMsg;
         } else {
-          this.eduDetailForm.keyword =
-            this.eduDetailForm.keyword + "," + item.cyMsg;
+          if (this.eduDetailForm.keyword.length < 30) {
+            this.eduDetailForm.keyword =
+              this.eduDetailForm.keyword + "," + item.cyMsg;
+          } else {
+            this.$message.error("关键词总长度不应该超过三十个字符长度");
+          }
         }
       } else {
         if (this.eduDetailForm.place == "") {
           this.eduDetailForm.place = this.eduDetailForm.place + item.cyMsg;
         } else {
-          this.eduDetailForm.place =
-            this.eduDetailForm.place + "," + item.cyMsg;
+          if (this.eduDetailForm.place.length < 30) {
+            this.eduDetailForm.place =
+              this.eduDetailForm.place + "," + item.cyMsg;
+          } else {
+            this.$message.error("开展地点总长度不应该超过三十个字符长度");
+          }
         }
       }
     },

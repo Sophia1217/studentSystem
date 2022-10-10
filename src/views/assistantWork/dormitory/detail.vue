@@ -53,6 +53,7 @@
                   :disabled="isEdit == '1' ? true : false"
                   placeholder="请选择楼栋"
                   @change="lyChange(index)"
+                  filterable
                 >
                   <el-option
                     v-for="(ele1, ind1) in zfssOptions"
@@ -68,6 +69,7 @@
                   :disabled="isEdit == '1' ? true : false"
                   placeholder="请选择宿舍号"
                   clearable
+                  filterable
                 >
                   <el-option
                     v-for="(ele, ind) in dormitory.fjhOptions"
@@ -114,7 +116,7 @@
           :rules="rules"
         >
           <el-row :gutter="10">
-            <el-col :span="6">
+            <el-col :span="6.5">
               <el-form-item label="走访主题" prop="zfzt">
                 <el-input
                   v-model="visitDetailForm.zfzt"
@@ -123,7 +125,7 @@
                 />
               </el-form-item>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="15">
               <div v-show="isEdit == '2' ? true : false">
                 <span class="tagtitle">常用主题</span>
                 <el-tag
@@ -169,7 +171,7 @@
               <el-time-picker
                 :disabled="isEdit == '1' ? true : false"
                 v-model="visitDetailForm.beginTime"
-                format="hh时mm分"
+                format="HH时mm分"
                 value-format="HH:mm"
                 :clearable="false"
             /></el-form-item>
@@ -177,7 +179,7 @@
               <el-time-picker
                 :disabled="isEdit == '1' ? true : false"
                 v-model="visitDetailForm.endTime"
-                format="hh时mm分"
+                format="HH时mm分"
                 value-format="HH:mm"
                 :clearable="false"
             /></el-form-item>
@@ -331,7 +333,7 @@ export default {
   created() {},
   mounted() {
     this.getDetailPage();
-
+    this.queryTag();
     this.getUrl();
     this.querywj();
     this.getOptions();
@@ -448,6 +450,9 @@ export default {
     //编辑
     editButtonClick() {
       this.isEdit = 2; // 控制是否可以编辑的字段
+      for (let index = 0; index < this.dormitoryList.length; index++)
+        //console.log("打印", this.dormitoryList[index]);
+        this.getFjh(index);
     },
     //新增主题确认
     handleInputConfirm(type) {
@@ -518,8 +523,12 @@ export default {
         if (this.visitDetailForm.zfzt == "") {
           this.visitDetailForm.zfzt = this.visitDetailForm.zfzt + item.cyMsg;
         } else {
-          this.visitDetailForm.zfzt =
-            this.visitDetailForm.zfzt + "," + item.cyMsg;
+          if (this.visitDetailForm.zfzt.length < 30) {
+            this.visitDetailForm.zfzt =
+              this.visitDetailForm.zfzt + "," + item.cyMsg;
+          } else {
+            this.$message.error("常用主题总长度不应该超过三十个字符长度");
+          }
         }
       } else {
         if (this.addressValue == "") {
@@ -591,13 +600,14 @@ export default {
     },
     beforeRemove(file, fileList) {
       //用于文件删除
-      console.log("file", file);
-      console.log("dayin", file.id);
+
       let uid = file.uid;
       let idx = fileList.findIndex((item) => item.uid === uid);
       this.fileListAdd.splice(idx, 1);
-
-      delwj({ id: file.id.toString() }).then((res) => console.log("res", res));
+      if (file.id) {
+        //如果是后端返回的文件就走删除接口，不然前端自我删除
+        delwj({ id: file.id.toString() }).then();
+      }
     },
     querywj() {
       //用于文件查询

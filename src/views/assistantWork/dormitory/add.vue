@@ -74,12 +74,12 @@
           :rules="rules"
         >
           <el-row :gutter="10">
-            <el-col :span="6">
+            <el-col :span="6.5">
               <el-form-item label="走访主题" prop="zfzt">
                 <el-input v-model="visitDetailForm.zfzt" clearable />
               </el-form-item>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="15">
               <span class="tagtitle">常用主题</span>
               <el-tag
                 v-for="(item, i) in tags.themeTags"
@@ -121,14 +121,14 @@
             <el-form-item label="开始时间">
               <el-time-picker
                 v-model="visitDetailForm.beginTime"
-                format="hh时mm分"
+                format="HH时mm分"
                 value-format="HH:mm"
                 :clearable="false"
             /></el-form-item>
             <el-form-item label="结束时间">
               <el-time-picker
                 v-model="visitDetailForm.endTime"
-                format="hh时mm分"
+                format="HH时mm分"
                 value-format="HH:mm"
                 :clearable="false"
             /></el-form-item>
@@ -156,6 +156,11 @@
                 :auto-upload="false"
                 ref="upload"
                 :file-list="fileList"
+                :before-remove="
+                  (item, item1) => {
+                    beforeRemove(item, item1);
+                  }
+                "
                 :on-change="change"
               >
                 <div class="el-upload-dragger">
@@ -288,6 +293,12 @@ export default {
       } else {
         this.fileList = fileList;
       }
+    },
+    beforeRemove(file, fileList) {
+      let uid = file.uid;
+      let idx = fileList.findIndex((item) => item.uid == uid);
+      fileList.splice(idx, 0);
+      this.fileList = fileList;
     },
     // 表单校验
     checkForm() {
@@ -448,8 +459,12 @@ export default {
         if (this.visitDetailForm.zfzt == "") {
           this.visitDetailForm.zfzt = this.visitDetailForm.zfzt + item.cyMsg;
         } else {
-          this.visitDetailForm.zfzt =
-            this.visitDetailForm.zfzt + "," + item.cyMsg;
+          if (this.visitDetailForm.zfzt.length < 30) {
+            this.visitDetailForm.zfzt =
+              this.visitDetailForm.zfzt + "," + item.cyMsg;
+          } else {
+            this.$message.error("常用主题总长度不应该超过三十个字符长度");
+          }
         }
       } else {
         if (this.addressValue == "") {

@@ -21,7 +21,7 @@
             </el-form-item>
           </el-row>
           <el-row>
-            <el-col :span="6"
+            <el-col :span="6.5"
               ><el-form-item label="关键词" prop="keyword">
                 <el-input
                   v-model="eduDetailForm.keyword"
@@ -29,7 +29,7 @@
                 /> </el-form-item
             ></el-col>
 
-            <el-col :span="18">
+            <el-col :span="15">
               <span class="tagtitle">常用关键词</span>
               <el-tag
                 v-for="(item, i) in tags.themeTags"
@@ -60,7 +60,7 @@
           </el-row>
           <el-row>
             <el-form-item label="教育对象" prop="xy">
-              <el-row :gutter="20">
+              <el-row :gutter="10">
                 <el-col :span="4">
                   <el-select
                     v-model="eduDetailForm.xy"
@@ -106,7 +106,7 @@
                     ></el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="5">
+                <el-col :span="4.5">
                   <el-select
                     v-model="eduDetailForm.zy"
                     :disabled="this.eduDetailForm.bj != '' ? true : false"
@@ -124,7 +124,7 @@
                     ></el-option>
                   </el-select>
                 </el-col>
-                <el-col :span="5">
+                <el-col :span="4.5">
                   <el-select
                     v-model="eduDetailForm.bj"
                     placeholder="班级(请先选择学院和培养层次)"
@@ -176,12 +176,12 @@
             /></el-form-item>
           </el-row>
           <el-row>
-            <el-col :span="6">
+            <el-col :span="6.5">
               <el-form-item label="开展地点" prop="place">
                 <el-input v-model="eduDetailForm.place"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="15">
               <span class="tagtitle">常用地点</span>
 
               <el-tag
@@ -221,6 +221,11 @@
               :auto-upload="false"
               ref="upload"
               :file-list="fileList"
+              :before-remove="
+                (item, item1) => {
+                  beforeRemove(item, item1);
+                }
+              "
               :on-change="change"
             >
               <div class="el-upload-dragger">
@@ -391,7 +396,12 @@ export default {
         this.fileList = fileList;
       }
     },
-
+    beforeRemove(file, fileList) {
+      let uid = file.uid;
+      let idx = fileList.findIndex((item) => item.uid == uid);
+      fileList.splice(idx, 0);
+      this.fileList = fileList;
+    },
     // 表单校验
     checkForm() {
       // 1.校验必填项
@@ -538,15 +548,23 @@ export default {
         if (this.eduDetailForm.keyword == "") {
           this.eduDetailForm.keyword = this.eduDetailForm.keyword + item.cyMsg;
         } else {
-          this.eduDetailForm.keyword =
-            this.eduDetailForm.keyword + "," + item.cyMsg;
+          if (this.eduDetailForm.keyword.length < 30) {
+            this.eduDetailForm.keyword =
+              this.eduDetailForm.keyword + "," + item.cyMsg;
+          } else {
+            this.$message.error("关键词总长度不应该超过三十个字符长度");
+          }
         }
       } else {
         if (this.eduDetailForm.place == "") {
           this.eduDetailForm.place = this.eduDetailForm.place + item.cyMsg;
         } else {
-          this.eduDetailForm.place =
-            this.eduDetailForm.place + "," + item.cyMsg;
+          if (this.eduDetailForm.place.length < 30) {
+            this.eduDetailForm.place =
+              this.eduDetailForm.place + "," + item.cyMsg;
+          } else {
+            this.$message.error("开展地点总长度不应该超过三十个字符长度");
+          }
         }
       }
     },

@@ -306,6 +306,8 @@
       v-if="showExport"
       :tag="2"
       :showExport="showExport"
+      :manageRegStuInfoParam="manageRegStuInfoParam"
+      :op="op"
       :multipleSelection="multipleSelection"
       @handleCancel="handleCancel"
       @handleConfirm="handleConfirm"
@@ -332,6 +334,8 @@ export default {
   components: { CheckboxCom, exportView },
   data() {
     return {
+      op: "1",
+      manageRegStuInfoParam: {},
       showExportA: false,
       title: "导出提示",
       ind: 1,
@@ -716,6 +720,39 @@ export default {
     },
     // 打开导出弹窗
     handleExport() {
+      let csrqs = "";
+      let csrqe = "";
+      if (this.datePicker && this.datePicker.length > 0) {
+        csrqs = this.datePicker[0];
+        csrqe = this.datePicker[1];
+      }
+      let data = {
+        xh: this.select == "xh" ? this.searchVal : null,
+        xm: this.select == "xm" ? this.searchVal : null,
+        sfzjh: this.select == "sfzjh" ? this.searchVal : null,
+        yddh: this.select == "yddh" ? this.searchVal : null,
+        jg: this.select == "jg" ? this.searchVal : "",
+        csdm: this.select == "csdm" ? this.searchVal : "",
+        gjdqm: this.select == "gjdqm" ? this.searchVal : "",
+        xbm: this.dmxbmOPs.choose,
+        csrqs: csrqs,
+        csrqe: csrqe,
+        pyccm: this.training.choose,
+        xz: this.learnHe.choose,
+        nj: this.njOps.choose,
+        xjzt: this.studentStatus.choose,
+        zzmmm: this.politica.choose,
+        mzm: this.ethnic.choose,
+        bjm: this.moreIform.pread, // 班级
+        dwh: this.moreIform.manageReg, // 学院
+        zydm: this.moreIform.stuInfo, // 专业
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        limitSql: "",
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+      };
+      this.manageRegStuInfoParam = data;
       this.showExport = true;
     },
     // 导出取消

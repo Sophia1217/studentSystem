@@ -94,7 +94,7 @@ import {
   deleteRole,
   defaultRoleAuth,
 } from "@/api/systemMan/user";
-import { queryRoleList } from "@/api/systemMan/role";
+import { queryRoleList } from "@/api/systemMan/user";
 export default {
   name: "permissions",
   data() {

@@ -9,6 +9,15 @@ export function queryUserPageList(data) {
   })
 }
 
+// 查询角色列表
+export function queryRoleList(data) {
+  return request({
+    url: '/manager/role/queryAllRoleList',
+    method: 'post',
+    data: data
+  })
+}
+
 // 用户编辑
 export function updateUserRole(data) {
   return request({

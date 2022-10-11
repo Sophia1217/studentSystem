@@ -318,6 +318,8 @@
       :tag="1"
       :showExport="showExport"
       :multipleSelection="multipleSelection"
+      :manageRegStuInfoParam="manageRegStuInfoParam"
+      :op="op"
       @handleCancel="handleCancel"
       @handleConfirm="handleConfirm"
     ></exportView>
@@ -349,6 +351,8 @@ export default {
   components: { CheckboxCom, exportView },
   data() {
     return {
+      op: "0",
+      manageRegStuInfoParam: {},
       title: "导出提示",
       expand: true,
       searchVal: "",
@@ -754,12 +758,41 @@ export default {
     },
     // 打开导出弹窗
     handleExport() {
-      // console.log(this.multipleSelection)
-      // if (this.multipleSelection.length > 0) {
+      let csrqs,
+        csrqe = "";
+      if (this.datePicker && this.datePicker.length > 0) {
+        csrqs = this.datePicker[0];
+        csrqe = this.datePicker[1];
+      }
+      let data = {
+        xh: this.select == "xh" ? this.searchVal : null,
+        xm: this.select == "xm" ? this.searchVal : null,
+        sfzjh: this.select == "sfzjh" ? this.searchVal : null,
+        yddh: this.select == "yddh" ? this.searchVal : null,
+        jg: this.select == "jg" ? this.searchVal : "",
+        csdm: this.select == "csdm" ? this.searchVal : "",
+        gjdqm: this.select == "gjdqm" ? this.searchVal : "",
+        xbm: this.dmxbmOPs.choose,
+        csrqs: csrqs,
+        csrqe: csrqe,
+        pyccm: this.training.choose,
+        xz: this.learnHe.choose,
+        xjzt: this.studentStatus.choose,
+        zzmmm: this.politica.choose,
+        sfzx: this.inSchool.choose,
+        mzm: this.ethnic.choose,
+        bjm: this.moreIform.pread,
+        dwh: this.moreIform.manageReg,
+        zydm: this.moreIform.stuInfo,
+        nj: this.moreIform.grade,
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        limitSql: "",
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+      };
+      this.manageRegStuInfoParam = data;
       this.showExport = true;
-      // } else {
-      // this.$message("请选择学生信息列表");
-      // }
     },
     // 导出取消
     handleCancel() {

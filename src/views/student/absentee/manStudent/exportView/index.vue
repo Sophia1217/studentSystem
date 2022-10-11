@@ -53,8 +53,16 @@ export default {
       type: Array,
       default: () => [],
     },
+    manageRegStuInfoParam: {
+      type: Object,
+      default: () => {},
+    },
     tag: {
       type: String | Number,
+      default: "",
+    },
+    op: {
+      type: String,
       default: "",
     },
   },
@@ -78,9 +86,6 @@ export default {
     handleConfirm() {
       let hxList = [];
       let columnInfoList = [];
-      for (let x = 0; x < this.multipleSelection.length; x++) {
-        hxList.push(this.multipleSelection[x].xh);
-      }
       if (this.transferVal.length > 0) {
         for (let i = 0; i < this.transferData.length; i++) {
           for (let y = 0; y < this.transferVal.length; y++) {
@@ -93,27 +98,54 @@ export default {
         this.$message("请选择导出字段");
         return;
       }
-      let data = {
-        hxList: hxList,
-        columnInfoList: columnInfoList,
-        exportStyle: "EXCEL",
-      };
-      exportStu(data).then((res) => {
-        //勾选一条，导出文件名为学号姓名
-        if(this.multipleSelection.length == 1){
-          let exportXh = this.multipleSelection[0].xh
-          let exportXm = this.multipleSelection[0].xm
-          this.downloadFn(res, exportXh + exportXm, "xls");
+      if (this.multipleSelection.length > 0) {
+        for (let x = 0; x < this.multipleSelection.length; x++) {
+          hxList.push(this.multipleSelection[x].xh);
         }
-        else{
-          if (this.tag == 1) {
-          this.downloadFn(res, "在籍学生信息导出", "xls");
+        var params = {
+          hxList: hxList,
+          columnInfoList: columnInfoList,
+          exportStyle: "EXCEL",
+          manageRegStuInfoParam: {},
+          op: this.op,
+        };
+        exportStu(params).then((res) => {
+          //勾选一条，导出文件名为学号姓名
+          if (this.multipleSelection.length == 1) {
+            let exportXh = this.multipleSelection[0].xh;
+            let exportXm = this.multipleSelection[0].xm;
+            this.downloadFn(res, exportXh + exportXm, "xls");
           } else {
-          this.downloadFn(res, "毕业学生信息导出", "xls");
-          }   
-        }
-        
-      });
+            if (this.tag == 1) {
+              this.downloadFn(res, "在籍学生信息导出", "xls");
+            } else {
+              this.downloadFn(res, "毕业学生信息导出", "xls");
+            }
+          }
+        });
+      } else {
+        var params = {
+          hxList: [],
+          columnInfoList: columnInfoList,
+          exportStyle: "EXCEL",
+          manageRegStuInfoParam: this.manageRegStuInfoParam,
+          op: this.op,
+        };
+        exportStu(params).then((res) => {
+          //勾选一条，导出文件名为学号姓名
+          if (this.multipleSelection.length == 1) {
+            let exportXh = this.multipleSelection[0].xh;
+            let exportXm = this.multipleSelection[0].xm;
+            this.downloadFn(res, exportXh + exportXm, "xls");
+          } else {
+            if (this.tag == 1) {
+              this.downloadFn(res, "在籍学生信息导出", "xls");
+            } else {
+              this.downloadFn(res, "毕业学生信息导出", "xls");
+            }
+          }
+        });
+      }
     },
   },
 };
@@ -132,7 +164,7 @@ export default {
     width: 280px;
   }
   .transfer {
-    ::v-deep .el-transfer-panel__body{
+    ::v-deep .el-transfer-panel__body {
       overflow: auto;
     }
     ::v-deep .el-transfer-panel__list {

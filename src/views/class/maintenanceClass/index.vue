@@ -250,7 +250,10 @@
           <el-col :span="12">
             <el-form-item label="班级数量" prop="classNum">
               <!-- <editor v-model="form.noticeContent" :min-height="192" /> -->
-              <el-input v-model="form.classNum"></el-input>
+              <el-input
+                v-model="form.classNum"
+                placeholder="请输入新建班级数量"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>

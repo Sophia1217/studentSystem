@@ -389,11 +389,16 @@ export default {
         userId: this.$store.getters.userId,
       };
       obj.cyMsg = this.form.inputValue;
-      addTag(obj).then((res) => {
-        this.queryTag();
-      });
-      this.form.inputVisible = false;
-      this.form.inputValue = "";
+      if (this.form.inputValue.length > 15) {
+          this.$message.error("常用主题标签输入值应不超过十五个字符");
+        } else {
+          addTag(obj).then((res) => {
+            this.queryTag();
+          });
+          this.form.inputVisible = false;
+          this.form.inputValue = "";
+        }
+      
     },
     //关闭标签
     handleClose(item) {
@@ -407,8 +412,13 @@ export default {
           this.form.theme =
             this.form.theme + item.cyMsg;
         } else {
-          this.form.theme =
-            this.form.theme + "," + item.cyMsg;
+          if (this.form.theme.length < 30) {
+            this.form.theme =
+              this.form.theme + "," + item.cyMsg;
+          } else {
+            this.$message.error("常用主题总长度不应该超过三十个字符长度");
+          }
+          
         }
      
     },

@@ -284,11 +284,16 @@ export default {
           userId: this.$store.getters.userId,
         };
         obj.cyMsg = this.form.inputValue;
-        addTag(obj).then((res) => {
-          this.queryTag();
-        });
-        this.form.inputVisible = false;
-        this.form.inputValue = "";
+        if (this.form.inputValue.length > 15) {
+          this.$message.error("常用组织单位标签输入值应不超过十五个字符");
+        } else {
+          addTag(obj).then((res) => {
+            this.queryTag();
+          });
+          this.form.inputVisible = false;
+          this.form.inputValue = "";
+        }
+        
       } else {
         var obj = {
           cyMsg: "",
@@ -296,11 +301,16 @@ export default {
           userId: this.$store.getters.userId,
         };
         obj.cyMsg = this.form.inputValue1;
-        addTag(obj).then((res) => {
-          this.queryTag();
-        });
-        this.form.inputVisible1 = false;
-        this.form.inputValue1 = "";
+        if (this.form.inputVisible1.length > 15) {
+          this.$message.error("常用地点标签输入值应不超过十五个字符");
+        } else {
+          addTag(obj).then((res) => {
+            this.queryTag();
+          });
+          this.form.inputVisible1 = false;
+          this.form.inputValue1 = "";
+        }
+        
       }
     },
     //关闭标签
@@ -315,13 +325,21 @@ export default {
         if (this.form.orgUnit == "") {
           this.form.orgUnit = this.form.orgUnit + item.cyMsg;
         } else {
-          this.form.orgUnit = this.form.orgUnit + "," + item.cyMsg;
+          if (this.form.orgUnit.length < 30) {
+            this.form.orgUnit = this.form.orgUnit + "," + item.cyMsg;
+          } else {
+            this.$message.error("常用主题总长度不应该超过三十个字符长度");
+          }
         }
       } else {
         if (this.form.place == "") {
           this.form.place = this.form.place + item.cyMsg;
         } else {
-          this.form.place = this.form.place + "," + item.cyMsg;
+          if (this.form.place.length < 30) {
+            this.form.place = this.form.place + "," + item.cyMsg;
+          } else {
+            this.$message.error("常用主题总长度不应该超过三十个字符长度");
+          }
         }
       }
     },

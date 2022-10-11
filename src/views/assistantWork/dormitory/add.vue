@@ -330,7 +330,9 @@ export default {
               !!this.dormitoryList[j].ly &&
               (this.dormitoryList[i].fjh === this.dormitoryList[j].fjh ||
                 this.dormitoryList[i].fjh == undefined ||
-                this.dormitoryList[j].fjh == undefined)
+                this.dormitoryList[j].fjh == undefined ||
+                this.dormitoryList[i].fjh == "" ||
+                this.dormitoryList[j].fjh == "")
             ) {
               flag = true;
             }
@@ -399,11 +401,16 @@ export default {
           userId: this.$store.getters.userId,
         };
         obj.cyMsg = this.inputValue;
-        addTag(obj).then((res) => {
-          this.queryTag();
-        });
-        this.inputVisible = false;
-        this.inputValue = "";
+        if (this.inputValue.length > 15) {
+          this.$message.error("常用主题标签输入值应不超过十五个字符");
+        } else {
+          addTag(obj).then((res) => {
+            this.queryTag();
+          });
+
+          this.inputVisible = false;
+          this.inputValue = "";
+        }
       } else {
         var obj = {
           cyMsg: "",
@@ -411,11 +418,16 @@ export default {
           userId: this.$store.getters.userId,
         };
         obj.cyMsg = this.inputValue1;
-        addTag(obj).then((res) => {
-          this.queryTag();
+        if (this.inputValue1.length > 15) {
+          this.$message.error("常用标签输入值应不超过十五个字符");
+        } else {
+          addTag(obj).then((res) => {
+            this.queryTag();
+          });
+
           this.inputVisible1 = false;
           this.inputValue1 = "";
-        });
+        }
       }
     },
     //获取标签

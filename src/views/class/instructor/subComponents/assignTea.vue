@@ -1,368 +1,484 @@
 <template>
   <div class="assign_tea">
-    <div class="assign-search">
-      <el-form
-        :model="queryParams"
-        ref="queryForm"
-        size="small"
-        :inline="true"
-        v-show="showSearch"
-        label-width="68px"
-        class="table-header"
-      >
-        <div class="assignInput">
-          <el-form-item label="工号" prop="xgh" class="header-item">
-            <el-input
-              v-model="queryParams.xgh"
-              placeholder="请输入工号"
-              clearable
-              @keyup.enter.native="handleQuery"
-            />
-          </el-form-item>
-          <el-form-item label="工作单位" prop="xy" class="header-item">
-            <el-select v-model="queryParams.xy" placeholder="请选择" clearable>
-              <el-option
-                v-for="(item, index) in collegeOptions"
-                :key="index"
-                :label="item.mc"
-                :value="item.dm"
+    <div class="tab">
+      <div class="tab_list">
+        <ul>
+          <li
+            v-for="(title, index) in tab_list"
+            :key="title"
+            @click="tabClick(index)"
+            :class="currentIndex == index ? 'activate' : ''"
+          >
+            {{ title }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="assign-search" v-show="currentIndex == 1">
+        <el-form
+          :model="queryParams"
+          ref="queryForm"
+          size="small"
+          :inline="true"
+          v-show="showSearch"
+          label-width="68px"
+          class="table-header"
+        >
+          <div class="assignInput">
+            <el-form-item label="工号" prop="xgh" class="header-item">
+              <el-input
+                v-model="queryParams.xgh"
+                placeholder="请输入工号"
+                clearable
+                @keyup.enter.native="handleQuery"
               />
-            </el-select>
-          </el-form-item>
-        </div>
-        <div class="assignBtn">
-          <el-form-item class="header-item">
-            <el-button
-              type="primary"
-              size="mini"
-              icon="el-icon-search"
-              class="search"
-              @click="handleQuery"
-              >查询</el-button
-            >
-            <el-button
-              size="mini"
-              @click="resetQuery('queryForm')"
-              class="reset"
-            >
-              <span class="iconfont reset_icon">&#xe614;</span>
-              重置</el-button
-            >
-          </el-form-item>
-        </div>
-      </el-form>
-    </div>
-    <!-- <assign-search></assign-search> -->
-    <!-- <assign-table></assign-table> -->
-    <div class="assign-table">
-      <div class="table-content">
-        <div class="title" icon="el-icon-refresh">
-          <span class="fptitle-item">{{ this.$route.query.bjmc }}</span>
-          <span class="iconfont">&#xe631;</span>
-          <el-row :gutter="10" class="mb8" style="float: right">
-            <el-col :span="1.5">
+            </el-form-item>
+            <el-form-item label="工作单位" prop="xy" class="header-item">
+              <el-select
+                v-model="queryParams.xy"
+                placeholder="请选择"
+                clearable
+              >
+                <el-option
+                  v-for="(item, index) in collegeOptions"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                />
+              </el-select>
+            </el-form-item>
+
+            <el-form-item class="header-item">
               <el-button
                 type="primary"
-                class="create"
+                size="mini"
                 icon="el-icon-search"
-                @click="handleAssignMore"
+                class="search"
+                @click="handleQuery"
+                >查询</el-button
               >
-                批量分配</el-button
-              >
-            </el-col>
-            <el-col :span="1.5">
               <el-button
-                class="delete"
-                icon="el-icon-delete"
-                @click="deleteAssignMore"
-                >批量取消</el-button
+                size="mini"
+                @click="resetQuery('queryForm')"
+                class="reset"
               >
-            </el-col>
-          </el-row>
-        </div>
-        <!-- v-loading="loading" -->
-        <el-table
-          :data="placementPageList"
-          @selection-change="handleSelectionChange"
-          @sort-change="changeTableSort"
-        >
-          <el-table-column type="selection" align="center" />
-          <el-table-column
-            label="序号"
-            align="center"
-            type="index"
-            width="60px"
-          />
-          <el-table-column
-            label="学工号"
-            align="center"
-            prop="gh"
-            sortable="custom"
-          />
-          <el-table-column
-            label="姓名"
-            align="center"
-            prop="xm"
-            sortable="custom"
-          >
-            <!-- <el-input
+                <span class="iconfont reset_icon">&#xe614;</span>
+                重置</el-button
+              >
+            </el-form-item>
+          </div>
+        </el-form>
+      </div>
+      <!-- <assign-search></assign-search> -->
+      <!-- <assign-table></assign-table> -->
+      <div class="assign-table">
+        <div class="haveDesigned" v-show="currentIndex == 0">
+          <div class="table-content">
+            <div class="title" icon="el-icon-refresh">
+              <span class="fptitle-item">{{ this.$route.query.bjmc }}</span>
+              <span class="iconfont">&#xe631;</span>
+              <el-row :gutter="10" class="mb8" style="float: right">
+                <!-- <el-col :span="1.5">
+                <el-button
+                  type="primary"
+                  class="create"
+                  icon="el-icon-search"
+                  @click="handleAssignMore"
+                >
+                  批量分配</el-button
+                >
+              </el-col> -->
+                <el-col :span="1.5">
+                  <el-button
+                    class="delete"
+                    icon="el-icon-delete"
+                    @click="deleteAssignMore"
+                    >批量取消</el-button
+                  >
+                </el-col>
+              </el-row>
+            </div>
+            <!-- v-loading="loading" -->
+            <el-table
+              :data="placementPageList"
+              @selection-change="handleSelectionChange"
+              @sort-change="changeTableSort"
+            >
+              <el-table-column type="selection" align="center" />
+              <el-table-column
+                label="序号"
+                align="center"
+                type="index"
+                width="60px"
+              />
+              <el-table-column
+                label="学工号"
+                align="center"
+                prop="gh"
+                sortable="custom"
+              />
+              <el-table-column
+                label="姓名"
+                align="center"
+                prop="xm"
+                sortable="custom"
+              >
+                <!-- <el-input
               :value="noticeList[0].className"
               clearable
               @keyup.enter.native="handleQuery"
             /> -->
-          </el-table-column>
-          <el-table-column
-            label="性别"
-            align="center"
-            prop="xb"
-            sortable="custom"
-          />
-          <el-table-column
-            label="工作单位"
-            align="center"
-            prop="dwmc"
-            sortable="custom"
-          />
-          <el-table-column
-            label="已任职班级数量"
-            align="center"
-            prop="sl"
-            sortable="custom"
-          />
-          <el-table-column label="操作" align="center" width="150px">
-            <template slot-scope="scope">
-              <div>
-                <el-button
-                  type="text"
-                  size="small"
-                  :disabled="scope.row.sffp == '0' ? true : false"
-                  @click="assignClass(scope.row)"
-                >
-                  <span
-                    class="iconfont"
-                    :class="
-                      scope.row.sffp == '0' ? 'allocate_none' : 'allocate_class'
-                    "
-                    >&#xe638;</span
-                  >
-                  <span
-                    style="
-                      margin-left: 5px;
-                      margin-right: 10px;
-                      font-size: 16px;
-                    "
-                    >分配班级</span
-                  >
-                </el-button>
-                <el-button
-                  type="text"
-                  size="small"
-                  :disabled="scope.row.sffp == '1' ? true : false"
-                  @click="allocateNone(scope.row)"
-                >
-                  <span
-                    class="iconfont"
-                    :class="
-                      scope.row.sffp == '1' ? 'allocate_none' : 'allocate_class'
-                    "
-                    >&#xe638;</span
-                  >
-                  <span style="margin-left: 5px; font-size: 16px"
-                    >取消分配</span
-                  >
-                </el-button>
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
-        <pagination
-          id="pagenation"
-          v-show="total > 0"
-          :total="total"
-          :page.sync="queryParams.pageNum"
-          :limit.sync="queryParams.pageSize"
-          @pagination="getInstructorList"
-        />
-      </div>
-      <!-- 分配班级对话框 -->
-      <el-dialog
-        class="assign_class"
-        :title="title"
-        :visible.sync="openAssignClass"
-        width="780px"
-        append-to-body
-      >
-        <el-form :model="form">
-          <el-form-item label="任命日期">
-            <el-date-picker
-              type="date"
-              style="width: 30%"
-              placeholder="选择任命日期"
-              value-format="yyyy-MM-dd hh:mm:ss"
-              v-model="form.rmsj"
-            ></el-date-picker>
-          </el-form-item>
-          <span class="assignTips"
-            >确认将【{{ fdyList }}】【{{ xm }}】任命为【{{
-              $route.query.bjmc
-            }}】辅导员</span
-          >
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
-          <el-button @click="submitTips" class="submit_btn">确认</el-button>
+              </el-table-column>
+              <el-table-column
+                label="性别"
+                align="center"
+                prop="xb"
+                sortable="custom"
+              />
+              <el-table-column
+                label="工作单位"
+                align="center"
+                prop="dwmc"
+                sortable="custom"
+              />
+              <el-table-column
+                label="已任职班级数量"
+                align="center"
+                prop="sl"
+                sortable="custom"
+              />
+              <el-table-column label="操作" align="center" width="150px">
+                <template slot-scope="scope">
+                  <div>
+                    <el-button
+                      type="text"
+                      size="small"
+                      :disabled="scope.row.sffp == '1' ? true : false"
+                      @click="allocateNone(scope.row)"
+                    >
+                      <span
+                        class="iconfont"
+                        :class="
+                          scope.row.sffp == '1'
+                            ? 'allocate_none'
+                            : 'allocate_class'
+                        "
+                        >&#xe638;</span
+                      >
+                      <span style="margin-left: 5px; font-size: 16px"
+                        >取消分配</span
+                      >
+                    </el-button>
+                  </div>
+                </template>
+              </el-table-column>
+            </el-table>
+            <pagination
+              id="pagenation"
+              v-show="total > 0"
+              :total="total"
+              :page.sync="queryParams.pageNum"
+              :limit.sync="queryParams.pageSize"
+              @pagination="getInstructorList"
+            />
+          </div>
         </div>
-      </el-dialog>
-      <!-- 批量分配班级对话框 -->
-      <el-dialog
-        class="assign_class"
-        :title="title"
-        :visible.sync="openAssignMoreClass"
-        width="780px"
-        append-to-body
-      >
-        <el-form :model="formMore">
-          <el-form-item label="任命日期">
-            <el-date-picker
-              type="date"
-              style="width: 30%"
-              placeholder="选择任命日期"
-              value-format="yyyy-MM-dd hh:mm:ss"
-              v-model="formMore.rmsj"
-            ></el-date-picker>
-          </el-form-item>
-          <template v-for="item in multipleSelection">
-            <div :key="item.gh">
-              <span
-                >确认将【{{ item.gh }}】【{{ item.xm }}】任命为【{{
-                  $route.query.bjmc
-                }}】辅导员</span
-              >
+
+        <div class="unDesigned" v-show="currentIndex == 1">
+          <div class="table-content">
+            <div class="title" icon="el-icon-refresh">
+              <span class="fptitle-item">{{ this.$route.query.bjmc }}</span>
+              <span class="iconfont">&#xe631;</span>
+              <!-- <el-row :gutter="10" class="mb8" style="float: right">
+              <el-col :span="1.5">
+                <el-button
+                  type="primary"
+                  class="create"
+                  icon="el-icon-search"
+                  @click="handleAssignMore"
+                >
+                  批量分配</el-button
+                >
+              </el-col>
+              <el-col :span="1.5">
+                <el-button
+                  class="delete"
+                  icon="el-icon-delete"
+                  @click="deleteAssignMore"
+                  >批量取消</el-button
+                >
+              </el-col>
+            </el-row> -->
             </div>
-          </template>
-        </el-form>
 
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="cancelMore" class="cancel_btn">取消</el-button>
-          <el-button @click="assignMore" class="submit_btn">确认</el-button>
+            <el-table
+              :data="placementPageList"
+              @selection-change="handleSelectionChange"
+              @sort-change="changeTableSort"
+            >
+              <el-table-column type="selection" align="center" />
+              <el-table-column
+                label="序号"
+                align="center"
+                type="index"
+                width="60px"
+              />
+              <el-table-column
+                label="学工号"
+                align="center"
+                prop="gh"
+                sortable="custom"
+              />
+              <el-table-column
+                label="姓名"
+                align="center"
+                prop="xm"
+                sortable="custom"
+              >
+                <!-- <el-input
+              :value="noticeList[0].className"
+              clearable
+              @keyup.enter.native="handleQuery"
+            /> -->
+              </el-table-column>
+              <el-table-column
+                label="性别"
+                align="center"
+                prop="xb"
+                sortable="custom"
+              />
+              <el-table-column
+                label="工作单位"
+                align="center"
+                prop="dwmc"
+                sortable="custom"
+              />
+              <el-table-column
+                label="已任职班级数量"
+                align="center"
+                prop="sl"
+                sortable="custom"
+              />
+              <el-table-column label="操作" align="center" width="150px">
+                <template slot-scope="scope">
+                  <div>
+                    <el-button
+                      type="text"
+                      size="small"
+                      :disabled="scope.row.sffp == '0' ? true : false"
+                      @click="assignClass(scope.row)"
+                    >
+                      <span
+                        class="iconfont"
+                        :class="
+                          scope.row.sffp == '0'
+                            ? 'allocate_none'
+                            : 'allocate_class'
+                        "
+                        >&#xe638;</span
+                      >
+                      <span
+                        style="
+                          margin-left: 5px;
+                          margin-right: 10px;
+                          font-size: 16px;
+                        "
+                        >分配班级</span
+                      >
+                    </el-button>
+                  </div>
+                </template>
+              </el-table-column>
+            </el-table>
+            <pagination
+              id="pagenation"
+              v-show="total > 0"
+              :total="total"
+              :page.sync="queryParams.pageNum"
+              :limit.sync="queryParams.pageSize"
+              @pagination="getInstructorList"
+            />
+          </div>
         </div>
-      </el-dialog>
-      <!-- 取消分配对话框 -->
-      <el-dialog
-        :title="title"
-        :visible.sync="openCancelAssign"
-        width="780px"
-        append-to-body
-      >
-        <el-form
-          ref="form"
-          :model="formDismission"
-          label-width="100px"
-          class="cancel_class"
-        >
-          <el-form-item label="撤任理由" prop="noticeTitle">
-            <el-input
-              v-model="formDismission.noticeTitle"
-              autocomplete="off"
-              type="textarea"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="撤任日期" prop="offDate">
-            <el-date-picker
-              type="date"
-              style="width: 40%"
-              placeholder="选择撤任日期"
-              v-model="formDismission.offDate"
-              value-format="yyyy-MM-dd hh:mm:ss"
-            ></el-date-picker>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
-          <el-button @click="submitOut" class="submit_btn">确认</el-button>
-        </div>
-      </el-dialog>
+      </div>
+    </div>
 
-      <!-- 二次确认取消分配对话框 -->
-      <el-dialog
-        :title="title"
-        :visible.sync="openSecondCancelAssign"
-        width="780px"
-        append-to-body
-      >
-        <span class="cancelTips"
-          >确认将取消【{{ fdyList }}】【{{ xm }}】【{{
+    <!-- 分配班级对话框 -->
+    <el-dialog
+      class="assign_class"
+      :title="title"
+      :visible.sync="openAssignClass"
+      width="780px"
+      append-to-body
+    >
+      <el-form :model="form">
+        <el-form-item label="任命日期">
+          <el-date-picker
+            type="date"
+            style="width: 30%"
+            placeholder="选择任命日期"
+            value-format="yyyy-MM-dd hh:mm:ss"
+            v-model="form.rmsj"
+          ></el-date-picker>
+        </el-form-item>
+        <span class="assignTips"
+          >确认将【{{ fdyList }}】【{{ xm }}】任命为【{{
             $route.query.bjmc
-          }}】辅导员任命？</span
+          }}】辅导员</span
         >
-
-        <div slot="footer" classt="dialog-footer">
-          <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
-          <el-button @click="submitOut2" class="submit_btn">确认</el-button>
-        </div>
-      </el-dialog>
-
-      <!-- 批量取消分配对话框 -->
-      <el-dialog
-        :title="title"
-        :visible.sync="openCancelAssignMore"
-        width="780px"
-        append-to-body
-      >
-        <el-form
-          ref="form"
-          :model="formDismissionMore"
-          label-width="100px"
-          class="cancel_class"
-        >
-          <el-form-item label="撤任理由" prop="noticeTitle">
-            <el-input
-              v-model="formDismissionMore.noticeTitle"
-              autocomplete="off"
-              type="textarea"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="撤任日期" prop="offDate">
-            <el-date-picker
-              type="date"
-              style="width: 40%"
-              placeholder="选择撤任日期"
-              v-model="formDismissionMore.offDate"
-              value-format="yyyy-MM-dd hh:mm:ss"
-            ></el-date-picker>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="cancelMore" class="cancel_btn">取消</el-button>
-          <el-button @click="submitOutMore" class="submit_btn">确认</el-button>
-        </div>
-      </el-dialog>
-
-      <!-- 二次确认批量取消分配对话框 -->
-      <el-dialog
-        class="assign_class"
-        :title="title"
-        :visible.sync="openSecondCancelAssignMore"
-        width="780px"
-        append-to-body
-        ><template v-for="item in multipleSelection">
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
+        <el-button @click="submitTips" class="submit_btn">确认</el-button>
+      </div>
+    </el-dialog>
+    <!-- 批量分配班级对话框 -->
+    <el-dialog
+      class="assign_class"
+      :title="title"
+      :visible.sync="openAssignMoreClass"
+      width="780px"
+      append-to-body
+    >
+      <el-form :model="formMore">
+        <el-form-item label="任命日期">
+          <el-date-picker
+            type="date"
+            style="width: 30%"
+            placeholder="选择任命日期"
+            value-format="yyyy-MM-dd hh:mm:ss"
+            v-model="formMore.rmsj"
+          ></el-date-picker>
+        </el-form-item>
+        <template v-for="item in multipleSelection">
           <div :key="item.gh">
             <span
-              >确认取消【{{ item.gh }}】【{{ item.xm }}】【{{
+              >确认将【{{ item.gh }}】【{{ item.xm }}】任命为【{{
                 $route.query.bjmc
-              }}】辅导员任命</span
+              }}】辅导员</span
             >
           </div>
         </template>
+      </el-form>
 
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="cancelMore" class="cancel_btn">取消</el-button>
-          <el-button @click="cancelAssignMore" class="submit_btn"
-            >确认</el-button
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancelMore" class="cancel_btn">取消</el-button>
+        <el-button @click="assignMore" class="submit_btn">确认</el-button>
+      </div>
+    </el-dialog>
+    <!-- 取消分配对话框 -->
+    <el-dialog
+      :title="title"
+      :visible.sync="openCancelAssign"
+      width="780px"
+      append-to-body
+    >
+      <el-form
+        ref="form"
+        :model="formDismission"
+        label-width="100px"
+        class="cancel_class"
+      >
+        <el-form-item label="撤任理由" prop="noticeTitle">
+          <el-input
+            v-model="formDismission.noticeTitle"
+            autocomplete="off"
+            type="textarea"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="撤任日期" prop="offDate">
+          <el-date-picker
+            type="date"
+            style="width: 40%"
+            placeholder="选择撤任日期"
+            v-model="formDismission.offDate"
+            value-format="yyyy-MM-dd hh:mm:ss"
+          ></el-date-picker>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
+        <el-button @click="submitOut" class="submit_btn">确认</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 二次确认取消分配对话框 -->
+    <el-dialog
+      :title="title"
+      :visible.sync="openSecondCancelAssign"
+      width="780px"
+      append-to-body
+    >
+      <span class="cancelTips"
+        >确认将取消【{{ fdyList }}】【{{ xm }}】【{{
+          $route.query.bjmc
+        }}】辅导员任命？</span
+      >
+
+      <div slot="footer" classt="dialog-footer">
+        <el-button @click="cancelTips" class="cancel_btn">取消</el-button>
+        <el-button @click="submitOut2" class="submit_btn">确认</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 批量取消分配对话框 -->
+    <el-dialog
+      :title="title"
+      :visible.sync="openCancelAssignMore"
+      width="780px"
+      append-to-body
+    >
+      <el-form
+        ref="form"
+        :model="formDismissionMore"
+        label-width="100px"
+        class="cancel_class"
+      >
+        <el-form-item label="撤任理由" prop="noticeTitle">
+          <el-input
+            v-model="formDismissionMore.noticeTitle"
+            autocomplete="off"
+            type="textarea"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="撤任日期" prop="offDate">
+          <el-date-picker
+            type="date"
+            style="width: 40%"
+            placeholder="选择撤任日期"
+            v-model="formDismissionMore.offDate"
+            value-format="yyyy-MM-dd hh:mm:ss"
+          ></el-date-picker>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancelMore" class="cancel_btn">取消</el-button>
+        <el-button @click="submitOutMore" class="submit_btn">确认</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 二次确认批量取消分配对话框 -->
+    <el-dialog
+      class="assign_class"
+      :title="title"
+      :visible.sync="openSecondCancelAssignMore"
+      width="780px"
+      append-to-body
+      ><template v-for="item in multipleSelection">
+        <div :key="item.gh">
+          <span
+            >确认取消【{{ item.gh }}】【{{ item.xm }}】【{{
+              $route.query.bjmc
+            }}】辅导员任命</span
           >
         </div>
-      </el-dialog>
-    </div>
+      </template>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancelMore" class="cancel_btn">取消</el-button>
+        <el-button @click="cancelAssignMore" class="submit_btn">确认</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -392,6 +508,8 @@ export default {
   activated() {},
   data() {
     return {
+      tab_list: ["已分配辅导员", "未分配辅导员"],
+      currentIndex: 0,
       // 总条数
       total: 0,
       // 列表数据
@@ -404,6 +522,7 @@ export default {
         xy: "", // 学员代码
         xm: "", // 姓名
         bjdm: "", //班级代码
+        sffp: "0",
       },
       // 班级代码
       fdyList: [], // 辅导员数组
@@ -426,41 +545,7 @@ export default {
       xm: "",
       multipleSelection: [],
       // 表格数据
-      noticeList: [
-        // {
-        //   id: 1,
-        //   classId: 13070025,
-        //   className: "计算机工程硕士2022级1班",
-        //   college: "计算机工程学院",
-        //   level: "本科",
-        //   nums: 34,
-        //   beginTime: "2022-07-07",
-        //   updateTime: "2022-07-07",
-        //   record: "班级操作记录",
-        // },
-        // {
-        //   id: 2,
-        //   classId: 13070025,
-        //   className: "计算机工程硕士2022级2班",
-        //   college: "计算机工程学院",
-        //   level: "本科",
-        //   nums: 34,
-        //   beginTime: "2022-07-07",
-        //   updateTime: "2022-07-07",
-        //   record: "班级操作记录",
-        // },
-        // {
-        //   id: 3,
-        //   classId: 13070025,
-        //   className: "计算机工程硕士2022级3班",
-        //   college: "计算机工程学院",
-        //   level: "本科",
-        //   nums: 34,
-        //   beginTime: "2022-07-07",
-        //   updateTime: "2022-07-07",
-        //   record: "班级操作记录",
-        // },
-      ],
+      noticeList: [],
       // 弹出层标题
       title: "",
       // 筛选框数据
@@ -499,6 +584,14 @@ export default {
     this.handleQuery();
   },
   methods: {
+    // tab栏切换
+    tabClick(index) {
+      this.currentIndex = index;
+      this.queryParams.pageNum = 1;
+      this.queryParams.sffp = index.toString();
+      this.$bus.$emit("index", this.currentIndex);
+      this.getInstructorList();
+    },
     getOptions() {
       this.collegeOptions = [];
       getCollege().then((response) => {
@@ -510,6 +603,20 @@ export default {
     //辅导员列表查询
     getInstructorList() {
       var data = this.queryParams;
+      // if (this.currentIndex == 0) {
+      //  getPlacementPageList(data).then((res) => {
+      //   this.placementPageList = res.items;
+      //   this.total = res.total;
+
+      // });//查询已分配
+      // } else if (this.currentIndex == 1) {
+      //   getNoPageList(data).then((res) => {
+      //   this.placementPageList = res.items;
+      //   this.total = res.total;
+
+      // });//查询未分配
+      // }
+
       getPlacementPageList(data).then((res) => {
         this.placementPageList = res.items;
         this.total = res.total;
@@ -608,17 +715,17 @@ export default {
         this.getInstructorList();
       });
     },
-    handleAssignMore() {
-      if (this.multipleSelection.length > 0) {
-        this.openAssignMoreClass = true;
-        this.title = "批量分配";
-      } else {
-        this.$message({
-          message: "请至少选择一位辅导员！",
-          type: "warning",
-        });
-      }
-    },
+    // handleAssignMore() {
+    //   if (this.multipleSelection.length > 0) {
+    //     this. openAssignMoreClass= true;
+    //     this.title = "批量分配";
+    //   } else {
+    //     this.$message({
+    //       message: "请至少选择一位辅导员！",
+    //       type: "warning",
+    //     });
+    //   }
+    // },
     cancelMore() {
       this.openAssignMoreClass = false;
       this.openCancelAssignMore = false;
@@ -768,17 +875,17 @@ export default {
 
 <style scoped>
 .assign_tea {
-  padding: 20px;
+  background-color: white;
+  padding: 10px;
 }
 /* 搜索 */
 .table-header {
   background-color: #ffffff;
-  height: 128px;
+  height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 15px;
-  margin-top: 10px;
 }
 .assignInput {
   display: flex;
@@ -791,6 +898,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 30px;
 }
 .search {
   background: #005657;
@@ -818,7 +926,6 @@ export default {
   padding-right: 40px;
   height: 100%;
   background-color: #ffffff;
-  margin-top: 24px;
 }
 
 .title {
@@ -871,5 +978,38 @@ export default {
   background: transparent;
   padding-left: 0;
   padding-right: 0;
+}
+.tab {
+  height: 100vh;
+}
+ul,
+li {
+  list-style-type: none;
+}
+.tab_list {
+  height: 43px;
+  background-color: #ffffff;
+}
+.tab_con {
+  height: 100%;
+}
+.tab_list li {
+  margin: 12px 0;
+  height: 43px;
+  box-sizing: border-box;
+  padding: 5px 10px;
+  display: inline-block;
+  cursor: pointer;
+}
+.activate {
+  color: #005657;
+  border-bottom: 2px solid #005657;
+}
+.tab-content {
+  padding-left: 40px;
+  padding-right: 40px;
+  height: 100%;
+  background-color: #ffffff;
+  margin-top: 24px;
 }
 </style>

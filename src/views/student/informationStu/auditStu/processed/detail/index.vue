@@ -2,20 +2,21 @@
   <div class="detail">
     <div class="wrap">
       <div class="detail_left">
-        <div v-for="(item, index) in detailInfo.dtailsList" :key="index">
-          <div
-            class="list"
-            :class="index == current ? 'active' : ''"
-            @click="handleList(index, 'tag')"
-          >
-            <el-badge :value="item.num > 0 ? item.num : ''" class="item">
-              <div>{{ item.name }}</div>
-            </el-badge>
-            <i :class="index == current ? 'el-icon-arrow-right' : ''"></i>
+        <div class="titlename">
+          <div v-for="(item, index) in detailInfo.dtailsList" :key="index">
+            <div
+              class="list"
+              :class="index == current ? 'active' : ''"
+              @click="handleList(index, 'tag')"
+            >
+              <el-badge :value="item.num > 0 ? item.num : ''" class="item">
+                <div>{{ item.name }}</div>
+              </el-badge>
+              <i :class="index == current ? 'el-icon-arrow-right' : ''"></i>
+            </div>
           </div>
         </div>
       </div>
-
       <div class="detail_right">
         <div class="right_top">
           <p class="title">学生信息</p>
@@ -422,7 +423,6 @@
                     </el-select>
                   </div> -->
                   <div
-     
                     class="content"
                     :class="
                       detailInfo.xsJbxx.gjdqm_approveFlag == 1
@@ -548,7 +548,6 @@
                     ></el-input>
                   </div> -->
                   <div
-  
                     class="content"
                     :class="
                       detailInfo.xsXjxx.nj_approveFlag == 1 ? 'greenColor' : ''
@@ -576,7 +575,6 @@
                     ></el-input>
                   </div> -->
                   <div
-
                     class="content"
                     :class="
                       detailInfo.xsXjxx.bjm_approveFlag == 1 ? 'greenColor' : ''
@@ -606,7 +604,6 @@
                     ></el-input>
                   </div> -->
                   <div
-        
                     class="content"
                     :class="
                       detailInfo.xsXjxx.zydm_approveFlag == 1
@@ -716,7 +713,6 @@
                     </el-select>
                   </div> -->
                   <div
-       
                     class="content"
                     :class="
                       detailInfo.xsXjxx.xjzt_approveFlag == 1
@@ -1602,7 +1598,6 @@
                     </el-select>
                   </div> -->
                   <div
-  
                     class="content"
                     :class="
                       detailInfo.xsJbxx.gjdqm_approveFlag == 1
@@ -1796,7 +1791,6 @@
                     </el-select>
                   </div> -->
                   <div
-        
                     class="content"
                     :class="
                       detailInfo.xsXjxx.xjzt_approveFlag == 1
@@ -1979,7 +1973,6 @@
                     ></el-input>
                   </div> -->
                   <div
-             
                     class="content"
                     :class="
                       detailInfo.xsXjxx.zydm_approveFlag == 1
@@ -3741,28 +3734,31 @@ export default {
       // height: calc(100vh - 170px);
       padding: 20px;
       box-sizing: border-box;
-      .list {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        height: 36px;
-        line-height: 36px;
-        font-size: 14px;
-        color: #1f1f1f;
-        cursor: pointer;
-        padding: 0 10px;
-        box-sizing: border-box;
-      }
-      .item {
-        ::v-deep.el-badge__content.is-fixed {
-          top: 20px;
-          right: -16px;
+      .titlename {
+        position: fixed;
+        .list {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          height: 36px;
+          line-height: 36px;
+          font-size: 14px;
+          color: #1f1f1f;
+          cursor: pointer;
+          padding: 0 10px;
+          box-sizing: border-box;
         }
-      }
-      .active {
-        background: #f0f0f0;
-        border-radius: 2px;
+        .item {
+          ::v-deep.el-badge__content.is-fixed {
+            top: 20px;
+            right: -16px;
+          }
+        }
+        .active {
+          background: #f0f0f0;
+          border-radius: 2px;
+        }
       }
     }
     .detail_right {

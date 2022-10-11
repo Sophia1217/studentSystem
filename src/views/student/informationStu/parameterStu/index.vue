@@ -14,6 +14,7 @@
             start-placeholder="起始年月日" 
             end-placeholder="结束年月日" 
             value-format="yyyy-MM-dd HH:mm:ss" 
+            :disabled = "this.form.sqkg == '0' ? true : false"
             :clearable="false">
           </el-date-picker>
         </el-form-item>
@@ -23,7 +24,6 @@
         <el-form-item label="审核开放" prop="shkg">
           <el-switch v-model="form.shkg" active-color="#23AD6F" inactive-color="#E0E0E0"
            active-value="1" inactive-value="0"
-           :disabled = "true"
            ></el-switch>
         </el-form-item>
         <el-form-item label="审核开放时间" prop="auditApplyDate">
@@ -34,7 +34,7 @@
             start-placeholder="起始年月日" 
             end-placeholder="结束年月日" 
             value-format="yyyy-MM-dd HH:mm:ss" 
-            :disabled = "true"
+            :disabled = "this.form.shkg == '0' ? true : false"
             :clearable="false">
           </el-date-picker>
         </el-form-item>
@@ -57,7 +57,7 @@ export default {
       form: {
         sqkg: '',
         applyDate: [], // 申请开放时间
-        shkg: '0',
+        shkg: '',
         auditApplyDate:[] //审核开放时间
       },
       rules: {
@@ -80,13 +80,21 @@ export default {
     getParameterStu(){
       getModeifyTime().then((res)=>{
         this.form.sqkg = res.sqkg
-        console.log("dd",this.res)
         var b = res.sqkfsj
         var a= res.sqjssj       
         var arr =[]
         arr.push(b)
         arr.push(a)
         this.$set(this.form,"applyDate", arr)
+        this.form.shkg = res.shkg
+        var c = res.shkfsj
+        var d = res.shjssj       
+        var brr =[]
+        brr.push(c)
+        brr.push(d)
+        this.$set(this.form,"auditApplyDate", brr)
+        console.log("时间",this.form.auditApplyDate)
+
       })
     },
     //学生信息修改参数申请开放
@@ -95,58 +103,90 @@ export default {
       let sqjssj=''
       let shkfsj=''
       let shjssj =''
-      // let start = this.form.applyDate&&this.form.applyDate[1]?this.form.applyDate[1]:''
-      // let end = this.form.auditApplyDate && this.form.auditApplyDate[1] ? this.form.auditApplyDate[1] : ''
-      // if (start > end) {
-      //   this.$message.error('审核开放结束时间需要晚于申请开放结束时间！');
-      //   return
-      // }
-      
-      
-      // 申请开放时间
-      if (this.form.applyDate && this.form.applyDate.length>0) {
-        sqkfsj = this.form.applyDate[0]
-        sqjssj = this.form.applyDate[1]
+     
 
-        let data = {
-        shkg:this.form.shkg,
-        shkfsj:shkfsj,
-        shjssj:shjssj,
-        sqkg:this.form.sqkg,
-        sqkfsj:sqkfsj,
-        sqjssj:sqjssj
+      let flag = false
+      if (this.form.sqkg==1 || this.form.shkg ==1){
+        console.log("11");
+        if (this.form.sqkg ==1 && this.form.shkg ==1){
+          //判时间
+          if (this.form.applyDate[0] !='' && this.form.applyDate.length>0 && 
+              this.form.auditApplyDate[0] !='' && this.form.auditApplyDate.length>0){
+            sqkfsj = this.form.applyDate[0]
+            sqjssj = this.form.applyDate[1]
+            shkfsj = this.form.auditApplyDate[0]
+            shjssj = this.form.auditApplyDate[1]
+
+            let start = this.form.applyDate[1]
+            let end = this.form.auditApplyDate[1]
+            if (start > end) {
+              this.$message.error('审核开放结束时间需要晚于申请开放结束时间！');
+              return
+            }else{ flag = true }
+            
+          } else {
+            this.$message({
+              message: "请选择开放时间!",
+              type: "warning",
+            });
+          }
+        } else if (this.form.sqkg ==1){
+          if (this.form.applyDate[0] !='' && this.form.applyDate.length>0){
+            sqkfsj = this.form.applyDate[0]
+            sqjssj = this.form.applyDate[1]
+            flag = true
+          } else {
+            this.$message({
+              message: "请选择申请开放时间!",
+              type: "warning",
+            });
+          }
+        } else {
+          if (this.form.auditApplyDate[0] !='' && this.form.auditApplyDate.length>0){
+            shkfsj = this.form.auditApplyDate[0]
+            shjssj = this.form.auditApplyDate[1]
+            flag = true
+          } else {
+            this.$message({
+              message: "请选择审核开放时间!",
+              type: "warning",
+            });
+          }
         }
-      //申请开放创建
-      stuInfoModifyParamService(data).then(res => {
-        if (res.errcode == '00') {
+        if (flag == true){
+          console.log(flag);
+          let data = {
+            shkg:this.form.shkg,
+            shkfsj:shkfsj,
+            shjssj:shjssj,
+            sqkg:this.form.sqkg,
+            sqkfsj:sqkfsj,
+            sqjssj:sqjssj
+          }
+          //创建
+          stuInfoModifyParamService(data).then(res => {
+            if (res.errcode == '00') {
+              this.$message({
+                message: res.errmsg,
+                type: 'success'
+              })
+              this.handleCel('ruleForm')
+              this.getParameterStu()
+            }  
+          }).catch(err=>{})
+        }
+        
+      } else {
           this.$message({
-            message: res.errmsg,
-            type: 'success'
-          })
-          this.handleCel('ruleForm')
-          this.getParameterStu()
-        }      
-        
-      }).catch(err=>{})
-      }
-      else{
-        this.$message({
-          message: "请选择申请开放时间!",
-          type: "warning",
-        });
-        }
-        
-      //审核开放时间
-      // if (this.form.auditApplyDate && this.form.auditApplyDate.length > 0) {
-      //   shkfsj = this.form.auditApplyDate[0]
-      //   shjssj = this.form.auditApplyDate[1]
-      // }
-
-      
+            message: "请选择开放时间!",
+            type: "warning",
+          });
+        }     
     },
     handleCel(formName) {
       this.$refs[formName].resetFields();
-    }
+    },
+    
   },
 };
 </script>

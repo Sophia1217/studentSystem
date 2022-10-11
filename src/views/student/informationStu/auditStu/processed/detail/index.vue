@@ -299,11 +299,6 @@
                       >
                       </el-option>
                     </el-select>
-                    <!-- <el-input
-                      v-model="detailInfo.xsJbxx.csdm_chinese"
-                      size="small"
-                      placeholder="请输入内容"
-                    ></el-input> -->
                   </div>
                   <div
                     v-else
@@ -358,7 +353,7 @@
                       detailInfo.xsJbxx.jg_approveFlag == 1 ? 'greenColor' : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.jg }}
+                    {{ detailInfo.xsJbxx.jg_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -403,7 +398,7 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">国籍/地区</div>
-                  <div
+                  <!-- <div
                     v-if="
                       (detailInfo.xsJbxx.gjdqm_approveFlag == 1 ||
                         detailInfo.xsJbxx.gjdqm_approveFlag == 0) &&
@@ -425,14 +420,9 @@
                       >
                       </el-option>
                     </el-select>
-                    <!-- <el-input
-                      v-model="detailInfo.xsJbxx.gjdqm_chinese"
-                      size="small"
-                      placeholder="请输入内容"
-                    ></el-input> -->
-                  </div>
+                  </div> -->
                   <div
-                    v-else
+     
                     class="content"
                     :class="
                       detailInfo.xsJbxx.gjdqm_approveFlag == 1
@@ -440,7 +430,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.gjdqm }}
+                    {{ detailInfo.xsJbxx.gjdqm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -455,7 +445,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.sfzjlxm }}
+                    {{ detailInfo.xsJbxx.sfzjlxm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -543,7 +533,7 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">年级</div>
-                  <div
+                  <!-- <div
                     v-if="
                       (detailInfo.xsXjxx.nj_approveFlag == 1 ||
                         detailInfo.xsXjxx.nj_approveFlag == 0) &&
@@ -556,9 +546,9 @@
                       size="small"
                       placeholder="请输入内容"
                     ></el-input>
-                  </div>
+                  </div> -->
                   <div
-                    v-else
+  
                     class="content"
                     :class="
                       detailInfo.xsXjxx.nj_approveFlag == 1 ? 'greenColor' : ''
@@ -571,7 +561,7 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">班级</div>
-                  <div
+                  <!-- <div
                     v-if="
                       (detailInfo.xsXjxx.bjm_approveFlag == 1 ||
                         detailInfo.xsXjxx.bjm_approveFlag == 0) &&
@@ -580,19 +570,19 @@
                     class="content"
                   >
                     <el-input
-                      v-model="detailInfo.xsXjxx.bjm"
+                      v-model="detailInfo.xsXjxx.bjm_chinese"
                       size="small"
                       placeholder="请输入内容"
                     ></el-input>
-                  </div>
+                  </div> -->
                   <div
-                    v-else
+
                     class="content"
                     :class="
                       detailInfo.xsXjxx.bjm_approveFlag == 1 ? 'greenColor' : ''
                     "
                   >
-                    {{ getName(bjOps, detailInfo.xsXjxx.bjm) }}
+                    {{ detailInfo.xsXjxx.bjm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -601,7 +591,7 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">专业</div>
-                  <div
+                  <!-- <div
                     v-if="
                       (detailInfo.xsXjxx.zydm_approveFlag == 1 ||
                         detailInfo.xsXjxx.zydm_approveFlag == 0) &&
@@ -614,9 +604,9 @@
                       size="small"
                       placeholder="请输入内容"
                     ></el-input>
-                  </div>
+                  </div> -->
                   <div
-                    v-else
+        
                     class="content"
                     :class="
                       detailInfo.xsXjxx.zydm_approveFlag == 1
@@ -624,25 +614,27 @@
                         : ''
                     "
                   >
-                    {{ getName(zyOps, detailInfo.xsXjxx.zydm) }}
+                    {{ detailInfo.xsXjxx.zydm_chinese }}
                   </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">学制</div>
-                  <div
+                  <!-- <div
                     v-if="
                       (detailInfo.xsXjxx.xz_approveFlag == 1 ||
                         detailInfo.xsXjxx.xz_approveFlag == 0) &&
                       isSh == 1
                     "
                     class="content"
+                    disabled ="true"
                   >
                     <el-select
                       v-model="detailInfo.xsXjxx.xz"
                       size="small"
                       placeholder="请选择"
+                      
                     >
                       <el-option
                         v-for="item in xzOps"
@@ -652,15 +644,15 @@
                       >
                       </el-option>
                     </el-select>
-                  </div>
+                  </div> -->
                   <div
-                    v-else
                     class="content"
                     :class="
                       detailInfo.xsXjxx.xz_approveFlag == 1 ? 'greenColor' : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.xz }}
+                    {{ getName(xzOps, detailInfo.xsXjxx.xz) }}
+                    <!-- detailInfo.xsXjxx.xz -->
                   </div>
                 </div>
               </el-col>
@@ -677,7 +669,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.zcqk }}
+                    {{ detailInfo.xsXjxx.zcqk_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -692,7 +684,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.sfzx }}
+                    {{ detailInfo.xsXjxx.sfzx_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -701,7 +693,7 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">学籍状态</div>
-                  <div
+                  <!-- <div
                     v-if="
                       (detailInfo.xsXjxx.xjzt_approveFlag == 1 ||
                         detailInfo.xsXjxx.xjzt_approveFlag == 0) &&
@@ -722,9 +714,9 @@
                       >
                       </el-option>
                     </el-select>
-                  </div>
+                  </div> -->
                   <div
-                    v-else
+       
                     class="content"
                     :class="
                       detailInfo.xsXjxx.xjzt_approveFlag == 1
@@ -747,7 +739,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.xsdqztm }}
+                    {{ detailInfo.xsXjxx.xsdqztm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -764,7 +756,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.sfby }}
+                    {{ detailInfo.xsXjxx.sfby_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -779,7 +771,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.hyzkm }}
+                    {{ detailInfo.xsJbxx.hyzkm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -796,7 +788,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.gatqwm }}
+                    {{ detailInfo.xsJbxx.gatqwm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -851,7 +843,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.jkztm }}
+                    {{ detailInfo.xsJbxx.jkztm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -866,7 +858,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.xyzjm }}
+                    {{ detailInfo.xsJbxx.xyzjm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -881,7 +873,7 @@
                       detailInfo.xsJbxx.xxm_approveFlag == 1 ? 'greenColor' : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.xxm }}
+                    {{ detailInfo.xsJbxx.xxm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -896,7 +888,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.sfdszn }}
+                    {{ detailInfo.xsJbxx.sfdszn_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -986,7 +978,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.rxfsm }}
+                    {{ detailInfo.xsXjxx.rxfsm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1001,7 +993,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.lydqm }}
+                    {{ detailInfo.xsXjxx.lydqm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1018,7 +1010,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.xslym }}
+                    {{ detailInfo.xsXjxx.xslym_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1033,7 +1025,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.jdfsm }}
+                    {{ detailInfo.xsXjxx.jdfsm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1050,7 +1042,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.rxqxlm }}
+                    {{ detailInfo.xsXjxx.rxqxlm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1065,7 +1057,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.rxqxwm }}
+                    {{ detailInfo.xsXjxx.rxqxwm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1114,7 +1106,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.sfsfs }}
+                    {{ detailInfo.xsXjxx.sfsfs_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1129,7 +1121,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.pyfsm }}
+                    {{ detailInfo.xsXjxx.pyfsm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1193,7 +1185,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.xslbm }}
+                    {{ detailInfo.xsXjxx.xslbm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1210,7 +1202,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.dywyyz }}
+                    {{ detailInfo.xsXjxx.dywyyz_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1225,7 +1217,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.dywysp }}
+                    {{ detailInfo.xsXjxx.dywysp_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1242,7 +1234,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.dewyyz }}
+                    {{ detailInfo.xsXjxx.dewyyz_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1257,7 +1249,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.dewysp }}
+                    {{ detailInfo.xsXjxx.dewysp_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1487,11 +1479,6 @@
                       >
                       </el-option>
                     </el-select>
-                    <!-- <el-input
-                      v-model="detailInfo.xsJbxx.csdm_chinese"
-                      size="small"
-                      placeholder="请输入内容"
-                    ></el-input> -->
                   </div>
                   <div
                     v-else
@@ -1546,7 +1533,7 @@
                       detailInfo.xsJbxx.jg_approveFlag == 1 ? 'greenColor' : ''
                     "
                   >
-                    {{ detailInfo.xsJbxx.jg }}
+                    {{ detailInfo.xsJbxx.jg_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1591,7 +1578,7 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">国籍/地区</div>
-                  <div
+                  <!-- <div
                     v-if="
                       (detailInfo.xsJbxx.gjdqm_approveFlag == 1 ||
                         detailInfo.xsJbxx.gjdqm_approveFlag == 0) &&
@@ -1613,14 +1600,9 @@
                       >
                       </el-option>
                     </el-select>
-                    <!-- <el-input
-                      v-model="detailInfo.xsJbxx.gjdqm_chinese"
-                      size="small"
-                      placeholder="请输入内容"
-                    ></el-input> -->
-                  </div>
+                  </div> -->
                   <div
-                    v-else
+  
                     class="content"
                     :class="
                       detailInfo.xsJbxx.gjdqm_approveFlag == 1
@@ -1791,7 +1773,7 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">学籍状态</div>
-                  <div
+                  <!-- <div
                     v-if="
                       (detailInfo.xsJbxx.xjzt_approveFlag == 1 ||
                         detailInfo.xsJbxx.xjzt_approveFlag == 0) &&
@@ -1812,9 +1794,9 @@
                       >
                       </el-option>
                     </el-select>
-                  </div>
+                  </div> -->
                   <div
-                    v-else
+        
                     class="content"
                     :class="
                       detailInfo.xsXjxx.xjzt_approveFlag == 1
@@ -1854,7 +1836,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.sfzx }}
+                    {{ detailInfo.xsXjxx.sfzx_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -1982,7 +1964,7 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">专业</div>
-                  <div
+                  <!-- <div
                     v-if="
                       (detailInfo.xsXjxx.zydm_approveFlag == 1 ||
                         detailInfo.xsXjxx.zydm_approveFlag == 0) &&
@@ -1995,9 +1977,9 @@
                       size="small"
                       placeholder="请输入内容"
                     ></el-input>
-                  </div>
+                  </div> -->
                   <div
-                    v-else
+             
                     class="content"
                     :class="
                       detailInfo.xsXjxx.zydm_approveFlag == 1
@@ -2005,7 +1987,7 @@
                         : ''
                     "
                   >
-                    {{ getName(zyOps, detailInfo.xsXjxx.zydm) }}
+                    {{ detailInfo.xsXjxx.zydm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -2177,7 +2159,7 @@
             <el-row :gutter="20">
               <el-col :span="24" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">专项计划码</div>
+                  <div class="title">专项计划</div>
                   <div
                     class="content"
                     :class="
@@ -2186,7 +2168,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.zxjhm }}
+                    {{ detailInfo.xsXjxx.zxjhm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -2288,7 +2270,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.zyxwlbm }}
+                    {{ detailInfo.xsXjxx.zyxwlbm_chinese }}
                   </div>
                 </div>
               </el-col>
@@ -2305,7 +2287,7 @@
                         : ''
                     "
                   >
-                    {{ detailInfo.xsXjxx.zyxwlym }}
+                    {{ detailInfo.xsXjxx.zyxwlym_chinese }}
                   </div>
                 </div>
               </el-col>

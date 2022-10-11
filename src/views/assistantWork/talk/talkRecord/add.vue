@@ -68,15 +68,20 @@
       </div>
       <el-form ref="form" label-width="80px">
         <el-row :gutter="20">
-          <el-col :span="6">
+          <el-col :span="3">
             <el-form-item label="谈话主题">
+              <el-input v-model="ele.Zhuti" placeholder="请输入"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item label="谈话标签">
               <el-input
                 v-model="ele.zhutiValue"
                 placeholder="请输入"
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="18">
+          <el-col :span="16">
             <el-tag
               v-for="(item, i) in ele.tag.tags.themeTags"
               :key="i"
@@ -220,8 +225,19 @@
           </el-upload>
         </el-form-item>
         <div class="buttonStle">
-          <el-button @click="cancel(index)">取消</el-button>
+          <el-button @click="cancel(index)" v-if="index > 0">删除</el-button>
           <el-button class="saveButton" @click="save(index)">保存</el-button>
+        </div>
+        <div>
+          <el-dialog :title="title" :visible.sync="showModal" width="30%">
+            <span>确认删除此条谈话内容？</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="handleCancel">取 消</el-button>
+              <el-button type="primary" class="confirm" @click="makeSure(index)"
+                >确 定</el-button
+              >
+            </span>
+          </el-dialog>
         </div>
       </el-form>
     </div>
@@ -239,6 +255,9 @@ import {
 export default {
   data() {
     return {
+      ind: 1,
+      title: "删除确认",
+      showModal: false,
       renshu: [
         {
           acceptVlaue: "",
@@ -256,6 +275,7 @@ export default {
               addressTags: [],
             },
           },
+          Zhuti: "",
           zhutiValue: "",
           addressValue: "",
           inputVisible: false,
@@ -322,7 +342,8 @@ export default {
           thsj: this.talkDate[index].date,
           startTime: this.talkDate[index].value1,
           endTime: this.talkDate[index].value2,
-          thzt: this.talkDate[index].zhutiValue,
+          thzt: this.talkDate[index].Zhuti,
+          thzt_type: this.talkDate[index].zhutiValue,
           xhList: list2,
           xmList: list,
         };
@@ -332,6 +353,7 @@ export default {
         formData.append("thsj", data.thsj);
         formData.append("startTime", data.startTime);
         formData.append("endTime", data.endTime);
+        formData.append("thzt_type", data.thzt_type);
         formData.append("thzt", data.thzt);
         formData.append("xhList", data.xhList);
         formData.append("xmList", data.xmList);
@@ -447,6 +469,7 @@ export default {
           },
         },
         zhutiValue: "",
+        Zhuti: "",
         addressValue: "",
         inputVisible: false,
         inputValue: "",
@@ -456,7 +479,19 @@ export default {
         value1: this.talkDate[0].value2,
         value2: this.talkDate[0].value1,
         textarea1: "",
+        fileList: [],
       });
+    },
+    handleCancel() {
+      this.showModal = false;
+    },
+    makeSure() {
+      this.talkDate.splice(this.ind, 1);
+      this.showModal = false;
+    },
+    cancel(index) {
+      this.ind = index;
+      this.showModal = true;
     },
     sfwk() {
       var data = {
@@ -510,7 +545,7 @@ export default {
     showInput(type, index) {
       if (type == 1) {
         if (this.talkDate[index].tag.tags.themeTags.length > 8) {
-          this.$message.error("最多九条");
+          this.$message.error("常用主题标签最多九条");
         } else {
           this.talkDate[index].inputVisible = true;
           this.$nextTick((_) => {
@@ -518,10 +553,14 @@ export default {
           });
         }
       } else {
-        this.talkDate[index].inputVisible1 = true;
-        this.$nextTick((_) => {
-          this.$refs.saveTagInput1[index].$refs.input.focus();
-        });
+        if (this.talkDate[index].tag.tags.addressTags.length > 8) {
+          this.$message.error("常用地点标签最多九条");
+        } else {
+          this.talkDate[index].inputVisible1 = true;
+          this.$nextTick((_) => {
+            this.$refs.saveTagInput1[index].$refs.input.focus();
+          });
+        }
       }
     },
     handleInputConfirm(type, index) {
@@ -532,23 +571,31 @@ export default {
           userId: this.$store.getters.userId,
         };
         obj.cyMsg = this.talkDate[index].inputValue;
-        addTag(obj).then((res) => {
-          this.queryTag();
-        });
-        this.talkDate[index].inputVisible = false;
-        this.talkDate[index].inputValue = "";
+        if (this.talkDate[index].inputValue.length > 15) {
+          this.$message.error("常用主题标签输入值应不超过十五个字符");
+        } else {
+          addTag(obj).then((res) => {
+            this.queryTag();
+          });
+          this.talkDate[index].inputVisible = false;
+          this.talkDate[index].inputValue = "";
+        }
       } else {
         var obj = {
           cyMsg: "",
           cyType: type.toString(),
           userId: this.$store.getters.userId,
         };
-        obj.cyMsg = this.talkDate[index].inputValue1;
-        addTag(obj).then((res) => {
-          this.queryTag();
-          this.talkDate[index].inputVisible1 = false;
-          this.talkDate[index].inputValue1 = "";
-        });
+        if (this.talkDate[index].inputValue1.length > 15) {
+          this.$message.error("常用地点标签输入值应不超过十五个字符");
+        } else {
+          obj.cyMsg = this.talkDate[index].inputValue1;
+          addTag(obj).then((res) => {
+            this.queryTag();
+            this.talkDate[index].inputVisible1 = false;
+            this.talkDate[index].inputValue1 = "";
+          });
+        }
       }
     },
     handleClose(item) {

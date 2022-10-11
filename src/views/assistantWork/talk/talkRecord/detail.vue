@@ -114,16 +114,25 @@
           </el-row>
         </el-form-item>
         <el-row :gutter="20">
-          <el-col :span="6">
+          <el-col :span="3">
             <el-form-item label="谈话主题">
               <el-input
+                v-model="Zhuti"
+                placeholder="请输入谈话主题"
                 :disabled="edit == 2 ? false : true"
-                v-model="zhutiValue"
-                placeholder="请输入"
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="edit == 2">
+          <el-col :span="4">
+            <el-form-item label="谈话标签">
+              <el-input
+                :disabled="edit == 2 ? false : true"
+                v-model="zhutiValue"
+                placeholder="请输入谈话标签"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="16" v-if="edit == 2">
             <el-tag
               v-for="(item, i) in tags.themeTags"
               :key="i"
@@ -162,7 +171,7 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="edit == 2">
+          <el-col :span="17" v-if="edit == 2">
             <el-tag
               v-for="(item, i) in tags.addressTags"
               :key="i"
@@ -325,6 +334,7 @@ export default {
       thrlb: "",
       thrxm: "",
       xgh: "",
+      Zhuti: "",
       zhutiValue: "",
       addressValue: "",
       inputVisible: false,
@@ -459,7 +469,8 @@ export default {
     queryDetail() {
       detailTalk({ id: this.lgnSn }).then((res) => {
         const { list, stuList, fdyMain } = res.data;
-        this.zhutiValue = list.thzt;
+        this.zhutiValue = list.thzttype;
+        this.Zhuti = list.thzt;
         this.addressValue = list.thdd;
         this.date = list.thsj;
         this.value1 = list.startTime;
@@ -570,7 +581,8 @@ export default {
           id: this.lgnSn,
           startTime: this.value1,
           endTime: this.value2,
-          thzt: this.zhutiValue,
+          thzt: this.Zhuti,
+          thzt_type: this.zhutiValue,
           xhList: list2,
           xmList: list,
         };
@@ -581,6 +593,7 @@ export default {
         formData.append("thsj", data.thsj);
         formData.append("startTime", data.startTime);
         formData.append("endTime", data.endTime);
+        formData.append("thzt_type", data.thzt_type);
         formData.append("thzt", data.thzt);
         formData.append("xhList", data.xhList);
         formData.append("xmList", data.xmList);
@@ -618,15 +631,23 @@ export default {
     },
     showInput(type) {
       if (type == 1) {
-        this.inputVisible = true;
-        this.$nextTick((_) => {
-          this.$refs.saveTagInput.$refs.input.focus();
-        });
+        if (this.tags.themeTags.length > 8) {
+          this.$message.error("常用主题标签最多九条");
+        } else {
+          this.inputVisible = true;
+          this.$nextTick((_) => {
+            this.$refs.saveTagInput$refs.input.focus();
+          });
+        }
       } else {
-        this.inputVisible1 = true;
-        this.$nextTick((_) => {
-          this.$refs.saveTagInput1.$refs.input.focus();
-        });
+        if (this.tags.addressTags.length > 8) {
+          this.$message.error("常用地点标签最多九条");
+        } else {
+          this.inputVisible1 = true;
+          this.$nextTick((_) => {
+            this.$refs.saveTagInput1.$refs.input.focus();
+          });
+        }
       }
     },
     handleInputConfirm(type) {
@@ -637,23 +658,31 @@ export default {
           userId: this.$store.getters.userId,
         };
         obj.cyMsg = this.inputValue;
-        addTag(obj).then((res) => {
-          this.queryTag();
-        });
-        this.inputVisible = false;
-        this.inputValue = "";
+        if (this.inputValue.length > 15) {
+          this.$message.error("常用主题标签输入值应不超过十五个字符");
+        } else {
+          addTag(obj).then((res) => {
+            this.queryTag();
+          });
+          this.inputVisible = false;
+          this.inputValue = "";
+        }
       } else {
-        var obj = {
-          cyMsg: "",
-          cyType: type.toString(),
-          userId: this.$store.getters.userId,
-        };
-        obj.cyMsg = this.inputValue1;
-        addTag(obj).then((res) => {
-          this.queryTag();
-          this.inputVisible1 = false;
-          this.inputValue1 = "";
-        });
+        if (this.inputValue1.length > 15) {
+          this.$message.error("常用地点标签输入值应不超过十五个字符");
+        } else {
+          var obj = {
+            cyMsg: "",
+            cyType: type.toString(),
+            userId: this.$store.getters.userId,
+          };
+          obj.cyMsg = this.inputValue1;
+          addTag(obj).then((res) => {
+            this.queryTag();
+            this.inputVisible1 = false;
+            this.inputValue1 = "";
+          });
+        }
       }
     },
     handleClose(item) {

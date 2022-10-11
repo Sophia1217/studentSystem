@@ -263,6 +263,15 @@
         <el-button type="primary" @click="handleOk">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog :title="title" :visible.sync="showExportA" width="30%">
+      <span>确认导出{{ len }}条学生数据？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancelA">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="expTalk()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -282,6 +291,10 @@ export default {
   components: { CheckboxCom },
   data() {
     return {
+      showExportA: false,
+      title: "导出提示",
+      len: 0,
+      stuInfoFlowExportParam: {},
       expand: true,
       form: { rollbackReason: "" },
       searchVal: "",
@@ -355,6 +368,9 @@ export default {
   },
 
   methods: {
+    handleCancelA() {
+      this.showExportA = false;
+    },
     openIt() {
       this.expand = false;
     },
@@ -568,15 +584,43 @@ export default {
       // });
     },
     // 打开导出弹窗
-    handleExport() {
+    async handleExport() {
       if (this.multipleSelection.length <= 0) {
-        let stuInfoFlowExportParam = this.queryExport;
-        let data = { stuInfoFlowExportParam, exportStyle: "EXCEL" };
-        // let data = this.queryExport
-        console.log("stuInfoFlowExportParam", stuInfoFlowExportParam);
-        // if(data.length == 0){
-        //   console.log("data",data);
-        // }
+        let param = {
+          userId: this.select == "xh" ? this.searchVal : null,
+          xm: this.select == "xm" ? this.searchVal : null,
+          sfzjh: this.select == "sfzjh" ? this.searchVal : null,
+          yddh: this.select == "yddh" ? this.searchVal : null,
+          pyccm: this.training.choose || [],
+          xz: this.learnHe.choose,
+          xjzt: this.studentStatus.choose,
+          zzmmm: this.politica.choose,
+          mzm: this.ethnic.choose,
+          bjm: this.moreIform.pread,
+          dwh: this.moreIform.manageReg,
+          zydm: this.moreIform.stuInfo,
+          nj: this.moreIform.grade,
+          pageNum: this.queryParams.pageNum,
+          pageSize: this.queryParams.pageSize,
+          limitSql: "",
+          orderZd: this.queryParams.orderZd,
+          orderPx: this.queryParams.orderPx,
+        };
+        this.stuInfoFlowExportParam = param;
+        await FlowPageList(param)
+          .then((res) => {
+            this.len = res.data.total;
+          })
+          .catch((err) => {});
+      } else {
+        this.len = this.multipleSelection.length;
+      }
+      this.showExportA = true;
+    },
+    expTalk() {
+      if (this.multipleSelection.length <= 0) {
+        let param = this.stuInfoFlowExportParam;
+        let data = { param, exportStyle: "EXCEL" };
         StuInfoFlowExport(data)
           .then((res) => {
             this.downloadFn(res, "学生信息审核导出", "xls");
@@ -586,7 +630,6 @@ export default {
           })
           .catch((err) => {});
       } else {
-        console.log("有勾选");
         let ids = [];
         this.multipleSelection.forEach((item) => {
           ids.push(item.id);

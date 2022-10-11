@@ -209,13 +209,13 @@
           <span class="title">毕业学生信息列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderBlue" @click="getGraStu">
+          <div class="btns borderBlue" @click="modal(1)">
             <i class="icon blueIcon"></i><span class="title">毕业生登记表</span>
           </div>
-          <div class="btns borderOrange" @click="getStuReg">
+          <div class="btns borderBlue" @click="modal(2)">
             <i class="icon orangeIcon"></i><span class="title">学生登记表</span>
           </div>
-          <div class="btns borderLight" @click="getStu">
+          <div class="btns borderBlue" @click="modal(3)">
             <i class="icon lightIcon"></i><span class="title">学生卡片</span>
           </div>
           <div class="btns borderGreen" @click="handleExport">
@@ -293,6 +293,15 @@
         @pagination="handleSearch"
       />
     </div>
+    <el-dialog :title="title" :visible.sync="showExportA" width="30%">
+      <span>确认导出{{ len }}条学生数据？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancelA">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="expTalk(ind)"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
     <exportView
       v-if="showExport"
       :tag="2"
@@ -323,6 +332,10 @@ export default {
   components: { CheckboxCom, exportView },
   data() {
     return {
+      showExportA: false,
+      title: "导出提示",
+      ind: 1,
+      len: 0,
       expand: true,
       searchVal: "",
       select: "",
@@ -412,6 +425,35 @@ export default {
     this.getSpread();
   },
   methods: {
+    modal(ind) {
+      if (this.multipleSelection.length <= 0) {
+        this.$message("请先选择学生");
+        return;
+      } else {
+        this.showExportA = true;
+        this.len = this.multipleSelection.length;
+        this.ind = ind;
+      }
+    },
+    handleCancelA() {
+      this.showExportA = false;
+    },
+    expTalk() {
+      let xhs = [];
+      this.multipleSelection.forEach((item) => {
+        xhs.push(item.xh);
+      });
+      let data = { xhs: xhs, etype: "docx" };
+      if (this.ind == 1) {
+        gradStu(data).then((res) =>
+          this.downloadFn(res, "毕业生登记表", "zip")
+        );
+      } else if (this.ind == 2) {
+        stuReg(data).then((res) => this.downloadFn(res, "学生登记表", "zip"));
+      } else if (this.ind == 3) {
+        stuCard(data).then((res) => this.downloadFn(res, "学生卡片", "zip"));
+      }
+    },
     openIt() {
       this.expand = false;
     },
@@ -683,45 +725,6 @@ export default {
     // 导出确认
     handleConfirm() {
       this.showExport = false;
-    },
-    // 毕业生登记表
-    getGraStu() {
-      let xhs = [];
-      this.multipleSelection.forEach((item) => {
-        xhs.push(item.xh);
-      });
-      if (xhs.length <= 0) {
-        this.$message("请选择");
-        return;
-      }
-      let data = { xhs: xhs, etype: "docx" };
-      gradStu(data).then((res) => this.downloadFn(res, "毕业生登记表", "zip"));
-    },
-    //学生登记
-    getStuReg() {
-      let xhs = [];
-      this.multipleSelection.forEach((item) => {
-        xhs.push(item.xh);
-      });
-      if (xhs.length <= 0) {
-        this.$message("请选择");
-        return;
-      }
-      let data = { xhs: xhs, etype: "docx" };
-      stuReg(data).then((res) => this.downloadFn(res, "学生登记表", "zip"));
-    },
-    //学生卡片
-    getStu() {
-      let xhs = [];
-      this.multipleSelection.forEach((item) => {
-        xhs.push(item.xh);
-      });
-      if (xhs.length <= 0) {
-        this.$message("请选择");
-        return;
-      }
-      let data = { xhs: xhs, etype: "docx" };
-      stuCard(data).then((res) => this.downloadFn(res, "毕业学生卡片", "zip"));
     },
     hadleDetail(row, flag) {
       // if (flag == '2' && (row.flag == 'false' || !row.flag)) {

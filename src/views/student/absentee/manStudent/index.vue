@@ -231,13 +231,13 @@
           <span class="title">学生信息列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderBlue" @click="getGraStu">
+          <div class="btns borderBlue" @click="modal(1)">
             <i class="icon blueIcon"></i><span class="title">毕业生登记表</span>
           </div>
-          <div class="btns borderOrange" @click="getStuReg">
+          <div class="btns borderBlue" @click="modal(2)">
             <i class="icon orangeIcon"></i><span class="title">学生登记表</span>
           </div>
-          <div class="btns borderLight" @click="getStu">
+          <div class="btns borderBlue" @click="modal(3)">
             <i class="icon lightIcon"></i><span class="title">学生卡片</span>
           </div>
           <div class="btns borderGreen" @click="handleExport">
@@ -304,6 +304,15 @@
         </el-table>
       </div>
     </div>
+    <el-dialog :title="title" :visible.sync="showExportA" width="30%">
+      <span>确认导出{{ len }}条学生数据？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancelA">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="expTalk(ind)"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
     <exportView
       v-if="showExport"
       :tag="1"
@@ -340,10 +349,12 @@ export default {
   components: { CheckboxCom, exportView },
   data() {
     return {
+      title: "导出提示",
       expand: true,
       searchVal: "",
       select: "",
       isMore: false,
+      showExportA: false,
       moreIform: {
         manageReg: [], // 学院
         stuInfo: [], // 专业
@@ -376,6 +387,8 @@ export default {
         checkBox: [],
         isIndeterminate: true,
       },
+      ind: 1,
+      len: 0,
       ethnic: {
         // 民 族
         checkAll: false,
@@ -442,6 +455,35 @@ export default {
   },
 
   methods: {
+    modal(ind) {
+      if (this.multipleSelection.length <= 0) {
+        this.$message("请先选择学生");
+        return;
+      } else {
+        this.showExportA = true;
+        this.len = this.multipleSelection.length;
+        this.ind = ind;
+      }
+    },
+    handleCancelA() {
+      this.showExportA = false;
+    },
+    expTalk() {
+      let xhs = [];
+      this.multipleSelection.forEach((item) => {
+        xhs.push(item.xh);
+      });
+      let data = { xhs: xhs, etype: "docx" };
+      if (this.ind == 1) {
+        gradStu(data).then((res) =>
+          this.downloadFn(res, "毕业生登记表", "zip")
+        );
+      } else if (this.ind == 2) {
+        stuReg(data).then((res) => this.downloadFn(res, "学生登记表", "zip"));
+      } else if (this.ind == 3) {
+        stuCard(data).then((res) => this.downloadFn(res, "学生卡片", "zip"));
+      }
+    },
     openIt() {
       this.expand = false;
     },
@@ -713,11 +755,11 @@ export default {
     // 打开导出弹窗
     handleExport() {
       // console.log(this.multipleSelection)
-      if (this.multipleSelection.length > 0) {
-        this.showExport = true;
-      } else {
-        this.$message("请选择学生信息列表");
-      }
+      // if (this.multipleSelection.length > 0) {
+      this.showExport = true;
+      // } else {
+      // this.$message("请选择学生信息列表");
+      // }
     },
     // 导出取消
     handleCancel() {
@@ -748,45 +790,7 @@ export default {
         },
       });
     },
-    // 毕业生登记表
-    getGraStu() {
-      let xhs = [];
-      this.multipleSelection.forEach((item) => {
-        xhs.push(item.xh);
-      });
-      if (xhs.length <= 0) {
-        this.$message("请选择");
-        return;
-      }
-      let data = { xhs: xhs, etype: "docx" };
-      gradStu(data).then((res) => this.downloadFn(res, "毕业生登记表", "zip"));
-    },
-    //学生登记
-    getStuReg() {
-      let xhs = [];
-      this.multipleSelection.forEach((item) => {
-        xhs.push(item.xh);
-      });
-      if (xhs.length <= 0) {
-        this.$message("请选择");
-        return;
-      }
-      let data = { xhs: xhs, etype: "docx" };
-      stuReg(data).then((res) => this.downloadFn(res, "学生登记表", "zip"));
-    },
-    //学生卡片
-    getStu() {
-      let xhs = [];
-      this.multipleSelection.forEach((item) => {
-        xhs.push(item.xh);
-      });
-      if (xhs.length <= 0) {
-        this.$message("请选择");
-        return;
-      }
-      let data = { xhs: xhs, etype: "docx" };
-      stuCard(data).then((res) => this.downloadFn(res, "学生卡片", "zip"));
-    },
+
     //排序
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;

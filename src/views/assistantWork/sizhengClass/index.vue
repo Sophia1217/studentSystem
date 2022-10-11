@@ -138,7 +138,7 @@
               <i class="icon blueIcon"></i><span class="title">导入</span>
             </el-upload>
           </div>
-          <div class="btns borderOrange" @click="daochu">
+          <div class="btns borderOrange" @click="handleExport">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
           <div class="btns borderLight" @click="del">
@@ -222,14 +222,8 @@
               @select="handleSelect"
               size="small"
             ></el-autocomplete>
-            <!-- <el-input
-              v-model="form.xm"
-              style="width: 520px"
-              placeholder="请输入"
-            ></el-input> -->
           </el-form-item>
         </el-row>
-
         <el-row :gutter="20">
           <el-form-item
             label="课程名称"
@@ -312,6 +306,15 @@
         <el-button type="primary" @click="addData">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="导出确认" :visible.sync="showExport" width="30%">
+      <span>确认导出？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="expTalk"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -346,6 +349,7 @@ export default {
   },
   data() {
     return {
+      showExport: false,
       form: {
         rs: "",
         xm: "",
@@ -461,6 +465,39 @@ export default {
   },
 
   methods: {
+    expTalk() {
+      var idList = [];
+      this.multipleSelection.map((item) => idList.push(item.id));
+      var data = {
+        gh: this.select == "gh" ? this.searchVal : null,
+        xm: this.select == "xm" ? this.searchVal : null,
+        kcmc: this.select == "kcmc" ? this.searchVal : null,
+        gzdwhList: this.moreIform.xydm || [],
+        kkxnList: this.moreIform.kkxn || [],
+        kxxqList: this.moreIform.kkxq || [],
+        gwList: this.position.choose || [],
+        lxList: this.Type.choose || [],
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+      };
+      if (this.multipleSelection.length > 0) {
+        expor({ idList: idList }).then((res) =>
+          this.downloadFn(res, "思政课程授課列表下载", "xlsx")
+        );
+      } else {
+        expor(data).then((res) =>
+          this.downloadFn(res, "思政课程授課列表下载", "xlsx")
+        );
+      }
+    },
+    handleExport() {
+      this.showExport = true;
+    },
+    handleCancel() {
+      this.showExport = false;
+    },
     handleSelect(item) {
       this.addParams = item;
     },
@@ -518,33 +555,7 @@ export default {
         this.downloadFn(res, "思政模板下载", "xlsx");
       });
     },
-    daochu() {
-      var idList = [];
-      this.multipleSelection.map((item) => idList.push(item.id));
-      var data = {
-        gh: this.select == "gh" ? this.searchVal : null,
-        xm: this.select == "xm" ? this.searchVal : null,
-        kcmc: this.select == "kcmc" ? this.searchVal : null,
-        gzdwhList: this.moreIform.xydm || [],
-        kkxnList: this.moreIform.kkxn || [],
-        kxxqList: this.moreIform.kkxq || [],
-        gwList: this.position.choose || [],
-        lxList: this.Type.choose || [],
-        pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
-      };
-      if (this.multipleSelection.length > 0) {
-        expor({ idList: idList }).then((res) =>
-          this.downloadFn(res, "思政课程授課列表下载", "xlsx")
-        );
-      } else {
-        expor(data).then((res) =>
-          this.downloadFn(res, "思政课程授課列表下载", "xlsx")
-        );
-      }
-    },
+
     del() {
       var arr = [];
       this.multipleSelection.map((item) => arr.push(item.id));

@@ -231,13 +231,9 @@
           <span class="title">学籍异动学生列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <el-dropdown split-button type="primary" @command="handleCommand">
-            <span class="el-dropdown-link"> 导出 </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="EXCEL">EXCEL</el-dropdown-item>
-              <!-- <el-dropdown-item command="TXT">TXT</el-dropdown-item> -->
-            </el-dropdown-menu>
-          </el-dropdown>
+          <div class="btns borderGreen" @click="handleCommand">
+            <i class="icon greenIcon"></i><span class="title">导出</span>
+          </div>
         </div>
       </div>
 
@@ -292,6 +288,15 @@
           @pagination="handleSearch"
         />
       </div>
+      <el-dialog :title="title" :visible.sync="showExportA" width="30%">
+        <span>确认导出{{ len }}条学生数据？</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="handleCancelA">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="expTalk()"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -306,11 +311,15 @@ import {
   getManageRegStuInfoSearchSpread,
   excelTest,
 } from "@/api/student/index";
+import { async } from "q";
 export default {
   name: "manStudent",
   components: { CheckboxCom },
   data() {
     return {
+      showExportA: false,
+      title: "导出提示",
+      len: 0,
       searchVal: "",
       select: "",
       isMore: false,
@@ -424,6 +433,9 @@ export default {
   },
 
   methods: {
+    handleCancelA() {
+      this.showExportA = false;
+    },
     // 查询学院
     getAllCollege() {
       getCollege()
@@ -589,7 +601,6 @@ export default {
             : "",
         // ydyy: this.changWhy.choose&&this.changWhy.choose.length>0?this.changWhy.choose.join(','):'',
         spwh: this.select == "spwh" ? this.searchVal : "",
-        // ydrq: this.datePicker,
         ydrqst: YDRQST,
         ydrqend: YDRQEND,
 
@@ -602,7 +613,6 @@ export default {
       this.exportParams = data;
       getStuChangeInfoPageList(data)
         .then((res) => {
-          // console.log("ress", res);
           this.tableData = res.data.data;
           this.queryParams.total = res.data.total;
         })
@@ -798,21 +808,96 @@ export default {
       // console.log(this.multipleSelection);
     },
     // 导出
-    handleCommand(command) {
-      let that = this;
-      if (command == "EXCEL") {
-        let ids = [];
-        for (let item_row of this.multipleSelection) {
-          ids.push(item_row.id);
+    async handleCommand() {
+      if (this.multipleSelection.length > 0) {
+        this.len = this.multipleSelection.length;
+      } else {
+        let YDRQST,
+          YDRQEND = "";
+        if (this.datePicker && this.datePicker.length > 0) {
+          YDRQST = this.datePicker[0];
+          YDRQEND = this.datePicker[1];
         }
-        this.exportParams.pageNum = 0;
-        this.$set(this.exportParams, "ids", ids);
-        excelTest(this.exportParams)
+        let data = {
+          xh: this.select == "xh" ? this.searchVal : null,
+          xm: this.select == "xm" ? this.searchVal : null,
+          ydwh:
+            this.moreIform.ydwh && this.moreIform.ydwh.length > 0
+              ? this.moreIform.ydwh.join(",")
+              : "", // 原培养单位
+          yzydm:
+            this.moreIform.yzydm && this.moreIform.yzydm.length > 0
+              ? this.moreIform.yzydm.join(",")
+              : "", // 原专业
+          ynj:
+            this.njOps.choose && this.njOps.choose.length > 0
+              ? this.njOps.choose.join(",")
+              : "", // 原年级
+          ybj:
+            this.moreIform.ybh && this.moreIform.ybh.length > 0
+              ? this.moreIform.ybh.join(",")
+              : "", // 原班级
+          xbm:
+            this.dmxbmOPs.choose && this.dmxbmOPs.choose.length > 0
+              ? this.dmxbmOPs.choose.join(",")
+              : "", // 性别码
+          xjzt:
+            this.studentStatus.choose && this.studentStatus.choose.length > 0
+              ? this.studentStatus.choose.join(",")
+              : "01,03",
+          bjm:
+            this.moreIform.pread && this.moreIform.pread.length > 0
+              ? this.moreIform.pread.join(",")
+              : "",
+          dwh:
+            this.moreIform.manageReg && this.moreIform.manageReg.length > 0
+              ? this.moreIform.manageReg.join(",")
+              : "",
+          zydm:
+            this.moreIform.stuInfo && this.moreIform.stuInfo.length > 0
+              ? this.moreIform.stuInfo.join(",")
+              : "", // 专业
+          ydlbm:
+            this.changType.choose && this.changType.choose.length > 0
+              ? this.changType.choose.join(",")
+              : "",
+          sfzx:
+            this.inSchool.choose && this.inSchool.choose.length > 0
+              ? this.inSchool.choose.join(",")
+              : "",
+          spwh: this.select == "spwh" ? this.searchVal : "",
+          ydrqst: YDRQST,
+          ydrqend: YDRQEND,
+
+          pageNum: this.queryParams.pageNum,
+          pageSize: this.queryParams.pageSize,
+          limitSql: "",
+          orderZd: this.queryParams.orderZd,
+          orderPx: this.queryParams.orderPx,
+        };
+        this.exportParams = data;
+        await getStuChangeInfoPageList(data)
           .then((res) => {
-            that.downloadFn(res, "学籍异动学生表.xlsx", "xlsx");
+            this.len = res.data.total;
           })
           .catch((err) => {});
       }
+      this.showExportA = true;
+    },
+
+    expTalk() {
+      let that = this;
+      let ids = [];
+      for (let item_row of this.multipleSelection) {
+        ids.push(item_row.id);
+      }
+      this.exportParams.pageNum = 0;
+      this.$set(this.exportParams, "ids", ids);
+      excelTest(this.exportParams)
+        .then((res) => {
+          that.downloadFn(res, "学籍异动学生表.xlsx", "xlsx");
+        })
+        .catch((err) => {});
     },
     hadleDetail(row) {
       this.$router.push({
@@ -912,6 +997,32 @@ export default {
       }
       .headerRight {
         display: flex;
+        .borderGreen {
+          border: 1px solid #005657;
+          color: #005657;
+          background: #fff;
+        }
+        .btns {
+          margin-right: 15px;
+          padding: 5px 10px;
+          cursor: pointer;
+          .title {
+            font-size: 14px;
+            text-align: center;
+            line-height: 22px;
+            // vertical-align: middle;
+          }
+          .icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            vertical-align: top;
+            margin-right: 5px;
+          }
+          .greenIcon {
+            background: url("~@/assets/images/export.png");
+          }
+        }
       }
     }
     .scopeIncon {

@@ -281,6 +281,19 @@
         <p class="describe">尚未导入强制修改名单</p>
       </div>
     </div>
+    <el-dialog
+      title="添加强制修改名单确认"
+      :visible.sync="showExport"
+      width="30%"
+    >
+      <span>本次共有{{ multipleSelection.length }}名学生添加至强制名单</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="expTalk"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -299,6 +312,7 @@ export default {
   components: { CheckboxCom },
   data() {
     return {
+      showExport: false,
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -377,6 +391,22 @@ export default {
   },
 
   methods: {
+    handleExport() {
+      this.showExport = true;
+    },
+    // 添加强制修改名单
+    expTalk() {
+      var data = this.multipleSelection;
+      if (this.multipleSelection.length > 0) {
+        forceAdd(data).then(() => this.$message("已成功添加强制修改名单"));
+        this.$emit("changeActiveName");
+      } else {
+        this.$message.error("请先勾选一条信息");
+      }
+    },
+    handleCancel() {
+      this.showExport = false;
+    },
     // 查询学院
     getAllCollege() {
       getCollege()
@@ -612,17 +642,6 @@ export default {
       this.multipleSelection = val.map((item) => {
         return item.xh;
       });
-    },
-    // 添加强制修改名单
-    handleExport() {
-      var data = this.multipleSelection;
-      console.log(this.multipleSelection, "multipleSelection");
-      if (this.multipleSelection.length > 0) {
-        forceAdd(data).then(() => this.$message("已成功添加强制修改名单"));
-        this.$emit("changeActiveName");
-      } else {
-        this.$message.error("请先勾选一条信息");
-      }
     },
 
     hadleDetail(row, flag) {

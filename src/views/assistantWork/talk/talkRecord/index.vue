@@ -132,6 +132,8 @@
           </el-table-column>
           <el-table-column prop="thzt" label="谈话主题" sortable="custom">
           </el-table-column>
+          <el-table-column prop="thzttype" label="谈话标签" sortable="custom">
+          </el-table-column>
           <el-table-column prop="zt" label="记录状态" sortable="custom">
             <template slot-scope="scope">
               <div v-if="scope.row.sfjl == 1">

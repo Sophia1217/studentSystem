@@ -1,6 +1,6 @@
 <template>
   <div class="addRole">
-    <div class="permissions">
+    <div class="permissions1" v-for="(ele, index) in talkDate" :key="index">
       <div class="headTop">
         <div class="headRight">
           <span class="title">谈话对象</span>
@@ -10,67 +10,52 @@
         </div>
       </div>
       <div class="wai-container">
-        <div class="roleWrap" v-for="(ele, index) in renshu" :key="index">
+        <div class="roleWrap" v-for="(ele1, num) in ele.renshu" :key="num">
           <div class="roleStyle">
-            <div class="name">{{ index + 1 }}:</div>
+            <div class="name">{{ num + 1 }}:</div>
             <div>
               <el-autocomplete
-                v-model="ele.acceptVlaue"
+                v-model="ele1.acceptVlaue"
                 :fetch-suggestions="querySearch"
                 placeholder="请输入姓名"
                 :trigger-on-focus="false"
                 @select="
                   (item) => {
-                    handleSelect(item, index);
+                    handleSelect(item, num, index);
                   }
                 "
                 size="small"
               ></el-autocomplete>
-              <!-- <el-select
-                v-model="ele.label"
-                :value-key="ele.value"
-                size="small"
-                remote       这个如果遍历层级较多，会有显示覆盖bug
-                filterable
-                :remote-method="querySearchAsync"
-                placeholder="请选择"
-              >
-                <el-option
-                  v-for="(item, i) in stuData"
-                  :key="i"
-                  :label="`${item.xm}(${item.gh})`"
-                  :value="item.gh"
-                >
-                </el-option>
-              </el-select> -->
             </div>
           </div>
           <div
-            v-if="index == renshu.length - 1 && renshu.length !== 6"
+            v-if="num == ele.renshu.length - 1 && ele.renshu.length !== 6"
             class="editBtn"
-            @click="addStu(ele, index)"
+            @click="addStu(index)"
           >
             <i class="addIcon"></i>
           </div>
           <div
-            v-if="renshu.length == 6 || index < renshu.length - 1"
+            v-if="ele.renshu.length == 6 || num < ele.renshu.length - 1"
             class="deleIcon"
-            @click="delStu(ele, index)"
+            @click="delStu(index)"
           >
             <i></i>
           </div>
         </div>
       </div>
-    </div>
-    <div class="permissions1" v-for="(ele, index) in talkDate" :key="index">
       <div>
         <span class="title">谈话内容</span>
       </div>
       <el-form ref="form" label-width="80px">
         <el-row :gutter="20">
-          <el-col :span="3">
+          <el-col :span="3.5">
             <el-form-item label="谈话主题">
-              <el-input v-model="ele.Zhuti" placeholder="请输入"></el-input>
+              <el-input
+                maxlength="10"
+                v-model="ele.Zhuti"
+                placeholder="请输入"
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="4">
@@ -81,7 +66,7 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="16">
+          <el-col :span="15">
             <el-tag
               v-for="(item, i) in ele.tag.tags.themeTags"
               :key="i"
@@ -258,17 +243,17 @@ export default {
       ind: 1,
       title: "删除确认",
       showModal: false,
-      renshu: [
-        {
-          acceptVlaue: "",
-          value: "",
-          label: "",
-        },
-      ],
       addParams: [],
       stuData: [],
       talkDate: [
         {
+          renshu: [
+            {
+              acceptVlaue: "",
+              value: "",
+              label: "",
+            },
+          ],
           tag: {
             tags: {
               themeTags: [],
@@ -305,14 +290,15 @@ export default {
 
   methods: {
     save(index) {
+      var renshu = this.talkDate[index].renshu; //字段太长，懒得写，赋个值
       var flag = false;
-      if (this.renshu.length > 1) {
-        for (var i = 0; i < this.renshu.length; i++) {
-          for (var j = i + 1; j < this.renshu.length; j++) {
+      if (renshu.length > 1) {
+        for (var i = 0; i < renshu.length; i++) {
+          for (var j = i + 1; j < renshu.length; j++) {
             if (
-              this.renshu[i].acceptVlaue == this.renshu[j].acceptVlaue &&
-              !!this.renshu[i].acceptVlaue &&
-              !!this.renshu[j].acceptVlaue
+              renshu[i].acceptVlaue == renshu[j].acceptVlaue &&
+              !!renshu[i].acceptVlaue &&
+              !!renshu[j].acceptVlaue
             ) {
               flag = true;
             }
@@ -323,7 +309,7 @@ export default {
       }
       if (flag) {
         this.$message.error("存在相同谈话对象，请重新选择");
-      } else if (this.renshu.some((val) => val.acceptVlaue == "")) {
+      } else if (renshu.some((val) => val.acceptVlaue == "")) {
         this.$message.error("所添加谈话对象存在空值或未选择学生信息");
       } else if (this.talkDate[index].addressValue == "") {
         this.$message.error("请至少选择一个谈话地点");
@@ -332,10 +318,11 @@ export default {
       } else {
         var list = [];
         var list2 = [];
-        for (var i = 0; i < this.addParams.length; i++) {
-          list.push(this.addParams[i].xm);
-          list2.push(this.addParams[i].label);
+        for (var i = 0; i < renshu.length; i++) {
+          list.push(renshu[i].value);
+          list2.push(renshu[i].label);
         }
+
         var data = {
           thdd: this.talkDate[index].addressValue,
           thnr: this.talkDate[index].textarea1,
@@ -448,20 +435,28 @@ export default {
             }
           });
           if (callBackArr.length == 0) {
-            this.$message.error("请输入正确模糊值");
+            this.$message.error("暂无相关数据");
           } else {
             cb(callBackArr);
           }
         });
       }
     },
-    // 点击谁，就把谁放进去
-    handleSelect(item, index) {
-      //可以在点击时候动态添加参数，免得拼接,单独设计一个参数作为提交参数，免得各种复杂的截取和判断
-      this.addParams[index] = item;
+    //
+    //点击谁，就把谁放进去,第一个参数是当前选中的值，第二个是内层循环的下标，第三个参数是外层循环的下标
+    handleSelect(item, num, index) {
+      this.talkDate[index].renshu[num].label = item.xm; //姓名
+      this.talkDate[index].renshu[num].value = item.label; //学号
     },
     addDate() {
       this.talkDate.push({
+        renshu: [
+          {
+            acceptVlaue: "",
+            value: "",
+            label: "",
+          },
+        ],
         tag: {
           tags: {
             themeTags: this.talkDate[0].tag.tags.themeTags,
@@ -603,15 +598,19 @@ export default {
       param.id = item.id;
       delTag(param).then((_) => this.queryTag());
     },
-    addStu() {
-      if (this.renshu.length > 5) {
+    addStu(index) {
+      if (this.talkDate[index].renshu.length > 5) {
         this.$message.error("最多六条数据");
       } else {
-        this.renshu.push({ value: "", label: "", acceptVlaue: "" });
+        this.talkDate[index].renshu.push({
+          value: "",
+          label: "",
+          acceptVlaue: "",
+        });
       }
     },
-    delStu(role, index) {
-      this.renshu.splice(index, 1);
+    delStu(index) {
+      this.talkDate[index].renshu.splice(index, 1);
       this.addParams.splice(index, 1); //此处代码可以优化,addParams可以和renshu写一起
     },
     pushData(item, type, index) {
@@ -699,7 +698,7 @@ export default {
   }
   .roleWrap {
     background: #fff;
-    margin-top: 20px;
+    margin-top: 10px;
 
     padding: 5px;
     display: flex;
@@ -750,10 +749,10 @@ export default {
     }
   }
   .permissions1 {
-    margin-top: 20px;
+    margin-top: 10px;
     flex-direction: row;
     background: #fff;
-    padding: 20px;
+    padding: 15px;
     height: 900px;
     // height: calc(100vh - 230px);
     .title {
@@ -774,8 +773,6 @@ export default {
     justify-content: space-between;
     align-items: center;
     .headRight {
-      display: flex;
-      align-items: center;
       .title {
         font-weight: 600;
         font-size: 20px;

@@ -447,7 +447,7 @@ export default {
     beforeRemove(file, fileList) {
       //用于文件删除
       let uid = file.uid;
-      let idx = fileList.findIndex((item) => item.uid === uid);
+      let idx = this.fileListAdd.findIndex((item) => item.uid === uid);
       this.fileListAdd.splice(idx, 1);
       if (file.id) {
         //如果是后端返回的文件就走删除接口，不然前端自我删除
@@ -597,9 +597,11 @@ export default {
         formData.append("thzt", data.thzt);
         formData.append("xhList", data.xhList);
         formData.append("xmList", data.xmList);
-        this.fileListAdd.map((file) => {
-          formData.append("files", file.raw);
-        });
+        if (this.fileListAdd.length > 0) {
+          this.fileListAdd.map((file) => {
+            formData.append("files", file.raw);
+          });
+        }
         updateTalk(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("保存成功");

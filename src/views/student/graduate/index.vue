@@ -312,6 +312,15 @@
       @handleCancel="handleCancel"
       @handleConfirm="handleConfirm"
     ></exportView>
+    <el-dialog title="导出确认" :visible.sync="daochuModal" width="30%">
+      <span>确认导出{{ leng }}条学生数据？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancelB">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="daochu()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -334,6 +343,8 @@ export default {
   components: { CheckboxCom, exportView },
   data() {
     return {
+      daochuModal: false,
+      leng: 0,
       op: "1",
       manageRegStuInfoParam: {},
       showExportA: false,
@@ -719,7 +730,7 @@ export default {
       this.multipleSelection = val;
     },
     // 打开导出弹窗
-    handleExport() {
+    async handleExport() {
       let csrqs = "";
       let csrqe = "";
       if (this.datePicker && this.datePicker.length > 0) {
@@ -752,8 +763,23 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      this.manageRegStuInfoParam = data;
+      if (this.multipleSelection.length > 0) {
+        this.leng = this.multipleSelection.length;
+      } else {
+        await getGraduateStuInfoPageList(data)
+          .then((res) => {
+            this.leng = res.data.total;
+          })
+          .catch((err) => {});
+      }
+      this.daochuModal = true;
+    },
+    daochu() {
       this.showExport = true;
+      this.daochuModal = false;
+    },
+    handleCancelB() {
+      this.daochuModal = false;
     },
     // 导出取消
     handleCancel() {

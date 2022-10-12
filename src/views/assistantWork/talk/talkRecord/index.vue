@@ -76,7 +76,7 @@
                 unlink-panels
                 type="daterange"
                 format="yyyy 年 MM 月 dd 日"
-                value-format="yyyyMMdd"
+                value-format="yyyy-MM-dd"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"

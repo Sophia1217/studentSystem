@@ -3599,7 +3599,7 @@ export default {
     this.getCode("dmzzmmm"); // 政治面貌码
     this.getCode("dmrsgjdqm"); // 国籍地区码
     this.getCode("dmsfzjlxm"); // 身份证件类型码
-    this.getCode("dmrshyzkm"); // 婚姻状况码_公用
+    this.getCode("dmhyzkm"); // 婚姻状况码_公用
     this.getCode("dmrsxlm"); // 学历码
     this.getCode("dmxwm"); // 学位码
     // this.getWorkPlace('dmdwmc') // 单位
@@ -3684,7 +3684,7 @@ export default {
             case "dmsfzjlxm":
               this.sfzjlxmOps = res.data;
               break;
-            case "dmrshyzkm":
+            case "dmhyzkm":
               this.hyzkmOps = res.data;
               break;
             case "dmrsxlm":

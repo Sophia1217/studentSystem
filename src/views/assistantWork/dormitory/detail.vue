@@ -409,8 +409,8 @@ export default {
       } else {
         let formData = new FormData();
 
-        formData.append("jssj ", this.visitDetailForm.endTime.slice(-8, -3));
-        formData.append("kssj", this.visitDetailForm.beginTime.slice(-8, -3));
+        formData.append("jssj ", this.visitDetailForm.endTime);
+        formData.append("kssj", this.visitDetailForm.beginTime);
         formData.append("id", this.id);
         //let lyList = [];
         for (let i = 0, len = this.dormitoryList.length; i < len; i++) {

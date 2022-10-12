@@ -228,6 +228,11 @@
             :auto-upload="false"
             ref="upload"
             :file-list="fileList"
+            :before-remove="
+                (item, item1) => {
+                  beforeRemove(item, item1);
+                }
+              "
             :on-change="change"
           >
             <div class="el-upload-dragger">
@@ -605,6 +610,12 @@ export default {
        else {
         this.fileList = fileList;
       }
+    },
+    beforeRemove(file, fileList) {
+      let uid = file.uid;
+      let idx = fileList.findIndex((item) => item.uid == uid);
+      fileList.splice(idx, 0);
+      this.fileList = fileList;
     },
     // 表单校验
     checkForm() {

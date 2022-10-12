@@ -522,7 +522,10 @@ export default {
       let uid = file.uid;
       let idx = fileList.findIndex((item) => item.uid === uid);
       this.fileListAdd.splice(idx, 1);
-      delwj({ id: file.id.toString() }).then((res) => console.log("res", res));
+      if (file.id) {
+        //如果是后端返回的文件就走删除接口，不然前端自我删除
+        delwj({ id: file.id.toString() }).then();
+      }
     },
     querywj() {
       //用于文件查询

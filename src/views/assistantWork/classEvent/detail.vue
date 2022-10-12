@@ -250,6 +250,7 @@
             class="el-upload"
             :on-preview="handlePreview"
             :on-change="change"
+            :before-remove="beforeRemove"
             :disabled="edit == '1' ? true : false"
           >
             <div class="el-upload-dragger">
@@ -403,7 +404,11 @@ export default {
       let uid = file.uid;
       let idx = fileList.findIndex((item) => item.uid === uid);
       this.fileListAdd.splice(idx, 1);
-      delwj({ id: file.id.toString() }).then((res) => console.log("res", res));
+      if (file.id) {
+        //如果是后端返回的文件就走删除接口，不然前端自我删除
+        console.log("file.id",file.id);
+        delwj({ id: file.id.toString() }).then();
+      }
     },
     querywj() {
       //用于文件查询

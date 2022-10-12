@@ -39,7 +39,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button size="small" type="primary" @click="onSubmit">立即创建</el-button>
+          <el-button size="small" type="primary" @click="onSubmit">确认</el-button>
           <el-button size="small" @click="handleCel('ruleForm')">取消</el-button>
         </el-form-item>
       </el-form>
@@ -153,7 +153,14 @@ export default {
             });
           }
         }
-        if (flag == true){
+      } else {
+        flag = true
+          // this.$message({
+          //   message: "请选择开放时间!",
+          //   type: "warning",
+          // });
+      }
+      if (flag == true){
           console.log(flag);
           let data = {
             shkg:this.form.shkg,
@@ -176,12 +183,7 @@ export default {
           }).catch(err=>{})
         }
         
-      } else {
-          this.$message({
-            message: "请选择开放时间!",
-            type: "warning",
-          });
-        }     
+          
     },
     handleCel(formName) {
       this.$refs[formName].resetFields();

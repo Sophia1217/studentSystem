@@ -71,3 +71,13 @@ export function outThemeEdu(query) {
         data: query
     })
 }
+//查学院
+export function getXy(query) {
+   
+    return request({
+        url: '/commonMethod/queryDwh',
+        method: 'post',
+       
+        data: query
+    })
+}

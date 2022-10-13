@@ -356,6 +356,7 @@ import {
   getMajor,
   editDetail,
   getNum,
+  getXy,
 } from "@/api/assistantWork/themeEdu";
 import {
   classList,
@@ -484,10 +485,10 @@ export default {
       });
     },
     getOptions() {
-      getCollege().then((response) => {
+      getXy().then((response) => {
         // 获取培养单位列表数据
         if (response.errcode == "00") {
-          this.xyOptions = response.data.rows;
+          this.xyOptions = response.data;
         }
       });
       getLevel().then((response) => {

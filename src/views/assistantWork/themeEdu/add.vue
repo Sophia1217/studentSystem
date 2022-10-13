@@ -251,7 +251,12 @@
 </template>
 <script>
 import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
-import { addDetail, getMajor, getNum } from "@/api/assistantWork/themeEdu";
+import {
+  addDetail,
+  getMajor,
+  getNum,
+  getXy,
+} from "@/api/assistantWork/themeEdu";
 import {
   classList,
   getCollege,
@@ -580,10 +585,10 @@ export default {
     },
     //下拉框
     getOptions() {
-      getCollege().then((response) => {
+      getXy().then((response) => {
         // 获取培养单位列表数据
         if (response.errcode == "00") {
-          this.xyOptions = response.data.rows;
+          this.xyOptions = response.data;
         }
       });
       getLevel().then((response) => {

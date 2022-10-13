@@ -276,6 +276,7 @@ export default {
           this.handleSearch();
         });
       }
+      this.showExport = false;
     },
     del() {
       if (this.delArr && this.delArr.length > 0) {

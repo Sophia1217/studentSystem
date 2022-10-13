@@ -38,7 +38,7 @@
           <div
             v-if="ele.renshu.length == 6 || num < ele.renshu.length - 1"
             class="deleIcon"
-            @click="delStu(index)"
+            @click="delStu(num, index)"
           >
             <i></i>
           </div>
@@ -289,6 +289,20 @@ export default {
   },
 
   methods: {
+    addStu(index) {
+      if (this.talkDate[index].renshu.length > 5) {
+        this.$message.error("最多六条数据");
+      } else {
+        this.talkDate[index].renshu.push({
+          value: "",
+          label: "",
+          acceptVlaue: "",
+        });
+      }
+    },
+    delStu(num, index) {
+      this.talkDate[index].renshu.splice(num, 1);
+    },
     save(index) {
       var renshu = this.talkDate[index].renshu; //字段太长，懒得写，赋个值
       var flag = false;
@@ -331,8 +345,8 @@ export default {
           endTime: this.talkDate[index].value2,
           thzt: this.talkDate[index].Zhuti,
           thzt_type: this.talkDate[index].zhutiValue,
-          xhList: list2,
-          xmList: list,
+          xhList: list,
+          xmList: list2,
         };
         let formData = new FormData();
         formData.append("thdd", data.thdd);
@@ -598,21 +612,7 @@ export default {
       param.id = item.id;
       delTag(param).then((_) => this.queryTag());
     },
-    addStu(index) {
-      if (this.talkDate[index].renshu.length > 5) {
-        this.$message.error("最多六条数据");
-      } else {
-        this.talkDate[index].renshu.push({
-          value: "",
-          label: "",
-          acceptVlaue: "",
-        });
-      }
-    },
-    delStu(index) {
-      this.talkDate[index].renshu.splice(index, 1);
-      this.addParams.splice(index, 1); //此处代码可以优化,addParams可以和renshu写一起
-    },
+
     pushData(item, type, index) {
       if (type == 1) {
         if (this.talkDate[index].zhutiValue == "") {

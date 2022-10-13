@@ -24,14 +24,14 @@
             </div>
           </div>
           <div
-            v-if="index == renshu.length - 1 "
+            v-if="index == renshu.length - 1"
             class="editBtn"
             @click="addPart(ele, index)"
           >
             <i class="addIcon"></i>
           </div>
           <div
-            v-if=" index < renshu.length - 1"
+            v-if="index < renshu.length - 1"
             class="deleIcon"
             @click="delPart(ele, index)"
           >
@@ -51,16 +51,16 @@
               <!-- <div class="name">{{ index + 1 }}:</div> -->
               <div style="display: flex">
                 <el-autocomplete
-                v-model="ele.acceptVlaue"
-                :fetch-suggestions="querySearchStu"
-                placeholder="请输入内容"
-                :trigger-on-focus="false"
-                @select="
-                  (item) => {
-                    handleSelectStu(item, index);
-                  }
-                "
-                size="small"
+                  v-model="ele.acceptVlaue"
+                  :fetch-suggestions="querySearchStu"
+                  placeholder="请输入内容"
+                  :trigger-on-focus="false"
+                  @select="
+                    (item) => {
+                      handleSelectStu(item, index);
+                    }
+                  "
+                  size="small"
                 ></el-autocomplete>
                 <div
                   v-if="index == renshuStu.length - 1"
@@ -79,7 +79,6 @@
               </div>
             </div>
           </el-row>
-          
         </el-form-item>
 
         <el-row :gutter="20">
@@ -90,14 +89,14 @@
           </el-col>
           <el-col :span="2">
             <el-form-item label="常用主题" label-width="90px"></el-form-item>
-            </el-col>
+          </el-col>
           <el-col :span="15">
             <el-tag
               v-for="item in tag.themeTags"
               :key="item.cyMsg"
               @click="pushData(item)"
               @close="handleClose(item)"
-              closable 
+              closable
             >
               {{ item.cyMsg }}
             </el-tag>
@@ -122,13 +121,13 @@
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="走访日期" prop="date">
-              <el-date-picker 
-                type="date" 
-                placeholder="选择日期" 
-                v-model="form.date" 
+              <el-date-picker
+                type="date"
+                placeholder="选择日期"
+                v-model="form.date"
                 format="yyyy 年 MM 月 dd 日"
                 value-format="yyyy-MM-dd"
-                style="width: 100%;"
+                style="width: 100%"
               ></el-date-picker>
             </el-form-item>
           </el-col>
@@ -136,11 +135,11 @@
         <el-row :gutter="20">
           <el-col :span="5">
             <el-form-item label="家访形式" prop="homeModel">
-              <el-select 
-                v-model="form.homeModel" 
+              <el-select
+                v-model="form.homeModel"
                 placeholder="请选择"
                 @change="changeModel"
-                >
+              >
                 <el-option
                   v-for="item in modelOps"
                   :key="item.xm"
@@ -154,12 +153,12 @@
         <el-row :gutter="20">
           <el-col :span="16">
             <el-form-item label="家访地点" prop="didian">
-              <el-select 
-                v-model="form.proPlace" 
+              <el-select
+                v-model="form.proPlace"
                 @change="changeX"
                 :disabled="xianshang == '1' ? true : false"
                 placeholder="省"
-                >
+              >
                 <el-option
                   v-for="(item, index) in proOps"
                   :key="index"
@@ -167,12 +166,12 @@
                   :value="item.dm"
                 />
               </el-select>
-              <el-select 
-                v-model="form.cityPlace" 
+              <el-select
+                v-model="form.cityPlace"
                 @change="changeY"
                 :disabled="xianshang == '1' ? true : false"
                 placeholder="市"
-                >
+              >
                 <el-option
                   v-for="(item, index) in cityOps"
                   :key="index"
@@ -180,11 +179,11 @@
                   :value="item.dm"
                 />
               </el-select>
-              <el-select 
-                v-model="form.countryPlace" 
+              <el-select
+                v-model="form.countryPlace"
                 :disabled="xianshang == '1' ? true : false"
                 placeholder="县"
-                >
+              >
                 <el-option
                   v-for="(item, index) in xianOps"
                   :key="index"
@@ -198,24 +197,24 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="详细地址" prop="detailPlace">
-              <el-input 
-                v-model="form.detailPlace" 
+              <el-input
+                v-model="form.detailPlace"
                 placeholder="请输入"
-                ></el-input>
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="22">
             <el-form-item label="走访情况" prop="state">
-              <el-input 
-                v-model="form.state" 
+              <el-input
+                v-model="form.state"
                 maxlength="2000"
                 show-word-limit
                 :autosize="{ minRows: 4, maxRows: 10 }"
                 type="textarea"
                 placeholder="请输入"
-                ></el-input>
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -229,10 +228,10 @@
             ref="upload"
             :file-list="fileList"
             :before-remove="
-                (item, item1) => {
-                  beforeRemove(item, item1);
-                }
-              "
+              (item, item1) => {
+                beforeRemove(item, item1);
+              }
+            "
             :on-change="change"
           >
             <div class="el-upload-dragger">
@@ -246,12 +245,10 @@
             </div>
           </el-upload>
         </el-form-item>
-
-
       </el-form>
       <div class="headLeft">
-        <button class="span1"  @click="cancel()">取消</button>
-        <button class="span2"  @click="sava">保存</button>
+        <button class="span1" @click="cancel()">取消</button>
+        <button class="span2" @click="sava">保存</button>
       </div>
     </div>
   </div>
@@ -264,7 +261,7 @@ import {
   savaTreeList,
   savaEditList,
 } from "@/api/systemMan/role";
-import { 
+import {
   insertJxlx,
   getXmXgh,
   queryStuList,
@@ -291,10 +288,10 @@ export default {
         },
       ],
       partDate: [],
-      stuDate:[],
-      modelOps:[
-        { dm:"1",xm:"线上视频" },
-        { dm:"2",xm:"线下实地" },
+      stuDate: [],
+      modelOps: [
+        { dm: "1", xm: "线上视频" },
+        { dm: "2", xm: "线下实地" },
       ],
       modId: "",
       // 查询参数
@@ -316,34 +313,32 @@ export default {
         themeTags: [],
       },
       form: {
-        theme: "",//家访主题
-        date:"",
-        homeModel:"",
-        proPlace:"",//省
-        cityPlace:"",//市
-        countryPlace:"",//县
-        detailPlace:"",
-        state:"",
+        theme: "", //家访主题
+        date: "",
+        homeModel: "",
+        proPlace: "", //省
+        cityPlace: "", //市
+        countryPlace: "", //县
+        detailPlace: "",
+        state: "",
 
         inputVisible: false,
         inputValue: "",
       },
       //地区筛选框数据
-      proOps: [],//省
-      cityOps:[],
-      xianOps:[],
+      proOps: [], //省
+      cityOps: [],
+      xianOps: [],
       //表单校验
       rules: {
-        theme: [
-          { required: true, message: "请输入家访主题", trigger: "blur" },
-        ],
+        theme: [{ required: true, message: "请输入家访主题", trigger: "blur" }],
         homeModel: [
           { required: true, message: "家访形式不能为空", trigger: "blur" },
         ],
         didian: [
           { required: true, message: "请选择家访地点", trigger: "blur" },
         ],
-    }
+      },
     };
   },
 
@@ -354,7 +349,7 @@ export default {
     // this.queryParams.roleRem = this.$route.query?.rem;
     // this.handleTree();
 
-    (this.form.date = new Date());
+    this.form.date = new Date();
     this.form.date = this.formatDate(new Date()).slice(0, 10);
     // this.talkDate[0].value2 = this.formatDate(new Date()).slice(-8, -3);
     // this.talkDate[0].value1 = this.formatDate(this.transTime(new Date())).slice(
@@ -382,28 +377,27 @@ export default {
 
     showInput() {
       if (this.tag.themeTags.length > 8) {
-          this.$message.error("最多九条");
-        } else{
-            this.form.inputVisible = true;
-        } 
+        this.$message.error("最多九条");
+      } else {
+        this.form.inputVisible = true;
+      }
     },
     handleInputConfirm() {
       var obj = {
         cyMsg: "",
-        cyType:"4",
+        cyType: "4",
         userId: this.$store.getters.userId,
       };
       obj.cyMsg = this.form.inputValue;
       if (this.form.inputValue.length > 15) {
-          this.$message.error("常用主题标签输入值应不超过十五个字符");
-        } else {
-          addTag(obj).then((res) => {
-            this.queryTag();
-          });
-          this.form.inputVisible = false;
-          this.form.inputValue = "";
-        }
-      
+        this.$message.error("常用主题标签输入值应不超过十五个字符");
+      } else {
+        addTag(obj).then((res) => {
+          this.queryTag();
+        });
+        this.form.inputVisible = false;
+        this.form.inputValue = "";
+      }
     },
     //关闭标签
     handleClose(item) {
@@ -413,19 +407,15 @@ export default {
     },
     //选中标签
     pushData(item) {
-        if (this.form.theme == "") {
-          this.form.theme =
-            this.form.theme + item.cyMsg;
+      if (this.form.theme == "") {
+        this.form.theme = this.form.theme + item.cyMsg;
+      } else {
+        if (this.form.theme.length < 30) {
+          this.form.theme = this.form.theme + "," + item.cyMsg;
         } else {
-          if (this.form.theme.length < 30) {
-            this.form.theme =
-              this.form.theme + "," + item.cyMsg;
-          } else {
-            this.$message.error("常用主题总长度不应该超过三十个字符长度");
-          }
-          
+          this.$message.error("常用主题总长度不应该超过三十个字符长度");
         }
-     
+      }
     },
     //共同参与人
     querySearchPart(queryString, cb) {
@@ -436,7 +426,7 @@ export default {
         var resultNew = [];
         getXmXgh(Xm).then((res) => {
           // console.log("res",res.data);
-          result = res.data.length > 0 ? res.data:[];
+          result = res.data.length > 0 ? res.data : [];
           resultNew = result.map((ele) => {
             //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
             //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
@@ -486,7 +476,7 @@ export default {
         var resultNew = [];
         queryStuList(Xm).then((res) => {
           // console.log("res",res.data);
-          result = res.data.length > 0 ? res.data:[];
+          result = res.data.length > 0 ? res.data : [];
           resultNew = result.map((ele) => {
             //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
             //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
@@ -516,27 +506,27 @@ export default {
       this.stuDate[index] = item;
     },
     addStu() {
-        this.renshuStu.push({ value: "", label: "" });
+      this.renshuStu.push({ value: "", label: "" });
     },
     delStu(role, index) {
       this.renshuStu.splice(index, 1);
       this.stuDate.splice(index, 1);
     },
     //改变家访形式
-    changeModel(val){
-      if (val =="线上视频"){
+    changeModel(val) {
+      if (val == "线上视频") {
         this.xianshang = 1;
         this.form.proPlace = [];
         this.form.cityPlace = []; // 市
-        this.form.countryPlace = []; 
-      }else{
+        this.form.countryPlace = [];
+      } else {
         this.xianshang = 0;
       }
     },
     //获取省列表
-    getProOps(){
+    getProOps() {
       getCityList({}).then((res) => {
-          this.proOps = res.data;
+        this.proOps = res.data;
       });
     },
     // 省找市
@@ -566,7 +556,7 @@ export default {
     changeX(val) {
       if (val) {
         this.form.cityPlace = []; // 市
-        this.form.countryPlace = []; 
+        this.form.countryPlace = [];
       }
       this.getCity(val);
     },
@@ -578,7 +568,6 @@ export default {
     },
     //上传文件
     change(file, fileList) {
-      
       console.log("file", file);
       console.log("fileList", fileList);
 
@@ -592,22 +581,24 @@ export default {
         "Number(file.size / 1024 / 1024)",
         Number(file.size / 1024 / 1024)
       );
-      if (Number(file.size / 1024 / 1024)>2  && (ext == "jpg" || ext == "png"|| ext == "png")) {
-         let uid = file.uid; // 关键作用代码，去除文件列表失败文件
-         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
-         fileList.splice(idx, 1);
-         this.fileList = fileList;
+      if (
+        Number(file.size / 1024 / 1024) > 2 &&
+        (ext == "jpg" || ext == "png" || ext == "png")
+      ) {
+        let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+        let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+        fileList.splice(idx, 1);
+        this.fileList = fileList;
         //  console.log("fileList", fileList);
-         this.$message.error("图片超过2M,上传失败");
-       } else if(Number(file.size / 1024 / 1024) > 10){
-         let uid = file.uid; // 关键作用代码，去除文件列表失败文件
-         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
-         fileList.splice(idx, 1);
-         this.fileList = fileList;
+        this.$message.error("图片超过2M,上传失败");
+      } else if (Number(file.size / 1024 / 1024) > 10) {
+        let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+        let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+        fileList.splice(idx, 1);
+        this.fileList = fileList;
         //  console.log("fileList", fileList);
-         this.$message.error("文件超过10M,上传失败");
-       }
-       else {
+        this.$message.error("文件超过10M,上传失败");
+      } else {
         this.fileList = fileList;
       }
     },
@@ -638,7 +629,7 @@ export default {
       // }
       // console.log("this.partDate",this.partDate[0]);
       // console.log("this.partDate长度",this.partDate.length);
-      
+
       //参与人重复校验
       var flag = false;
       if (this.renshu.length > 1) {
@@ -652,7 +643,7 @@ export default {
               flag = true;
             }
           }
-        } 
+        }
       } else {
         flag = false;
       }
@@ -669,7 +660,7 @@ export default {
               flagB = true;
             }
           }
-        } 
+        }
       } else {
         flagB = false;
       }
@@ -677,28 +668,37 @@ export default {
         this.$message.error("存在相同参与人，请重新选择！");
       } else if (flagB) {
         this.$message.error("存在相同学生，请重新选择！");
-      } else if (this.renshu.some((val) => val.acceptVlaue == undefined) &&       
-            this.renshu[0].acceptVlaue !== undefined) {
+      } else if (
+        this.renshu.some((val) => val.acceptVlaue == undefined) &&
+        this.renshu[0].acceptVlaue !== undefined
+      ) {
         this.$message.error("所添加参与人存在空值！");
-      } else if (this.renshuStu.some((val) => val.acceptVlaue == undefined) ||
-            this.renshuStu[0].acceptVlaue == "") {
+      } else if (
+        this.renshuStu.some((val) => val.acceptVlaue == undefined) ||
+        this.renshuStu[0].acceptVlaue == ""
+      ) {
         this.$message.error("所添加学生存在空值！");
-      } else if (this.renshuStu[0].acceptVlaue =="") {
+      } else if (this.renshuStu[0].acceptVlaue == "") {
         this.$message.error("未选择学生！");
-      } else if (this.form.theme=="") {
+      } else if (this.form.theme == "") {
         this.$message.error("家访主题不能为空!");
-      } else if (this.form.date=="") {
+      } else if (this.form.date == "") {
         this.$message.error("走访日期不能为空!");
-      } else if (this.form.homeModel=="") {
+      } else if (this.form.homeModel == "") {
         this.$message.error("家访形式不能为空!");
-      } else if (this.form.homeModel =="线下实地" && this.form.countryPlace=="") {
+      } else if (
+        this.form.homeModel == "线下实地" &&
+        this.form.countryPlace == ""
+      ) {
         this.$message.error("家访地点不能为空!");
-      } else if (this.form.homeModel =="线下实地" && this.form.detailPlace=="") {
+      } else if (
+        this.form.homeModel == "线下实地" &&
+        this.form.detailPlace == ""
+      ) {
         this.$message.error("详细地址不能为空!");
-      } else if (this.form.state=="") {
+      } else if (this.form.state == "") {
         this.$message.error("走访情况不能为空!");
-      } 
-      else{
+      } else {
         let formData = new FormData();
         formData.append("jfdd", this.form.countryPlace);
         formData.append("jfqk", this.form.state);
@@ -706,23 +706,23 @@ export default {
         formData.append("jfxs", this.form.homeModel);
         formData.append("jfzt", this.form.theme);
         formData.append("xxdz", this.form.detailPlace);
-        for(let i=0,len= this.stuDate.length;i<len;i++){
+        for (let i = 0, len = this.stuDate.length; i < len; i++) {
           let locationInfo = this.stuDate[i];
-          formData.append('xsXmXgh['+i+'].xm',locationInfo.xm);
-          formData.append('xsXmXgh['+i+'].gh',locationInfo.gh);
+          formData.append("xsXmXgh[" + i + "].xm", locationInfo.xm);
+          formData.append("xsXmXgh[" + i + "].gh", locationInfo.gh);
         }
-        for(let j=0,leng= this.partDate.length;j<leng;j++){
+        for (let j = 0, leng = this.partDate.length; j < leng; j++) {
           let locationInfo = this.partDate[j];
-          formData.append('gtcyrXmXgh['+j+'].xm',locationInfo.xm);
-          formData.append('gtcyrXmXgh['+j+'].gh',locationInfo.gh);
+          formData.append("gtcyrXmXgh[" + j + "].xm", locationInfo.xm);
+          formData.append("gtcyrXmXgh[" + j + "].gh", locationInfo.gh);
         }
         if (this.fileList.length > 0) {
           this.fileList.map((ele) => {
             formData.append("files", ele.raw);
           });
         }
-        insertJxlx(formData).then((res) => { 
-        if (res.errcode == "00") {
+        insertJxlx(formData).then((res) => {
+          if (res.errcode == "00") {
             this.$message.success("保存成功");
             window.history.go(-1);
           } else {
@@ -730,10 +730,10 @@ export default {
           }
         });
       }
-      if (this.form.homeModel =="线下实地"){
-          this.getCity(this.form.proPlace);
-          this.getXian(this.form.cityPlace);
-        }
+      if (this.form.homeModel == "线下实地") {
+        this.getCity(this.form.proPlace);
+        this.getXian(this.form.cityPlace);
+      }
     },
   },
 };
@@ -773,8 +773,8 @@ export default {
   }
   .suibian {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
-    align-items: center;
     font-size: 14px;
     color: #1f1f1f;
   }
@@ -806,9 +806,9 @@ export default {
     }
   }
   .name {
-        margin-right: 20px;
-        font-weight: 600;
-      }
+    margin-right: 20px;
+    font-weight: 600;
+  }
   .deleIcon {
     padding: 0 12px;
     margin-left: 4px;
@@ -852,7 +852,7 @@ export default {
       line-height: 28px;
       margin-right: 20px;
     }
-    .search{
+    .search {
       background: #005657;
       align-items: center;
     }
@@ -943,24 +943,24 @@ export default {
     overflow: hidden;
   }
   .headLeft {
-      display: flex;
-      align-items: center;
-      justify-content:flex-end;
-      .span1 {
-        cursor: pointer;
-        color: #fff;
-        background: #005657;
-        border: 1px solid #005657;
-        padding: 10px;
-      }
-      .span2 {
-        cursor: pointer;
-        color: #fff;
-        background: #005657;
-        border: 1px solid #005657;
-        padding: 10px;
-        margin-left: 15px;
-      }
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .span1 {
+      cursor: pointer;
+      color: #fff;
+      background: #005657;
+      border: 1px solid #005657;
+      padding: 10px;
+    }
+    .span2 {
+      cursor: pointer;
+      color: #fff;
+      background: #005657;
+      border: 1px solid #005657;
+      padding: 10px;
+      margin-left: 15px;
+    }
   }
 }
 </style>

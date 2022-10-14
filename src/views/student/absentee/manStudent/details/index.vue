@@ -253,6 +253,7 @@
                       v-model="valueJlcsd"
                       :options="options"
                       @change="handleChangeCsd"
+                      :disabled="detailInfo.xsJbxx.csdm_stuFlag == 2"
                       :props="locationProps"
                     ></el-cascader>
                     <!-- <el-select
@@ -287,6 +288,7 @@
                       :options="options"
                       @change="handleChangeJg"
                       :props="locationProps"
+                      :disabled="detailInfo.xsJbxx.jg_stuFlag == 2"
                     ></el-cascader>
                     <!-- <el-select
                       v-model="detailInfo.xsJbxx.jg"
@@ -1732,6 +1734,7 @@
                       v-model="valueJlcsd"
                       :options="options"
                       @change="handleChangeCsd"
+                      :disabled="detailInfo.xsJbxx.csdm_stuFlag == 2"
                       :props="locationProps"
                     ></el-cascader>
                     <!-- <el-select
@@ -1771,6 +1774,7 @@
                       v-model="valueJljg"
                       :options="options"
                       @change="handleChangeJg"
+                      :disabled="detailInfo.xsJbxx.jg_stuFlag == 2"
                       :props="locationProps"
                     ></el-cascader>
                     <!-- <el-select
@@ -3207,19 +3211,19 @@
                 <div v-if="isEdit == 1">{{ scope.row.jkztm_chinese }}</div>
                 <div v-else>
                   <el-select
-                      v-model="detailInfo.xsJbxx.jkztm"
-                      size="small"
-                      :disabled="detailInfo.xsJbxx.jkztm_stuFlag == 2"
-                      placeholder="请选择"
+                    v-model="detailInfo.xsJbxx.jkztm"
+                    size="small"
+                    :disabled="detailInfo.xsJbxx.jkztm_stuFlag == 2"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="item in dmjkzkm"
+                      :key="item.dm"
+                      :label="item.mc"
+                      :value="item.dm"
                     >
-                      <el-option
-                        v-for="item in dmjkzkm"
-                        :key="item.dm"
-                        :label="item.mc"
-                        :value="item.dm"
-                      >
-                      </el-option>
-                    </el-select>
+                    </el-option>
+                  </el-select>
                   <!-- <el-input
                     v-model="scope.row.jkzkm"
                     placeholder="请输入"
@@ -3689,9 +3693,9 @@ export default {
       zzmmOps: [], //政治面貌
       xzOps: [], //学制
       jgOps: [], //籍贯和出生地
-      allDwh: [],//单位
-      zyOps: [],//专业
-      bjOps:[],
+      allDwh: [], //单位
+      zyOps: [], //专业
+      bjOps: [],
       xslbOps: [], //;学生类别
       zxjhmOps: [], // 专项计划码
       gjdqm: [], //国籍
@@ -3707,14 +3711,14 @@ export default {
       dmsfbzm: [], //  是否毕业 是否学分制 是否师范生
       dmxsdqztm: [], //学生当前状态
       dmjkzkm: [], //健康状况
-      dmzjxym:[], //信仰宗教
-      dmxxm:[],//血型
-      dmxslym:[],//学生来源
-      dmxlm:[],//入学前学历
-      dmxwm:[],//入学前学位
-      dmyzmcm:[],//第一外语语种 第二外语语种
-      dmlxsyzspm:[],//第一外语水平 第二外语水平
-      dmgxm:[],//关系
+      dmzjxym: [], //信仰宗教
+      dmxxm: [], //血型
+      dmxslym: [], //学生来源
+      dmxlm: [], //入学前学历
+      dmxwm: [], //入学前学位
+      dmyzmcm: [], //第一外语语种 第二外语语种
+      dmlxsyzspm: [], //第一外语水平 第二外语水平
+      dmgxm: [], //关系
 
       // 地区级联
       valueJljg: "",
@@ -3727,10 +3731,8 @@ export default {
         children: "dataCodeCascadingList", //匹配响应数据中的children }
       },
       options: [],
-      updateJg:"",
-      updateCsd:"",
-      
-
+      updateJg: "",
+      updateCsd: "",
     };
   },
   created() {
@@ -3760,7 +3762,6 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      
       this.getCode("dmxbm"); // 性别码
       this.getCode("dmmzm"); // 民 族
       this.getCode("dmxjztm"); // 学籍
@@ -3784,19 +3785,17 @@ export default {
       this.getCode("dmyjszyxwlbm"); // 专业学位类别
 
       this.getCode("dmxsdqztm"); //学生当前状态
-      this.getCode("dmjkzkm");//健康状况
-      this.getCode("dmzjxym");//信仰宗教
-      this.getCode("dmxxm");//血型
-      this.getCode("dmxslym");//学生来源
-      this.getCode("dmxlm");//入学前学位
-      this.getCode("dmxwm");//入学前学位
-      this.getCode("dmyzmcm");//第一外语语种 第二外语语种
-      this.getCode("dmlxsyzspm");//第一外语水平 第二外语水平
-      this.getCode("dmgxm");//关系
-      this.getLocationjl()
-      
-      
-      
+      this.getCode("dmjkzkm"); //健康状况
+      this.getCode("dmzjxym"); //信仰宗教
+      this.getCode("dmxxm"); //血型
+      this.getCode("dmxslym"); //学生来源
+      this.getCode("dmxlm"); //入学前学位
+      this.getCode("dmxwm"); //入学前学位
+      this.getCode("dmyzmcm"); //第一外语语种 第二外语语种
+      this.getCode("dmlxsyzspm"); //第一外语水平 第二外语水平
+      this.getCode("dmgxm"); //关系
+      this.getLocationjl();
+
       if (this.isEdit == 1) {
         this.getDetail();
       } else {
@@ -3875,7 +3874,7 @@ export default {
               break;
             case "dmxsdqztm": //学生当前状态
               this.dmxsdqztm = res.data;
-              break; 
+              break;
             case "dmjkzkm": //健康状况
               this.dmjkzkm = res.data;
               break;
@@ -3903,7 +3902,6 @@ export default {
             case "dmgxm": //关系
               this.dmgxm = res.data;
               break;
-
           }
         })
         .catch((err) => {});
@@ -3960,8 +3958,8 @@ export default {
       loadRegStuInfoUpdatePage(data)
         .then((res) => {
           //  console.log(res.data.xsJbxx,"???");
-          this.valueJljg = res.data.xsJbxx.jg|| ""
-          this.valueJlcsd = res.data.xsJbxx.csdm|| ""
+          this.valueJljg = res.data.xsJbxx.jg || "";
+          this.valueJlcsd = res.data.xsJbxx.csdm || "";
           this.$set(
             this.detailInfo,
             "xsJbxx",
@@ -3979,7 +3977,7 @@ export default {
           );
           this.$set(
             this.detailInfo,
-            "xsZsxx",  //楼栋房间
+            "xsZsxx", //楼栋房间
             res.data.xsZsxx ? res.data.xsZsxx : {}
           );
           this.$set(this.detailInfo, "xsJtcyxxList", res.data.xsJtcyxxList);
@@ -3990,21 +3988,21 @@ export default {
             "xsXszpb",
             res.data.xsXszpb ? res.data.xsXszpb : {}
           );
-          this.getAllCollege(this.detailInfo.xsXjxx.dwh)
+          this.getAllCollege(this.detailInfo.xsXjxx.dwh);
           this.getZY([this.detailInfo.xsXjxx.dwh]);
           this.getBJ([this.detailInfo.xsXjxx.dwh]);
         })
         .catch((err) => {});
     },
-   async getDetail() {
+    async getDetail() {
       let data = { XH: this.$route.query.xh };
-     await  getRegStuInfoDetailPage(data)
+      await getRegStuInfoDetailPage(data)
         .then((res) => {
           // var arr = res.data.xsGzjlList || [];
           // var arr1 = arr.filter(function (s) {
           //   return s && s.trim();
           // });
-        this.$set(
+          this.$set(
             this.detailInfo,
             "xsJbxx",
             res.data.xsJbxx ? res.data.xsJbxx : {}
@@ -4022,7 +4020,7 @@ export default {
           );
           this.$set(
             this.detailInfo,
-            "xsZsxx",  //楼栋房间
+            "xsZsxx", //楼栋房间
             res.data.xsZsxx ? res.data.xsZsxx : {}
           );
           this.$set(
@@ -4053,9 +4051,7 @@ export default {
           this.getAllCollege(this.detailInfo.xsXjxx.dwh);
           this.getZY([this.detailInfo.xsXjxx.dwh]);
           this.getBJ([this.detailInfo.xsXjxx.dwh]);
-          ;
-        }
-        )
+        })
         .catch((err) => {});
     },
     handleList(index, tag) {
@@ -4099,10 +4095,14 @@ export default {
     // 提交
     handlUpdata() {
       this.$set(this.detailInfo, "xh", this.$route.query.xh);
-      this.detailInfo.xsJbxx.jg = this.updateJg ?this.updateJg:this.detailInfo.xsJbxx.jg
-      console.log("jiguan",this.detailInfo.xsJbxx.jg);
-      this.detailInfo.xsJbxx.csdm = this.updateCsd ? this.updateCsd : this.detailInfo.xsJbxx.csdm;
-      console.log("csd",this.detailInfo.xsJbxx.csdm);
+      this.detailInfo.xsJbxx.jg = this.updateJg
+        ? this.updateJg
+        : this.detailInfo.xsJbxx.jg;
+      console.log("jiguan", this.detailInfo.xsJbxx.jg);
+      this.detailInfo.xsJbxx.csdm = this.updateCsd
+        ? this.updateCsd
+        : this.detailInfo.xsJbxx.csdm;
+      console.log("csd", this.detailInfo.xsJbxx.csdm);
       let data = this.detailInfo;
       //0必填和空的校验
       if (data.xsJbxx.xh_stuFlag == 0 && !data.xsJbxx.xh) {
@@ -4252,24 +4252,24 @@ export default {
       });
     },
     handleChangeJg(value) {
-      if (value.length == 1){
-        this.updateJg = value[0]
-      } else if(value.length == 2){
-        this.updateJg = value[1]
-      } else{
-        this.updateJg = value[2]
+      if (value.length == 1) {
+        this.updateJg = value[0];
+      } else if (value.length == 2) {
+        this.updateJg = value[1];
+      } else {
+        this.updateJg = value[2];
       }
-      console.log("this.updateJg",this.updateJg);
+      console.log("this.updateJg", this.updateJg);
     },
     handleChangeCsd(value) {
-      if (value.length == 1){
-        this.updateCsd = value[0]
-      } else if(value.length == 2){
-        this.updateCsd = value[1]
-      } else{
-        this.updateCsd = value[2]
+      if (value.length == 1) {
+        this.updateCsd = value[0];
+      } else if (value.length == 2) {
+        this.updateCsd = value[1];
+      } else {
+        this.updateCsd = value[2];
       }
-      console.log("this.updateCsd",this.updateCsd);
+      console.log("this.updateCsd", this.updateCsd);
     },
   },
 };

@@ -36,6 +36,28 @@
               </el-col>
           </el-row>
         </div>
+        <!-- 学籍信息 -->
+        <div class="headline" id="tag_0">
+          <div>学籍信息</div>
+          <div class="boxSelect">
+             <el-checkbox v-model="basicCheckBox.xjxxReader" @change="(val) => {xsjbxxReader(val,1,columns.xs_xjxx,6)}">全部只读</el-checkbox>
+             <el-checkbox v-model="basicCheckBox.xjxxBt" @change="(val) => {xsjbxxReader(val,2,columns.xs_xjxx,6)}">全部必填</el-checkbox>
+          </div>
+        </div>
+        <div class="information">
+          <el-row :gutter="20">
+              <el-col :span="8" class="rowStyle" v-for="item in columns.xs_xjxx" :key="item.id">
+                <div class="wrap">
+                  <div class="title">{{item.dicCloumnChinese}}</div>
+                  <div class="content"> 
+                    <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
+                  </div>
+                </div>
+              </el-col>
+          </el-row>
+        </div>
         <!-- 联系方式 -->
         <div class="headline" id="tag_1">
           <div>联系方式</div>
@@ -145,6 +167,7 @@ export default {
         xs_xxjl:[],
         xs_gzjl:[],
         xs_jbxx:[],
+        xs_xjxx:[],
       }
     };
   },
@@ -176,6 +199,7 @@ export default {
           xs_txxx:[],
           xs_xxjl:[],
           xs_gzjl:[],
+          xs_xjxx:[],
         }
         for (let x = 0; x < data.length; x++){
           if (data[x].dicEnglish == 'xs_jbxx') {
@@ -188,6 +212,8 @@ export default {
             columns.xs_xxjl.push(data[x])
           } else if (data[x].dicEnglish == 'xs_gzjl') {
             columns.xs_gzjl.push(data[x])
+          } else if (data[x].dicEnglish == 'xs_xjxx') {
+            columns.xs_xjxx.push(data[x])
           }
         }
         this.columns = columns
@@ -226,6 +252,9 @@ export default {
             case 5:
             this.basicCheckBox.gzjlBt = false
           break;
+            case 6:
+            this.basicCheckBox.xjxxBt = false
+          break;
         }
       } else {
         if (val) {
@@ -250,12 +279,15 @@ export default {
             case 5:
             this.basicCheckBox.gzjlReader = false
           break;
+            case 6:
+            this.basicCheckBox.xjxxReader = false
+          break;
         }
       }
     },
     getUpdateStuColumns() {
       let newData = []
-      newData = newData.concat(this.columns.xs_gzjl,this.columns.xs_jbxx,this.columns.xs_jtcyxx,this.columns.xs_txxx,this.columns.xs_xxjl)
+      newData = newData.concat(this.columns.xs_gzjl,this.columns.xs_jbxx,this.columns.xs_xjxx,this.columns.xs_jtcyxx,this.columns.xs_txxx,this.columns.xs_xxjl)
       updateStuColumns(JSON.stringify(newData)).then(res => {
         if (res.errcode == '00') {
           this.$message({

@@ -258,3 +258,11 @@ export function stuReg(data) {
     data: data
   })
 }
+//地区级联
+export function getLocationjl(query) {
+  return request({
+    url: '/commonMethod/getLocation',
+    method: 'post',
+    data: query,
+  })
+}

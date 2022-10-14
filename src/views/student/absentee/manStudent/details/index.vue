@@ -4007,7 +4007,7 @@ export default {
             "xsJbxx",
             res.data.xsJbxx ? res.data.xsJbxx : {}
           );
-          console.log(" detailInfo.xsJbxx.jg", detailInfo.xsJbxx.jg);
+
           this.$set(
             this.detailInfo,
             "xsTxxx",

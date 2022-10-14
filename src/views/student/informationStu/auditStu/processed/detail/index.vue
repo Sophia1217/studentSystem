@@ -3742,11 +3742,19 @@
                     "
                     class="content"
                   >
-                    <el-input
+                    <el-select
                       v-model="detailInfo.xsXjxx.sfzyxw"
                       size="small"
-                      placeholder="请输入内容"
-                    ></el-input>
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in sfzyxwOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
                   </div>
                   <div
                     v-else
@@ -5166,6 +5174,7 @@ export default {
       zwjbOps: [], //职位级别
       shxwOps: [], //所获学位（学习经历
       crdzzwOps: [], //党政职务
+      sfzyxwOps: [], //是否专业学位
       gxmOps: [], //关系吗
       dmmzmOps: [],
       zzmmOps: [],
@@ -5495,6 +5504,7 @@ export default {
               this.zcqkOps = res.data;
               this.sfzxOps = res.data;
               this.sfdsznOps = res.data;
+              this.sfzyxwOps = res.data;
               break;
             case "dmrxfsm": //入学方式
               this.rxfsOps = res.data;

@@ -2704,12 +2704,26 @@
                     {{ detailInfo.xsXjxx.sfzyxw }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <el-input
+                    <!-- <el-input
                       v-model="detailInfo.xsXjxx.sfzyxw"
                       :disabled="detailInfo.xsXjxx.sfzyxw_stuFlag == 2"
                       size="small"
                       placeholder="请输入内容"
-                    ></el-input>
+                    ></el-input> -->
+                    <el-select
+                      v-model="detailInfo.xsXjxx.sfzyxw"
+                      size="small"
+                      placeholder="请选择"
+                      :disabled="detailInfo.xsXjxx.sfzyxw_stuFlag == 2"
+                    >
+                      <el-option
+                        v-for="item in sfzyxwOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
                   </div>
                 </div>
               </el-col>
@@ -3719,6 +3733,7 @@ export default {
       dmyzmcm: [], //第一外语语种 第二外语语种
       dmlxsyzspm: [], //第一外语水平 第二外语水平
       dmgxm: [], //关系
+      sfzyxwOps: [], //是否专业学位
 
       // 地区级联
       valueJljg: "",
@@ -3853,6 +3868,7 @@ export default {
               break;
             case "dmsfbzm": //是否毕业 是否学分制 是否师范生 在册情况 是否独生子女
               this.dmsfbzm = res.data;
+              this.sfzyxwOps = res.data;
               break;
             case "dmrxfsm": //入学方式
               this.dmrxfsm = res.data;

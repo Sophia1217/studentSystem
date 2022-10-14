@@ -220,6 +220,14 @@
           </el-col>
         </el-row>
         <el-form-item label="添加附件" v-if="edit == '1'">
+          <div v-if="videoSrc" class="block">
+            <video
+              :src="videoSrc"
+              controls="controls"
+              :custom-cache="false"
+              style="margin-left: 20px; width: 300px; height: 300px"
+            ></video>
+          </div>
           <div v-if="urlArr.length > 0" class="block">
             <div v-for="(item, i) in urlArr">
               <el-image
@@ -266,10 +274,15 @@
         </el-form-item>
       </el-form>
       <div class="headLeft">
-        <button class="span1" v-if="edit == 1 && 
-          (this.formTop.recordGh == this.$store.getters.userId ||
-          this.$store.getters.roleId=='01')"
-        @click="editClick()">
+        <button
+          class="span1"
+          v-if="
+            edit == 1 &&
+            (this.formTop.recordGh == this.$store.getters.userId ||
+              this.$store.getters.roleId == '01')
+          "
+          @click="editClick()"
+        >
           编辑
         </button>
         <button class="span1" v-if="edit == 2" @click="cancel()">取消</button>
@@ -291,6 +304,7 @@ import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
 export default {
   data() {
     return {
+      videoSrc: "",
       urlArr: [],
       fileList: [],
       fileListAdd: [],
@@ -332,30 +346,11 @@ export default {
       (this.form.endTime = new Date()),
       this.transTime(new Date());
     this.queryTag();
-    this.getUrl();
     this.getDetail();
     this.querywj();
   },
 
   methods: {
-    getUrl() {
-      querywj({ businesId: this.id }).then((res) => {
-        var arr = res.data || [];
-        var arr1 = [];
-        for (var i = 0; i < arr.length; i++) {
-          if (arr[i].fileSuffix == ".png" || arr[i].fileSuffix == ".jpg") {
-            arr1.push(arr[i]);
-          }
-        }
-        var arr2 = arr1.slice(0, 3) || [];
-        for (var j = 0; j < arr2.length; j++) {
-          Exportwj({ id: arr[j].id.toString() }).then((res) => {
-            this.urlArr.push(window.URL.createObjectURL(res));
-            console.log("this.araa",this.urlArr);
-          });
-        }
-      });
-    },
     change(file, fileList) {
       console.log("file", file);
       console.log("fileList", fileList);
@@ -370,29 +365,31 @@ export default {
         "Number(file.size / 1024 / 1024)",
         Number(file.size / 1024 / 1024)
       );
-      if (Number(file.size / 1024 / 1024)>2 && (ext == "jpg" || ext == "png"|| ext == "png")) {
-         let uid = file.uid; // 关键作用代码，去除文件列表失败文件
-         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
-         fileList.splice(idx, 1);
-         this.fileList = fileList;
-         console.log("fileList", fileList);
-         this.$message.error("图片超过2M,上传失败");
-       } else if(Number(file.size / 1024 / 1024) > 10){
-         let uid = file.uid; // 关键作用代码，去除文件列表失败文件
-         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
-         fileList.splice(idx, 1);
-         this.fileList = fileList;
-         console.log("fileList", fileList);
-         this.$message.error("文件超过10M,上传失败");
-       }
-       else {
+      if (
+        Number(file.size / 1024 / 1024) > 2 &&
+        (ext == "jpg" || ext == "png" || ext == "png")
+      ) {
+        let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+        let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+        fileList.splice(idx, 1);
+        this.fileList = fileList;
+        console.log("fileList", fileList);
+        this.$message.error("图片超过2M,上传失败");
+      } else if (Number(file.size / 1024 / 1024) > 10) {
+        let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+        let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+        fileList.splice(idx, 1);
+        this.fileList = fileList;
+        console.log("fileList", fileList);
+        this.$message.error("文件超过10M,上传失败");
+      } else {
         //用于文件先保存
         this.fileListAdd.push(file);
         this.fileList = fileList;
       }
     },
     handlePreview(file) {
-      console.log("file",file);
+      console.log("file", file);
       //用于文件下载
       Exportwj({ id: file.id.toString() }).then((res) => {
         this.url = window.URL.createObjectURL(res);
@@ -406,7 +403,7 @@ export default {
       this.fileListAdd.splice(idx, 1);
       if (file.id) {
         //如果是后端返回的文件就走删除接口，不然前端自我删除
-        console.log("file.id",file.id);
+        console.log("file.id", file.id);
         delwj({ id: file.id.toString() }).then();
       }
     },
@@ -414,6 +411,15 @@ export default {
       //用于文件查询
       querywj({ businesId: this.id }).then((res) => {
         this.fileList = res.data;
+        this.fileList.map((ele) => {
+          if (ele.fileSuffix == ".png" || ele.fileSuffix == ".jpg") {
+            if (this.urlArr.length < 3) {
+              this.urlArr.push(`${window.location.origin}/sfile/${ele.proId}`);
+            }
+          } else {
+            this.videoSrc = `${window.location.origin}/sfile/${ele.proId}`;
+          }
+        });
         this.fileList = this.fileList.map((ele) => {
           return {
             name: ele.fileName,
@@ -475,15 +481,15 @@ export default {
       if (type == 3) {
         if (this.tag.unitTags.length > 8) {
           this.$message.error("最多九条");
-        } else{
-            this.form.inputVisible = true;
-        } 
+        } else {
+          this.form.inputVisible = true;
+        }
       } else {
         if (this.tag.addressTags.length > 8) {
           this.$message.error("最多九条");
-        } else{
-            this.form.inputVisible1 = true;
-        } 
+        } else {
+          this.form.inputVisible1 = true;
+        }
       }
     },
     handleInputConfirm(type) {
@@ -566,22 +572,22 @@ export default {
       this.fileListAdd.map((ele) => {
         formData.append("files", ele.raw);
       });
-      if (this.form.orgUnit=="") {
+      if (this.form.orgUnit == "") {
         this.$message.error("组织单位不能为空！");
-      } else if (this.form.theme=="") {
+      } else if (this.form.theme == "") {
         this.$message.error("活动主题不能为空!");
-      } else if (this.form.date=="") {
+      } else if (this.form.date == "") {
         this.$message.error("活动日期不能为空!");
-      } else if (this.form.place=="") {
+      } else if (this.form.place == "") {
         this.$message.error("活动地址不能为空!");
-      } else if (this.form.detail=="") {
+      } else if (this.form.detail == "") {
         this.$message.error("活动内容不能为空!");
-      } else if (this.form.cyth=="") {
+      } else if (this.form.cyth == "") {
         this.$message.error("参与体会不能为空!");
-      } else{
-          insertFdyBthd(formData).then((res) => {
+      } else {
+        insertFdyBthd(formData).then((res) => {
           window.history.go(-1);
-      });
+        });
       }
     },
   },
@@ -590,6 +596,9 @@ export default {
 
 <style lang="scss" scoped>
 .addHomeSchool {
+  .block {
+    display: flex;
+  }
   .permissions {
     margin-top: 20px;
     flex-direction: row;

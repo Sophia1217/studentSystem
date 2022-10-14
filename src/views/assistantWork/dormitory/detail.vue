@@ -200,6 +200,14 @@
           </el-row>
           <el-row>
             <el-form-item label="走访附件" v-if="isEdit == '1'">
+              <div v-if="videoSrc" class="block">
+                <video
+                  :src="videoSrc"
+                  controls="controls"
+                  :custom-cache="false"
+                  style="margin-left: 20px; width: 300px; height: 300px"
+                ></video>
+              </div>
               <div v-if="urlArr.length > 0" class="block">
                 <div v-for="(item, i) in urlArr">
                   <el-image
@@ -279,6 +287,7 @@ export default {
 
   data() {
     return {
+      videoSrc: "",
       xmOptions: [],
       gzdwOptions: [],
       gwOptions: [],
@@ -332,9 +341,9 @@ export default {
   watch: {},
   created() {},
   mounted() {
+    this.lgnSn = this.$route.query.id; //逻辑主键
     this.getDetailPage();
     this.queryTag();
-    this.getUrl();
     this.querywj();
     this.getOptions();
   },
@@ -550,24 +559,6 @@ export default {
         }
       }
     },
-    //////上传附件
-    getUrl() {
-      querywj({ businesId: this.id }).then((res) => {
-        var arr = res.data || [];
-        var arr1 = [];
-        for (var i = 0; i < arr.length; i++) {
-          if (arr[i].fileSuffix == ".png" || arr[i].fileSuffix == ".jpg") {
-            arr1.push(arr[i]);
-          }
-        }
-        var arr2 = arr1.slice(0, 3) || [];
-        for (var j = 0; j < arr2.length; j++) {
-          Exportwj({ id: arr[j].id.toString() }).then((res) => {
-            this.urlArr.push(window.URL.createObjectURL(res));
-          });
-        }
-      });
-    },
     change(file, fileList) {
       const index = file.name.lastIndexOf(".");
       const ext = file.name.substr(index + 1);
@@ -623,8 +614,17 @@ export default {
     },
     querywj() {
       //用于文件查询
-      querywj({ businesId: this.id }).then((res) => {
+      querywj({ businesId: this.lgnSn }).then((res) => {
         this.fileList = res.data;
+        this.fileList.map((ele) => {
+          if (ele.fileSuffix == ".png" || ele.fileSuffix == ".jpg") {
+            if (this.urlArr.length < 3) {
+              this.urlArr.push(`${window.location.origin}/sfile/${ele.proId}`);
+            }
+          } else {
+            this.videoSrc = `${window.location.origin}/sfile/${ele.proId}`;
+          }
+        });
         this.fileList = this.fileList.map((ele) => {
           return {
             name: ele.fileName,
@@ -672,6 +672,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .dormitoryVisit {
+  .block {
+    display: flex;
+  }
   .writePeople {
     background: #fff;
     padding: 20px;

@@ -350,7 +350,6 @@ export default {
   },
 
   mounted() {
-    console.log("process.env.VUE_APP_BASE_API", window.location.origin);
     this.lgnSn = this.$route.query.id; //逻辑主键
     this.queryTag();
     // this.getUrl();

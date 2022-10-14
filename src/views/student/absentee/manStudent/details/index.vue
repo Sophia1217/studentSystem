@@ -249,7 +249,13 @@
                     {{ detailInfo.xsJbxx.csdm_chinese }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <el-select
+                    <el-cascader
+                      v-model="value"
+                      :options="options"
+                      @change="handleChange"
+                      :props="locationProps"
+                    ></el-cascader>
+                    <!-- <el-select
                       v-model="detailInfo.xsJbxx.csdm"
                       size="small"
                       :disabled="detailInfo.xsJbxx.csdm_stuFlag == 2"
@@ -263,7 +269,7 @@
                         :value="item.dm"
                       >
                       </el-option>
-                    </el-select>
+                    </el-select> -->
                   </div>
                 </div>
               </el-col>
@@ -276,7 +282,13 @@
                     {{ detailInfo.xsJbxx.jg_chinese }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <el-select
+                    <el-cascader
+                      v-model="value"
+                      :options="options"
+                      @change="handleChange"
+                      :props="locationProps"
+                    ></el-cascader>
+                    <!-- <el-select
                       v-model="detailInfo.xsJbxx.jg"
                       size="small"
                       :disabled="detailInfo.xsJbxx.jg_stuFlag == 2"
@@ -290,7 +302,7 @@
                         :value="item.dm"
                       >
                       </el-option>
-                    </el-select>
+                    </el-select> -->
                   </div>
                 </div>
               </el-col>
@@ -330,6 +342,7 @@
                     <el-select
                       v-model="detailInfo.xsJbxx.gjdqm"
                       size="small"
+                      :disabled="detailInfo.xsJbxx.mzm_stuFlag == 2"
                       placeholder="请选择"
                       filterable
                     >
@@ -1715,7 +1728,13 @@
                     {{ detailInfo.xsJbxx.csdm_chinese }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <el-select
+                    <el-cascader
+                      v-model="value"
+                      :options="options"
+                      @change="handleChange"
+                      :props="locationProps"
+                    ></el-cascader>
+                    <!-- <el-select
                       v-model="detailInfo.xsJbxx.csdm"
                       size="small"
                       :disabled="detailInfo.xsJbxx.csdm_stuFlag == 2"
@@ -1729,7 +1748,7 @@
                         :value="item.dm"
                       >
                       </el-option>
-                    </el-select>
+                    </el-select> -->
                     <!-- <el-input
                       v-model="detailInfo.xsJbxx.csdm_"
                       :disabled="detailInfo.xsJbxx.csdm_stuFlag == 2"
@@ -1748,7 +1767,13 @@
                     {{ detailInfo.xsJbxx.jg_chinese }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <el-select
+                    <el-cascader
+                      v-model="value"
+                      :options="options"
+                      @change="handleChange"
+                      :props="locationProps"
+                    ></el-cascader>
+                    <!-- <el-select
                       v-model="detailInfo.xsJbxx.jg"
                       size="small"
                       :disabled="detailInfo.xsJbxx.jg_stuFlag == 2"
@@ -1762,7 +1787,7 @@
                         :value="item.dm"
                       >
                       </el-option>
-                    </el-select>
+                    </el-select> -->
                     <!-- <el-input
                       v-model="detailInfo.xsJbxx.jg_chinese"
                       :disabled="detailInfo.xsJbxx.jg_stuFlag == 2"
@@ -1809,6 +1834,7 @@
                     <el-select
                       v-model="detailInfo.xsJbxx.gjdqm"
                       size="small"
+                      :disabled="detailInfo.xsJbxx.mzm_stuFlag == 2"
                       placeholder="请选择"
                       filterable
                     >
@@ -3614,6 +3640,7 @@ import {
   stuReg,
   getZY,
   getBJ,
+  getLocationjl,
 } from "@/api/student/index";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import TopTitle from "@/components/TopTitle/index.vue";
@@ -3688,9 +3715,17 @@ export default {
       dmyzmcm:[],//第一外语语种 第二外语语种
       dmlxsyzspm:[],//第一外语水平 第二外语水平
       dmgxm:[],//关系
-      
-      
-      
+
+      // 地区级联
+      value: "",
+      // value: [],
+      locationProps: {
+        value: "dm", //匹配响应数据中的id
+        label: "mc", //匹配响应数据中的name
+        checkStrictly: true,
+        children: "dataCodeCascadingList", //匹配响应数据中的children }
+      },
+      options: [],
       
 
     };
@@ -3722,6 +3757,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
+      
       this.getCode("dmxbm"); // 性别码
       this.getCode("dmmzm"); // 民 族
       this.getCode("dmxjztm"); // 学籍
@@ -3953,19 +3989,20 @@ export default {
         })
         .catch((err) => {});
     },
-    getDetail() {
+   async getDetail() {
       let data = { XH: this.$route.query.xh };
-      getRegStuInfoDetailPage(data)
+     await   getRegStuInfoDetailPage(data)
         .then((res) => {
           // var arr = res.data.xsGzjlList || [];
           // var arr1 = arr.filter(function (s) {
           //   return s && s.trim();
           // });
-          this.$set(
+        this.$set(
             this.detailInfo,
             "xsJbxx",
             res.data.xsJbxx ? res.data.xsJbxx : {}
           );
+          console.log(" detailInfo.xsJbxx.jg", detailInfo.xsJbxx.jg);
           this.$set(
             this.detailInfo,
             "xsTxxx",
@@ -4009,7 +4046,9 @@ export default {
           this.getAllCollege(this.detailInfo.xsXjxx.dwh);
           this.getZY([this.detailInfo.xsXjxx.dwh]);
           this.getBJ([this.detailInfo.xsXjxx.dwh]);
-        })
+          ;
+        }
+        )
         .catch((err) => {});
     },
     handleList(index, tag) {
@@ -4193,6 +4232,19 @@ export default {
       let xhs = [this.xh];
       let data = { xhs: xhs, etype: "docx" };
       stuCard(data).then((res) => this.downloadFn(res, "学生卡片", "zip"));
+    },
+    //地区级联
+    getLocationjl() {
+      console.log("detailInfo",detailInfo);
+      getLocationjl().then((res) => {
+        this.options = res.data;
+        // this.value = ["150000", "150600"]; //meiqubie
+        this.value = detailInfo.xsJbxx.jg;
+        console.log("res", res);
+      });
+    },
+    handleChange(value) {
+      console.log(value);
     },
   },
 };

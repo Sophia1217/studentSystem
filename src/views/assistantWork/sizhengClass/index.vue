@@ -692,7 +692,6 @@ export default {
     },
     // 多选
     handleSelectionChange(val) {
-      console.log("val", val);
       this.multipleSelection = val;
     },
     //排序

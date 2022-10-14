@@ -110,6 +110,7 @@
           style="width: 100%"
           :default-sort="{ prop: 'date', order: 'descending' }"
           @sort-change="changeTableSort"
+          @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column

@@ -50,9 +50,9 @@
                 <div class="wrap">
                   <div class="title">{{item.dicCloumnChinese}}</div>
                   <div class="content"> 
-                    <el-radio v-model="item.stuColumnAuth" label="2">只读</el-radio>
-                    <el-radio v-model="item.stuColumnAuth" label="0">必填</el-radio>
-                    <el-radio v-model="item.stuColumnAuth" label="1">可写</el-radio>
+                    <el-radio v-model="item.approveColumnAuth" label="2">只读</el-radio>
+                    <el-radio v-model="item.approveColumnAuth" label="0">必填</el-radio>
+                    <el-radio v-model="item.approveColumnAuth" label="1">可写</el-radio>
                   </div>
                 </div>
               </el-col>
@@ -158,7 +158,7 @@ export default {
 
   data() {
     return {
-      dtailsList: ['基本信息', '联系方式', '家庭成员信息', '学习经历', '工作经历'],
+      dtailsList: ['基本信息', '学籍信息', '联系方式', '家庭成员信息', '学习经历', '工作经历'],
       current: 0,
       basicCheckBox: {},
       columns: {

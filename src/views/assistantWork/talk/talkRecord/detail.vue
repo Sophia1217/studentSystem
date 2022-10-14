@@ -248,14 +248,14 @@
           </el-input>
         </el-form-item>
         <el-form-item label="添加附件" v-if="edit == '1'">
-          <!-- <div v-if="urlArr.length > 0" class="block">
+          <div v-if="videoSrc" class="block">
             <video
               :src="videoSrc"
               controls="controls"
               :custom-cache="false"
               style="margin-left: 20px; width: 300px; height: 300px"
             ></video>
-          </div> -->
+          </div>
           <div v-if="urlArr.length > 0" class="block">
             <div v-for="(item, i) in urlArr">
               <el-image
@@ -317,8 +317,7 @@ import { querywj, delwj, Exportwj } from "@/api/assistantWork/classEvent";
 export default {
   data() {
     return {
-      // videoSrc:
-      //   "https://hzypt.oss-cn-hangzhou.aliyuncs.com/web/course/videocoursevideo1651113800000",
+      videoSrc: "",
       urlArr: [],
       fileList: [],
       fileListAdd: [],
@@ -351,9 +350,10 @@ export default {
   },
 
   mounted() {
+    console.log("process.env.VUE_APP_BASE_API", window.location.origin);
     this.lgnSn = this.$route.query.id; //逻辑主键
     this.queryTag();
-    this.getUrl();
+    // this.getUrl();
     this.querywj();
     this.$nextTick((_) => {
       this.queryDetail();
@@ -361,8 +361,31 @@ export default {
   },
 
   methods: {
+    querywj() {
+      //用于文件查询
+      querywj({ businesId: this.lgnSn }).then((res) => {
+        this.fileList = res.data;
+        this.fileList.map((ele) => {
+          if (ele.fileSuffix == ".png" || ele.fileSuffix == ".jpg") {
+            if (this.urlArr.length < 3) {
+              this.urlArr.push(`${window.location.origin}/sfile/${ele.proId}`);
+            }
+          } else {
+            this.videoSrc = `${window.location.origin}/sfile/${ele.proId}`;
+          }
+        });
+        this.fileList = this.fileList.map((ele) => {
+          return {
+            name: ele.fileName,
+            ...ele,
+          };
+        });
+      });
+    },
     getUrl() {
       querywj({ businesId: this.lgnSn }).then((res) => {
+        this.videoSrc =
+          "http://172.30.129.27/sfile/fdyFolder/txth/28ec5288-5654-4646-8f74-3ea289675a26/2005690039_5265938529011051.mp4";
         var arr = res.data || [];
         // console.log("arr", arr);
         var arr1 = [];
@@ -381,21 +404,13 @@ export default {
         for (var j = 0; j < arr2.length; j++) {
           Exportwj({ id: arr[j].id.toString() }).then((res) => {
             // console.log("res", res);
-            this.urlArr.push(window.URL.createObjectURL(res));
-            // console.log("this.urlArr", this.urlArr);
+            // this.urlArr.push(window.URL.createObjectURL(res));
+            this.urlArr.push(
+              `http://172.30.129.27/sfile/fdyFolder/txth/28ec5288-5654-4646-8f74-3ea289675a26/2005690039_5265936886101138.jpg`
+              // `http://172.30.129.27/sfile/fdyFolder/bthd/5c5675db-c71d-40ca-a9c1-4c399456f57d/2005690035_5265827973323090.png`
+            );
           });
         }
-        // } else {
-        //视频
-        // console.log("shipinliyu", ship);
-        // Exportwj({ id: ship[0].id.toString() }).then((res) => {
-        //   console.log("res", res);
-        //   this.videoSrc =
-        //     "https://hzypt.oss-cn-hangzhou.aliyuncs.com/web/course/videocoursevideo1651113800000";
-        //   // this.videoSrc = window.URL.createObjectURL(res);
-        //   console.log("this.viedeo", this.videoSrc);
-        // });
-        // }
       });
     },
     change(file, fileList) {
@@ -454,18 +469,7 @@ export default {
         delwj({ id: file.id.toString() }).then();
       }
     },
-    querywj() {
-      //用于文件查询
-      querywj({ businesId: this.lgnSn }).then((res) => {
-        this.fileList = res.data;
-        this.fileList = this.fileList.map((ele) => {
-          return {
-            name: ele.fileName,
-            ...ele,
-          };
-        });
-      });
-    },
+
     queryDetail() {
       detailTalk({ id: this.lgnSn }).then((res) => {
         const { list, stuList, fdyMain } = res.data;

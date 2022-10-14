@@ -179,40 +179,47 @@
           </el-input>
         </el-form-item>
         <el-form-item label="添加附件">
-          <el-upload
-            drag
-            action="#"
-            multiple
-            class="el-upload"
-            :auto-upload="false"
-            ref="upload"
-            :file-list="ele.fileList"
-            :before-remove="
-              (item, item1) => {
-                beforeRemove(item, item1, index);
-              }
-            "
-            :on-change="
-              (item, item1) => {
-                change(item, item1, index);
-              }
-            "
-          >
-            <div class="el-upload-dragger">
-              <i class="el-icon-upload"></i>
-              <div class="el-upload__text">
-                <em>点击</em>或<em>拖拽</em>上传附件
+          <div class="uploadStyle">
+            <el-upload
+              drag
+              action="#"
+              multiple
+              class="el-upload"
+              :auto-upload="false"
+              ref="upload"
+              :file-list="ele.fileList"
+              :before-remove="
+                (item, item1) => {
+                  beforeRemove(item, item1, index);
+                }
+              "
+              :on-change="
+                (item, item1) => {
+                  change(item, item1, index);
+                }
+              "
+            >
+              <div class="el-upload-dragger">
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">
+                  <em>点击</em>或<em>拖拽</em>上传附件
+                </div>
+                <div class="el-upload__text">
+                  支持格式：PNG、JPG、WORD、PDF、PPT、ZIP或RAR等主流格，压缩包10M以内，图片2M以内
+                </div>
               </div>
-              <div class="el-upload__text">
-                支持格式：PNG、JPG、WORD、PDF、PPT、ZIP或RAR等主流格，压缩包10M以内，图片2M以内
-              </div>
+            </el-upload>
+            <div class="buttonStle">
+              <el-button @click="cancel(index)" v-if="index > 0"
+                >删除</el-button
+              >
+              <el-button class="saveButton" @click="save(index)"
+                >保存</el-button
+              >
             </div>
-          </el-upload>
+          </div>
         </el-form-item>
-        <div class="buttonStle">
-          <el-button @click="cancel(index)" v-if="index > 0">删除</el-button>
-          <el-button class="saveButton" @click="save(index)">保存</el-button>
-        </div>
+
         <div>
           <el-dialog :title="title" :visible.sync="showModal" width="30%">
             <span>确认删除此条谈话内容？</span>
@@ -753,7 +760,7 @@ export default {
     flex-direction: row;
     background: #fff;
     padding: 15px;
-    height: 900px;
+    height: 1200px;
     // height: calc(100vh - 230px);
     .title {
       font-weight: 600;

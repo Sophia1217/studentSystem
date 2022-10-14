@@ -784,7 +784,7 @@ export default {
               this.urlArr.push(`${window.location.origin}/sfile/${ele.proId}`);
               // this.urlArr.push(`http://172.30.129.27//sfile/${ele.proId}`);
             }
-          } else {
+          } else if (ele.fileSuffix == ".mp4") {
             this.videoSrc = `${window.location.origin}/sfile/${ele.proId}`;
           }
         });

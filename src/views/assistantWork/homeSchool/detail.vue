@@ -517,7 +517,7 @@ export default {
             if (this.urlArr.length < 3) {
               this.urlArr.push(`${window.location.origin}/sfile/${ele.proId}`);
             }
-          } else {
+          } else if (ele.fileSuffix == ".mp4") {
             this.videoSrc = `${window.location.origin}/sfile/${ele.proId}`;
           }
         });

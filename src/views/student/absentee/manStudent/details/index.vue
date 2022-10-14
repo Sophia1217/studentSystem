@@ -250,9 +250,9 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-cascader
-                      v-model="value"
+                      v-model="valueJlcsd"
                       :options="options"
-                      @change="handleChange"
+                      @change="handleChangeCsd"
                       :props="locationProps"
                     ></el-cascader>
                     <!-- <el-select
@@ -283,9 +283,9 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-cascader
-                      v-model="value"
+                      v-model="valueJljg"
                       :options="options"
-                      @change="handleChange"
+                      @change="handleChangeJg"
                       :props="locationProps"
                     ></el-cascader>
                     <!-- <el-select
@@ -1729,9 +1729,9 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-cascader
-                      v-model="value"
+                      v-model="valueJlcsd"
                       :options="options"
-                      @change="handleChange"
+                      @change="handleChangeCsd"
                       :props="locationProps"
                     ></el-cascader>
                     <!-- <el-select
@@ -1768,9 +1768,9 @@
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <el-cascader
-                      v-model="value"
+                      v-model="valueJljg"
                       :options="options"
-                      @change="handleChange"
+                      @change="handleChangeJg"
                       :props="locationProps"
                     ></el-cascader>
                     <!-- <el-select
@@ -3717,7 +3717,8 @@ export default {
       dmgxm:[],//关系
 
       // 地区级联
-      value: "",
+      valueJljg: "",
+      valueJlcsd: "",
       // value: [],
       locationProps: {
         value: "dm", //匹配响应数据中的id
@@ -3726,6 +3727,8 @@ export default {
         children: "dataCodeCascadingList", //匹配响应数据中的children }
       },
       options: [],
+      updateJg:"",
+      updateCsd:"",
       
 
     };
@@ -3790,6 +3793,7 @@ export default {
       this.getCode("dmyzmcm");//第一外语语种 第二外语语种
       this.getCode("dmlxsyzspm");//第一外语水平 第二外语水平
       this.getCode("dmgxm");//关系
+      this.getLocationjl()
       
       
       
@@ -3955,6 +3959,9 @@ export default {
       let data = { XH: this.xh };
       loadRegStuInfoUpdatePage(data)
         .then((res) => {
+          //  console.log(res.data.xsJbxx,"???");
+          this.valueJljg = res.data.xsJbxx.jg|| ""
+          this.valueJlcsd = res.data.xsJbxx.csdm|| ""
           this.$set(
             this.detailInfo,
             "xsJbxx",
@@ -3991,7 +3998,7 @@ export default {
     },
    async getDetail() {
       let data = { XH: this.$route.query.xh };
-     await   getRegStuInfoDetailPage(data)
+     await  getRegStuInfoDetailPage(data)
         .then((res) => {
           // var arr = res.data.xsGzjlList || [];
           // var arr1 = arr.filter(function (s) {
@@ -4092,6 +4099,10 @@ export default {
     // 提交
     handlUpdata() {
       this.$set(this.detailInfo, "xh", this.$route.query.xh);
+      this.detailInfo.xsJbxx.jg = this.updateJg ?this.updateJg:this.detailInfo.xsJbxx.jg
+      console.log("jiguan",this.detailInfo.xsJbxx.jg);
+      this.detailInfo.xsJbxx.csdm = this.updateCsd ? this.updateCsd : this.detailInfo.xsJbxx.csdm;
+      console.log("csd",this.detailInfo.xsJbxx.csdm);
       let data = this.detailInfo;
       //0必填和空的校验
       if (data.xsJbxx.xh_stuFlag == 0 && !data.xsJbxx.xh) {
@@ -4235,16 +4246,30 @@ export default {
     },
     //地区级联
     getLocationjl() {
-      console.log("detailInfo",detailInfo);
       getLocationjl().then((res) => {
         this.options = res.data;
         // this.value = ["150000", "150600"]; //meiqubie
-        this.value = detailInfo.xsJbxx.jg;
-        console.log("res", res);
       });
     },
-    handleChange(value) {
-      console.log(value);
+    handleChangeJg(value) {
+      if (value.length == 1){
+        this.updateJg = value[0]
+      } else if(value.length == 2){
+        this.updateJg = value[1]
+      } else{
+        this.updateJg = value[2]
+      }
+      console.log("this.updateJg",this.updateJg);
+    },
+    handleChangeCsd(value) {
+      if (value.length == 1){
+        this.updateCsd = value[0]
+      } else if(value.length == 2){
+        this.updateCsd = value[1]
+      } else{
+        this.updateCsd = value[2]
+      }
+      console.log("this.updateCsd",this.updateCsd);
     },
   },
 };

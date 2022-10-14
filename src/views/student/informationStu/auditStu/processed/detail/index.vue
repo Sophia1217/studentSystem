@@ -355,7 +355,7 @@
                     "
                     class="content"
                   >
-                    <el-select
+                    <!-- <el-select
                       v-model="detailInfo.xsJbxx.csdm"
                       size="small"
                       placeholder="请选择"
@@ -368,7 +368,13 @@
                         :value="item.dm"
                       >
                       </el-option>
-                    </el-select>
+                    </el-select> -->
+                    <el-cascader
+                      v-model="valueJlcsd"
+                      :options="options"
+                      @change="handleChangeCsd"
+                      :props="locationProps"
+                    ></el-cascader>
                   </div>
                   <div
                     v-else
@@ -396,7 +402,7 @@
                     "
                     class="content"
                   >
-                    <el-select
+                    <!-- <el-select
                       v-model="detailInfo.xsJbxx.jg"
                       size="small"
                       placeholder="请选择"
@@ -409,12 +415,13 @@
                         :value="item.dm"
                       >
                       </el-option>
-                    </el-select>
-                    <!-- <el-input
-                      v-model="detailInfo.xsJbxx.jg"
-                      size="small"
-                      placeholder="请输入内容"
-                    ></el-input> -->
+                    </el-select> -->
+                    <el-cascader
+                      v-model="valueJljg"
+                      :options="options"
+                      @change="handleChangeJg"
+                      :props="locationProps"
+                    ></el-cascader>
                   </div>
                   <div
                     v-else
@@ -1613,6 +1620,7 @@
                     </el-select>
                   </div>
                   <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsXjxx.rxqxwm_approveFlag == 1
@@ -1824,6 +1832,21 @@
                 <div class="wrap">
                   <div class="title">连读方式</div>
                   <div
+                    v-if="
+                      (detailInfo.xsXjxx.ldfsm_approveFlag == 1 ||
+                        detailInfo.xsXjxx.ldfsm_approveFlag == 0) &&
+                      isSh == 1
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsXjxx.ldfsm"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsXjxx.ldfsm_approveFlag == 1
@@ -1841,6 +1864,21 @@
                 <div class="wrap">
                   <div class="title">定向或委培</div>
                   <div
+                    v-if="
+                      (detailInfo.xsXjxx.dxhwpdw_approveFlag == 1 ||
+                        detailInfo.xsXjxx.dxhwpdw_approveFlag == 0) &&
+                      isSh == 1
+                    "
+                    class="content"
+                  >
+                    <el-input
+                      v-model="detailInfo.xsXjxx.dxhwpdw"
+                      size="small"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </div>
+                  <div
+                    v-else
                     class="content"
                     :class="
                       detailInfo.xsXjxx.dxhwpdw_approveFlag == 1
@@ -2342,7 +2380,7 @@
                     "
                     class="content"
                   >
-                    <el-select
+                    <!-- <el-select
                       v-model="detailInfo.xsJbxx.csdm"
                       size="small"
                       placeholder="请选择"
@@ -2355,7 +2393,13 @@
                         :value="item.dm"
                       >
                       </el-option>
-                    </el-select>
+                    </el-select> -->
+                    <el-cascader
+                      v-model="valueJlcsd"
+                      :options="options"
+                      @change="handleChangeCsd"
+                      :props="locationProps"
+                    ></el-cascader>
                   </div>
                   <div
                     v-else
@@ -2383,7 +2427,7 @@
                     "
                     class="content"
                   >
-                    <el-select
+                    <!-- <el-select
                       v-model="detailInfo.xsJbxx.jg"
                       size="small"
                       placeholder="请选择"
@@ -2396,12 +2440,13 @@
                         :value="item.dm"
                       >
                       </el-option>
-                    </el-select>
-                    <!-- <el-input
-                      v-model="detailInfo.xsJbxx.jg"
-                      size="small"
-                      placeholder="请输入内容"
-                    ></el-input> -->
+                    </el-select> -->
+                    <el-cascader
+                      v-model="valueJljg"
+                      :options="options"
+                      @change="handleChangeJg"
+                      :props="locationProps"
+                    ></el-cascader>
                   </div>
                   <div
                     v-else
@@ -2567,8 +2612,8 @@
                   <div class="title">年级</div>
                   <div
                     v-if="
-                      (detailInfo.xsJbxx.nj_approveFlag == 1 ||
-                        detailInfo.xsJbxx.nj_approveFlag == 0) &&
+                      (detailInfo.xsXjxx.nj_approveFlag == 1 ||
+                        detailInfo.xsXjxx.nj_approveFlag == 0) &&
                       isSh == 1
                     "
                     class="content"
@@ -2760,8 +2805,8 @@
                   <div class="title">学籍状态</div>
                   <div
                     v-if="
-                      (detailInfo.xsJbxx.xjzt_approveFlag == 1 ||
-                        detailInfo.xsJbxx.xjzt_approveFlag == 0) &&
+                      (detailInfo.xsXjxx.xjzt_approveFlag == 1 ||
+                        detailInfo.xsXjxx.xjzt_approveFlag == 0) &&
                       isSh == 1
                     "
                     class="content"
@@ -3691,14 +3736,14 @@
                   <div class="title">是否专业学位</div>
                   <div
                     v-if="
-                      (detailInfo.xsXjxx.xsfzyxw_approveFlag == 1 ||
-                        detailInfo.xsXjxx.xsfzyxw_approveFlag == 0) &&
+                      (detailInfo.xsXjxx.sfzyxw_approveFlag == 1 ||
+                        detailInfo.xsXjxx.sfzyxw_approveFlag == 0) &&
                       isSh == 1
                     "
                     class="content"
                   >
                     <el-input
-                      v-model="detailInfo.xsXjxx.xsfzyxw"
+                      v-model="detailInfo.xsXjxx.sfzyxw"
                       size="small"
                       placeholder="请输入内容"
                     ></el-input>
@@ -3707,7 +3752,7 @@
                     v-else
                     class="content"
                     :class="
-                      detailInfo.xsXjxx.xsfzyxw_approveFlag == 1
+                      detailInfo.xsXjxx.sfzyxw_approveFlag == 1
                         ? 'greenColor'
                         : ''
                     "
@@ -5051,6 +5096,7 @@ import {
   backFlow,
   getZY,
   getBJ,
+  getLocationjl,
 } from "@/api/student/index";
 
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
@@ -5130,6 +5176,19 @@ export default {
       allDwh: [],
       jgOps: [], //籍贯 出生地
       gjdqOps: [], //国籍地区 来源地区
+      // 地区级联
+      valueJljg: "",
+      valueJlcsd: "",
+      // value: [],
+      locationProps: {
+        value: "dm", //匹配响应数据中的id
+        label: "mc", //匹配响应数据中的name
+        checkStrictly: true,
+        children: "dataCodeCascadingList", //匹配响应数据中的children }
+      },
+      options: [],
+      updateJg: "",
+      updateCsd: "",
     };
   },
   props: {
@@ -5180,11 +5239,20 @@ export default {
     this.getDetailQueryPoliticalWorkList();
     this.isSh = this.$route.query.isSh ? this.$route.query.isSh : 2;
     console.log("this.isSh", this.isSh);
+    this.getLocationjl();
   },
 
   methods: {
     save() {
       this.$set(this.detailInfo, "id", this.$route.query.id);
+      this.$set(this.detailInfo, "xh", this.$route.query.xh);
+      this.detailInfo.xsJbxx.jg = this.updateJg
+        ? this.updateJg
+        : this.detailInfo.xsJbxx.jg;
+      console.log("jiguan", this.detailInfo.xsJbxx.jg);
+      this.detailInfo.xsJbxx.csdm = this.updateCsd
+        ? this.updateCsd
+        : this.detailInfo.xsJbxx.csdm;
       let data = this.detailInfo;
       console.log("this.detailInfo", this.detailInfo);
       //0必填和空的校验
@@ -5342,6 +5410,33 @@ export default {
         })
         .catch((err) => {});
     },
+    //地区级联
+    getLocationjl() {
+      getLocationjl().then((res) => {
+        this.options = res.data;
+        // this.value = ["150000", "150600"]; //meiqubie
+      });
+    },
+    handleChangeJg(value) {
+      if (value.length == 1) {
+        this.updateJg = value[0];
+      } else if (value.length == 2) {
+        this.updateJg = value[1];
+      } else {
+        this.updateJg = value[2];
+      }
+      console.log("this.updateJg", this.updateJg);
+    },
+    handleChangeCsd(value) {
+      if (value.length == 1) {
+        this.updateCsd = value[0];
+      } else if (value.length == 2) {
+        this.updateCsd = value[1];
+      } else {
+        this.updateCsd = value[2];
+      }
+      console.log("this.updateCsd", this.updateCsd);
+    },
     getCode(data) {
       this.getCodeInfoByEnglish(data);
     },
@@ -5480,6 +5575,9 @@ export default {
       getStuInfoFlowUpdatePage(data)
         .then((res) => {
           // console.log(res.data,'res.data')
+          this.valueJljg = res.data.xsJbxxMap.jg || "";
+          console.log("???", this.valueJljg);
+          this.valueJlcsd = res.data.xsJbxxMap.csdm || "";
           this.$set(
             this.detailInfo,
             "xsJbxx",

@@ -260,12 +260,8 @@ export default {
 
     //上传文件
     change(file, fileList) {
-      console.log("file", file);
-      console.log("fileList", fileList);
-
       const index1 = file.name.lastIndexOf(".");
       const ext = file.name.substr(index1 + 1);
-      console.log("ext", ext);
       //获取后缀 判断文件格式
       // 图片 2M  文件10M  视频50M
       console.log("file", file);

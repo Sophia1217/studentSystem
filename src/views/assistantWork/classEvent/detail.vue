@@ -220,14 +220,14 @@
           </el-col>
         </el-row>
         <el-form-item label="添加附件" v-if="edit == '1'">
-          <div v-if="videoSrc" class="block">
+          <!-- <div v-if="videoSrc" class="block">
             <video
               :src="videoSrc"
               controls="controls"
               :custom-cache="false"
               style="margin-left: 20px; width: 300px; height: 300px"
             ></video>
-          </div>
+          </div> -->
           <div v-if="urlArr.length > 0" class="block">
             <div v-for="(item, i) in urlArr">
               <el-image
@@ -304,7 +304,7 @@ import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
 export default {
   data() {
     return {
-      videoSrc: "",
+      // videoSrc: "",
       urlArr: [],
       fileList: [],
       fileListAdd: [],
@@ -416,9 +416,10 @@ export default {
             if (this.urlArr.length < 3) {
               this.urlArr.push(`${window.location.origin}/sfile/${ele.proId}`);
             }
-          } else if (ele.fileSuffix == ".mp4") {
-            this.videoSrc = `${window.location.origin}/sfile/${ele.proId}`;
           }
+          //  else if (ele.fileSuffix == ".mp4") {
+          //   this.videoSrc = `${window.location.origin}/sfile/${ele.proId}`;
+          // }
         });
         this.fileList = this.fileList.map((ele) => {
           return {

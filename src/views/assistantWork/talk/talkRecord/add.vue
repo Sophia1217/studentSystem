@@ -395,11 +395,9 @@ export default {
       const ind = file.name.lastIndexOf(".");
       const ext = file.name.substr(ind + 1);
       if (Number(totalSize / 1024 / 1024) > 50) {
-        console.log("flieaist111", fileList);
         let uid = file.uid;
         let idx = fileList.findIndex((item) => item.uid === uid);
         fileList.splice(idx, 1);
-        console.log("flieaist", fileList);
         this.$message.error("总共文件大小超过50M，当前文件上传失败");
       } else if (
         Number(file.size / 1024 / 1024) > 2 &&

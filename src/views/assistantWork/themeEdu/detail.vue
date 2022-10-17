@@ -283,14 +283,14 @@
           </el-row>
           <el-row>
             <el-form-item label="添加附件" v-if="isEdit == '1'">
-              <div v-if="videoSrc" class="block">
+              <!-- <div v-if="videoSrc" class="block">
                 <video
                   :src="videoSrc"
                   controls="controls"
                   :custom-cache="false"
                   style="margin-left: 20px; width: 300px; height: 300px"
                 ></video>
-              </div>
+              </div> -->
               <div v-if="urlArr.length > 0" class="block">
                 <div v-for="(item, i) in urlArr">
                   <el-image
@@ -378,7 +378,7 @@ export default {
 
   data() {
     return {
-      videoSrc: "",
+      // videoSrc: "",
       xmOptions: [],
       gzdwOptions: [],
       gwOptions: [],
@@ -782,11 +782,11 @@ export default {
           if (ele.fileSuffix == ".png" || ele.fileSuffix == ".jpg") {
             if (this.urlArr.length < 3) {
               this.urlArr.push(`${window.location.origin}/sfile/${ele.proId}`);
-              // this.urlArr.push(`http://172.30.129.27//sfile/${ele.proId}`);
             }
-          } else if (ele.fileSuffix == ".mp4") {
-            this.videoSrc = `${window.location.origin}/sfile/${ele.proId}`;
           }
+          // else if (ele.fileSuffix == ".mp4") {
+          //   this.videoSrc = `${window.location.origin}/sfile/${ele.proId}`;
+          // }
         });
         this.fileList = this.fileList.map((ele) => {
           return {

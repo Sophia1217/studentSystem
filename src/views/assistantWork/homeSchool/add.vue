@@ -568,20 +568,21 @@ export default {
     },
     //上传文件
     change(file, fileList) {
-      console.log("file", file);
-      console.log("fileList", fileList);
-
+      var totalSize = 0;
+      for (var i = 0; i < fileList.length; i++) {
+        totalSize += fileList[i].raw.size;
+      }
       const index1 = file.name.lastIndexOf(".");
       const ext = file.name.substr(index1 + 1);
-      console.log("ext", ext);
       //获取后缀 判断文件格式
       // 图片 2M  文件10M  视频50M
-      console.log("file", file);
-      console.log(
-        "Number(file.size / 1024 / 1024)",
-        Number(file.size / 1024 / 1024)
-      );
-      if (
+      if (Number(totalSize / 1024 / 1024) > 50) {
+        let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+        let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+        fileList.splice(idx, 1);
+        this.fileList = fileList;
+        this.$message.error("总共文件大小超过50M，当前文件上传失败");
+      } else if (
         Number(file.size / 1024 / 1024) > 2 &&
         (ext == "jpg" || ext == "png" || ext == "png")
       ) {
@@ -589,15 +590,22 @@ export default {
         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
         fileList.splice(idx, 1);
         this.fileList = fileList;
-        //  console.log("fileList", fileList);
         this.$message.error("图片超过2M,上传失败");
-      } else if (Number(file.size / 1024 / 1024) > 10) {
+      } else if (
+        Number(file.size / 1024 / 1024) > 50 &&
+        ["mp3", "mp2", "mpe", "mpeg", "mpg"].indexOf(ext) != -1
+      ) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
+        this.fileList = fileList;
+        this.$message.error("视频大小不超过50M,上传失败");
+      } else if (Number(file.size / 1024 / 1024) > 50) {
         let uid = file.uid; // 关键作用代码，去除文件列表失败文件
         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
         fileList.splice(idx, 1);
         this.fileList = fileList;
-        //  console.log("fileList", fileList);
-        this.$message.error("文件超过10M,上传失败");
+        this.$message.error("文件超过50M,上传失败");
       } else {
         this.fileList = fileList;
       }

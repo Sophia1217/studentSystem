@@ -512,15 +512,18 @@ export default {
       //用于文件查询
       querywj({ businesId: this.id }).then((res) => {
         this.fileList = res.data;
+        var videoArr = [];
         this.fileList.map((ele) => {
           if (ele.fileSuffix == ".png" || ele.fileSuffix == ".jpg") {
             if (this.urlArr.length < 3) {
               this.urlArr.push(`${window.location.origin}/sfile/${ele.proId}`);
             }
-          } else if (ele.fileSuffix == ".mp4") {
-            this.videoSrc = `${window.location.origin}/sfile/${ele.proId}`;
+          } else if (ele.fileSuffix == ".mp4" || ele.fileSuffix == ".MPEG") {
+            // videoArr.push(`${window.location.origin}/sfile/${ele.proId}`);
+            videoArr.push(`http://172.30.129.27/sfile/${ele.proId}`);
           }
         });
+        this.videoSrc = videoArr.length > 0 ? videoArr[0] : [];
         this.fileList = this.fileList.map((ele) => {
           return {
             name: ele.fileName,

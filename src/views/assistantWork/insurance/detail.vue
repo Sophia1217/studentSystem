@@ -27,33 +27,6 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="3.5">
-            <el-form-item label="培养单位">
-              <el-input
-                placeholder="请输入"
-                v-model="form.dwmc"
-                :disabled="true"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="3.5">
-            <el-form-item label="年级">
-              <el-input
-                placeholder="请输入"
-                v-model="form.nj"
-                :disabled="true"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="3.5">
-            <el-form-item label="专业">
-              <el-input
-                placeholder="请输入"
-                v-model="form.zymc"
-                :disabled="true"
-              ></el-input>
-            </el-form-item>
-          </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="1.5">
@@ -130,7 +103,7 @@
         <el-form>
           <el-row :gutter="20">
             <el-col :span="5">
-              <el-form-item label="承包公司">
+              <el-form-item label="承保公司">
                 <el-input
                   placeholder="请输入"
                   v-model="form.cbgs"

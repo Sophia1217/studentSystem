@@ -63,20 +63,22 @@
           ></el-col>
           <el-col :span="5.5">
             <el-form-item label="开始时间">
-              <el-time-picker 
-                v-model="form.begTime" 
+              <el-time-picker
+                v-model="form.begTime"
                 format="hh时mm分"
                 value-format="HH:mm"
-                placeholder="选择开始时间">
+                placeholder="选择开始时间"
+              >
               </el-time-picker> </el-form-item
           ></el-col>
           <el-col :span="5.5">
             <el-form-item label="结束时间">
-              <el-time-picker 
-                v-model="form.endTime" 
+              <el-time-picker
+                v-model="form.endTime"
                 format="hh时mm分"
                 value-format="HH:mm"
-                placeholder="选择结束时间">
+                placeholder="选择结束时间"
+              >
               </el-time-picker> </el-form-item
           ></el-col>
         </el-row>
@@ -156,10 +158,10 @@
             ref="upload"
             :file-list="fileList"
             :before-remove="
-                (item, item1) => {
-                  beforeRemove(item, item1);
-                }
-              "
+              (item, item1) => {
+                beforeRemove(item, item1);
+              }
+            "
             :on-change="change"
           >
             <div class="el-upload-dragger">
@@ -225,7 +227,7 @@ export default {
         // didian: [
         //   { required: true, message: "请选择家访地点", trigger: "change" },
         // ],
-    }
+      },
     };
   },
 
@@ -270,15 +272,15 @@ export default {
       if (type == 3) {
         if (this.tag.unitTags.length > 8) {
           this.$message.error("最多九条");
-        } else{
-            this.form.inputVisible = true;
-        } 
+        } else {
+          this.form.inputVisible = true;
+        }
       } else {
         if (this.tag.addressTags.length > 8) {
           this.$message.error("最多九条");
-        } else{
-            this.form.inputVisible1 = true;
-        } 
+        } else {
+          this.form.inputVisible1 = true;
+        }
       }
     },
     handleInputConfirm(type) {
@@ -298,7 +300,6 @@ export default {
           this.form.inputVisible = false;
           this.form.inputValue = "";
         }
-        
       } else {
         var obj = {
           cyMsg: "",
@@ -315,7 +316,6 @@ export default {
           this.form.inputVisible1 = false;
           this.form.inputValue1 = "";
         }
-        
       }
     },
     //关闭标签
@@ -349,35 +349,27 @@ export default {
       }
     },
     change(file, fileList) {
-      console.log("file", file);
-      console.log("fileList", fileList);
-
       const index1 = file.name.lastIndexOf(".");
       const ext = file.name.substr(index1 + 1);
-      console.log("ext", ext);
       //获取后缀 判断文件格式
       // 图片 2M  文件10M  视频50M
-      console.log("file", file);
-      console.log(
-        "Number(file.size / 1024 / 1024)",
-        Number(file.size / 1024 / 1024)
-      );
-      if (Number(file.size / 1024 / 1024)>2  && (ext == "jpg" || ext == "png"|| ext == "png")) {
-         let uid = file.uid; // 关键作用代码，去除文件列表失败文件
-         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
-         fileList.splice(idx, 1);
-         this.fileList = fileList;
-         console.log("fileList", fileList);
-         this.$message.error("图片超过2M,上传失败");
-       } else if(Number(file.size / 1024 / 1024) > 10){
-         let uid = file.uid; // 关键作用代码，去除文件列表失败文件
-         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
-         fileList.splice(idx, 1);
-         this.fileList = fileList;
-         console.log("fileList", fileList);
-         this.$message.error("文件超过10M,上传失败");
-       }
-       else {
+      if (
+        Number(file.size / 1024 / 1024) > 2 &&
+        (ext == "jpg" || ext == "png" || ext == "png")
+      ) {
+        let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+        let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+        fileList.splice(idx, 1);
+        this.fileList = fileList;
+        console.log("fileList", fileList);
+        this.$message.error("图片超过2M,上传失败");
+      } else if (Number(file.size / 1024 / 1024) > 10) {
+        let uid = file.uid; // 关键作用代码，去除文件列表失败文件
+        let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+        fileList.splice(idx, 1);
+        this.fileList = fileList;
+        this.$message.error("文件超过10M,上传失败");
+      } else {
         this.fileList = fileList;
       }
     },
@@ -415,24 +407,23 @@ export default {
           formData.append("files", ele.raw);
         });
       }
-      if (this.form.orgUnit=="") {
+      if (this.form.orgUnit == "") {
         this.$message.error("组织单位不能为空！");
-      } else if (this.form.theme=="") {
+      } else if (this.form.theme == "") {
         this.$message.error("活动主题不能为空!");
-      } else if (this.form.date=="") {
+      } else if (this.form.date == "") {
         this.$message.error("活动日期不能为空!");
-      } else if (this.form.place=="") {
+      } else if (this.form.place == "") {
         this.$message.error("活动地址不能为空!");
-      } else if (this.form.detail=="") {
+      } else if (this.form.detail == "") {
         this.$message.error("活动内容不能为空!");
-      } else if (this.form.cyth=="") {
+      } else if (this.form.cyth == "") {
         this.$message.error("参与体会不能为空!");
-      } else{
-          insertFdyBthd(formData).then((res) => {
+      } else {
+        insertFdyBthd(formData).then((res) => {
           window.history.go(-1);
-      });
+        });
       }
-      
     },
   },
 };

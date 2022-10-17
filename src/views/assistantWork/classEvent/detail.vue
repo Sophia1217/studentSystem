@@ -352,19 +352,10 @@ export default {
 
   methods: {
     change(file, fileList) {
-      console.log("file", file);
-      console.log("fileList", fileList);
-
       const index1 = file.name.lastIndexOf(".");
       const ext = file.name.substr(index1 + 1);
-      console.log("ext", ext);
       //获取后缀 判断文件格式
       // 图片 2M  文件10M  视频50M
-      console.log("file", file);
-      console.log(
-        "Number(file.size / 1024 / 1024)",
-        Number(file.size / 1024 / 1024)
-      );
       if (
         Number(file.size / 1024 / 1024) > 2 &&
         (ext == "jpg" || ext == "png" || ext == "png")
@@ -373,14 +364,12 @@ export default {
         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
         fileList.splice(idx, 1);
         this.fileList = fileList;
-        console.log("fileList", fileList);
         this.$message.error("图片超过2M,上传失败");
       } else if (Number(file.size / 1024 / 1024) > 10) {
         let uid = file.uid; // 关键作用代码，去除文件列表失败文件
         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
         fileList.splice(idx, 1);
         this.fileList = fileList;
-        console.log("fileList", fileList);
         this.$message.error("文件超过10M,上传失败");
       } else {
         //用于文件先保存

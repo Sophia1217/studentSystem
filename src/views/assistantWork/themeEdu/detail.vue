@@ -725,37 +725,44 @@ export default {
       });
     },
     change(file, fileList) {
-      const index = file.name.lastIndexOf(".");
-      const ext = file.name.substr(index + 1);
-      //console.log("ext", ext);
-      //获取后缀 判断文件格式
-      // 图片 2M 文件10M 视频50M
-      // console.log("file", file);
-      console.log(
-        "Number(file.size / 1024 / 1024)",
-        Number(file.size / 1024 / 1024)
-      );
+      //用于文件先保存
+      const ind = file.name.lastIndexOf(".");
+      const ext = file.name.substr(ind + 1);
+
+      console.log("filelist", fileList);
       if (
         Number(file.size / 1024 / 1024) > 2 &&
-        (ext == "jpg" || ext == "png")
+        ["jpe", "jpeg", "jpg", "png"].indexOf(ext) != -1
       ) {
-        let uid = file.uid; // 关键作用代码，去除文件列表失败文件
-        let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
         fileList.splice(idx, 1);
-        this.fileList = fileList;
-        console.log("图片", fileList);
         this.$message.error("图片大小超过2M,上传失败");
-      } else if (Number(file.size / 1024 / 1024) > 10) {
-        let uid = file.uid; // 关键作用代码，去除文件列表失败文件
-        let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
+        // } else if (
+        //   Number(file.size / 1024 / 1024) > 10 &&
+        //   ["zip", "pdf", "word", "ppt"].indexOf(ext) != -1
+        // ) {
+        //   let uid = file.uid;
+        //   let idx = fileList.findIndex((item) => item.uid === uid);
+        //   fileList.splice(idx, 1);
+        //   this.$message.error("常见文件格式大小超过10M,上传失败");
+      } else if (
+        Number(file.size / 1024 / 1024) > 50 &&
+        ["mp3", "mp2", "mpe", "mpeg", "mpg"].indexOf(ext) != -1
+      ) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
         fileList.splice(idx, 1);
-        this.fileList = fileList;
-        console.log("文件", fileList);
-        this.$message.error("文件大小超过10M,上传失败");
+        this.$message.error("视频大小超过50M,上传失败");
+      } else if (Number(file.size / 1024 / 1024) > 50) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
+        this.$message.error("文件大小超过50M,上传失败");
       } else {
         this.fileListAdd.push(file);
-        this.fileList = fileList;
       }
+      this.fileList = fileList;
     },
     handlePreview(file) {
       //用于文件下载

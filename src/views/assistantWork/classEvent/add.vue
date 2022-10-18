@@ -363,12 +363,12 @@ export default {
         this.fileList = fileList;
         console.log("fileList", fileList);
         this.$message.error("图片超过2M,上传失败");
-      } else if (Number(file.size / 1024 / 1024) > 10) {
+      } else if (Number(file.size / 1024 / 1024) > 50) {
         let uid = file.uid; // 关键作用代码，去除文件列表失败文件
         let idx = fileList.findIndex((item) => item.uid === uid); // 关键作用代码，去除文件列表失败文件（uploadFiles为el-upload中的ref值）
         fileList.splice(idx, 1);
         this.fileList = fileList;
-        this.$message.error("文件超过10M,上传失败");
+        this.$message.error("文件超过50M,上传失败");
       } else {
         this.fileList = fileList;
       }

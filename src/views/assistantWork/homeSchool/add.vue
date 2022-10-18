@@ -593,7 +593,7 @@ export default {
         this.$message.error("图片超过2M,上传失败");
       } else if (
         Number(file.size / 1024 / 1024) > 50 &&
-        ["mp3", "mp2", "mpe", "mpeg", "mpg"].indexOf(ext) != -1
+        ["mp3", "mp4", "mpe", "mpeg", "mpg"].indexOf(ext) != -1
       ) {
         let uid = file.uid;
         let idx = fileList.findIndex((item) => item.uid === uid);

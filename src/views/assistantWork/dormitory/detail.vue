@@ -581,7 +581,7 @@ export default {
         //   this.$message.error("常见文件格式大小不超过10M,上传失败");
       } else if (
         Number(file.size / 1024 / 1024) > 50 &&
-        ["mp3", "mp2", "mpe", "mpeg", "mpg"].indexOf(ext) != -1
+        ["mp3", "mp4", "mpe", "mpeg", "mpg"].indexOf(ext) != -1
       ) {
         let uid = file.uid;
         let idx = fileList.findIndex((item) => item.uid === uid);
@@ -608,9 +608,8 @@ export default {
     },
     beforeRemove(file, fileList) {
       //用于文件删除
-
       let uid = file.uid;
-      let idx = fileList.findIndex((item) => item.uid === uid);
+      let idx = this.fileListAdd.findIndex((item) => item.uid === uid);
       this.fileListAdd.splice(idx, 1);
       if (file.id) {
         //如果是后端返回的文件就走删除接口，不然前端自我删除

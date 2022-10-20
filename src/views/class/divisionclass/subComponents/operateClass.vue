@@ -389,9 +389,9 @@
               id="pagenation"
               v-show="total > 0"
               :total="total"
-              :page.sync="queryParams.pageNum"
-              :limit.sync="queryParams.pageSize"
-              @pagination="getList"
+              :page.sync="queryParams1.pageNum"
+              :limit.sync="queryParams1.pageSize"
+              @pagination="getList1"
             />
           </div>
         </div>
@@ -523,7 +523,7 @@ export default {
         pageNum: 1, // 默认请求第一页数据
         pageSize: 10, // 默认一页10条数据
         pydw: this.$route.query.pydw, // 培养单位代码
-        pycc: this.$route.query.pycc, // 培养层次码
+        pyccm: this.$route.query.pycc, // 培养层次码
         ssnj: this.$route.query.ssnj, // 年级
         zydm: "", // 专业代码
         syd: "", // 生源地代码
@@ -559,11 +559,7 @@ export default {
     this.getList(this.queryParams); // 页面一挂载就默认展示某一特定班级学生名单
     this.getOptions(); // 获取生源地、专业、性别筛选框数据
   },
-  activated() {
-    // this.queryParams.bjdm = this.$route.query.bjdm; // 班级编号
-    // this.getList(this.queryParams); // 页面一挂载就默认展示某一特定班级学生名单
-    // this.getOptions(); // 获取生源地、专业、性别筛选框数据
-  },
+  activated() {},
   methods: {
     upLoadSuccess(res, file, fileList) {
       if (res.errcode == "00") {
@@ -622,8 +618,8 @@ export default {
         //  this.loading = false;
       });
       // 获取专业
-    var DWH =[this.$route.query.pydw]
-      getMajors({ DWH:DWH }).then((response) => {
+      var DWH = [this.$route.query.pydw];
+      getMajors({ DWH: DWH }).then((response) => {
         // 获取培养层次列表数据
         // console.log("Res", response);
         this.majorOptions = response.data;
@@ -683,7 +679,7 @@ export default {
           pageNum: 1, // 默认请求第一页数据
           pageSize: 10, // 默认一页10条数据
           pydw: this.$route.query.ssdwdm, // 培养单位代码
-          pycc: this.$route.query.pycc, // 培养层次码
+          pyccm: this.$route.query.pycc, // 培养层次码
           ssnj: this.$route.query.ssnj, // 年级
           zydm: "", // 专业代码
           syd: "", // 生源地代码

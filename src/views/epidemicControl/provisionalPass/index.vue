@@ -15,12 +15,12 @@
             slot="prepend"
             placeholder="查询条件"
           >
-            <el-option label="申请人" value="kcmc"></el-option>
-            <el-option label="学号" value="jxdd"></el-option>
-            <el-option label="手机号" value="rkls"></el-option>
-            <el-option label="外出原因" value="jlrxm"></el-option>
-            <el-option label="目的地" value="jlrgh"></el-option>
-            <el-option label="审核人" value="jlrgh"></el-option>
+            <el-option label="申请人" value="sqxm"></el-option>
+            <el-option label="学号" value="sqxh"></el-option>
+            <el-option label="手机号" value="sqsjh"></el-option>
+            <el-option label="外出原因" value="sqwcyymc"></el-option>
+            <el-option label="目的地" value="sqwcmdd"></el-option>
+            <el-option label="审核人" value="fdysprxm"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
             >查询</el-button
@@ -35,7 +35,7 @@
       <!-- 更多选择 -->
       <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3"> 工作单位 ： </el-col>
+          <el-col :span="3"> 学院 ： </el-col>
           <el-col :span="20">
             <div class="checkbox">
               <el-select
@@ -118,25 +118,25 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="kcbh" label="申请人" sortable="custom">
+          <el-table-column prop="sqxm" label="申请人" sortable="custom">
           </el-table-column>
-          <el-table-column prop="kcmc" label="学号" sortable="custom">
+          <el-table-column prop="sqxh" label="学号" sortable="custom">
           </el-table-column>
-          <el-table-column prop="jxdd" label="学院" sortable="custom">
+          <el-table-column prop="sqxymc" label="学院" sortable="custom">
           </el-table-column>
-          <el-table-column prop="kckksj" label="手机号" sortable="custom">
+          <el-table-column prop="sqsjh" label="手机号" sortable="custom">
           </el-table-column>
-          <el-table-column prop="kcsksj" label="外出原因" sortable="custom">
+          <el-table-column prop="sqwcyymc" label="外出原因" sortable="custom">
           </el-table-column>
-          <el-table-column prop="rkls" label="目的地" sortable="custom">
+          <el-table-column prop="sqwcmdd" label="目的地" sortable="custom">
           </el-table-column>
-          <el-table-column prop="rklsgh" label="外出时间" sortable="custom">
+          <el-table-column prop="wcsj" label="外出时间" sortable="custom">
           </el-table-column>
-          <el-table-column prop="jlrxm" label="拟返回时间" sortable="custom">
+          <el-table-column prop="fxsj" label="拟返回时间" sortable="custom">
           </el-table-column>
-          <el-table-column prop="jlrgh" label="审核人" sortable="custom">
+          <el-table-column prop="fdysprxm" label="审核人" sortable="custom">
           </el-table-column>
-          <el-table-column prop="jlrlx" label="审核时间" sortable="custom">
+          <el-table-column prop="fdyspsj" label="审核时间" sortable="custom">
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
@@ -164,22 +164,130 @@
       <span>确认导出？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="expTalk"
-          >确 定</el-button
-        >
+        <el-button type="primary" class="confirm" @click="exp">确 定</el-button>
       </span>
+    </el-dialog>
+    <el-dialog
+      title="临时出入申请详情"
+      :visible.sync="detailModal"
+      width="40%"
+      style="height: 78vh"
+    >
+      <div>
+        <el-row>
+          <el-col :span="12" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">申请人</div>
+              <div class="bs">{{ res.sqxm }}</div>
+            </div>
+          </el-col>
+          <el-col :span="12" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">学号</div>
+              <div class="bs">{{ res.sqxh }}</div>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">学院</div>
+              <div class="bs">{{ res.sqxymc }}</div>
+            </div>
+          </el-col>
+          <el-col :span="12" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">身份证号</div>
+              <div class="bs">{{ res.sqsfzh }}</div>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">学生类别</div>
+              <div class="bs">{{ res.sqxslb }}</div>
+            </div>
+          </el-col>
+          <el-col :span="12" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">手机号</div>
+              <div class="bs">{{ res.sqsjh }}</div>
+            </div>
+          </el-col> </el-row
+        ><el-row>
+          <el-col :span="12" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">外出原因</div>
+              <div class="bs">{{ res.sqwcyymc }}</div>
+            </div>
+          </el-col>
+          <el-col :span="12" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">目的地</div>
+              <div class="bs">{{ res.sqwcmdd }}</div>
+            </div>
+          </el-col> </el-row
+        ><el-row>
+          <el-col :span="24" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">原因说明</div>
+              <div class="bs">{{ res.sqwcyysm }}</div>
+            </div>
+          </el-col> </el-row
+        ><el-row>
+          <el-col :span="12" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">外出时间</div>
+              <div class="bs">{{ res.wcsj }}</div>
+            </div>
+          </el-col>
+          <el-col :span="12" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">拟返回时间</div>
+              <div class="bs">{{ res.fxsj }}</div>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">审核人</div>
+              <div class="bs">{{ res.fdysprXmAndGh }}</div>
+            </div>
+          </el-col>
+          <el-col :span="12" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">审核时间</div>
+              <div class="bs">{{ res.fdyspsj }}</div>
+            </div>
+          </el-col> </el-row
+        ><el-row>
+          <el-col :span="24" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">审核状态</div>
+              <div class="bs">{{ res.fdyspyj }}</div>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import CheckboxCom from "../../components/checkboxCom";
-import { listenQuery } from "@/api/assistantWork/listen";
+import {
+  getQuerylist,
+  exp,
+  getDetail,
+} from "@/api/epidemicControl/provisionalPass";
 import { getGzdw } from "@/api/politicalWork/assistantappoint";
 export default {
   components: { CheckboxCom },
   data() {
     return {
+      res: {},
       detailModal: false,
       moreIform: {
         xydm: [],
@@ -212,7 +320,6 @@ export default {
 
   methods: {
     getAllCollege() {
-      console.log("jinlaiem");
       getGzdw()
         .then((res) => {
           this.allDwh = res.data.rows;
@@ -226,30 +333,45 @@ export default {
     handleCancel() {
       this.showExport = false;
     },
-    expTalk() {
+    exp() {
       if (this.delArr && this.delArr.length > 0) {
         var ids = this.delArr;
-        expTalk({ ids: ids }).then((res) => {
-          this.downloadFn(res, "课程听课列表数据下载", "xlsx");
+        exp({ idList: ids }).then((res) => {
+          this.downloadFn(res, "临时出入申请列表下载", "xlsx");
           this.handleSearch();
         });
       } else {
         let data = {
-          xm: this.select == "xm" ? this.searchVal : null,
-          xh: this.select == "xh" ? this.searchVal : null,
-          thzt: this.select == "thzt" ? this.searchVal : null,
-          thrxm: this.select == "thrxm" ? this.searchVal : null,
-          thrgh: this.select == "thrgh" ? this.searchVal : null,
-          thdd: this.select == "thdd" ? this.searchVal : null,
-          starttime: this.dateArray ? this.dateArray[0] : "",
-          endtime: this.dateArray ? this.dateArray[1] : "",
+          sqxm: this.select == "sqxm" ? this.searchVal : null,
+          sqxh: this.select == "sqxh" ? this.searchVal : null,
+          sqsjh: this.select == "sqsjh" ? this.searchVal : null,
+          sqwcyymc: this.select == "sqwcyymc" ? this.searchVal : null,
+          sqwcmdd: this.select == "sqwcmdd" ? this.searchVal : null,
+          fdysprxm: this.select == "fdysprxm" ? this.searchVal : null,
+          dwhList: this.moreIform.xydm,
+          fxsjStart:
+            this.dateArrayBack && this.dateArrayBack.length > 0
+              ? this.dateArrayBack[0]
+              : "",
+          fxsjEnd:
+            this.dateArrayBack && this.dateArrayBack.length > 0
+              ? this.dateArrayBack[1]
+              : "",
+          wcsjStart:
+            this.dateArrayOut && this.dateArrayOut.length > 0
+              ? this.dateArrayOut[0]
+              : "",
+          wcsjEnd:
+            this.dateArrayOut && this.dateArrayOut.length > 0
+              ? this.dateArrayOut[1]
+              : "",
           pageNum: this.queryParams.pageNum,
           pageSize: this.queryParams.pageSize,
           orderZd: this.queryParams.orderZd,
           orderPx: this.queryParams.orderPx,
         };
-        expTalk({ ...data }).then((res) => {
-          this.downloadFn(res, "课程听课列表数据下载", "xlsx");
+        exp({ ...data }).then((res) => {
+          this.downloadFn(res, "临时出入申请列表下载", "xlsx");
           this.handleSearch();
         });
       }
@@ -264,7 +386,14 @@ export default {
     },
 
     hadleDetail2(row) {
-      this.detailModal = true;
+      this.$nextTick((_) => {
+        getDetail({ id: row.id })
+          .then((res) => {
+            const { data } = res;
+            this.res = data;
+          })
+          .then(() => (this.detailModal = true));
+      });
     },
     changeSelect() {
       this.searchVal = "";
@@ -272,19 +401,35 @@ export default {
     // 查询
     handleSearch() {
       let data = {
-        kcmc: this.select == "kcmc" ? this.searchVal : null,
-        rkls: this.select == "rkls" ? this.searchVal : null,
-        jxdd: this.select == "jxdd" ? this.searchVal : null,
-        jlrxm: this.select == "jlrxm" ? this.searchVal : null,
-        jlrgh: this.select == "jlrgh" ? this.searchVal : null,
-        // kcsksjks: this.dateArray.length > 0 ? this.dateArray[0] : "",
-        // kcsksjjs: this.dateArray.length > 0 ? this.dateArray[1] : "",
+        sqxm: this.select == "sqxm" ? this.searchVal : null,
+        sqxh: this.select == "sqxh" ? this.searchVal : null,
+        sqsjh: this.select == "sqsjh" ? this.searchVal : null,
+        sqwcyymc: this.select == "sqwcyymc" ? this.searchVal : null,
+        sqwcmdd: this.select == "sqwcmdd" ? this.searchVal : null,
+        fdysprxm: this.select == "fdysprxm" ? this.searchVal : null,
+        dwhList: this.moreIform.xydm,
+        fxsjStart:
+          this.dateArrayBack && this.dateArrayBack.length > 0
+            ? this.dateArrayBack[0]
+            : "",
+        fxsjEnd:
+          this.dateArrayBack && this.dateArrayBack.length > 0
+            ? this.dateArrayBack[1]
+            : "",
+        wcsjStart:
+          this.dateArrayOut && this.dateArrayOut.length > 0
+            ? this.dateArrayOut[0]
+            : "",
+        wcsjEnd:
+          this.dateArrayOut && this.dateArrayOut.length > 0
+            ? this.dateArrayOut[1]
+            : "",
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      listenQuery(data)
+      getQuerylist(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
@@ -312,6 +457,22 @@ export default {
 
 <style lang="scss" scoped>
 .talkRec {
+  .yiny {
+    border: 1px solid grey;
+    background: rgba(0, 0, 0, 0.0001);
+    box-shadow: inset -1px 0px 0px #e0e0e0, inset 1px 0px 0px #e0e0e0;
+    height: 50px;
+  }
+  .hs {
+    flex: 0 0 100px;
+    background: #ccc;
+    padding-left: 20px;
+    padding-top: 14px;
+  }
+  .bs {
+    padding-left: 40px;
+    padding-top: 14px;
+  }
   .scopeIncon {
     display: inline-block;
     width: 20px;

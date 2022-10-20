@@ -279,7 +279,7 @@
             v-model="form.rmsj"
           ></el-date-picker>
         </el-form-item>
-        <el-form-item label="班干部职位代码" prop="bgbid">
+        <el-form-item label="班干部职位" prop="bgbid">
           <!-- <el-input v-model="form.bgbid"></el-input> -->
           <el-select v-model="form.bgbid" placeholder="请选择" clearable>
             <!-- 班干部职位筛选框 -->

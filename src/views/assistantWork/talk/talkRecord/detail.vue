@@ -370,9 +370,6 @@ export default {
               this.urlArr.push(`${window.location.origin}/sfile/${ele.proId}`);
             }
           }
-          // else if (ele.fileSuffix == ".mp4") {
-          //   this.videoSrc = `${window.location.origin}/sfile/${ele.proId}`;
-          // }
         });
         this.fileList = this.fileList.map((ele) => {
           return {
@@ -487,7 +484,7 @@ export default {
         this.thrxm = fdyMain.thrxm;
         this.xgh = fdyMain.xgh;
         for (var i = 0; i < this.stuDate.length; i++) {
-          if (this.stuDate[i].xm !== "") {
+          if (this.stuDate[i].xm !== "" || this.stuDate[i].xh !== "") {
             //此处找后台约定好
             this.$set(
               this.stuDate[i],
@@ -577,6 +574,8 @@ export default {
           list.push(this.stuDate[i].xm);
           list2.push(this.stuDate[i].xh);
         }
+        console.log("list", list);
+        console.log("list2", list2);
         var data = {
           thdd: this.addressValue,
           thnr: this.textarea1,

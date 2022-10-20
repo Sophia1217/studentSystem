@@ -15,12 +15,12 @@
             slot="prepend"
             placeholder="查询条件"
           >
-            <el-option label="申请人" value="kcmc"></el-option>
-            <el-option label="学号" value="jxdd"></el-option>
-            <el-option label="手机号" value="rkls"></el-option>
-            <el-option label="外出原因" value="jlrxm"></el-option>
-            <el-option label="目的地" value="jlrgh"></el-option>
-            <el-option label="审核人" value="jlrgh"></el-option>
+            <el-option label="学号" value="xh"></el-option>
+            <el-option label="购买人" value="xm"></el-option>
+            <el-option label="险种名称" value="xzmc"></el-option>
+            <el-option label="承保公司" value="cbgs"></el-option>
+            <el-option label="联系人" value="lxr"></el-option>
+            <el-option label="联系电话" value="lxdh"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
             >查询</el-button
@@ -35,52 +35,36 @@
       <!-- 更多选择 -->
       <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3"> 工作单位 ： </el-col>
+          <el-col :span="3">险种类型：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <el-select
-                v-model="moreIform.xydm"
+                v-model="moreIform.xzlx"
                 multiple
                 collapse-tags
                 placeholder="请选择"
-                size="medium"
+                size="small"
               >
                 <el-option
-                  v-for="item in allDwh"
+                  v-for="item in xzlx"
                   :key="item.dm"
                   :label="item.mc"
-                  :value="item.dm"
+                  :value="item.mc"
                 ></el-option>
               </el-select>
             </div>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">外出时间</el-col>
+          <el-col :span="3">购买起止时间：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <el-date-picker
-                v-model="dateArrayOut"
+                v-model="datePicker"
                 unlink-panels
-                type="datetimerange"
-                value-format="yyyy-MM-dd-hh-mm"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-              >
-              </el-date-picker>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">拟返回时间</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <el-date-picker
-                v-model="dateArrayBack"
-                unlink-panels
-                type="datetimerange"
-                value-format="yyyy-MM-dd-hh-mm"
+                type="daterange"
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyyMMdd"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
@@ -95,10 +79,26 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">临时出入申请列表</span> <i class="Updataicon"></i>
+          <span class="title">学平险查询列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderOrange" @click="handleExport">
+          <div class="btns borderBlue" @click="mbDown">
+            <i class="icon blueIcon"></i><span class="title">模板下载</span>
+          </div>
+          <div class="btns borderBlue">
+            <el-upload
+              accept=".xlsx,.xls"
+              :auto-upload="true"
+              :action="uploadUrl"
+              :show-file-list="false"
+              :headers="fileHeader"
+              :on-success="upLoadSuccess"
+              :on-error="upLoadError"
+            >
+              <i class="icon blueIcon"></i><span class="title">导入</span>
+            </el-upload>
+          </div>
+          <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
         </div>
@@ -108,9 +108,9 @@
           :data="tableData"
           ref="multipleTable"
           style="width: 100%"
-          @selection-change="handleSelectionChange"
           :default-sort="{ prop: 'date', order: 'descending' }"
           @sort-change="changeTableSort"
+          @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
@@ -118,35 +118,34 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="kcbh" label="申请人" sortable="custom">
+          <el-table-column prop="xh" label="学号" sortable="custom">
           </el-table-column>
-          <el-table-column prop="kcmc" label="学号" sortable="custom">
+          <el-table-column prop="xm" label="购买人" sortable="custom">
           </el-table-column>
-          <el-table-column prop="jxdd" label="学院" sortable="custom">
+          <el-table-column prop="xzmc" label="险种名称" sortable="custom">
           </el-table-column>
-          <el-table-column prop="kckksj" label="手机号" sortable="custom">
+          <el-table-column prop="bdh" label="保单号" sortable="custom">
           </el-table-column>
-          <el-table-column prop="kcsksj" label="外出原因" sortable="custom">
+          <el-table-column prop="xzlx" label="险种类型" sortable="custom">
           </el-table-column>
-          <el-table-column prop="rkls" label="目的地" sortable="custom">
+          <el-table-column prop="cbgs" label="承保公司" sortable="custom">
+          </el-table-column
+          ><el-table-column prop="lxr" label="联系人" sortable="custom">
+          </el-table-column
+          ><el-table-column prop="lxdh" label="联系电话" sortable="custom">
           </el-table-column>
-          <el-table-column prop="rklsgh" label="外出时间" sortable="custom">
+          <el-table-column prop="gmsj" label="购买时间" sortable="custom">
           </el-table-column>
-          <el-table-column prop="jlrxm" label="拟返回时间" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="jlrgh" label="审核人" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="jlrlx" label="审核时间" sortable="custom">
-          </el-table-column>
+
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
               <el-button
                 type="text"
                 size="small"
-                @click="hadleDetail2(scope.row)"
+                @click="hadleDetail(scope.row, 1)"
               >
                 <i class="scopeIncon handledie"></i>
-                <span class="handleName">申请详情</span>
+                <span class="handleName">保险详情</span>
               </el-button>
             </template>
           </el-table-column>
@@ -160,131 +159,160 @@
         @pagination="handleSearch"
       />
     </div>
-    <el-dialog :title="title" :visible.sync="showExport" width="30%">
-      <span>确认导出？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="expTalk"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import CheckboxCom from "../../components/checkboxCom";
-import { listenQuery } from "@/api/assistantWork/listen";
-import { getGzdw } from "@/api/politicalWork/assistantappoint";
+import CheckboxCom from "../../../components/checkboxCom";
+import { getToken } from "@/utils/auth";
+import {
+  expor,
+  mbDown,
+  queryXzlx,
+  queryList,
+} from "@/api/assistantWork/baoxian";
 export default {
+  name: "manStudent",
   components: { CheckboxCom },
+  computed: {
+    fileHeader: {
+      get() {
+        return {
+          accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
+          uuid: new Date().getTime(),
+          clientId: "111",
+        };
+      },
+    },
+  },
   data() {
     return {
-      detailModal: false,
-      moreIform: {
-        xydm: [],
-      },
-      delArr: [],
+      uploadUrl: process.env.VUE_APP_BASE_API + "/fdyXpx/import",
       searchVal: "",
-      allDwh: [], // 学院下拉框
       select: "",
       isMore: false,
-      showExport: false,
-      title: "",
-      dateArrayOut: [],
-      dateArrayBack: [],
+      moreIform: {
+        xzlx: [],
+      },
+      xzlx: [], // 学院下拉框
       tableData: [],
+      manageRegOps: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
         total: 0,
       },
+      datePicker: [],
+      multipleSelection: [],
     };
   },
 
   mounted() {
     this.handleSearch();
-    this.getAllCollege();
-  },
-  activated() {
-    this.handleSearch();
+    this.queryXzlx();
   },
 
   methods: {
-    getAllCollege() {
-      console.log("jinlaiem");
-      getGzdw()
-        .then((res) => {
-          this.allDwh = res.data.rows;
-        })
-        .catch((err) => {});
-    },
-    handleExport() {
-      this.showExport = true;
-      this.title = "导出";
-    },
-    handleCancel() {
-      this.showExport = false;
-    },
-    expTalk() {
-      if (this.delArr && this.delArr.length > 0) {
-        var ids = this.delArr;
-        expTalk({ ids: ids }).then((res) => {
-          this.downloadFn(res, "课程听课列表数据下载", "xlsx");
-          this.handleSearch();
-        });
-      } else {
-        let data = {
-          xm: this.select == "xm" ? this.searchVal : null,
-          xh: this.select == "xh" ? this.searchVal : null,
-          thzt: this.select == "thzt" ? this.searchVal : null,
-          thrxm: this.select == "thrxm" ? this.searchVal : null,
-          thrgh: this.select == "thrgh" ? this.searchVal : null,
-          thdd: this.select == "thdd" ? this.searchVal : null,
-          starttime: this.dateArray ? this.dateArray[0] : "",
-          endtime: this.dateArray ? this.dateArray[1] : "",
-          pageNum: this.queryParams.pageNum,
-          pageSize: this.queryParams.pageSize,
-          orderZd: this.queryParams.orderZd,
-          orderPx: this.queryParams.orderPx,
-        };
-        expTalk({ ...data }).then((res) => {
-          this.downloadFn(res, "课程听课列表数据下载", "xlsx");
-          this.handleSearch();
-        });
+    expor() {
+      var rqs = "";
+      var rqe = "";
+      if (this.datePicker && this.datePicker.length > 0) {
+        var rqs = this.datePicker[0];
+        rqe = this.datePicker[1];
       }
-      this.showExport = false;
-    },
-    del() {
-      if (this.delArr && this.delArr.length > 0) {
-        delTalk({ ids: this.delArr }).then((res) => this.handleSearch());
+      var idList = [];
+      this.multipleSelection.map((item) => idList.push(item.id));
+      var data = {
+        xm: this.select == "xm" ? this.searchVal : null,
+        xh: this.select == "xh" ? this.searchVal : null,
+        xzmc: this.select == "xzmc" ? this.xzmc : null,
+        buyEndTime: rqs,
+        buyStartTime: rqe,
+        cbgs: this.select == "cbgs" ? this.cbgs : null,
+        lxr: this.select == "lxr" ? this.lxr : null,
+        lxdh: this.select == "lxdh" ? this.lxdh : null,
+        xzlxList: this.moreIform.xzlx,
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+      };
+      if (this.multipleSelection.length > 0) {
+        expor({ idList: idList }).then((res) =>
+          this.downloadFn(res, "学平险列表下载", "xlsx")
+        );
       } else {
-        this.$message.error("请先勾选数据");
+        expor(data).then((res) =>
+          this.downloadFn(res, "学平险列表下载", "xlsx")
+        );
       }
+    },
+    queryXzlx() {
+      queryXzlx().then((res) => {
+        this.xzlx = res.data;
+      });
     },
 
-    hadleDetail2(row) {
-      this.detailModal = true;
+    upLoadError(err, file, fileList) {
+      this.$message({
+        type: "error",
+        message: "上传失败",
+      });
+    },
+    upLoadSuccess(res, file, fileList) {
+      if (res.errcode == "00") {
+        this.handleSearch();
+        this.$message({
+          type: "success",
+          message: res.errmsg,
+        });
+      } else {
+        this.$message({
+          type: "error",
+          message: res.errmsg,
+        });
+      }
+    },
+    mbDown() {
+      mbDown().then((res) => {
+        this.downloadFn(res, "学平险模板下载", "xlsx");
+      });
+    },
+    hadleDetail(row) {
+      this.$router.push({
+        path: "/assistantWork/detailBX",
+        query: {
+          id: row.id,
+        },
+      });
     },
     changeSelect() {
       this.searchVal = "";
     },
     // 查询
     handleSearch() {
+      var rqs = "";
+      var rqe = "";
+      if (this.datePicker && this.datePicker.length > 0) {
+        var rqs = this.datePicker[0];
+        rqe = this.datePicker[1];
+      }
       let data = {
-        kcmc: this.select == "kcmc" ? this.searchVal : null,
-        rkls: this.select == "rkls" ? this.searchVal : null,
-        jxdd: this.select == "jxdd" ? this.searchVal : null,
-        jlrxm: this.select == "jlrxm" ? this.searchVal : null,
-        jlrgh: this.select == "jlrgh" ? this.searchVal : null,
-        // kcsksjks: this.dateArray.length > 0 ? this.dateArray[0] : "",
-        // kcsksjjs: this.dateArray.length > 0 ? this.dateArray[1] : "",
+        xm: this.select == "xm" ? this.searchVal : null,
+        xh: this.select == "xh" ? this.searchVal : null,
+        xzmc: this.select == "xzmc" ? this.xzmc : null,
+        buyEndTime: rqs,
+        buyStartTime: rqe,
+        cbgs: this.select == "cbgs" ? this.cbgs : null,
+        lxr: this.select == "lxr" ? this.lxr : null,
+        lxdh: this.select == "lxdh" ? this.lxdh : null,
+        xzlxList: this.moreIform.xzlx,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      listenQuery(data)
+      queryList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
@@ -298,7 +326,6 @@ export default {
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      this.delArr = this.multipleSelection.map((item) => item.id);
     },
     //排序
     changeTableSort(column) {
@@ -321,19 +348,6 @@ export default {
   .handledie {
     background: url("~@/assets/images/details.png");
   }
-  .scopeIncon1 {
-    display: inline-block;
-    width: 20px;
-    height: 16px;
-    vertical-align: middle;
-  }
-  .ywc {
-    background: url("~@/assets/assistantPng/blue.png") no-repeat;
-  }
-  .djl {
-    background: url("~@/assets/assistantPng/red.png") no-repeat;
-  }
-
   .handleName {
     font-weight: 400;
     font-size: 14px;
@@ -370,10 +384,10 @@ export default {
           height: 20px;
         }
         .chevronDown {
-          background: url("../../../assets/images/chevronDown.png") no-repeat;
+          background: url("../../../../assets/images/chevronDown.png") no-repeat;
         }
         .chevronUp {
-          background: url("../../../assets/images/chevronUp.png") no-repeat;
+          background: url("../../../../assets/images/chevronUp.png") no-repeat;
         }
       }
     }
@@ -383,7 +397,6 @@ export default {
       background: #fafafa;
     }
   }
-
   .tableWrap {
     background: #fff;
     padding: 20px;
@@ -405,7 +418,7 @@ export default {
           margin-left: 10px;
           width: 20px;
           height: 20px;
-          background: url("../../../assets/images/updata.png") no-repeat;
+          background: url("../../../../assets/images/updata.png") no-repeat;
         }
       }
       .headerRight {
@@ -419,15 +432,6 @@ export default {
           border: 1px solid grey;
           background: #fff;
         }
-        .borderLight {
-          border: 1px solid grey;
-          color: red;
-          background: #fff;
-        }
-        .borderGreen {
-          border: 1px solid grey;
-          background: #005657;
-        }
         .btns {
           margin-right: 15px;
           padding: 0px 10px;
@@ -439,13 +443,6 @@ export default {
             line-height: 32px;
             // vertical-align: middle;
           }
-          .title1 {
-            font-size: 14px;
-            text-align: center;
-            line-height: 32px;
-            color: #fff;
-            // vertical-align: middle;
-          }
           .icon {
             display: inline-block;
             width: 20px;
@@ -453,17 +450,13 @@ export default {
             vertical-align: top;
             margin-right: 5px;
           }
+          .blueIcon {
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/in.png") no-repeat;
+          }
           .orangeIcon {
             margin-top: 10px;
             background: url("~@/assets/assistantPng/out.png") no-repeat;
-          }
-          .lightIcon {
-            margin-top: 9px;
-            background: url("~@/assets/assistantPng/delete.png") no-repeat;
-          }
-          .greenIcon {
-            margin-top: 10px;
-            background: url("~@/assets/assistantPng/add.png") no-repeat;
           }
         }
       }

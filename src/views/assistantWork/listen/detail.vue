@@ -1,9 +1,54 @@
 <template>
   <div class="addRole">
+    <div style="background-color: white; margin-top: 20px; padding: 24px">
+      <div style="margin-bottom: 20px">
+        <span class="titleTop">记录人员</span>
+      </div>
+      <div>
+        <el-row :gutter="20">
+          <el-col :span="5">
+            申请人工号：<el-input
+              v-model="defaultForm.jlrgh"
+              :disabled="true"
+              style="width: 200px"
+            ></el-input>
+          </el-col>
+          <el-col :span="4">
+            姓名 :<el-input
+              v-model="defaultForm.jlrxm"
+              style="width: 200px"
+              :disabled="true"
+            ></el-input
+          ></el-col>
+          <el-col :span="4">
+            单位:
+            <el-input
+              v-model="defaultForm.jlrssdw"
+              style="width: 200px"
+              :disabled="true"
+            ></el-input
+          ></el-col>
+          <el-col :span="4">
+            岗位:<el-input
+              v-model="defaultForm.jlrgw"
+              style="width: 200px"
+              :disabled="true"
+            ></el-input
+          ></el-col>
+          <el-col :span="4">
+            类型:<el-input
+              v-model="defaultForm.jlrlx"
+              :disabled="true"
+              style="width: 200px"
+            ></el-input
+          ></el-col>
+        </el-row>
+      </div>
+    </div>
     <div class="permissions1">
       <div class="headTop">
         <div class="headRight">
-          <span class="title">课程新增</span>
+          <span class="title">课程详情</span>
         </div>
       </div>
       <el-form ref="Form" label-width="80px" v-model="Form">
@@ -188,7 +233,7 @@
         ></el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cancelModal">取 消</el-button>
+        <el-button @click="cancelModal(form)">取 消</el-button>
         <el-button type="primary" @click="addData">确 定</el-button>
       </div>
     </el-dialog>
@@ -200,6 +245,7 @@ import {
   getXmXgh,
   getGrade,
   FdyKcxxPageList,
+  getDetail,
 } from "@/api/assistantWork/listen";
 export default {
   data() {
@@ -209,8 +255,6 @@ export default {
         jsxx: "",
         xqm: "",
         xnm: "",
-        pageNum: 1,
-        pageSize: 10,
       },
       options: [
         {
@@ -285,22 +329,46 @@ export default {
         skjs: "",
         tkqk: "",
       },
+      defaultForm: {
+        jlrgh: "",
+        jlrxm: "",
+        jlrssdw: "",
+        jlrgw: "",
+        jlrlx: "",
+      },
+      lgnSn: "",
     };
   },
 
   mounted() {
+    this.lgnSn = this.$route.query.id;
     this.getYears();
+    this.getDetail();
   },
 
   methods: {
-    cancelModal() {
-      this.dialogFormVisible = false;
-      this.queryParams = {};
-    },
-    addData() {
-      console.log("123");
+    getDetail() {
+      getDetail({ id: this.lgnSn }).then((res) => {
+        this.defaultForm.jlrgh = res.data.jlrgh;
+        this.defaultForm.jlrxm = res.data.jlrxm;
+        this.defaultForm.jlrlx = res.data.jlrlx;
+        this.defaultForm.jlrssdw = res.data.jlrssdw;
+        this.defaultForm.jlrgw = res.data.jlrgw;
+        this.Form.rkls = "";
+        this.Form.ktmc = "";
+        this.Form.bh = res.data.kcbh;
+        this.Form.kksj = "";
+        this.Form.week = res.data.kckksj;
+        this.Form.jsBegin = "";
+        this.Form.jsEnd = "";
+        this.Form.xq = res.data.kckksj;
+        this.Form.sksj = res.data.kcsksj;
+        this.Form.skjs = res.data.jxdd;
+        this.Form.tkqk = res.data.tkqk;
+      });
     },
     FdyKcxxPageList() {
+      console.log("12");
       FdyKcxxPageList(this.queryParams).then((res) => {
         console.log("res", res);
       });
@@ -478,6 +546,12 @@ export default {
 
 <style lang="scss" scoped>
 .addRole {
+  .titleTop {
+    font-weight: 600;
+    font-size: 20px;
+    color: #1f1f1f;
+    line-height: 28px;
+  }
   .block {
     display: flex;
   }
@@ -640,6 +714,7 @@ export default {
         line-height: 28px;
       }
     }
+
     .headLeft {
       display: flex;
       align-items: center;

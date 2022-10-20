@@ -282,6 +282,20 @@
             </el-col>
           </el-row>
           <el-row>
+            <el-form-item label="备注">
+              <el-input
+                maxlength="2000"
+                placeholder="请输入..."
+                show-word-limit
+                v-model="eduDetailForm.beizhu"
+                style="width: 1000px"
+                :autosize="{ minRows: 10 }"
+                type="textarea"
+                :disabled="isEdit == '1' ? true : false"
+              ></el-input>
+            </el-form-item>
+          </el-row>
+          <el-row>
             <el-form-item label="添加附件" v-if="isEdit == '1'">
               <!-- <div v-if="videoSrc" class="block">
                 <video
@@ -416,6 +430,7 @@ export default {
         beginDate: "",
         beginTime: "",
         endTime: "",
+        beizhu: "",
       },
       peopleDetailForm: {
         gh: "",
@@ -491,6 +506,7 @@ export default {
         this.peopleDetailForm.gw = res.data.gw;
         this.peopleDetailForm.lx = res.data.jlrlx;
         this.eduDetailForm.peopleNum = res.data.hdrs;
+        this.eduDetailForm.beizhu = res.data.bz;
       });
     },
     getOptions() {
@@ -679,7 +695,7 @@ export default {
       let formData = new FormData();
       formData.append("gjc", this.eduDetailForm.keyword);
       formData.append("hddd", this.eduDetailForm.place);
-      formData.append(" hdjssj", this.eduDetailForm.endTime);
+      formData.append("hdjssj", this.eduDetailForm.endTime);
       formData.append("hdksrq", this.eduDetailForm.beginDate);
       formData.append("hdkssj", this.eduDetailForm.beginTime);
       formData.append("hdrs", this.eduDetailForm.peopleNum);
@@ -690,6 +706,7 @@ export default {
       formData.append("ssnj", this.eduDetailForm.nj);
       formData.append("ssxz", this.eduDetailForm.other);
       formData.append("sszy", zystr);
+      formData.append("bz", this.eduDetailForm.beizhu);
       formData.append("id", this.$route.query.id);
       this.fileListAdd.map((ele) => {
         formData.append("files", ele.raw);

@@ -212,6 +212,19 @@
             </el-col>
           </el-row>
           <el-row>
+            <el-form-item label="备注">
+              <el-input
+                maxlength="2000"
+                placeholder="请输入..."
+                show-word-limit
+                v-model="eduDetailForm.beizhu"
+                style="width: 1000px"
+                :autosize="{ minRows: 10 }"
+                type="textarea"
+              ></el-input>
+            </el-form-item>
+          </el-row>
+          <el-row>
             <el-form-item label="活动资料" prop="activity"> </el-form-item>
             <el-upload
               drag
@@ -324,6 +337,7 @@ export default {
         beginDate: "",
         beginTime: "",
         endTime: "",
+        beizhu: "",
       },
       classList: [],
       fileList: [],
@@ -453,6 +467,7 @@ export default {
       formData.append("ssdwdm", this.eduDetailForm.xy);
       formData.append("ssnj", this.eduDetailForm.nj);
       formData.append("ssxz", this.eduDetailForm.other);
+      formData.append("bz", this.eduDetailForm.beizhu);
       formData.append("sszy", zystr);
       // let data = {
       //   gjc: this.eduDetailForm.keyword,

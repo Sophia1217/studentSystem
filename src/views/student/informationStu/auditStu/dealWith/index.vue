@@ -209,21 +209,17 @@
             label="培养层次"
             sortable
           ></el-table-column>
-          <el-table-column
-            prop="approveTime"
-            label="修改时间"
-            sortable="custom"
-          >
-          </el-table-column>
+
           <el-table-column
             prop="approveState"
             label="审核状态"
             sortable="custom"
           >
             <template slot-scope="scope">
-              <div v-if="scope.row.approveState == 1">已审批</div>
-              <div v-else-if="scope.row.approveState == 2">未审批</div>
-              <div v-else>退回</div>
+              <div v-if="scope.row.approveState == 1">待审核</div>
+              <div v-else-if="scope.row.approveState == 2">审核通过</div>
+              <div v-else-if="scope.row.approveState == 3">审核拒绝</div>
+              <div v-else>未知状态</div>
             </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="180">

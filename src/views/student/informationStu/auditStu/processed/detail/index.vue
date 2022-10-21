@@ -5638,7 +5638,7 @@ export default {
       } else {
         this.dialogVisible = false;
         let data = {
-          id: this.$route.query.id,
+          id: this.$route.query.xh,
           approver: this.$route.query.approver,
           rollbackReason: this.textarea,
         };

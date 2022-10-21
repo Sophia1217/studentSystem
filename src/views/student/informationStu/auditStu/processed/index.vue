@@ -219,12 +219,7 @@
           <el-table-column prop="bjmc" label="班级" sortable> </el-table-column>
           <el-table-column prop="pyccmc" label="培养层次" sortable>
           </el-table-column>
-          <el-table-column
-            prop="approveTime"
-            label="修改时间"
-            sortable="custom"
-          >
-          </el-table-column>
+
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
               <el-button
@@ -676,7 +671,7 @@ export default {
     },
     handleOk() {
       let data = {
-        id: this.multipleSelection[0].id,
+        id: this.multipleSelection[0].userId,
         approver: this.multipleSelection[0].approver,
         rollbackReason: this.form.rollbackReason,
       };

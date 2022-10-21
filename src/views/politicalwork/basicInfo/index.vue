@@ -19,9 +19,9 @@
             <el-option label="姓名" value="xm" />
             <el-option label="身份证件号" value="sfzjh" />
             <el-option label="移动电话" value="yddh" />
-            <el-option label="籍贯" value="jg" />
+            <!-- <el-option label="籍贯" value="jg" /> -->
             <el-option label="毕业院校" value="byyx" />
-            <el-option label="专业背景" value="zybj" />
+            <el-option label="专业" value="zybj" />
           </el-select>
           <el-button
             slot="append"
@@ -61,7 +61,7 @@
               </el-select>
             </el-col>
           </el-row>
-          <el-row :gutter="20" class="mt15">
+          <!-- <el-row :gutter="20" class="mt15">
             <el-col :span="3">性 别：</el-col>
             <el-col :span="20">
               <div class="checkbox">
@@ -89,7 +89,7 @@
                 <el-button v-else @click="closeIt"> 收起</el-button>
               </div>
             </el-col>
-          </el-row>
+          </el-row> -->
           <el-row :gutter="20" class="mt15">
             <el-col :span="3">政治面貌：</el-col>
             <el-col :span="20">
@@ -152,8 +152,8 @@
           <el-table-column prop="lxdh" label="联系方式" sortable />
           <el-table-column prop="gzdwListString" label="工作单位" sortable />
           <el-table-column prop="zgxl" label="最高学历" sortable />
-          <el-table-column prop="zgxlbyxx" label="最高学历毕业学校" sortable />
-          <el-table-column prop="zybj" label="专业背景" sortable />
+          <el-table-column prop="zgxlbyxx" label="毕业学校" sortable />
+          <el-table-column prop="zybj" label="专业" sortable />
           <el-table-column prop="gwListString" label="职务" sortable />
           <el-table-column prop="cjgzsj" label="参加工作时间" sortable />
           <el-table-column fixed="right" label="操作" width="180">

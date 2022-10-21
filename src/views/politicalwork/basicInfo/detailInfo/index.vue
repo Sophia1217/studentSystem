@@ -1,73 +1,65 @@
 <template>
   <div class="detail">
     <div class="wrap">
-      <div class="detail_left">
-        <div class="titlename">
-        <div>
-          <div v-for="(item, index) in dtailsList" :key="index"
-            class="list"
-            :class="index == current ? 'active' : ''"
-            @click="handleList(index, 'tag')"
-          >
-            <div class="ellipsis">{{ item }}</div>
-            <i :class="index == current ? 'el-icon-arrow-right' : ''" />
-          </div>
-        </div>
-        </div>
+    
+      <!-- <div class="detail_left" > -->
+        <div class="detail_left" v-if="detailInfoData.sffdy===1">
+        <el-tabs
+          v-model="activeName"
+          class="tab_left"
+          @tab-click="handleClick"
+          tab-position="left"
+        >
+          <el-tab-pane label="基本信息" name="1"></el-tab-pane>
+          <el-tab-pane label="学业成长" name="2"></el-tab-pane>
+          <el-tab-pane label="职业发展" name="3"></el-tab-pane>
+          <el-tab-pane label="学习培训" name="4"></el-tab-pane>
+          <el-tab-pane label="职业资格" name="5"></el-tab-pane>
+          <el-tab-pane label="岗位锻炼" name="6"></el-tab-pane>
+          <el-tab-pane label="教学科研" name="7"></el-tab-pane>
+          <el-tab-pane label="考核评价" name="8"></el-tab-pane>
+          <el-tab-pane label="奖励表彰" name="9"></el-tab-pane>
+        </el-tabs>
       </div>
-      <!-- <div v-if="detailInfoData.zgZgjbxxes !== null && detailInfoData.zgZgjbxxes.length>0" class="detail_right"> -->
-      <div class="detail_right">
-        <div class="right_top">
+      <!-- 基本信息 -->
+      <div class="detail_right" v-if="activeName == '1'">
+      
+        <div class="right_top" >
           <p class="title">政工干部基本信息</p>
           <div class="timeWrap">
-            <span>创建时间：{{ detailInfoData.createTime }} </span>
-            <span
-              class="updataTime"
-            >更新时间：{{ detailInfoData.updateTime }}</span>
+            <span>创建时间：{{detailInfoData.createTime}} </span>
+            <span class="updataTime">更新时间：{{detailInfoData.updateTime}}</span>
           </div>
         </div>
-        <!-- <div class="headline"> -->
         <div id="tag_0" class="headline">基本信息</div>
-        <!-- <div v-if="isEdit ==2" class="editBtn" @click="saveBasicInfoData"><i class="addIcon" /> 保存</div> -->
-        <!-- </div> -->
         <div class="tableStyle">
           <div class="imgWrap">
             <div class="photo" v-if="detailInfoData.zgZps != null">
-              <img :src="detailInfoData.zgZps.zp" alt="照片"> </img>
-              <!-- <img src="" alt=""> -->
+              <img  :src="detailInfoData.zgZps.zp"  alt="照片"> </img>
+              
             </div>
-            <div class="photo" v-else>
+            <div class="photo" >
               <img src="" alt=""> </img>
-              <!-- <img src="" alt=""> -->
+             
             </div>
           </div>
 
           <div class="information">
-            <el-row :gutter="20">
+              <el-row :gutter="20">
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">工号</div>
                   <div v-if="isEdit == 1" class="content">
                     {{ detailInfoData.zgZgjbxxes.gh }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.GH == 2">
+                    </div>
+                    <div v-if="isEdit == 2" class="content">
                       <el-input
                         v-model="detailInfoData.zgZgjbxxes.gh"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="true"
+                        :disabled="zgZgjbxxesAuth.GH == 2||detailInfoData.sfxs==1 "
                       />
                     </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.gh"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                  </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
@@ -76,62 +68,25 @@
                   <div v-if="isEdit == 1" class="content">
                     {{ detailInfoData.zgZgjbxxes.xm }}
                   </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.XM == 2">
+                   <div v-if="isEdit == 2" class="content">
                       <el-input
                         v-model="detailInfoData.zgZgjbxxes.xm"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="true"
+                        :disabled="zgZgjbxxesAuth.XM == 2 ||detailInfoData.sfxs==1"
                       />
                     </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.xm"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                  </div>
                 </div>
               </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">曾用名</div>
-                  <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgZgjbxxes.cym }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.CYM == 2">
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.cym"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.cym"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </el-col>
+             </el-row>
+              <el-row :gutter="20">
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">性别</div>
                   <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgZgjbxxes.xbm == "1" ? "男" : "女" }} -->
-                    <el-select
+                   <el-select
                       v-model="detailInfoData.zgZgjbxxes.xbm"
-                      placeholder=""
+                      placeholder="请选择"
                       size="small"
                       disabled
                     >
@@ -143,236 +98,46 @@
                       />
                     </el-select>
                   </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.XBM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.xbm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xbmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.xbm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xbmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">单位</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgZgjbxxes.dwh }} -->
+                   <div v-if="isEdit == 2" class="content">
                     <el-select
-                      v-model="detailInfoData.zgZgjbxxes.dwh"
+                      v-model="detailInfoData.zgZgjbxxes.xbm"
                       placeholder="请选择"
                       size="small"
-                      disabled
+                     :disabled="zgZgjbxxesAuth.XBM == 2 ||detailInfoData.sfxs==1"
                     >
                       <el-option
-                        v-for="(item,index) in dwhOps"
+                        v-for="(item,index) in xbmOps"
                         :key="index"
                         :label="item.mc"
                         :value="item.dm"
                       />
                     </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.DWH == 2">
-                      <el-select
-                      v-model="detailInfoData.zgZgjbxxes.dwh"
-                      placeholder="请选择"
-                      size="small"
-                      disabled
-                    >
-                      <el-option
-                        v-for="(item,index) in dwhOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                      v-model="detailInfoData.zgZgjbxxes.dwh"
-                      placeholder="请选择"
-                      size="small"
-                      disabled
-                    >
-                      <el-option
-                        v-for="(item,index) in dwhOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                    </div>
-                  </div>
+                   </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">出生日期</div>
+                  <div class="title">出生年月</div>
                   <div v-if="isEdit == 1" class="content">
                     {{ detailInfoData.zgZgjbxxes.csrq }}
                   </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.CSRQ == 2">
+                   <div v-if="isEdit == 2" class="content">
                       <el-input
                         v-model="detailInfoData.zgZgjbxxes.csrq"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="true"
+                        :disabled="zgZgjbxxesAuth.CSRQ == 2||detailInfoData.sfxs==1 "
                       />
                     </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.csrq"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                  </div>
                 </div>
               </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">籍贯</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <el-select
-                        v-model="detailInfoData.zgZgjbxxes.jg"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in jgOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.JG == 2">
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.jg"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in jgOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.jg"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in jgOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">民族</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgZgjbxxes.mzm }} -->
-                    <el-select
-                        v-model="detailInfoData.zgZgjbxxes.mzm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in mzmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.MZM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.mzm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in mzmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.mzm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in mzmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
+             </el-row>
+              <el-row :gutter="20">
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">政治面貌</div>
                   <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgZgjbxxes.zzmmm }} -->
-                    <el-select
+                   <el-select
                         v-model="detailInfoData.zgZgjbxxes.zzmmm"
                         placeholder=""
                         size="small"
@@ -387,12 +152,12 @@
                       </el-select>
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.ZZMMM == 2">
+                 
                       <el-select
                         v-model="detailInfoData.zgZgjbxxes.zzmmm"
                         placeholder="请选择"
                         size="small"
-                        disabled
+                         :disabled="zgZgjbxxesAuth.ZZMMM == 2 ||detailInfoData.sfxs==1"
                       >
                         <el-option
                           v-for="(item,index) in zzmmmOps"
@@ -402,165 +167,340 @@
                         />
                       </el-select>
                     </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.zzmmm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in zzmmmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">国籍/地区</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgZgjbxxes.gjdqm }} -->
-                    <el-select
-                        v-model="detailInfoData.zgZgjbxxes.gjdqm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in gjdqmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.GJDQM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.gjdqm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in gjdqmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.gjdqm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in gjdqmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">身份证件类型</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgZgjbxxes.sfzjlxm }} -->
-                    <el-select
-                        v-model="detailInfoData.zgZgjbxxes.sfzjlxm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in sfzjlxmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.SFZJLXM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.sfzjlxm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in sfzjlxmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.sfzjlxm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in sfzjlxmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">身份证件号</div>
+                  <div class="title">身份证号</div>
                   <div v-if="isEdit == 1" class="content">
                     {{ detailInfoData.zgZgjbxxes.sfzjh }}
                   </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.SFZJH == 2">
+                   <div v-if="isEdit == 2" class="content">
+                   
                       <el-input
                         v-model="detailInfoData.zgZgjbxxes.sfzjh"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="true"
+                        :disabled="zgZgjbxxesAuth.SFZJH == 2 ||detailInfoData.sfxs==1"
                       />
                     </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.sfzjh"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
+                </div>
+              </el-col>
+             </el-row>
+              <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">学校名称</div>
+                  <!-- <div v-if="isEdit == 1" class="content"> -->
+                    <div class="content">
+                    华中师范大学
                   </div>
                 </div>
               </el-col>
-            </el-row>
-            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">二级单位</div>
+                  <!-- <div v-if="isEdit == 1" class="content"> -->
+                    <div  class="content">
+                   <el-select
+                      v-model="detailInfoData.zgZgjbxxes.rzdwh"
+                      placeholder="请选择"
+                      size="small"
+                      disabled
+                    >
+                      <el-option
+                        v-for="(item,index) in rzdwhOps"
+                        :key="index"
+                        :label="item.mc"
+                        :value="item.dm"
+                      />
+                    </el-select>
+                  </div>
+                   <!-- <div v-if="isEdit == 2" class="content">
+                   
+                      <el-select
+                      v-model="detailInfoData.zgZgjbxxes.rzdwh"
+                      placeholder="请选择"
+                      size="small"
+                       :disabled="zgZgjbxxesAuth.RZDWH == 2 "
+                    >
+                      <el-option
+                        v-for="(item,index) in rzdwhOps"
+                        :key="index"
+                        :label="item.mc"
+                        :value="item.dm"
+                      />
+                    </el-select>
+                    </div> -->
+                </div>
+              </el-col>
+             </el-row>
+              <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">行政职务</div>
+                  <!-- <div v-if="isEdit == 1" class="content"> -->
+                    <div class="content">
+                   <el-select
+                      v-model="detailInfoData.zgZgjbxxes.zwmcm"
+                      placeholder="请选择"
+                      size="small"
+                      disabled
+                    >
+                      <el-option
+                        v-for="(item,index) in zwmcmOps"
+                        :key="index"
+                        :label="item.mc"
+                        :value="item.dm"
+                      />
+                    </el-select>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">行政职务等级</div>
+                  <!-- <div v-if="isEdit == 1" class="content"> -->
+                     <div class="content">
+                   <el-select
+                      v-model="detailInfoData.zgZgjbxxes.zwjbm"
+                      placeholder="请选择"
+                      size="small"
+                      disabled
+                    >
+                      <el-option
+                        v-for="(item,index) in zwjbmOps"
+                        :key="index"
+                        :label="item.mc"
+                        :value="item.dm"
+                      />
+                    </el-select>
+                  </div>
+                </div>
+              </el-col>
+             </el-row>
+              <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">专业技术职务</div>
+                  <!-- <div v-if="isEdit == 1" class="content"> -->
+                    <div  class="content">
+                  <el-select
+                      v-model="detailInfoData.zgZgjbxxes.zjzcdm"
+                      placeholder="请选择"
+                      size="small"
+                      disabled
+                    >
+                      <el-option
+                        v-for="(item,index) in zjzcdmOps"
+                        :key="index"
+                        :label="item.mc"
+                        :value="item.dm"
+                      />
+                    </el-select>
+                  </div>
+                  <!-- <div v-if="isEdit == 2" class="content">                   
+                      <el-select
+                      v-model="detailInfoData.zgZgjbxxes.zjzcdm"
+                      placeholder="请选择"
+                      size="small"
+                       :disabled="zgZgjbxxesAuth.ZJZCDM== 2 "
+                    >
+                      <el-option
+                        v-for="(item,index) in zjzcdmOps"
+                        :key="index"
+                        :label="item.mc"
+                        :value="item.dm"
+                      />
+                    </el-select>
+                    </div> -->
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">参加工作时间</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfoData.zgZgjbxxes.cjgzrq }}
+                  </div>
+                   <div v-if="isEdit == 2" class="content">
+                      <el-input
+                        v-model="detailInfoData.zgZgjbxxes.cjgzrq"
+                        size="small"
+                        placeholder="请输入内容"
+                         :disabled="zgZgjbxxesAuth.CJGZRQ == 2 ||detailInfoData.sfxs==1"
+                      />
+                    </div>
+                </div>
+              </el-col>
+             </el-row>
+              <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">最高学历</div>
+                  <div v-if="isEdit == 1" class="content">
+                      <el-select
+                        v-model="detailInfoData.zgZgjbxxes.zgxlm"
+                        placeholder=""
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in zgxlmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                  </div>
+                   <div v-if="isEdit == 2" class="content">
+                   
+                      <el-select
+                        v-model="detailInfoData.zgZgjbxxes.zgxlm"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgZgjbxxesAuth.ZGXLM == 2||detailInfoData.sfxs==1 "
+                      >
+                        <el-option
+                          v-for="(item,index) in zgxlmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                    </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">毕业院校</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfoData.zgZgjbxxes.byxxjdw }}
+
+                  </div>
+                    <div v-if="isEdit == 2" class="content">
+                      <el-input
+                        v-model="detailInfoData.zgZgjbxxes.byxxjdw"
+                        size="small"
+                        placeholder="请输入内容"
+                         :disabled="zgZgjbxxesAuth.BYXXJDW == 2||detailInfoData.sfxs==1 "
+                      />
+                    </div>
+                </div>
+              </el-col>
+             </el-row>
+              <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">专业</div>
+                  <div v-if="isEdit == 1" class="content">
+                    <!-- {{ detailInfoData.zgZgjbxxes.sxzym }} -->
+                    <el-select
+                        v-model="detailInfoData.zgZgjbxxes.sxzym"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in sxzymOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                     <el-select
+                        v-model="detailInfoData.zgZgjbxxes.sxzym"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgZgjbxxesAuth.SXZYM == 2 ||detailInfoData.sfxs==1"
+                      >
+                        <el-option
+                          v-for="(item,index) in sxzymOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">专业类别</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfoData.zgZgjbxxes.zylb }}
+                  </div>
+                   <div v-if="isEdit == 2" class="content">
+                      <el-input
+                        v-model="detailInfoData.zgZgjbxxes.zylb"
+                        size="small"
+                        placeholder="请输入内容"
+                         :disabled="zgZgjbxxesAuth.ZYLB == 2||detailInfoData.sfxs==1 "
+                      />
+                    </div>
+                </div>
+              </el-col>
+             </el-row>
+              <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">最后学位</div>
+                  <div v-if="isEdit == 1" class="content">
+                    <!-- {{ detailInfoData.zgZgjbxxes.zgxwm }} -->
+                    <el-select
+                        v-model="detailInfoData.zgZgjbxxes.zgxwm"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in zgxwmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                    <el-select
+                        v-model="detailInfoData.zgZgjbxxes.zgxwm"
+                        placeholder="请选择"
+                        size="small"
+                          :disabled="zgZgjbxxesAuth.ZGXWM == 2||detailInfoData.sfxs==1 "
+                      >
+                        <el-option
+                          v-for="(item,index) in zgxwmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">博士后经历</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfoData.zgZgjbxxes.bshjl }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                      <el-input
+                        v-model="detailInfoData.zgZgjbxxes.bshjl"
+                        size="small"
+                        placeholder="请输入内容"
+                         :disabled="zgZgjbxxesAuth.BSHJL == 2||detailInfoData.sfxs==1 "
+                      />
+                    </div>
+                </div>
+              </el-col>
+             </el-row>
+              <el-row :gutter="20">
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">婚姻状况</div>
                   <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgZgjbxxes.hyzkm }} -->
                     <el-select
                         v-model="detailInfoData.zgZgjbxxes.hyzkm"
                         placeholder=""
@@ -576,12 +516,12 @@
                       </el-select>
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.HYZKM == 2">
+                    
                       <el-select
                         v-model="detailInfoData.zgZgjbxxes.hyzkm"
                         placeholder="请选择"
                         size="small"
-                        disabled
+                       :disabled="zgZgjbxxesAuth.HYZKM == 2||detailInfoData.sfxs==1 "
                       >
                         <el-option
                           v-for="(item,index) in hyzkmOps"
@@ -591,619 +531,26 @@
                         />
                       </el-select>
                     </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.hyzkm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in hyzkmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">最高学历码</div>
+                  <div class="title">生育状况</div>
                   <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgZgjbxxes.zgxlm }} -->
-                    <el-select
-                        v-model="detailInfoData.zgZgjbxxes.zgxlm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in zgxlmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
+                    {{ detailInfoData.zgZgjbxxes.syzk }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.ZGXLM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.zgxlm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in zgxlmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.zgxlm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in zgxlmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">教职工人员类别</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgZgjbxxes.jzgrylbm }} -->
-                    <el-select
-                        v-model="detailInfoData.zgZgjbxxes.jzgrylbm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in jzgrylbmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.JZGRYLBM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.jzgrylbm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in jzgrylbmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.jzgrylbm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in jzgrylbmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">人员总分类</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgZgjbxxes.ryzfl }} -->
-                    <el-select
-                        v-model="detailInfoData.zgZgjbxxes.ryzfl"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in ryzflOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.RYZFL == 2">
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.ryzfl"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in ryzflOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.ryzfl"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in ryzflOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">人员岗位状态</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgZgjbxxes.rygwztm }} -->
-                    <el-select
-                        v-model="detailInfoData.zgZgjbxxes.rygwztm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in rygwztmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.RYGWZTM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.rygwztm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in rygwztmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.rygwztm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in rygwztmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">学科类别</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgZgjbxxes.xklbm }} -->
-                    <el-select
-                        v-model="detailInfoData.zgZgjbxxes.xklbm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xklbmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.XKLBM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.xklbm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xklbmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.xklbm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xklbmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">一级学科</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgZgjbxxes.yjxkm }} -->
-                    <el-select
-                        v-model="detailInfoData.zgZgjbxxes.yjxkm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in yjxkmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.YJXKM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.yjxkm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in yjxkmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.yjxkm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in yjxkmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">二级学科</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgZgjbxxes.ejxkm }} -->
-                    <el-select
-                        v-model="detailInfoData.zgZgjbxxes.ejxkm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in ejxkmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.EJXKM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.ejxkm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in ejxkmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.ejxkm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in ejxkmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">学缘</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgZgjbxxes.xy }} -->
-                    <el-select
-                        v-model="detailInfoData.zgZgjbxxes.xy"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xyOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.XY == 2">
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.xy"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xyOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.xy"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xyOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">毕业学校及单位</div>
-                  <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgZgjbxxes.byxxjdw }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.BYXXJDW == 2">
                       <el-input
-                        v-model="detailInfoData.zgZgjbxxes.byxxjdw"
+                        v-model="detailInfoData.zgZgjbxxes.syzk"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="true"
+                         :disabled="zgZgjbxxesAuth.SYZK == 2 ||detailInfoData.sfxs==1"
                       />
                     </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.byxxjdw"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                  </div>
                 </div>
               </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">参加工作日期</div>
-                  <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgZgjbxxes.cjgzrq }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.CJGZRQ == 2">
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.cjgzrq"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.cjgzrq"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">来校日期</div>
-                  <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgZgjbxxes.lxrq }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.LXRQ == 2">
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.lxrq"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.lxrq"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">参保类型</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgZgjbxxes.cblbm }} -->
-                    <el-select
-                        v-model="detailInfoData.zgZgjbxxes.cblbm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in cblbmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.CBLBM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.cblbm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in cblbmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgZgjbxxes.cblbm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in cblbmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">社保号</div>
-                  <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgZgjbxxes.sbh }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.SBH == 2">
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.sbh"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.sbh"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
+             </el-row>
+              <el-row :gutter="20">
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">办公电话</div>
@@ -1211,358 +558,554 @@
                     {{ detailInfoData.zgZgjbxxes.bgdh }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.BGDH == 2">
+
                       <el-input
                         v-model="detailInfoData.zgZgjbxxes.bgdh"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="true"
+                        :disabled="zgZgjbxxesAuth.BGDH == 2 ||detailInfoData.sfxs==1"
                       />
                     </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.bgdh"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                  </div>
                 </div>
               </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">移动电话</div>
-                  <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgZgjbxxes.yddh }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.YDDH == 2">
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.yddh"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.yddh"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="false"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">电子邮箱</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgZgjbxxes.dzyx }}
+                     {{ detailInfoData.zgZgjbxxes.dzyx }}
                   </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.DZYX == 2">
+                   <div v-if="isEdit == 2" class="content">
+                   
                       <el-input
                         v-model="detailInfoData.zgZgjbxxes.dzyx"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="true"
+                        :disabled="zgZgjbxxesAuth.DZYX == 2 ||detailInfoData.sfxs==1"
                       />
                     </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.dzyx"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                  </div>
                 </div>
               </el-col>
-            </el-row>
-            <el-row :gutter="20">
+             </el-row>
+              <el-row :gutter="20">
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">离校审批通过时间</div>
+                  <div class="title">手机号码</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgZgjbxxes.lxsptgsj }}
+                    {{ detailInfoData.zgZgjbxxes.yddh }}
                   </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.LXSPTGSJ == 2">
+                   <div v-if="isEdit == 2" class="content">
+                   
                       <el-input
-                        v-model="detailInfoData.zgZgjbxxes.lxsptgsj"
+                        v-model="detailInfoData.zgZgjbxxes.yddh"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="true"
+                       :disabled="zgZgjbxxesAuth.YDDH == 2||detailInfoData.sfxs==1 "
                       />
                     </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.lxsptgsj"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                  </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">办理离校手续时间</div>
+                  <div class="title">微信账号</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgZgjbxxes.bllxsxsj }}
+                    {{ detailInfoData.zgZgjbxxes.wxzh }}
                   </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.BLLXSXSJ == 2">
+                   <div v-if="isEdit == 2" class="content">
+                   
                       <el-input
-                        v-model="detailInfoData.zgZgjbxxes.bllxsxsj"
+                        v-model="detailInfoData.zgZgjbxxes.wxzh"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="true"
+                       :disabled="zgZgjbxxesAuth.WXZH == 2||detailInfoData.sfxs==1 "
                       />
                     </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.bllxsxsj"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                  </div>
                 </div>
               </el-col>
-            </el-row>
-            <el-row :gutter="20">
+             </el-row>
+              <el-row :gutter="20">
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">工资停发时间</div>
+                  <div class="title">QQ号码</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgZgjbxxes.gztfsj }}
+                    {{ detailInfoData.zgZgjbxxes.qqzh }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.GZTFSJ == 2">
+                   
                       <el-input
-                        v-model="detailInfoData.zgZgjbxxes.gztfsj"
+                        v-model="detailInfoData.zgZgjbxxes.qqzh"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="true"
+                       :disabled="zgZgjbxxesAuth.QQZH == 2||detailInfoData.sfxs==1 "
                       />
                     </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.gztfsj"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                  </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">调往单位</div>
+                  <div class="title">邮编</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgZgjbxxes.dwdw }}
+                    {{ detailInfoData.zgZgjbxxes.yb }}
                   </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgZgjbxxesAuth.DWDW == 2">
+                   <div v-if="isEdit == 2" class="content">
+                   
                       <el-input
-                        v-model="detailInfoData.zgZgjbxxes.dwdw"
+                        v-model="detailInfoData.zgZgjbxxes.yb"
                         size="small"
                         placeholder="请输入内容"
-                        :disabled="true"
+                       :disabled="zgZgjbxxesAuth.YB == 2 ||detailInfoData.sfxs==1"
                       />
                     </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgZgjbxxes.dwdw"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                  </div>
                 </div>
               </el-col>
-            </el-row>
+             </el-row>
+              <el-row :gutter="20">
+              <el-col :span="24" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">通讯地址</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfoData.zgZgjbxxes.txdz }}
+                  </div>
+                   <div v-if="isEdit == 2" class="content">
+                   
+                      <el-input
+                        v-model="detailInfoData.zgZgjbxxes.txdz"
+                        size="small"
+                        placeholder="请输入内容"
+                       :disabled="zgZgjbxxesAuth.TXDZ == 2 ||detailInfoData.sfxs==1"
+                      />
+                    </div>
+                </div>
+              </el-col>
+             </el-row>
           </div>
-        </div>
+          </div>
 
-        <div class="headline">
-          <div id="tag_1">工作简历</div>
+           <div id="tag_1" class="headline">辅导员信息</div>
+           <div class="tableStyle">
+            <div class="information">
+              <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">担任辅导员时间</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfoData.zgFdyrms.drfdysj }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                   
+                      <el-input
+                        v-model="detailInfoData.zgFdyrms.drfdysj"
+                        size="small"
+                        placeholder="请输入内容"
+                       :disabled="zgFdyrmsAuth.DRFDYSJ == 2 "
+                      />
+                    </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">岗位性质</div>
+                  <div v-if="isEdit == 1" class="content">
+                    <el-select
+                        v-model="detailInfoData.zgFdyrms.gwxz"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in gwxzOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                  <el-select
+                        v-model="detailInfoData.zgFdyrms.gwxz"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgFdyrmsAuth.GWXZ == 2 "
+                      >
+                        <el-option
+                          v-for="(item,index) in gwxzOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                  </div>
+                </div>
+              </el-col>
+             </el-row>
+             <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">少数民族学生辅导员</div>
+                  <div v-if="isEdit == 1" class="content">
+                   <el-select
+                        v-model="detailInfoData.zgFdyrms.sfssmzxsfdy"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in sfOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                  <el-select
+                        v-model="detailInfoData.zgFdyrms.sfssmzxsfdy"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgFdyrmsAuth.SFSSMZXSFDY == 2 "
+                      >
+                        <el-option
+                          v-for="(item,index) in sfOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">国际学生辅导员</div>
+                   <div v-if="isEdit == 1" class="content">
+                   <el-select
+                        v-model="detailInfoData.zgFdyrms.sfgjxsfdy"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in sfOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                  <el-select
+                        v-model="detailInfoData.zgFdyrms.sfgjxsfdy"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgFdyrmsAuth.SFGJXSFDY == 2 "
+                      >
+                        <el-option
+                          v-for="(item,index) in sfOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                  </div>
+                </div>
+              </el-col>
+             </el-row>
+             <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">毕业班辅导员</div>
+                   <div v-if="isEdit == 1" class="content">
+                   <el-select
+                        v-model="detailInfoData.zgFdyrms.sfbybfdy"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in sfOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                  <el-select
+                        v-model="detailInfoData.zgFdyrms.sfbybfdy"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgFdyrmsAuth.SFBYBXSFDY == 2 "
+                      >
+                        <el-option
+                          v-for="(item,index) in sfOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">带学生情况</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfoData.zgFdyrms.dxsqk }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                      <el-input
+                        v-model="detailInfoData.zgFdyrms.dxsqk"
+                        size="small"
+                        placeholder="请输入内容"
+                         :disabled="zgFdyrmsAuth.DXSQK == 2 "
+                      />
+                    </div>
+                </div>
+              </el-col>
+             </el-row>
+              <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">带专科生人数</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfoData.zgFdyrms.dzksrs }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                      <el-input
+                        v-model="detailInfoData.zgFdyrms.dzksrs"
+                        size="small"
+                        placeholder="请输入内容"
+                         :disabled="zgFdyrmsAuth.DZKSRS == 2 "
+                      />
+                    </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">带本科生人数</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfoData.zgFdyrms.dbksrs }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                      <el-input
+                        v-model="detailInfoData.zgFdyrms.dbksrs"
+                        size="small"
+                        placeholder="请输入内容"
+                         :disabled="zgFdyrmsAuth.DBKSRS == 2 "
+                      />
+                    </div>
+                </div>
+              </el-col>
+             </el-row>
+              <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">带研究生人数</div>
+                  <div v-if="isEdit == 1" class="content">
+                    {{ detailInfoData.zgFdyrms.dyjsrs }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                      <el-input
+                        v-model="detailInfoData.zgFdyrms.dyjsrs"
+                        size="small"
+                        placeholder="请输入内容"
+                         :disabled="zgFdyrmsAuth.DYJSRS == 2 "
+                      />
+                    </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">带国际学生人数</div>
+                 <div v-if="isEdit == 1" class="content">
+                    {{ detailInfoData.zgFdyrms.dgjxsrs }}
+                  </div>
+                  <div v-if="isEdit == 2" class="content">
+                      <el-input
+                        v-model="detailInfoData.zgFdyrms.dgjxsrs"
+                        size="small"
+                        placeholder="请输入内容"
+                         :disabled="zgFdyrmsAuth.DGJXSRS == 2 "
+                      />
+                    </div>
+                </div>
+              </el-col>
+             </el-row>
+            </div>
+      </div>
+    </div>
+    <!-- 学业成长 -->
+    <div class="detail_right" v-if="activeName == '2'&&detailInfoData.sffdy==1">
+        <div id="tag_2" class="headline">
+          <div>学业成长</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(1)">
-            <i class="addIcon" /> 添加工作经历
+            <i class="addIcon" /> 添加
           </div>
         </div>
         <div class="tableStyle">
-          <el-table :data="detailInfoData.zgGzjls" style="width: 100%">
-            <el-table-column prop="gzqsrq" label="起始时间">
+          <el-table :data="detailInfoData.zgXlxws" style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="xlm" label="学历类型">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.gzqsrq }}</div>
+                <div v-if="isEdit == 1"><el-select
+                        v-model="scope.row.xlm"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in zgxlmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
                 <div v-else>
-                  <div v-if="zgGzjlsAuth.GZQSRQ == 2">
-                  <el-input v-model="scope.row.gzqsrq" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.gzqsrq" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="gzzzrq" label="终止时间">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.gzzzrq }}</div>
-                <div v-else>
-                  <div v-if="zgGzjlsAuth.GZZZRQ == 2">
-                  <el-input v-model="scope.row.gzzzrq" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.gzzzrq" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="gzdw" label="工作单位">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.gzdw }}</div>
-                <div v-else>
-                  <div v-if="zgGzjlsAuth.GZDW == 2">
-                  <el-input v-model="scope.row.gzdw" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.gzdw" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="gznr" label="工作内容">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.gznr }}</div>
-                <div v-else>
-                  <div v-if="zgGzjlsAuth.GZNR == 2">
-                  <el-input v-model="scope.row.gznr" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.gznr" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="zw" label="职位">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.zw }}</div>
-                <div v-else>
-                  <div v-if="zgGzjlsAuth.ZW == 2">
-                  <el-input v-model="scope.row.zw" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.zw" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="crdzzwmc" label="曾任党政职务">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.crdzzwmc }}</div>
-                <div v-else>
-                  <div v-if="zgGzjlsAuth.CRDZZWMC == 2">
-                  <el-input v-model="scope.row.crdzzwmc" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.crdzzwmc" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="crzyjszwm" label="曾任专业技术职务">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">
-                  <!-- {{ scope.row.crzyjszwm }} -->
-
                   <el-select
-                      v-model="scope.row.crzyjszwm"
-                      placeholder=""
-                      size="small"
-                      disabled
-                    >
-                      <el-option
-                        v-for="(item,index) in crzyjszwmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                </div>
-                <div v-else>
-                  <div v-if="zgGzjlsAuth.CRZYJSZWM == 2">
-                    <el-select
-                      v-model="scope.row.crzyjszwm"
-                      placeholder="请选择"
-                      size="small"
-                      disabled
-                    >
-                      <el-option
-                        v-for="(item,index) in crzyjszwmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
-                  <div v-else>
-                    <el-select
-                      v-model="scope.row.crzyjszwm"
-                      placeholder="请选择"
-                      size="small"
-                    >
-                      <el-option
-                        v-for="(item,index) in crzyjszwmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
-                </div>
+                        v-model="scope.row.xlm"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgXlxwsAuth.XLM == 2||scope.row.sftb=='1'"
+                      >
+                        <el-option
+                          v-for="(item,index) in zgxlmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
               </template>
-            </el-table-column>
-            <el-table-column prop="gzzmr" label="工作证明人">
+            </el-table-column>   
+        
+           <el-table-column prop="byxxhdw" label="毕业学校">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.gzzmr }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.byxxhdw }}</div>
                 <div v-else>
-                  <div v-if="zgGzjlsAuth.GZZMR == 2">
-                  <el-input v-model="scope.row.gzzmr" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.byxxhdw" placeholder="请输入" :disabled="zgXlxwsAuth.BYXXHDW==2||scope.row.sftb=='1'"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.gzzmr" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
               </template>
-            </el-table-column>
-            <el-table-column prop="bz" label="备注">
+            </el-table-column>   
+            <el-table-column prop="byxxlb" label="毕业学校类型">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.bz }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.byxxlb }}</div>
                 <div v-else>
-                  <div v-if="zgGzjlsAuth.BZ == 2">
-                  <el-input v-model="scope.row.bz" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.byxxlb" placeholder="请输入" :disabled="zgXlxwsAuth.BYXXLB==2||scope.row.sftb=='1'"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.bz" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
               </template>
-            </el-table-column>
-            <el-table-column v-if="isEdit == 2" label="">
+            </el-table-column> 
+            <el-table-column prop="sxzym" label="专业">
               <template slot-scope="scope">
-                <div
+                <div v-if="isEdit == 1"><el-select
+                        v-model="scope.row.sxzym"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in sxzymOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
+                <div v-else>
+                 <el-select
+                        v-model="scope.row.sxzym"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgXlxwsAuth.SXZYM == 2 ||scope.row.sftb=='1'"
+                      >
+                        <el-option
+                          v-for="(item,index) in sxzymOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
+              </template>
+            </el-table-column> 
+            <el-table-column prop="bysj" label="毕业时间">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.bysj }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.bysj" placeholder="请输入" :disabled="zgXlxwsAuth.BYSJ==2||scope.row.sftb=='1'"/>
+                  </div>
+              </template>
+            </el-table-column> 
+            <el-table-column prop="xz" label="学制">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1"><el-select
+                        v-model="scope.row.xz"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in xzOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
+                <div v-else>
+                 <el-select
+                        v-model="scope.row.xz"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgXlxwsAuth.XZ == 2||scope.row.sftb=='1'"
+                      >
+                        <el-option
+                          v-for="(item,index) in xzOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
+              </template>
+            </el-table-column> 
+            <el-table-column prop="xwm" label="学位">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1"> <el-select
+                        v-model="scope.row.xwm"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in zgxwmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
+                <div v-else>
+                   <el-select
+                        v-model="scope.row.xwm"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgXlxwsAuth.XWM == 2||scope.row.sftb=='1' "
+                      >
+                        <el-option
+                          v-for="(item,index) in zgxwmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
+              </template>
+            </el-table-column> 
+            <el-table-column prop="xwsysj" label="学位授予时间">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.xwsysj }}</div>
+                <div v-else>
+                  
+                  <el-input v-model="scope.row.xwsysj" placeholder="请输入" :disabled="zgXlxwsAuth.XWSYSJ==2||scope.row.sftb=='1'"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+              <el-table-column v-if="isEdit == 2" label="">
+              <template slot-scope="scope">
+                <div v-if="scope.row.sftb!=='1'"
                   class="deleteBtn"
                   @click="deleteWorkBrifeData(scope.row, scope.$index, 'a')"
                 >
@@ -1572,1112 +1115,72 @@
             </el-table-column>
           </el-table>
         </div>
-        <div id="tag_2" class="headline">学历学位信息</div>
-        <div class="tableStyle">
-          <div class="information">
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">入学时间</div>
-                  <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgXlxws.rxsj }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.RXSJ == 2">
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.rxsj"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.rxsj"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="false"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">毕业时间</div>
-                  <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgXlxws.bysj }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.BYSJ == 2">
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.bysj"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.bysj"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="false"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">学制</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <el-select
-                        v-model="detailInfoData.zgXlxws.xz"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xzOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.XZ == 2">
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.xz"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xzOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.xz"
-                        placeholder=""
-                        size="small"
-                      >
-                        <el-option
-                          v-for="(item,index) in xzOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">学习方式码</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgXlxws.xxfsm }} -->
-                    <el-select
-                        v-model="detailInfoData.zgXlxws.xxfsm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xxfsmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.XXFSM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.xxfsm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xxfsmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.xxfsm"
-                        placeholder="请选择"
-                        size="small"
-                      >
-                        <el-option
-                          v-for="(item,index) in xxfsmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">学习形式码</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgXlxws.xxxsm }} -->
-                    <el-select
-                        v-model="detailInfoData.zgXlxws.xxxsm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xxxsmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.XXXSM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.xxxsm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xxxsmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.xxxsm"
-                        placeholder="请选择"
-                        size="small"
-                      >
-                        <el-option
-                          v-for="(item,index) in xxxsmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">是否当前最高学历</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgXlxws.sfdqzgxlm }} -->
-                    <el-select
-                        v-model="detailInfoData.zgXlxws.sfdqzgxlm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in sfdqzgxlmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.SFDQZGXLM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.sfdqzgxlm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in sfdqzgxlmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.sfdqzgxlm"
-                        placeholder=""
-                        size="small"
-                      >
-                        <el-option
-                          v-for="(item,index) in sfdqzgxlmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">学历获得时间</div>
-                  <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgXlxws.xlhdsj }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.XLHDSJ == 2">
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.xlhdsj"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.xlhdsj"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="false"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">学历证书号</div>
-                  <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgXlxws.xlzsh }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.XLZSH == 2">
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.xlzsh"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.xlzsh"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="false"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">所学专业</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgXlxws.sxzym }} -->
-                    <el-select
-                        v-model="detailInfoData.zgXlxws.sxzym"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in sxzymOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.SXZYM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.sxzym"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in sxzymOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.sxzym"
-                        placeholder="请选择"
-                        size="small"
-                      >
-                        <el-option
-                          v-for="(item,index) in sxzymOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">所学专业描述</div>
-                  <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgXlxws.sxzyms }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.SXZYMS == 2">
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.sxzyms"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.sxzyms"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="false"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">毕业学校或单位</div>
-                  <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgXlxws.byxxhdw }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.BYXXHDW == 2">
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.byxxhdw"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.byxxhdw"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="false"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">学习证明人</div>
-                  <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgXlxws.xxzmr }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.XXZMR == 2">
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.xxzmr"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.xxzmr"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="false"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">学位</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgXlxws.xwm }} -->
-                    <el-select
-                        v-model="detailInfoData.zgXlxws.xwm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xwmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.XWM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.xwm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xwmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.xwm"
-                        placeholder="请选择"
-                        size="small"
-                      >
-                        <el-option
-                          v-for="(item,index) in xwmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">是否当前最高学位</div>
-                  <!-- <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgXlxws.sfdqzgxwm }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.SFDQZGXWM == 2">
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.sfdqzgxwm"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.sfdqzgxwm"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="false"
-                      />
-                    </div>
-                  </div> -->
-                   <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgXlxws.sfdqzgxlm }} -->
-                    <el-select
-                        v-model="detailInfoData.zgXlxws.sfdqzgxwm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in sfdqzgxlmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.SFDQZGXLM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.sfdqzgxwm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in sfdqzgxlmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.sfdqzgxwm"
-                        placeholder=""
-                        size="small"
-                      >
-                        <el-option
-                          v-for="(item,index) in sfdqzgxlmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">授学位单位名称</div>
-                  <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgXlxws.sxwdwmc }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.SXWDWMC == 2">
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.sxwdwmc"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.sxwdwmc"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="false"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">授学位国家/地区</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgXlxws.sxwgjdqm }} -->
-                    <el-select
-                        v-model="detailInfoData.zgXlxws.sxwgjdqm"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in sxwgjdqmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.SXWGJDQM == 2">
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.sxwgjdqm"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in sxwgjdqmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.sxwgjdqm"
-                        placeholder="请选择"
-                        size="small"
-                      >
-                        <el-option
-                          v-for="(item,index) in sxwgjdqmOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">学位授予时间</div>
-                  <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgXlxws.xwsysj }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.XWSYSJ == 2">
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.xwsysj"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.xwsysj"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="false"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">学位证书号</div>
-                  <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgXlxws.xwzsh }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.XWZSH == 2">
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.xwzsh"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.xwzsh"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="false"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">学缘</div>
-                  <div v-if="isEdit == 1" class="content">
-                    <!-- {{ detailInfoData.zgXlxws.xy }} -->
-                    <el-select
-                        v-model="detailInfoData.zgXlxws.xy"
-                        placeholder=""
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xyOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.XY == 2">
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.xy"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in xyOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                    <div v-else>
-                      <el-select
-                        v-model="detailInfoData.zgXlxws.xy"
-                        placeholder="请选择"
-                        size="small"
-                      >
-                        <el-option
-                          v-for="(item,index) in xyOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">备注</div>
-                  <div v-if="isEdit == 1" class="content">
-                    {{ detailInfoData.zgXlxws.bz }}
-                  </div>
-                  <div v-if="isEdit == 2" class="content">
-                    <div v-if="zgXlxwsAuth.BZ == 2">
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.bz"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-else>
-                      <el-input
-                        v-model="detailInfoData.zgXlxws.bz"
-                        size="small"
-                        placeholder="请输入内容"
-                        :disabled="false"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-          </div>
-        </div>
-
-        <div id="tag_3" class="headline">
-          <div>专业技术职务</div>
+    </div>
+    <!-- 职业发展 -->
+     <div class="detail_right" v-if="activeName == '3'&&detailInfoData.sffdy==1">
+        <div id="tag_31" class="headline">
+          <div>行政职务发展</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(2)">
             <i class="addIcon" /> 添加
           </div>
         </div>
         <div class="tableStyle">
-          <el-table :data="detailInfoData.zgZyjszws" style="width: 100%">
-            <el-table-column prop="zjzcdm" label="专技职称代码">
+          <el-table :data="detailInfoData.zgDzzws" style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="zwmcm" label="行政职务名称">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">
-                  <!-- {{ scope.row.zjzcdm }} -->
+                <div v-if="isEdit == 1"><el-select
+                        v-model="scope.row.zwmcm"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in zwmcmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
+                <div v-else>
+                  
                   <el-select
-                      v-model="scope.row.zjzcdm"
-                      placeholder=""
-                      size="small"
-                      disabled
-                    >
-                      <el-option
-                        v-for="(item,index) in zjzcdmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
+                        v-model="scope.row.zwmcm"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgDzzwsAuth.ZWMCM==2||scope.row.sftb=='1'"
+                      >
+                        <el-option
+                          v-for="(item,index) in zwmcmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
                   </div>
-                <div v-else>
-                  <div v-if="zgZyjszwsAuth.ZJZCDM == 2">
-                    <el-select
-                      v-model="scope.row.zjzcdm"
-                      placeholder="请选择"
-                      size="small"
-                      disabled
-                    >
-                      <el-option
-                        v-for="(item,index) in zjzcdmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
-                  <div v-else>
-                    <el-select
-                      v-model="scope.row.zjzcdm"
-                      placeholder="请选择"
-                      size="small"
-                    >
-                      <el-option
-                        v-for="(item,index) in zjzcdmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
-                </div>
+                
               </template>
-            </el-table-column>
-            <el-table-column prop="zjzcsj" label="专技职称时间">
+            </el-table-column>   
+            <el-table-column prop="jdhtmrzrq" label="起始时间">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.zjzcsj }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.jdhtmrzrq }}</div>
                 <div v-else>
-                  <div v-if="zgZyjszwsAuth.ZJZCSJ == 2">
-                  <el-input v-model="scope.row.zjzcsj" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.jdhtmrzrq" placeholder="请输入" :disabled="zgDzzwsAuth.JDHTMRZRQ==2||scope.row.sftb=='1'"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.zjzcsj" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                
               </template>
-            </el-table-column>
-            <el-table-column prop="prgwxlm" label="聘任岗位系列">
+            </el-table-column> 
+            <el-table-column prop="jdhtmmzdrq" label="结束时间">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">
-                  <!-- {{ scope.row.prgwxlm }} -->
-                  <el-select
-                      v-model="scope.row.prgwxlm"
-                      placeholder=""
-                      size="small"
-                      disabled
-                    >
-                      <el-option
-                        v-for="(item,index) in prgwxlmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
+                <div v-if="isEdit == 1">{{ scope.row.jdhtmmzdrq }}</div>
                 <div v-else>
-                  <div v-if="zgZyjszwsAuth.PRGWXLM == 2">
-                    <el-select
-                      v-model="scope.row.prgwxlm"
-                      placeholder="请选择"
-                      size="small"
-                      disabled
-                    >
-                      <el-option
-                        v-for="(item,index) in prgwxlmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
+                  <el-input v-model="scope.row.jdhtmmzdrq" placeholder="请输入" :disabled="zgDzzwsAuth.JDHTMMZDRQ==2||scope.row.sftb=='1'"/>
                   </div>
-                  <div v-else>
-                    <el-select
-                      v-model="scope.row.prgwxlm"
-                      placeholder="请选择"
-                      size="small"
-                    >
-                      <el-option
-                        v-for="(item,index) in prgwxlmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="prgwdjm" label="聘任岗位等级">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">
-                  <!-- {{ scope.row.prgwdjm }} -->
-                  <el-select
-                      v-model="scope.row.prgwdjm"
-                      placeholder=""
-                      size="small"
-                      disabled
-                    >
-                      <el-option
-                        v-for="(item,index) in prgwdjmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
-                <div v-else>
-                  <div v-if="zgZyjszwsAuth.PRGWDJM == 2">
-                    <el-select
-                      v-model="scope.row.prgwdjm"
-                      placeholder="请选择"
-                      size="small"
-                      disabled
-                    >
-                      <el-option
-                        v-for="(item,index) in prgwdjmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
-                  <div v-else>
-                    <el-select
-                      v-model="scope.row.prgwdjm"
-                      placeholder="请选择"
-                      size="small"
-                      
-                    >
-                      <el-option
-                        v-for="(item,index) in prgwdjmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="prrq" label="聘任日期">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.prrq }}</div>
-                <div v-else>
-                  <div v-if="zgZyjszwsAuth.PRRQ == 2">
-                  <el-input v-model="scope.row.prrq" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.prrq" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="prwh" label="聘任文号">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.prwh }}</div>
-                <div v-else>
-                  <div v-if="zgZyjszwsAuth.PRWH == 2">
-                  <el-input v-model="scope.row.prwh" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.prwh" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="gwdjm" label="岗位等级">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">
-                  <!-- {{ scope.row.gwdjm }} -->
-                  <el-select
-                      v-model="scope.row.gwdjm"
-                      placeholder=""
-                      size="small"
-                      disabled
-                    >
-                      <el-option
-                        v-for="(item,index) in gwdjOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
-                <div v-else>
-                  <div v-if="zgZyjszwsAuth.GWDJM == 2">
-                    <el-select
-                      v-model="scope.row.gwdjm"
-                      placeholder="请选择"
-                      size="small"
-                      disabled
-                    >
-                      <el-option
-                        v-for="(item,index) in gwdjOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
-                  <div v-else>
-                    <el-select
-                      v-model="scope.row.gwdjm"
-                      placeholder="请选择"
-                      size="small"
-                    >
-                      <el-option
-                        v-for="(item,index) in gwdjOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="zjdj" label="专技等级">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">
-                  <!-- {{ scope.row.zjdj }} -->
-                  <el-select
-                      v-model="scope.row.zjdj"
-                      placeholder=""
-                      size="small"
-                      disabled
-                    >
-                      <el-option
-                        v-for="(item,index) in prgwdjmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
-                <div v-else>
-                  <div v-if="zgZyjszwsAuth.ZJDJ == 2">
-                    <el-select
-                      v-model="scope.row.zjdj"
-                      placeholder="请选择"
-                      size="small"
-                      disabled
-                    >
-                      <el-option
-                        v-for="(item,index) in prgwdjmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
-                  <div v-else>
-                    <el-select
-                      v-model="scope.row.zjdj"
-                      placeholder="请选择"
-                      size="small"
-                    >
-                      <el-option
-                        v-for="(item,index) in prgwdjmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
+                  </template>
+            </el-table-column> 
             <el-table-column v-if="isEdit == 2" label="">
               <template slot-scope="scope">
-                <div
+                <div v-if="scope.row.sftb!=='1'"
                   class="deleteBtn"
                   @click="deleteWorkBrifeData(scope.row, scope.$index, 'b')"
                 >
@@ -2687,109 +1190,142 @@
             </el-table-column>
           </el-table>
         </div>
-
-        <div id="tag_4" class="headline">
-          <div>学习培训</div>
-          <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(3)">
+         <div id="tag_34" class="headline">
+          <div>行政级别发展</div>
+          <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(16)">
             <i class="addIcon" /> 添加
           </div>
         </div>
         <div class="tableStyle">
-          <el-table :data="detailInfoData.zgXxpxes" style="width: 100%">
-            <el-table-column prop="pxmc" label="培训名称">
+          <el-table :data="detailInfoData.zgDzzjs" style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="zwjbm" label="行政级别发展">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.pxmc }}</div>
+                <div v-if="isEdit == 1"><el-select
+                        v-model="scope.row.zwjbm"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in zwjbmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
                 <div v-else>
-                  <div v-if="zgXxpxesAuth.PXMC == 2">
-                  <el-input v-model="scope.row.pxmc" placeholder="请输入" :disabled="true"/>
+                  
+                  <el-select
+                        v-model="scope.row.zwjbm"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgDzzjsAuth.ZWJBM==2||scope.row.sftb=='1'"
+                      >
+                        <el-option
+                          v-for="(item,index) in zwjbmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.pxmc" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                
               </template>
-            </el-table-column>
-            <el-table-column prop="zzdw" label="组织单位">
+            </el-table-column>   
+            <el-table-column prop="zjpzrq" label="起始时间">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.zzdw }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.zjpzrq }}</div>
                 <div v-else>
-                  <div v-if="zgXxpxesAuth.ZZDW == 2">
-                  <el-input v-model="scope.row.zzdw" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.zjpzrq" placeholder="请输入" :disabled="zgDzzjsAuth.ZJPZRQ==2||scope.row.sftb=='1'"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.zzdw" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                
               </template>
-            </el-table-column>
-            <el-table-column prop="pxdd" label="培训地点">
+            </el-table-column> 
+            <el-table-column prop="zjzzrq" label="结束时间">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.pxdd }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.zjzzrq }}</div>
                 <div v-else>
-                  <div v-if="zgXxpxesAuth.PXDD == 2">
-                  <el-input v-model="scope.row.pxdd" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.zjzzrq" placeholder="请输入" :disabled="zgDzzjsAuth.ZJZZRQ==2||scope.row.sftb=='1'"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.pxdd" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="qssj" label="起始时间">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.qssj }}</div>
-                <div v-else>
-                  <div v-if="zgXxpxesAuth.QSSJ == 2">
-                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="jssj" label="结束时间">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.jssj }}</div>
-                <div v-else>
-                  <div v-if="zgXxpxesAuth.JSSJ == 2">
-                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="pxxz" label="培训性质">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.pxxz }}</div>
-                <div v-else>
-                  <div v-if="zgXxpxesAuth.PXXZ == 2">
-                  <el-input v-model="scope.row.pxxz" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.pxxz" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="pxjb" label="培训级别">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.pxjb }}</div>
-                <div v-else>
-                  <div v-if="zgXxpxesAuth.PXJB == 2">
-                  <el-input v-model="scope.row.pxjb" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.pxjb" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
+                  </template>
+            </el-table-column> 
             <el-table-column v-if="isEdit == 2" label="">
               <template slot-scope="scope">
-                <div
+                <div v-if="scope.row.sftb!=='1'"
+                  class="deleteBtn"
+                  @click="deleteWorkBrifeData(scope.row, scope.$index, 'p')"
+                >
+                  <i class="el-icon-close" />
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+          <div id="tag_32" class="headline">
+          <div>专业技术职务发展</div>
+          <!-- <div v-if="isEdit == 2&&detailInfoData.zgZyjszws.sftb==0" class="editBtn" @click="addDetailInfoData(3)">
+            <i class="addIcon" /> 添加
+          </div> -->
+        </div>
+        <div class="tableStyle">
+          <el-table :data="detailInfoData.zgZyjszws" style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="zjzcdm" label="专业技术职务">
+              <template slot-scope="scope">
+                 <div v-if="isEdit == 1"><el-select
+                        v-model="scope.row.zjzcdm"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in zjzcdmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
+                <div v-else>
+                  <el-select
+                        v-model="scope.row.zjzcdm"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in zjzcdmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
+              </template>
+            </el-table-column>   
+        
+           <el-table-column prop="prrq" label="起始时间">
+              <template slot-scope="scope">
+                 
+                <div v-if="isEdit == 1">{{ scope.row.prrq }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.prrq" placeholder="请输入" disabled/>
+                  </div>
+                  
+              </template>
+            </el-table-column>   
+          
+            <el-table-column prop="jssj" label="结束时间">
+              <template slot-scope="scope">
+                 
+                <div v-if="isEdit == 1">{{ scope.row.jssj }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="true"/>
+                  </div>
+              </template>
+            </el-table-column> 
+            <el-table-column v-if="isEdit == 2" label="">
+              <template slot-scope="scope">
+                <div v-if="scope.row.sftb!=='1'"
                   class="deleteBtn"
                   @click="deleteWorkBrifeData(scope.row, scope.$index, 'c')"
                 >
@@ -2799,94 +1335,85 @@
             </el-table-column>
           </el-table>
         </div>
-
-        <div id="tag_5" class="headline">
-          <div>年度考核</div>
+        <div id="tag_33" class="headline">
+          <div>工作履历</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(4)">
             <i class="addIcon" /> 添加
           </div>
         </div>
         <div class="tableStyle">
-          <el-table :data="detailInfoData.zgNdkhs" style="width: 100%">
-            <el-table-column prop="khnd" label="考核年度">
+          <el-table :data="detailInfoData.zgGzjls" style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="gzdw" label="工作单位">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.khnd }}</div>
+                <div v-if="isEdit == 1"><el-select
+                        v-model="scope.row.gzdw"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in gzdwOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
                 <div v-else>
-                  <div v-if="zgNdkhsAuth.KHND == 2">
-                  <el-input v-model="scope.row.khnd" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.khnd" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="khrq" label="考核日期">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.khrq }}</div>
-                <div v-else>
-                  <div v-if="zgNdkhsAuth.KHRQ == 2">
-                  <el-input v-model="scope.row.khrq" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.khrq" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="khjgm" label="考核结果">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">
-                  <!-- {{ scope.row.khjgm }} -->
                   <el-select
-                      v-model="scope.row.khjgm"
-                      placeholder=""
-                      size="small"
-                      disabled
-                    >
-                      <el-option
-                        v-for="(item,index) in khjgmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
-                <div v-else>
-                  <div v-if="zgNdkhsAuth.KHJGM == 2">
-                    <el-select
-                      v-model="scope.row.khjgm"
-                      placeholder="请选择"
-                      size="small"
-                      disabled
-                    >
-                      <el-option
-                        v-for="(item,index) in khjgmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
-                  <div v-else>
-                    <el-select
-                      v-model="scope.row.khjgm"
-                      placeholder="请选择"
-                      size="small"
-                      
-                    >
-                      <el-option
-                        v-for="(item,index) in khjgmOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      />
-                    </el-select>
-                  </div>
+                        v-model="scope.row.gzdw"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgGzjlsAuth.GZDW==2"
+                      >
+                        <el-option
+                          v-for="(item,index) in gzdwOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
                 </div>
               </template>
-            </el-table-column>
-            <el-table-column v-if="isEdit == 2" label="">
+            </el-table-column>   
+        
+           <el-table-column prop="zw" label="职务">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.zw }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.zw" placeholder="请输入" :disabled="zgGzjlsAuth.ZW==2"/>
+                  </div>
+                  
+              </template>
+            </el-table-column>   
+          <el-table-column prop="zsh" label="起始时间">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.gzqsrq }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.gzqsrq" placeholder="请输入" :disabled="zgGzjlsAuth.GZQSRQ==2"/>
+                  </div>
+               
+              </template>
+            </el-table-column> 
+            <el-table-column prop="gzzzrq" label="结束时间">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.gzzzrq }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.zsh" placeholder="请输入" :disabled="zgGzjlsAuth.GZZZRQ==2"/>
+                  </div>
+                  
+              </template>
+            </el-table-column> 
+           <el-table-column prop="gzgwxz" label="工作岗位性质">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.gzgwxz }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.gzgwxz" placeholder="请输入" :disabled="zgGzjlsAuth.GZGWXZ==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+             <el-table-column v-if="isEdit == 2" label="">
               <template slot-scope="scope">
                 <div
                   class="deleteBtn"
@@ -2898,119 +1425,264 @@
             </el-table-column>
           </el-table>
         </div>
-        <div id="tag_6" class="headline">
-          <div>奖励表彰信息</div>
+         <div id="tag_35" class="headline">
+          <div>教职工职员聘任信息</div>
+          <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(17)">
+            <i class="addIcon" /> 添加
+          </div>
+        </div>
+        <div class="tableStyle">
+          <el-table :data="detailInfoData.zgPrxxs" style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="przwdj" label="聘任职务等级">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1"><el-select
+                        v-model="scope.row.przwdj"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in przwdjOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
+                <div v-else>
+                  <el-select
+                        v-model="scope.row.przwdj"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgPrxxsAuth.PRZWDJ==2||scope.row.sftb=='1'"
+                      >
+                        <el-option
+                          v-for="(item,index) in przwdjOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                </div>
+              </template>
+            </el-table-column>   
+        
+           <el-table-column prop="prsj" label="聘任时间">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.prsj }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.prsj" placeholder="请输入" :disabled="zgPrxxsAuth.PRSJ==2||scope.row.sftb=='1'"/>
+                  </div>
+                  
+              </template>
+            </el-table-column> 
+            <el-table-column prop="prwh" label="聘任文号">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.prwh }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.prwh" placeholder="请输入" :disabled="zgPrxxsAuth.PRWH==2||scope.row.sftb=='1'"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+            <el-table-column prop="zylb" label="职员类别">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.zylb }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.zylb" placeholder="请输入" :disabled="zgPrxxsAuth.ZYLB==2||scope.row.sftb=='1'"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+            <el-table-column prop="jslb" label="晋升类别">
+              <template slot-scope="scope">
+                 <div v-if="isEdit == 1"><el-select
+                        v-model="scope.row.jslb"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in jslbOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
+                <div v-else>
+                  <el-select
+                        v-model="scope.row.jslb"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgPrxxsAuth.JSLB==2||scope.row.sftb=='1'"
+                      >
+                        <el-option
+                          v-for="(item,index) in jslbOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                </div>
+                 
+              </template>
+            </el-table-column>   
+             <el-table-column prop="rmbz" label="任免标志">
+              <template slot-scope="scope">
+                 <div v-if="isEdit == 1"><el-select
+                        v-model="scope.row.rmbz"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in sfOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
+                <div v-else>
+                  <el-select
+                        v-model="scope.row.rmbz"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgPrxxsAuth.RMBZ==2||scope.row.sftb=='1'"
+                      >
+                        <el-option
+                          v-for="(item,index) in sfOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                </div>
+                 
+              </template>
+            </el-table-column>  
+             <el-table-column prop="stateId" label="是否当前状态">
+              <template slot-scope="scope">
+                 <div v-if="isEdit == 1"><el-select
+                        v-model="scope.row.stateId"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in sfOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
+                <div v-else>
+                  <el-select
+                        v-model="scope.row.stateId"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgPrxxsAuth.PRZWDJ==2||scope.row.sftb=='1'"
+                      >
+                        <el-option
+                          v-for="(item,index) in sfOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                </div>
+                 
+              </template>
+            </el-table-column>  
+           
+             <el-table-column v-if="isEdit == 2" label="">
+              <template slot-scope="scope">
+                <div v-if="scope.row.sftb!=='1'"
+                  class="deleteBtn"
+                  @click="deleteWorkBrifeData(scope.row, scope.$index, 'q')"
+                >
+                  <i class="el-icon-close" />
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+    </div>
+    <!-- 学习培训 -->
+    <div class="detail_right" v-if="activeName == '4'&&detailInfoData.sffdy==1">
+        <div id="tag_41" class="headline">
+          <div>培训</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(5)">
             <i class="addIcon" /> 添加
           </div>
         </div>
         <div class="tableStyle">
-          <el-table :data="detailInfoData.zgJlbzs" style="width: 100%">
-            <el-table-column prop="zsh" label="证书号">
+          <el-table :data="detailInfoData.zgXxpxes" style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="pxmc" label="培训名称">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.zsh }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.pxmc }}</div>
                 <div v-else>
-                  <div v-if="zgJlbzsAuth.ZSH == 2">
-                  <el-input v-model="scope.row.zsh" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.pxmc" placeholder="请输入" :disabled="zgXxpxesAuth.PXMC==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.zsh" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                  
               </template>
-            </el-table-column>
-            <el-table-column prop="hjlx" label="获奖类型">
+            </el-table-column>   
+        
+           <el-table-column prop="zzdw" label="组织单位">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.hjlx }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.zzdw }}</div>
                 <div v-else>
-                  <div v-if="zgJlbzsAuth.HJLX == 2">
-                  <el-input v-model="scope.row.hjlx" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.zzdw" placeholder="请输入" :disabled="zgXxpxesAuth.ZZDW==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.hjlx" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                 
               </template>
-            </el-table-column>
-            <el-table-column prop="jxmc" label="奖项名称">
+            </el-table-column>   
+            <el-table-column prop="pxdd" label="培训地点">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.jxmc }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.pxdd}}</div>
                 <div v-else>
-                  <div v-if="zgJlbzsAuth.JXMC == 2">
-                  <el-input v-model="scope.row.jxmc" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.pxdd" placeholder="请输入" :disabled="zgXxpxesAuth.PXDD==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.jxmc" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                 
               </template>
-            </el-table-column>
-            <el-table-column prop="hjcgmc" label="获奖成果名称">
+            </el-table-column> 
+            <el-table-column prop="qssj" label="起始时间">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.hjcgmc }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.qssj }}</div>
                 <div v-else>
-                  <div v-if="zgJlbzsAuth.HJCGMC == 2">
-                  <el-input v-model="scope.row.hjcgmc" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="zgXxpxesAuth.QSSJ==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.hjcgmc" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+               
               </template>
-            </el-table-column>
-            <el-table-column prop="jxjb" label="奖项级别">
+            </el-table-column> 
+            <el-table-column prop="jssj" label="结束时间">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.jxjb }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.jssj }}</div>
                 <div v-else>
-                  <div v-if="zgJlbzsAuth.JXJB == 2">
-                  <el-input v-model="scope.row.jxjb" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="zgXxpxesAuth.JSSJ==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.jxjb" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                  
               </template>
-            </el-table-column>
-            <el-table-column prop="hjsj" label="获奖时间">
+            </el-table-column> 
+            <el-table-column prop="pxxz" label="培训性质">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.hjsj }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.pxxz }}</div>
                 <div v-else>
-                  <div v-if="zgJlbzsAuth.HJSJ == 2">
-                  <el-input v-model="scope.row.hjsj" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.pxxz" placeholder="请输入" :disabled="zgXxpxesAuth.PXXZ==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.hjsj" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                 
               </template>
-            </el-table-column>
-            <el-table-column prop="brwc" label="本人位次">
+            </el-table-column> 
+            <el-table-column prop="pxjb" label="培训级别">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.brwc }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.pxjb }}</div>
                 <div v-else>
-                  <div v-if="zgJlbzsAuth.BRWC == 2">
-                  <el-input v-model="scope.row.brwc" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.pxjb" placeholder="请输入" :disabled="zgXxpxesAuth.PXJB==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.brwc" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                  
               </template>
-            </el-table-column>
-            <el-table-column prop="bzbm" label="表彰部门">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.bzbm }}</div>
-                <div v-else>
-                  <div v-if="zgJlbzsAuth.BZBM == 2">
-                  <el-input v-model="scope.row.bzbm" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.bzbm" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column v-if="isEdit == 2" label="">
+            </el-table-column> 
+             <el-table-column v-if="isEdit == 2" label="">
               <template slot-scope="scope">
                 <div
                   class="deleteBtn"
@@ -3022,120 +1694,71 @@
             </el-table-column>
           </el-table>
         </div>
-        <!-- TODO：批准部门字段缺失 -->
-        <div id="tag_7" class="headline">
-          <div>政工科研情况（项目）</div>
+        <div id="tag_42" class="headline">
+          <div>项目学习</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(6)">
             <i class="addIcon" /> 添加
           </div>
         </div>
         <div class="tableStyle">
-          <el-table :data="detailInfoData.zgXmkyqks" style="width: 100%">
-            <el-table-column prop="xmmc" label="项目名称">
+          <el-table :data="detailInfoData.zgXmxxs" style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="pxmc" label="项目名称">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.xmmc }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.pxmc }}</div>
                 <div v-else>
-                  <div v-if="zgXmkyqksAuth.XMMC == 2">
-                  <el-input v-model="scope.row.xmmc" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.pxmc" placeholder="请输入" :disabled="zgXmxxsAuth.PXMC==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.xmmc" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                 
               </template>
-            </el-table-column>
-            <el-table-column prop="xmjb" label="项目级别">
+            </el-table-column>   
+        
+           <el-table-column prop="zzdw" label="组织单位">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.xmjb }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.zzdw }}</div>
                 <div v-else>
-                  <div v-if="zgXmkyqksAuth.XMJB == 2">
-                  <el-input v-model="scope.row.xmjb" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.zzdw" placeholder="请输入" :disabled="zgXmxxsAuth.ZZDW==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.xmjb" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                 
               </template>
-            </el-table-column>
-            <el-table-column prop="xmbh" label="项目编号">
+            </el-table-column>   
+            <el-table-column prop="xxdd" label="学习地点">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.xmbh }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.xxdd }}</div>
                 <div v-else>
-                  <div v-if="zgXmkyqksAuth.XMBH == 2">
-                  <el-input v-model="scope.row.xmbh" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.xxdd" placeholder="请输入" :disabled="zgXmxxsAuth.XXDD==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.xmbh" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                
               </template>
-            </el-table-column>
+            </el-table-column> 
             <el-table-column prop="qssj" label="起始时间">
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.qssj }}</div>
                 <div v-else>
-                  <div v-if="zgXmkyqksAuth.QSSJ == 2">
-                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="zgXmxxsAuth.QSSJ==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                 
               </template>
-            </el-table-column>
+            </el-table-column> 
             <el-table-column prop="jssj" label="结束时间">
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.jssj }}</div>
                 <div v-else>
-                  <div v-if="zgXmkyqksAuth.JSSJ == 2">
-                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="zgXmxxsAuth.JSSJ==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                  
               </template>
-            </el-table-column>
-            <el-table-column prop="sdjf" label="实到经费">
+            </el-table-column> 
+            <el-table-column prop="xmlb" label="项目类别">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.sdjf }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.xmlb }}</div>
                 <div v-else>
-                  <div v-if="zgXmkyqksAuth.SDJF == 2">
-                  <el-input v-model="scope.row.sdjf" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.xmlb" placeholder="请输入" :disabled="zgXmxxsAuth.XMLB==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.sdjf" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                 
               </template>
-            </el-table-column>
-            <el-table-column prop="brwc" label="本人位次">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.brwc }}</div>
-                <div v-else>
-                  <div v-if="zgXmkyqksAuth.BRWC == 2">
-                  <el-input v-model="scope.row.brwc" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.brwc" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="date" label="批准部门">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.pzbm }}</div>
-                <div v-else>
-                  <div v-if="zgXmkyqksAuth.PZBM == 2">
-                  <el-input v-model="scope.row.pzbm" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.pzbm" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column v-if="isEdit == 2" label="">
+            </el-table-column> 
+       <el-table-column v-if="isEdit == 2" label="">
               <template slot-scope="scope">
                 <div
                   class="deleteBtn"
@@ -3147,93 +1770,46 @@
             </el-table-column>
           </el-table>
         </div>
-
-        <div id="tag_8" class="headline">
-          <div>政工科研情况（论文）</div>
+    </div>
+   <!-- 职业资格 -->
+     <div class="detail_right" v-if="activeName == '5'&&detailInfoData.sffdy==1">
+        <div id="tag_5" class="headline">
+          <div>职业资格</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(7)">
             <i class="addIcon" /> 添加
           </div>
         </div>
         <div class="tableStyle">
-          <el-table :data="detailInfoData.zgLwkyqks" style="width: 100%">
-            <el-table-column prop="lwmc" label="论文名称">
+          <el-table :data="detailInfoData.zgZyzgs" style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="zsmc" label="证书名称">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.lwmc }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.zsmc }}</div>
                 <div v-else>
-                  <div v-if="zgLwkyqksAuth.LWMC == 2">
-                  <el-input v-model="scope.row.lwmc" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.zsmc" placeholder="请输入" :disabled="zgZyzgsAuth.ZSMC==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.lwmc" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                
               </template>
-            </el-table-column>
-            <el-table-column prop="qkmc" label="期刊名称">
+            </el-table-column>   
+        
+           <el-table-column prop="sydw" label="授予单位">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.qkmc }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.sydw }}</div>
                 <div v-else>
-                  <div v-if="zgLwkyqksAuth.QKMC == 2">
-                  <el-input v-model="scope.row.qkmc" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.sydw" placeholder="请输入" :disabled="zgZyzgsAuth.SYDW==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.qkmc" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                 
               </template>
-            </el-table-column>
-            <el-table-column prop="cnkh" label="期刊国内标准编号">
+            </el-table-column>   
+            <el-table-column prop="hqsj" label="获取时间">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.cnkh }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.hqsj }}</div>
                 <div v-else>
-                  <div v-if="zgLwkyqksAuth.CNKH == 2">
-                  <el-input v-model="scope.row.cnkh" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.hqsj" placeholder="请输入" :disabled="zgZyzgsAuth.HQSJ==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.cnkh" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                  
               </template>
-            </el-table-column>
-            <el-table-column prop="qklx" label="期刊类型">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.qklx }}</div>
-                <div v-else>
-                  <div v-if="zgLwkyqksAuth.QKLX == 2">
-                  <el-input v-model="scope.row.qklx" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.qklx" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="fbsj" label="发表时间">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.fbsj }}</div>
-                <div v-else>
-                  <div v-if="zgLwkyqksAuth.FBSJ == 2">
-                  <el-input v-model="scope.row.fbsj" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.fbsj" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="brwc" label="本人位次">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.brwc }}</div>
-                <div v-else>
-                  <div v-if="zgLwkyqksAuth.BRWC == 2">
-                  <el-input v-model="scope.row.brwc" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.brwc" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
+            </el-table-column> 
             <el-table-column v-if="isEdit == 2" label="">
               <template slot-scope="scope">
                 <div
@@ -3246,107 +1822,74 @@
             </el-table-column>
           </el-table>
         </div>
-
-        <div id="tag_9" class="headline">
-          <div>政工科研情况（著作）</div>
+    </div>
+     <!-- 岗位锻炼 -->
+       <div class="detail_right" v-if="activeName == '6'&&detailInfoData.sffdy==1">
+        <div id="tag_6" class="headline">
+          <div>岗位锻炼</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(8)">
             <i class="addIcon" /> 添加
           </div>
         </div>
         <div class="tableStyle">
-          <el-table :data="detailInfoData.zgZzkyqks" style="width: 100%">
-            <el-table-column prop="zzmc" label="著作名称">
+          <el-table :data="detailInfoData.zgGwdls" style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="zzdw" label="组织单位">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.zzmc }}</div>
+                <div v-if="isEdit == 1">{{ scope.row.zzdw }}</div>
                 <div v-else>
-                  <div v-if="zgZzkyqksAuth.ZZMC == 2">
-                  <el-input v-model="scope.row.zzmc" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.zzdw" placeholder="请输入" :disabled="zgGwdlsAuth.ZZDW==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.zzmc" placeholder="请输入" :disabled="false"/>
+                
+              </template>
+            </el-table-column>   
+        
+           <el-table-column prop="jsdw" label="接收单位">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.jsdw }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.jsdw" placeholder="请输入" :disabled="zgGwdlsAuth.JSDW==2"/>
                   </div>
-                </div>
+                 
+              </template>
+            </el-table-column>   
+            <el-table-column prop="dlxz" label="锻炼性质">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.dlxz }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.dlxz" placeholder="请输入" :disabled="zgGwdlsAuth.DLXZ==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+            <el-table-column prop="gwmc" label="岗位名称">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.gwmc }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.gwmc" placeholder="请输入" :disabled="zgGwdlsAuth.GWMC==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+             <el-table-column prop="qssj" label="起始时间">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.qssj }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="zgGwdlsAuth.QSSJ==2"/>
+                  </div>
+                  
+              </template>
+            </el-table-column> 
+             <el-table-column prop="jssj" label="结束时间">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.jssj }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="zgGwdlsAuth.JSSJ==2"/>
+                  </div>
+                 
               </template>
             </el-table-column>
-            <el-table-column prop="zzlx" label="著作类型">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.zzlx }}</div>
-                <div v-else>
-                  <div v-if="zgZzkyqksAuth.ZZLX == 2">
-                  <el-input v-model="scope.row.zzlx" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.zzlx" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="cgssdw" label="成果所属单位">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.cgssdw }}</div>
-                <div v-else>
-                  <div v-if="zgZzkyqksAuth.CGSSDW == 2">
-                  <el-input v-model="scope.row.cgssdw" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.cgssdw" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="isbnno" label="ISBN号">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.isbnno }}</div>
-                <div v-else>
-                  <div v-if="zgZzkyqksAuth.ISBNNO == 2">
-                  <el-input v-model="scope.row.isbnno" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.isbnno" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="cbs" label="出版社">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.cbs }}</div>
-                <div v-else>
-                  <div v-if="zgZzkyqksAuth.CBS == 2">
-                  <el-input v-model="scope.row.cbs" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.cbs" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="cbsj" label="出版时间">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.cbsj }}</div>
-                <div v-else>
-                  <div v-if="zgZzkyqksAuth.CBSJ == 2">
-                  <el-input v-model="scope.row.cbsj" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.cbsj" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="brwc" label="本人位次">
-              <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.brwc }}</div>
-                <div v-else>
-                  <div v-if="zgZzkyqksAuth.BRWC == 2">
-                  <el-input v-model="scope.row.brwc" placeholder="请输入" :disabled="true"/>
-                  </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.brwc" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column v-if="isEdit == 2" label="">
+             <el-table-column v-if="isEdit == 2" label="">
               <template slot-scope="scope">
                 <div
                   class="deleteBtn"
@@ -3355,109 +1898,85 @@
                   <i class="el-icon-close" />
                 </div>
               </template>
-            </el-table-column>
+            </el-table-column> 
           </el-table>
         </div>
-
-        <div id="tag_10" class="headline">
-          <div>政工科研情况（教学情况）</div>
+    </div>
+     <!-- 教学科研 -->
+     <div class="detail_right" v-if="activeName == '7'&&detailInfoData.sffdy==1">
+        <div id="tag_71" class="headline">
+          <div>教学情况</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(9)">
             <i class="addIcon" /> 添加
           </div>
         </div>
         <div class="tableStyle">
           <el-table :data="detailInfoData.zgJxkyqks" style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
             <el-table-column prop="kcmc" label="课程名称">
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.kcmc }}</div>
                 <div v-else>
-                  <div v-if="zgJxkyqksAuth.KCMC == 2">
-                  <el-input v-model="scope.row.kcmc" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.kcmc" placeholder="请输入" :disabled="zgJxkyqksAuth.KCMC==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.kcmc" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                
               </template>
-            </el-table-column>
-            <el-table-column prop="kclx" label="课程类型">
+            </el-table-column>   
+        
+           <el-table-column prop="kclx" label="课程类型">
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.kclx }}</div>
                 <div v-else>
-                  <div v-if="zgJxkyqksAuth.KCLX == 2">
-                  <el-input v-model="scope.row.kclx" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.kclx" placeholder="请输入" :disabled="zgJxkyqksAuth.KCLX==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.kclx" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                
               </template>
-            </el-table-column>
+            </el-table-column>   
             <el-table-column prop="kcxz" label="课程性质">
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.kcxz }}</div>
                 <div v-else>
-                  <div v-if="zgJxkyqksAuth.KCXZ == 2">
-                  <el-input v-model="scope.row.kcxz" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.kcxz" placeholder="请输入" :disabled="zgJxkyqksAuth.KCXZ==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.kcxz" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                 
               </template>
-            </el-table-column>
+            </el-table-column> 
             <el-table-column prop="ksl" label="课时量">
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.ksl }}</div>
                 <div v-else>
-                  <div v-if="zgJxkyqksAuth.KSL == 2">
-                  <el-input v-model="scope.row.ksl" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.ksl" placeholder="请输入" :disabled="zgJxkyqksAuth.KSL==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.ksl" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                
               </template>
-            </el-table-column>
-            <el-table-column prop="skrs" label="授课人数">
+            </el-table-column> 
+           <el-table-column prop="skrs" label="授课人数">
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.skrs }}</div>
                 <div v-else>
-                  <div v-if="zgJxkyqksAuth.SKRS == 2">
-                  <el-input v-model="scope.row.skrs" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.skrs" placeholder="请输入" :disabled="zgJxkyqksAuth.SKRS==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.skrs" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                 
               </template>
-            </el-table-column>
+            </el-table-column> 
             <el-table-column prop="qssj" label="起始时间">
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.qssj }}</div>
                 <div v-else>
-                  <div v-if="zgJxkyqksAuth.QSSJ == 2">
-                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="zgJxkyqksAuth.QSSJ==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                 
               </template>
-            </el-table-column>
+            </el-table-column> 
             <el-table-column prop="jssj" label="结束时间">
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.jssj }}</div>
                 <div v-else>
-                  <div v-if="zgJxkyqksAuth.JSSJ == 2">
-                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="true"/>
+                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="zgJxkyqksAuth.JSSJ==2"/>
                   </div>
-                  <div v-else>
-                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="false"/>
-                  </div>
-                </div>
+                 
               </template>
-            </el-table-column>
+            </el-table-column> 
             <el-table-column v-if="isEdit == 2" label="">
               <template slot-scope="scope">
                 <div
@@ -3470,7 +1989,442 @@
             </el-table-column>
           </el-table>
         </div>
-        <div v-if="isEdit != 2" class="editBottom">
+          <div id="tag_72" class="headline">
+          <div>科研情况（论文）</div>
+          <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(10)">
+            <i class="addIcon" /> 添加
+          </div>
+        </div>
+        <div class="tableStyle">
+          <el-table :data="detailInfoData.zgLwkyqks" style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="lwmc" label="题目">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.lwmc }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.lwmc" placeholder="请输入" :disabled="zgLwkyqksAuth.LWMC==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column>   
+        
+           <el-table-column prop="qkmc" label="期刊名称">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.qkmc }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.qkmc" placeholder="请输入" :disabled="zgLwkyqksAuth.QKMC==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column>   
+          
+            <el-table-column prop="cnkh" label="期刊国内标准刊号(CN)">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.cnkh }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.cnkh" placeholder="请输入" :disabled="zgLwkyqksAuth.CNKH==2"/>
+                  </div>
+                  
+              </template>
+            </el-table-column> 
+           <el-table-column prop="qklx" label="期刊类型">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.qklx }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.qklx" placeholder="请输入" :disabled="zgLwkyqksAuth.QKLX==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column>   
+            <el-table-column prop="fbsj" label="发表时间">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.fbsj }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.fbsj" placeholder="请输入" :disabled="zgLwkyqksAuth.FBSJ==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column>   
+            <el-table-column prop="brwc" label="本人位次">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.brwc }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.brwc" placeholder="请输入" :disabled="zgLwkyqksAuth.BRWC==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column>   
+             <el-table-column v-if="isEdit == 2" label="">
+              <template slot-scope="scope">
+                <div
+                  class="deleteBtn"
+                  @click="deleteWorkBrifeData(scope.row, scope.$index, 'j')"
+                >
+                  <i class="el-icon-close" />
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div id="tag_73" class="headline">
+          <div>科研情况（项目）</div>
+          <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(11)">
+            <i class="addIcon" /> 添加
+          </div>
+        </div>
+        <div class="tableStyle">
+          <el-table :data="detailInfoData.zgXmkyqks" style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="xmmc" label="项目名称">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.xmmc }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.xmmc" placeholder="请输入" :disabled="zgXmkyqksAuth.XMMC==2"/>
+                  </div>
+                  
+              </template>
+            </el-table-column>   
+        
+           <el-table-column prop="xmjb" label="项目级别">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.xmjb }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.xmjb" placeholder="请输入" :disabled="zgXmkyqksAuth.XMJB==2"/>
+                  </div>
+                  
+              </template>
+            </el-table-column>   
+          <el-table-column prop="xmbh" label="项目编号">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.xmbh }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.xmbh" placeholder="请输入" :disabled="zgXmkyqksAuth.XMBH==2"/>
+                  </div>
+                  
+              </template>
+            </el-table-column> 
+            <el-table-column prop="qssj" label="起始时间">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.qssj }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="zgXmkyqksAuth.QSSJ==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+            <el-table-column prop="jssj" label="结束时间">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.jssj }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="zgXmkyqksAuth.JSSJ==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+           <el-table-column prop="sdjf" label="实到经费">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.sdjf }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.sdjf" placeholder="请输入" :disabled="zgXmkyqksAuth.SDJF==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+            <el-table-column prop="brwc" label="本人位次">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.brwc }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.brwc" placeholder="请输入" :disabled="zgXmkyqksAuth.BRWC==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+            <el-table-column prop="pzbm" label="批准部门">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.pzbm }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.pzbm" placeholder="请输入" :disabled="zgXmkyqksAuth.PZBM==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+             <el-table-column v-if="isEdit == 2" label="">
+              <template slot-scope="scope">
+                <div
+                  class="deleteBtn"
+                  @click="deleteWorkBrifeData(scope.row, scope.$index, 'k')"
+                >
+                  <i class="el-icon-close" />
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+         <div id="tag_74" class="headline">
+          <div>科研情况（著作）</div>
+          <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(12)">
+            <i class="addIcon" /> 添加
+          </div>
+        </div>
+        <div class="tableStyle">
+          <el-table :data="detailInfoData.zgZzkyqks" style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="zzmc" label="著作名称">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.zzmc }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.zzmc" placeholder="请输入" :disabled="zgZzkyqksAuth.ZZMC==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column>   
+        
+           <el-table-column prop="zzlx" label="著作类型">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.zzlx }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.zzlx" placeholder="请输入" :disabled="zgZzkyqksAuth.ZZLX==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column>   
+          <el-table-column prop="cbs" label="出版社">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.cbs }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.cbs" placeholder="请输入" :disabled="zgZzkyqksAuth.CBS==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+            <el-table-column prop="cbsj" label="出版时间">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.cbsj }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.cbsj" placeholder="请输入" :disabled="zgZzkyqksAuth.CBSJ==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+           <el-table-column prop="brwc" label="本人位次">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.brwc }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.brwc" placeholder="请输入" :disabled="zgZzkyqksAuth.BRWC==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+             <el-table-column v-if="isEdit == 2" label="">
+              <template slot-scope="scope">
+                <div
+                  class="deleteBtn"
+                  @click="deleteWorkBrifeData(scope.row, scope.$index, 'l')"
+                >
+                  <i class="el-icon-close" />
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+         <div id="tag_75" class="headline">
+          <div>科研情况（其他）</div>
+          <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(13)">
+            <i class="addIcon" /> 添加
+          </div>
+        </div>
+        <div class="tableStyle">
+          <el-table :data="detailInfoData.zgQtkyqks" style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="tm" label="题目">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.tm }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.tm" placeholder="请输入" :disabled="zgQtkyqksAuth.TM==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column>   
+        
+           <el-table-column prop="cglx" label="成果类型">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.cglx }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.cglx" placeholder="请输入" :disabled="zgQtkyqksAuth.CGLX==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column>   
+          <el-table-column prop="fbsj" label="发表时间">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.fbsj }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.fbsj" placeholder="请输入" :disabled="zgQtkyqksAuth.FBSJ==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+            <el-table-column prop="brwc" label="本人位次">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.brwc }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.brwc" placeholder="请输入" :disabled="zgQtkyqksAuth.BRWC==2"/>
+                  </div>
+                  
+              </template>
+            </el-table-column> 
+             <el-table-column v-if="isEdit == 2" label="">
+              <template slot-scope="scope">
+                <div
+                  class="deleteBtn"
+                  @click="deleteWorkBrifeData(scope.row, scope.$index, 'm')"
+                >
+                  <i class="el-icon-close" />
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+    </div>
+    <!-- 考核评价 -->
+    <div class="detail_right" v-if="activeName == '8'&&detailInfoData.sffdy==1">
+        <div id="tag_8" class="headline">
+          <div>学校年度考核结果</div>
+          <!-- <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(14)">
+            <i class="addIcon" /> 添加
+          </div> -->
+        </div>
+        <div class="tableStyle">
+          <el-table :data="detailInfoData.zgNdkhs" style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="khnd" label="考核年度">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.khnd }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.khnd" placeholder="请输入" disabled/>
+                  </div>
+               
+              </template>
+            </el-table-column>   
+        
+           <el-table-column prop="khjgm" label="学校年度考核结果">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1"><el-select
+                        v-model="scope.row.khjgm"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in khjgmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
+                <div v-else>
+      
+                  <el-select
+                        v-model="scope.row.khjgm"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in khjgmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select>
+                 </div>
+              </template>
+            </el-table-column>   
+            <el-table-column v-if="isEdit == 2" label="">
+              <template slot-scope="scope">
+                <div v-if="scope.row.sftb!=='1'"
+                  class="deleteBtn"
+                  @click="deleteWorkBrifeData(scope.row, scope.$index, 'n')"
+                >
+                  <i class="el-icon-close" />
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+    </div>
+    <!-- 奖励表彰 -->
+    <div class="detail_right" v-if="activeName == '9'&&detailInfoData.sffdy==1">
+        <div id="tag_9" class="headline">
+          <div>奖励表彰</div>
+          <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(15)">
+            <i class="addIcon" /> 添加
+          </div>
+        </div>
+        <div class="tableStyle">
+          <el-table :data="detailInfoData.zgJlbzs" style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="jxmc" label="奖项名称">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.jxmc }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.jxmc" placeholder="请输入" :disabled="zgJlbzsAuth.JXMC==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column>   
+        
+           <el-table-column prop="jxjb" label="奖项级别">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.jxjb }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.jxjb" placeholder="请输入" :disabled="zgJlbzsAuth.JXJB==2"/>
+                  </div>
+                
+              </template>
+            </el-table-column>   
+            <el-table-column prop="hjsj" label="获奖时间">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.hjsj }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.hjsj" placeholder="请输入" :disabled="zgJlbzsAuth.HJSJ==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+            <el-table-column prop="brwc" label="本人位次">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.brwc }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.brwc" placeholder="请输入" :disabled="zgJlbzsAuth.BRWC==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+            <el-table-column prop="bzbm" label="表彰部门">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1">{{ scope.row.bzbm }}</div>
+                <div v-else>
+                  <el-input v-model="scope.row.bzbm" placeholder="请输入" :disabled="zgJlbzsAuth.BZBM==2"/>
+                  </div>
+                 
+              </template>
+            </el-table-column> 
+             <el-table-column v-if="isEdit == 2" label="">
+              <template slot-scope="scope">
+                <div
+                  class="deleteBtn"
+                  @click="deleteWorkBrifeData(scope.row, scope.$index, 'o')"
+                >
+                  <i class="el-icon-close" />
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+    </div>
+    </div>
+    <div v-if="isEdit != 2" class="editBottom">
           <div class="btn editIcon" @click="editButtonClick">编辑</div>
         </div>
 
@@ -3478,14 +2432,9 @@
           <div class="btn cancel" @click="handleCancle">取消</div>
           <div class="btn confirm" @click="handlUpdata">保存</div>
         </div>
-      </div>
-      <!-- <div v-else>
-        暂无数据
-      </div> -->
-    </div>
   </div>
+  
 </template>
-
 <script>
 import {
   getDetailQueryPoliticalWorkList,
@@ -3496,167 +2445,106 @@ import {
 } from "@/api/politicalWork/basicInfo";
 export default {
   name: "DetailInfo",
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      vm.routerFrom = from.fullPath;
-    });
-  },
   data() {
     return {
-      sfdqzgxlmOps: [
-        { dm: 0, mc: "否" },
-        { dm: 1, mc: "是" },
-      ],
-      xbmOps: [],
-      mzmOps: [],
-      zzmmmOps: [],
-      sxwgjdqmOps: [],
-      sfzjlxmOps: [],
+      activeName: "1",
+      isEdit: 1,
+      value: "测试",
+      //选项
+      sfOps: [],
       hyzkmOps: [],
-      zgxlmOps: [],
-      xwmOps: [],
-      jzgrylbmOps: [],
-      ryzflOps: [],
-      rygwztmOps: [],
-      xklbmOps: [],
-      yjxkmOps: [],
-      ejxkmOps: [],
-      xyOps: [],
-      cblbmOps: [],
-      dwhOps: [],
-      gjdqmOps: [],
-      sxzymOps: [],
-      jgOps: [],
-      xzOps: [],
-
-      crzyjszwmOps: [],
-
-      xxfsmOps: [],
-      xxxsmOps: [],
-
-      zjzcdmOps: [],
-      prgwxlmOps: [],
-      prgwdjmOps: [],
-      gwdjmOps: [],
-      khjgmOps: [],
-
+      zjzcdmOps: [], //专业技术职务
+      zzmmmOps: [],
+      rzdwhOps: [], //二级学科
+      sxzymOps: [], //专业
+      gwxzOps: [
+        { dm: "0", mc: "专职" },
+        { dm: "1", mc: "兼职" },
+      ],
+      zgxlmOps: [], //学历
+      xbmOps: [],
+      zgxwmOps: [], //学位
+      xzOps: [], //学制
+      khjgmOps: [], //考核结果
+      zwmcmOps: [], //行政职务名称
+      zwjbmOps: [], //职务级别码
+      gzdwOps: [], //工作单位
+      przwdjOps: [], //聘任职务等级
+      jslbOps: [], //晋升类别
       zgZgjbxxesAuth: {},
-      zgGzjlsAuth: {},
-      zgXxpxesAuth: {},
+      zgFdyrmsAuth: {},
       zgXlxwsAuth: {},
+      zgDzzwsAuth: {},
+      zgDzzjsAuth: {},
+      zgZyjszwsAuth: {},
+      zgGzjlsAuth: {},
+      zgPrxxsAuth: {},
+      zgXxpxesAuth: {},
+      zgXmxxsAuth: {},
+      zgZyzgsAuth: {},
+      zgGwdlsAuth: {},
       zgNdkhsAuth: {},
-      zgKycgsAuth: {},
+      //zgKycgsAuth: {},
       zgLwkyqksAuth: {},
       zgXmkyqksAuth: {},
-      zgZyjszwsAuth: {},
-      zgJlbzsAuth: {},
       zgJxkyqksAuth: {},
       zgZzkyqksAuth: {},
+      zgQtkyqksAuth: {},
+      zgJlbzsAuth: {},
+
       routerFrom: "", // 跳转过来的路由
+
       detailInfoData: {
-        zgZgjbxxes: {},
-        zgGzjls: [],
-        zgXlxws: {}, // 学历学位
-        zgZyjszws: [],
-        zgXxpxes: [],
-        zgNdkhs: [],
-        zgJlbzs: [],
-        zgXmkyqks: [],
-        zgLwkyqks: [],
-        zgZzkyqks: [],
-        zgJxkyqks: [],
+        zgZgjbxxes: {}, //基本信息
+        zgFdyrms: {}, //辅导员信息
+
+        zgXlxws: [], // 学历学位
+
+        zgDzzws: [], //行政职业发展
+        zgDzzjs: [], //级别
+        zgZyjszws: [], //专业技术职务
+        zgGzjls: [], //工作经历
+        zgPrxxs: [], //聘任信息
+
+        zgXxpxes: [], //学习培训
+        zgXmxxs: [], //项目学习
+        zgZyzgs: [], //职业资格
+        zgGwdls: [], //岗位锻炼
+        zgNdkhs: [], //考核
+        zgJlbzs: [], //奖励
+        zgXmkyqks: [], //项目可研
+        zgLwkyqks: [], //论文科研
+        zgZzkyqks: [], //著作科研
+        zgJxkyqks: [], //教学科研
+        zgQtkyqks: [], //其他科研
         zgZps: {},
       },
-      dtailsList: [
-        "基本信息",
-        "工作简历",
-        "学历学位信息",
-        "专业技术职务",
-        "学习培训",
-        "年度考核",
-        "奖励表彰信息",
-        "科研情况（项目）",
-        "科研情况（论文）",
-        "科研情况（著作）",
-        "科研情况（教学情况）",
-      ],
-      current: 0,
-      tableData: [],
-      isEdit: false,
-      value: "",
     };
   },
-  created() {
-    this.$nextTick(() => {
-      this.getDetail();
-    });
-    this.isEdit = this.$route.query.show;
-  },
+  created() {},
   mounted() {
-    this.getCode("dmxbm"); // 性别码
-    this.getCode("dmmzm"); // 民族码
-    this.getCode("dmxzqhm"); // 籍贯码
-    this.getCode("dmzzmmm"); // 政治面貌码
-    this.getCode("dmrsgjdqm"); // 国籍地区码
-    this.getCode("dmsfzjlxm"); // 身份证件类型码
-    this.getCode("dmhyzkm"); // 婚姻状况码_公用
-    this.getCode("dmrsxlm"); // 学历码
-    this.getCode("dmxwm"); // 学位码
-    // this.getWorkPlace('dmdwmc') // 单位
-
-    this.getCode("dmrsrylbm"); // 人员类别码
-    this.getCode("dmrsryflm"); // 人员总分类
-    this.getCode("dmrsgwztm"); // 人员岗位状态
-    this.getCode("dmrsxklbm"); // 学科类别
-    this.getCode("dmrsxym"); // 学缘
-    this.getCode("dmrscblbm"); // 参保类别码
-
-    this.getCode("dmrszyjszwm"); // 曾任专业技术职务码
-
-    this.getCode("dmxxfsm"); // 学习方式码
-    this.getCode("dmrsxxxsm"); // 学习形式码
-    this.getCode("dmxz"); // 学制
-    // this.getCode('dmrsxklbm') // 学习方式码
-    // this.getCode('dmxwm') // 学习方式码
-    // this.getCode('dmrsgjdqm') // 学习方式码
-    // this.getCode('dmrsxym') // 学习方式码
-
-    this.getCode("dmkyzcm"); // 专业职称码
-    this.getCode("dmrsprgwxlm"); // 聘任岗位系列码
-    this.getCode("dmrsprgwdjm"); // 聘任岗位等级码
-    this.getCode("dmrsgwdjm"); // 岗位等级码
-    // this.getCode('dmrsprgwdjm') // 专技等级
-
-    this.getCode("dmrskhjgm"); // 考核结果码
-
-    this.getListWorkPlace(); //单位码表
-    this.getSxzy();
+    this.getCode("dmxbm");
+    this.getCode("dmsfbzm");
+    this.getCode("dmzzmmm");
+    this.getCode("dmkyzcm");
+    this.getCode("dmrsxlm");
+    this.getCode("dmrsxklbm");
+    this.getCode("dmxwm");
+    this.getCode("dmrshyzkm");
+    this.getCode("dmxz");
+    //this.getCode("dmzwmcm(还没有)");
+    this.getCode("dmrskhjgm");
+    this.getListWorkPlace();
+    this.getDetail();
   },
-
   methods: {
-    // getWorkPlace(data) {
-    //   this.getListWorkPlace(data)
-    // },
-
-    // getListWorkPlace(paramsData) {
-    //   const data = { listWorkPlace: paramsData }
-    //   getListWorkPlace(data)
-    //     .then((res) => {
-    //       this.dwhOps = res.data.rows
-    //     })
-    //     .catch((err) => {})
-    // },
-    getSxzy() {
-      getMajors()
-        .then((res) => {
-          this.sxzymOps = res.data.rows;
-        })
-        .catch((err) => {});
+    handleClick() {
+      console.log(this.detailInfoData.zgZyjszws.sftb);
     },
     getListWorkPlace() {
       queryAllDwh()
         .then((res) => {
-          this.dwhOps = res.data.rows;
+          this.rzdwhOps = res.data.rows;
         })
         .catch((err) => {});
     },
@@ -3671,81 +2559,100 @@ export default {
             case "dmxbm":
               this.xbmOps = res.data;
               break;
-            case "dmmzm":
-              this.mzmOps = res.data;
-              break;
+            case "dmsfbzm":
+              this.sfOps = res.data;
+            // case "dmmzm":
+            //   this.mzmOps = res.data;
+            //   break;
             case "dmzzmmm":
               this.zzmmmOps = res.data;
-              break;
-            case "dmrsgjdqm":
-              this.gjdqmOps = res.data;
-              this.sxwgjdqmOps = res.data;
-              break;
-            case "dmsfzjlxm":
-              this.sfzjlxmOps = res.data;
-              break;
-            case "dmhyzkm":
-              this.hyzkmOps = res.data;
-              break;
-            case "dmrsxlm":
-              this.zgxlmOps = res.data;
-              break;
-            case "dmxwm":
-              this.xwmOps = res.data;
-              break;
-            case "dmrsrylbm":
-              this.jzgrylbmOps = res.data;
-              break;
-            case "dmrsryflm":
-              this.rsryflmOps = res.data;
-              break;
-            case "dmrsgwztm":
-              this.rygwztmOps = res.data;
-              break;
-            case "dmrsxklbm":
-              this.xklbmOps = res.data;
-              this.yjxkmOps = res.data;
-              this.ejxkmOps = res.data;
-              // this.sxzymOps = res.data
-              break;
-            case "dmrsxym":
-              this.xyOps = res.data;
-              break;
-            case "dmrscblbm":
-              this.cblbmOps = res.data;
-              break;
-            case "dmrszyjszwm":
-              this.crzyjszwmOps = res.data;
-              break;
-            case "dmxxfsm":
-              this.xxfsmOps = res.data;
-              break;
-            case "dmrsxxxsm":
-              this.xxxsmOps = res.data;
               break;
             case "dmkyzcm":
               this.zjzcdmOps = res.data;
               break;
-            case "dmrsprgwxlm":
-              this.prgwxlmOps = res.data;
+            case "dmrsxlm":
+              this.zgxlmOps = res.data;
               break;
-            case "dmrsprgwdjm":
-              this.prgwdjmOps = res.data;
+            case "dmrsxklbm":
+              // this.xklbmOps = res.data;
+              // this.yjxkmOps = res.data;
+              // this.ejxkmOps = res.data;
+              this.sxzymOps = res.data;
               break;
-            case "dmrskhjgm":
-              this.khjgmOps = res.data;
+            case "dmxwm":
+              this.zgxwmOps = res.data;
               break;
-            //籍贯
-            case "dmxzqhm":
-              this.jgOps = res.data;
+            case "dmrshyzkm":
+              this.hyzkmOps = res.data;
               break;
-            //学制
             case "dmxz":
               this.xzOps = res.data;
               break;
-            //岗位等级
-            case "dmrsgwdjm":
-              this.gwdjOps = res.data;
+            //  case "dmzwmcm(还没有)":
+            // this.zwmcmOps = res.data;
+            // break;
+            // case "dmzwjbm(还没有)":
+            //   this.zwjbmOps = res.data;
+            //   break;
+            case "dmrskhjgm":
+              this.khjgmOps = res.data;
+              break;
+            case "dmzwjbm(还没有)":
+              this.zwjbmOps = res.data;
+              break;
+              // case "dmrsgjdqm":
+              //   this.gjdqmOps = res.data;
+              //   this.sxwgjdqmOps = res.data;
+              //   break;
+              // case "dmsfzjlxm":
+              //   this.sfzjlxmOps = res.data;
+              //   break;
+              // case "dmhyzkm":
+              //   this.hyzkmOps = res.data;
+              //   break;
+
+              // case "dmrsrylbm":
+              //   this.jzgrylbmOps = res.data;
+              //   break;
+              // case "dmrsryflm":
+              //   this.rsryflmOps = res.data;
+              //   break;
+              // case "dmrsgwztm":
+              //   this.rygwztmOps = res.data;
+              //   break;
+
+              // case "dmrsxym":
+              //   this.xyOps = res.data;
+              //   break;
+              // case "dmrscblbm":
+              //   this.cblbmOps = res.data;
+              //   break;
+              // case "dmrszyjszwm":
+              //   this.crzyjszwmOps = res.data;
+              //   break;
+              // case "dmxxfsm":
+              //   this.xxfsmOps = res.data;
+              //   break;
+              // case "dmrsxxxsm":
+              //   this.xxxsmOps = res.data;
+              //   break;
+
+              // case "dmrsprgwxlm":
+              //   this.prgwxlmOps = res.data;
+              //   break;
+              // case "dmrsprgwdjm":
+              //   this.prgwdjmOps = res.data;
+              //   break;
+
+              // //籍贯
+              // case "dmxzqhm":
+              //   this.jgOps = res.data;
+              //   break;
+              // //学制
+
+              // //岗位等级
+              // case "dmrsgwdjm":
+              //   this.gwdjOps = res.data;
               break;
           }
         })
@@ -3769,18 +2676,18 @@ export default {
           );
           this.$set(
             this.detailInfoData,
+            "zgFdyrms",
+            res.zgFdyrms[0] ? res.zgFdyrms[0] : {} // 辅导员信息
+          );
+          this.$set(
+            this.detailInfoData,
             "zgGzjls",
             res.zgGzjls ? res.zgGzjls : [] // 工作简历
           );
           this.$set(
             this.detailInfoData,
             "zgXlxws",
-            res.zgXlxws[0] ? res.zgXlxws[0] : {} // 学历学位
-          );
-          this.$set(
-            this.detailInfoData,
-            "zgKycgs",
-            res.zgKycgs ? res.zgKycgs[0] : [] // 科研成果
+            res.zgXlxws ? res.zgXlxws : [] // 学历学位
           );
           this.$set(
             this.detailInfoData,
@@ -3824,303 +2731,188 @@ export default {
           ),
             this.$set(
               this.detailInfoData,
-              "zgZps",
-              res.zgZps[0] ? res.zgZps[0] : {} // 照片
+              "zgQtkyqks",
+              res.zgQtkyqks ? res.zgQtkyqks : [] // 其他科研情况
             );
+          this.$set(
+            this.detailInfoData,
+            "zgDzzjs",
+            res.zgDzzjs ? res.zgDzzjs : [] // 行政级别
+          );
+          this.$set(
+            this.detailInfoData,
+            "zgDzzws",
+            res.zgDzzws ? res.zgDzzws : [] // 行政职务
+          );
+          this.$set(
+            this.detailInfoData,
+            "zgGwdls",
+            res.zgGwdls ? res.zgGwdls : [] // 岗位锻炼
+          );
+          this.$set(
+            this.detailInfoData,
+            "zgPrxxs",
+            res.zgPrxxes ? res.zgPrxxes : [] // 聘任信息
+          );
+          this.$set(
+            this.detailInfoData,
+            "zgXmxxs",
+            res.zgXmxxes ? res.zgXmxxes : [] // 项目学习
+          );
+          this.$set(
+            this.detailInfoData,
+            "zgZyzgs",
+            res.zgZyzgs ? res.zgZyzgs : [] // 职业资格
+          );
+          this.$set(
+            this.detailInfoData,
+            "zgZps",
+            res.zgZps[0] ? res.zgZps[0] : {} // 照片
+          );
           this.$set(this.detailInfoData, "updateTime", res.updateTime);
           this.$set(this.detailInfoData, "createTime", res.createTime);
-
+          this.$set(this.detailInfoData, "sffdy", res.sffdy);
+          this.$set(this.detailInfoData, "sfxs", res.sfxs);
           this.zgZgjbxxesAuth = res.auth.zg_zgjbxxAuth;
           this.zgGzjlsAuth = res.auth.zg_gzjlAuth;
           this.zgXxpxesAuth = res.auth.zg_xxpxAuth;
           this.zgXlxwsAuth = res.auth.zg_xlxwAuth;
-          this.zgNdkhsAuth = res.auth.zg_ndkhAuth;
-          this.zgKycgsAuth = res.auth.zg_kycgAuth;
+          //this.zgNdkhsAuth = res.auth.zg_ndkhAuth;
+
           this.zgLwkyqksAuth = res.auth.zg_lwkyqkAuth;
           this.zgXmkyqksAuth = res.auth.zg_xmkyqkAuth;
           this.zgZyjszwsAuth = res.auth.zg_zyjszwAuth;
           this.zgJlbzsAuth = res.auth.zg_jlbzAuth;
           this.zgJxkyqksAuth = res.auth.zg_jxkyqkAuth;
           this.zgZzkyqksAuth = res.auth.zg_zzkyqkAuth;
+          this.zgDzzjsAuth = res.auth.zg_dzzjAuth;
+          this.zgDzzwsAuth = res.auth.zg_dzzwAuth;
+          this.zgFdyrmsAuth = res.auth.zg_fdyrmAuth;
+          this.zgGwdlsAuth = res.auth.zg_gwdlAuth;
+          this.zgPrxxsAuth = res.auth.zg_prxxAuth;
+          this.zgQtkyqksAuth = res.auth.zg_qtkyqkAuth;
+          this.zgXmxxsAuth = res.auth.zg_xmxxAuth;
+          this.zgZyzgsAuth = res.auth.zg_zyzgAuth;
         })
         .catch((err) => {});
-    },
-    handleList(index, tag) {
-      this.current = index;
-      var id = "#" + tag + "_" + index;
-
-      document.querySelector(id).scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "nearest",
-      });
-    },
-    addDetailInfoData(index) {
-      if (index == 1) {
-        // 工作简历1
-        this.detailInfoData.zgGzjls.push({});
-      } else if (index == 2) {
-        // 专业技术职务
-        this.detailInfoData.zgZyjszws.push({});
-      } else if (index == 3) {
-        // 学习培训
-        this.detailInfoData.zgXxpxes.push({});
-      } else if (index == 4) {
-        // 年度考核
-        this.detailInfoData.zgNdkhs.push({});
-      } else if (index == 5) {
-        // 奖励表彰信息
-        this.detailInfoData.zgJlbzs.push({});
-      } else if (index == 6) {
-        // 政工科研情况（项目）
-        this.detailInfoData.zgXmkyqks.push({});
-      } else if (index == 7) {
-        // 政工科研情况（论文）
-        this.detailInfoData.zgLwkyqks.push({});
-      } else if (index == 8) {
-        // 政工科研情况（著作）
-        this.detailInfoData.zgZzkyqks.push({});
-      } else if (index == 9) {
-        // 政工科研情况（教学情况）
-        this.detailInfoData.zgJxkyqks.push({});
-      }
-    },
-    deleteWorkBrifeData(row, index, flag) {
-      if (flag == "a") {
-        // 工作简历
-        this.detailInfoData.zgGzjls.splice(index, 1);
-      } else if (flag == "b") {
-        // 专业技术职务
-        this.detailInfoData.zgZyjszws.splice(index, 1);
-      } else if (flag == "c") {
-        // 学习培训
-        this.detailInfoData.zgXxpxes.splice(index, 1);
-      } else if (flag == "d") {
-        // 年度考核是D
-        this.detailInfoData.zgNdkhs.splice(index, 1);
-      } else if (flag == "e") {
-        // 奖励是E
-        this.detailInfoData.zgJlbzs.splice(index, 1);
-      } else if (flag == "f") {
-        // 政工科研情况（项目）
-        this.detailInfoData.zgXmkyqks.splice(index, 1);
-      } else if (flag == "g") {
-        // 政工科研情况（论文）
-        this.detailInfoData.zgLwkyqks.splice(index, 1);
-      } else if (flag == "h") {
-        // 政工科研情况（著作）
-        this.detailInfoData.zgZzkyqks.splice(index, 1);
-      } else if (flag == "i") {
-        // 政工科研情况（教学情况）
-        this.detailInfoData.zgJxkyqks.splice(index, 1);
-      }
     },
     editButtonClick() {
       this.isEdit = 2; // 控制是否可以编辑的字段
     },
-    // 取消
     handleCancle() {
       // this.$router.push({
       //   path: this.routerFrom,
       // });
       this.isEdit = 1;
-      this.getDetail();
     },
-    // 提交
     handlUpdata() {
       let data = this.detailInfoData;
-      // console.log("data.zgGzjls:", data.zgGzjls);
-      // console.log("data.zgGzjls.gzqsrq:", data.zgGzjls[0].gzqsrq);
-      // //0必填和空的校验
-      if (this.zgZgjbxxesAuth.YDDH == 0 && !data.zgZgjbxxes.yddh) {
-        this.$message.error("移动电话不能为空");
-        // } else if (this.zgGzjlsAuth.GZQSRQ == 0 && !data.zgGzjls.gzqsrq) {
-        //   this.$message.error("工作起始日期不能为空");
-        // } else if (this.zgGzjlsAuth.GZZZRQ == 0 && !data.zgGzjls.gzzzrq) {
-        //   this.$message.error("工作终止日期不能为空"); //
-        // } else if (this.zgGzjlsAuth.GZDW == 0 && !data.zgGzjls.gzdw) {
-        //   this.$message.error("工作单位不能为空"); //
-        // } else if (this.zgGzjlsAuth.GZNR == 0 && !data.zgGzjls.gznr) {
-        //   this.$message.error("工作内容不能为空"); //
-        // } else if (this.zgGzjlsAuth.BZ == 0 && !data.zgGzjls.bz) {
-        //   this.$message.error("备注不能为空"); //
-        // } else if (this.zgGzjlsAuth.ZW == 0 && !data.zgGzjls.zw) {
-        //   this.$message.error("职位不能为空"); //
-        // } else if (this.zgGzjlsAuth.CRDZZWMC == 0 && !data.zgGzjls.crdzzwmc) {
-        //   this.$message.error("曾任党务职位不能为空"); //
-        // } else if (this.zgGzjlsAuth.CRZYJSZWM == 0 && !data.zgGzjls.crzyjszwm) {
-        //   this.$message.error("曾任专业技术职务不能为空");
-        // } else if (this.zgGzjlsAuth.GZZMR == 0 && !data.zgGzjls.gzzmr) {
-        //   this.$message.error("工作证明人不能为空");
-      } else if (this.zgXlxwsAuth.RXSJ == 0 && !data.zgXlxws.rxsj) {
-        this.$message.error("入学时间不能为空");
-      } else if (this.zgXlxwsAuth.BYSJ == 0 && !data.zgXlxws.bysj) {
-        this.$message.error("毕业时间不能为空");
-      } else if (this.zgXlxwsAuth.XZ == 0 && !data.zgXlxws.xz) {
-        this.$message.error("学制不能为空");
-      } else if (this.zgXlxwsAuth.XXFSM == 0 && !data.zgXlxws.xxfsm) {
-        this.$message.error("学习方式码不能为空");
-      } else if (this.zgXlxwsAuth.XXXSM == 0 && !data.zgXlxws.xxxsm) {
-        this.$message.error("学习形式码不能为空");
-      } else if (this.zgXlxwsAuth.XLZSH == 0 && !data.zgXlxws.xlzsh) {
-        this.$message.error("学历证书号不能为空");
-      } else if (this.zgXlxwsAuth.XLHDSJ == 0 && !data.zgXlxws.xlhdsj) {
-        this.$message.error("学历获得时间不能为空");
-      } else if (this.zgXlxwsAuth.SXZYM == 0 && !data.zgXlxws.sxzys) {
-        this.$message.error("所学专业不能为空");
-      } else if (this.zgXlxwsAuth.SXZYSM == 0 && !data.zgXlxws.sxzyms) {
-        this.$message.error("所学专业描述不能为空");
-      } else if (this.zgXlxwsAuth.BYXXHDW == 0 && !data.zgXlxws.byxxhdw) {
-        this.$message.error("毕业学校或单位不能为空");
-      } else if (this.zgXlxwsAuth.XXZMR == 0 && !data.zgXlxws.xxzmr) {
-        this.$message.error("学习证明人不能为空");
-      } else if (this.zgXlxwsAuth.XWM == 0 && !data.zgXlxws.xwm) {
-        this.$message.error("学位码不能为空");
-      } else if (this.zgXlxwsAuth.SFDQZGXW == 0 && !data.zgXlxws.sfdqzgxw) {
-        this.$message.error("是否当前最高学位不能为空");
-      } else if (this.zgXlxwsAuth.SXWDWMC == 0 && !data.zgXlxws.sxwdwmc) {
-        this.$message.error("授学位单位名称不能为空");
-      } else if (this.zgXlxwsAuth.SXWGJDQM == 0 && !data.zgXlxws.scwgjdqm) {
-        this.$message.error("授学位国家/地区不能为空");
-      } else if (this.zgXlxwsAuth.XWSYSJ == 0 && !data.zgXlxws.xwsysj) {
-        this.$message.error("学位授予时间不能为空");
-      } else if (this.zgXlxwsAuth.XWZSH == 0 && !data.zgXlxws.xwzsh) {
-        this.$message.error("学位证书号不能为空");
-      } else if (this.zgXlxwsAuth.XY == 0 && !data.zgXlxws.xy) {
-        this.$message.error("学缘不能为空");
-      } else if (this.zgXlxwsAuth.BZ == 0 && !data.zgXlxws.bz) {
-        this.$message.error("备注不能为空");
-        // } else if (this.zgZyjszwsAuth.ZJZCDM == 0 && !data.zgZyjszws.zjzcdm) {
-        //   this.$message.error("专技职称代码不能为空");
-        // } else if (this.zgZyjszwsAuth.ZJZCSJ == 0 && !data.zgZyjszws.zjzcdm) {
-        //   this.$message.error("专技职称时间不能为空");
-        // } else if (this.zgZyjszwsAuth.PRGWXLM == 0 && !data.zgZyjszws.prgwxlm) {
-        //   this.$message.error("聘任岗位系列不能为空");
-        // } else if (this.zgZyjszwsAuth.PRGWDJM == 0 && !data.zgZyjszws.prgwdjm) {
-        //   this.$message.error("聘任岗位等级不能为空");
-        // } else if (this.zgZyjszwsAuth.PRRQ == 0 && !data.zgZyjszws.prrq) {
-        //   this.$message.error("聘任日期不能为空");
-        // } else if (this.zgZyjszwsAuth.PRWH == 0 && !data.zgZyjszws.prwh) {
-        //   this.$message.error("聘任文号不能为空");
-        // } else if (this.zgZyjszwsAuth.GWDJM == 0 && !data.zgZyjszws.gwdjm) {
-        //   this.$message.error("岗位等级不能为空");
-        // } else if (this.zgZyjszwsAuth.ZJDJ == 0 && !data.zgZyjszws.zjdj) {
-        //   this.$message.error("专技等级不能为空");
-        // } else if (this.zgXxpxesAuth.PXMC == 0 && !data.zgXxpxes.pxmc) {
-        //   this.$message.error("培训名称不能为空");
-        // } else if (this.zgXxpxesAuth.ZZDW == 0 && !data.zgXxpxes.zzdw) {
-        //   this.$message.error("组织单位不能为空");
-        // } else if (this.zgXxpxesAuth.PXDD == 0 && !data.zgXxpxes.pxdd) {
-        //   this.$message.error("培训地点不能为空");
-        // } else if (this.zgXxpxesAuth.QSSJ == 0 && !data.zgXxpxes.qssj) {
-        //   this.$message.error("起始时间不能为空");
-        // } else if (this.zgXxpxesAuth.JSSJ == 0 && !data.zgXxpxes.jssj) {
-        //   this.$message.error("结束时间不能为空");
-        // } else if (this.zgXxpxesAuth.PXXZ == 0 && !data.zgXxpxes.pxxz) {
-        //   this.$message.error("培训性质不能为空");
-        // } else if (this.zgXxpxesAuth.PXJB == 0 && !data.zgXxpxes.pxjb) {
-        //   this.$message.error("培训级别不能为空");
-        // } else if (this.zgNdkhsAuth.KHND == 0 && !data.zgNdkhs.khnd) {
-        //   this.$message.error("考核年度不能为空");
-        // } else if (this.zgNdkhsAuth.KHRQ == 0 && !data.zgNdkhs.khrq) {
-        //   this.$message.error("考核日期不能为空");
-        // } else if (this.zgNdkhsAuth.KHJGM == 0 && !data.zgNdkhs.khjgm) {
-        //   this.$message.error("考核结果不能为空");
-        // } else if (this.zgJlbzsAuth.ZSH == 0 && !data.zgJlbzs.zsh) {
-        //   this.$message.error("证书号不能为空");
-        // } else if (this.zgJlbzsAuth.HJLX == 0 && !data.zgJlbzs.hjlx) {
-        //   this.$message.error("获奖类型不能为空");
-        // } else if (this.zgJlbzsAuth.JXMC == 0 && !data.zgJlbzs.jxmc) {
-        //   this.$message.error("奖项名称不能为空");
-        // } else if (this.zgJlbzsAuth.HJCGMC == 0 && !data.zgJlbzs.hjcgmc) {
-        //   this.$message.error("获奖成果名称不能为空");
-        // } else if (this.zgJlbzsAuth.JXJB == 0 && !data.zgJlbzs.jxjb) {
-        //   this.$message.error("奖项级别不能为空");
-        // } else if (this.zgJlbzsAuth.HJDJ == 0 && !data.zgJlbzs.hjdj) {
-        //   this.$message.error("获奖等级不能为空");
-        // } else if (this.zgJlbzsAuth.HJSJ == 0 && !data.zgJlbzs.hjsj) {
-        //   this.$message.error("获奖时间不能为空");
-        // } else if (this.zgJlbzsAuth.BRWC == 0 && !data.zgJlbzs.brwc) {
-        //   this.$message.error("本人位次不能为空");
-        // } else if (this.zgJlbzsAuth.BZBM == 0 && !data.zgJlbzs.bzbm) {
-        //   this.$message.error("表彰部门不能为空");
-        // } else if (this.zgXmkyqksAuth.XMMC == 0 && !data.zgXmkyqks.xmmc) {
-        //   this.$message.error("项目名称不能为空");
-        // } else if (this.zgXmkyqksAuth.XMJB == 0 && !data.zgXmkyqks.xmjb) {
-        //   this.$message.error("项目级别不能为空");
-        // } else if (this.zgXmkyqksAuth.XMBH == 0 && !data.zgXmkyqks.xmbh) {
-        //   this.$message.error("项目编号不能为空");
-        // } else if (this.zgXmkyqksAuth.QSSJ == 0 && !data.zgXmkyqks.qssj) {
-        //   this.$message.error("起始时间不能为空");
-        // } else if (this.zgXmkyqksAuth.JSSJ == 0 && !data.zgXmkyqks.jssj) {
-        //   this.$message.error("结束时间不能为空");
-        // } else if (this.zgXmkyqksAuth.SDJF == 0 && !data.zgXmkyqks.sdjf) {
-        //   this.$message.error("实到经费不能为空");
-        // } else if (this.zgXmkyqksAuth.BRWC == 0 && !data.zgXmkyqks.brwc) {
-        //   this.$message.error("本人位次不能为空");
-        // } else if (this.zgXmkyqksAuth.PZBM == 0 && !data.zgXmkyqks.pzbm) {
-        //   this.$message.error("批准部门不能为空");
-        // } else if (this.zgLwkyqksAuth.LWMC == 0 && !data.zgLwkyqks.qkmc) {
-        //   this.$message.error("论文名称不能为空");
-        // } else if (this.zgLwkyqksAuth.QKMC == 0 && !data.zgLwkyqks.qkmc) {
-        //   this.$message.error("期刊名称不能为空");
-        // } else if (this.zgLwkyqksAuth.CNKH == 0 && !data.zgLwkyqks.cnkh) {
-        //   this.$message.error("期刊国内标准刊号不能为空");
-        // } else if (this.zgLwkyqksAuth.QKLX == 0 && !data.zgLwkyqks.qklx) {
-        //   this.$message.error("期刊类型不能为空");
-        // } else if (this.zgLwkyqksAuth.FBSJ == 0 && !data.zgLwkyqks.fbsj) {
-        //   this.$message.error("发表时间不能为空");
-        // } else if (this.zgLwkyqksAuth.BRWC == 0 && !data.zgLwkyqks.brwc) {
-        //   this.$message.error("本人位次不能为空");
-        // } else if (this.zgZzkyqksAuth.ZZMC == 0 && !data.zgZzkyqks.zzmc) {
-        //   this.$message.error("著作名称不能为空");
-        // } else if (this.zgZzkyqksAuth.ZZLX == 0 && !data.zgZzkyqks.zzlx) {
-        //   this.$message.error("著作类型不能为空");
-        // } else if (this.zgZzkyqksAuth.CGSSDW == 0 && !data.zgZzkyqks.cgssdw) {
-        //   this.$message.error("成果所属单位不能为空");
-        // } else if (this.zgZzkyqksAuth.ISBNNO == 0 && !data.zgZzkyqks.isbnno) {
-        //   this.$message.error("ISBN号不能为空");
-        // } else if (this.zgZzkyqksAuth.CBS == 0 && !data.zgZzkyqks.cbs) {
-        //   this.$message.error("出版社不能为空");
-        // } else if (this.zgZzkyqksAuth.CBSJ == 0 && !data.zgZzkyqks.cbsj) {
-        //   this.$message.error("出版时间不能为空");
-        // } else if (this.zgZzkyqksAuth.BRWC == 0 && !data.zgZzkyqks.brwc) {
-        //   this.$message.error("本人位次不能为空");
-        // } else if (this.zgJxkyqksAuth.KCMC == 0 && !data.zgJxkyqks.kcmc) {
-        //   this.$message.error("课程名称不能为空");
-        // } else if (this.zgJxkyqksAuth.KCLX == 0 && !data.zgJxkyqks.kclx) {
-        //   this.$message.error("课程类型不能为空");
-        // } else if (this.zgJxkyqksAuth.KCXZ == 0 && !data.zgJxkyqks.kcxz) {
-        //   this.$message.error("课程性质不能为空");
-        // } else if (this.zgJxkyqksAuth.KSL == 0 && !data.zgJxkyqks.ksl) {
-        //   this.$message.error("课时量不能为空");
-        // } else if (this.zgJxkyqksAuth.SKRS == 0 && !data.zgJxkyqks.skrs) {
-        //   this.$message.error("授课人数不能为空");
-        // } else if (this.zgJxkyqksAuth.QSSJ == 0 && !data.zgJxkyqks.qssj) {
-        //   this.$message.error("起始时间不能为空");
-        // } else if (this.zgJxkyqksAuth.JSSJ == 0 && !data.zgJxkyqks.jssj) {
-        //   this.$message.error("结束时间不能为空");
-      } else {
-        updateDetailQueryPoliticalWorkList(data)
-          .then((res) => {
-            this.$message({
-              message: res.errmsg,
-              type: "success",
-            });
-            this.isEdit = 1;
-            // this.$router.push({
-            //   path: this.routerFrom
-            // })
-          })
-          .catch((err) => {
-            this.$message.error(err.errmsg);
+      updateDetailQueryPoliticalWorkList(data)
+        .then((res) => {
+          this.$message({
+            message: res.errmsg,
+            type: "success",
           });
+          this.isEdit = 1;
+        })
+        .catch((err) => {
+          this.$message.error(err.errmsg);
+        });
+    },
+    addDetailInfoData(index) {
+      if (index == 1) {
+        // 学业成长
+        this.detailInfoData.zgXlxws.push({});
+      } else if (index == 2) {
+        // 行政职业发展
+        this.detailInfoData.zgDzzws.push({});
+      } else if (index == 3) {
+        // 专业技术职务发展
+        this.detailInfoData.zgZyjszws.push({});
+      } else if (index == 4) {
+        // 工作履历
+        this.detailInfoData.zgGzjls.push({});
+      } else if (index == 5) {
+        // 培训
+        this.detailInfoData.zgXxpxes.push({});
+      } else if (index == 6) {
+        // 项目学习
+        this.detailInfoData.zgXmxxs.push({});
+      } else if (index == 7) {
+        // 职业资格
+        this.detailInfoData.zgZyzgs.push({});
+      } else if (index == 8) {
+        // 岗位锻炼
+        this.detailInfoData.zgGwdls.push({});
+      } else if (index == 9) {
+        // 政工科研情况（教学情况）
+        this.detailInfoData.zgJxkyqks.push({});
+      } else if (index == 10) {
+        // 政工科研情况（论文）
+        this.detailInfoData.zgLwkyqks.push({});
+      } else if (index == 11) {
+        // 政工科研情况（项目）
+        this.detailInfoData.zgXmkyqks.push({});
+      } else if (index == 12) {
+        // 政工科研情况（著作）
+        this.detailInfoData.zgZzkyqks.push({});
+      } else if (index == 13) {
+        // 政工科研情况（其他）
+        this.detailInfoData.zgQtkyqks.push({});
+      } else if (index == 14) {
+        // 年度考核
+        this.detailInfoData.zgNdkhs.push({});
+      } else if (index == 15) {
+        // 奖励表彰信息
+        this.detailInfoData.zgJlbzs.push({});
+      } else if (index == 16) {
+        // 职务级别
+        this.detailInfoData.zgDzzjs.push({});
+      } else if (index == 17) {
+        // 聘任信息
+        this.detailInfoData.zgPrxxs.push({});
+      }
+    },
+    deleteWorkBrifeData(row, index, flag) {
+      if (flag == "a") {
+        this.detailInfoData.zgXlxws.splice(index, 1);
+      } else if (flag == "b") {
+        this.detailInfoData.zgDzzws.splice(index, 1);
+      } else if (flag == "c") {
+        this.detailInfoData.zgZyjszws.splice(index, 1);
+      } else if (flag == "d") {
+        this.detailInfoData.zgGzjls.splice(index, 1);
+      } else if (flag == "e") {
+        this.detailInfoData.zgXxpxes.splice(index, 1);
+      } else if (flag == "f") {
+        this.detailInfoData.zgXmxxs.splice(index, 1);
+      } else if (flag == "g") {
+        this.detailInfoData.zgZyzgs.splice(index, 1);
+      } else if (flag == "h") {
+        this.detailInfoData.zgGwdls.splice(index, 1);
+      } else if (flag == "i") {
+        this.detailInfoData.zgJxkyqks.splice(index, 1);
+      } else if (flag == "j") {
+        this.detailInfoData.zgLwkyqks.splice(index, 1);
+      } else if (flag == "k") {
+        this.detailInfoData.zgXmkyqks.splice(index, 1);
+      } else if (flag == "l") {
+        this.detailInfoData.zgZzkyqks.splice(index, 1);
+      } else if (flag == "m") {
+        this.detailInfoData.zgQtkyqks.splice(index, 1);
+      } else if (flag == "n") {
+        this.detailInfoData.zgNdkhs.splice(index, 1);
+      } else if (flag == "o") {
+        this.detailInfoData.zgJlbzs.splice(index, 1);
+      } else if (flag == "p") {
+        this.detailInfoData.zgDzzjs.splice(index, 1);
+      } else if (flag == "q") {
+        this.detailInfoData.zgPrxxs.splice(index, 1);
       }
     },
   },
 };
 </script>
-
 <style lang="scss" scoped>
 .detail {
   padding: 20px 0;
@@ -4128,7 +2920,7 @@ export default {
   .wrap {
     display: flex;
     flex-direction: row;
-    // overflow: hidden;
+
     .detail_left {
       flex: 0 0 198px;
       margin-right: 24px;
@@ -4136,31 +2928,9 @@ export default {
       // height: calc(100vh - 170px);
       padding: 20px;
       box-sizing: border-box;
-      .titlename {
-        position: fixed;
-        .list {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: center;
-          height: 36px;
-          line-height: 36px;
-          font-size: 14px;
-          color: #1f1f1f;
-          cursor: pointer;
-          padding: 0 10px;
-          box-sizing: border-box;
-          .ellipsis {
-            width: 150px;
-            overflow: hidden; //溢出隐藏
-            white-space: nowrap; //禁止换行
-            text-overflow: ellipsis; //...
-          }
-        }
-        .active {
-          background: #f0f0f0;
-          border-radius: 2px;
-        }
+
+      .tab-left {
+        padding: 0 40px;
       }
     }
     .detail_right {

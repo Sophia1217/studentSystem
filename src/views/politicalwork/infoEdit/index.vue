@@ -75,25 +75,24 @@
             </el-col>
           </el-row>
         </div>
-
-        <!-- 工作简历 -->
+        <!-- 辅导员信息 -->
         <div class="headline" id="tag_1">
-          <div>工作简历</div>
+          <div>辅导员信息</div>
           <div class="boxSelect">
             <el-checkbox
-              v-model="basicCheckBox.gzjlzd"
+              v-model="basicCheckBox.fdyrmzd"
               @change="
                 (val) => {
-                  xsjbxxReader(val, 1, columns.zg_gzjl, 2);
+                  xsjbxxReader(val, 1, columns.zg_fdyrm, 13);
                 }
               "
               >全部只读</el-checkbox
             >
             <el-checkbox
-              v-model="basicCheckBox.gzjlbt"
+              v-model="basicCheckBox.fdyrmbt"
               @change="
                 (val) => {
-                  xsjbxxReader(val, 2, columns.zg_gzjl, 2);
+                  xsjbxxReader(val, 2, columns.zg_fdyrm, 13);
                 }
               "
               >全部必填</el-checkbox
@@ -105,12 +104,13 @@
             <el-col
               :span="8"
               class="rowStyle"
-              v-for="item in columns.zg_gzjl"
+              v-for="item in columns.zg_fdyrm"
               :key="item.id"
             >
               <div class="wrap">
                 <div class="title">{{ item.dicCloumnChinese }}</div>
                 <div class="content">
+                  <!--- 0 必填 1可写 2可读--->
                   <el-radio v-model="item.stuColumnAuth" label="2"
                     >只读</el-radio
                   >
@@ -125,10 +125,9 @@
             </el-col>
           </el-row>
         </div>
-
-        <!-- 学历学位信息 -->
+        <!-- 学业成长 -->
         <div class="headline" id="tag_2">
-          <div>学历学位信息</div>
+          <div>学业成长</div>
           <div class="boxSelect">
             <el-checkbox
               v-model="basicCheckBox.xlxwzd"
@@ -175,9 +174,106 @@
             </el-col>
           </el-row>
         </div>
-
-        <!-- 专业技术职务 -->
+        <!-- 行政职务发展 -->
         <div class="headline" id="tag_3">
+          <div>行政职务发展</div>
+          <div class="boxSelect">
+            <el-checkbox
+              v-model="basicCheckBox.dzzwzd"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 1, columns.zg_dzzw, 13);
+                }
+              "
+              >全部只读</el-checkbox
+            >
+            <el-checkbox
+              v-model="basicCheckBox.dzzwbt"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 2, columns.zg_dzzw, 13);
+                }
+              "
+              >全部必填</el-checkbox
+            >
+          </div>
+        </div>
+        <div class="information">
+          <el-row :gutter="20">
+            <el-col
+              :span="8"
+              class="rowStyle"
+              v-for="item in columns.zg_dzzw"
+              :key="item.id"
+            >
+              <div class="wrap">
+                <div class="title">{{ item.dicCloumnChinese }}</div>
+                <div class="content">
+                  <el-radio v-model="item.stuColumnAuth" label="2"
+                    >只读</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="0"
+                    >必填</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="1"
+                    >可写</el-radio
+                  >
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <!-- 行政级别发展 -->
+        <div class="headline" id="tag_4">
+          <div>行政级别发展</div>
+          <div class="boxSelect">
+            <el-checkbox
+              v-model="basicCheckBox.dzzjzd"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 1, columns.zg_dzzj, 14);
+                }
+              "
+              >全部只读</el-checkbox
+            >
+            <el-checkbox
+              v-model="basicCheckBox.dzzjbt"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 2, columns.zg_dzzj, 14);
+                }
+              "
+              >全部必填</el-checkbox
+            >
+          </div>
+        </div>
+        <div class="information">
+          <el-row :gutter="20">
+            <el-col
+              :span="8"
+              class="rowStyle"
+              v-for="item in columns.zg_dzzj"
+              :key="item.id"
+            >
+              <div class="wrap">
+                <div class="title">{{ item.dicCloumnChinese }}</div>
+                <div class="content">
+                  <el-radio v-model="item.stuColumnAuth" label="2"
+                    >只读</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="0"
+                    >必填</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="1"
+                    >可写</el-radio
+                  >
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <!-- 专业技术职务 -->
+        <div class="headline" id="tag_5">
           <div>专业技术职务</div>
           <div class="boxSelect">
             <el-checkbox
@@ -225,10 +321,108 @@
             </el-col>
           </el-row>
         </div>
+        <!-- 工作简历 -->
+        <div class="headline" id="tag_6">
+          <div>工作履历</div>
+          <div class="boxSelect">
+            <el-checkbox
+              v-model="basicCheckBox.gzjlzd"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 1, columns.zg_gzjl, 2);
+                }
+              "
+              >全部只读</el-checkbox
+            >
+            <el-checkbox
+              v-model="basicCheckBox.gzjlbt"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 2, columns.zg_gzjl, 2);
+                }
+              "
+              >全部必填</el-checkbox
+            >
+          </div>
+        </div>
+        <div class="information">
+          <el-row :gutter="20">
+            <el-col
+              :span="8"
+              class="rowStyle"
+              v-for="item in columns.zg_gzjl"
+              :key="item.id"
+            >
+              <div class="wrap">
+                <div class="title">{{ item.dicCloumnChinese }}</div>
+                <div class="content">
+                  <el-radio v-model="item.stuColumnAuth" label="2"
+                    >只读</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="0"
+                    >必填</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="1"
+                    >可写</el-radio
+                  >
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <!-- 教职工职员聘任信息 -->
+        <div class="headline" id="tag_7">
+          <div>教职工职员聘任信息</div>
+          <div class="boxSelect">
+            <el-checkbox
+              v-model="basicCheckBox.prxxzd"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 1, columns.zg_prxx, 15);
+                }
+              "
+              >全部只读</el-checkbox
+            >
+            <el-checkbox
+              v-model="basicCheckBox.prxxbt"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 2, columns.zg_prxx, 15);
+                }
+              "
+              >全部必填</el-checkbox
+            >
+          </div>
+        </div>
+        <div class="information">
+          <el-row :gutter="20">
+            <el-col
+              :span="8"
+              class="rowStyle"
+              v-for="item in columns.zg_prxx"
+              :key="item.id"
+            >
+              <div class="wrap">
+                <div class="title">{{ item.dicCloumnChinese }}</div>
+                <div class="content">
+                  <el-radio v-model="item.stuColumnAuth" label="2"
+                    >只读</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="0"
+                    >必填</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="1"
+                    >可写</el-radio
+                  >
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
 
         <!-- 学习培训 -->
-        <div class="headline" id="tag_4">
-          <div>学习培训</div>
+        <div class="headline" id="tag_8">
+          <div>培训</div>
           <div class="boxSelect">
             <el-checkbox
               v-model="basicCheckBox.xxpxzd"
@@ -275,25 +469,24 @@
             </el-col>
           </el-row>
         </div>
-
-        <!-- 年度考核 -->
-        <div class="headline" id="tag_5">
-          <div>年度考核</div>
+        <!-- 项目学习 -->
+        <div class="headline" id="tag_9">
+          <div>项目学习</div>
           <div class="boxSelect">
             <el-checkbox
-              v-model="basicCheckBox.ndkhzd"
+              v-model="basicCheckBox.xmxxzd"
               @change="
                 (val) => {
-                  xsjbxxReader(val, 1, columns.zg_ndkh, 6);
+                  xsjbxxReader(val, 1, columns.zg_xmxx, 19);
                 }
               "
               >全部只读</el-checkbox
             >
             <el-checkbox
-              v-model="basicCheckBox.ndkhbt"
+              v-model="basicCheckBox.xmxxbt"
               @change="
                 (val) => {
-                  xsjbxxReader(val, 2, columns.zg_ndkh, 6);
+                  xsjbxxReader(val, 2, columns.zg_xmxx, 19);
                 }
               "
               >全部必填</el-checkbox
@@ -305,7 +498,105 @@
             <el-col
               :span="8"
               class="rowStyle"
-              v-for="item in columns.zg_ndkh"
+              v-for="item in columns.zg_xmxx"
+              :key="item.id"
+            >
+              <div class="wrap">
+                <div class="title">{{ item.dicCloumnChinese }}</div>
+                <div class="content">
+                  <el-radio v-model="item.stuColumnAuth" label="2"
+                    >只读</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="0"
+                    >必填</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="1"
+                    >可写</el-radio
+                  >
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <!-- 职业资格 -->
+        <div class="headline" id="tag_10">
+          <div>职业资格</div>
+          <div class="boxSelect">
+            <el-checkbox
+              v-model="basicCheckBox.zyzgzd"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 1, columns.zg_zyzg, 16);
+                }
+              "
+              >全部只读</el-checkbox
+            >
+            <el-checkbox
+              v-model="basicCheckBox.zyzgbt"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 2, columns.zg_zyzg, 16);
+                }
+              "
+              >全部必填</el-checkbox
+            >
+          </div>
+        </div>
+        <div class="information">
+          <el-row :gutter="20">
+            <el-col
+              :span="8"
+              class="rowStyle"
+              v-for="item in columns.zg_zyzg"
+              :key="item.id"
+            >
+              <div class="wrap">
+                <div class="title">{{ item.dicCloumnChinese }}</div>
+                <div class="content">
+                  <el-radio v-model="item.stuColumnAuth" label="2"
+                    >只读</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="0"
+                    >必填</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="1"
+                    >可写</el-radio
+                  >
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <!-- 岗位锻炼 -->
+        <div class="headline" id="tag_11">
+          <div>岗位锻炼</div>
+          <div class="boxSelect">
+            <el-checkbox
+              v-model="basicCheckBox.gwdlzd"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 1, columns.zg_gwdl, 17);
+                }
+              "
+              >全部只读</el-checkbox
+            >
+            <el-checkbox
+              v-model="basicCheckBox.gwdlbt"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 2, columns.zg_gwdl, 17);
+                }
+              "
+              >全部必填</el-checkbox
+            >
+          </div>
+        </div>
+        <div class="information">
+          <el-row :gutter="20">
+            <el-col
+              :span="8"
+              class="rowStyle"
+              v-for="item in columns.zg_gwdl"
               :key="item.id"
             >
               <div class="wrap">
@@ -326,24 +617,24 @@
           </el-row>
         </div>
 
-        <!-- 奖励表彰信息 -->
-        <div class="headline" id="tag_6">
-          <div>奖励表彰信息</div>
+        <!-- 教学情况 -->
+        <div class="headline" id="tag_12">
+          <div>教学情况</div>
           <div class="boxSelect">
             <el-checkbox
-              v-model="basicCheckBox.jlbzzd"
+              v-model="basicCheckBox.jxkyqkzd"
               @change="
                 (val) => {
-                  xsjbxxReader(val, 1, columns.zg_jlbz, 7);
+                  xsjbxxReader(val, 1, columns.zg_jxkyqk, 11);
                 }
               "
               >全部只读</el-checkbox
             >
             <el-checkbox
-              v-model="basicCheckBox.jlbzbt"
+              v-model="basicCheckBox.jxkyqkbt"
               @change="
                 (val) => {
-                  xsjbxxReader(val, 2, columns.zg_jlbz, 7);
+                  xsjbxxReader(val, 2, columns.zg_jxkyqk, 11);
                 }
               "
               >全部必填</el-checkbox
@@ -355,7 +646,7 @@
             <el-col
               :span="8"
               class="rowStyle"
-              v-for="item in columns.zg_jlbz"
+              v-for="item in columns.zg_jxkyqk"
               :key="item.id"
             >
               <div class="wrap">
@@ -375,9 +666,57 @@
             </el-col>
           </el-row>
         </div>
-
+        <!-- 科研情况（论文） -->
+        <div class="headline" id="tag_13">
+          <div>科研情况（论文）</div>
+          <div class="boxSelect">
+            <el-checkbox
+              v-model="basicCheckBox.lwkyqkzd"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 1, columns.zg_lwkyqk, 9);
+                }
+              "
+              >全部只读</el-checkbox
+            >
+            <el-checkbox
+              v-model="basicCheckBox.lwkyqkbt"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 2, columns.zg_lwkyqk, 9);
+                }
+              "
+              >全部必填</el-checkbox
+            >
+          </div>
+        </div>
+        <div class="information">
+          <el-row :gutter="20">
+            <el-col
+              :span="8"
+              class="rowStyle"
+              v-for="item in columns.zg_lwkyqk"
+              :key="item.id"
+            >
+              <div class="wrap">
+                <div class="title">{{ item.dicCloumnChinese }}</div>
+                <div class="content">
+                  <el-radio v-model="item.stuColumnAuth" label="2"
+                    >只读</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="0"
+                    >必填</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="1"
+                    >可写</el-radio
+                  >
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
         <!-- 科研情况（项目） -->
-        <div class="headline" id="tag_7">
+        <div class="headline" id="tag_14">
           <div>科研情况（项目）</div>
           <div class="boxSelect">
             <el-checkbox
@@ -426,58 +765,8 @@
           </el-row>
         </div>
 
-        <!-- 科研情况（论文） -->
-        <div class="headline" id="tag_8">
-          <div>科研情况（论文）</div>
-          <div class="boxSelect">
-            <el-checkbox
-              v-model="basicCheckBox.lwkyqkzd"
-              @change="
-                (val) => {
-                  xsjbxxReader(val, 1, columns.zg_lwkyqk, 9);
-                }
-              "
-              >全部只读</el-checkbox
-            >
-            <el-checkbox
-              v-model="basicCheckBox.lwkyqkbt"
-              @change="
-                (val) => {
-                  xsjbxxReader(val, 2, columns.zg_lwkyqk, 9);
-                }
-              "
-              >全部必填</el-checkbox
-            >
-          </div>
-        </div>
-        <div class="information">
-          <el-row :gutter="20">
-            <el-col
-              :span="8"
-              class="rowStyle"
-              v-for="item in columns.zg_lwkyqk"
-              :key="item.id"
-            >
-              <div class="wrap">
-                <div class="title">{{ item.dicCloumnChinese }}</div>
-                <div class="content">
-                  <el-radio v-model="item.stuColumnAuth" label="2"
-                    >只读</el-radio
-                  >
-                  <el-radio v-model="item.stuColumnAuth" label="0"
-                    >必填</el-radio
-                  >
-                  <el-radio v-model="item.stuColumnAuth" label="1"
-                    >可写</el-radio
-                  >
-                </div>
-              </div>
-            </el-col>
-          </el-row>
-        </div>
-
         <!-- 科研情况（著作） -->
-        <div class="headline" id="tag_9">
+        <div class="headline" id="tag_15">
           <div>科研情况（著作）</div>
           <div class="boxSelect">
             <el-checkbox
@@ -525,25 +814,24 @@
             </el-col>
           </el-row>
         </div>
-
-        <!-- 科研情况（著作） -->
-        <div class="headline" id="tag_10">
-          <div>科研情况（教学情况）</div>
+        <!-- 科研情况（qita） -->
+        <div class="headline" id="tag_16">
+          <div>科研情况（其他）</div>
           <div class="boxSelect">
             <el-checkbox
-              v-model="basicCheckBox.jxkyqkzd"
+              v-model="basicCheckBox.qtkyqkzd"
               @change="
                 (val) => {
-                  xsjbxxReader(val, 1, columns.zg_jxkyqk, 11);
+                  xsjbxxReader(val, 1, columns.zg_qtkyqk, 18);
                 }
               "
               >全部只读</el-checkbox
             >
             <el-checkbox
-              v-model="basicCheckBox.jxkyqkbt"
+              v-model="basicCheckBox.qtkyqkbt"
               @change="
                 (val) => {
-                  xsjbxxReader(val, 2, columns.zg_jxkyqk, 11);
+                  xsjbxxReader(val, 2, columns.zg_qtkyqk, 18);
                 }
               "
               >全部必填</el-checkbox
@@ -555,7 +843,106 @@
             <el-col
               :span="8"
               class="rowStyle"
-              v-for="item in columns.zg_jxkyqk"
+              v-for="item in columns.zg_qtkyqk"
+              :key="item.id"
+            >
+              <div class="wrap">
+                <div class="title">{{ item.dicCloumnChinese }}</div>
+                <div class="content">
+                  <el-radio v-model="item.stuColumnAuth" label="2"
+                    >只读</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="0"
+                    >必填</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="1"
+                    >可写</el-radio
+                  >
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <!-- 年度考核 -->
+        <div class="headline" id="tag_17">
+          <div>学校年度考核结果</div>
+          <div class="boxSelect">
+            <el-checkbox
+              v-model="basicCheckBox.ndkhzd"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 1, columns.zg_ndkh, 6);
+                }
+              "
+              >全部只读</el-checkbox
+            >
+            <el-checkbox
+              v-model="basicCheckBox.ndkhbt"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 2, columns.zg_ndkh, 6);
+                }
+              "
+              >全部必填</el-checkbox
+            >
+          </div>
+        </div>
+        <div class="information">
+          <el-row :gutter="20">
+            <el-col
+              :span="8"
+              class="rowStyle"
+              v-for="item in columns.zg_ndkh"
+              :key="item.id"
+            >
+              <div class="wrap">
+                <div class="title">{{ item.dicCloumnChinese }}</div>
+                <div class="content">
+                  <el-radio v-model="item.stuColumnAuth" label="2"
+                    >只读</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="0"
+                    >必填</el-radio
+                  >
+                  <el-radio v-model="item.stuColumnAuth" label="1"
+                    >可写</el-radio
+                  >
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+
+        <!-- 奖励表彰信息 -->
+        <div class="headline" id="tag_18">
+          <div>奖励表彰信息</div>
+          <div class="boxSelect">
+            <el-checkbox
+              v-model="basicCheckBox.jlbzzd"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 1, columns.zg_jlbz, 7);
+                }
+              "
+              >全部只读</el-checkbox
+            >
+            <el-checkbox
+              v-model="basicCheckBox.jlbzbt"
+              @change="
+                (val) => {
+                  xsjbxxReader(val, 2, columns.zg_jlbz, 7);
+                }
+              "
+              >全部必填</el-checkbox
+            >
+          </div>
+        </div>
+        <div class="information">
+          <el-row :gutter="20">
+            <el-col
+              :span="8"
+              class="rowStyle"
+              v-for="item in columns.zg_jlbz"
               :key="item.id"
             >
               <div class="wrap">
@@ -592,16 +979,24 @@ export default {
     return {
       dtailsList: [
         "基本信息",
-        "工作简历",
-        "学历学位信息",
-        "专业技术职务",
-        "学习培训",
-        "年度考核",
-        "奖励表彰信息",
-        "科研情况（项目）",
+        "辅导员信息",
+        "学业成长",
+        "行政职务发展",
+        "行政级别发展",
+        "专业技术职务发展",
+        "工作履历",
+        "教职工职员聘任信息",
+        "培训",
+        "项目学习",
+        "职业资格",
+        "岗位锻炼",
+        "教学情况",
         "科研情况（论文）",
+        "科研情况（项目）",
         "科研情况（著作）",
-        "科研情况（教学情况）",
+        "科研情况（其他）",
+        "学校年度考核结果",
+        "奖励表彰信息",
       ],
       current: 0,
       basicCheckBox: {}, // 选中
@@ -630,6 +1025,14 @@ export default {
             zg_lwkyqk: [], // 论文科研情况表
             zg_zzkyqk: [], // 著作科研情况表
             zg_jxkyqk: [], // 教学科研情况表
+            zg_fdyrm: [], //辅导员信息
+            zg_dzzw: [], //
+            zg_dzzj: [], //
+            zg_prxx: [], //
+            zg_zyzg: [], //
+            zg_gwdl: [], //
+            zg_qtkyqk: [], //
+            zg_xmxx: [], //
           };
           for (let x = 0; x < data.length; x++) {
             if (data[x].dicEnglish == "zg_zgjbxx") {
@@ -654,6 +1057,22 @@ export default {
               columns.zg_zzkyqk.push(data[x]);
             } else if (data[x].dicEnglish == "zg_jxkyqk") {
               columns.zg_jxkyqk.push(data[x]);
+            } else if (data[x].dicEnglish == "zg_fdyrm") {
+              columns.zg_fdyrm.push(data[x]);
+            } else if (data[x].dicEnglish == "zg_dzzw") {
+              columns.zg_dzzw.push(data[x]);
+            } else if (data[x].dicEnglish == "zg_dzzj") {
+              columns.zg_dzzj.push(data[x]);
+            } else if (data[x].dicEnglish == "zg_prxx") {
+              columns.zg_prxx.push(data[x]);
+            } else if (data[x].dicEnglish == "zg_zyzg") {
+              columns.zg_zyzg.push(data[x]);
+            } else if (data[x].dicEnglish == "zg_gwdl") {
+              columns.zg_gwdl.push(data[x]);
+            } else if (data[x].dicEnglish == "zg_qtkyqk") {
+              columns.zg_qtkyqk.push(data[x]);
+            } else if (data[x].dicEnglish == "zg_xmxx") {
+              columns.zg_xmxx.push(data[x]);
             }
           }
           this.columns = columns;
@@ -709,6 +1128,30 @@ export default {
           case 11:
             this.basicCheckBox.jxkyqkbt = false;
             break;
+          case 12:
+            this.basicCheckBox.fdyrmbt = false;
+            break;
+          case 13:
+            this.basicCheckBox.dzzwbt = false;
+            break;
+          case 14:
+            this.basicCheckBox.dzzjbt = false;
+            break;
+          case 15:
+            this.basicCheckBox.prxxbt = false;
+            break;
+          case 16:
+            this.basicCheckBox.zyzgbt = false;
+            break;
+          case 17:
+            this.basicCheckBox.gwdlbt = false;
+            break;
+          case 18:
+            this.basicCheckBox.qtkyqkbt = false;
+            break;
+          case 19:
+            this.basicCheckBox.xmxxbt = false;
+            break;
         }
       } else {
         if (val) {
@@ -750,6 +1193,30 @@ export default {
           case 11:
             this.basicCheckBox.jxkyqkzd = false;
             break;
+          case 12:
+            this.basicCheckBox.fdyrmzd = false;
+            break;
+          case 13:
+            this.basicCheckBox.dzzwzd = false;
+            break;
+          case 14:
+            this.basicCheckBox.dzzjzd = false;
+            break;
+          case 15:
+            this.basicCheckBox.prxxzd = false;
+            break;
+          case 16:
+            this.basicCheckBox.zyzgzd = false;
+            break;
+          case 17:
+            this.basicCheckBox.gwdlzd = false;
+            break;
+          case 18:
+            this.basicCheckBox.qtkyqkzd = false;
+            break;
+          case 19:
+            this.basicCheckBox.xmxxzd = false;
+            break;
         }
       }
     },
@@ -766,7 +1233,15 @@ export default {
         this.columns.zg_xmkyqk,
         this.columns.zg_lwkyqk,
         this.columns.zg_zzkyqk,
-        this.columns.zg_jxkyqk
+        this.columns.zg_jxkyqk,
+        this.columns.zg_fdyrm,
+        this.columns.zg_dzzw,
+        this.columns.zg_dzzj,
+        this.columns.zg_prxx,
+        this.columns.zg_zyzg,
+        this.columns.zg_gwdl,
+        this.columns.zg_qtkyqk,
+        this.columns.zg_xmxx
       );
       updateStuColumns(newData)
         .then((res) => {

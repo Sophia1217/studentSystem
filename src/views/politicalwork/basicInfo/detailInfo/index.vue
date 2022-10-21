@@ -680,8 +680,8 @@
           </div>
           </div>
 
-           <div id="tag_1" class="headline">辅导员信息</div>
-           <div class="tableStyle">
+           <div id="tag_1" class="headline" v-if="detailInfoData.sffdy===1">辅导员信息</div>
+           <div class="tableStyle" v-if="detailInfoData.sffdy===1">
             <div class="information">
               <el-row :gutter="20">
               <el-col :span="12" class="rowStyle">

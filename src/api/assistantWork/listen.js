@@ -41,3 +41,40 @@ export function getGrade() {
         method: 'post',
     })
 }
+
+export function del(query) {
+    return request({
+        url: '/fdyKttk/fdyKttkDelete',
+        method: 'delete',
+        data: query
+    })
+}
+
+export function exp(query) {
+    return request({
+        url: '/fdyKttk/excelExport',
+        method: 'post',
+        responseType: 'blob',
+        data: query
+    })
+}
+
+
+export function updateListen(query) {
+    return request({
+        url: '/fdyKttk/importfdyKttkChange',
+        method: 'post',
+        data: query
+    })
+}
+
+
+export function addListen(query) {
+    return request({
+        url: '/fdyKttk/importfdyKttkAdd',
+        method: 'post',
+        data: query
+    })
+}
+
+

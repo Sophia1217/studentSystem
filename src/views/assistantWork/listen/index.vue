@@ -145,7 +145,7 @@
       <span>确认导出？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="expTalk"
+        <el-button type="primary" class="confirm" @click="expListen"
           >确 定</el-button
         >
       </span>
@@ -155,7 +155,7 @@
 
 <script>
 import CheckboxCom from "../../components/checkboxCom";
-import { listenQuery } from "@/api/assistantWork/listen";
+import { listenQuery, del, exp } from "@/api/assistantWork/listen";
 export default {
   components: { CheckboxCom },
   data() {
@@ -201,7 +201,6 @@ export default {
 
   mounted() {
     this.handleSearch();
-    this.test();
   },
   activated() {
     this.handleSearch();
@@ -210,18 +209,10 @@ export default {
   methods: {
     test() {
       var a =
-        "星期一第2-4,6-8节{2周};星期二第2-4,6-8节{2周};星期三第2-4,6-8节{1-2周};星期四第2-4,6-8节{1-2周};星期五第2-4,6-8节{1-2周}";
+        "星期二第7-10节{14-19周};星期三第1-4,7-10节{14-19周};星期五第1-4节{14-19周}";
       var list = a.split(";");
-      [
-        "星期一第2-4,6-8节{2周}",
-        "星期二第2-4,6-8节{2周}",
-        "星期三第2-4,6-8节{1-2周}",
-        "星期四第2-4,6-8节{1-2周}",
-        "星期五第2-4,6-8节{1-2周}",
-      ];
       var xq = [];
       var begin = [];
-      var end = [];
       var week = [];
       for (var i = 0; i < list.length; i++) {
         xq.push(list[i].slice(0, 3));
@@ -229,14 +220,15 @@ export default {
           list[i].slice(list[i].indexOf("{") + 1, list[i].indexOf("}"))
         );
         begin.push(
-          list[i].slice(list[i].indexOf("第"), list[i].indexOf("第") + 2)
+          list[i].slice(list[i].indexOf("第"), list[i].indexOf("节") + 1)
         );
-        end.push(list[i].slice(list[i].indexOf("-"), list[i].indexOf("节")));
       }
-      console.log("xq", xq);
-      console.log("end", end);
-      console.log("begin", begin);
-      console.log("week", week);
+      let result = xq.map((v, i) => ({
+        xq: xq[i],
+        begin: begin[i],
+        week: week[i],
+      }));
+      console.log("res", result);
     },
     handleExport() {
       this.showExport = true;
@@ -245,30 +237,30 @@ export default {
     handleCancel() {
       this.showExport = false;
     },
-    expTalk() {
+    expListen() {
       if (this.delArr && this.delArr.length > 0) {
         var ids = this.delArr;
-        expTalk({ ids: ids }).then((res) => {
+        exp({ ids: ids }).then((res) => {
           this.downloadFn(res, "课程听课列表数据下载", "xlsx");
           this.handleSearch();
         });
       } else {
         let data = {
-          xm: this.select == "xm" ? this.searchVal : null,
-          xh: this.select == "xh" ? this.searchVal : null,
-          thzt: this.select == "thzt" ? this.searchVal : null,
-          thrxm: this.select == "thrxm" ? this.searchVal : null,
-          thrgh: this.select == "thrgh" ? this.searchVal : null,
-          thdd: this.select == "thdd" ? this.searchVal : null,
-          ztjlList: this.ztjl.choose,
-          starttime: this.dateArray ? this.dateArray[0] : "",
-          endtime: this.dateArray ? this.dateArray[1] : "",
+          kcmc: this.select == "kcmc" ? this.searchVal : null,
+          rkls: this.select == "rkls" ? this.searchVal : null,
+          jxdd: this.select == "jxdd" ? this.searchVal : null,
+          jlrxm: this.select == "jlrxm" ? this.searchVal : null,
+          jlrgh: this.select == "jlrgh" ? this.searchVal : null,
+          jlrlxList: this.ztjl.choose ? this.ztjl.choose : [],
+          kcsksjks: this.dateArray.length > 0 ? this.dateArray[0] : "",
+          kcsksjjs: this.dateArray.length > 0 ? this.dateArray[1] : "",
           pageNum: this.queryParams.pageNum,
           pageSize: this.queryParams.pageSize,
           orderZd: this.queryParams.orderZd,
           orderPx: this.queryParams.orderPx,
+          ids: [],
         };
-        expTalk({ ...data }).then((res) => {
+        exp({ ...data }).then((res) => {
           this.downloadFn(res, "课程听课列表数据下载", "xlsx");
           this.handleSearch();
         });
@@ -277,7 +269,10 @@ export default {
     },
     del() {
       if (this.delArr && this.delArr.length > 0) {
-        delTalk({ ids: this.delArr }).then((res) => this.handleSearch());
+        let data = {
+          ids: this.delArr,
+        };
+        del(data).then((res) => this.handleSearch());
       } else {
         this.$message.error("请先勾选数据");
       }
@@ -291,7 +286,7 @@ export default {
       const { id } = row;
       this.$router.push({
         path: "/assistantWork/listenDetail",
-        query: { id: id },
+        query: { id: id, state: 0 },
       });
     },
     changeSelect() {

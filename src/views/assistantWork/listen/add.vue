@@ -3,18 +3,25 @@
     <div class="permissions1">
       <div class="headTop">
         <div class="headRight">
-          <span class="title">课程新增</span>
+          <span class="title">课程详情</span>
         </div>
       </div>
-      <el-form ref="Form" label-width="80px" v-model="Form">
+      <el-form ref="Form" label-width="80px" :model="Form">
         <el-form-item
           label="任课教师
         "
+          prop="rkls"
         >
           <el-row>
-            <el-col :span="5.5">
+            <div v-if="listFlag == true">
+              <el-col v-for="(ele, index) in Form.rkls" :key="index" :span="4">
+                <el-input v-model="ele.value" :disabled="listFlag == true">
+                </el-input>
+              </el-col>
+            </div>
+            <el-col :span="5.5" v-if="listFlag == false">
               <el-autocomplete
-                v-model="Form.rkls"
+                v-model="Form.rkls[0].value"
                 :fetch-suggestions="querySearch"
                 placeholder="请输入任课教师"
                 :trigger-on-focus="false"
@@ -34,67 +41,142 @@
                 >课程查询</el-button
               >
             </el-col>
+            <el-col :span="2.5">
+              <el-button
+                style="background: #005657; color: white; margin-left: 10px"
+                @click="del"
+                >清空</el-button
+              >
+            </el-col>
           </el-row>
         </el-form-item>
         <div style="display: flex">
           <el-form-item
             label="课堂名称
         "
+            prop="kcmc"
           >
-            <el-input size="small" v-model="Form.ktmc"> </el-input>
+            <el-input
+              size="small"
+              v-model="Form.kcmc"
+              :disabled="listFlag == true"
+            >
+            </el-input>
           </el-form-item>
           <el-form-item
             label="编号
         "
           >
-            <el-input size="small" v-model="Form.bh"> </el-input>
+            <el-input
+              size="small"
+              v-model="Form.bh"
+              :disabled="listFlag == true"
+            >
+            </el-input>
           </el-form-item>
         </div>
-        <el-form-item label="开课时间">
-          <el-row>
-            <el-col :span="4">
-              <el-select v-model="Form.xq" placeholder="星期">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-            </el-col>
-            <el-col :span="8">
-              <el-select v-model="Form.jsBegin" placeholder="请选择开始节数">
-                <el-option
-                  v-for="item in options1"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-              <span>-</span>
-              <el-select v-model="Form.jsEnd" placeholder="请选择结束节数">
-                <el-option
-                  v-for="item in options1"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-            </el-col>
-            <el-col :span="4">
-              <el-input
-                placeholder="请输入开始到结束的周"
-                size="small"
-                v-model="Form.week"
-                style="width: 240px"
-              ></el-input>
-            </el-col>
-          </el-row>
+
+        <el-form-item label="开课时间" prop="kksj">
+          <div v-if="listFlag == true">
+            <div v-for="(ele, index) in Form.kksj">
+              <el-row>
+                <el-col :span="3.5">
+                  <el-select
+                    v-model="Form.kksj[index].xingqi"
+                    :disabled="true"
+                    placeholder="星期"
+                  >
+                    <el-option
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="4">
+                  <el-input
+                    placeholder="请输入节数"
+                    :disabled="true"
+                    size="small"
+                    v-model="Form.kksj[index].jieKs"
+                    style="width: 240px"
+                  ></el-input>
+                </el-col>
+                <el-col :span="4">
+                  <el-input
+                    placeholder="请输入开始到结束的周"
+                    size="small"
+                    :disabled="true"
+                    v-model="Form.kksj[index].week"
+                    style="width: 240px"
+                  ></el-input>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
+          <div v-if="listFlag == false">
+            <div v-for="(ele, index) in Form.kksj">
+              <el-row>
+                <el-col :span="4">
+                  <el-select
+                    v-model="Form.kksj[index].xingqi"
+                    placeholder="星期"
+                  >
+                    <el-option
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="3.5">
+                  <el-select
+                    v-model="Form.kksj[index].jieKs"
+                    placeholder="请选择开始节数"
+                  >
+                    <el-option
+                      v-for="item in options1"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="0.5">
+                  <span>-</span>
+                </el-col>
+                <el-col :span="4">
+                  <el-select
+                    v-model="Form.kksj[index].jieJs"
+                    placeholder="请选择结束节数"
+                  >
+                    <el-option
+                      v-for="item in options2"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="4">
+                  <el-input
+                    placeholder="请输入开始到结束的周"
+                    size="small"
+                    v-model="Form.kksj[index].week"
+                    style="width: 240px"
+                  ></el-input>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
         </el-form-item>
-        <el-form-item label="授课时间">
+        <el-form-item label="授课时间" prop="sksj">
           <el-date-picker
             v-model="Form.sksj"
             type="date"
@@ -105,11 +187,16 @@
           >
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="授课教室">
-          <el-input size="small" v-model="Form.skjs" style="width: 240px">
+        <el-form-item label="授课教室" prop="skjs">
+          <el-input
+            size="small"
+            v-model="Form.skjs"
+            :disabled="listFlag == true"
+            style="width: 240px"
+          >
           </el-input>
         </el-form-item>
-        <el-form-item label="听课情况">
+        <el-form-item label="听课情况" prop="tkqk">
           <el-input
             size="small"
             v-model="Form.tkqk"
@@ -151,10 +238,10 @@
         @click="saveListen"
         >保存</el-button
       >
-      <el-button>取消</el-button>
+      <!-- <el-button @click="quxiao">取消</el-button> -->
     </div>
     <el-dialog title="课程查询" :visible.sync="dialogFormVisible">
-      <el-form v-model="queryParams" :inline="true">
+      <el-form :model="queryParams" :inline="true">
         <el-form-item label="任课教师" prop="jsxx">
           <el-input
             v-model="queryParams.jsxx"
@@ -186,10 +273,41 @@
               :value="item.value"
             ></el-option> </el-select
         ></el-form-item>
+        <el-table
+          :data="tableDate"
+          ref="multipleTable"
+          style="width: 100%"
+          @selection-change="handleSelectionChange"
+          :default-sort="{ prop: 'date', order: 'descending' }"
+        >
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            width="50"
+          ></el-table-column>
+          <el-table-column prop="kch" label="课程编号" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="kcmc" label="课程名称" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="jxdd" label="教室" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="sksj" label="开课时间" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="jsxx" label="教师信息" sortable="custom">
+          </el-table-column>
+        </el-table>
+        <pagination
+          v-show="queryParams.total > 0"
+          :total="queryParams.total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="FdyKcxxPageList"
+        />
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cancelModal">取 消</el-button>
-        <el-button type="primary" @click="addData">确 定</el-button>
+        <el-button @click="cancelModal()">取 消</el-button>
+        <el-button type="primary" @click="confirm">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -200,17 +318,23 @@ import {
   getXmXgh,
   getGrade,
   FdyKcxxPageList,
+  addListen,
 } from "@/api/assistantWork/listen";
 export default {
   data() {
     return {
+      flag: true,
+      tjlx: "1", //新增的单条数据标志
+      listFlag: false,
       dialogFormVisible: false,
+      tableDate: [],
       queryParams: {
         jsxx: "",
         xqm: "",
         xnm: "",
         pageNum: 1,
         pageSize: 10,
+        total: 0,
       },
       options: [
         {
@@ -260,31 +384,131 @@ export default {
       options1: [
         {
           value: "1",
-          label: "1",
+          label: "第1",
         },
         {
           value: "2",
-          label: "2",
+          label: "第2",
         },
         {
           value: "3",
-          label: "3",
+          label: "第3",
+        },
+        {
+          value: "4",
+          label: "第4",
+        },
+        {
+          value: "5",
+          label: "第5",
+        },
+        {
+          value: "6",
+          label: "第6",
+        },
+        {
+          value: "7",
+          label: "第7",
+        },
+        {
+          value: "8",
+          label: "第8",
+        },
+        {
+          value: "9",
+          label: "第9",
+        },
+        {
+          value: "10",
+          label: "第10",
+        },
+        {
+          value: "11",
+          label: "第11",
+        },
+        {
+          value: "12",
+          label: "第12",
+        },
+        {
+          value: "13",
+          label: "第13",
+        },
+      ],
+      options2: [
+        {
+          value: "1",
+          label: "1节",
+        },
+        {
+          value: "2",
+          label: "2节",
+        },
+        {
+          value: "3",
+          label: "3节",
+        },
+        {
+          value: "4",
+          label: "4节",
+        },
+        {
+          value: "5",
+          label: "5节",
+        },
+        {
+          value: "6",
+          label: "6节",
+        },
+        {
+          value: "7",
+          label: "7节",
+        },
+        {
+          value: "8",
+          label: "8节",
+        },
+        {
+          value: "9",
+          label: "9节",
+        },
+        {
+          value: "10",
+          label: "10节",
+        },
+        {
+          value: "11",
+          label: "11节",
+        },
+        {
+          value: "12",
+          label: "12节",
+        },
+        {
+          value: "13",
+          label: "13节",
         },
       ],
       Form: {
         fileList: [],
-        rkls: "",
-        ktmc: "",
+        rkls: [{ value: "", xh: "", xm: "" }],
+        kcmc: "",
         bh: "",
-        kksj: "",
-        week: "",
-        jsBegin: "",
-        jsEnd: "",
+        kksj: [
+          {
+            xingqi: "",
+            jieKs: "",
+            jieJs: "",
+            week: "",
+          },
+        ],
         xq: "",
         sksj: "",
         skjs: "",
         tkqk: "",
       },
+      multipleSelection: [],
+      fileListAdd: [],
     };
   },
 
@@ -293,16 +517,55 @@ export default {
   },
 
   methods: {
+    confirm() {
+      this.listFlag = true; //代表是列表数据
+      this.dialogFormVisible = false;
+      this.tjlx = "0";
+      //处理数据时间
+      var tar = this.multipleSelection[0].sksj;
+      this.Form.xq = tar;
+      var list = tar.split(";");
+      var xingqi = [];
+      var jieKs = [];
+      var week = [];
+      for (var i = 0; i < list.length; i++) {
+        xingqi.push(list[i].slice(0, 3));
+        week.push(
+          list[i].slice(list[i].indexOf("{") + 1, list[i].indexOf("}"))
+        );
+        jieKs.push(
+          list[i].slice(list[i].indexOf("第"), list[i].indexOf("节") + 1)
+        );
+      }
+      let result = xingqi.map((v, i) => ({
+        xingqi: xingqi[i],
+        jieKs: jieKs[i],
+        week: week[i],
+      }));
+      //处理数据老师信息
+      var jsList = this.multipleSelection[0].jsxxList;
+      var a = [];
+      jsList.map((item, i) => {
+        a.push(item.slice(0, item.indexOf("/", 13)));
+      });
+      var lsList = a.map((v, i) => ({
+        xm: a[i].slice(a[i].indexOf("/") + 1),
+        xh: a[i].slice(0, a[i].indexOf("/")),
+        value: a[i],
+      }));
+      this.Form.skjs = this.multipleSelection[0].jxdd;
+      this.Form.kksj = result;
+      this.Form.kcmc = this.multipleSelection[0].kcmc;
+      this.Form.bh = this.multipleSelection[0].kch;
+      this.Form.rkls = lsList;
+    },
     cancelModal() {
       this.dialogFormVisible = false;
-      this.queryParams = {};
-    },
-    addData() {
-      console.log("123");
     },
     FdyKcxxPageList() {
       FdyKcxxPageList(this.queryParams).then((res) => {
-        console.log("res", res);
+        this.tableDate = res.data;
+        this.queryParams.total = res.totalCount;
       });
     },
     getYears() {
@@ -316,6 +579,23 @@ export default {
     classQuery() {
       this.dialogFormVisible = true;
       this.FdyKcxxPageList();
+    },
+    del() {
+      this.Form.xq = "";
+      this.listFlag = false;
+      this.tjlx = "1";
+      this.Form.kcmc = "";
+      this.Form.bh = "";
+      this.Form.skjs = "";
+      this.Form.kksj = [
+        {
+          xingqi: "",
+          jieKs: "",
+          jieJs: "",
+          week: "",
+        },
+      ];
+      this.Form.rkls = [{ value: "", xh: "", xm: "" }];
     },
     change(file, fileList) {
       //用于文件先保存
@@ -371,7 +651,7 @@ export default {
           result = res.data;
           resultNew = result.map((ele) => {
             return {
-              value: `${ele.xm}(${ele.gh})`.trim(),
+              value: `${ele.xm}/${ele.gh}`,
               xh: ele.gh.trim(),
               xm: ele.xm.trim(),
             };
@@ -389,88 +669,54 @@ export default {
         });
       }
     },
-
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
     handleSelect(item) {
-      console.log("item", item);
+      this.Form.rkls[0] = item;
     },
     saveListen() {
       console.log("this.from", this.Form);
-    },
-    save() {
-      var flag = false;
-      if (this.stuDate.length > 1) {
-        for (var i = 0; i < this.stuDate.length; i++) {
-          for (var j = i + 1; j < this.stuDate.length; j++) {
-            if (
-              this.stuDate[i].value === this.stuDate[j].value &&
-              !!this.stuDate[i].value &&
-              !!this.stuDate[j].value
-            ) {
-              flag = true;
-            }
-          }
-        }
-      } else {
-        flag = false;
+      var list = [];
+      var list2 = [];
+      //批量老师数据处理
+      for (var i = 0; i < this.Form.rkls.length; i++) {
+        list.push(this.Form.rkls[i].xm);
+        list2.push(this.Form.rkls[i].xh);
       }
-      if (flag) {
-        this.$message.error("存在相同谈话对象，请重新选择");
-      } else if (this.stuDate.some((val) => val.value == "")) {
-        this.$message.error("所添加谈话对象存在空值或未选择学生信息");
-      } else if (this.addressValue == "") {
-        this.$message.error("请至少选择一个谈话地点");
-      } else if (this.zhutiValue == "") {
-        this.$message.error("请至少选择一个谈话主题");
-      } else {
-        var list = [];
-        var list2 = [];
-        for (var i = 0; i < this.stuDate.length; i++) {
-          list.push(this.stuDate[i].xm);
-          list2.push(this.stuDate[i].xh);
-        }
-        var data = {
-          thdd: this.addressValue,
-          thnr: this.textarea1,
-          thsj: this.date,
-          id: this.lgnSn,
-          startTime: this.value1,
-          endTime: this.value2,
-          thzt: this.Zhuti,
-          thzt_type: this.zhutiValue,
-          xhList: list2,
-          xmList: list,
-        };
-        let formData = new FormData();
-        formData.append("id", this.lgnSn.toString());
-        formData.append("thdd", data.thdd);
-        formData.append("thnr", data.thnr);
-        formData.append("thsj", data.thsj);
-        formData.append("startTime", data.startTime);
-        formData.append("endTime", data.endTime);
-        formData.append("thzt_type", data.thzt_type);
-        formData.append("thzt", data.thzt);
-        formData.append("xhList", data.xhList);
-        formData.append("xmList", data.xmList);
-        if (this.fileListAdd.length > 0) {
-          this.fileListAdd.map((file) => {
-            formData.append("files", file.raw);
-          });
-        }
-        updateTalk(formData).then((res) => {
-          if (res.errcode == "00") {
-            this.$message.success("保存成功");
-          } else {
-            this.$message.error("保存失败");
-          }
+      var kksj = this.Form.kksj[0];
+      var ksshijian = `${kksj.xingqi}第${kksj.jieKs}-${kksj.jieJs}节{${kksj.week}}`;
+      let formData = new FormData();
+      formData.append("tjlx", this.tjlx);
+      formData.append("tkqk", this.Form.tkqk);
+      formData.append("jxdd", this.Form.skjs);
+      formData.append("kcbh", this.Form.bh);
+      formData.append("kckksj", this.tjlx == "0" ? this.Form.xq : ksshijian); //开始时间
+      formData.append("kcsksj", this.Form.sksj);
+      formData.append(
+        "rkls",
+        this.tjlx == "0" ? list : this.tjlx == "0" ? list : this.Form.rkls[0].xm
+      ); //老师工号
+      formData.append(
+        "rklsgh",
+        this.tjlx == "0" ? list2 : this.Form.rkls[0].xh
+      ); //老师姓名
+      formData.append("kcmc", this.Form.kcmc);
+      if (this.fileListAdd.length > 0) {
+        this.fileListAdd.map((file) => {
+          formData.append("files", file.raw);
         });
       }
-    },
-
-    editClick() {
-      this.edit = 2;
-    },
-    cancal() {
-      this.edit = 1;
+      addListen(formData).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("保存成功");
+          this.$router.push({
+            path: "/assistantWork/listen",
+          });
+        } else {
+          this.$message.error("保存失败");
+        }
+      });
     },
   },
 };
@@ -478,6 +724,12 @@ export default {
 
 <style lang="scss" scoped>
 .addRole {
+  .titleTop {
+    font-weight: 600;
+    font-size: 20px;
+    color: #1f1f1f;
+    line-height: 28px;
+  }
   .block {
     display: flex;
   }
@@ -640,6 +892,7 @@ export default {
         line-height: 28px;
       }
     }
+
     .headLeft {
       display: flex;
       align-items: center;

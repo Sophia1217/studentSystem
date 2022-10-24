@@ -264,8 +264,8 @@ export default {
           thdd: this.select == "thdd" ? this.searchVal : null,
           dwh: this.moreIform.xydm,
           ztjlList: this.ztjl.choose,
-          starttime: this.dateArray ? this.dateArray[0] : "",
-          endtime: this.dateArray ? this.dateArray[1] : "",
+          starttime: this.dateArray && this.dateArray ? this.dateArray[0] : "",
+          endtime: this.dateArray && this.dateArray ? this.dateArray[1] : "",
           pageNum: this.queryParams.pageNum,
           pageSize: this.queryParams.pageSize,
           orderZd: this.queryParams.orderZd,
@@ -318,8 +318,10 @@ export default {
         thdd: this.select == "thdd" ? this.searchVal : null,
         dwh: this.moreIform.xydm,
         ztjlList: this.ztjl.choose,
-        starttime: this.dateArray.length > 0 ? this.dateArray[0] : "",
-        endtime: this.dateArray.length > 0 ? this.dateArray[1] : "",
+        starttime:
+          this.dateArray && this.dateArray.length > 0 ? this.dateArray[0] : "",
+        endtime:
+          this.dateArray && this.dateArray.length > 0 ? this.dateArray[1] : "",
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,

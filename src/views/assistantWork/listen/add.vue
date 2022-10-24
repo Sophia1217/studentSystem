@@ -80,7 +80,7 @@
           <div v-if="listFlag == true">
             <div v-for="(ele, index) in Form.kksj">
               <el-row>
-                <el-col :span="3.5">
+                <el-col :span="4">
                   <el-select
                     v-model="Form.kksj[index].xingqi"
                     :disabled="true"
@@ -272,7 +272,13 @@
               :label="item.label"
               :value="item.value"
             ></el-option> </el-select
-        ></el-form-item>
+          ><el-button
+            style="background: rgb(0, 86, 87); color: white; margin-left: 10px"
+            @click="FdyKcxxPageList"
+          >
+            查询
+          </el-button>
+        </el-form-item>
         <el-table
           :data="tableDate"
           ref="multipleTable"

@@ -252,8 +252,14 @@ export default {
           jlrxm: this.select == "jlrxm" ? this.searchVal : null,
           jlrgh: this.select == "jlrgh" ? this.searchVal : null,
           jlrlxList: this.ztjl.choose ? this.ztjl.choose : [],
-          kcsksjks: this.dateArray.length > 0 ? this.dateArray[0] : "",
-          kcsksjjs: this.dateArray.length > 0 ? this.dateArray[1] : "",
+          kcsksjks:
+            this.dateArray && this.dateArray.length > 0
+              ? this.dateArray[0]
+              : "",
+          kcsksjjs:
+            this.dateArray && this.dateArray.length > 0
+              ? this.dateArray[1]
+              : "",
           pageNum: this.queryParams.pageNum,
           pageSize: this.queryParams.pageSize,
           orderZd: this.queryParams.orderZd,
@@ -283,10 +289,17 @@ export default {
       });
     },
     hadleDetail2(row) {
+      var gh = row.jlrgh;
+      var gh1 = this.$store.getters.userId;
+      var sf = true;
+      if (gh !== gh1) {
+        sf = false;
+      }
+      console.log("sf", sf);
       const { id } = row;
       this.$router.push({
         path: "/assistantWork/listenDetail",
-        query: { id: id, state: 0 },
+        query: { id: id, state: 0, sf: sf },
       });
     },
     changeSelect() {
@@ -301,8 +314,10 @@ export default {
         jlrxm: this.select == "jlrxm" ? this.searchVal : null,
         jlrgh: this.select == "jlrgh" ? this.searchVal : null,
         jlrlxList: this.ztjl.choose ? this.ztjl.choose : [],
-        kcsksjks: this.dateArray.length > 0 ? this.dateArray[0] : "",
-        kcsksjjs: this.dateArray.length > 0 ? this.dateArray[1] : "",
+        kcsksjks:
+          this.dateArray && this.dateArray.length > 0 ? this.dateArray[0] : "",
+        kcsksjjs:
+          this.dateArray && this.dateArray.length > 0 ? this.dateArray[1] : "",
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,

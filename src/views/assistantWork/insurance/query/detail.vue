@@ -132,14 +132,6 @@
           </el-row>
           <span class="title">保险内容</span>
           <el-form-item label="附件">
-            <!-- <div v-if="urlArr.length > 0" class="block">
-              <div v-for="(item, i) in urlArr">
-                <el-image
-                  style="margin-left: 20px; width: 300px; height: 300px"
-                  :src="item"
-                ></el-image>
-              </div>
-            </div> -->
             <el-upload
               action="#"
               :file-list="fileList"
@@ -155,7 +147,6 @@
       </div>
 
       <div class="headLeft">
-        <!-- <button class="span1" @click="downlo">下载</button> -->
         <el-upload
           accept=".pdf"
           :auto-upload="true"
@@ -174,7 +165,6 @@
 </template>
 
 <script>
-import { fjsc } from "@/api/assistantWork/baoxian";
 import { getToken } from "@/utils/auth";
 import { queryList } from "@/api/assistantWork/baoxian";
 import { querywj, delwj, Exportwj } from "@/api/assistantWork/classEvent";

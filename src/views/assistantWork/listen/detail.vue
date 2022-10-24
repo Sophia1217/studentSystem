@@ -85,12 +85,11 @@
             <el-col :span="2.5">
               <el-button
                 style="background: #005657; color: white; margin-left: 10px"
-                :disabled="state == 0"
                 @click="classQuery"
+                v-if="state == 1"
                 >课程查询</el-button
               >
             </el-col>
-            <!-- :disabled="state == 0" -->
           </el-row>
         </el-form-item>
         <div style="display: flex">
@@ -299,14 +298,14 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="p2" v-if="state == 0">
+    <div class="p2" v-if="state == 0 && sf">
       <el-button
         style="background: #005657; color: white; margin-left: 10px"
         @click="edit"
         >编辑</el-button
       >
     </div>
-    <div class="p2" v-else>
+    <div class="p2" v-if="state == 1">
       <el-button
         style="background: #005657; color: white; margin-left: 10px"
         @click="saveListen"
@@ -589,6 +588,7 @@ export default {
       fileListAdd: [],
       urlArr: [],
       fileList: [],
+      sf: true,
     };
   },
 
@@ -598,6 +598,7 @@ export default {
     this.querywj();
     this.getYears();
     this.getDetail();
+    this.sf = this.$route.query.sf;
   },
 
   methods: {

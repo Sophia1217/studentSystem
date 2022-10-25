@@ -80,6 +80,7 @@
     </div>
     <div class="p2">
       <el-button
+        v-show="state == 2"
         style="background: #005657; color: white; margin-left: 10px"
         @click="saveBx"
         >保存</el-button
@@ -116,13 +117,12 @@ export default {
   },
   methods: {
     saveBx() {
-      let data = { fdyXpxXzxxReq: this.form };
-      updateXzxx(data).then((res) => {
+      updateXzxx(this.form).then((res) => {
         if (res.errcode == "00") {
           this.$message.success("保存成功");
-          // this.$router.push({
-          //   path: "/assistantWork/listen",
-          // });
+          this.$router.push({
+            path: "/assistantWork/insurance",
+          });
         } else {
           this.$message.error("保存失败");
         }

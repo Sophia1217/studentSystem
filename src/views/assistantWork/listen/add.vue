@@ -44,7 +44,7 @@
             <el-col :span="2.5">
               <el-button
                 style="background: #005657; color: white; margin-left: 10px"
-                @click="del"
+                @click="delInfo"
                 >清空</el-button
               >
             </el-col>
@@ -586,7 +586,7 @@ export default {
       this.dialogFormVisible = true;
       this.FdyKcxxPageList();
     },
-    del() {
+    delInfo() {
       this.Form.xq = "";
       this.listFlag = false;
       this.tjlx = "1";

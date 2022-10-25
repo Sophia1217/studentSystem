@@ -90,6 +90,14 @@
                 >课程查询</el-button
               >
             </el-col>
+            <el-col :span="2.5">
+              <el-button
+                style="background: #005657; color: white; margin-left: 10px"
+                @click="delInfo"
+                v-if="state == 1"
+                >清空</el-button
+              >
+            </el-col>
           </el-row>
         </el-form-item>
         <div style="display: flex">
@@ -602,6 +610,23 @@ export default {
   },
 
   methods: {
+    delInfo() {
+      this.Form.xq = "";
+      this.listFlag = false;
+      this.tjlx = "1";
+      this.Form.kcmc = "";
+      this.Form.bh = "";
+      this.Form.skjs = "";
+      this.Form.kksj = [
+        {
+          xingqi: "",
+          jieKs: "",
+          jieJs: "",
+          week: "",
+        },
+      ];
+      this.Form.rkls = [{ value: "", xh: "", xm: "" }];
+    },
     handlePreview(file) {
       //用于文件下载
       Exportwj({ id: file.id.toString() }).then((res) => {
@@ -812,6 +837,7 @@ export default {
       this.multipleSelection = val;
       this.delArr = this.multipleSelection.map((item) => item.id);
     },
+
     handleSelect(item) {
       this.Form.rkls[0] = item;
     },

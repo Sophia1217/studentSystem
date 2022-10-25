@@ -281,6 +281,7 @@ import {
   passFlow,
   backFlow,
 } from "@/api/student/index";
+import { param } from "../../../../../utils";
 export default {
   name: "manStudent",
   components: { CheckboxCom },
@@ -580,28 +581,28 @@ export default {
     },
     // 打开导出弹窗
     async handleExport() {
+      let param = {
+        userId: this.select == "xh" ? this.searchVal : null,
+        xm: this.select == "xm" ? this.searchVal : null,
+        sfzjh: this.select == "sfzjh" ? this.searchVal : null,
+        yddh: this.select == "yddh" ? this.searchVal : null,
+        pyccm: this.training.choose || [],
+        xz: this.learnHe.choose,
+        xjzt: this.studentStatus.choose,
+        zzmmm: this.politica.choose,
+        mzm: this.ethnic.choose,
+        bjm: this.moreIform.pread,
+        dwh: this.moreIform.manageReg,
+        zydm: this.moreIform.stuInfo,
+        nj: this.moreIform.grade,
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        limitSql: "",
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+      };
+      this.stuInfoFlowExportParam = param;
       if (this.multipleSelection.length <= 0) {
-        let param = {
-          userId: this.select == "xh" ? this.searchVal : null,
-          xm: this.select == "xm" ? this.searchVal : null,
-          sfzjh: this.select == "sfzjh" ? this.searchVal : null,
-          yddh: this.select == "yddh" ? this.searchVal : null,
-          pyccm: this.training.choose || [],
-          xz: this.learnHe.choose,
-          xjzt: this.studentStatus.choose,
-          zzmmm: this.politica.choose,
-          mzm: this.ethnic.choose,
-          bjm: this.moreIform.pread,
-          dwh: this.moreIform.manageReg,
-          zydm: this.moreIform.stuInfo,
-          nj: this.moreIform.grade,
-          pageNum: this.queryParams.pageNum,
-          pageSize: this.queryParams.pageSize,
-          limitSql: "",
-          orderZd: this.queryParams.orderZd,
-          orderPx: this.queryParams.orderPx,
-        };
-        this.stuInfoFlowExportParam = param;
         await FlowPageList(param)
           .then((res) => {
             this.len = res.data.total;
@@ -613,23 +614,26 @@ export default {
       this.showExportA = true;
     },
     expTalk() {
+      this.showExportA = false;
+      let ids = [];
+
       if (this.multipleSelection.length <= 0) {
         let param = this.stuInfoFlowExportParam;
-        let data = { param, exportStyle: "EXCEL" };
-        StuInfoFlowExport(data)
+        this.$set(param, "ids", ids);
+        StuInfoFlowExport(param)
           .then((res) => {
             this.downloadFn(res, "学生信息审核导出", "xls");
-
             this.$message.success("学生信息审核已导出");
             return;
           })
           .catch((err) => {});
       } else {
-        let ids = [];
         this.multipleSelection.forEach((item) => {
           ids.push(item.id);
         });
-        let data = { idList: ids, exportStyle: "EXCEL" };
+        let data = this.stuInfoFlowExportParam;
+        this.$set(data, "ids", ids);
+        console.log(data);
         StuInfoFlowExport(data)
           .then((res) => {
             this.downloadFn(res, "学生信息审核导出", "xls");
@@ -709,7 +713,7 @@ export default {
           xh: row.userId,
           schooling: schooling,
           id: row.id,
-          approveState: 2,
+          approveState: row.approveState,
           approver: row.approver,
           isSh: flag, //1是审核，2是详情
         },

@@ -39,10 +39,10 @@ export default {
     this.xh = this.$route.query.xh;
     let approveState = this.$route.query.approveState;
     if (approveState == 1) {
-      this.active = 3;
+      this.active = 2;
       this.flag = "tg";
     } else if (approveState == 2) {
-      this.active = 2;
+      this.active = 3;
       this.flag = "tg";
     } else if (approveState == 3) {
       this.active = 3;

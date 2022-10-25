@@ -833,7 +833,7 @@
                         v-model="detailInfoData.zgFdyrms.sfbybfdy"
                         placeholder="请选择"
                         size="small"
-                        :disabled="zgFdyrmsAuth.SFBYBXSFDY == 2 "
+                        :disabled="zgFdyrmsAuth.SFBYBFDY == 2 "
                       >
                         <el-option
                           v-for="(item,index) in sfOps"
@@ -1346,34 +1346,11 @@
             <el-table-column type="index" label="序号" width="50" />
             <el-table-column prop="gzdw" label="工作单位">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1"><el-select
-                        v-model="scope.row.gzdw"
-                        placeholder="请选择"
-                        size="small"
-                        disabled
-                      >
-                        <el-option
-                          v-for="(item,index) in gzdwOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select></div>
+ <div v-if="isEdit == 1">{{ scope.row.gzdw}}</div>
                 <div v-else>
-                  <el-select
-                        v-model="scope.row.gzdw"
-                        placeholder="请选择"
-                        size="small"
-                        :disabled="zgGzjlsAuth.GZDW==2"
-                      >
-                        <el-option
-                          v-for="(item,index) in gzdwOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        />
-                      </el-select>
-                </div>
+                  <el-input v-model="scope.row.gzdw" placeholder="请输入" :disabled="zgGzjlsAuth.GZDW==2"/>
+                  </div>
+                
               </template>
             </el-table-column>   
         
@@ -1399,7 +1376,7 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.gzzzrq }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.zsh" placeholder="请输入" :disabled="zgGzjlsAuth.GZZZRQ==2"/>
+                  <el-input v-model="scope.row.gzzzrq" placeholder="请输入" :disabled="zgGzjlsAuth.GZZZRQ==2"/>
                   </div>
                   
               </template>
@@ -1432,7 +1409,7 @@
           </div>
         </div>
         <div class="tableStyle">
-          <el-table :data="detailInfoData.zgPrxxs" style="width: 100%">
+          <el-table :data="detailInfoData.zgPrxxes" style="width: 100%">
             <el-table-column type="index" label="序号" width="50" />
             <el-table-column prop="przwdj" label="聘任职务等级">
               <template slot-scope="scope">
@@ -1454,7 +1431,7 @@
                         v-model="scope.row.przwdj"
                         placeholder="请选择"
                         size="small"
-                        :disabled="zgPrxxsAuth.PRZWDJ==2||scope.row.sftb=='1'"
+                        :disabled="zgPrxxesAuth.PRZWDJ==2||scope.row.sftb=='1'"
                       >
                         <el-option
                           v-for="(item,index) in przwdjOps"
@@ -1471,7 +1448,7 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.prsj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.prsj" placeholder="请输入" :disabled="zgPrxxsAuth.PRSJ==2||scope.row.sftb=='1'"/>
+                  <el-input v-model="scope.row.prsj" placeholder="请输入" :disabled="zgPrxxesAuth.PRSJ==2||scope.row.sftb=='1'"/>
                   </div>
                   
               </template>
@@ -1480,7 +1457,7 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.prwh }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.prwh" placeholder="请输入" :disabled="zgPrxxsAuth.PRWH==2||scope.row.sftb=='1'"/>
+                  <el-input v-model="scope.row.prwh" placeholder="请输入" :disabled="zgPrxxesAuth.PRWH==2||scope.row.sftb=='1'"/>
                   </div>
                  
               </template>
@@ -1489,7 +1466,7 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.zylb }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.zylb" placeholder="请输入" :disabled="zgPrxxsAuth.ZYLB==2||scope.row.sftb=='1'"/>
+                  <el-input v-model="scope.row.zylb" placeholder="请输入" :disabled="zgPrxxesAuth.ZYLB==2||scope.row.sftb=='1'"/>
                   </div>
                  
               </template>
@@ -1514,7 +1491,7 @@
                         v-model="scope.row.jslb"
                         placeholder="请选择"
                         size="small"
-                        :disabled="zgPrxxsAuth.JSLB==2||scope.row.sftb=='1'"
+                        :disabled="zgPrxxesAuth.JSLB==2||scope.row.sftb=='1'"
                       >
                         <el-option
                           v-for="(item,index) in jslbOps"
@@ -1547,7 +1524,7 @@
                         v-model="scope.row.rmbz"
                         placeholder="请选择"
                         size="small"
-                        :disabled="zgPrxxsAuth.RMBZ==2||scope.row.sftb=='1'"
+                        :disabled="zgPrxxesAuth.RMBZ==2||scope.row.sftb=='1'"
                       >
                         <el-option
                           v-for="(item,index) in sfOps"
@@ -1580,7 +1557,7 @@
                         v-model="scope.row.stateId"
                         placeholder="请选择"
                         size="small"
-                        :disabled="zgPrxxsAuth.PRZWDJ==2||scope.row.sftb=='1'"
+                        :disabled="zgPrxxesAuth.STATE_ID==2||scope.row.sftb=='1'"
                       >
                         <el-option
                           v-for="(item,index) in sfOps"
@@ -1701,13 +1678,13 @@
           </div>
         </div>
         <div class="tableStyle">
-          <el-table :data="detailInfoData.zgXmxxs" style="width: 100%">
+          <el-table :data="detailInfoData.zgXmxxes" style="width: 100%">
             <el-table-column type="index" label="序号" width="50" />
             <el-table-column prop="pxmc" label="项目名称">
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.pxmc }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.pxmc" placeholder="请输入" :disabled="zgXmxxsAuth.PXMC==2"/>
+                  <el-input v-model="scope.row.pxmc" placeholder="请输入" :disabled="zgXmxxesAuth.PXMC==2"/>
                   </div>
                  
               </template>
@@ -1717,7 +1694,7 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.zzdw }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.zzdw" placeholder="请输入" :disabled="zgXmxxsAuth.ZZDW==2"/>
+                  <el-input v-model="scope.row.zzdw" placeholder="请输入" :disabled="zgXmxxesAuth.ZZDW==2"/>
                   </div>
                  
               </template>
@@ -1726,7 +1703,7 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.xxdd }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.xxdd" placeholder="请输入" :disabled="zgXmxxsAuth.XXDD==2"/>
+                  <el-input v-model="scope.row.xxdd" placeholder="请输入" :disabled="zgXmxxesAuth.XXDD==2"/>
                   </div>
                 
               </template>
@@ -1735,7 +1712,7 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.qssj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="zgXmxxsAuth.QSSJ==2"/>
+                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="zgXmxxesAuth.QSSJ==2"/>
                   </div>
                  
               </template>
@@ -1744,7 +1721,7 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.jssj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="zgXmxxsAuth.JSSJ==2"/>
+                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="zgXmxxesAuth.JSSJ==2"/>
                   </div>
                   
               </template>
@@ -1753,7 +1730,7 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.xmlb }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.xmlb" placeholder="请输入" :disabled="zgXmxxsAuth.XMLB==2"/>
+                  <el-input v-model="scope.row.xmlb" placeholder="请输入" :disabled="zgXmxxesAuth.XMLB==2"/>
                   </div>
                  
               </template>
@@ -2478,9 +2455,9 @@ export default {
       zgDzzjsAuth: {},
       zgZyjszwsAuth: {},
       zgGzjlsAuth: {},
-      zgPrxxsAuth: {},
+      zgPrxxesAuth: {},
       zgXxpxesAuth: {},
-      zgXmxxsAuth: {},
+      zgXmxxesAuth: {},
       zgZyzgsAuth: {},
       zgGwdlsAuth: {},
       zgNdkhsAuth: {},
@@ -2504,10 +2481,10 @@ export default {
         zgDzzjs: [], //级别
         zgZyjszws: [], //专业技术职务
         zgGzjls: [], //工作经历
-        zgPrxxs: [], //聘任信息
+        zgPrxxes: [], //聘任信息
 
         zgXxpxes: [], //学习培训
-        zgXmxxs: [], //项目学习
+        zgXmxxes: [], //项目学习
         zgZyzgs: [], //职业资格
         zgGwdls: [], //岗位锻炼
         zgNdkhs: [], //考核
@@ -2530,7 +2507,7 @@ export default {
     this.getCode("dmrsxlm");
     this.getCode("dmrsxklbm");
     this.getCode("dmxwm");
-    this.getCode("dmrshyzkm");
+    this.getCode("dmhyzkm");
     this.getCode("dmxz");
     //this.getCode("dmzwmcm(还没有)");
     this.getCode("dmrskhjgm");
@@ -2582,7 +2559,7 @@ export default {
             case "dmxwm":
               this.zgxwmOps = res.data;
               break;
-            case "dmrshyzkm":
+            case "dmhyzkm":
               this.hyzkmOps = res.data;
               break;
             case "dmxz":
@@ -2751,12 +2728,12 @@ export default {
           );
           this.$set(
             this.detailInfoData,
-            "zgPrxxs",
+            "zgPrxxes",
             res.zgPrxxes ? res.zgPrxxes : [] // 聘任信息
           );
           this.$set(
             this.detailInfoData,
-            "zgXmxxs",
+            "zgXmxxes",
             res.zgXmxxes ? res.zgXmxxes : [] // 项目学习
           );
           this.$set(
@@ -2789,9 +2766,9 @@ export default {
           this.zgDzzwsAuth = res.auth.zg_dzzwAuth;
           this.zgFdyrmsAuth = res.auth.zg_fdyrmAuth;
           this.zgGwdlsAuth = res.auth.zg_gwdlAuth;
-          this.zgPrxxsAuth = res.auth.zg_prxxAuth;
+          this.zgPrxxesAuth = res.auth.zg_prxxAuth;
           this.zgQtkyqksAuth = res.auth.zg_qtkyqkAuth;
-          this.zgXmxxsAuth = res.auth.zg_xmxxAuth;
+          this.zgXmxxesAuth = res.auth.zg_xmxxAuth;
           this.zgZyzgsAuth = res.auth.zg_zyzgAuth;
         })
         .catch((err) => {});
@@ -2806,18 +2783,965 @@ export default {
       this.isEdit = 1;
     },
     handlUpdata() {
+      console.log(this.detailInfoData.zgGzjls);
       let data = this.detailInfoData;
-      updateDetailQueryPoliticalWorkList(data)
-        .then((res) => {
-          this.$message({
-            message: res.errmsg,
-            type: "success",
+      let flag = 0;
+
+      if (this.zgZgjbxxesAuth.GH == 0 && !data.zgZgjbxxes.gh) {
+        flag = 1;
+        this.$message.error("工号不能为空");
+      } else if (this.zgZgjbxxesAuth.XM == 0 && !data.zgZgjbxxes.xm) {
+        flag = 1;
+        this.$message.error("姓名不能为空");
+      } else if (this.zgZgjbxxesAuth.XBM == 0 && !data.zgZgjbxxes.xbm) {
+        flag = 1;
+        this.$message.error("性别不能为空");
+      } else if (this.zgZgjbxxesAuth.CSRQ == 0 && !data.zgZgjbxxes.csrq) {
+        flag = 1;
+        this.$message.error("出生年月不能为空");
+      } else if (this.zgZgjbxxesAuth.ZZMMM == 0 && !data.zgZgjbxxes.zzmmm) {
+        flag = 1;
+        this.$message.error("政治面貌不能为空");
+      } else if (this.zgZgjbxxesAuth.SFZJH == 0 && !data.zgZgjbxxes.sfzjh) {
+        flag = 1;
+        this.$message.error("身份证号不能为空");
+      } else if (this.zgZgjbxxesAuth.HYZKM == 0 && !data.zgZgjbxxes.hyzkm) {
+        flag = 1;
+        this.$message.error("婚姻状况不能为空");
+      } else if (this.zgZgjbxxesAuth.ZGXLM == 0 && !data.zgZgjbxxes.zgxlm) {
+        flag = 1;
+        this.$message.error("最高学历不能为空");
+      } else if (this.zgZgjbxxesAuth.ZGXWM == 0 && !data.zgZgjbxxes.zgxwm) {
+        flag = 1;
+        this.$message.error("最后学位不能为空");
+      } else if (this.zgZgjbxxesAuth.BYXXJDW == 0 && !data.zgZgjbxxes.byxxjdw) {
+        flag = 1;
+        this.$message.error("毕业院校不能为空");
+      } else if (this.zgZgjbxxesAuth.CJGZRQ == 0 && !data.zgZgjbxxes.cjgzrq) {
+        flag = 1;
+        this.$message.error("参加工作时间不能为空");
+      } else if (this.zgZgjbxxesAuth.BGDH == 0 && !data.zgZgjbxxes.bgdh) {
+        flag = 1;
+        this.$message.error("办公电话不能为空");
+      } else if (this.zgZgjbxxesAuth.YDDH == 0 && !data.zgZgjbxxes.yddh) {
+        flag = 1;
+        this.$message.error("手机号码不能为空");
+      } else if (this.zgZgjbxxesAuth.DZYX == 0 && !data.zgZgjbxxes.dzyx) {
+        flag = 1;
+        this.$message.error("电子邮箱不能为空");
+      } else if (this.zgZgjbxxesAuth.WXZH == 0 && !data.zgZgjbxxes.wxzh) {
+        flag = 1;
+        this.$message.error("微信账号不能为空");
+      } else if (this.zgZgjbxxesAuth.QQZH == 0 && !data.zgZgjbxxes.qqzh) {
+        flag = 1;
+        this.$message.error("qq号码不能为空");
+      } else if (this.zgZgjbxxesAuth.YB == 0 && !data.zgZgjbxxes.yb) {
+        flag = 1;
+        this.$message.error("邮编不能为空");
+      } else if (this.zgZgjbxxesAuth.TXDZ == 0 && !data.zgZgjbxxes.txdz) {
+        flag = 1;
+        this.$message.error("通讯地址不能为空");
+      } else if (this.zgZgjbxxesAuth.SYZK == 0 && !data.zgZgjbxxes.syzk) {
+        flag = 1;
+        this.$message.error("生育状况不能为空");
+      } else if (this.zgZgjbxxesAuth.BSHJL == 0 && !data.zgZgjbxxes.bshjl) {
+        flag = 1;
+        this.$message.error("博士后经历不能为空");
+      } else if (this.zgZgjbxxesAuth.SXZYM == 0 && !data.zgZgjbxxes.sxzym) {
+        flag = 1;
+        this.$message.error("专业不能为空");
+      } else if (this.zgZgjbxxesAuth.ZYLB == 0 && !data.zgZgjbxxes.zylb) {
+        flag = 1;
+        this.$message.error("专业类别不能为空");
+      } else if (
+        this.zgFdyrmsAuth.DRFDYSJ == 0 &&
+        !data.zgFdyrms.drfdysj &&
+        data.sffdy == 1
+      ) {
+        flag = 1;
+        this.$message.error("担任辅导员时间不能为空");
+      } else if (
+        this.zgFdyrmsAuth.GWXZ == 0 &&
+        !data.zgFdyrms.gwxz &&
+        data.sffdy == 1
+      ) {
+        flag = 1;
+        this.$message.error("岗位性质不能为空");
+      } else if (
+        this.zgFdyrmsAuth.SFSSMZXSFDY == 0 &&
+        !data.zgFdyrms.sfssmzxsfdy &&
+        data.sffdy == 1
+      ) {
+        flag = 1;
+        this.$message.error("是否少数民族学生辅导员不能为空");
+      } else if (
+        this.zgFdyrmsAuth.SFGJXSFDY == 0 &&
+        !data.zgFdyrms.sfgjxsfdy &&
+        data.sffdy == 1
+      ) {
+        flag = 1;
+        this.$message.error("是否国际学生辅导员不能为空");
+      } else if (
+        this.zgFdyrmsAuth.SFBYBFDY == 0 &&
+        !data.zgFdyrms.sfbybfdy &&
+        data.sffdy == 1
+      ) {
+        flag = 1;
+        this.$message.error("是否毕业班辅导员不能为空");
+      } else if (
+        this.zgFdyrmsAuth.DXSQK == 0 &&
+        !data.zgFdyrms.dxsqk &&
+        data.sffdy == 1
+      ) {
+        flag = 1;
+        this.$message.error("带学生情况不能为空");
+      } else if (
+        this.zgFdyrmsAuth.DZKSRS == 0 &&
+        !data.zgFdyrms.dzksrs &&
+        data.sffdy == 1
+      ) {
+        flag = 1;
+        this.$message.error("带专科生人数不能为空");
+      } else if (
+        this.zgFdyrmsAuth.DBKSRS == 0 &&
+        !data.zgFdyrms.dbksrs &&
+        data.sffdy == 1
+      ) {
+        flag = 1;
+        this.$message.error("带本科生人数不能为空");
+      } else if (
+        this.zgFdyrmsAuth.DYJSRS == 0 &&
+        !data.zgFdyrms.dyjsrs &&
+        data.sffdy == 1
+      ) {
+        flag = 1;
+        this.$message.error("带研究生人数不能为空");
+      } else if (
+        this.zgFdyrmsAuth.DGJXSRS == 0 &&
+        !data.zgFdyrms.dgjxsrs &&
+        data.sffdy == 1
+      ) {
+        flag = 1;
+        this.$message.error("带国际学生人数不能为空");
+      }
+      if (data.sffdy == 1 && this.detailInfoData.zgXlxws.length > 0) {
+        for (var i = 0; i < this.detailInfoData.zgXlxws.length; i++) {
+          if (this.detailInfoData.zgXlxws[i].sftb == 1) continue;
+          if (
+            !this.detailInfoData.zgXlxws[i].xlm &&
+            this.zgXlxwsAuth.XLM == 0
+          ) {
+            flag = 1;
+            this.$message.error("学历不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXlxws[i].byxxhdw &&
+            this.zgXlxwsAuth.BYXXHDW == 0
+          ) {
+            flag = 1;
+            this.$message.error("毕业院校不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXlxws[i].byxxlb &&
+            this.zgXlxwsAuth.BYXXLB == 0
+          ) {
+            flag = 1;
+            this.$message.error("毕业学校类别不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXlxws[i].sxzym &&
+            this.zgXlxwsAuth.SXZYM == 0
+          ) {
+            flag = 1;
+            this.$message.error("专业不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXlxws[i].bysj &&
+            this.zgXlxwsAuth.BYSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("毕业时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXlxws[i].xz &&
+            this.zgXlxwsAuth.XZ == 0
+          ) {
+            flag = 1;
+            this.$message.error("学制不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXlxws[i].xwm &&
+            this.zgXlxwsAuth.XWM == 0
+          ) {
+            flag = 1;
+            this.$message.error("学位不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXlxws[i].xwsysj &&
+            this.zgXlxwsAuth.XWSYSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("学位授予时间不能为空");
+
+            break;
+          }
+        }
+      }
+      if (data.sffdy == 1 && this.detailInfoData.zgDzzws.length > 0) {
+        for (var i = 0; i < this.detailInfoData.zgDzzws.length; i++) {
+          if (this.detailInfoData.zgDzzws[i].sftb == 1) continue;
+          if (
+            !this.detailInfoData.zgDzzws[i].zwmcm &&
+            this.zgDzzwsAuth.ZWMCM == 0
+          ) {
+            flag = 1;
+            this.$message.error("行政职务名称不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgDzzws[i].jdhtmrzrq &&
+            this.zgDzzwsAuth.JDHTMRZRQ == 0
+          ) {
+            flag = 1;
+            this.$message.error("起始时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgDzzws[i].jdhtmmzdrq &&
+            this.zgDzzwsAuth.JDHTMMZDRQ == 0
+          ) {
+            flag = 1;
+            this.$message.error("结束时间不能为空");
+
+            break;
+          }
+        }
+      }
+      if (data.sffdy == 1 && this.detailInfoData.zgDzzjs.length > 0) {
+        for (var i = 0; i < this.detailInfoData.zgDzzjs.length; i++) {
+          if (this.detailInfoData.zgDzzjs[i].sftb == 1) continue;
+          if (
+            !this.detailInfoData.zgDzzjs[i].zwjbm &&
+            this.zgDzzjsAuth.ZWJBM == 0
+          ) {
+            flag = 1;
+            this.$message.error("行政级别发展不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgDzzjs[i].zjpzrq &&
+            this.zgDzzjsAuth.ZJPZRQ == 0
+          ) {
+            flag = 1;
+            this.$message.error("起始时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgDzzjs[i].zjzzrq &&
+            this.zgDzzjsAuth.ZJZZRQ == 0
+          ) {
+            flag = 1;
+            this.$message.error("结束时间不能为空");
+
+            break;
+          }
+        }
+      }
+      if (data.sffdy == 1 && this.detailInfoData.zgZyjszws.length > 0) {
+        for (var i = 0; i < this.detailInfoData.zgZyjszws.length; i++) {
+          if (this.detailInfoData.zgZyjszws[i].sftb == 1) continue;
+          if (
+            !this.detailInfoData.zgZyjszws[i].zjzcdm &&
+            this.zgZyjszwsAuth.XJZCDM == 0
+          ) {
+            flag = 1;
+            this.$message.error("专业技术职务不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgZyjszws[i].prrq &&
+            this.zgZyjszwsAuth.PRRQ == 0
+          ) {
+            flag = 1;
+            this.$message.error("起始时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgZyjszws[i].jssj &&
+            this.zgZyjszwsAuth.JSSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("结束时间不能为空");
+
+            break;
+          }
+        }
+      }
+      if (data.sffdy == 1 && this.detailInfoData.zgGzjls.length > 0) {
+        for (var i = 0; i < this.detailInfoData.zgGzjls.length; i++) {
+          // if (this.detailInfoData.zgGzjls[i].sftb == 1) continue;
+          if (
+            !this.detailInfoData.zgGzjls[i].gzdw &&
+            this.zgGzjlsAuth.GZDW == 0
+          ) {
+            flag = 1;
+            this.$message.error("工作单位不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgGzjls[i].zw &&
+            this.zgGzjlsAuth.ZW == 0
+          ) {
+            flag = 1;
+            this.$message.error("职务不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgGzjls[i].gzqsrq &&
+            this.zgGzjlsAuth.GZQSRQ == 0
+          ) {
+            flag = 1;
+            this.$message.error("起始时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgGzjls[i].gzzzrq &&
+            this.zgGzjlsAuth.GZZZRQ == 0
+          ) {
+            flag = 1;
+            this.$message.error("结束时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgGzjls[i].gzgwxz &&
+            this.zgGzjlsAuth.GZGWXZ == 0
+          ) {
+            flag = 1;
+            this.$message.error("工作岗位性质不能为空");
+
+            break;
+          }
+        }
+      }
+      if (data.sffdy == 1 && this.detailInfoData.zgPrxxes.length > 0) {
+        for (var i = 0; i < this.detailInfoData.zgPrxxes.length; i++) {
+          // if (this.detailInfoData.zgPrxxes[i].sftb == 1) continue;
+          if (
+            !this.detailInfoData.zgPrxxes[i].przwdj &&
+            this.zgPrxxesAuth.PRZWDJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("聘任职务等级不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgPrxxes[i].prsj &&
+            this.zgPrxxesAuth.PRSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("聘任时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgPrxxes[i].prwh &&
+            this.zgPrxxesAuth.PRWH == 0
+          ) {
+            flag = 1;
+            this.$message.error("聘任文号不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgPrxxes[i].zylb &&
+            this.zgPrxxesAuth.ZYLB == 0
+          ) {
+            flag = 1;
+            this.$message.error("职员类别不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgPrxxes[i].jslb &&
+            this.zgPrxxesAuth.JSLB == 0
+          ) {
+            flag = 1;
+            this.$message.error("晋升类别不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgPrxxes[i].rmbz &&
+            this.zgPrxxesAuth.RMBZ == 0
+          ) {
+            flag = 1;
+            this.$message.error("任免标志不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgPrxxes[i].stateId &&
+            this.zgPrxxesAuth.STATE_ID == 0
+          ) {
+            flag = 1;
+            this.$message.error("是否当前状态不能为空");
+
+            break;
+          }
+        }
+      }
+      if (data.sffdy == 1 && this.detailInfoData.zgXxpxes.length > 0) {
+        for (var i = 0; i < this.detailInfoData.zgXxpxes.length; i++) {
+          // if (this.detailInfoData.zgXxpxes[i].sftb == 1) continue;
+          if (
+            !this.detailInfoData.zgXxpxes[i].pxmc &&
+            this.zgXxpxesAuth.PXMC == 0
+          ) {
+            flag = 1;
+            this.$message.error("培训名称不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXxpxes[i].zzdw &&
+            this.zgXxpxesAuth.ZZDW == 0
+          ) {
+            flag = 1;
+            this.$message.error("组织单位不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXxpxes[i].pxdd &&
+            this.zgXxpxesAuth.PXDD == 0
+          ) {
+            flag = 1;
+            this.$message.error("培训地点不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXxpxes[i].qssj &&
+            this.zgXxpxesAuth.QSSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("起始时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXxpxes[i].jssj &&
+            this.zgXxpxesAuth.JSSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("结束时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXxpxes[i].pxxz &&
+            this.zgXxpxesAuth.PXXZ == 0
+          ) {
+            flag = 1;
+            this.$message.error("培训性质不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXxpxes[i].pxjb &&
+            this.zgXxpxesAuth.PXJB == 0
+          ) {
+            flag = 1;
+            this.$message.error("培训级别不能为空");
+
+            break;
+          }
+        }
+      }
+      if (data.sffdy == 1 && this.detailInfoData.zgXmxxes.length > 0) {
+        for (var i = 0; i < this.detailInfoData.zgXmxxes.length; i++) {
+          // if (this.detailInfoData.zgXmxxes[i].sftb == 1) continue;
+          if (
+            !this.detailInfoData.zgXmxxes[i].pxmc &&
+            this.zgXmxxesAuth.PXMC == 0
+          ) {
+            flag = 1;
+            this.$message.error("项目名称不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXmxxes[i].zzdw &&
+            this.zgXmxxesAuth.ZZDW == 0
+          ) {
+            flag = 1;
+            this.$message.error("组织单位不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXmxxes[i].xxdd &&
+            this.zgXmxxesAuth.XXDD == 0
+          ) {
+            flag = 1;
+            this.$message.error("学习地点不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXmxxes[i].qssj &&
+            this.zgXmxxesAuth.QSSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("起始时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXmxxes[i].jssj &&
+            this.zgXmxxesAuth.JSSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("结束时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXmxxes[i].xmlb &&
+            this.zgXmxxesAuth.XMLB == 0
+          ) {
+            flag = 1;
+            this.$message.error("项目类别不能为空");
+
+            break;
+          }
+        }
+      }
+      if (data.sffdy == 1 && this.detailInfoData.zgZyzgs.length > 0) {
+        for (var i = 0; i < this.detailInfoData.zgZyzgs.length; i++) {
+          // if (this.detailInfoData.zgZyzgs[i].sftb == 1) continue;
+          if (
+            !this.detailInfoData.zgZyzgs[i].zsmc &&
+            this.zgZyzgsAuth.ZSMC == 0
+          ) {
+            flag = 1;
+            this.$message.error("证书名称不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgZyzgs[i].sydw &&
+            this.zgZyzgsAuth.SYDW == 0
+          ) {
+            flag = 1;
+            this.$message.error("授予单位不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgZyzgs[i].hqsj &&
+            this.zgZyzgsAuth.HQSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("获取时间不能为空");
+
+            break;
+          }
+        }
+      }
+      if (data.sffdy == 1 && this.detailInfoData.zgGwdls.length > 0) {
+        for (var i = 0; i < this.detailInfoData.zgGwdls.length; i++) {
+          // if (this.detailInfoData.zgGwdls[i].sftb == 1) continue;
+          if (
+            !this.detailInfoData.zgGwdls[i].zzdw &&
+            this.zgGwdlsAuth.ZZDW == 0
+          ) {
+            flag = 1;
+            this.$message.error("组织单位不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgGwdls[i].jsdw &&
+            this.zgGwdlsAuth.JSDW == 0
+          ) {
+            flag = 1;
+            this.$message.error("接收单位不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgGwdls[i].dlxz &&
+            this.zgGwdlsAuth.DLXZ == 0
+          ) {
+            flag = 1;
+            this.$message.error("锻炼性质不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgGwdls[i].gwmc &&
+            this.zgGwdlsAuth.GWMC == 0
+          ) {
+            flag = 1;
+            this.$message.error("岗位名称不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgGwdls[i].qssj &&
+            this.zgGwdlsAuth.QSSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("起始时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgGwdls[i].jssj &&
+            this.zgGwdlsAuth.JSSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("结束时间不能为空");
+
+            break;
+          }
+        }
+      }
+      if (data.sffdy == 1 && this.detailInfoData.zgJxkyqks.length > 0) {
+        for (var i = 0; i < this.detailInfoData.zgJxkyqks.length; i++) {
+          // if (this.detailInfoData.zgJxkyqks[i].sftb == 1) continue;
+          if (
+            !this.detailInfoData.zgJxkyqks[i].kcmc &&
+            this.zgJxkyqksAuth.KCMC == 0
+          ) {
+            flag = 1;
+            this.$message.error("课程名称不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgJxkyqks[i].kclx &&
+            this.zgJxkyqksAuth.KCLX == 0
+          ) {
+            flag = 1;
+            this.$message.error("课程类型不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgJxkyqks[i].kcxz &&
+            this.zgJxkyqksAuth.KCXZ == 0
+          ) {
+            flag = 1;
+            this.$message.error("课程性质不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgJxkyqks[i].ksl &&
+            this.zgJxkyqksAuth.KSL == 0
+          ) {
+            flag = 1;
+            this.$message.error("课时量不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgJxkyqks[i].skrs &&
+            this.zgJxkyqksAuth.SKRS == 0
+          ) {
+            flag = 1;
+            this.$message.error("授课人数不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgJxkyqks[i].qssj &&
+            this.zgJxkyqksAuth.QSSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("起始时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgJxkyqks[i].jssj &&
+            this.zgJxkyqksAuth.JSSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("结束时间不能为空");
+
+            break;
+          }
+        }
+      }
+      if (data.sffdy == 1 && this.detailInfoData.zgLwkyqks.length > 0) {
+        for (var i = 0; i < this.detailInfoData.zgLwkyqks.length; i++) {
+          // if (this.detailInfoData.zgLwkyqks[i].sftb == 1) continue;
+          if (
+            !this.detailInfoData.zgLwkyqks[i].lwmc &&
+            this.zgLwkyqksAuth.LWMC == 0
+          ) {
+            flag = 1;
+            this.$message.error("题目不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgLwkyqks[i].qkmc &&
+            this.zgLwkyqksAuth.QKMC == 0
+          ) {
+            flag = 1;
+            this.$message.error("期刊名称不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgLwkyqks[i].cnkh &&
+            this.zgLwkyqksAuth.CNKH == 0
+          ) {
+            flag = 1;
+            this.$message.error("期刊国内标准刊号不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgLwkyqks[i].qklx &&
+            this.zgLwkyqksAuth.QKLX == 0
+          ) {
+            flag = 1;
+            this.$message.error("期刊类型不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgLwkyqks[i].fbsj &&
+            this.zgLwkyqksAuth.FBSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("发表时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgLwkyqks[i].brwc &&
+            this.zgLwkyqksAuth.BRWC == 0
+          ) {
+            flag = 1;
+            this.$message.error("本人位次不能为空");
+
+            break;
+          }
+        }
+      }
+      if (data.sffdy == 1 && this.detailInfoData.zgXmkyqks.length > 0) {
+        for (var i = 0; i < this.detailInfoData.zgXmkyqks.length; i++) {
+          // if (this.detailInfoData.zgXmkyqks[i].sftb == 1) continue;
+          if (
+            !this.detailInfoData.zgXmkyqks[i].xmmc &&
+            this.zgXmkyqksAuth.XMMC == 0
+          ) {
+            flag = 1;
+            this.$message.error("项目名称不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXmkyqks[i].xmjb &&
+            this.zgXmkyqksAuth.XMJB == 0
+          ) {
+            flag = 1;
+            this.$message.error("项目级别不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXmkyqks[i].xmbh &&
+            this.zgXmkyqksAuth.XMBH == 0
+          ) {
+            flag = 1;
+            this.$message.error("项目编号不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXmkyqks[i].qssj &&
+            this.zgXmkyqksAuth.QSSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("起始时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXmkyqks[i].jssj &&
+            this.zgXmkyqksAuth.JSSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("结束时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXmkyqks[i].sdjf &&
+            this.zgXmkyqksAuth.SDJF == 0
+          ) {
+            flag = 1;
+            this.$message.error("实到经费不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXmkyqks[i].brwc &&
+            this.zgXmkyqksAuth.BRWC == 0
+          ) {
+            flag = 1;
+            this.$message.error("本人位次不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgXmkyqks[i].pzbm &&
+            this.zgXmkyqksAuth.PZBM == 0
+          ) {
+            flag = 1;
+            this.$message.error("批准部门不能为空");
+
+            break;
+          }
+        }
+      }
+      if (data.sffdy == 1 && this.detailInfoData.zgZzkyqks.length > 0) {
+        for (var i = 0; i < this.detailInfoData.zgZzkyqks.length; i++) {
+          // if (this.detailInfoData.zgZzkyqks[i].sftb == 1) continue;
+          if (
+            !this.detailInfoData.zgZzkyqks[i].zzmc &&
+            this.zgZzkyqksAuth.ZZMC == 0
+          ) {
+            flag = 1;
+            this.$message.error("著作名称不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgZzkyqks[i].zzlx &&
+            this.zgZzkyqksAuth.ZZLX == 0
+          ) {
+            flag = 1;
+            this.$message.error("著作类型不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgZzkyqks[i].cbs &&
+            this.zgZzkyqksAuth.CBS == 0
+          ) {
+            flag = 1;
+            this.$message.error("出版社不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgZzkyqks[i].cbsj &&
+            this.zgZzkyqksAuth.CBSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("出版时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgZzkyqks[i].brwc &&
+            this.zgZzkyqksAuth.BRWC == 0
+          ) {
+            flag = 1;
+            this.$message.error("本人位次不能为空");
+
+            break;
+          }
+        }
+      }
+      if (data.sffdy == 1 && this.detailInfoData.zgQtkyqks.length > 0) {
+        for (var i = 0; i < this.detailInfoData.zgQtkyqks.length; i++) {
+          if (
+            !this.detailInfoData.zgQtkyqks[i].tm &&
+            this.zgQtkyqksAuth.TM == 0
+          ) {
+            flag = 1;
+            this.$message.error("题目不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgQtkyqks[i].cglx &&
+            this.zgQtkyqksAuth.CGLX == 0
+          ) {
+            flag = 1;
+            this.$message.error("成果类型不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgQtkyqks[i].fbsj &&
+            this.zgQtkyqksAuth.FBSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("发表时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgQtkyqks[i].brwc &&
+            this.zgQtkyqksAuth.BRWC == 0
+          ) {
+            flag = 1;
+            this.$message.error("本人位次不能为空");
+
+            break;
+          }
+        }
+      }
+      if (data.sffdy == 1 && this.detailInfoData.zgNdkhs.length > 0) {
+        for (var i = 0; i < this.detailInfoData.zgNdkhs.length; i++) {
+          if (this.detailInfoData.zgNdkhs[i].sftb == 1) continue;
+          if (
+            !this.detailInfoData.zgNdkhs[i].khnd &&
+            this.zgQtkyqksAuth.KHND == 0
+          ) {
+            flag = 1;
+            this.$message.error("考核年度不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgNdkhs[i].khjgm &&
+            this.zgQtkyqksAuth.KHJGM == 0
+          ) {
+            flag = 1;
+            this.$message.error("学校年度考核结果不能为空");
+
+            break;
+          }
+        }
+      }
+      if (data.sffdy == 1 && this.detailInfoData.zgJlbzs.length > 0) {
+        for (var i = 0; i < this.detailInfoData.zgJlbzs.length; i++) {
+          if (this.detailInfoData.zgJlbzs[i].sftb == 1) continue;
+          if (
+            !this.detailInfoData.zgJlbzs[i].jxmc &&
+            this.zgJlbzsAuth.JXMC == 0
+          ) {
+            flag = 1;
+            this.$message.error("奖项名称不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgJlbzs[i].jxjb &&
+            this.zgJlbzsAuth.JXJB == 0
+          ) {
+            flag = 1;
+            this.$message.error("奖项级别不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgJlbzs[i].hjsj &&
+            this.zgJlbzsAuth.HJSJ == 0
+          ) {
+            flag = 1;
+            this.$message.error("获奖时间不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgJlbzs[i].brwc &&
+            this.zgJlbzsAuth.BRWC == 0
+          ) {
+            flag = 1;
+            this.$message.error("本人位次不能为空");
+
+            break;
+          } else if (
+            !this.detailInfoData.zgJlbzs[i].bzbm &&
+            this.zgJlbzsAuth.BZBM == 0
+          ) {
+            flag = 1;
+            this.$message.error("表彰部门不能为空");
+
+            break;
+          }
+        }
+      }
+      if (flag == 0) {
+        updateDetailQueryPoliticalWorkList(data)
+          .then((res) => {
+            this.$message({
+              message: res.errmsg,
+              type: "success",
+            });
+            this.isEdit = 1;
+          })
+          .catch((err) => {
+            this.$message.error(err.errmsg);
           });
-          this.isEdit = 1;
-        })
-        .catch((err) => {
-          this.$message.error(err.errmsg);
-        });
+      }
     },
     addDetailInfoData(index) {
       if (index == 1) {
@@ -2837,7 +3761,7 @@ export default {
         this.detailInfoData.zgXxpxes.push({});
       } else if (index == 6) {
         // 项目学习
-        this.detailInfoData.zgXmxxs.push({});
+        this.detailInfoData.zgXmxxes.push({});
       } else if (index == 7) {
         // 职业资格
         this.detailInfoData.zgZyzgs.push({});
@@ -2870,7 +3794,7 @@ export default {
         this.detailInfoData.zgDzzjs.push({});
       } else if (index == 17) {
         // 聘任信息
-        this.detailInfoData.zgPrxxs.push({});
+        this.detailInfoData.zgPrxxes.push({});
       }
     },
     deleteWorkBrifeData(row, index, flag) {
@@ -2885,7 +3809,7 @@ export default {
       } else if (flag == "e") {
         this.detailInfoData.zgXxpxes.splice(index, 1);
       } else if (flag == "f") {
-        this.detailInfoData.zgXmxxs.splice(index, 1);
+        this.detailInfoData.zgXmxxes.splice(index, 1);
       } else if (flag == "g") {
         this.detailInfoData.zgZyzgs.splice(index, 1);
       } else if (flag == "h") {
@@ -2907,7 +3831,7 @@ export default {
       } else if (flag == "p") {
         this.detailInfoData.zgDzzjs.splice(index, 1);
       } else if (flag == "q") {
-        this.detailInfoData.zgPrxxs.splice(index, 1);
+        this.detailInfoData.zgPrxxes.splice(index, 1);
       }
     },
   },

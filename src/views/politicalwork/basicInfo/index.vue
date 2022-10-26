@@ -152,7 +152,7 @@
           <el-table-column prop="lxdh" label="联系方式" sortable />
           <el-table-column prop="gzdwListString" label="工作单位" sortable />
           <el-table-column prop="zgxl" label="最高学历" sortable />
-          <el-table-column prop="zgxlbyxx" label="毕业学校" sortable />
+          <el-table-column prop="zgxlbyxx" label="毕业院校" sortable />
           <el-table-column prop="zybj" label="专业" sortable />
           <el-table-column prop="gwListString" label="职务" sortable />
           <el-table-column prop="cjgzsj" label="参加工作时间" sortable />

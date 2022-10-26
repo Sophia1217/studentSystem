@@ -2509,8 +2509,12 @@ export default {
     this.getCode("dmxwm");
     this.getCode("dmhyzkm");
     this.getCode("dmxz");
-    //this.getCode("dmzwmcm(还没有)");
+
     this.getCode("dmrskhjgm");
+    this.getCode("dmzzbzwmcm");
+    this.getCode("dmzzbzwjbm");
+    this.getCode("dmrsprzwdjm");
+    this.getCode("dmrsjslbm");
     this.getListWorkPlace();
     this.getDetail();
   },
@@ -2565,25 +2569,23 @@ export default {
             case "dmxz":
               this.xzOps = res.data;
               break;
-            //  case "dmzwmcm(还没有)":
-            // this.zwmcmOps = res.data;
-            // break;
-            // case "dmzwjbm(还没有)":
-            //   this.zwjbmOps = res.data;
-            //   break;
+            case "dmzzbzwmcm":
+              this.zwmcmOps = res.data;
+              break;
+            case "dmzzbzwjbm":
+              this.zwjbmOps = res.data;
+              break;
             case "dmrskhjgm":
               this.khjgmOps = res.data;
               break;
-            case "dmzwjbm(还没有)":
-              this.zwjbmOps = res.data;
+
+            case "dmrsprzwdjm":
+              this.przwdjOps = res.data;
+
               break;
-              // case "dmrsgjdqm":
-              //   this.gjdqmOps = res.data;
-              //   this.sxwgjdqmOps = res.data;
-              //   break;
-              // case "dmsfzjlxm":
-              //   this.sfzjlxmOps = res.data;
-              //   break;
+            case "dmrsjslbm":
+              this.jslbOps = res.data;
+              break;
               // case "dmhyzkm":
               //   this.hyzkmOps = res.data;
               //   break;

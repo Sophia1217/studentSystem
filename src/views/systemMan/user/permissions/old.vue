@@ -24,7 +24,7 @@
       </el-form-item>
     </el-form>
 
-    <div class="roleWrap" v-for="(role, index) in targetArr" :key="index">
+    <div class="roleWrap" v-for="(role, index) in roleData" :key="index">
       <div class="roleStyle">
         <div class="name">用户角色</div>
         <div>
@@ -44,24 +44,45 @@
             </el-option>
           </el-select>
         </div>
-        <div>
-          <el-tree
-            ref="tree"
-            node-key="modId"
-            :data="role.treeData"
-            :props="defaultProps"
-            show-checkbox
-            :default-checked-keys="role.arr"
-            @check="currentChecked"
-          >
-          </el-tree>
-        </div>
       </div>
+      <div class="roleStyle">
+        <el-tree
+          style="min-width: 200px"
+          class="treeStyle"
+          :load="loadNode"
+          ref="tree"
+          show-checkbox
+          lazy
+          node-key="nodeId"
+          @check-change="handleCheckChange"
+          :props="props"
+          @node-click="nodeClick"
+          @node-expand="nodeClick"
+        >
+          <!-- :id="index" -->
+          <!-- :expand-on-click-node="false" -->
+          <!-- :data="role.cascaderOptions" -->
+          <!-- :id="index" -->
+          <!--  -->
+          <!-- <span class="custom-tree-node" slot-scope="{ node, data }">
+                <span @click="() => append(data, index)">{{ node.label }}</span>
+              </span> -->
+        </el-tree>
+      </div>
+
       <div class="deleIcon" @click="deleRoles(role, index)"><i></i></div>
       <div class="btn confirm" @click="handleDataAuth(role, index)">
         <i class="icon yesIcon"></i> 提交
       </div>
     </div>
+
+    <!-- <div class="editBottom">
+          <div class="btn cancel" @click="handleCencal">
+            <i class="icon noIcon"></i> 取消
+          </div>
+          <div class="btn confirm" @click="handleDataAuth">
+            <i class="icon yesIcon"></i> 提交
+          </div> -->
   </div>
 </template>
 
@@ -69,43 +90,40 @@
 import {
   queryDataAuth,
   updateDataAuth,
+  queryUserPageList,
   deleteRole,
   defaultRoleAuth,
-} from "@/api/systemMan/user";
-import {
-  queryLoginUserDataAuth,
-  queryUserDataAuth,
 } from "@/api/systemMan/user";
 import { queryRoleList } from "@/api/systemMan/user";
 export default {
   name: "permissions",
   data() {
     return {
-      defaultTree: [], //默认树
-      checkboxWrap: [], //用户角色下拉
-      defaultProps: {
-        children: "dataEntityList",
-        label: "modName",
-        value: "modId",
+      props: {
+        // 树配置
+        //   label: 'name',
+        //   children: 'rows',
+        isLeaf: "leaf",
       },
-      roleArr: [],
-      targetArr: [],
-
       formName: {
         xm: "",
         userId: "",
         roleId: "",
       },
+      checkboxWrap: [], //用户角色下拉
+
+      cascaderOptions: [], // 学院数据
+      classListOps: [], // 班级数据
       stuListOps: [], // 学生数据
       roleData: [], // 用户分组
       checksedKeys: [], // 被操作人选中节点
       defaultArr: [],
+      newIndex: [],
     };
   },
 
   created() {
     this.formName = this.$route.query;
-    this.roleArr = this.$route.query.roleId;
   },
 
   mounted() {
@@ -113,7 +131,8 @@ export default {
   },
 
   methods: {
-    async getqueryRoleList() {
+    // 获取用户角色
+    getqueryRoleList() {
       // 获取管理员角色列表
       let data = { roleId: this.$store.getters.roleId };
       queryRoleList(data)
@@ -121,46 +140,64 @@ export default {
           this.checkboxWrap = res.data.rows || [];
         })
         .catch((err) => {});
-      var arr = this.roleArr.split(",");
-      for (let index = 0; index < arr.length; index++) {
-        const roleData = [];
-        var roleId = arr[index] || "";
-        if (roleId.length == 0) {
-          continue;
-        }
-        const element = {
-          roleId: roleId,
-        };
-        roleData.push(element);
-        element.treeData = [];
-        element.arr = [];
-        var loginData = {
-          userId: this.$store.getters.userId,
-          roleId: this.$store.getters.roleId,
-          type: 0,
-        }; //登录人的树结构，每棵树都是一样的，不用循环
-        await queryLoginUserDataAuth(loginData).then((res) => {
-          var treeData = res.data.rows.dataEntityList;
-          this.defaultTree = res.data.rows.dataEntityList;
-          element.treeData = treeData;
-        });
-        var userData = {
-          userId: this.formName.userId,
-          roleId: arr[index],
-        };
-        await queryUserDataAuth(userData).then((res) => {
-          var arr = res.data;
-          element.arr = arr;
-        });
-        this.targetArr.push(element);
-      }
+      //  获取被操作用户角色
+      let user1 = {
+        userId: this.$store.getters.userId, // 用户Id
+        roleId: this.$store.getters.roleId, //当前人
+        gh: this.formName.userId,
+        pageNum: 1,
+        pageSize: 1,
+      };
+      queryUserPageList(user1) //查询操作人的所有权限角色
+        .then((res) => {
+          //如果res.row[0]无数据就请求默认的接口
+          var roleIdStr = res.rows[0].roleIds || ""; //roleIds: "06,07,03"
+          var a = roleIdStr.split(",") || [];
+          var roleIdArr = [];
+          for (let x = 0; x < a.length; x++) {
+            var item = a[x] || "";
+            if (typeof item == "string" && item.length > 0 && item != "01") {
+              roleIdArr.push(item);
+            }
+          }
+          const roleData = [];
+          for (let index = 0; index < roleIdArr.length; index++) {
+            var roleId = roleIdArr[index] || "";
+            if (roleId.length == 0) {
+              continue;
+            }
+            const element = {
+              roleId: roleId,
+            };
+            element.oldRoleId = element.roleId;
+            element.checksedKeys = [];
+            roleData.push(element);
+            const data1 = {
+              userId: this.formName.userId,
+              roleId: element.roleId,
+              type: 0,
+            };
+            queryDataAuth(data1) //查询被操作人的返回权限数据  第一级树展示的数据
+              .then((res1) => {
+                var resData = res1.data.rows || [];
+                for (let x = 0; x < resData.length; x++) {
+                  var nodeId = resData[x].orgType || "";
+                  element.checksedKeys.push(nodeId); //初始化的不能推入最外层的字段，不然会全选
+                }
+              })
+              .catch((err) => {});
+
+            this.roleData = roleData; //把回显的数组放进去
+          }
+        })
+        .catch((err) => {});
     },
     // 添加角色
     addRoles() {
-      this.targetArr.push({
+      this.roleData.push({
         oldRoleId: "",
-        treeData: this.defaultTree,
-        arr: [],
+        roleId: "",
+        checksedKeys: [],
         Edit: "1", //区分页面跳转过来的还是新增的默认权限
       });
     },
@@ -179,21 +216,21 @@ export default {
           '确认要删除"' + this.formName.xm + '"的"' + roleName + '"角色吗？'
         )
         .then(() => {
-          console.log("jinlaile");
+          // this.$modal.msgSuccess(text + "成功");
           if (role.Edit == "1") {
-            console.log("111");
-            this.targetArr.splice(index, 1);
+            this.roleData.splice(index, 1);
           } else {
-            console.log("222");
             var param = {
               userId: this.formName.userId,
               roleId: role.roleId,
             };
             deleteRole(param)
               .then(() => {
-                this.targetArr.splice(index, 1);
-                this.roleArr.splice(index, 1);
+                this.roleData.splice(index, 1);
                 this.getqueryRoleList();
+                this.$refs.tree[index].setCheckedKeys(
+                  this.roleData[index].checksedKeys
+                );
               })
               .catch(() => {});
           }
@@ -347,20 +384,20 @@ export default {
     //新增时候角色改变对应的默认权限
     hold() {
       //如果是新增就调用默认的权限接口
-      for (let i = 0; i < this.targetArr.length; i++) {
-        if (this.targetArr[i].Edit) {
+      for (let i = 0; i < this.roleData.length; i++) {
+        if (this.roleData[i].Edit) {
           let data = {
             userId: this.formName.userId,
-            roleId: this.targetArr[i].roleId,
+            roleId: this.roleData[i].roleId,
           };
           defaultRoleAuth(data).then((res) => {
             this.defaultArr[i] = res.data.rows || []; //对应的新增放入对应的权限
             var resD = res.data.rows || [];
             for (let x = 0; x < resD.length; x++) {
               var nodeId = resD[x].orgType || "";
-              this.targetArr[i].checksedKeys.push(nodeId);
+              this.roleData[i].checksedKeys.push(nodeId);
             }
-            this.$refs.tree[i].setCheckedKeys(this.targetArr[i].checksedKeys);
+            this.$refs.tree[i].setCheckedKeys(this.roleData[i].checksedKeys);
           });
         }
       }
@@ -554,18 +591,145 @@ export default {
       }
     },
 
-    currentChecked(nodeObj, SelectedObj) {
-      const { checkedNodes, halfCheckedKeys } = SelectedObj;
-      var menuList = checkedNodes.map((item) => item.modId);
-      this.savaData = menuList; //要获取上级根节点
+    handleCheckChange(data, checked) {
+      // console.log('选中项变动')
+      for (let index = 0; index < this.roleData.length; index++) {
+        var role = this.roleData[index];
+        var tree = this.$refs.tree[index];
+        role.checksedKeys = tree.getCheckedKeys();
+      }
     },
+    // 更新数据权限
     handleDataAuth(role, index) {
+      // 参数合法校验
+      var roleId = role.roleId || "";
+      if (roleId.length == 0) {
+        this.$message({
+          message: "请选择角色",
+          type: "error",
+        });
+        return;
+      }
+      var nodes = this.$refs.tree[index].getCheckedNodes() || [];
+      if (nodes.length == 0) {
+        this.$message({
+          message: "请选择数据权限",
+          type: "error",
+        });
+        return;
+      }
+      // 数据筛选
+      var dataArr = [];
+      //   console.log("开始筛选权限数据", nodes);
+      for (let index = 0; index < nodes.length; index++) {
+        var element = nodes[index];
+        if (element.visitId == "4") {
+          var flag = false;
+          for (let x = 0; x < nodes.length; x++) {
+            const item = nodes[x];
+            if (item.visitId == "3" && item.nodeId == element.bjdm) {
+              flag = true;
+              break;
+            }
+          }
+          if (flag == false) {
+            dataArr.push(element);
+          }
+        } else if (element.visitId == "3") {
+          //班级是否在培养层次
+          var hasPy = false;
+          for (let i = 0; i < nodes.length; i++) {
+            const b = nodes[i];
+            if (b.visitId == "2" && b.nodeId == element.pycc) {
+              hasPy = true;
+              break;
+            }
+          }
+          if (hasPy == false) {
+            dataArr.push(element);
+          }
+        } else if (element.visitId == "2") {
+          // 培养层次是否在学院
+          var hasxy = false;
+          for (let x = 0; x < nodes.length; x++) {
+            const item = nodes[x];
+            if (item.visitId == "1" && item.nodeId == element.dwdm) {
+              hasxy = true;
+              break;
+            }
+          }
+          if (hasxy == false) {
+            dataArr.push(element);
+          }
+        } else if (element.visitId == "1") {
+          //学院是否在机构
+          var hasORG = false;
+          for (let i = 0; i < nodes.length; i++) {
+            const b = nodes[i];
+            if (b.visitId == "0" && b.nodeId == element.orgType) {
+              hasORG = true;
+              break;
+            }
+          }
+          if (hasORG == false) {
+            dataArr.push(element);
+          }
+        } else {
+          dataArr.push(element);
+        }
+      }
+      //   console.log("dataArr", dataArr);
+      // 包装数据
+      var dataList = [];
+      for (let s = 0; s < dataArr.length; s++) {
+        var node = dataArr[s];
+        // console.log("node", node);
+        var data = {};
+        if (node.visitId == "0") {
+          //   console.log("node", node);
+          data.orgType = node.orgType;
+        } else if (node.visitId == "1") {
+          //   console.log("node", node);
+          //   data.orgType = node.orgType;
+          data.orginazationCode = node.dwdm;
+        } else if (node.visitId == "2") {
+          //   data.orgType = node.orgType;
+          data.orginazationCode = node.dwdm;
+          data.pycc = node.pycc;
+        } else if (node.visitId == "3") {
+          //   data.orgType = node.orgType;
+          data.orginazationCode = node.dwdm;
+          data.pycc = node.pycc;
+          data.classNo = node.bjdm;
+        } else if (node.visitId == "4") {
+          //   data.orgType = node.orgType;
+          data.orginazationCode = node.dwdm;
+          data.pycc = node.pycc;
+          data.classNo = node.bjdm;
+          data.stuId = node.xh;
+        }
+
+        dataList.push(data);
+      }
+      var orgTypeFlag = dataList.some((item) => !!item.orgType);
+      var orginazationCodeFlag = dataList.some(
+        (item) => !!item.orginazationCode
+      );
+      if (orgTypeFlag && orginazationCodeFlag) {
+        dataList.shift();
+      }
+
+      // 网络请求
       var param = {
         userId: this.formName.userId,
         newRoleId: role.roleId,
-        dataList: this.savaData,
+        dataList: dataList,
         operateRoleId: this.$store.getters.roleId,
       };
+      if (role.oldRoleId.length > 0 && role.oldRoleId != role.roleId) {
+        param.oldRoleId = role.oldRoleId;
+      }
+
       updateDataAuth(param)
         .then((res) => {
           this.$message({

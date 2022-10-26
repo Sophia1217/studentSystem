@@ -27,10 +27,27 @@ export function updateUserRole(data) {
   })
 }
 
-// 查询用户数据权限
-export function queryDataAuth(data) {
+// // 查询用户数据权限  old
+// export function queryDataAuth(data) {
+//   return request({
+//     url: '/manager/user/queryDataAuth',
+//     method: 'post',
+//     data: data
+//   })
+// }
+// 查询登录人数据权限  new
+export function queryLoginUserDataAuth(data) {
   return request({
-    url: '/manager/user/queryDataAuth',
+    url: '/manager/user/queryLoginUserDataAuth',
+    method: 'post',
+    data: data
+  })
+}
+ 
+// 查询被操作人数据权限  new
+export function queryUserDataAuth(data) {
+  return request({
+    url: '/manager/user/queryUserDataAuth',
     method: 'post',
     data: data
   })

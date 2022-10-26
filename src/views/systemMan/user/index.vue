@@ -71,16 +71,6 @@
         </el-row> -->
       </div>
     </div>
-
-    <el-tree
-      ref="tree"
-      node-key="modId"
-      :data="treeData"
-      :props="defaultProps"
-      show-checkbox
-      :default-checked-keys="arr"
-    >
-    </el-tree>
     <!-- table -->
     <div class="tableWrap mt15">
       <div class="headerTop">
@@ -167,11 +157,6 @@ export default {
   components: { CheckboxCom },
   data() {
     return {
-      defaultProps: {
-        children: "dataEntityList",
-        label: "modName",
-        value: "modId",
-      },
       searchVal: "",
       select: "",
       isMore: false,
@@ -214,8 +199,6 @@ export default {
         checkBox: [],
         isIndeterminate: false,
       },
-      treeData: [],
-      arr: [],
       tableData: [],
       multipleSelection: [],
       checkboxWrap: [],
@@ -234,31 +217,12 @@ export default {
     this.getCode("dmxbm"); // 获取性别
     this.getqueryRoleList(); // 获取角色
     // this.getOrg(); // 获取单位
-    this.test();
   },
 
   activated() {
     this.getList();
   },
   methods: {
-    async test() {
-      var loginData = {
-        userId: this.$store.getters.userId,
-        roleId: this.$store.getters.roleId,
-        type: 0,
-      };
-      var userData = {
-        userId: this.$store.getters.userId,
-        roleId: this.$store.getters.roleId,
-      };
-      await queryLoginUserDataAuth(loginData).then((res) => {
-        console.log("loginDatares", res);
-        this.treeData = res.data.rows.dataEntityList;
-      });
-      await queryUserDataAuth(userData).then((res) => {
-        this.arr = res.data;
-      });
-    },
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序

@@ -149,6 +149,18 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
+          <el-col :span="3">是否全日制：</el-col>
+          <el-col :span="20">
+            <div class="checkbox">
+              <checkboxCom
+                :objProp="isQuan"
+                @training="isQuanAll"
+                @checkedTraining="isQuanCheck"
+              ></checkboxCom>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" class="mt15">
           <el-col :span="3">性别：</el-col>
           <el-col :span="20">
             <div class="checkbox">
@@ -270,6 +282,8 @@
           <el-table-column prop="dwmc" label="学院" sortable="custom">
           </el-table-column>
           <el-table-column prop="zydmc" label="专业" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="xxxs" label="学制" sortable="custom">
           </el-table-column>
           <el-table-column prop="nj" label="年级" sortable="custom">
           </el-table-column>
@@ -423,6 +437,22 @@ export default {
           {
             dm: "不在校",
             mc: "否",
+          },
+        ],
+        isIndeterminate: true,
+      },
+      isQuan: {
+        //是否在校
+        checkAll: false,
+        choose: [],
+        checkBox: [
+          {
+            dm: "全日制",
+            mc: "全日制",
+          },
+          {
+            dm: "非全日制",
+            mc: "非全日制",
           },
         ],
         isIndeterminate: true,
@@ -617,6 +647,8 @@ export default {
         xjzt: this.studentStatus.choose,
         zzmmm: this.politica.choose,
         sfzx: this.inSchool.choose,
+        // 是否全日制
+        xxxs: this.isQuan.choose,
         mzm: this.ethnic.choose,
         bjm: this.moreIform.pread,
         dwh: this.moreIform.manageReg,
@@ -744,6 +776,22 @@ export default {
       this.inSchool.isIndeterminate =
         checkedCount > 0 && checkedCount < this.inSchool.checkBox.length;
     },
+    isQuanAll(val) {
+      let allCheck = [];
+      for (let i in this.isQuan.checkBox) {
+        allCheck.push(this.isQuan.checkBox[i].dm);
+      }
+      this.isQuan.choose = val ? allCheck : [];
+
+      this.isQuan.isIndeterminate = false;
+    },
+    // 是否在校：单选
+    isQuanCheck(value) {
+      let checkedCount = value.length;
+      this.isQuan.checkAll = checkedCount === this.isQuan.checkBox.length;
+      this.isQuan.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.isQuan.checkBox.length;
+    },
     // 性别：全选
     dmxbmAll(val) {
       let allCheck = [];
@@ -791,6 +839,7 @@ export default {
         xjzt: this.studentStatus.choose,
         zzmmm: this.politica.choose,
         sfzx: this.inSchool.choose,
+        xxxs: this.isQuan.choose,
         mzm: this.ethnic.choose,
         bjm: this.moreIform.pread,
         dwh: this.moreIform.manageReg,

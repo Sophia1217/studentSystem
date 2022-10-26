@@ -179,12 +179,9 @@ export default {
           '确认要删除"' + this.formName.xm + '"的"' + roleName + '"角色吗？'
         )
         .then(() => {
-          console.log("jinlaile");
           if (role.Edit == "1") {
-            console.log("111");
             this.targetArr.splice(index, 1);
           } else {
-            console.log("222");
             var param = {
               userId: this.formName.userId,
               roleId: role.roleId,

@@ -110,10 +110,15 @@
             <span>任职日期：</span>
             <el-date-picker
               v-model="rzDate"
-              type="date"
-              placeholder="请选择"
+              type="daterange"
+              unlink-panels
+              format="yyyy 年 MM 月 dd 日"
               value-format="yyyy-MM-dd"
-            />
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            >
+            </el-date-picker>
           </el-col>
         </el-row>
       </div>
@@ -274,7 +279,8 @@ export default {
         bjdm: "",
         bjmc: "",
         njList: [], //年纪
-        rzrq: "", //任职日期
+        rzrqStart: "",
+        rzrqEnd: "", //任职日期
       },
       list: [],
     };
@@ -531,6 +537,12 @@ export default {
 
     // 搜索查询按钮
     searchClick() {
+      let rqs = "";
+      let rqe = "";
+      if (this.rzDate && this.rzDate.length > 0) {
+        rqs = this.rzDate[0];
+        rqe = this.rzDate[1];
+      }
       this.queryParams.gh = this.select == 1 ? this.searchVal : "";
       this.queryParams.xm = this.select == 2 ? this.searchVal : "";
       this.queryParams.bjdm = this.select == 3 ? this.searchVal : "";
@@ -540,7 +552,8 @@ export default {
       this.queryParams.gwdmList = this.workgw.choose;
       this.queryParams.lxdmList = this.category.choose;
       this.queryParams.pyccmList = this.training.choose;
-      this.queryParams.rzrq = this.rzDate;
+      this.queryParams.rzrqStart = rqs;
+      this.queryParams.rzrqEnd = rqe;
       this.getList(this.queryParams);
     },
     changeTableSort(column) {

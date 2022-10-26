@@ -317,7 +317,7 @@
             type="date"
             style="width: 30%"
             placeholder="选择任命日期"
-            value-format="yyyy-MM-dd hh:mm:ss"
+            value-format="yyyy-MM-dd"
             v-model="form.rmsj"
           ></el-date-picker>
         </el-form-item>
@@ -346,7 +346,7 @@
             type="date"
             style="width: 30%"
             placeholder="选择任命日期"
-            value-format="yyyy-MM-dd hh:mm:ss"
+            value-format="yyyy-MM-dd"
             v-model="formMore.rmsj"
           ></el-date-picker>
         </el-form-item>
@@ -392,7 +392,7 @@
             style="width: 40%"
             placeholder="选择撤任日期"
             v-model="formDismission.offDate"
-            value-format="yyyy-MM-dd hh:mm:ss"
+            value-format="yyyy-MM-dd"
           ></el-date-picker>
         </el-form-item>
       </el-form>

@@ -291,9 +291,9 @@ export default {
     hadleDetail2(row) {
       var gh = row.jlrgh;
       var gh1 = this.$store.getters.userId;
-      var sf = true;
-      if (gh !== gh1) {
-        sf = false;
+      var sf;
+      if (gh == gh1) {
+        sf = 0;
       }
       console.log("sf", sf);
       const { id } = row;

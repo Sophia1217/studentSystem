@@ -31,7 +31,11 @@
           <el-select
             v-model="role.roleId"
             class="elFormSelect"
-            @change="hold"
+            @change="
+              (item) => {
+                hold(item, index);
+              }
+            "
             size="small"
             placeholder="请选择"
           >
@@ -121,9 +125,18 @@ export default {
           this.checkboxWrap = res.data.rows || [];
         })
         .catch((err) => {});
+      //登录人的树结构，每棵树都是一样的，不用循环
+      var loginData = {
+        userId: this.$store.getters.userId,
+        roleId: this.$store.getters.roleId,
+        type: 0,
+      };
+      await queryLoginUserDataAuth(loginData).then((res) => {
+        var treeData = res.data.rows.dataEntityList;
+        this.defaultTree = treeData;
+      });
       var arr = this.roleArr.split(",");
       for (let index = 0; index < arr.length; index++) {
-        const roleData = [];
         var roleId = arr[index] || "";
         if (roleId.length == 0) {
           continue;
@@ -131,23 +144,14 @@ export default {
         const element = {
           roleId: roleId,
         };
-        roleData.push(element);
         element.treeData = [];
         element.arr = [];
-        var loginData = {
-          userId: this.$store.getters.userId,
-          roleId: this.$store.getters.roleId,
-          type: 0,
-        }; //登录人的树结构，每棵树都是一样的，不用循环
-        await queryLoginUserDataAuth(loginData).then((res) => {
-          var treeData = res.data.rows.dataEntityList;
-          this.defaultTree = res.data.rows.dataEntityList;
-          element.treeData = treeData;
-        });
+        element.treeData = this.defaultTree;
         var userData = {
           userId: this.formName.userId,
           roleId: arr[index],
         };
+
         await queryUserDataAuth(userData).then((res) => {
           var arr = res.data;
           element.arr = arr;
@@ -163,6 +167,21 @@ export default {
         arr: [],
         Edit: "1", //区分页面跳转过来的还是新增的默认权限
       });
+    },
+    //新增时候角色改变对应的默认权限
+    hold(item, index) {
+      //如果是新增就调用默认的权限接口
+      for (let i = 0; i < this.targetArr.length; i++) {
+        if (this.targetArr[i].Edit) {
+          let data = {
+            userId: this.formName.userId,
+            roleId: this.targetArr[i].roleId,
+          };
+          defaultRoleAuth(data).then((res) => {
+            this.targetArr[i].arr = res.data;
+          });
+        }
+      }
     },
     // 删除角色
     deleRoles(role, index) {
@@ -341,27 +360,7 @@ export default {
           });
       }
     },
-    //新增时候角色改变对应的默认权限
-    hold() {
-      //如果是新增就调用默认的权限接口
-      for (let i = 0; i < this.targetArr.length; i++) {
-        if (this.targetArr[i].Edit) {
-          let data = {
-            userId: this.formName.userId,
-            roleId: this.targetArr[i].roleId,
-          };
-          defaultRoleAuth(data).then((res) => {
-            this.defaultArr[i] = res.data.rows || []; //对应的新增放入对应的权限
-            var resD = res.data.rows || [];
-            for (let x = 0; x < resD.length; x++) {
-              var nodeId = resD[x].orgType || "";
-              this.targetArr[i].checksedKeys.push(nodeId);
-            }
-            this.$refs.tree[i].setCheckedKeys(this.targetArr[i].checksedKeys);
-          });
-        }
-      }
-    },
+
     nodeClick(data, node, nodeVue) {
       var index = -1;
       var param = {

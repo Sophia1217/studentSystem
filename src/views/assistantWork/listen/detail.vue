@@ -306,7 +306,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="p2" v-if="state == 0 && sf">
+    <div class="p2" v-if="state == 0 && sf == 0">
       <el-button
         style="background: #005657; color: white; margin-left: 10px"
         @click="edit"
@@ -353,7 +353,13 @@
               :label="item.label"
               :value="item.value"
             ></el-option> </el-select
-        ></el-form-item>
+          ><el-button
+            style="background: rgb(0, 86, 87); color: white; margin-left: 10px"
+            @click="FdyKcxxPageList"
+          >
+            查询
+          </el-button></el-form-item
+        >
         <el-table
           :data="tableDate"
           ref="multipleTable"
@@ -596,24 +602,25 @@ export default {
       fileListAdd: [],
       urlArr: [],
       fileList: [],
-      sf: true,
+      sf: 0,
     };
   },
 
   mounted() {
     this.lgnSn = this.$route.query.id;
     this.state = this.$route.query.state;
+    this.sf = this.$route.query.sf;
     this.querywj();
     this.getYears();
     this.getDetail();
-    this.sf = this.$route.query.sf;
   },
 
   methods: {
     delInfo() {
-      this.Form.xq = "";
+      this.flag = false;
       this.listFlag = false;
       this.tjlx = "1";
+      this.Form.xq = "";
       this.Form.kcmc = "";
       this.Form.bh = "";
       this.Form.skjs = "";
@@ -672,7 +679,6 @@ export default {
           xm: lsXmList[i],
           value: lsXmList[i] + "/" + lsXhList[i],
         }));
-        console.log("lsList", lsList);
         this.flag = res.data.tjlx == "0" ? true : false; //0是列表数据不让修改，1是新增单条数据
         this.Form.kksj = res.data.kcsksjList; //后台给的处理数据
         this.Form.xq = res.data.kckksj; //后台给的未处理时间数据
@@ -697,7 +703,6 @@ export default {
       var tar = this.multipleSelection[0].sksj;
       this.Form.xq = tar;
       var list = tar.split(";");
-      console.log("list", list);
       var xingqi = [];
       var jieKs = [];
       var week = [];
@@ -726,7 +731,6 @@ export default {
         xh: a[i].slice(0, a[i].indexOf("/")),
         value: a[i],
       }));
-      console.log("lsList", lsList);
       this.Form.skjs = this.multipleSelection[0].jxdd;
       this.Form.kksj = result;
       this.Form.kcmc = this.multipleSelection[0].kcmc;
@@ -842,7 +846,6 @@ export default {
       this.Form.rkls[0] = item;
     },
     saveListen() {
-      console.log("this.from", this.Form);
       var list = [];
       var list2 = [];
       for (var i = 0; i < this.Form.rkls.length; i++) {

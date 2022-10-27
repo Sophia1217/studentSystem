@@ -200,6 +200,11 @@
                 </el-col>
                 <el-col :span="4">
                   <el-select
+                    @change="
+                      (item) => {
+                        bj(item, index);
+                      }
+                    "
                     v-model="Form.kksj[index].jieJs"
                     :disabled="state == 0"
                     placeholder="请选择结束节数"
@@ -616,6 +621,15 @@ export default {
   },
 
   methods: {
+    bj(val, index) {
+      if (
+        Number(this.Form.kksj[index].jieJs) <=
+        Number(this.Form.kksj[index].jieKs)
+      ) {
+        this.$message.error("开课节数要大于开始节数");
+        this.Form.kksj[index].jieJs = "";
+      }
+    },
     delInfo() {
       this.flag = false;
       this.listFlag = false;

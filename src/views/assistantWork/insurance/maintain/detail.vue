@@ -62,6 +62,7 @@
                 :action="uploadUrl"
                 :headers="fileHeader"
                 :data="fileData"
+                :on-preview="handlePreview"
                 :on-success="upLoadSuccess"
                 :on-error="upLoadError"
               >

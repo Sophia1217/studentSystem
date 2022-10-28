@@ -293,11 +293,18 @@
           :data="tableDate"
           ref="multipleTable"
           style="width: 100%"
-          @select-all="selectAll"
-          @select="select"
           :default-sort="{ prop: 'date', order: 'descending' }"
         >
-          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column width="55">
+            <template slot-scope="scope">
+              <el-radio
+                :label="scope.$index"
+                v-model="tempRadio"
+                @change.native="getRow(scope.$index, scope.row)"
+                >{{ "" }}</el-radio
+              >
+            </template>
+          </el-table-column>
           <el-table-column
             type="index"
             label="序号"
@@ -526,6 +533,7 @@ export default {
       },
       multipleSelection: {},
       fileListAdd: [],
+      tempRadio: false,
     };
   },
 
@@ -534,6 +542,9 @@ export default {
   },
 
   methods: {
+    getRow(index, row) {
+      this.multipleSelection = row;
+    },
     wh(val, index) {
       if (
         Number(this.Form.kksj[index].jieJs) <= Number(val) &&
@@ -704,19 +715,6 @@ export default {
           }
         });
       }
-    },
-    selectAll() {
-      this.$message.error("请不要一次性勾选多个数据");
-      this.$refs.multipleTable.clearSelection();
-    },
-    select(selection, row) {
-      this.multipleSelection = row;
-      // 清除 所有勾选项
-      this.$refs.multipleTable.clearSelection();
-      // 当表格数据都没有被勾选的时候 就返回
-      // 主要用于将当前勾选的表格状态清除
-      if (selection.length == 0) return;
-      this.$refs.multipleTable.toggleRowSelection(row, true);
     },
     handleSelect(item) {
       this.Form.rkls[0] = item;

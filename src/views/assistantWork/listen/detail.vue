@@ -374,11 +374,18 @@
           :data="tableDate"
           ref="multipleTable"
           style="width: 100%"
-          @select="select"
-          @select-all="selectAll"
           :default-sort="{ prop: 'date', order: 'descending' }"
         >
-          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column width="55">
+            <template slot-scope="scope">
+              <el-radio
+                :label="scope.$index"
+                v-model="tempRadio"
+                @change.native="getRow(scope.$index, scope.row)"
+                >{{ "" }}</el-radio
+              >
+            </template>
+          </el-table-column>
           <el-table-column
             type="index"
             label="序号"
@@ -614,6 +621,7 @@ export default {
       urlArr: [],
       fileList: [],
       sf: 0,
+      tempRadio: false,
     };
   },
 
@@ -627,18 +635,8 @@ export default {
   },
 
   methods: {
-    selectAll() {
-      this.$message.error("请不要一次性勾选多个数据");
-      this.$refs.multipleTable.clearSelection();
-    },
-    select(selection, row) {
+    getRow(index, row) {
       this.multipleSelection = row;
-      // 清除 所有勾选项
-      this.$refs.multipleTable.clearSelection();
-      // 当表格数据都没有被勾选的时候 就返回
-      // 主要用于将当前勾选的表格状态清除
-      if (selection.length == 0) return;
-      this.$refs.multipleTable.toggleRowSelection(row, true);
     },
     wh(val, index) {
       if (
@@ -890,13 +888,11 @@ export default {
         list.push(this.Form.rkls[i].xm);
         list2.push(this.Form.rkls[i].xh);
       }
-      var xmAlone = this.Form.rkls[0].xm;
-      var ghAlone = this.Form.rkls[0].xh;
       var kksj = this.Form.kksj[0];
       var ksshijian =
         this.tjlx == "0"
           ? this.Form.xq
-          : `${kksj.xingqi}第${kksj.jieKs}-${kksj.jieJs}节${kksj.week}`;
+          : `${kksj.xingqi}第${kksj.jieKs}-${kksj.jieJs}节{${kksj.week}}`;
       let formData = new FormData();
       formData.append("id", this.lgnSn.toString());
       formData.append("tjlx", this.tjlx);

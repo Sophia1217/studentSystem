@@ -207,29 +207,6 @@ export default {
   },
 
   methods: {
-    test() {
-      var a =
-        "星期二第7-10节{14-19周};星期三第1-4,7-10节{14-19周};星期五第1-4节{14-19周}";
-      var list = a.split(";");
-      var xq = [];
-      var begin = [];
-      var week = [];
-      for (var i = 0; i < list.length; i++) {
-        xq.push(list[i].slice(0, 3));
-        week.push(
-          list[i].slice(list[i].indexOf("{") + 1, list[i].indexOf("}"))
-        );
-        begin.push(
-          list[i].slice(list[i].indexOf("第"), list[i].indexOf("节") + 1)
-        );
-      }
-      let result = xq.map((v, i) => ({
-        xq: xq[i],
-        begin: begin[i],
-        week: week[i],
-      }));
-      console.log("res", result);
-    },
     handleExport() {
       this.showExport = true;
       this.title = "导出";
@@ -295,7 +272,6 @@ export default {
       if (gh == gh1) {
         sf = 0;
       }
-      console.log("sf", sf);
       const { id } = row;
       this.$router.push({
         path: "/assistantWork/listenDetail",

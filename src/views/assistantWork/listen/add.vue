@@ -720,7 +720,6 @@ export default {
       this.Form.rkls[0] = item;
     },
     saveListen() {
-      console.log("this.from", this.Form);
       var list = [];
       var list2 = [];
       //批量老师数据处理

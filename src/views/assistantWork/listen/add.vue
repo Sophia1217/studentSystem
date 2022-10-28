@@ -293,7 +293,7 @@
           :data="tableDate"
           ref="multipleTable"
           style="width: 100%"
-          @selection-change="handleSelectionChange"
+          @select="select"
           :default-sort="{ prop: 'date', order: 'descending' }"
         >
           <el-table-column type="selection" width="55"></el-table-column>
@@ -523,7 +523,7 @@ export default {
         skjs: "",
         tkqk: "",
       },
-      multipleSelection: [],
+      multipleSelection: {},
       fileListAdd: [],
     };
   },
@@ -557,7 +557,7 @@ export default {
       this.dialogFormVisible = false;
       this.tjlx = "0";
       //处理数据时间
-      var tar = this.multipleSelection[0].sksj;
+      var tar = this.multipleSelection.sksj;
       this.Form.xq = tar;
       var list = tar.split(";");
       var xingqi = [];
@@ -578,7 +578,7 @@ export default {
         week: week[i],
       }));
       //处理数据老师信息
-      var jsList = this.multipleSelection[0].jsxxList;
+      var jsList = this.multipleSelection.jsxxList;
       var a = [];
       jsList.map((item, i) => {
         a.push(item.slice(0, item.indexOf("/", 13)));
@@ -588,10 +588,10 @@ export default {
         xh: a[i].slice(0, a[i].indexOf("/")),
         value: a[i],
       }));
-      this.Form.skjs = this.multipleSelection[0].jxdd;
+      this.Form.skjs = this.multipleSelection.jxdd;
       this.Form.kksj = result;
-      this.Form.kcmc = this.multipleSelection[0].kcmc;
-      this.Form.bh = this.multipleSelection[0].kch;
+      this.Form.kcmc = this.multipleSelection.kcmc;
+      this.Form.bh = this.multipleSelection.kch;
       this.Form.rkls = lsList;
     },
     cancelModal() {
@@ -704,8 +704,14 @@ export default {
         });
       }
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
+    select(selection, row) {
+      this.multipleSelection = row;
+      // 清除 所有勾选项
+      this.$refs.multipleTable.clearSelection();
+      // 当表格数据都没有被勾选的时候 就返回
+      // 主要用于将当前勾选的表格状态清除
+      if (selection.length == 0) return;
+      this.$refs.multipleTable.toggleRowSelection(row, true);
     },
     handleSelect(item) {
       this.Form.rkls[0] = item;

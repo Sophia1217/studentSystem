@@ -375,6 +375,7 @@
           ref="multipleTable"
           style="width: 100%"
           @select="select"
+          @select-all="selectAll"
           :default-sort="{ prop: 'date', order: 'descending' }"
         >
           <el-table-column type="selection" width="55"></el-table-column>
@@ -626,6 +627,10 @@ export default {
   },
 
   methods: {
+    selectAll() {
+      this.$message.error("请不要一次性勾选多个数据");
+      this.$refs.multipleTable.clearSelection();
+    },
     select(selection, row) {
       this.multipleSelection = row;
       // 清除 所有勾选项

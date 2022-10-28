@@ -293,6 +293,7 @@
           :data="tableDate"
           ref="multipleTable"
           style="width: 100%"
+          @select-all="selectAll"
           @select="select"
           :default-sort="{ prop: 'date', order: 'descending' }"
         >
@@ -704,6 +705,10 @@ export default {
         });
       }
     },
+    selectAll() {
+      this.$message.error("请不要一次性勾选多个数据");
+      this.$refs.multipleTable.clearSelection();
+    },
     select(selection, row) {
       this.multipleSelection = row;
       // 清除 所有勾选项
@@ -832,6 +837,7 @@ export default {
       background: url("~@/assets/images/addicon.png") no-repeat center;
     }
   }
+
   .roleWrap {
     background: #fff;
     margin-top: 20px;

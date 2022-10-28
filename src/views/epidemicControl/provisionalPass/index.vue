@@ -265,7 +265,7 @@
         ><el-row>
           <el-col :span="24" class="yiny">
             <div style="display: flex; height: 50px">
-              <div class="hs">审核状态</div>
+              <div class="hs1">审核状态</div>
               <div class="bs">{{ res.fdyspyj }}</div>
             </div>
           </el-col>
@@ -386,11 +386,26 @@ export default {
     },
 
     hadleDetail2(row) {
+      // sqxm sqxh  sqxymc  sqsfzh  sqxslb sqsjh  sqwcyymc sqwcmdd  sqwcyysm wcsj fxsj  fdysprXmAndGh fdyspsj  fdyspyj
       this.$nextTick((_) => {
         getDetail({ id: row.id })
           .then((res) => {
             const { data } = res;
-            this.res = data;
+            // this.res = data;
+            this.res.sqxm = data ? data.sqxm : "";
+            this.res.sqxh = data ? data.sqxh : "";
+            this.res.sqxymc = data ? data.sqxymc : "";
+            this.res.sqsfzh = data ? data.sqsfzh : "";
+            this.res.sqxslb = data ? data.sqxslb : "";
+            this.res.sqsjh = data ? data.sqsjh : "";
+            this.res.sqwcyymc = data ? data.sqwcyymc : "";
+            this.res.sqwcmdd = data ? data.sqwcmdd : "";
+            this.res.sqwcyysm = data ? data.sqwcyysm : "";
+            this.res.wcsj = data ? data.wcsj : "";
+            this.res.fxsj = data ? data.fxsj : "";
+            this.res.fdysprXmAndGh = data ? data.fdysprXmAndGh : "";
+            this.res.fdyspsj = data ? data.fdyspsj : "";
+            this.res.fdyspyj = data ? data.fdyspyj : "";
           })
           .then(() => (this.detailModal = true));
       });
@@ -462,12 +477,21 @@ export default {
     background: rgba(0, 0, 0, 0.0001);
     box-shadow: inset -1px 0px 0px #e0e0e0, inset 1px 0px 0px #e0e0e0;
     height: 50px;
+    border-bottom: none;
+    border-left: none;
   }
   .hs {
     flex: 0 0 100px;
     background: #ccc;
     padding-left: 20px;
     padding-top: 14px;
+  }
+  .hs1 {
+    flex: 0 0 100px;
+    background: #ccc;
+    padding-left: 20px;
+    padding-top: 14px;
+    border-bottom: 1px solid grey;
   }
   .bs {
     padding-left: 40px;

@@ -2461,7 +2461,6 @@ export default {
       zgZyzgsAuth: {},
       zgGwdlsAuth: {},
       zgNdkhsAuth: {},
-      //zgKycgsAuth: {},
       zgLwkyqksAuth: {},
       zgXmkyqksAuth: {},
       zgJxkyqksAuth: {},
@@ -2542,9 +2541,7 @@ export default {
               break;
             case "dmsfbzm":
               this.sfOps = res.data;
-            // case "dmmzm":
-            //   this.mzmOps = res.data;
-            //   break;
+              break;
             case "dmzzmmm":
               this.zzmmmOps = res.data;
               break;
@@ -2555,9 +2552,6 @@ export default {
               this.zgxlmOps = res.data;
               break;
             case "dmrsxklbm":
-              // this.xklbmOps = res.data;
-              // this.yjxkmOps = res.data;
-              // this.ejxkmOps = res.data;
               this.sxzymOps = res.data;
               break;
             case "dmxwm":
@@ -2578,60 +2572,11 @@ export default {
             case "dmrskhjgm":
               this.khjgmOps = res.data;
               break;
-
             case "dmrsprzwdjm":
               this.przwdjOps = res.data;
-
               break;
             case "dmrsjslbm":
               this.jslbOps = res.data;
-              break;
-              // case "dmhyzkm":
-              //   this.hyzkmOps = res.data;
-              //   break;
-
-              // case "dmrsrylbm":
-              //   this.jzgrylbmOps = res.data;
-              //   break;
-              // case "dmrsryflm":
-              //   this.rsryflmOps = res.data;
-              //   break;
-              // case "dmrsgwztm":
-              //   this.rygwztmOps = res.data;
-              //   break;
-
-              // case "dmrsxym":
-              //   this.xyOps = res.data;
-              //   break;
-              // case "dmrscblbm":
-              //   this.cblbmOps = res.data;
-              //   break;
-              // case "dmrszyjszwm":
-              //   this.crzyjszwmOps = res.data;
-              //   break;
-              // case "dmxxfsm":
-              //   this.xxfsmOps = res.data;
-              //   break;
-              // case "dmrsxxxsm":
-              //   this.xxxsmOps = res.data;
-              //   break;
-
-              // case "dmrsprgwxlm":
-              //   this.prgwxlmOps = res.data;
-              //   break;
-              // case "dmrsprgwdjm":
-              //   this.prgwdjmOps = res.data;
-              //   break;
-
-              // //籍贯
-              // case "dmxzqhm":
-              //   this.jgOps = res.data;
-              //   break;
-              // //学制
-
-              // //岗位等级
-              // case "dmrsgwdjm":
-              //   this.gwdjOps = res.data;
               break;
           }
         })
@@ -2756,8 +2701,7 @@ export default {
           this.zgGzjlsAuth = res.auth.zg_gzjlAuth;
           this.zgXxpxesAuth = res.auth.zg_xxpxAuth;
           this.zgXlxwsAuth = res.auth.zg_xlxwAuth;
-          //this.zgNdkhsAuth = res.auth.zg_ndkhAuth;
-
+          this.zgNdkhsAuth = res.auth.zg_ndkhAuth;
           this.zgLwkyqksAuth = res.auth.zg_lwkyqkAuth;
           this.zgXmkyqksAuth = res.auth.zg_xmkyqkAuth;
           this.zgZyjszwsAuth = res.auth.zg_zyjszwAuth;

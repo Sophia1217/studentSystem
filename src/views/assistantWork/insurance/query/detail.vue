@@ -87,7 +87,7 @@
             <el-form-item label="金额">
               <el-input
                 placeholder="请输入"
-                v-model="form.jr"
+                v-model="form.je"
                 :disabled="true"
               ></el-input>
             </el-form-item>
@@ -167,7 +167,7 @@
 <script>
 import { getToken } from "@/utils/auth";
 import { queryList } from "@/api/assistantWork/baoxian";
-import { querywj, delwj, Exportwj } from "@/api/assistantWork/classEvent";
+import { querywj, Exportwj } from "@/api/assistantWork/classEvent";
 
 export default {
   data() {
@@ -184,7 +184,6 @@ export default {
         bxdh: [],
         startSj: [],
         endSj: [],
-        money: "",
       },
     };
   },
@@ -197,7 +196,8 @@ export default {
       queryList({ id: this.$route.query.id })
         .then((res) => {
           this.form = res.data[0];
-          console.log("this", this.form);
+          this.form.je = res.data[0].je + "元";
+          console.log(this.form, "this.form");
         })
         .catch((err) => {});
     },

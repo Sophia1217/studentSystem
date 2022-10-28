@@ -264,8 +264,10 @@
           </el-col> </el-row
         ><el-row>
           <el-col :span="24" class="yiny">
-            <div style="display: flex; height: 50px">
-              <div class="hs1">审核状态</div>
+            <div
+              style="display: flex; height: 50px; border-bottom: 1px solid grey"
+            >
+              <div class="hs">审核状态</div>
               <div class="bs">{{ res.fdyspyj }}</div>
             </div>
           </el-col>
@@ -485,13 +487,6 @@ export default {
     background: #ccc;
     padding-left: 20px;
     padding-top: 14px;
-  }
-  .hs1 {
-    flex: 0 0 100px;
-    background: #ccc;
-    padding-left: 20px;
-    padding-top: 14px;
-    border-bottom: 1px solid grey;
   }
   .bs {
     padding-left: 40px;

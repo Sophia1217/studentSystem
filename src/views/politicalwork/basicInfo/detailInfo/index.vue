@@ -122,10 +122,10 @@
                     {{ detailInfoData.zgZgjbxxes.csrq }}
                   </div>
                    <div v-if="isEdit == 2" class="content">
-                      <el-input
+                      <el-date-picker
                         v-model="detailInfoData.zgZgjbxxes.csrq"
-                        size="small"
-                        placeholder="请输入内容"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
                         :disabled="zgZgjbxxesAuth.CSRQ == 2||detailInfoData.sfxs==1 "
                       />
                     </div>
@@ -323,10 +323,11 @@
                     {{ detailInfoData.zgZgjbxxes.cjgzrq }}
                   </div>
                    <div v-if="isEdit == 2" class="content">
-                      <el-input
+                      <el-date-picker
                         v-model="detailInfoData.zgZgjbxxes.cjgzrq"
-                        size="small"
-                        placeholder="请输入内容"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
                          :disabled="zgZgjbxxesAuth.CJGZRQ == 2 ||detailInfoData.sfxs==1"
                       />
                     </div>

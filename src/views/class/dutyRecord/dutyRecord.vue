@@ -40,7 +40,7 @@
       <div v-if="isMore" class="moreSelect">
         <el-row :gutter="20" class="mt15">
           <el-col :span="12">
-            <span>学 院：</span>
+            <span>培养单位：</span>
             <el-select
               v-model="workPlace"
               multiple
@@ -159,7 +159,7 @@
           <el-table-column prop="lxmc" label="类型" sortable="custom" />
           <el-table-column prop="bjdm" label="班级编号" sortable="custom" />
           <el-table-column prop="bjmc" label="班级名称" sortable="custom" />
-          <el-table-column prop="dwmc" label="学院" sortable="custom" />
+          <el-table-column prop="dwmc" label="培养单位" sortable="custom" />
           <el-table-column prop="pyccmc" label="培养层次" sortable="custom" />
           <el-table-column prop="nj" label="年级" sortable="custom" />
           <el-table-column prop="rzrq" label="任职日期" sortable="custom" />

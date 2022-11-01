@@ -48,7 +48,7 @@
             </div>
           </el-col> -->
           <el-col :span="8">
-            <span>学 院：</span>
+            <span>培养单位：</span>
             <el-select
               v-model="moreIform.manageReg"
               placeholder="请选择"
@@ -395,7 +395,6 @@ export default {
     getSpread() {
       getManageRegStuInfoSearchSpread()
         .then((res) => {
-        
           this.manageRegOps = res.data.dwhbj;
         })
         .catch((err) => {});
@@ -439,7 +438,6 @@ export default {
       this.category.checkAll = checkedCount === this.category.checkBox.length;
       this.category.isIndeterminate =
         checkedCount > 0 && checkedCount < this.category.checkBox.length;
-
     },
     // 性别全选
     handleCheckAllSexChange(val) {
@@ -448,7 +446,7 @@ export default {
         allCheck.push(this.sex.checkBox[i].val);
       }
       this.sex.choose = val ? allCheck : [];
-    
+
       this.sex.isIndeterminate = false;
     },
     // 性别单选
@@ -457,7 +455,6 @@ export default {
       this.sex.checkAll = checkedCount === this.sex.checkBox.length;
       this.sex.isIndeterminate =
         checkedCount > 0 && checkedCount < this.sex.checkBox.length;
-
     },
     // 类别全选
     handleCheckAllWorkPlaceChange(val) {
@@ -466,7 +463,7 @@ export default {
         allCheck.push(this.workPlace.checkBox[i].val);
       }
       this.workPlace.choose = val ? allCheck : [];
-    
+
       this.workPlace.isIndeterminate = false;
     },
     // 类别单选
@@ -475,12 +472,10 @@ export default {
       this.workPlace.checkAll = checkedCount === this.workPlace.checkBox.length;
       this.workPlace.isIndeterminate =
         checkedCount > 0 && checkedCount < this.workPlace.checkBox.length;
-    
     },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-    
     },
     //状态全选
     handleCheckAllStatusChange(val) {
@@ -489,7 +484,7 @@ export default {
         allCheck.push(this.status.checkBox[i].val);
       }
       this.status.choose = val ? allCheck : [];
-     
+
       this.status.isIndeterminate = false;
     },
     // 状态单选
@@ -498,7 +493,6 @@ export default {
       this.status.checkAll = checkedCount === this.status.checkBox.length;
       this.status.isIndeterminate =
         checkedCount > 0 && checkedCount < this.status.checkBox.length;
-    
     },
     // 打开导出弹窗
     handleExport() {
@@ -513,7 +507,6 @@ export default {
       this.showExport = false;
       outAssistant().then((res) => {
         if (res.errcode == "00") {
-        
         }
       });
     },
@@ -527,10 +520,9 @@ export default {
       let data = {
         ghList: ghlist,
       };
-     
+
       removeMoreAssistant(data).then((res) => {
         if (res.errcode == "00") {
-        
         }
       });
     },
@@ -547,7 +539,6 @@ export default {
       };
       addOneAssistant(data).then((res) => {
         if (res.errcode == "00") {
-        
         }
       });
       this.reset();
@@ -561,7 +552,7 @@ export default {
       lookDetail(ghdata).then((res) => {
         if (res.errcode == "00") {
           //this.moreIform.classNum = res.assistantDetailRes[0].bjbh;
-        
+
           this.tableData = res.assistantDetailRes;
         }
       });
@@ -675,7 +666,6 @@ export default {
     },
     // 搜索查询按钮
     searchClick() {
-    
       let str = [];
       let name, gonghao, dbzt;
       //       console.log(str);

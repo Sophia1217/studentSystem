@@ -35,7 +35,7 @@
       <!-- 更多选择 -->
       <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3"> 学院 ： </el-col>
+          <el-col :span="3"> 培养单位： </el-col>
           <el-col :span="20">
             <div class="checkbox">
               <el-select
@@ -122,7 +122,7 @@
           </el-table-column>
           <el-table-column prop="sqxh" label="学号" sortable="custom">
           </el-table-column>
-          <el-table-column prop="sqxymc" label="学院" sortable="custom">
+          <el-table-column prop="sqxymc" label="培养单位" sortable="custom">
           </el-table-column>
           <el-table-column prop="sqsjh" label="手机号" sortable="custom">
           </el-table-column>
@@ -191,7 +191,7 @@
         <el-row>
           <el-col :span="12" class="yiny">
             <div style="display: flex; height: 50px">
-              <div class="hs">学院</div>
+              <div class="hs">培养单位</div>
               <div class="bs">{{ res.sqxymc }}</div>
             </div>
           </el-col>

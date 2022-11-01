@@ -5339,7 +5339,7 @@ export default {
       } else if (data.xsXjxx.bjm_approveFlag == 0 && !data.xsXjxx.bjm) {
         this.$message.error("班级不能为空");
       } else if (data.xsXjxx.dwh_approveFlag == 0 && !data.xsXjxx.dwh) {
-        this.$message.error("学院不能为空");
+        this.$message.error("培养单位不能为空");
       } else if (data.xsXjxx.nj_approveFlag == 0 && !data.xsXjxx.nj) {
         this.$message.error("年级不能为空");
       } else if (data.xsXjxx.xjzt_approveFlag == 0 && !data.xsXjxx.xjzt) {

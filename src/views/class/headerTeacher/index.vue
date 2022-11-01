@@ -195,7 +195,7 @@
       >
         <el-row>
           <el-col :span="12">
-            <el-form-item label="所属学院" prop="noticeTitle">
+            <el-form-item label="培养单位" prop="noticeTitle">
               <el-select
                 v-model="form.noticeType"
                 placeholder="计算机学院"
@@ -288,7 +288,7 @@ export default {
       // 表单校验
       rules: {
         noticeTitle: [
-          { required: true, message: "所属学院为空", trigger: "blur" },
+          { required: true, message: "培养单位为空", trigger: "blur" },
         ],
         noticeType: [
           { required: true, message: "培养层次不能为空", trigger: "change" },

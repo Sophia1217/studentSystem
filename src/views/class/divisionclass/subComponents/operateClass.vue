@@ -409,7 +409,7 @@
       <el-form ref="form" :model="form" label-width="80px">
         <el-row class="change_row">
           <el-col :span="10">
-            <el-form-item label="当前学院">
+            <el-form-item label="当前培养单位">
               <el-input :placeholder="$route.query.pydwmc" disabled />
             </el-form-item>
           </el-col>

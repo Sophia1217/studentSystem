@@ -108,7 +108,7 @@
                   <el-select
                     :disabled="isEdit == '1' ? true : false"
                     v-model="eduDetailForm.xy"
-                    placeholder="学院(必选)"
+                    placeholder="培养单位(必选)"
                     clearable
                     @change="xyChange"
                   >
@@ -452,7 +452,9 @@ export default {
         keyword: [
           { required: true, message: "关键词不能为空", trigger: "change" },
         ],
-        xy: [{ required: true, message: "学院不能为空", trigger: "change" }],
+        xy: [
+          { required: true, message: "培养单位不能为空", trigger: "change" },
+        ],
         beginDate: [
           { required: true, message: "日期不能为空", trigger: "change" },
         ],

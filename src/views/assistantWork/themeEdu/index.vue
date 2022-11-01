@@ -41,7 +41,7 @@
       <!-- 更多选择 -->
       <div v-if="isMore" class="moreSelect">
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">学院 ：</el-col>
+          <el-col :span="3">培养单位：</el-col>
           <el-col :span="20">
             <el-select
               v-model="workPlace"
@@ -138,7 +138,7 @@
           <el-table-column prop="jyzt" label="教育主题" sortable />
           <el-table-column prop="gjc" label="关键词" sortable="custom" />
           <el-table-column prop="jydx" label="教育对象" sortable="custom" />
-          <el-table-column prop="ssdwmc" label="学院" sortable="custom" />
+          <el-table-column prop="ssdwmc" label="培养单位" sortable="custom" />
           <el-table-column prop="hdksrq" label="活动时间" sortable="custom" />
           <el-table-column prop="hddd" label="开展地点" sortable="custom" />
           <el-table-column prop="jlrxm" label="记录人" sortable="custom" />

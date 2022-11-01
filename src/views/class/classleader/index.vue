@@ -213,7 +213,7 @@ export default {
       // 表单校验
       rules: {
         noticeTitle: [
-          { required: true, message: "所属学院为空", trigger: "blur" },
+          { required: true, message: "所属培养单位为空", trigger: "blur" },
         ],
         noticeType: [
           { required: true, message: "培养层次不能为空", trigger: "change" },

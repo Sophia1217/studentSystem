@@ -64,7 +64,7 @@
                 <el-col :span="4">
                   <el-select
                     v-model="eduDetailForm.xy"
-                    placeholder="学院（必选）"
+                    placeholder="培养单位（必选）"
                     @change="xyChange"
                     clearable
                   >
@@ -110,7 +110,7 @@
                   <el-select
                     v-model="eduDetailForm.zy"
                     :disabled="this.eduDetailForm.bj != '' ? true : false"
-                    placeholder="专业(请先选择学院和培养层次)"
+                    placeholder="专业(请先选择培养单位和培养层次)"
                     @change="bjChange"
                     clearable
                     multiple
@@ -127,7 +127,7 @@
                 <el-col :span="4.5">
                   <el-select
                     v-model="eduDetailForm.bj"
-                    placeholder="班级(请先选择学院和培养层次)"
+                    placeholder="班级(请先选择培养单位和培养层次)"
                     :disabled="this.eduDetailForm.zy != '' ? true : false"
                     @change="bjChange"
                     clearable
@@ -293,7 +293,9 @@ export default {
         keyword: [
           { required: true, message: "关键词不能为空", trigger: "change" },
         ],
-        xy: [{ required: true, message: "学院不能为空", trigger: "change" }],
+        xy: [
+          { required: true, message: "培养单位不能为空", trigger: "change" },
+        ],
         beginDate: [
           { required: true, message: "日期不能为空", trigger: "change" },
         ],

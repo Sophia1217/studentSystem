@@ -3463,7 +3463,7 @@
         </div>
         <div class="tableStyle">
           <el-table :data="detailInfo.xsXjydList" style="width: 100%">
-            <el-table-column prop="ydwmc" label="原学院"> </el-table-column>
+            <el-table-column prop="ydwmc" label="原培养单位"> </el-table-column>
             <el-table-column prop="ybjmc" label="原班级"> </el-table-column>
             <el-table-column prop="ydlbm" label="异动类别"> </el-table-column>
             <el-table-column prop="spwh" label="异动文号"> </el-table-column>
@@ -4195,7 +4195,7 @@ export default {
       } else if (data.xsXjxx.bjm_stuFlag == 0 && !data.xsXjxx.bjm) {
         this.$message.error("班级不能为空");
       } else if (data.xsXjxx.dwh_stuFlag == 0 && !data.xsXjxx.dwh) {
-        this.$message.error("学院不能为空");
+        this.$message.error("培养单位不能为空");
       } else if (data.xsXjxx.nj_stuFlag == 0 && !data.xsXjxx.nj) {
         this.$message.error("年级不能为空");
       } else if (data.xsXjxx.xjzt_stuFlag == 0 && !data.xsXjxx.xjzt) {

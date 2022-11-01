@@ -211,7 +211,7 @@
       >
         <el-row>
           <el-col :span="12">
-            <el-form-item label="所属学院" prop="pydw">
+            <el-form-item label="所属培养单位" prop="pydw">
               <el-select v-model="form.pydw" placeholder="未选择">
                 <el-option
                   v-for="(item, index) in collegeOptions"

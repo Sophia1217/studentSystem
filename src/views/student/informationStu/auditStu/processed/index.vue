@@ -38,7 +38,7 @@
       <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20">
           <el-col :span="6">
-            <span>学 院：</span>
+            <span>培养单位：</span>
             <el-select
               v-model="moreIform.manageReg"
               multiple
@@ -213,7 +213,8 @@
             sortable="custom"
           ></el-table-column>
           <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
-          <el-table-column prop="dwmc" label="学院" sortable> </el-table-column>
+          <el-table-column prop="dwmc" label="培养单位" sortable>
+          </el-table-column>
           <el-table-column prop="zydmc" label="专业" sortable>
           </el-table-column>
           <el-table-column prop="bjmc" label="班级" sortable> </el-table-column>

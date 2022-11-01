@@ -32,7 +32,7 @@
       <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20">
           <el-col :span="8">
-            <span>学 院：</span>
+            <span>培养单位：</span>
             <el-select
               v-model="moreIform.xydm"
               @change="changeXY"
@@ -146,7 +146,7 @@
           </el-table-column>
           <el-table-column prop="xm" label="姓名" sortable="custom">
           </el-table-column>
-          <el-table-column prop="dwmc" label="学院" sortable="custom">
+          <el-table-column prop="dwmc" label="培养单位" sortable="custom">
           </el-table-column>
           <el-table-column prop="zydmc" label="专业" sortable="custom">
           </el-table-column>
@@ -175,7 +175,7 @@ import {
 } from "@/api/student/index";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getZY, getBJ } from "@/api/student/index";
-import { getCollege,getGrade } from "@/api/class/maintenanceClass";
+import { getCollege, getGrade } from "@/api/class/maintenanceClass";
 export default {
   name: "manStudent",
   components: { CheckboxCom },

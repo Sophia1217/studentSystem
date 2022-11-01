@@ -129,8 +129,8 @@
             v-model="row.bjmc"
             clearable
             width="200px"
-            @blur="alterClassName(row)"
-            @keyup.enter.native="alterClassName(row)"
+            @blur="alterClassName($event, row)"
+            @keyup.enter.native="alterClassName($event, row)"
           />
         </template>
       </el-table-column>
@@ -283,6 +283,17 @@
     </el-dialog>
 
     <!-- 删除空班级对话框-确认按钮-显示提醒消息 -->
+
+    <!-- 修改班级对话框 -->
+    <el-dialog title="修改班级确认提示" :visible.sync="sureModal" width="30%">
+      <span>是否修改班级名为{{ bjmcEdit }}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="sureCancel">取消</el-button>
+        <el-button type="primary" @click="sureConfirm" class="confirm"
+          >确定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -305,6 +316,9 @@ export default {
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
   data() {
     return {
+      bjdmEdit: "",
+      bjmcEdit: "",
+      sureModal: false,
       // 2.删除空班级:当前班级编号
       // currentBjbm: { bjdm: "" },
       // 遮罩层
@@ -432,27 +446,40 @@ export default {
       });
     },
     // 修改班级名称回调
-    alterClassName(row) {
-      // 整理参数
+    alterClassName(e, row) {
+      this.sureModal = true;
       const { bjdm, bjmc } = row;
-
-      modifyClassName({ bjdm, bjmc }).then((response) => {
-        //response：{new className: '计算机学院硕士2020级5班'} {"fail to modify className": false}
-        if (response.flag == true) {
-          this.$message({
-            showClose: true,
-            message: "修改班级名称成功",
-            type: "success",
-          });
-        } else {
-          this.$message({
-            showClose: true,
-            message: "修改班级名称失败",
-            type: "error",
-          });
-        }
-        // 根据返回状态码确定是否修改成功——成功则重新请求数据刷新页面后弹出信息提醒；失败也弹出信息提醒
-      });
+      this.bjdmEdit = bjdm;
+      this.bjmcEdit = bjmc;
+    },
+    sureConfirm() {
+      if (this.bjmcEdit == "") {
+        this.$message.error("班级名不能为空");
+      } else {
+        var bjdm = this.bjdmEdit;
+        var bjmc = this.bjmcEdit;
+        modifyClassName({ bjdm, bjmc }).then((response) => {
+          if (response.flag == true) {
+            this.$message({
+              showClose: true,
+              message: "修改班级名称成功",
+              type: "success",
+            });
+          } else {
+            this.$message({
+              showClose: true,
+              message: "修改班级名称失败",
+              type: "error",
+            });
+            this.handleQuery();
+          }
+          this.sureModal = false;
+        });
+      }
+    },
+    sureCancel() {
+      this.sureModal = false;
+      this.handleQuery();
     },
     // 新建班级-取消按钮
     cancel() {

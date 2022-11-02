@@ -255,6 +255,9 @@
           <div class="btns borderGreen" @click="handleExport">
             <i class="icon greenIcon"></i><span class="title">导出</span>
           </div>
+          <div class="btns" style="background: #ebfafd" @click="dynamicTable">
+            <i class="el-icon-s-operation"></i>
+          </div>
         </div>
       </div>
       <div class="mt15">
@@ -268,31 +271,14 @@
         >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
+            fixed="left"
             type="index"
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" sortable> </el-table-column>
-          <el-table-column prop="xm" label="姓名" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="zzmmc" label="政治面貌" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="mzmc" label="民族" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="dwmc" label="培养单位" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="zydmc" label="专业" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="xxxs" label="学制" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="nj" label="年级" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="pyccmc" label="培养层次" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="xz" label="学制(年)" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="xjztmc" label="学籍状态" sortable="custom">
-          </el-table-column>
+          <div v-for="(item, index) in tableHeader" :key="index">
+            <el-table-column :prop="item.dm" :label="item.mc"></el-table-column>
+          </div>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
               <el-button
@@ -323,6 +309,21 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancelA">取 消</el-button>
         <el-button type="primary" class="confirm" @click="expTalk(ind)"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <el-dialog title="列表显示项" :visible.sync="dynamicModal" width="40%">
+      <div class="checkbox">
+        <checkboxComDynic
+          :objProp="dynamicsCheckboxs"
+          @training="dynamicsAll"
+          @checkedTraining="dynamicsCheck"
+        ></checkboxComDynic>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dynamicCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="dynamicConfirm"
           >确 定</el-button
         >
       </span>
@@ -358,6 +359,7 @@
 
 <script>
 import CheckboxCom from "../../../components/checkboxCom";
+import checkboxComDynic from "../../../components/checkboxComDynic";
 import exportView from "./exportView/index.vue";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getZY, getBJ } from "@/api/student/index";
@@ -371,7 +373,7 @@ import {
 } from "@/api/student/index";
 export default {
   name: "absentee",
-  components: { CheckboxCom, exportView },
+  components: { CheckboxCom, exportView, checkboxComDynic },
   data() {
     return {
       daochuModal: false,
@@ -457,6 +459,117 @@ export default {
         ],
         isIndeterminate: true,
       },
+      dynamicModal: false,
+      tableHeader: [
+        { dm: "xh", mc: "学号" },
+        { dm: "xm", mc: "姓名" },
+        { dm: "zzmmc", mc: "政治面貌" },
+        { dm: "mzmc", mc: "民族" },
+        { dm: "dwmc", mc: "学院" },
+        { dm: "zydmc", mc: "专业" },
+        { dm: "xxxs", mc: "学制" },
+        { dm: "nj", mc: "年级" },
+        { dm: "xz", mc: "培养层次" },
+        { dm: "xxxs", mc: "学制(年)" },
+        { dm: "xjztmc", mc: "学籍状态" },
+      ],
+      dynamicsCheckboxs: {
+        //动态表头
+        checkAll: false,
+        choose: [],
+        checkBox: [
+          {
+            dm: "xm",
+            mc: "姓名",
+          },
+          {
+            dm: "xbmmc",
+            mc: "性别",
+          },
+          {
+            dm: "csrq",
+            mc: "出生日期",
+          },
+          {
+            dm: "sfzjh",
+            mc: "身份证",
+          },
+          {
+            dm: "xh",
+            mc: "学号",
+          },
+          {
+            dm: "dwmc",
+            mc: "单位",
+          },
+          {
+            dm: "zydmc",
+            mc: "专业",
+          },
+          {
+            dm: "bjm",
+            mc: "班级",
+          },
+          {
+            dm: "xz",
+            mc: "学制",
+          },
+          {
+            dm: "zzmmc",
+            mc: "政治面貌",
+          },
+          {
+            dm: "mzmc",
+            mc: "民族",
+          },
+          {
+            dm: "xjztmc",
+            mc: "学籍状态",
+          },
+          {
+            dm: "jgmc",
+            mc: "籍贯",
+          },
+          {
+            dm: "jgmc",
+            mc: "国籍",
+          },
+          {
+            dm: "csdm",
+            mc: "出生地",
+          },
+          {
+            dm: "jtdh",
+            mc: "家庭电话",
+          },
+          {
+            dm: "yzbm",
+            mc: "家庭邮编",
+          },
+          {
+            dm: "jtzz",
+            mc: "家庭住址",
+          },
+
+          {
+            dm: "nj",
+            mc: "年级",
+          },
+          {
+            dm: "yddh",
+            mc: "移动电话",
+          },
+          {
+            dm: "dzyx",
+            mc: "电子邮箱",
+          },
+          {
+            dm: "qqhm",
+            mc: "QQ号码",
+          },
+        ],
+        isIndeterminate: true,
+      },
       politica: {
         // 政治面貌：
         checkAll: false,
@@ -500,6 +613,34 @@ export default {
   },
 
   methods: {
+    dynamicsAll(val) {
+      let allCheck = [];
+      for (let i in this.dynamicsCheckboxs.checkBox) {
+        allCheck.push(this.dynamicsCheckboxs.checkBox[i]);
+      }
+      this.dynamicsCheckboxs.choose = val ? allCheck : [];
+
+      this.dynamicsCheckboxs.isIndeterminate = false;
+    },
+    // 政治面貌：单选
+    dynamicsCheck(value) {
+      let checkedCount = value.length;
+      this.dynamicsCheckboxs.checkAll =
+        checkedCount === this.dynamicsCheckboxs.checkBox.length;
+      this.dynamicsCheckboxs.isIndeterminate =
+        checkedCount > 0 &&
+        checkedCount < this.dynamicsCheckboxs.checkBox.length;
+    },
+    dynamicCancel() {
+      this.dynamicModal = false;
+    },
+    dynamicConfirm() {
+      this.tableHeader = this.dynamicsCheckboxs.choose;
+      this.dynamicModal = false;
+    },
+    dynamicTable() {
+      this.dynamicModal = true;
+    },
     modal(ind) {
       if (this.multipleSelection.length <= 0) {
         this.$message("请先选择学生");

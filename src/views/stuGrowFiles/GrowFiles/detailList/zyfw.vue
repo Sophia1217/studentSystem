@@ -1,0 +1,418 @@
+<template>
+  <div>
+    <div class="tableWrap mt15">
+      <div class="headerTop">
+        <div class="headerLeft">
+          <span class="title">社团经历</span> <i class="Updataicon"></i>
+        </div>
+        <div class="headerRight">
+          <div class="btns borderLight" @click="del">
+            <i class="icon lightIcon"></i><span class="title">删除</span>
+          </div>
+          <div class="btns borderGreen" @click="xinzeng">
+            <i class="icon greenIcon"></i><span class="title1">新增</span>
+          </div>
+          <div class="btns borderGreen">
+            <i class="icon greenIcon"></i><span class="title1">提交</span>
+          </div>
+        </div>
+      </div>
+      <div class="mt15">
+        <el-table
+          :data="tableDate"
+          ref="multipleTable"
+          style="width: 100%"
+          @selection-change="handleSelectionChange"
+          @sort-change="changeTableSort"
+          :default-sort="{ prop: 'date', order: 'descending' }"
+        >
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            width="50"
+          ></el-table-column>
+          <el-table-column prop="stmc" label="社团名称" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="stlx" label="社团类型" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="gkdwmc" label="挂靠单位" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="rzzw" label="任职职务" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="kssj" label="开始时间" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="jssj" label="结束时间" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="zdlsxm" label="指导老师" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="zt" label="审核状态" sortable="custom">
+            <template slot-scope="scope">
+              <div>
+                <i class="scopeIncon1 ywc"></i>
+                <span class="handleName">已完成</span>
+              </div>
+              <div>
+                <i class="scopeIncon1 djl"></i>
+                <span class="handleName">待记录</span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column fixed="right" label="操作" width="140">
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="bianji(scope.row)">
+                <i class="scopeIncon handledie"></i>
+                <span class="handleName">编辑</span>
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <el-dialog title="新增" :visible.sync="addModal" width="80%">
+        <el-table :data="addData">
+          <el-table-column label="社团名称" align="center">
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.stmc" />
+            </template>
+          </el-table-column>
+          <el-table-column label="社团类型" align="center">
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.stlx" />
+            </template>
+          </el-table-column>
+          <el-table-column label="挂靠单位" width="240px">
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.gkdwmc" />
+            </template>
+          </el-table-column>
+          <el-table-column label="任职职务" width="240px">
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.rzzw" />
+            </template>
+          </el-table-column>
+          <el-table-column label="开始时间" align="center">
+            <template slot-scope="scope">
+              <el-date-picker
+                v-model="scope.row.kssj"
+                type="date"
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
+                placeholder="选择日期"
+              >
+              </el-date-picker>
+            </template>
+          </el-table-column>
+          <el-table-column label="结束时间" align="center">
+            <template slot-scope="scope">
+              <el-date-picker
+                v-model="scope.row.jssj"
+                type="date"
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
+                placeholder="选择日期"
+              >
+              </el-date-picker>
+            </template>
+          </el-table-column>
+          <el-table-column label="指导老师" align="center">
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.zdlsxm" />
+            </template>
+          </el-table-column>
+        </el-table>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="addCance">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="addClick"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
+      <el-dialog title="编辑" :visible.sync="editModal" width="80%">
+        <el-table :data="editData">
+          <el-table-column label="社团名称" align="center">
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.stmc" />
+            </template>
+          </el-table-column>
+          <el-table-column label="社团类型" align="center">
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.stlx" />
+            </template>
+          </el-table-column>
+          <el-table-column label="挂靠单位" width="240px">
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.gkdwmc" />
+            </template>
+          </el-table-column>
+          <el-table-column label="任职职务" width="240px">
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.rzzw" />
+            </template>
+          </el-table-column>
+          <el-table-column label="开始时间" align="center">
+            <template slot-scope="scope">
+              <el-date-picker
+                v-model="scope.row.kssj"
+                type="date"
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
+                placeholder="选择日期"
+              >
+              </el-date-picker>
+            </template>
+          </el-table-column>
+          <el-table-column label="结束时间" align="center">
+            <template slot-scope="scope">
+              <el-date-picker
+                v-model="scope.row.jssj"
+                type="date"
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
+                placeholder="选择日期"
+              >
+              </el-date-picker>
+            </template>
+          </el-table-column>
+          <el-table-column label="指导老师" align="center">
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.zdlsxm" />
+            </template>
+          </el-table-column>
+        </el-table>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="editCance">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="editClick"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
+      <pagination
+        v-show="queryParams.totalCount > 0"
+        :total="queryParams.totalCount"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="query"
+      />
+    </div>
+  </div>
+</template>
+<script>
+import { edit, del, query } from "@/api/stuDangan/detailList/stjl";
+import { delwj } from "@/api/assistantWork/classEvent";
+
+export default {
+  data() {
+    return {
+      addModal: false,
+      editModal: false,
+      addData: [],
+      editData: [],
+      tableDate: [],
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        totalCount: 0,
+        xh: "",
+      },
+      delArr: [],
+    };
+  },
+  mounted() {
+    this.query();
+  },
+
+  methods: {
+    del() {
+      if (this.delArr && this.delArr.length > 0) {
+        del({ ids: this.delArr }).then((res) => {
+          this.$message.success("删除成功");
+          this.query();
+        });
+      } else {
+        this.$message.error("请先勾选数据");
+      }
+    },
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
+      this.query();
+    },
+    handleSelectionChange(val) {
+      this.delArr = val.map((item) => item.id);
+    },
+    bianji(row) {
+      this.editData = [];
+      this.editData.push(row);
+      this.editModal = true;
+    },
+    editCance() {
+      this.editModal = false;
+    },
+    editClick() {
+      var data = this.editData[0];
+      var params = {
+        stmc: data.stmc,
+        stlx: data.stlx,
+        gkdwmc: data.gkdwmc,
+        rzzw: data.rzzw,
+        kssj: data.kssj,
+        jssj: data.jssj,
+        zdlsxm: data.zdlsxm,
+        id: data.id,
+        xh: this.$store.getters.userId,
+      };
+      edit(params).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("编辑成功");
+          this.query();
+        } else {
+          this.$message.error("编辑失败");
+        }
+      });
+      this.editModal = false;
+    },
+    addClick() {
+      var data = this.addData[0];
+      var params = {
+        stmc: data.stmc,
+        stlx: data.stlx,
+        gkdwmc: data.gkdwmc,
+        rzzw: data.rzzw,
+        kssj: data.kssj,
+        jssj: data.jssj,
+        zdlsxm: data.zdlsxm,
+        xh: this.$store.getters.userId,
+      };
+      edit(params).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("新增成功");
+          this.query();
+        } else {
+          this.$message.error("新增失败");
+        }
+      });
+      this.addModal = false;
+    },
+    query() {
+      var data = {
+        xh: this.$store.getters.userId,
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",
+        orderPx: this.queryParams.orderPx ? this.queryParams.orderPx : "",
+      };
+      query(data).then((res) => {
+        this.tableDate = res.data;
+        this.queryParams.totalCount = res.totalCount;
+      });
+    },
+    xinzeng() {
+      this.addData = []; // 每次打开弹框先将弹框的table数组置空
+      var newLine = {
+        stmc: "",
+        stlx: "",
+        gkdwmc: "",
+        rzzw: "",
+        kssj: "",
+        jssj: "",
+        zdlsxm: "",
+      };
+      this.addData.push(newLine);
+      this.addModal = true;
+    },
+    addCance() {
+      this.addModal = false;
+    },
+  },
+};
+</script>
+<style lang="scss" scoped>
+.mt15 {
+  margin-top: 15px;
+}
+.tableWrap {
+  background: #fff;
+  padding: 20px;
+  .headerTop {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    .headerLeft {
+      .title {
+        font-weight: 600;
+        font-size: 20px;
+        color: #1f1f1f;
+        line-height: 28px;
+      }
+      .Updataicon {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 10px;
+        width: 20px;
+        height: 20px;
+        background: url("../../../../assets/images/updata.png") no-repeat;
+      }
+    }
+    .headerRight {
+      display: flex;
+      align-items: center;
+      .borderBlue {
+        background: #fff;
+        border: 1px solid grey;
+      }
+      .borderOrange {
+        border: 1px solid grey;
+        background: #fff;
+      }
+      .borderLight {
+        border: 1px solid grey;
+        color: red;
+        background: #fff;
+      }
+      .borderGreen {
+        border: 1px solid grey;
+        background: #005657;
+      }
+      .btns {
+        margin-right: 15px;
+        padding: 0px 10px;
+        cursor: pointer;
+        border-radius: 4px;
+        .title {
+          font-size: 14px;
+          text-align: center;
+          line-height: 32px;
+          // vertical-align: middle;
+        }
+        .title1 {
+          font-size: 14px;
+          text-align: center;
+          line-height: 32px;
+          color: #fff;
+          // vertical-align: middle;
+        }
+        .icon {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          vertical-align: top;
+          margin-right: 5px;
+        }
+        .orangeIcon {
+          margin-top: 10px;
+          background: url("~@/assets/assistantPng/out.png") no-repeat;
+        }
+        .lightIcon {
+          margin-top: 9px;
+          background: url("~@/assets/assistantPng/delete.png") no-repeat;
+        }
+        .greenIcon {
+          margin-top: 10px;
+          background: url("~@/assets/assistantPng/add.png") no-repeat;
+        }
+      }
+    }
+  }
+}
+</style>

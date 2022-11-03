@@ -335,9 +335,8 @@ export default {
   width: 348px;
   height: 152px;
   display: flex;
-  margin-left: 15px;
   border-radius: 8px;
-  margin-left: 110px;
+  margin-left: 6%;
   justify-content: normal;
 }
 .item2 {

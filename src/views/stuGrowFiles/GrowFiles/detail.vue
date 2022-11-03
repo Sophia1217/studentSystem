@@ -1,12 +1,7 @@
 <template>
   <div class="wrap">
     <div class="detail_left">
-      <el-tabs
-        v-model="activeName"
-        class="tab_left"
-        @tab-click="handleClick"
-        tab-position="left"
-      >
+      <el-tabs v-model="activeName" class="tab_left" tab-position="left">
         <el-tab-pane label="荣誉称号" name="0"> </el-tab-pane>
         <el-tab-pane label="奖学金" name="1"></el-tab-pane>
         <el-tab-pane label="资格认证" name="2"></el-tab-pane>
@@ -21,16 +16,29 @@
     <div class="detail_right" v-if="activeName == '0'"></div>
     <div class="detail_right" v-if="activeName == '1'"></div>
     <div class="detail_right" v-if="activeName == '2'"></div>
-    <div class="detail_right" v-if="activeName == '3'"></div>
-    <div class="detail_right" v-if="activeName == '4'"></div>
-    <div class="detail_right" v-if="activeName == '5'"></div>
+    <div class="detail_right" v-if="activeName == '3'">
+      <shsj></shsj>
+    </div>
+    <div class="detail_right" v-if="activeName == '4'">
+      <zyfw></zyfw>
+    </div>
+    <div class="detail_right" v-if="activeName == '5'">
+      <stjl></stjl>
+    </div>
     <div class="detail_right" v-if="activeName == '6'"></div>
     <div class="detail_right" v-if="activeName == '7'"></div>
-    <div class="detail_right" v-if="activeName == '8'"></div>
+    <div class="detail_right" v-if="activeName == '8'">
+      <xnwpxjlVue></xnwpxjlVue>
+    </div>
   </div>
 </template>
 <script>
+import xnwpxjlVue from "./detailList/xnwpxjl.vue";
+import stjl from "./detailList/stjl";
+import zyfw from "./detailList/zyfw";
+import shsj from "./detailList/shsj";
 export default {
+  components: { xnwpxjlVue, stjl, zyfw, shsj },
   data() {
     return {
       activeName: "0",

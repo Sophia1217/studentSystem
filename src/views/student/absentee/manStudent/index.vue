@@ -252,11 +252,32 @@
           <div class="btns borderBlue" @click="modal(3)">
             <i class="icon lightIcon"></i><span class="title">学生卡片</span>
           </div>
+          <div class="btns" style="background: #ebfafd" @click="dynamicTable">
+            <i class="el-icon-s-operation"></i>
+          </div>
+          <div class="btns borderGreen" @click="mbDown">
+            <span class="title">模板下载</span>
+          </div>
+          <div class="btns borderGreen">
+            <!-- <i class="icon greenIcon"></i><span class="title">导入</span> -->
+            <el-upload
+              accept=".xlsx,.xls"
+              :auto-upload="true"
+              :action="uploadUrl"
+              :show-file-list="false"
+              :headers="fileHeader"
+              :on-success="upLoadSuccess"
+              :on-error="upLoadError"
+            >
+              <i class="icon greenIcon"></i><span class="title">导入</span>
+            </el-upload>
+          </div>
           <div class="btns borderGreen" @click="handleExport">
             <i class="icon greenIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns" style="background: #ebfafd" @click="dynamicTable">
-            <i class="el-icon-s-operation"></i>
+
+          <div class="btns borderGreen" @click="openAdd">
+            <i class="icon addIcon"></i><span class="title">新增</span>
           </div>
         </div>
       </div>
@@ -290,7 +311,6 @@
                 <span class="handleName">详情</span>
               </el-button>
               <el-button
-                v-show="!scope.row.flag || scope.row.flag == null"
                 type="text"
                 size="small"
                 @click="hadleDetail(scope.row, 2)"
@@ -304,6 +324,7 @@
         </el-table>
       </div>
     </div>
+
     <el-dialog :title="title" :visible.sync="showExportA" width="30%">
       <span>确认导出{{ len }}条学生数据？</span>
       <span slot="footer" class="dialog-footer">
@@ -324,6 +345,26 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="dynamicCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="dynamicConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <el-dialog title="新增" :visible.sync="showExportC" width="30%">
+      <el-form :inline="true">
+        <el-form-item label="培养层次">
+          <el-select v-model="pycc" placeholder="请选择">
+            <el-option
+              v-for="item in pyccOps"
+              :key="item.dm"
+              :label="item.mc"
+              :value="item.dm"
+            />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancelC">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="handleAdd"
           >确 定</el-button
         >
       </span>
@@ -362,7 +403,7 @@ import CheckboxCom from "../../../components/checkboxCom";
 import checkboxComDynic from "../../../components/checkboxComDynic";
 import exportView from "./exportView/index.vue";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { getZY, getBJ } from "@/api/student/index";
+import { getZY, getBJ, importRegStuExcel } from "@/api/student/index";
 import { getCollege, getGrade } from "@/api/class/maintenanceClass";
 import {
   getManageRegStuInfoSearchSpread,
@@ -370,12 +411,15 @@ import {
   gradStu,
   stuCard,
   stuReg,
+  fileDown,
 } from "@/api/student/index";
+import { getToken } from "@/utils/auth";
 export default {
   name: "absentee",
   components: { CheckboxCom, exportView, checkboxComDynic },
   data() {
     return {
+      uploadUrl: process.env.VUE_APP_BASE_API + "/regStuInfo/importRegStuExcel",
       daochuModal: false,
       leng: 0,
       op: "0",
@@ -386,6 +430,8 @@ export default {
       select: "",
       isMore: false,
       showExportA: false,
+      showExportC: false,
+      pycc: "",
       moreIform: {
         manageReg: [], // 学院
         stuInfo: [], // 专业
@@ -394,6 +440,8 @@ export default {
       allDwh: [], // 学院下拉框
       zyOps: [], // 专业下拉
       bjOps: [], // 班级下拉
+      pyccOps: [], //培养层次
+      xbOps: [], //性别
       allNj: [], //年级下拉
       datePicker: [],
       manageRegOps: [], //
@@ -592,6 +640,15 @@ export default {
         pageSize: 10,
         total: 0,
       },
+      form: {
+        xh: "",
+        xm: "",
+        dwh: "",
+        pyccm: "",
+        xbm: "",
+        nj: "",
+        sfzjh: "",
+      },
     };
   },
   watch: {},
@@ -609,9 +666,19 @@ export default {
     this.handleSearch();
   },
   activated() {
-    // this.handleSearch()
+    this.handleSearch();
   },
-
+  computed: {
+    fileHeader: {
+      get() {
+        return {
+          accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
+          uuid: new Date().getTime(),
+          clientId: "111",
+        };
+      },
+    },
+  },
   methods: {
     dynamicsAll(val) {
       let allCheck = [];
@@ -641,6 +708,31 @@ export default {
     dynamicTable() {
       this.dynamicModal = true;
     },
+    //模板下载
+    mbDown() {
+      fileDown().then((res) => this.downloadFn(res, "导入模板下载", "xlsx"));
+    },
+    ///上传
+    upLoadSuccess(res, file, fileList) {
+      if (res.errcode == "00") {
+        this.$message({
+          type: "success",
+          message: res.errmsg,
+        });
+      } else {
+        this.$message({
+          type: "error",
+          message: res.errmsg,
+        });
+      }
+    },
+
+    upLoadError(err, file, fileList) {
+      this.$message({
+        type: "error",
+        message: "上传失败",
+      });
+    },
     modal(ind) {
       if (this.multipleSelection.length <= 0) {
         this.$message("请先选择学生");
@@ -653,6 +745,9 @@ export default {
     },
     handleCancelA() {
       this.showExportA = false;
+    },
+    handleCancelC() {
+      this.showExportC = false;
     },
     expTalk() {
       let xhs = [];
@@ -675,6 +770,9 @@ export default {
     },
     closeIt() {
       this.expand = true;
+    },
+    openAdd() {
+      this.showExportC = true;
     },
     // 查询学院
     getAllCollege() {
@@ -725,6 +823,7 @@ export default {
           switch (paramsData) {
             case "dmpyccm":
               this.$set(this.training, "checkBox", res.data);
+              this.pyccOps = res.data;
               break;
             case "dmxjztm":
               this.$set(this.studentStatus, "checkBox", res.data);
@@ -740,6 +839,7 @@ export default {
               break;
             case "dmxbm":
               this.$set(this.dmxbmOPs, "checkBox", res.data);
+              this.xbOps = res.data;
           }
         })
         .catch((err) => {});
@@ -1046,6 +1146,34 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
     },
+    //新增
+    handleAdd() {
+      if (!this.pycc) {
+        this.$message.error("请选择培养层次");
+      } else {
+        let schooling = "";
+        if (this.pycc == 1 || this.pycc == 2) {
+          // 1 2 是研究生
+          schooling = 2;
+        } else {
+          schooling = 1;
+        }
+
+        this.$router.push({
+          path: "/student/addstuDetails",
+          query: {
+            pycc: this.pycc,
+            schooling: schooling,
+          },
+        });
+        this.showExportC = false;
+        this.pycc = "";
+      }
+    },
+    // //导入
+    // handleImport() {
+    //   importRegStuExcel().then((res) => {});
+    // },
   },
 };
 </script>
@@ -1183,6 +1311,9 @@ export default {
           }
           .greenIcon {
             background: url("~@/assets/images/export.png");
+          }
+          .addIcon {
+            background: url("~@/assets/images/addicon.png");
           }
         }
       }

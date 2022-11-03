@@ -68,6 +68,7 @@ export function getRegStuInfoDetailPage(data) {
 export function loadRegStuInfoUpdatePage(data) {
   return request({
     url: '/regStuInfo/loadRegStuInfoUpdatePage',
+    
     method: 'get',
     params: data
   })
@@ -76,7 +77,8 @@ export function loadRegStuInfoUpdatePage(data) {
 // 查询学生信息 -可管理学生更新
 export function updateRegStuInfo(data) {
   return request({
-    url: '/regStuInfo/updateRegStuInfo',
+     //url: '/regStuInfo/updateRegStuInfo',
+     url: '/regStuInfo/updateRegStuInfoDirect',
     method: 'post',
     data: data
   })
@@ -264,5 +266,35 @@ export function getLocationjl(query) {
     url: '/commonMethod/getLocation',
     method: 'post',
     data: query,
+  })
+}
+//新增学生信息
+export function insertRegStuInfo(query) {
+  return request({
+    url: '/regStuInfo/insertRegStuInfo',
+    method: 'post',
+    data: query,
+  })
+}
+
+//导入学生信息
+export function importRegStuExcel(query) {
+  return request({
+    url: '/regStuInfo/importRegStuExcel',
+    method: 'post',
+    headers: {
+      "Content-Type": "multipart/form-data;charset=utf-8"
+    },
+    data: query,
+  })
+}
+//模板下载
+export function fileDown(data) {
+    
+  return request({
+    url:'/regStuInfo/downloadExcel',
+    method: 'post',
+    responseType: 'blob',
+    data: data
   })
 }

@@ -284,7 +284,7 @@ import {
   exp,
   getDetail,
 } from "@/api/epidemicControl/provisionalPass";
-import { getGzdw } from "@/api/politicalWork/assistantappoint";
+import { getCollege } from "@/api/class/maintenanceClass";
 export default {
   components: { CheckboxCom },
   data() {
@@ -322,7 +322,7 @@ export default {
 
   methods: {
     getAllCollege() {
-      getGzdw()
+      getCollege()
         .then((res) => {
           this.allDwh = res.data.rows;
         })

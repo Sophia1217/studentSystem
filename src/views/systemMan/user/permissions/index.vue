@@ -100,6 +100,7 @@ export default {
         userId: "",
         roleId: "",
       },
+      isDeafult: false,
       stuListOps: [], // 学生数据
       roleData: [], // 用户分组
       checksedKeys: [], // 被操作人选中节点
@@ -178,7 +179,9 @@ export default {
             roleId: this.targetArr[i].roleId,
           };
           defaultRoleAuth(data).then((res) => {
-            this.targetArr[i].arr = res.data;
+            this.$set(this.targetArr[i], "arr", []);
+            this.defaultArr = res.data;
+            this.$refs.tree[i].setCheckedKeys(res.data);
           });
         }
       }
@@ -551,17 +554,27 @@ export default {
     },
 
     currentChecked(nodeObj, SelectedObj) {
+      this.isDeafult = true;
       const { checkedNodes, halfCheckedKeys } = SelectedObj;
       var menuList = checkedNodes.map((item) => item.modId);
       this.savaData = menuList; //要获取上级根节点
     },
     handleDataAuth(role, index) {
-      var param = {
-        userId: this.formName.userId,
-        newRoleId: role.roleId,
-        dataList: this.savaData,
-        operateRoleId: this.$store.getters.roleId,
-      };
+      if (this.isDeafult == false) {
+        var param = {
+          userId: this.formName.userId,
+          newRoleId: role.roleId,
+          dataList: this.defaultArr,
+          operateRoleId: this.$store.getters.roleId,
+        };
+      } else {
+        var param = {
+          userId: this.formName.userId,
+          newRoleId: role.roleId,
+          dataList: this.savaData,
+          operateRoleId: this.$store.getters.roleId,
+        };
+      }
       updateDataAuth(param)
         .then((res) => {
           this.$message({

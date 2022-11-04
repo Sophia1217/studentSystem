@@ -46,27 +46,71 @@
           </el-table-column>
           <el-table-column prop="zdlsxm" label="指导老师" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zt" label="审核状态" sortable="custom">
+          <el-table-column prop="status" label="审核状态" sortable="custom">
             <template slot-scope="scope">
-              <div>
-                <i class="scopeIncon1 ywc"></i>
-                <span class="handleName">已完成</span>
-              </div>
-              <div>
-                <i class="scopeIncon1 djl"></i>
-                <span class="handleName">待记录</span>
-              </div>
+              <el-select
+                v-model="scope.row.status"
+                placeholder="请选择"
+                :disabled="true"
+              >
+                <el-option
+                  v-for="(item, index) in ztStatus"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" label="操作" width="140">
+          <el-table-column
+            fixed="right"
+            label="操作"
+            align="center"
+            width="240"
+          >
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="bianji(scope.row)">
-                <i class="scopeIncon handledie"></i>
-                <span class="handleName">撤回</span>
+              <el-button
+                type="text"
+                size="small"
+                @click="bianji(scope)"
+                v-if="scope.row.status === '01' || scope.row.status === '08'"
+              >
+                <i class="scopeIncon Edit"></i>
+                <span>编辑</span>
               </el-button>
-              <el-button type="text" size="small" @click="bianji(scope.row)">
-                <i class="scopeIncon handleEdit"></i>
-                <span class="handleName">编辑</span>
+              <el-button
+                type="text"
+                size="small"
+                :disabled="true"
+                @click="bianji(scope.row)"
+                v-if="scope.row.status !== '01' && scope.row.status !== '08'"
+              >
+                <i class="scopeIncon EditDis"></i>
+                <span>编辑</span>
+              </el-button>
+
+              <el-button
+                type="text"
+                size="small"
+                @click="chehui(scope.row)"
+                v-if="scope.row.status === '02'"
+              >
+                <i class="scopeIncon ch"></i>
+                <span>撤回</span>
+              </el-button>
+              <el-button
+                type="text"
+                size="small"
+                :disabled="true"
+                @click="chehui(scope.row)"
+                v-if="scope.row.status !== '02'"
+              >
+                <i class="scopeIncon chDis"></i>
+                <span style="color: #bfbfbf">撤回</span>
+              </el-button>
+              <el-button type="text" size="small" @click="lct(scope.row)">
+                <i class="scopeIncon lct"></i>
+                <span>流程图</span>
               </el-button>
             </template>
           </el-table-column>
@@ -207,6 +251,7 @@ import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
   data() {
     return {
+      ztStatus: [],
       addModal: false,
       editModal: false,
       addData: [],
@@ -219,6 +264,7 @@ export default {
         xh: "",
       },
       delArr: [],
+      val: [],
     };
   },
   mounted() {
@@ -230,17 +276,25 @@ export default {
     getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
-        console.log("res", res);
+        this.ztStatus = res.data;
       });
     },
     del() {
-      if (this.delArr && this.delArr.length > 0) {
-        del({ ids: this.delArr }).then((res) => {
-          this.$message.success("删除成功");
-          this.query();
-        });
+      var falg = 1;
+      for (var i = 0; i < this.val.length; i++) {
+        if (this.val[i].status !== "01") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.delArr && this.delArr.length > 0) {
+          del({ ids: this.delArr }).then((res) => {
+            this.$message.success("删除成功");
+            this.query();
+          });
+        } else {
+          this.$message.error("请先勾选数据");
+        }
       } else {
-        this.$message.error("请先勾选数据");
+        this.$message.error("存在草稿状态数据，不可以删除");
       }
     },
     changeTableSort(column) {
@@ -249,6 +303,7 @@ export default {
       this.query();
     },
     handleSelectionChange(val) {
+      this.val = val;
       this.delArr = val.map((item) => item.id);
     },
     bianji(row) {
@@ -338,6 +393,34 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.scopeIncon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+.chDis {
+  background: url("~@/assets/dangan/chDisable.png");
+}
+.Edit {
+  background: url("~@/assets/images/edit.png");
+}
+.EditDis {
+  background: url("~@/assets/dangan/editDisable.png") no-repeat;
+}
+.ch {
+  background: url("~@/assets/dangan/ch.png");
+}
+.lct {
+  background: url("~@/assets/dangan/lct.png");
+}
+.el-button--text {
+  border-color: transparent;
+  color: #005657;
+  background: transparent;
+  padding-left: 0;
+  padding-right: 0;
+}
 .mt15 {
   margin-top: 15px;
 }
@@ -421,21 +504,6 @@ export default {
         .greenIcon {
           margin-top: 10px;
           background: url("~@/assets/assistantPng/add.png") no-repeat;
-        }
-        .scopeIncon {
-          display: inline-block;
-          width: 20px;
-          height: 20px;
-          vertical-align: middle;
-        }
-        .handleEdit {
-          background: url("../../../../assets/images/edit.png");
-        }
-        .handleName {
-          font-weight: 400;
-          font-size: 14px;
-          color: #005657;
-          line-height: 28px;
         }
       }
     }

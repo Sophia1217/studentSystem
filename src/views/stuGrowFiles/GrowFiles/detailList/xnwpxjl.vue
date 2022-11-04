@@ -92,8 +92,8 @@
               <el-button
                 type="text"
                 size="small"
-                @click="bianji(scope.row)"
-                v-if="scope.row.status == '01'"
+                @click="bianji(scope)"
+                v-if="scope.row.status === '01' || scope.row.status === '08'"
               >
                 <i class="scopeIncon Edit"></i>
                 <span>编辑</span>
@@ -103,7 +103,7 @@
                 size="small"
                 :disabled="true"
                 @click="bianji(scope.row)"
-                v-else
+                v-if="scope.row.status !== '01' && scope.row.status !== '08'"
               >
                 <i class="scopeIncon EditDis"></i>
                 <span>编辑</span>
@@ -113,7 +113,7 @@
                 type="text"
                 size="small"
                 @click="chehui(scope.row)"
-                v-if="scope.row.status == '01'"
+                v-if="scope.row.status === '02'"
               >
                 <i class="scopeIncon ch"></i>
                 <span>撤回</span>
@@ -123,7 +123,7 @@
                 size="small"
                 :disabled="true"
                 @click="chehui(scope.row)"
-                v-esle
+                v-if="scope.row.status !== '02'"
               >
                 <i class="scopeIncon chDis"></i>
                 <span style="color: #bfbfbf">撤回</span>
@@ -378,31 +378,47 @@ export default {
         }
       });
     },
-    tj() {
-      var data = this.val;
-      tj(data).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("提交成功");
-          this.query();
-        } else {
-          this.$message.error("提交失败");
-        }
-      });
-    },
     getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
         this.ztStatus = res.data;
       });
     },
-    del() {
-      if (this.delArr && this.delArr.length > 0) {
-        del({ ids: this.delArr }).then((res) => {
-          this.$message.success("删除成功");
-          this.query();
+    tj() {
+      var data = this.val;
+      var falg = 1;
+      for (var i = 0; i < this.val.length; i++) {
+        if (this.val[i].status !== "01") falg = 2;
+      }
+      if (falg == 1) {
+        tj(data).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("提交成功");
+            this.query();
+          } else {
+            this.$message.error("提交失败");
+          }
         });
       } else {
-        this.$message.error("请先勾选数据");
+        this.$message.error("存在非草稿状态数据，不可以提交");
+      }
+    },
+    del() {
+      var falg = 1;
+      for (var i = 0; i < this.val.length; i++) {
+        if (this.val[i].status !== "01") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.delArr && this.delArr.length > 0) {
+          del({ ids: this.delArr }).then((res) => {
+            this.$message.success("删除成功");
+            this.query();
+          });
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("存在草稿状态数据，不可以删除");
       }
     },
     changeTableSort(column) {
@@ -557,7 +573,7 @@ export default {
   background: url("~@/assets/images/edit.png");
 }
 .EditDis {
-  background: url("~@/assets/images/icon_edit_white.png");
+  background: url("~@/assets/dangan/editDisable.png") no-repeat;
 }
 .ch {
   background: url("~@/assets/dangan/ch.png");

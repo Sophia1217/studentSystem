@@ -42,7 +42,7 @@ export function tj(data){
 }//流程图
 export function lct(data){
   return request({
-    url: '/czdaXnwpxjl/excelDiagramView',
+    url: '/flowableCommonController/excelDiagramView',
     method: 'get',
     params: data,
     responseType:'blob'

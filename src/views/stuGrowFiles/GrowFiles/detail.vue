@@ -14,8 +14,13 @@
       </el-tabs>
     </div>
     <div class="detail_right" v-if="activeName == '0'"></div>
-    <div class="detail_right" v-if="activeName == '1'"></div>
-    <div class="detail_right" v-if="activeName == '2'"></div>
+    <div class="detail_right" v-if="activeName == '1'">
+      <scholarships></scholarships>
+    </div>
+    <div class="detail_right" v-if="activeName == '2'">
+      <zgrz></zgrz>
+    </div>
+
     <div class="detail_right" v-if="activeName == '3'">
       <shsj></shsj>
     </div>
@@ -26,7 +31,10 @@
       <stjl></stjl>
     </div>
     <div class="detail_right" v-if="activeName == '6'"></div>
-    <div class="detail_right" v-if="activeName == '7'"></div>
+    <div class="detail_right" v-if="activeName == '7'">
+      <xxcj></xxcj>
+    </div>
+
     <div class="detail_right" v-if="activeName == '8'">
       <xnwpxjlVue></xnwpxjlVue>
     </div>
@@ -37,8 +45,11 @@ import xnwpxjlVue from "./detailList/xnwpxjl.vue";
 import stjl from "./detailList/stjl";
 import zyfw from "./detailList/zyfw";
 import shsj from "./detailList/shsj";
+import zgrz from "./detailList/zgrz";
+import xxcj from "./detailList/xxcj";
+import scholarships from "./detailList/scholarships.vue";
 export default {
-  components: { xnwpxjlVue, stjl, zyfw, shsj },
+  components: { xnwpxjlVue, stjl, zyfw, shsj, scholarships, zgrz, xxcj },
   data() {
     return {
       activeName: "0",

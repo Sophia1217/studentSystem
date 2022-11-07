@@ -92,7 +92,7 @@
               <el-button
                 type="text"
                 size="small"
-                @click="bianji(scope)"
+                @click="bianji(scope.row)"
                 v-if="scope.row.status === '01' || scope.row.status === '08'"
               >
                 <i class="scopeIncon Edit"></i>
@@ -349,6 +349,7 @@ export default {
       },
       fileList: [],
       delArr: [],
+      tjArr: [],
       fileListAdd: [],
       ztStatus: [],
       val: [],
@@ -391,14 +392,18 @@ export default {
         if (this.val[i].status !== "01") falg = 2;
       }
       if (falg == 1) {
-        tj(data).then((res) => {
-          if (res.errcode == "00") {
-            this.$message.success("提交成功");
-            this.query();
-          } else {
-            this.$message.error("提交失败");
-          }
-        });
+        if (this.tjArr && this.tjArr.length > 0) {
+          tj(data).then((res) => {
+            if (res.errcode == "00") {
+              this.$message.success("提交成功");
+              this.query();
+            } else {
+              this.$message.error("提交失败");
+            }
+          });
+        } else {
+          this.$message.error("请先勾选数据");
+        }
       } else {
         this.$message.error("存在非草稿状态数据，不可以提交");
       }
@@ -429,6 +434,7 @@ export default {
     handleSelectionChange(val) {
       this.val = val;
       this.delArr = val.map((item) => item.id);
+      this.tjArr = val.map((item) => item.id);
     },
     handlePreview() {
       console.log("yulan");
@@ -457,12 +463,12 @@ export default {
     },
     bianji(row) {
       this.editData = [];
-      row.fileList = row.fileList.map((ele) => {
-        return {
-          name: ele.fileName,
-          ...ele,
-        };
-      });
+      // row.fileList = row.fileList.map((ele) => {
+      //   return {
+      //     name: ele.fileName,
+      //     ...ele,
+      //   };
+      // });
       this.editData.push(row);
       this.editModal = true;
     },

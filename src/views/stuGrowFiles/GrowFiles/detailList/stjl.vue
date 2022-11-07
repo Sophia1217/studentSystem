@@ -12,7 +12,7 @@
           <div class="btns borderGreen" @click="xinzeng">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
-          <div class="btns borderGreen">
+          <div class="btns borderGreen" @click="submit">
             <i class="icon greenIcon"></i><span class="title1">提交</span>
           </div>
         </div>
@@ -72,7 +72,7 @@
               <el-button
                 type="text"
                 size="small"
-                @click="bianji(scope)"
+                @click="bianji(scope.row)"
                 v-if="scope.row.status === '01' || scope.row.status === '08'"
               >
                 <i class="scopeIncon Edit"></i>
@@ -234,6 +234,19 @@
           >
         </span>
       </el-dialog>
+      <el-dialog title="提交" :visible.sync="submitModal" width="30%">
+      <template>
+        <div>
+          <span>确认提交？</span>
+        </div>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="subCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="submitConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
       <pagination
         v-show="queryParams.totalCount > 0"
         :total="queryParams.totalCount"
@@ -245,7 +258,7 @@
   </div>
 </template>
 <script>
-import { edit, del, query } from "@/api/stuDangan/detailList/stjl";
+import { edit, del, query, stjlTj, stjlCx } from "@/api/stuDangan/detailList/stjl";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
 export default {
@@ -254,6 +267,7 @@ export default {
       ztStatus: [],
       addModal: false,
       editModal: false,
+      submitModal: false,
       addData: [],
       editData: [],
       tableDate: [],
@@ -264,6 +278,7 @@ export default {
         xh: "",
       },
       delArr: [],
+      subArr:[],
       val: [],
     };
   },
@@ -305,6 +320,7 @@ export default {
     handleSelectionChange(val) {
       this.val = val;
       this.delArr = val.map((item) => item.id);
+      this.subArr = val.map((item) => item.id);
     },
     bianji(row) {
       this.editData = [];
@@ -315,19 +331,19 @@ export default {
       this.editModal = false;
     },
     editClick() {
-      var data = this.editData[0];
-      var params = {
-        stmc: data.stmc,
-        stlx: data.stlx,
-        gkdwmc: data.gkdwmc,
-        rzzw: data.rzzw,
-        kssj: data.kssj,
-        jssj: data.jssj,
-        zdlsxm: data.zdlsxm,
-        id: data.id,
-        xh: this.$store.getters.userId,
-      };
-      edit(params).then((res) => {
+      let data = this.editData[0];
+      // var params = {
+      //   stmc: data.stmc,
+      //   stlx: data.stlx,
+      //   gkdwmc: data.gkdwmc,
+      //   rzzw: data.rzzw,
+      //   kssj: data.kssj,
+      //   jssj: data.jssj,
+      //   zdlsxm: data.zdlsxm,
+      //   id: data.id,
+      //   xh: this.$store.getters.userId,
+      // };
+      edit(data).then((res) => {
         if (res.errcode == "00") {
           this.$message.success("编辑成功");
           this.query();
@@ -385,6 +401,45 @@ export default {
       };
       this.addData.push(newLine);
       this.addModal = true;
+    },
+    //提交
+    submit() {
+      var falg = 1;
+      for (var i = 0; i < this.val.length; i++) {
+        if (this.val[i].status !== "01") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.subArr && this.subArr.length > 0) {
+          this.submitModal = true;
+          
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("不是草稿状态数据，不可以提交");
+      }
+    },
+    submitConfirm(){
+      var data = this.val;
+      stjlTj(data).then((res) => {
+        console.log(111);
+        this.$message.success("提交成功");
+        this.query();
+        this.addModal = false;
+      });
+    },
+    subCancel(){
+      this.submitModal = false;
+    },
+    chehui(row){
+      stjlCx({ ...row }).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("撤销成功");
+          this.query();
+        } else {
+          this.$message.error("撤销失败");
+        }
+      });
     },
     addCance() {
       this.addModal = false;

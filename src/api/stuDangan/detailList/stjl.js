@@ -23,3 +23,19 @@ export function query(data){
       data: data
     })
   }
+//社团经历提交审核
+export function stjlTj(data){
+  return request({
+    url: 'ClubExprience/StjltjById',
+    method: 'post',
+    data: data
+  })
+}
+//社团经历审核撤销
+export function stjlCx(data){
+  return request({
+    url: '/ClubExprience/StjlcxById',
+    method: 'post',
+    data: data
+  })
+}

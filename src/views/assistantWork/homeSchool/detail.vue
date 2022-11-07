@@ -511,7 +511,7 @@ export default {
             // videoArr.push(`http://172.30.129.27/sfile/${ele.proId}`);
           }
         });
-        this.videoSrc = videoArr.length > 0 ? videoArr[0] : [];
+        this.videoSrc = videoArr.length > 0 ? videoArr[0] : "";
         this.fileList = this.fileList.map((ele) => {
           return {
             name: ele.fileName,

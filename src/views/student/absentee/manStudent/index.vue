@@ -1102,7 +1102,11 @@ export default {
           })
           .catch((err) => {});
       }
-      this.daochuModal = true;
+      if (this.leng > 0) {
+        this.daochuModal = true;
+      } else {
+        this.$message.warning("当前无数据导出");
+      }
     },
     daochu() {
       this.daochuModal = false;

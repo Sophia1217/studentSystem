@@ -612,7 +612,11 @@ export default {
       } else {
         this.len = this.multipleSelection.length;
       }
-      this.showExportA = true;
+      if (this.len > 0) {
+        this.showExportA = true;
+      } else {
+        this.$message.warning("当前无数据导出");
+      }
     },
     expTalk() {
       this.showExportA = false;

@@ -111,12 +111,7 @@
           <el-table-column type="index" label="序号" width="50" />
           <el-table-column prop="gh" label="工号" sortable />
           <el-table-column prop="xm" label="姓名" sortable />
-          <el-table-column prop="lb" label="类别" sortable>
-            <template slot-scope="scope">
-              <span v-if="scope.row.lb == 0">专职</span>
-              <span v-else>兼职</span>
-            </template>
-          </el-table-column>
+          <el-table-column prop="lb" label="类别" sortable> </el-table-column>
           <el-table-column prop="xb" label="性别" sortable>
             <!-- <template slot-scope="scope">
               <span v-if="scope.row.xb == 1">男</span>

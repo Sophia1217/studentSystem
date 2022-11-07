@@ -299,11 +299,23 @@
         </span>
       </el-dialog>
       <el-dialog title="流程图" :visible.sync="lctModal" width="40%">
-        <el-image :src="url"
-          ><div slot="placeholder" class="image-slot">
-            加载中<span class="dot">...</span>
-          </div></el-image
-        >
+        <div>
+          <el-image :src="url"
+            ><div slot="placeholder" class="image-slot">
+              加载中<span class="dot">...</span>
+            </div></el-image
+          >
+          <el-table :data="tableLct">
+            <el-table-column prop="userId" label="操作人" sortable="custom">
+            </el-table-column>
+            <el-table-column prop="opTime" label="操作时间" sortable="custom">
+            </el-table-column>
+            <el-table-column prop="opType" label="操作类型" sortable="custom">
+            </el-table-column>
+            <el-table-column prop="msg" label="审核意见" sortable="custom">
+            </el-table-column>
+          </el-table>
+        </div>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" class="confirm" @click="editClick"
             >确 定</el-button
@@ -328,6 +340,7 @@ import {
   back,
   lct,
   tj,
+  lctTable,
 } from "@/api/stuDangan/detailList/xiaoneiwai";
 import { delwj } from "@/api/assistantWork/classEvent";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
@@ -367,8 +380,13 @@ export default {
       lct({ processInstanceId }).then((res) => {
         this.url = window.URL.createObjectURL(res);
       });
+      lctTable({ processInstanceId }).then((res) => {
+        console.log("res", res);
+        this.tableLct = res.data;
+      });
       this.lctModal = true;
     },
+
     chehui(row) {
       back({ ...row }).then((res) => {
         if (res.errcode == "00") {

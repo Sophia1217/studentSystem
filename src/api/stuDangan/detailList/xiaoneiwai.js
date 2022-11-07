@@ -48,3 +48,11 @@ export function lct(data){
     responseType:'blob'
   })
 }
+
+export function lctTable(data){
+  return request({
+    url: '/flowableCommonController/queryFlowableComment',
+    method: 'get',
+    params: data,
+  })
+}

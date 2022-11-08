@@ -100,7 +100,6 @@
               <el-row :gutter="10" class="mb8" style="float: right">
                 <el-col :span="1.5">
                   <el-button class="export" @click="mbDown">
-                    <!-- <span class="iconfont icon-daochu-06"></span> -->
                     模板下载</el-button
                   >
                 </el-col>

@@ -348,6 +348,7 @@ import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
   data() {
     return {
+      tableLct: [],
       lctModal: false,
       addModal: false,
       editModal: false,
@@ -376,6 +377,8 @@ export default {
 
   methods: {
     lct(row) {
+      this.tableLct = [];
+      this.url = "";
       var processInstanceId = row.processid;
       lct({ processInstanceId }).then((res) => {
         this.url = window.URL.createObjectURL(res);

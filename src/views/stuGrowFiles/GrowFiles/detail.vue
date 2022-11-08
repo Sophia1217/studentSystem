@@ -34,7 +34,6 @@
     <div class="detail_right" v-if="activeName == '7'">
       <xxcj></xxcj>
     </div>
-
     <div class="detail_right" v-if="activeName == '8'">
       <xnwpxjlVue></xnwpxjlVue>
     </div>

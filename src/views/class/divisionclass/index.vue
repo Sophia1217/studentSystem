@@ -80,8 +80,27 @@
     </el-form>
     <div class="table-content">
       <div class="title" icon="el-icon-refresh">
-        <span class="title-itemlll">分班管理列表</span>
+        <span class="title-itemll">分班管理列表</span>
         <span class="iconfont">&#xe631;</span>
+        <el-row :gutter="10" class="mb8" style="float: right">
+          <el-col :span="1.5">
+            <el-button class="export" @click="mbDown"> 模板下载</el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-upload
+              accept=".xlsx,.xls"
+              :auto-upload="true"
+              :action="uploadUrl"
+              :show-file-list="false"
+              :data="fileData"
+              :headers="fileHeader"
+              :on-success="upLoadSuccess"
+              :on-error="upLoadError"
+            >
+              <el-button class="export"> 导入</el-button>
+            </el-upload>
+          </el-col>
+        </el-row>
       </div>
       <!-- v-loading="loading" -->
       <el-table :data="noticeList" @sort-change="changeTableSort">
@@ -181,12 +200,15 @@ import {
   getLevel,
   getGrade,
 } from "@/api/class/maintenanceClass"; // 引入班级列表查询、修改班级名称接口
+import { mbDown } from "@/api/class/divisionClass";
 import { getQueryStuList } from "@/api/class/divisionClass";
+import { getToken } from "@/utils/auth";
 export default {
   name: "divisionClass", //分班管理
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
   data() {
     return {
+      uploadUrl: process.env.VUE_APP_BASE_API + "/class/importExcel", // 上传的图片服务器地址
       // 遮罩层
       // loading: true,
       // 选中数组
@@ -234,6 +256,24 @@ export default {
       fbgl: true,
     };
   },
+  computed: {
+    fileData: {
+      get() {
+        return {
+          classNum: this.$route.query.bjdm,
+        };
+      },
+    },
+    fileHeader: {
+      get() {
+        return {
+          accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
+          uuid: new Date().getTime(),
+          clientId: "111",
+        };
+      },
+    },
+  },
   mounted() {
     this.getList();
     this.getOptions();
@@ -242,6 +282,29 @@ export default {
   },
   activated() {},
   methods: {
+    mbDown() {
+      mbDown().then((res) => this.downloadFn(res, "标准模板下载", "xlsx"));
+    },
+    upLoadSuccess(res, file, fileList) {
+      if (res.errcode == "00") {
+        this.$message({
+          type: "success",
+          message: res.errmsg,
+        });
+      } else {
+        this.$message({
+          type: "error",
+          message: res.errmsg,
+        });
+      }
+    },
+
+    upLoadError(err, file, fileList) {
+      this.$message({
+        type: "error",
+        message: "上传失败",
+      });
+    },
     getData(data) {
       for (var i in data) {
         this.Jr.push(data[i].modId); //将第一层的保存出来，

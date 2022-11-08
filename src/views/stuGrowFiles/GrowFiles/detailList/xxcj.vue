@@ -15,19 +15,20 @@
           @sort-change="changeTableSort"
           :default-sort="{ prop: 'date', order: 'descending' }"
         >
-          <el-table-column type="selection" width="55"></el-table-column>
+          <!-- <el-table-column type="selection" width="55"></el-table-column> -->
           <el-table-column
             type="index"
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="zslx" label="学年"> </el-table-column>
-          <el-table-column prop="cj" label="学期"> </el-table-column>
-          <el-table-column prop="djm" label="课程名称"> </el-table-column>
-          <el-table-column prop="fxlb" label="成绩"> </el-table-column>
-          <el-table-column prop="zsbh" label="学分数"> </el-table-column>
-          <el-table-column prop="fzdw" label="学分绩"> </el-table-column>
-          <el-table-column prop="fzsj" label="学年专业排名"> </el-table-column>
+          <el-table-column prop="xn" label="学年"> </el-table-column>
+          <el-table-column prop="xq" label="学期"> </el-table-column>
+          <el-table-column prop="kcmc" label="课程名称"> </el-table-column>
+          <el-table-column prop="cj" label="成绩"> </el-table-column>
+          <el-table-column prop="xfs" label="学分数"> </el-table-column>
+          <el-table-column prop="xfj" label="学分绩"> </el-table-column>
+          <el-table-column prop="xnzypm" label="学年专业排名">
+          </el-table-column>
         </el-table>
       </div>
       <pagination
@@ -41,6 +42,8 @@
   </div>
 </template>
 <script>
+import { queryAcademicExpList } from "@/api/growFiles/xxcj";
+
 export default {
   data() {
     return {
@@ -65,7 +68,7 @@ export default {
     };
   },
   mounted() {
-    //this.query();
+    this.query();
   },
 
   methods: {
@@ -74,18 +77,18 @@ export default {
         xh: this.$store.getters.userId,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
-        //orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",
-        //orderPx: this.queryParams.orderPx ? this.queryParams.orderPx : "",
+        orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",
+        orderPx: this.queryParams.orderPx ? this.queryParams.orderPx : "",
       };
-      queryZgrzList(data).then((res) => {
+      queryAcademicExpList(data).then((res) => {
         this.tableDate = res.data;
         this.queryParams.totalCount = res.totalCount;
       });
     },
     changeTableSort(column) {
-      // this.queryParams.orderZd = column.prop;
-      // this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
-      // this.query();
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
+      this.query();
     },
     handleSelectionChange(val) {
       // this.val = val;
@@ -108,7 +111,7 @@ export default {
   background: url("~@/assets/images/edit.png");
 }
 .EditDis {
-  background: url("~@/assets/images/icon_edit_white.png");
+  background: url("~@/assets/dangan/editDisable.png") no-repeat;
 }
 .ch {
   background: url("~@/assets/dangan/ch.png");

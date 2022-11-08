@@ -523,7 +523,7 @@ export default {
   background: url("~@/assets/images/edit.png");
 }
 .EditDis {
-  background: url("~@/assets/images/icon_edit_white.png");
+  background: url("~@/assets/dangan/editDisable.png") no-repeat;
 }
 .ch {
   background: url("~@/assets/dangan/ch.png");

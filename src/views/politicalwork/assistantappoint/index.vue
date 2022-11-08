@@ -486,7 +486,7 @@ export default {
     //获取数据列表
     getList() {
       // console.log(this.select, "select");
-      this.queryParams.xh = this.select == 1 ? this.searchVal : "";
+      this.queryParams.gh = this.select == 1 ? this.searchVal : "";
       this.queryParams.xm = this.select == 2 ? this.searchVal : "";
       fdyList(this.queryParams)
         .then((response) => {
@@ -621,11 +621,12 @@ export default {
     handleConfirm() {
       this.showExport = false;
       var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
-      var data = { ghList: arr };
+
       var exportParams = this.queryParams;
       exportParams.pageSize = 0;
-      Object.assign(data, this.exportParams);
-      outAssistant(data)
+      this.$set(exportParams, "ghList", arr);
+
+      outAssistant(exportParams)
         .then((res) => this.downloadFn(res, "辅导员任命导出", "xlsx"))
         .catch((err) => {});
     },

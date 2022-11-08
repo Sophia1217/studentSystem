@@ -462,14 +462,9 @@ export default {
     // 查询
     handleSearch() {
       this.queryParams.pageNum = 1;
-      if (this.select == "xm") {
-        this.queryParams.xm = this.searchVal;
-      } else if (this.select == "gh") {
-        this.queryParams.gh = this.searchVal;
-      }
+      this.queryParams.xm = this.select == "xm" ? this.searchVal : "";
+      this.queryParams.gh = this.select == "gh" ? this.searchVal : "";
       this.getList();
-      this.queryParams.xm = "";
-      this.queryParams.gh = "";
     },
     // 点击更多
     handleMore() {
@@ -550,11 +545,11 @@ export default {
     handleConfirm() {
       this.showExport = false;
       var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
-      var data = { ghList: arr };
+
       var exportParams = this.queryParams;
       exportParams.pageSize = 0;
-      Object.assign(data, this.exportParams);
-      exportTeacher(data)
+      this.$set(exportParams, "ghList", arr);
+      exportTeacher(exportParams)
         .then((res) => this.downloadFn(res, "班主任任命表", "xlsx"))
         .catch((err) => {});
     },

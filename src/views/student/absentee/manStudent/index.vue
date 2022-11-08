@@ -723,6 +723,7 @@ export default {
           type: "success",
           message: res.errmsg,
         });
+        this.handleSearch();
       } else {
         this.$message({
           type: "error",

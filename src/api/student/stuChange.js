@@ -48,6 +48,7 @@ export function downLoad(data) {
   return request({
     url: '/StuStatusChange/downLoad',
     method: 'post',
+    responseType: 'blob',
     data: data
   })
 }
@@ -56,6 +57,9 @@ export function importXjyd(data) {
   return request({
     url: '/StuStatusChange/importXjyd',
     method: 'post',
+    headers: {
+      "Content-Type": "multipart/form-data;charset=utf-8"
+    },
     data: data
   })
 }

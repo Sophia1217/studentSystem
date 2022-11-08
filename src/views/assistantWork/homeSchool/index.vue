@@ -226,7 +226,7 @@ export default {
       list: [],
       datePicker: [],//日期
       jfxsOps:[
-        {label:"线下实地"},
+        {label:"线下走访"},
         {label:"线上视频"}
       ],
       exportParams: {},//导出数据

@@ -17,8 +17,6 @@
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
-            <el-option label="审核人" value="lxdh"></el-option>
-            <el-option label="工号" value="lxdh"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
             >查询</el-button
@@ -107,22 +105,34 @@
           <el-col :span="1.5">审核结果：</el-col>
           <el-col :span="20">
             <el-select
-                v-model="moreIform.xzlx"
+                v-model="moreIform.status"
                 multiple
                 collapse-tags
                 placeholder="请选择"
                 size="small"
               >
                 <el-option
-                  v-for="item in allDwh"
+                  v-for="item in spjgOps"
                   :key="item.dm"
                   :label="item.mc"
-                  :value="item.mc"
+                  :value="item.dm"
                 ></el-option>
               </el-select>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
+          <el-col :span="3">培养层次：</el-col>
+          <el-col :span="20">
+            <div class="checkbox">
+              <checkboxCom
+                :objProp="training"
+                @training="handleCheckAllChangeTraining"
+                @checkedTraining="handleCheckedCitiesChangeTraining"
+              ></checkboxCom>
+            </div>
+          </el-col>
+        </el-row>
+        <!-- <el-row :gutter="20" class="mt15">
           <el-col :span="2">处理日期：</el-col>
           <el-col :span="20">
             <div class="checkbox">
@@ -139,7 +149,7 @@
               </el-date-picker>
             </div>
           </el-col>
-        </el-row>
+        </el-row> -->
       </div>
     </div>
     <!-- table -->
@@ -188,17 +198,17 @@
           </el-table-column>
           <el-table-column prop="xzmc" label="培养单位" sortable="custom">
           </el-table-column>
-          <el-table-column prop="bdh" label="培养层次" sortable="custom">
+          <el-table-column prop="pyccmmc" label="培养层次" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xzlx" label="专业" sortable="custom">
+          <el-table-column prop="zydmmc" label="专业" sortable="custom">
           </el-table-column>
-          <el-table-column prop="cbgs" label="班级" sortable="custom">
+          <el-table-column prop="bjmmc" label="班级" sortable="custom">
           </el-table-column
-          ><el-table-column prop="lxr" label="所属模块" sortable="custom">
+          ><el-table-column prop="mk" label="所属模块" sortable="custom">
           </el-table-column
-          ><el-table-column prop="gmsj" label="审核结果" sortable="custom">
+          ><el-table-column prop="status" label="审核结果" sortable="custom">
           </el-table-column
-          ><el-table-column prop="gmsj" label="审核进度" sortable="custom">
+          ><el-table-column prop="mk" label="审核进度" sortable="custom">
           </el-table-column>
 
           <el-table-column fixed="right" label="操作" width="140">
@@ -233,6 +243,7 @@ import {
   queryYshList,
 } from "@/api/growFiles/infoAppr";
 import { getCollege } from "@/api/class/maintenanceClass";
+import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getZY, getBJ } from "@/api/student/index";
 export default {
   name: "manStudent",
@@ -261,6 +272,7 @@ export default {
       allDwh: [],// 学院下拉框
       zyOps: [], // 专业下拉
       bjOps: [], // 班级下拉
+      spjgOps: [],//审批结果下拉
       mkOps:[
         {mc:"奖学金"},
         {mc:"社会实践"},
@@ -275,6 +287,13 @@ export default {
         pageSize: 10,
         total: 0,
       },
+      training: {
+        // 培养层次
+        checkAll: false,
+        choose: [],
+        checkBox: [],
+        isIndeterminate: true,
+      },
       datePicker: [],
       multipleSelection: [],
     };
@@ -283,6 +302,8 @@ export default {
   mounted() {
     this.handleSearch();
     this.getAllCollege();
+    this.getCode("dmpyccm"); // 培养层次
+    this.getCode("dmsplcm"); // 审核结果
     
   },
 
@@ -408,7 +429,8 @@ export default {
         zydm: this.moreIform.zydm || [],
         bjm: this.moreIform.bjm || [],
         mk: this.moreIform.mk || [],
-        pyccm: [],
+        status: this.moreIform.status || [],
+        pyccm: this.training.choose || [],
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
@@ -425,14 +447,7 @@ export default {
     handleMore() {
       this.isMore = !this.isMore;
     },
-    //获取审批结果
-    getCode(val) {
-      const data = { codeTableEnglish: val };
-      getCodeInfoByEnglish(data).then((res) => {
-        this.ztStatus = res.data;
-      });
-    },
-
+    //获取
     getCode(data) {
       this.getCodeInfoByEnglish(data);
     },
@@ -441,12 +456,31 @@ export default {
       getCodeInfoByEnglish(data)
         .then((res) => {
           switch (paramsData) {
-            case "dmsplcm":
+            case "dmpyccm":
               this.$set(this.training, "checkBox", res.data);
+              break;
+            case "dmsplcm"://审批结果
+              this.spjgOps = res.data;
               break;
           }
         })
         .catch((err) => {});
+    },
+    // 培养层次全选
+    handleCheckAllChangeTraining(val) {
+      let allCheck = [];
+      for (let i in this.training.checkBox) {
+        allCheck.push(this.training.checkBox[i].dm);
+      }
+      this.training.choose = val ? allCheck : [];
+      this.training.isIndeterminate = false;
+    },
+    // 培养层次单选
+    handleCheckedCitiesChangeTraining(value) {
+      let checkedCount = value.length;
+      this.training.checkAll = checkedCount === this.training.checkBox.length;
+      this.training.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.training.checkBox.length;
     },
     // 多选
     handleSelectionChange(val) {

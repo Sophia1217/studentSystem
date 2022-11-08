@@ -3,7 +3,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">社团经历</span> <i class="Updataicon"></i>
+          <span class="title">社会实践</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
           <div class="btns borderLight" @click="del">
@@ -12,7 +12,7 @@
           <div class="btns borderGreen" @click="xinzeng">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
-          <div class="btns borderGreen">
+          <div class="btns borderGreen" @click="submit">
             <i class="icon greenIcon"></i><span class="title1">提交</span>
           </div>
         </div>
@@ -32,19 +32,23 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="stmc" label="社团名称" sortable="custom">
+          <el-table-column prop="xmmc" label="项目名称" sortable="custom">
           </el-table-column>
-          <el-table-column prop="stlx" label="社团类型" sortable="custom">
+          <el-table-column prop="zzdw" label="组织单位" sortable="custom">
           </el-table-column>
-          <el-table-column prop="gkdwmc" label="挂靠单位" sortable="custom">
+          <el-table-column prop="djm" label="等级" sortable="custom">
           </el-table-column>
-          <el-table-column prop="rzzw" label="任职职务" sortable="custom">
+          <el-table-column prop="lx" label="类型" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="sjdd" label="实践地点" sortable="custom">
           </el-table-column>
           <el-table-column prop="kssj" label="开始时间" sortable="custom">
           </el-table-column>
           <el-table-column prop="jssj" label="结束时间" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zdlsxm" label="指导老师" sortable="custom">
+          <el-table-column prop="zmr" label="证明人" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="lxfs" label="联系方式" sortable="custom">
           </el-table-column>
           <el-table-column prop="status" label="审核状态" sortable="custom">
             <template slot-scope="scope">
@@ -72,7 +76,7 @@
               <el-button
                 type="text"
                 size="small"
-                @click="bianji(scope)"
+                @click="bianji(scope.row)"
                 v-if="scope.row.status === '01' || scope.row.status === '08'"
               >
                 <i class="scopeIncon Edit"></i>
@@ -118,24 +122,29 @@
       </div>
       <el-dialog title="新增" :visible.sync="addModal" width="80%">
         <el-table :data="addData">
-          <el-table-column label="社团名称" align="center">
+          <el-table-column label="项目名称" align="center">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.stmc" />
+              <el-input v-model="scope.row.xmmc" />
             </template>
           </el-table-column>
-          <el-table-column label="社团类型" align="center">
+          <el-table-column label="组织单位" align="center">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.stlx" />
+              <el-input v-model="scope.row.zzdw" />
             </template>
           </el-table-column>
-          <el-table-column label="挂靠单位" width="240px">
+          <el-table-column label="等级" width="150px" align="center">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.gkdwmc" />
+              <el-input v-model="scope.row.djm" />
             </template>
           </el-table-column>
-          <el-table-column label="任职职务" width="240px">
+          <el-table-column label="类型" width="150px" align="center">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.rzzw" />
+              <el-input v-model="scope.row.lx" />
+            </template>
+          </el-table-column>
+          <el-table-column label="实践地点" width="150px" align="center">
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.sjdd" />
             </template>
           </el-table-column>
           <el-table-column label="开始时间" align="center">
@@ -162,9 +171,14 @@
               </el-date-picker>
             </template>
           </el-table-column>
-          <el-table-column label="指导老师" align="center">
+          <el-table-column label="证明人" width="120px">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.zdlsxm" />
+              <el-input v-model="scope.row.zmr" />
+            </template>
+          </el-table-column>
+          <el-table-column label="联系方式" align="center">
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.lxfs" />
             </template>
           </el-table-column>
         </el-table>
@@ -177,24 +191,29 @@
       </el-dialog>
       <el-dialog title="编辑" :visible.sync="editModal" width="80%">
         <el-table :data="editData">
-          <el-table-column label="社团名称" align="center">
+          <el-table-column label="项目名称" align="center">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.stmc" />
+              <el-input v-model="scope.row.xmmc" />
             </template>
           </el-table-column>
-          <el-table-column label="社团类型" align="center">
+          <el-table-column label="组织单位" align="center">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.stlx" />
+              <el-input v-model="scope.row.zzdw" />
             </template>
           </el-table-column>
-          <el-table-column label="挂靠单位" width="240px">
+          <el-table-column label="等级" width="150px" align="center">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.gkdwmc" />
+              <el-input v-model="scope.row.djm" />
             </template>
           </el-table-column>
-          <el-table-column label="任职职务" width="240px">
+          <el-table-column label="类型" width="150px" align="center">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.rzzw" />
+              <el-input v-model="scope.row.lx" />
+            </template>
+          </el-table-column>
+          <el-table-column label="实践地点" width="150px" align="center">
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.sjdd" />
             </template>
           </el-table-column>
           <el-table-column label="开始时间" align="center">
@@ -221,15 +240,33 @@
               </el-date-picker>
             </template>
           </el-table-column>
-          <el-table-column label="指导老师" align="center">
+          <el-table-column label="证明人" width="120px">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.zdlsxm" />
+              <el-input v-model="scope.row.zmr" />
+            </template>
+          </el-table-column>
+          <el-table-column label="联系方式" align="center">
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.lxfs" />
             </template>
           </el-table-column>
         </el-table>
         <span slot="footer" class="dialog-footer">
           <el-button @click="editCance">取 消</el-button>
           <el-button type="primary" class="confirm" @click="editClick"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
+      <el-dialog title="提交" :visible.sync="submitModal" width="30%">
+        <template>
+          <div>
+            <span>确认提交？</span>
+          </div>
+        </template>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="subCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="submitConfirm"
             >确 定</el-button
           >
         </span>
@@ -245,7 +282,7 @@
   </div>
 </template>
 <script>
-import { edit, del, query } from "@/api/stuDangan/detailList/stjl";
+import { edit, del, query, tj, back } from "@/api/stuDangan/detailList/shsj";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
 export default {
@@ -254,6 +291,7 @@ export default {
       ztStatus: [],
       addModal: false,
       editModal: false,
+      submitModal: false,
       addData: [],
       editData: [],
       tableDate: [],
@@ -264,6 +302,7 @@ export default {
         xh: "",
       },
       delArr: [],
+      subArr: [],
       val: [],
     };
   },
@@ -305,6 +344,7 @@ export default {
     handleSelectionChange(val) {
       this.val = val;
       this.delArr = val.map((item) => item.id);
+      this.subArr = val.map((item) => item.id);
     },
     bianji(row) {
       this.editData = [];
@@ -315,19 +355,8 @@ export default {
       this.editModal = false;
     },
     editClick() {
-      var data = this.editData[0];
-      var params = {
-        stmc: data.stmc,
-        stlx: data.stlx,
-        gkdwmc: data.gkdwmc,
-        rzzw: data.rzzw,
-        kssj: data.kssj,
-        jssj: data.jssj,
-        zdlsxm: data.zdlsxm,
-        id: data.id,
-        xh: this.$store.getters.userId,
-      };
-      edit(params).then((res) => {
+      let data = this.editData[0];
+      edit(data).then((res) => {
         if (res.errcode == "00") {
           this.$message.success("编辑成功");
           this.query();
@@ -340,13 +369,15 @@ export default {
     addClick() {
       var data = this.addData[0];
       var params = {
-        stmc: data.stmc,
-        stlx: data.stlx,
-        gkdwmc: data.gkdwmc,
-        rzzw: data.rzzw,
+        xmmc: data.xmmc,
+        zzdw: data.zzdw,
+        djm: data.djm,
+        lx: data.lx,
+        sjdd: data.sjdd,
         kssj: data.kssj,
         jssj: data.jssj,
-        zdlsxm: data.zdlsxm,
+        zmr: data.zmr,
+        lxfs: data.lxfs,
         xh: this.$store.getters.userId,
       };
       edit(params).then((res) => {
@@ -375,16 +406,56 @@ export default {
     xinzeng() {
       this.addData = []; // 每次打开弹框先将弹框的table数组置空
       var newLine = {
-        stmc: "",
-        stlx: "",
-        gkdwmc: "",
-        rzzw: "",
+        xmmc: "",
+        zzdw: "",
+        djm: "",
+        lx: "",
         kssj: "",
+        sjdd: "",
         jssj: "",
-        zdlsxm: "",
+        zmr: "",
+        lxfs: "",
       };
       this.addData.push(newLine);
       this.addModal = true;
+    },
+    //提交
+    submit() {
+      var falg = 1;
+      for (var i = 0; i < this.val.length; i++) {
+        if (this.val[i].status !== "01") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.subArr && this.subArr.length > 0) {
+          this.submitModal = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("不是草稿状态数据，不可以提交");
+      }
+    },
+    submitConfirm() {
+      var data = this.val;
+      tj(data).then((res) => {
+        console.log(111);
+        this.$message.success("提交成功");
+        this.query();
+        this.submitModal = false;
+      });
+    },
+    subCancel() {
+      this.submitModal = false;
+    },
+    chehui(row) {
+      back({ ...row }).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("撤销成功");
+          this.query();
+        } else {
+          this.$message.error("撤销失败");
+        }
+      });
     },
     addCance() {
       this.addModal = false;

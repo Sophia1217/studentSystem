@@ -574,8 +574,6 @@ export default {
           list.push(this.stuDate[i].xm);
           list2.push(this.stuDate[i].xh);
         }
-        console.log("list", list);
-        console.log("list2", list2);
         var data = {
           thdd: this.addressValue,
           thnr: this.textarea1,

@@ -32,6 +32,7 @@
           <el-col :span="1.5">
             <el-form-item label="保险信息"> </el-form-item>
           </el-col>
+
           <el-col :span="4">
             <el-form-item label="名称">
               <el-input
@@ -41,7 +42,7 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="3.5">
+          <el-col :span="3">
             <el-form-item label="类型">
               <el-input
                 placeholder="请输入"
@@ -54,17 +55,18 @@
             <el-form-item label="保险单号">
               <el-input
                 placeholder="请输入"
+                :disabled="edit == '1' ? true : false"
                 v-model="form.bdh"
-                :disabled="true"
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="3.5">
-            <el-form-item label="时间">
+            <el-form-item label="购买时间">
               <el-date-picker
                 v-model="form.createTime"
-                :disabled="true"
-                format="yyyy 年 MM 月 dd 日"
+                :disabled="edit == '1' ? true : false"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
                 type="date"
                 placeholder="选择日期"
               >
@@ -72,35 +74,36 @@
             </el-form-item>
           </el-col>
           <el-col :span="3.5">
-            <el-form-item label="至">
-              <el-date-picker
-                v-model="form.updateTime"
-                :disabled="true"
-                format="yyyy 年 MM 月 dd 日"
-                type="date"
-                placeholder="选择日期"
+            <el-form-item label="年限">
+              <el-input
+                placeholder="请输入"
+                :disabled="edit == '1' ? true : false"
+                v-model="form.gmnx"
               >
-              </el-date-picker>
+                <template slot="append">年</template></el-input
+              >
             </el-form-item>
           </el-col>
-          <el-col :span="3.5">
+          <el-col :span="3.5" style="margin-left: 100px">
             <el-form-item label="金额">
               <el-input
                 placeholder="请输入"
+                :disabled="edit == '1' ? true : false"
                 v-model="form.je"
-                :disabled="true"
-              ></el-input>
+              >
+                <template slot="append">元</template></el-input
+              >
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
     </div>
     <div class="permissions">
-      <div>
+      <el-form ref="formTop" label-width="80px">
         <div>
-          <span class="title">保险内容</span>
-        </div>
-        <el-form>
+          <div>
+            <span class="title">保险内容</span>
+          </div>
           <el-row :gutter="20">
             <el-col :span="5">
               <el-form-item label="承保公司">
@@ -143,8 +146,8 @@
             >
             </el-upload>
           </el-form-item>
-        </el-form>
-      </div>
+        </div>
+      </el-form>
 
       <div class="headLeft">
         <el-upload
@@ -159,6 +162,11 @@
         >
           <el-button class="export"> 更新</el-button>
         </el-upload>
+        <el-button class="export" v-if="edit == '1'" @click="editDetail">
+          编辑</el-button
+        >
+        <el-button v-if="edit == '2'" @click="baocun"> 保存</el-button>
+        <el-button v-if="edit == '2'" @click="cancel"> 取消</el-button>
       </div>
     </div>
   </div>
@@ -166,12 +174,13 @@
 
 <script>
 import { getToken } from "@/utils/auth";
-import { queryList } from "@/api/assistantWork/baoxian";
+import { queryList, updateXpx } from "@/api/assistantWork/baoxian";
 import { querywj, Exportwj } from "@/api/assistantWork/classEvent";
 
 export default {
   data() {
     return {
+      edit: "1",
       uploadUrl: process.env.VUE_APP_BASE_API + "/fdyXpx/importAppend",
       fileList: [],
       form: {
@@ -192,12 +201,33 @@ export default {
     this.getDatail();
   },
   methods: {
+    baocun() {
+      const { bdh, gmnx, gmsj, je } = this.form;
+      var data = {
+        bdh: bdh,
+        gmsj: gmsj,
+        je: je,
+        id: this.$route.query.id,
+        gmnx: gmnx,
+      };
+      updateXpx(data).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("保存成功");
+          window.history.go(-1);
+        }
+      });
+    },
+    editDetail() {
+      this.edit = 2; //1是详情 二是编辑
+    },
+    cancel() {
+      this.edit = 1; //1是详情 二是编辑
+    },
     getDatail() {
       queryList({ id: this.$route.query.id })
         .then((res) => {
           this.form = res.data[0];
-          this.form.je = res.data[0].je + "元";
-          console.log(this.form, "this.form");
+          // this.form.je = res.data[0].je + "元";
         })
         .catch((err) => {});
     },
@@ -451,6 +481,12 @@ export default {
       padding: 10px;
       margin-left: 15px;
     }
+  }
+  ::v-deep .el-button--medium {
+    margin-left: 11px;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 4px;
   }
   ::v-deep .el-upload-dragger {
     background-color: #fff;

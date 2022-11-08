@@ -55,6 +55,15 @@ import request from "@/utils/request.js"
     })
   }
 
+  //学平险详情修改
+  export function updateXpx(query) {
+    return request({
+        url: '/fdyXpx/updateXpxInfo',
+        method: 'post',
+        data: query,
+    })
+  }
+
   export function updateXzxx(query) {
     return request({
         url: '/fdyXpx/updateXzxx',

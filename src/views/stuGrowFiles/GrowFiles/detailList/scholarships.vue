@@ -318,6 +318,8 @@ import {
   deleteJxj,
   queryJxjList,
   updateJxj,
+  commitJxj,
+  RollBackJxj,
 } from "@/api/growFiles/scholarships";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
@@ -382,7 +384,7 @@ export default {
       this.lctModal = true;
     },
     chehui(row) {
-      back({ ...row }).then((res) => {
+      RollBackJxj({ ...row }).then((res) => {
         if (res.errcode == "00") {
           this.$message.success("撤销成功");
           this.getinList();
@@ -393,7 +395,7 @@ export default {
     },
     tj() {
       var data = this.val;
-      updateJxj(data).then((res) => {
+      commitJxj(data).then((res) => {
         if (res.errcode == "00") {
           this.$message.success("提交成功");
           this.getinList();
@@ -477,7 +479,7 @@ export default {
     },
     addClick() {
       let data = {
-        jxjmc: this.addData[0].jxjlxm,
+        jxjmc: this.addData[0].jxjmc,
         hjsj: this.addData[0].hjsj,
         djm: this.addData[0].djm,
         jbm: this.addData[0].jbm,

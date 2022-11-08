@@ -32,3 +32,22 @@ export function deleteJxj(query) {
       data: query
     })
   }
+  //
+//奖学金提交审核
+export function commitJxj(query) {
+  return request({
+    url: '/jxj/commitJxj',
+    method: 'post',
+    data: query
+  })
+}
+//
+
+//奖学金审核撤销
+export function RollBackJxj(query) {
+  return request({
+    url: '/jxj/RollBackJxj',
+    method: 'post',
+    data: query
+  })
+}

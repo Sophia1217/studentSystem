@@ -298,7 +298,11 @@
             width="50"
           ></el-table-column>
           <div v-for="(item, index) in tableHeader" :key="index">
-            <el-table-column :prop="item.dm" :label="item.mc"></el-table-column>
+            <el-table-column
+              :prop="item.dm"
+              :label="item.mc"
+              sortable="custom"
+            ></el-table-column>
           </div>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
@@ -517,8 +521,8 @@ export default {
         { dm: "zydmc", mc: "专业" },
         { dm: "xxxs", mc: "学制" },
         { dm: "nj", mc: "年级" },
-        { dm: "xz", mc: "培养层次" },
-        { dm: "xxxs", mc: "学制(年)" },
+        { dm: "pyccmc", mc: "培养层次" },
+        { dm: "xz", mc: "学制(年)" },
         { dm: "xjztmc", mc: "学籍状态" },
       ],
       dynamicsCheckboxs: {

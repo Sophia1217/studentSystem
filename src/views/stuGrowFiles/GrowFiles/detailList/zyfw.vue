@@ -258,13 +258,7 @@
   </div>
 </template>
 <script>
-import {
-  edit,
-  del,
-  query,
-  stjlTj,
-  stjlCx,
-} from "@/api/stuDangan/detailList/zyfw";
+import { edit, del, query, tj, back } from "@/api/stuDangan/detailList/zyfw";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
 export default {
@@ -415,18 +409,18 @@ export default {
     },
     submitConfirm() {
       var data = this.val;
-      stjlTj(data).then((res) => {
+      tj(data).then((res) => {
         console.log(111);
         this.$message.success("提交成功");
         this.query();
-        this.addModal = false;
+        this.submitModal = false;
       });
     },
     subCancel() {
       this.submitModal = false;
     },
     chehui(row) {
-      stjlCx({ ...row }).then((res) => {
+      back({ ...row }).then((res) => {
         if (res.errcode == "00") {
           this.$message.success("撤销成功");
           this.query();

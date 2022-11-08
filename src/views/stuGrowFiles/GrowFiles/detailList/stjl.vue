@@ -235,18 +235,18 @@
         </span>
       </el-dialog>
       <el-dialog title="提交" :visible.sync="submitModal" width="30%">
-      <template>
-        <div>
-          <span>确认提交？</span>
-        </div>
-      </template>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="subCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="submitConfirm"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
+        <template>
+          <div>
+            <span>确认提交？</span>
+          </div>
+        </template>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="subCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="submitConfirm"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
       <pagination
         v-show="queryParams.totalCount > 0"
         :total="queryParams.totalCount"
@@ -258,7 +258,13 @@
   </div>
 </template>
 <script>
-import { edit, del, query, stjlTj, stjlCx } from "@/api/stuDangan/detailList/stjl";
+import {
+  edit,
+  del,
+  query,
+  stjlTj,
+  stjlCx,
+} from "@/api/stuDangan/detailList/stjl";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
 export default {
@@ -278,7 +284,7 @@ export default {
         xh: "",
       },
       delArr: [],
-      subArr:[],
+      subArr: [],
       val: [],
     };
   },
@@ -411,7 +417,6 @@ export default {
       if (falg == 1) {
         if (this.subArr && this.subArr.length > 0) {
           this.submitModal = true;
-          
         } else {
           this.$message.error("请先勾选数据");
         }
@@ -419,19 +424,19 @@ export default {
         this.$message.error("不是草稿状态数据，不可以提交");
       }
     },
-    submitConfirm(){
+    submitConfirm() {
       var data = this.val;
       stjlTj(data).then((res) => {
         console.log(111);
         this.$message.success("提交成功");
         this.query();
-        this.addModal = false;
+        this.submitModal = false;
       });
     },
-    subCancel(){
+    subCancel() {
       this.submitModal = false;
     },
-    chehui(row){
+    chehui(row) {
       stjlCx({ ...row }).then((res) => {
         if (res.errcode == "00") {
           this.$message.success("撤销成功");

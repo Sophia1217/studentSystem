@@ -368,6 +368,7 @@ export default {
       ztStatus: [],
       val: [],
       url: "",
+      tableLct:[],
     };
   },
   mounted() {

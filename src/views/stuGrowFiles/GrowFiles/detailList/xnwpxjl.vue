@@ -430,6 +430,15 @@
         @pagination="query"
       />
     </div>
+    <el-dialog title="删除" :visible.sync="delModal" width="20%">
+      <span>确认删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="del()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -452,6 +461,7 @@ export default {
       lctModal: false,
       addModal: false,
       editModal: false,
+      delModal: false,
       formAdd: { addData: [] },
       formEdit: { editData: [] },
       tableDate: [],
@@ -613,6 +623,7 @@ export default {
       } else {
         this.$message.error("存在草稿状态数据，不可以删除");
       }
+      this.delModal = false;
     },
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
@@ -759,6 +770,12 @@ export default {
     },
     addCance() {
       this.addModal = false;
+    },
+    delCancel() {
+      this.delModal = false;
+    },
+    showDel() {
+      this.delModal = true;
     },
   },
 };

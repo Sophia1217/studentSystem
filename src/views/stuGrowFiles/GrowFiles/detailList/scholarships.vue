@@ -568,6 +568,7 @@ export default {
       } else {
         this.$message.error("请先勾选数据");
       }
+      this.delModal = false;
     },
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
@@ -658,7 +659,6 @@ export default {
     },
     showDel() {
       this.delModal = true;
-      console.log("yyyy");
     },
   },
 };

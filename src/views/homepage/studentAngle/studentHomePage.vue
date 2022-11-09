@@ -254,11 +254,6 @@ export default {
     stuInfoClick() {
       this.$router.push({
         path: "/student/studetails",
-        // query: {
-        //   xh: '2008121491',
-        //   show: '2',
-        //   schooling:'2'
-        // }
       });
     },
   },

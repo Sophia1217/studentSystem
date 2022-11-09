@@ -40,13 +40,13 @@
   </div>
 </template>
 <script>
-import xnwpxjlVue from "./detailList/xnwpxjl.vue";
-import stjl from "./detailList/stjl";
-import zyfw from "./detailList/zyfw";
-import shsj from "./detailList/shsj";
-import zgrz from "./detailList/zgrz";
-import xxcj from "./detailList/xxcj";
-import scholarships from "./detailList/scholarships.vue";
+import xnwpxjlVue from "./tchDetailList/xnwpxjl.vue";
+import stjl from "./tchDetailList/stjl";
+import zyfw from "./tchDetailList/zyfw";
+import shsj from "./tchDetailList/shsj";
+import zgrz from "./tchDetailList/zgrz";
+import xxcj from "./tchDetailList/xxcj";
+import scholarships from "./tchDetailList/scholarships.vue";
 export default {
   components: { xnwpxjlVue, stjl, zyfw, shsj, scholarships, zgrz, xxcj },
   data() {
@@ -120,53 +120,6 @@ export default {
           height: 15px;
           background: url("~@/assets/images/addicon.png") no-repeat center;
           vertical-align: middle;
-        }
-      }
-    }
-    .tableStyle {
-      position: relative;
-      padding: 20px;
-      .imgWrap {
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        z-index: 100;
-        .photo {
-          width: 160px;
-          height: 206px;
-          background: #fff;
-          overflow: hidden;
-          img {
-            width: 160px;
-            height: 206px;
-          }
-        }
-      }
-      .information {
-        padding: 0 20px;
-        .rowStyle {
-          padding: 0 !important;
-          margin: 0;
-          border-bottom: 1px solid #cccccc;
-        }
-        .wrap {
-          display: flex;
-          align-items: center;
-          .title {
-            flex: 0 0 160px;
-            line-height: 48px;
-            background: #e0e0e0;
-            text-align: right;
-            padding-right: 5px;
-            margin: 0 !important;
-          }
-          .content {
-            font-weight: 400;
-            font-size: 14px;
-            color: #1f1f1f;
-            line-height: 22px;
-            margin-left: 16px;
-          }
         }
       }
     }

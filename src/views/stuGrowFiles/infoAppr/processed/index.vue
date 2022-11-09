@@ -34,71 +34,71 @@
           <el-col :span="6">
             <span>培养单位：</span>
             <el-select
-                v-model="moreIform.dwh"
-                multiple
-                collapse-tags
-                @change="changeXY"
-                placeholder="请选择"
-                size="small"
-              >
-                <el-option
-                  v-for="item in allDwh"
-                  :key="item.dm"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select>
+              v-model="moreIform.dwh"
+              multiple
+              collapse-tags
+              @change="changeXY"
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in allDwh"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
           </el-col>
           <el-col :span="6">
             <span>专业：</span>
             <el-select
-                v-model="moreIform.zydm	"
-                multiple
-                collapse-tags
-                placeholder="请选择"
-                size="small"
-              >
-                <el-option
-                  v-for="item in zyOps"
-                  :key="item.dm"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select>
+              v-model="moreIform.zydm"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in zyOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
           </el-col>
           <el-col :span="6">
             <span>班级：</span>
             <el-select
-                v-model="moreIform.bjm"
-                multiple
-                collapse-tags
-                placeholder="请选择"
-                size="small"
-              >
-                <el-option
-                  v-for="item in bjOps"
-                  :key="item.dm"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select>
+              v-model="moreIform.bjm"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in bjOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
           </el-col>
           <el-col :span="6">
             <span>所属模块：</span>
             <el-select
-                v-model="moreIform.mk"
-                multiple
-                collapse-tags
-                placeholder="请选择"
-                size="small"
-              >
-                <el-option
-                  v-for="item in mkOps"
-                  :key="item.mc"
-                  :label="item.mc"
-                  :value="item.mc"
-                ></el-option>
-              </el-select>
+              v-model="moreIform.mk"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in mkOps"
+                :key="item.mc"
+                :label="item.mc"
+                :value="item.mc"
+              ></el-option>
+            </el-select>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
@@ -113,24 +113,6 @@
             </div>
           </el-col>
         </el-row>
-        <!-- <el-row :gutter="20" class="mt15">
-          <el-col :span="3">申报日期：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <el-date-picker
-                v-model="datePicker"
-                unlink-panels
-                type="daterange"
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyyMMdd"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-              >
-              </el-date-picker>
-            </div>
-          </el-col>
-        </el-row> -->
       </div>
     </div>
     <!-- table -->
@@ -140,10 +122,9 @@
           <span class="title">待审核列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          
-          <div class="btns borderOrange" @click="expor">
+          <!-- <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
-          </div>
+          </div> -->
           <div class="btns borderRed" @click="back">
             <i class="icon orangeIcon"></i><span class="title">退回</span>
           </div>
@@ -153,7 +134,6 @@
           <div class="btns fullGreen" @click="pass">
             <i class="icon orangeIcon"></i><span class="title1">通过</span>
           </div>
-          
         </div>
       </div>
       <div class="mt15">
@@ -185,7 +165,11 @@
           </el-table-column
           ><el-table-column prop="mk" label="所属模块" sortable="custom">
           </el-table-column
-          ><el-table-column prop="createTime" label="申报日期" sortable="custom">
+          ><el-table-column
+            prop="createTime"
+            label="申报日期"
+            sortable="custom"
+          >
           </el-table-column>
 
           <el-table-column fixed="right" label="操作" width="140">
@@ -202,6 +186,64 @@
           </el-table-column>
         </el-table>
       </div>
+      <el-dialog title="拒绝理由" :visible.sync="jjModal" width="30%">
+        <template>
+          <el-input placeholder="请输入拒绝理由" v-model="jjly"></el-input>
+        </template>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="jjCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="jjConfirm"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
+      <el-dialog title="退回选择" :visible.sync="thTableModal" width="30%">
+        <template>
+          <el-table
+            :data="tableInner"
+            ref="multipleTable1"
+            style="width: 100%"
+            :default-sort="{ prop: 'date', order: 'descending' }"
+          >
+            <el-table-column width="55">
+              <template slot-scope="scope">
+                <el-radio
+                  :label="scope.$index"
+                  v-model="tempRadio"
+                  @change.native="getRow(scope.$index, scope.row)"
+                  >{{ "" }}</el-radio
+                >
+              </template>
+            </el-table-column>
+            <el-table-column
+              type="index"
+              label="序号"
+              width="50"
+            ></el-table-column>
+            <el-table-column prop="actId" label="节点Id" sortable="custom">
+            </el-table-column>
+            <el-table-column prop="actName" label="节点名称" sortable="custom">
+            </el-table-column>
+          </el-table>
+        </template>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="thTableCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="thTableConfirm"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
+      <el-dialog title="退回理由" :visible.sync="thModal" width="30%">
+        <template>
+          <el-input placeholder="请输入退回理由" v-model="thly"></el-input>
+        </template>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="thCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="thConfirm"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
       <pagination
         v-show="queryParams.total > 0"
         :total="queryParams.total"
@@ -221,6 +263,7 @@ import {
   tyFlow,
   jjFlow,
   backFlow,
+  thFinal,
 } from "@/api/growFiles/infoAppr";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
@@ -246,7 +289,7 @@ export default {
       select: "",
       isMore: false,
       moreIform: {
-        dwh: [],// 学院下拉框
+        dwh: [], // 学院下拉框
         zydm: [],
         bjm: [],
         mk: [],
@@ -255,15 +298,16 @@ export default {
       allDwh: [],
       zyOps: [], // 专业下拉
       bjOps: [], // 班级下拉
-      mkOps:[
-        {mc:"奖学金"},
-        {mc:"社会实践"},
-        {mc:"社团经历"},
-        {mc:"校内外培训"},
-        {mc:"学习成绩"},
-        {mc:"资格认证"},
-        {mc:"志愿服务"}
+      mkOps: [
+        { mc: "奖学金" },
+        { mc: "社会实践" },
+        { mc: "社团经历" },
+        { mc: "校内外培训" },
+        { mc: "学习成绩" },
+        { mc: "资格认证" },
+        { mc: "志愿服务" },
       ],
+      commonParams: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -276,12 +320,15 @@ export default {
         checkBox: [],
         isIndeterminate: true,
       },
-      datePicker: [],
       multipleSelection: [],
-      xhArr: [],
-      mkArr: [],
-      aab: {},
-      
+      multipleSelection1: "",
+      jjModal: false,
+      jjly: "",
+      tableInner: [],
+      thTableModal: false,
+      thModal: false,
+      thly: "",
+      tempRadio: false,
     };
   },
 
@@ -289,10 +336,94 @@ export default {
     this.handleSearch();
     this.getAllCollege();
     this.getCode("dmpyccm"); // 培养层次
-    
   },
 
   methods: {
+    getRow(index, row) {
+      this.multipleSelection1 = row;
+    },
+    //通过
+    pass() {
+      if (this.commonParams.length > 0) {
+        var data = this.commonParams.map((item) => ({
+          ...item,
+          opMsg: "审核通过",
+        }));
+        tyFlow(data).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("审核已通过");
+            this.handleSearch();
+          }
+        });
+      } else {
+        this.$message.error("请先选择一条数据");
+      }
+    },
+    //拒绝
+    refuse() {
+      if (this.commonParams.length > 0) {
+        this.jjModal = true;
+        this.jjly = "";
+      } else {
+        this.$message.error("请先选择一条数据");
+      }
+    },
+    jjCancel() {
+      this.jjModal = false;
+    },
+    jjConfirm() {
+      var data = this.commonParams.map((item) => ({
+        ...item,
+        opMsg: this.jjly,
+      }));
+      jjFlow(data).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("已拒绝");
+          this.handleSearch();
+        }
+      });
+      this.jjModal = false;
+    },
+    async back() {
+      if (this.commonParams.length > 0) {
+        var processId = { processId: this.commonParams[0].processId };
+        await backFlow(processId).then((res) => {
+          this.tableInner = res.data;
+        });
+        this.thTableModal = true;
+      } else {
+        this.$message.error("请先选择一条数据");
+      }
+    },
+    thTableCancel() {
+      this.thTableModal = false;
+    },
+    thTableConfirm() {
+      if (this.tempRadio == true) {
+        this.thTableModal = false;
+        this.thModal = true;
+      } else {
+        this.$message.error("请先勾选退回的节点");
+      }
+    },
+    thCancel() {
+      this.thModal = false;
+    },
+    thConfirm() {
+      this.thModal = false;
+      var data = this.commonParams.map((item) => ({
+        ...item,
+        opMsg: this.thly,
+      }));
+      var targ = {
+        czdaFlowNodeRes: this.multipleSelection1,
+        czdaFlowOpReqList: data,
+      };
+      console.log("targ", targ);
+      thFinal(targ).then((res) => {
+        console.log("res", res);
+      });
+    },
     getAllCollege() {
       getCollege()
         .then((res) => {
@@ -334,10 +465,6 @@ export default {
     expor() {
       var rqs = "";
       var rqe = "";
-      if (this.datePicker && this.datePicker.length > 0) {
-        var rqs = this.datePicker[0];
-        rqe = this.datePicker[1];
-      }
       var idList = [];
       this.multipleSelection.map((item) => idList.push(item.id));
       var data = {
@@ -365,57 +492,7 @@ export default {
         );
       }
     },
-    //通过
-    pass(){
-      var data = {
-        xh: this.xhArr,
-        mk: this.mkArr, 
-        opMsg: "",
-        taskId: this.multipleSelection.map((item) => item.taskId),
-        status: this.multipleSelection.map((item) => item.status),
-        processId: this.multipleSelection.map((item) => item.processId),
-        businesId: this.multipleSelection.map((item) => item.businesId),
-      }
-      if (this.multipleSelection && this.multipleSelection.length > 0) {    
-          tyFlow(data).then((res) => {
-            console.log(111);
-            this.$message.success("提交成功");
-            this.handleSearch();
-          });
-          
-        } else {
-          this.$message.error("请先勾选数据");
-        }
-    },
-    //拒绝
-    refuse(){
 
-    },
-    //拒绝
-    back(){
-
-    },
-
-    // upLoadError(err, file, fileList) {
-    //   this.$message({
-    //     type: "error",
-    //     message: "上传失败",
-    //   });
-    // },
-    // upLoadSuccess(res, file, fileList) {
-    //   if (res.errcode == "00") {
-    //     this.handleSearch();
-    //     this.$message({
-    //       type: "success",
-    //       message: res.errmsg,
-    //     });
-    //   } else {
-    //     this.$message({
-    //       type: "error",
-    //       message: res.errmsg,
-    //     });
-    //   }
-    // },
     hadleDetail(row) {
       this.$router.push({
         path: "/assistantWork/detailBX",
@@ -429,16 +506,9 @@ export default {
     },
     // 查询
     handleSearch() {
-      // var rqs = "";
-      // var rqe = "";
-      // if (this.datePicker && this.datePicker.length > 0) {
-      //   var rqs = this.datePicker[0];
-      //   rqe = this.datePicker[1];
-      // }
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-
         dwh: this.moreIform.dwh,
         zydm: this.moreIform.zydm,
         bjm: this.moreIform.bjm,
@@ -492,12 +562,22 @@ export default {
       this.training.isIndeterminate =
         checkedCount > 0 && checkedCount < this.training.checkBox.length;
     },
+    handleSelectionChange1(val) {
+      this.multipleSelection1 = val;
+    },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      console.log(this.multipleSelection);
-      this.xhArr = val.map((item) => item.xh);
-      this.mkArr = val.map((item) => item.mk);
+      console.log("this.multipleSelection", this.multipleSelection);
+      this.commonParams = this.multipleSelection.map((v) => ({
+        businesId: v.businesId,
+        mk: v.mk,
+        // opMsg: v.opMsg,
+        processId: v.processId,
+        status: v.status,
+        taskId: v.taskId,
+        xh: v.xh,
+      }));
     },
     //排序
     changeTableSort(column) {
@@ -604,7 +684,7 @@ export default {
           border: 1px solid grey;
           background: #fff;
         }
-        .borderRed{
+        .borderRed {
           border: 1px solid grey;
           color: red;
           background: #fff;

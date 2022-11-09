@@ -39,6 +39,14 @@ export function jjFlow(query) {
 export function backFlow(query) {
   return request({
     url: '/czdaFlow/queryNodeFlowed',
+    method: 'get',
+    params: query
+  })
+}
+//退回操作
+export function thFinal(query) {
+  return request({
+    url: '/czdaFlow/htFlow',
     method: 'post',
     data: query
   })

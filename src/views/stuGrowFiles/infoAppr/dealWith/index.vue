@@ -34,90 +34,90 @@
           <el-col :span="6">
             <span>培养单位：</span>
             <el-select
-                v-model="moreIform.dwh"
-                multiple
-                collapse-tags
-                @change="changeXY"
-                placeholder="请选择"
-                size="small"
-              >
-                <el-option
-                  v-for="item in allDwh"
-                  :key="item.dm"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select>
+              v-model="moreIform.dwh"
+              multiple
+              collapse-tags
+              @change="changeXY"
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in allDwh"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
           </el-col>
           <el-col :span="6">
             <span>专业：</span>
             <el-select
-                v-model="moreIform.zydm"
-                multiple
-                collapse-tags
-                placeholder="请选择"
-                size="small"
-              >
-                <el-option
-                  v-for="item in zyOps"
-                  :key="item.dm"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select>
+              v-model="moreIform.zydm"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in zyOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
           </el-col>
           <el-col :span="6">
             <span>班级：</span>
             <el-select
-                v-model="moreIform.bjm"
-                multiple
-                collapse-tags
-                placeholder="请选择"
-                size="small"
-              >
-                <el-option
-                  v-for="item in bjOps"
-                  :key="item.dm"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select>
+              v-model="moreIform.bjm"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in bjOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
           </el-col>
           <el-col :span="6">
             <span>所属模块：</span>
             <el-select
-                v-model="moreIform.mk"
-                multiple
-                collapse-tags
-                placeholder="请选择"
-                size="small"
-              >
-                <el-option
-                  v-for="item in mkOps"
-                  :key="item.mc"
-                  :label="item.mc"
-                  :value="item.mc"
-                ></el-option>
-              </el-select>
+              v-model="moreIform.mk"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in mkOps"
+                :key="item.mc"
+                :label="item.mc"
+                :value="item.mc"
+              ></el-option>
+            </el-select>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
           <el-col :span="1.5">审核结果：</el-col>
           <el-col :span="20">
             <el-select
-                v-model="moreIform.status"
-                multiple
-                collapse-tags
-                placeholder="请选择"
-                size="small"
-              >
-                <el-option
-                  v-for="item in spjgOps"
-                  :key="item.dm"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select>
+              v-model="moreIform.status"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in spjgOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
@@ -207,7 +207,20 @@
           ><el-table-column prop="mk" label="所属模块" sortable="custom">
           </el-table-column
           ><el-table-column prop="status" label="审核结果" sortable="custom">
-          </el-table-column
+            <template slot-scope="scope">
+              <el-select
+                v-model="scope.row.status"
+                placeholder="请选择"
+                :disabled="true"
+              >
+                <el-option
+                  v-for="(item, index) in spjgOps"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </template> </el-table-column
           ><el-table-column prop="mk" label="审核进度" sortable="custom">
           </el-table-column>
 
@@ -239,9 +252,7 @@
 <script>
 import CheckboxCom from "../../../components/checkboxCom";
 import { getToken } from "@/utils/auth";
-import {
-  queryYshList,
-} from "@/api/growFiles/infoAppr";
+import { queryYshList } from "@/api/growFiles/infoAppr";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getZY, getBJ } from "@/api/student/index";
@@ -269,18 +280,18 @@ export default {
         dwh: [],
       },
       tableData: [],
-      allDwh: [],// 学院下拉框
+      allDwh: [], // 学院下拉框
       zyOps: [], // 专业下拉
       bjOps: [], // 班级下拉
-      spjgOps: [],//审批结果下拉
-      mkOps:[
-        {mc:"奖学金"},
-        {mc:"社会实践"},
-        {mc:"社团经历"},
-        {mc:"校内外培训"},
-        {mc:"学习成绩"},
-        {mc:"资格认证"},
-        {mc:"志愿服务"}
+      spjgOps: [], //审批结果下拉
+      mkOps: [
+        { mc: "奖学金" },
+        { mc: "社会实践" },
+        { mc: "社团经历" },
+        { mc: "校内外培训" },
+        { mc: "学习成绩" },
+        { mc: "资格认证" },
+        { mc: "志愿服务" },
       ],
       queryParams: {
         pageNum: 1,
@@ -304,7 +315,6 @@ export default {
     this.getAllCollege();
     this.getCode("dmpyccm"); // 培养层次
     this.getCode("dmsplcm"); // 审核结果
-    
   },
 
   methods: {
@@ -424,7 +434,7 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        
+
         dwh: this.moreIform.dwh || [],
         zydm: this.moreIform.zydm || [],
         bjm: this.moreIform.bjm || [],
@@ -459,7 +469,7 @@ export default {
             case "dmpyccm":
               this.$set(this.training, "checkBox", res.data);
               break;
-            case "dmsplcm"://审批结果
+            case "dmsplcm": //审批结果
               this.spjgOps = res.data;
               break;
           }

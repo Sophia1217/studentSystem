@@ -310,7 +310,23 @@
             </el-table-column>
             <el-table-column prop="opTime" label="操作时间" sortable="custom">
             </el-table-column>
+            <el-table-column prop="nodeName" label="操作节点" sortable="custom">
+            </el-table-column>
             <el-table-column prop="opType" label="操作类型" sortable="custom">
+              <template slot-scope="scope">
+                <el-select
+                  v-model="scope.row.opType"
+                  placeholder="请选择"
+                  :disabled="true"
+                >
+                  <el-option
+                    v-for="(item, index) in czlx"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+              </template>
             </el-table-column>
             <el-table-column prop="msg" label="审核意见" sortable="custom">
             </el-table-column>
@@ -368,12 +384,14 @@ export default {
       ztStatus: [],
       val: [],
       url: "",
-      tableLct:[],
+      tableLct: [],
+      czlx: [],
     };
   },
   mounted() {
     this.query();
     this.getCode("dmsplcm"); //性别
+    this.getCode("dmshrzlx"); //性别
   },
 
   methods: {
@@ -404,7 +422,14 @@ export default {
     getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
-        this.ztStatus = res.data;
+        switch (val) {
+          case "dmshrzlx":
+            this.czlx = res.data;
+            break;
+          case "dmsplcm": //审批结果
+            this.ztStatus = res.data;
+            break;
+        }
       });
     },
     tj() {

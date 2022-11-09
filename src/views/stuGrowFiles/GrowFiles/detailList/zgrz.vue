@@ -32,19 +32,27 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="zslx" label="证书类型"> </el-table-column>
-          <el-table-column prop="cj" label="成绩"> </el-table-column>
-          <el-table-column prop="djm" label="等级"> </el-table-column>
-          <el-table-column prop="fxlb" label="方向/类别"> </el-table-column>
-          <el-table-column prop="zsbh" label="证书编号"> </el-table-column>
-          <el-table-column prop="fzdw" label="发证单位"> </el-table-column>
-          <el-table-column prop="fzsj" label="发证时间"> </el-table-column>
+          <el-table-column prop="zslx" label="证书类型" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="cj" label="成绩" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="djm" label="等级" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="fxlb" label="方向/类别" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="zsbh" label="证书编号" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="fzdw" label="发证单位" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="fzsj" label="发证时间" sortable="custom">
+          </el-table-column>
 
           <el-table-column
             prop="fileList"
             label="附件"
             align="center"
             width="300"
+            sortable="custom"
           >
             <template slot-scope="scope">
               <div v-for="item in scope.row.fileList">
@@ -57,7 +65,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="status" label="审核状态">
+          <el-table-column prop="status" label="审核状态" sortable="custom">
             <template slot-scope="scope">
               <el-select
                 v-model="scope.row.status"
@@ -419,7 +427,6 @@ export default {
           {
             required: true,
             message: "发证时间不能为空",
-
             trigger: "blur",
           },
         ],
@@ -618,8 +625,8 @@ export default {
         xh: this.$store.getters.userId,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
-        //orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",
-        //orderPx: this.queryParams.orderPx ? this.queryParams.orderPx : "",
+        orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",
+        orderPx: this.queryParams.orderPx ? this.queryParams.orderPx : "",
       };
       queryZgrzList(data).then((res) => {
         this.tableDate = res.data;

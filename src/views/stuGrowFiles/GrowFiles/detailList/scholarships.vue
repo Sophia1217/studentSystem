@@ -6,7 +6,7 @@
           <span class="title">校内外奖项</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderLight" @click="del">
+          <div class="btns borderLight" @click="showDel">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
           <div class="btns borderGreen" @click="xinzeng">
@@ -375,6 +375,7 @@
           >
         </span>
       </el-dialog>
+
       <pagination
         v-show="queryParams.totalCount > 0"
         :total="queryParams.totalCount"
@@ -383,6 +384,15 @@
         @pagination="getinList"
       />
     </div>
+    <el-dialog title="删除" :visible.sync="delModal" width="20%">
+      <span>确认删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="del()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -402,6 +412,7 @@ export default {
       lctModal: false,
       addModal: false,
       editModal: false,
+      delModal: false,
       detailInfoData: {},
       formAdd: { addData: [] },
       formEdit: { editData: [] },
@@ -642,38 +653,13 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.getinList();
     },
-    // editButtonClick() {
-    //   this.isEdit = 2; // 控制是否可以编辑的字段
-    // },
-    // handleCancle() {
-    //   this.isEdit = 1;
-    // },
-    // handleUpdata() {
-    //   updateJxj().then((res) => {
-    //     if (res.errcode == "00") {
-    //       this.getinList(this.queryParams);
-    //     }
-    //   });
-    // },
-    // addDetailInfoData() {
-    //   this.detailInfoData.xnJxj.push({});
-
-    //   insertJxj(data).then((res) => {
-    //     if (res.errcode == "00") {
-    //       console.log(res);
-    //       this.getinList(this.queryParams);
-    //     }
-    //   });
-    // },
-    // delDetailInfoData() {
-    //   deleteJxj().then((res) => {
-    //     if (res.errcode == "00") {
-    //       this.getinList(this.queryParams);
-    //     }
-    //   });
-    // },
-    // //撤回
-    // deleteDetail() {},
+    delCancel() {
+      this.delModal = false;
+    },
+    showDel() {
+      this.delModal = true;
+      console.log("yyyy");
+    },
   },
 };
 </script>

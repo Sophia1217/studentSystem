@@ -21,13 +21,19 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xn" label="学年"> </el-table-column>
-          <el-table-column prop="xq" label="学期"> </el-table-column>
-          <el-table-column prop="kcmc" label="课程名称"> </el-table-column>
-          <el-table-column prop="cj" label="成绩"> </el-table-column>
-          <el-table-column prop="xfs" label="学分数"> </el-table-column>
-          <el-table-column prop="xfj" label="学分绩"> </el-table-column>
-          <el-table-column prop="xnzypm" label="学年专业排名">
+          <el-table-column prop="xn" label="学年" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="xq" label="学期" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="kcmc" label="课程名称" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="cj" label="成绩" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="xfs" label="学分数" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="xfj" label="学分绩" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="xnzypm" label="学年专业排名" sortable="custom">
           </el-table-column>
         </el-table>
       </div>

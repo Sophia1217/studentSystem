@@ -370,10 +370,10 @@ export default {
           },
         ],
         stlx: [
-          { required: true, message: "社团类型不能为空", trigger: "change" },
+          { required: true, message: "社团类型不能为空", trigger: "blur" },
         ],
         gkdwmc: [
-          { required: true, message: "挂靠单位不能为空", trigger: "change" },
+          { required: true, message: "挂靠单位不能为空", trigger: "blur" },
         ],
         rzzw: [
           { required: true, message: "任职职务不能为空", trigger: "blur" },

@@ -84,84 +84,121 @@
         </el-table>
       </div>
       <el-dialog title="新增" :visible.sync="addModal" width="80%">
-        <el-table :data="addData">
-          <el-table-column label="奖学金名称" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.jxjmc" />
-            </template>
-          </el-table-column>
-          <el-table-column label="级别" align="center">
-            <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.jbm"
-                placeholder="请选择"
-                size="small"
-              >
-                <el-option
-                  v-for="(item, index) in jbmOps"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                />
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column label="等级" width="240px">
-            <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.djm"
-                placeholder="请选择"
-                size="small"
-              >
-                <el-option
-                  v-for="(item, index) in djmOps"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                />
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column label="金额" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.je" />
-            </template>
-          </el-table-column>
+        <el-form ref="formAdd" :model="formAdd" :rules="rules">
+          <el-table :data="formAdd.addData">
+            <el-table-column label="奖学金名称" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.jxjmc'"
+                  :rules="rules.jxjmc"
+                >
+                  <el-input v-model="scope.row.jxjmc" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="级别" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.jbm'"
+                  :rules="rules.jbm"
+                >
+                  <el-select
+                    v-model="scope.row.jbm"
+                    placeholder="请选择"
+                    size="small"
+                  >
+                    <el-option
+                      v-for="(item, index) in jbmOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    />
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="等级" width="240px" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.djm'"
+                  :rules="rules.djm"
+                >
+                  <el-select
+                    v-model="scope.row.djm"
+                    placeholder="请选择"
+                    size="small"
+                  >
+                    <el-option
+                      v-for="(item, index) in djmOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    />
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="金额" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.je'"
+                  :rules="rules.je"
+                >
+                  <el-input v-model="scope.row.je" />
+                </el-form-item>
+              </template>
+            </el-table-column>
 
-          <el-table-column label="奖学金类型" align="center">
-            <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.jxjlxm"
-                placeholder="请选择"
-                size="small"
-              >
-                <el-option
-                  v-for="(item, index) in jxjlxmOps"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                />
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column label="设立单位" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.sldw" />
-            </template>
-          </el-table-column>
-          <el-table-column label="获奖时间" width="240px">
-            <template slot-scope="scope">
-              <el-date-picker
-                v-model="scope.row.hjsj"
-                type="date"
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyy-MM-dd"
-                placeholder="选择日期"
-              >
-              </el-date-picker>
-            </template>
-          </el-table-column>
-        </el-table>
+            <el-table-column label="奖学金类型" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.jxjlxm'"
+                  :rules="rules.jxjlxm"
+                >
+                  <el-select
+                    v-model="scope.row.jxjlxm"
+                    placeholder="请选择"
+                    size="small"
+                  >
+                    <el-option
+                      v-for="(item, index) in jxjlxmOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    />
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="设立单位" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.sldw'"
+                  :rules="rules.sldw"
+                >
+                  <el-input v-model="scope.row.sldw" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="获奖时间" width="240px" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.hjsj'"
+                  :rules="rules.hjsj"
+                >
+                  <el-date-picker
+                    v-model="scope.row.hjsj"
+                    type="date"
+                    format="yyyy 年 MM 月 dd 日"
+                    value-format="yyyy-MM-dd"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
+                </el-form-item>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="addCance">取 消</el-button>
           <el-button type="primary" class="confirm" @click="addClick"
@@ -170,85 +207,121 @@
         </span>
       </el-dialog>
       <el-dialog title="编辑" :visible.sync="editModal" width="80%">
-        <el-table :data="editData">
-          <el-table-column label="奖学金名称" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.jxjmc" />
-            </template>
-          </el-table-column>
-          <el-table-column label="级别" align="center">
-            <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.jbm"
-                placeholder="请选择"
-                size="small"
-              >
-                <el-option
-                  v-for="(item, index) in jbmOps"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                />
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column label="等级" width="240px">
-            <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.djm"
-                placeholder="请选择"
-                size="small"
-              >
-                <el-option
-                  v-for="(item, index) in djmOps"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                />
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column label="金额" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.je" />
-            </template>
-          </el-table-column>
+        <el-form ref="formEdit" :model="formEdit" :rules="rules">
+          <el-table :data="formEdit.editData">
+            <el-table-column label="奖学金名称" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.jxjmc'"
+                  :rules="rules.jxjmc"
+                >
+                  <el-input v-model="scope.row.jxjmc" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="级别" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.jbm'"
+                  :rules="rules.jbm"
+                >
+                  <el-select
+                    v-model="scope.row.jbm"
+                    placeholder="请选择"
+                    size="small"
+                  >
+                    <el-option
+                      v-for="(item, index) in jbmOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    />
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="等级" width="240px" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.djm'"
+                  :rules="rules.djm"
+                >
+                  <el-select
+                    v-model="scope.row.djm"
+                    placeholder="请选择"
+                    size="small"
+                  >
+                    <el-option
+                      v-for="(item, index) in djmOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    />
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="金额" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.je'"
+                  :rules="rules.je"
+                >
+                  <el-input v-model="scope.row.je" />
+                </el-form-item>
+              </template>
+            </el-table-column>
 
-          <el-table-column label="奖学金类型" align="center">
-            <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.jxjlxm"
-                placeholder="请选择"
-                jxjlxm
-                size="small"
-              >
-                <el-option
-                  v-for="(item, index) in jxjlxmOps"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                />
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column label="设立单位" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.sldw" />
-            </template>
-          </el-table-column>
-          <el-table-column label="获奖时间" width="240px">
-            <template slot-scope="scope">
-              <el-date-picker
-                v-model="scope.row.hjsj"
-                type="date"
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyy-MM-dd"
-                placeholder="选择日期"
-              >
-              </el-date-picker>
-            </template>
-          </el-table-column>
-        </el-table>
+            <el-table-column label="奖学金类型" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.jxjlxm'"
+                  :rules="rules.jxjlxm"
+                >
+                  <el-select
+                    v-model="scope.row.jxjlxm"
+                    placeholder="请选择"
+                    size="small"
+                  >
+                    <el-option
+                      v-for="(item, index) in jxjlxmOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    />
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="设立单位" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.sldw'"
+                  :rules="rules.sldw"
+                >
+                  <el-input v-model="scope.row.sldw" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="获奖时间" width="240px" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.hjsj'"
+                  :rules="rules.hjsj"
+                >
+                  <el-date-picker
+                    v-model="scope.row.hjsj"
+                    type="date"
+                    format="yyyy 年 MM 月 dd 日"
+                    value-format="yyyy-MM-dd"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
+                </el-form-item>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="editCance">取 消</el-button>
           <el-button type="primary" class="confirm" @click="editClick"
@@ -294,8 +367,8 @@ export default {
       addModal: false,
       editModal: false,
       detailInfoData: {},
-      addData: [],
-      editData: [],
+      formAdd: { addData: [] },
+      formEdit: { editData: [] },
       tableDate: [],
       isEdit: 1,
       queryParams: {
@@ -310,6 +383,32 @@ export default {
       jxjlxmOps: [],
       val: [],
       url: "",
+      rules: {
+        jxjmc: [
+          {
+            required: true,
+            message: "奖学金名称不能为空",
+            trigger: "blur",
+          },
+        ],
+        jbm: [{ required: true, message: "级别不能为空", trigger: "change" }],
+        djm: [{ required: true, message: "等级不能为空", trigger: "change" }],
+        je: [{ required: true, message: "金额不能为空", trigger: "blur" }],
+        jxjlxm: [
+          { required: true, message: "奖学金类型不能为空", trigger: "change" },
+        ],
+        sldw: [
+          { required: true, message: "设立单位不能为空", trigger: "blur" },
+        ],
+        hjsj: [
+          {
+            required: true,
+            message: "获奖时间不能为空",
+
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   watch: {},
@@ -321,6 +420,31 @@ export default {
     this.getCode("dmsplcm");
   },
   methods: {
+    // 表单校验
+    checkFormAdd() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formAdd.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+
+      return true;
+    },
+    checkFormEdit() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formEdit.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+
+      return true;
+    },
     getinList() {
       let data = {
         xh: this.$route.query.xh,
@@ -386,28 +510,33 @@ export default {
       this.delArr = val.map((item) => item.id);
     },
     bianji(row) {
-      this.editData = [];
+      this.formEdit.editData = [];
 
-      this.editData.push(row);
+      this.formEdit.editData.push(row);
       this.editModal = true;
     },
     editClick() {
-      let data = this.editData[0];
-      updateJxj(data).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("编辑成功");
-          this.getinList();
-        } else {
-          this.$message.error("编辑失败");
-        }
-      });
-      this.editModal = false;
+      if (!this.checkFormEdit()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        let data = this.formEdit.editData[0];
+        updateJxj(data).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("编辑成功");
+            this.getinList();
+          } else {
+            this.$message.error("编辑失败");
+          }
+        });
+        this.editModal = false;
+      }
     },
     editCance() {
       this.editModal = false;
     },
     xinzeng() {
-      this.addData = []; // 每次打开弹框先将弹框的table数组置空
+      this.formAdd.addData = []; // 每次打开弹框先将弹框的table数组置空
       var newLine = {
         jxjmc: "",
         hjsj: "",
@@ -417,30 +546,35 @@ export default {
         je: "",
         sldw: "",
       };
-      this.addData.push(newLine);
+      this.formAdd.addData.push(newLine);
       this.addModal = true;
     },
     addClick() {
-      let data = {
-        jxjmc: this.addData[0].jxjmc,
-        hjsj: this.addData[0].hjsj,
-        djm: this.addData[0].djm,
-        jbm: this.addData[0].jbm,
-        jxjlxm: this.addData[0].jxjlxm,
-        je: this.addData[0].je,
-        sldw: this.addData[0].sldw,
-        xh: this.$route.query.xh,
-      };
+      if (!this.checkFormAdd()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        let data = {
+          jxjmc: this.formAdd.addData[0].jxjmc,
+          hjsj: this.formAdd.addData[0].hjsj,
+          djm: this.formAdd.addData[0].djm,
+          jbm: this.formAdd.addData[0].jbm,
+          jxjlxm: this.formAdd.addData[0].jxjlxm,
+          je: this.formAdd.addData[0].je,
+          sldw: this.formAdd.addData[0].sldw,
+          xh: this.$route.query.xh,
+        };
 
-      insertJxj(data).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("新增成功");
-          this.getinList();
-        } else {
-          this.$message.error("新增失败");
-        }
-      });
-      this.addModal = false;
+        insertJxj(data).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("新增成功");
+            this.getinList();
+          } else {
+            this.$message.error("新增失败");
+          }
+        });
+        this.addModal = false;
+      }
     },
     addCance() {
       this.addModal = false;

@@ -196,8 +196,8 @@
             <el-table-column label="指导老师" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'addData.' + scope.$index + '.zdls'"
-                  :rules="rules.zdls"
+                  :prop="'addData.' + scope.$index + '.zdlsxm'"
+                  :rules="rules.zdlsxm"
                 >
                   <el-input v-model="scope.row.zdlsxm" />
                 </el-form-item>
@@ -292,8 +292,8 @@
             <el-table-column label="指导老师" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'editData.' + scope.$index + '.zdls'"
-                  :rules="rules.zdls"
+                  :prop="'editData.' + scope.$index + '.zdlsxm'"
+                  :rules="rules.zdlsxm"
                 >
                   <el-input v-model="scope.row.zdlsxm" />
                 </el-form-item>
@@ -398,7 +398,7 @@ export default {
             trigger: "blur",
           },
         ],
-        zdls: [
+        zdlsxm: [
           { required: true, message: "指导老师不能为空", trigger: "blur" },
         ],
       },

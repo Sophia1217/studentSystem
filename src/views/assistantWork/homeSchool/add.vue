@@ -291,7 +291,7 @@ export default {
       stuDate: [],
       modelOps: [
         { dm: "1", xm: "线上视频" },
-        { dm: "2", xm: "线下实地" },
+        { dm: "2", xm: "线下走访" },
       ],
       modId: "",
       // 查询参数

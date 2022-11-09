@@ -87,67 +87,114 @@
         </el-table>
       </div>
       <el-dialog title="新增" :visible.sync="addModal" width="80%">
-        <el-table :data="addData">
-          <el-table-column label="项目名称" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.xmmc" />
-            </template>
-          </el-table-column>
-          <el-table-column label="组织单位" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.zzdw" />
-            </template>
-          </el-table-column>
-          <el-table-column label="等级" width="150px" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.djm" />
-            </template>
-          </el-table-column>
-          <el-table-column label="类型" width="150px" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.lx" />
-            </template>
-          </el-table-column>
-          <el-table-column label="实践地点" width="150px" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.sjdd" />
-            </template>
-          </el-table-column>
-          <el-table-column label="开始时间" align="center">
-            <template slot-scope="scope">
-              <el-date-picker
-                v-model="scope.row.kssj"
-                type="date"
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyy-MM-dd"
-                placeholder="选择日期"
-              >
-              </el-date-picker>
-            </template>
-          </el-table-column>
-          <el-table-column label="结束时间" align="center">
-            <template slot-scope="scope">
-              <el-date-picker
-                v-model="scope.row.jssj"
-                type="date"
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyy-MM-dd"
-                placeholder="选择日期"
-              >
-              </el-date-picker>
-            </template>
-          </el-table-column>
-          <el-table-column label="证明人" width="120px">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.zmr" />
-            </template>
-          </el-table-column>
-          <el-table-column label="联系方式" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.lxfs" />
-            </template>
-          </el-table-column>
-        </el-table>
+        <el-form ref="formAdd" :model="formAdd" :rules="rules">
+          <el-table :data="formAdd.addData">
+            <el-table-column label="项目名称" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.xmmc'"
+                  :rules="rules.xmmc"
+                >
+                  <el-input v-model="scope.row.xmmc" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="组织单位" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.zzdw'"
+                  :rules="rules.zzdw"
+                >
+                  <el-input v-model="scope.row.zzdw" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="等级" width="150px" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.djm'"
+                  :rules="rules.djm"
+                >
+                  <el-input v-model="scope.row.djm" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="类型" width="150px" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.lx'"
+                  :rules="rules.lx"
+                >
+                  <el-input v-model="scope.row.lx" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="实践地点" width="150px" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.sjdd'"
+                  :rules="rules.sjdd"
+                >
+                  <el-input v-model="scope.row.sjdd" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="开始时间" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.kssj'"
+                  :rules="rules.kssj"
+                >
+                  <el-date-picker
+                    v-model="scope.row.kssj"
+                    type="date"
+                    format="yyyy 年 MM 月 dd 日"
+                    value-format="yyyy-MM-dd"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="结束时间" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.jssj'"
+                  :rules="rules.jssj"
+                >
+                  <el-date-picker
+                    v-model="scope.row.jssj"
+                    type="date"
+                    format="yyyy 年 MM 月 dd 日"
+                    value-format="yyyy-MM-dd"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="证明人" width="120px">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.zmr'"
+                  :rules="rules.zmr"
+                >
+                  <el-input v-model="scope.row.zmr" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="联系方式" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.lxfs'"
+                  :rules="rules.lxfs"
+                >
+                  <el-input v-model="scope.row.lxfs" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="addCance">取 消</el-button>
           <el-button type="primary" class="confirm" @click="addClick"
@@ -156,67 +203,114 @@
         </span>
       </el-dialog>
       <el-dialog title="编辑" :visible.sync="editModal" width="80%">
-        <el-table :data="editData">
-          <el-table-column label="项目名称" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.xmmc" />
-            </template>
-          </el-table-column>
-          <el-table-column label="组织单位" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.zzdw" />
-            </template>
-          </el-table-column>
-          <el-table-column label="等级" width="150px" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.djm" />
-            </template>
-          </el-table-column>
-          <el-table-column label="类型" width="150px" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.lx" />
-            </template>
-          </el-table-column>
-          <el-table-column label="实践地点" width="150px" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.sjdd" />
-            </template>
-          </el-table-column>
-          <el-table-column label="开始时间" align="center">
-            <template slot-scope="scope">
-              <el-date-picker
-                v-model="scope.row.kssj"
-                type="date"
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyy-MM-dd"
-                placeholder="选择日期"
-              >
-              </el-date-picker>
-            </template>
-          </el-table-column>
-          <el-table-column label="结束时间" align="center">
-            <template slot-scope="scope">
-              <el-date-picker
-                v-model="scope.row.jssj"
-                type="date"
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyy-MM-dd"
-                placeholder="选择日期"
-              >
-              </el-date-picker>
-            </template>
-          </el-table-column>
-          <el-table-column label="证明人" width="120px">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.zmr" />
-            </template>
-          </el-table-column>
-          <el-table-column label="联系方式" align="center">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.lxfs" />
-            </template>
-          </el-table-column>
-        </el-table>
+        <el-form ref="formEdit" :model="formEdit" :rules="rules">
+          <el-table :data="formEdit.editData">
+            <el-table-column label="项目名称" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.xmmc'"
+                  :rules="rules.xmmc"
+                >
+                  <el-input v-model="scope.row.xmmc" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="组织单位" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.zzdw'"
+                  :rules="rules.zzdw"
+                >
+                  <el-input v-model="scope.row.zzdw" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="等级" width="150px" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.djm'"
+                  :rules="rules.djm"
+                >
+                  <el-input v-model="scope.row.djm" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="类型" width="150px" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.lx'"
+                  :rules="rules.lx"
+                >
+                  <el-input v-model="scope.row.lx" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="实践地点" width="150px" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.sjdd'"
+                  :rules="rules.sjdd"
+                >
+                  <el-input v-model="scope.row.sjdd" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="开始时间" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.kssj'"
+                  :rules="rules.kssj"
+                >
+                  <el-date-picker
+                    v-model="scope.row.kssj"
+                    type="date"
+                    format="yyyy 年 MM 月 dd 日"
+                    value-format="yyyy-MM-dd"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="结束时间" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.jssj'"
+                  :rules="rules.jssj"
+                >
+                  <el-date-picker
+                    v-model="scope.row.jssj"
+                    type="date"
+                    format="yyyy 年 MM 月 dd 日"
+                    value-format="yyyy-MM-dd"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="证明人" width="120px">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.zmr'"
+                  :rules="rules.zmr"
+                >
+                  <el-input v-model="scope.row.zmr" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="联系方式" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.lxfs'"
+                  :rules="rules.lxfs"
+                >
+                  <el-input v-model="scope.row.lxfs" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="editCance">取 消</el-button>
           <el-button type="primary" class="confirm" @click="editClick"
@@ -244,8 +338,8 @@ export default {
       ztStatus: [],
       addModal: false,
       editModal: false,
-      addData: [],
-      editData: [],
+      formAdd: { addData: [] },
+      formEdit: { editData: [] },
       tableDate: [],
       queryParams: {
         pageNum: 1,
@@ -256,6 +350,45 @@ export default {
       delArr: [],
       subArr: [],
       val: [],
+      rules: {
+        xmmc: [
+          {
+            required: true,
+            message: "项目名称不能为空",
+            trigger: "blur",
+          },
+        ],
+        zzdw: [
+          { required: true, message: "组织单位不能为空", trigger: "change" },
+        ],
+        djm: [{ required: true, message: "等级不能为空", trigger: "change" }],
+        lx: [{ required: true, message: "类型不能为空", trigger: "blur" }],
+        sjdd: [
+          { required: true, message: "时间地点不能为空", trigger: "change" },
+        ],
+        zmr: [{ required: true, message: "证明人不能为空", trigger: "blur" }],
+        kssj: [
+          {
+            required: true,
+            message: "开始时间不能为空",
+            trigger: "blur",
+          },
+        ],
+        jssj: [
+          {
+            required: true,
+            message: "结束时间不能为空",
+
+            trigger: "blur",
+          },
+        ],
+        lxfs: [
+          { required: true, message: "联系方式不能为空", trigger: "blur" },
+        ],
+        shzt: [
+          { required: true, message: "审核状态不能为空", trigger: "blur" },
+        ],
+      },
     };
   },
   mounted() {
@@ -264,6 +397,31 @@ export default {
   },
 
   methods: {
+    // 表单校验
+    checkFormAdd() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formAdd.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+
+      return true;
+    },
+    checkFormEdit() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formEdit.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+
+      return true;
+    },
     getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
@@ -293,48 +451,58 @@ export default {
       this.subArr = val.map((item) => item.id);
     },
     bianji(row) {
-      this.editData = [];
-      this.editData.push(row);
+      this.formEdit.editData = [];
+      this.formEdit.editData.push(row);
       this.editModal = true;
     },
     editCance() {
       this.editModal = false;
     },
     editClick() {
-      let data = this.editData[0];
-      edit(data).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("编辑成功");
-          this.query();
-        } else {
-          this.$message.error("编辑失败");
-        }
-      });
-      this.editModal = false;
+      if (!this.checkFormEdit()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        let data = this.formEdit.editData[0];
+        edit(data).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("编辑成功");
+            this.query();
+          } else {
+            this.$message.error("编辑失败");
+          }
+        });
+        this.editModal = false;
+      }
     },
     addClick() {
-      var data = this.addData[0];
-      var params = {
-        xmmc: data.xmmc,
-        zzdw: data.zzdw,
-        djm: data.djm,
-        lx: data.lx,
-        sjdd: data.sjdd,
-        kssj: data.kssj,
-        jssj: data.jssj,
-        zmr: data.zmr,
-        lxfs: data.lxfs,
-        xh: this.$route.query.xh,
-      };
-      edit(params).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("新增成功");
-          this.query();
-        } else {
-          this.$message.error("新增失败");
-        }
-      });
-      this.addModal = false;
+      if (!this.checkFormAdd()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        var data = this.formAdd.addData[0];
+        var params = {
+          xmmc: data.xmmc,
+          zzdw: data.zzdw,
+          djm: data.djm,
+          lx: data.lx,
+          sjdd: data.sjdd,
+          kssj: data.kssj,
+          jssj: data.jssj,
+          zmr: data.zmr,
+          lxfs: data.lxfs,
+          xh: this.$route.query.xh,
+        };
+        edit(params).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("新增成功");
+            this.query();
+          } else {
+            this.$message.error("新增失败");
+          }
+        });
+        this.addModal = false;
+      }
     },
     query() {
       var data = {
@@ -350,7 +518,7 @@ export default {
       });
     },
     xinzeng() {
-      this.addData = []; // 每次打开弹框先将弹框的table数组置空
+      this.formAdd.addData = []; // 每次打开弹框先将弹框的table数组置空
       var newLine = {
         xmmc: "",
         zzdw: "",
@@ -362,7 +530,7 @@ export default {
         zmr: "",
         lxfs: "",
       };
-      this.addData.push(newLine);
+      this.formAdd.addData.push(newLine);
       this.addModal = true;
     },
     addCance() {

@@ -128,7 +128,7 @@
                 <i class="scopeIncon chDis"></i>
                 <span style="color: #bfbfbf">撤回</span>
               </el-button>
-              <el-button type="text" size="small" @click="lct(scope.row)">
+              <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
                 <span>流程图</span>
               </el-button>
@@ -382,46 +382,6 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="流程图" :visible.sync="lctModal" width="40%">
-        <div>
-          <el-image :src="url"
-            ><div slot="placeholder" class="image-slot">
-              加载中<span class="dot">...</span>
-            </div></el-image
-          >
-          <el-table :data="tableLct">
-            <el-table-column prop="userId" label="操作人" sortable="custom">
-            </el-table-column>
-            <el-table-column prop="opTime" label="操作时间" sortable="custom">
-            </el-table-column>
-            <el-table-column prop="nodeName" label="操作节点" sortable="custom">
-            </el-table-column>
-            <el-table-column prop="opType" label="操作类型" sortable="custom">
-              <template slot-scope="scope">
-                <el-select
-                  v-model="scope.row.opType"
-                  placeholder="请选择"
-                  :disabled="true"
-                >
-                  <el-option
-                    v-for="(item, index) in czlx"
-                    :key="index"
-                    :label="item.mc"
-                    :value="item.dm"
-                  ></el-option>
-                </el-select>
-              </template>
-            </el-table-column>
-            <el-table-column prop="msg" label="审核意见" sortable="custom">
-            </el-table-column>
-          </el-table>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" class="confirm" @click="editClick"
-            >确 定</el-button
-          >
-        </span>
-      </el-dialog>
       <pagination
         v-show="queryParams.totalCount > 0"
         :total="queryParams.totalCount"
@@ -439,6 +399,12 @@
         >
       </span>
     </el-dialog>
+    <lctCom
+      :tableLct="tableLct"
+      :url="url"
+      :lctModal="lctModal"
+      @handleCloseLct="handleCloseLct"
+    ></lctCom>
   </div>
 </template>
 <script>
@@ -451,13 +417,16 @@ import {
   tj,
   lctTable,
 } from "@/api/stuDangan/detailList/xiaoneiwai";
+import lctCom from "../../../components/lct";
 import { delwj } from "@/api/assistantWork/classEvent";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
 export default {
+  components: { lctCom },
   data() {
     return {
       tableLct: [],
+      url: "",
       lctModal: false,
       addModal: false,
       editModal: false,
@@ -477,8 +446,6 @@ export default {
       fileListAdd: [],
       ztStatus: [],
       val: [],
-      url: "",
-      tableLct: [],
       czlx: [],
       rules: {
         pxxmmc: [
@@ -516,8 +483,7 @@ export default {
   },
   mounted() {
     this.query();
-    this.getCode("dmsplcm"); //性别
-    this.getCode("dmshrzlx"); //性别
+    this.getCode("dmsplcm"); //状态
   },
 
   methods: {
@@ -534,6 +500,9 @@ export default {
 
       return true;
     },
+    handleCloseLct() {
+      this.lctModal = false;
+    },
     checkFormEdit() {
       // 1.校验必填项
       let validForm = false;
@@ -546,7 +515,7 @@ export default {
 
       return true;
     },
-    lct(row) {
+    lctClick(row) {
       this.tableLct = [];
       this.url = "";
       var processInstanceId = row.processid;
@@ -554,7 +523,6 @@ export default {
         this.url = window.URL.createObjectURL(res);
       });
       lctTable({ processInstanceId }).then((res) => {
-        console.log("res", res);
         this.tableLct = res.data;
       });
       this.lctModal = true;
@@ -574,9 +542,6 @@ export default {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
         switch (val) {
-          case "dmshrzlx":
-            this.czlx = res.data;
-            break;
           case "dmsplcm": //审批结果
             this.ztStatus = res.data;
             break;

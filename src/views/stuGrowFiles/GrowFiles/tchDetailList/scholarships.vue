@@ -12,9 +12,6 @@
           <div class="btns borderGreen" @click="xinzeng">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
-          <div class="btns borderGreen" @click="tj">
-            <i class="icon greenIcon"></i><span class="title1">提交</span>
-          </div>
         </div>
       </div>
       <div class="mt15">
@@ -74,40 +71,9 @@
                 type="text"
                 size="small"
                 @click="bianji(scope.row)"
-                v-if="scope.row.status === '01' || scope.row.status === '08'"
               >
                 <i class="scopeIncon Edit"></i>
                 <span>编辑</span>
-              </el-button>
-              <el-button
-                type="text"
-                size="small"
-                :disabled="true"
-                @click="bianji(scope.row)"
-                v-if="scope.row.status !== '01' && scope.row.status !== '08'"
-              >
-                <i class="scopeIncon EditDis"></i>
-                <span>编辑</span>
-              </el-button>
-
-              <el-button
-                type="text"
-                size="small"
-                @click="chehui(scope.row)"
-                v-if="scope.row.status === '02'"
-              >
-                <i class="scopeIncon ch"></i>
-                <span>撤回</span>
-              </el-button>
-              <el-button
-                type="text"
-                size="small"
-                :disabled="true"
-                @click="chehui(scope.row)"
-                v-if="scope.row.status !== '02'"
-              >
-                <i class="scopeIncon chDis"></i>
-                <span style="color: #bfbfbf">撤回</span>
               </el-button>
               <el-button type="text" size="small" @click="lct(scope.row)">
                 <i class="scopeIncon lct"></i>
@@ -318,8 +284,6 @@ import {
   deleteJxj,
   queryJxjList,
   updateJxj,
-  commitJxj,
-  RollBackJxj,
 } from "@/api/growFiles/scholarships";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
@@ -335,7 +299,7 @@ export default {
       tableDate: [],
       isEdit: 1,
       queryParams: {
-        xh: this.$store.getters.userId,
+        xh: this.$route.query.xh,
         pageNum: 1,
         pageSize: 10,
         totalCount: 0,
@@ -359,7 +323,7 @@ export default {
   methods: {
     getinList() {
       let data = {
-        xh: this.$store.getters.userId,
+        xh: this.$route.query.xh,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",
@@ -382,27 +346,6 @@ export default {
         this.url = window.URL.createObjectURL(res);
       });
       this.lctModal = true;
-    },
-    chehui(row) {
-      RollBackJxj({ ...row }).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("撤销成功");
-          this.getinList();
-        } else {
-          this.$message.error("撤销失败");
-        }
-      });
-    },
-    tj() {
-      var data = this.val;
-      commitJxj(data).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("提交成功");
-          this.getinList();
-        } else {
-          this.$message.error("提交失败");
-        }
-      });
     },
     getCode(val) {
       const data = { codeTableEnglish: val };
@@ -486,7 +429,7 @@ export default {
         jxjlxm: this.addData[0].jxjlxm,
         je: this.addData[0].je,
         sldw: this.addData[0].sldw,
-        xh: this.$store.getters.userId,
+        xh: this.$route.query.xh,
       };
 
       insertJxj(data).then((res) => {

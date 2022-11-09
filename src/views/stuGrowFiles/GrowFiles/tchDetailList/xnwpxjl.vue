@@ -12,9 +12,6 @@
           <div class="btns borderGreen" @click="xinzeng">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
-          <div class="btns borderGreen" @click="tj">
-            <i class="icon greenIcon"></i><span class="title1">提交</span>
-          </div>
         </div>
       </div>
       <div class="mt15">
@@ -93,41 +90,11 @@
                 type="text"
                 size="small"
                 @click="bianji(scope.row)"
-                v-if="scope.row.status === '01' || scope.row.status === '08'"
               >
                 <i class="scopeIncon Edit"></i>
                 <span>编辑</span>
               </el-button>
-              <el-button
-                type="text"
-                size="small"
-                :disabled="true"
-                @click="bianji(scope.row)"
-                v-if="scope.row.status !== '01' && scope.row.status !== '08'"
-              >
-                <i class="scopeIncon EditDis"></i>
-                <span>编辑</span>
-              </el-button>
 
-              <el-button
-                type="text"
-                size="small"
-                @click="chehui(scope.row)"
-                v-if="scope.row.status === '02'"
-              >
-                <i class="scopeIncon ch"></i>
-                <span>撤回</span>
-              </el-button>
-              <el-button
-                type="text"
-                size="small"
-                :disabled="true"
-                @click="chehui(scope.row)"
-                v-if="scope.row.status !== '02'"
-              >
-                <i class="scopeIncon chDis"></i>
-                <span style="color: #bfbfbf">撤回</span>
-              </el-button>
               <el-button type="text" size="small" @click="lct(scope.row)">
                 <i class="scopeIncon lct"></i>
                 <span>流程图</span>
@@ -337,9 +304,7 @@ import {
   edit,
   del,
   query,
-  back,
   lct,
-  tj,
   lctTable,
 } from "@/api/stuDangan/detailList/xiaoneiwai";
 import { delwj } from "@/api/assistantWork/classEvent";
@@ -363,7 +328,6 @@ export default {
       },
       fileList: [],
       delArr: [],
-      tjArr: [],
       fileListAdd: [],
       ztStatus: [],
       val: [],
@@ -390,52 +354,14 @@ export default {
       });
       this.lctModal = true;
     },
-
-    chehui(row) {
-      back({ ...row }).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("撤销成功");
-          this.query();
-        } else {
-          this.$message.error("撤销失败");
-        }
-      });
-    },
     getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
         this.ztStatus = res.data;
       });
     },
-    tj() {
-      var data = this.val;
-      var falg = 1;
-      for (var i = 0; i < this.val.length; i++) {
-        if (this.val[i].status !== "01") falg = 2;
-      }
-      if (falg == 1) {
-        if (this.tjArr && this.tjArr.length > 0) {
-          tj(data).then((res) => {
-            if (res.errcode == "00") {
-              this.$message.success("提交成功");
-              this.query();
-            } else {
-              this.$message.error("提交失败");
-            }
-          });
-        } else {
-          this.$message.error("请先勾选数据");
-        }
-      } else {
-        this.$message.error("存在非草稿状态数据，不可以提交");
-      }
-    },
     del() {
-      var falg = 1;
-      for (var i = 0; i < this.val.length; i++) {
-        if (this.val[i].status !== "01") falg = 2;
-      }
-      if (falg == 1) {
+  
         if (this.delArr && this.delArr.length > 0) {
           del({ ids: this.delArr }).then((res) => {
             this.$message.success("删除成功");
@@ -444,9 +370,7 @@ export default {
         } else {
           this.$message.error("请先勾选数据");
         }
-      } else {
-        this.$message.error("存在草稿状态数据，不可以删除");
-      }
+
     },
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
@@ -456,7 +380,6 @@ export default {
     handleSelectionChange(val) {
       this.val = val;
       this.delArr = val.map((item) => item.id);
-      this.tjArr = val.map((item) => item.id);
     },
     handlePreview() {
       console.log("yulan");
@@ -509,7 +432,7 @@ export default {
       formData.append("pxdwlb", data.pxdwlb);
       formData.append("jg", data.jg);
       formData.append("id", data.id);
-      formData.append("xh", this.$store.getters.userId);
+      formData.append("xh", this.$route.query.xh,);
       if (this.fileListAdd.length > 0) {
         this.fileListAdd.map((file) => {
           formData.append("files", file.raw);
@@ -536,7 +459,7 @@ export default {
       formData.append("xz", data.xz);
       formData.append("pxdwlb", data.pxdwlb);
       formData.append("jg", data.jg);
-      formData.append("xh", this.$store.getters.userId);
+      formData.append("xh", this.$route.query.xh,);
       if (this.fileList.length > 0) {
         this.fileList.map((file) => {
           formData.append("files", file.raw);
@@ -554,7 +477,7 @@ export default {
     },
     query() {
       var data = {
-        xh: this.$store.getters.userId,
+        xh: this.$route.query.xh,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",

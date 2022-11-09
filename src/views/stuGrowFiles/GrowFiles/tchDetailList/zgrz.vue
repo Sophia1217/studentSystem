@@ -12,9 +12,6 @@
           <div class="btns borderGreen" @click="xinzeng">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
-          <div class="btns borderGreen" @click="tj">
-            <i class="icon greenIcon"></i><span class="title1">提交</span>
-          </div>
         </div>
       </div>
       <div class="mt15">
@@ -84,41 +81,11 @@
                 type="text"
                 size="small"
                 @click="bianji(scope.row)"
-                v-if="scope.row.status === '01' || scope.row.status === '08'"
               >
                 <i class="scopeIncon Edit"></i>
                 <span>编辑</span>
               </el-button>
-              <el-button
-                type="text"
-                size="small"
-                :disabled="true"
-                @click="bianji(scope.row)"
-                v-if="scope.row.status !== '01' && scope.row.status !== '08'"
-              >
-                <i class="scopeIncon EditDis"></i>
-                <span>编辑</span>
-              </el-button>
 
-              <el-button
-                type="text"
-                size="small"
-                @click="chehui(scope.row)"
-                v-if="scope.row.status === '02'"
-              >
-                <i class="scopeIncon ch"></i>
-                <span>撤回</span>
-              </el-button>
-              <el-button
-                type="text"
-                size="small"
-                :disabled="true"
-                @click="chehui(scope.row)"
-                v-if="scope.row.status !== '02'"
-              >
-                <i class="scopeIncon chDis"></i>
-                <span style="color: #bfbfbf">撤回</span>
-              </el-button>
               <el-button type="text" size="small" @click="lct(scope.row)">
                 <i class="scopeIncon lct"></i>
                 <span>流程图</span>
@@ -290,11 +257,9 @@
 </template>
 <script>
 import {
-  cxById,
   deleteZgrz,
   queryZgrzList,
   importCzdaZgrz,
-  tjById,
 } from "@/api/growFiles/zgrz";
 import { lct } from "@/api/stuDangan/detailList/xiaoneiwai";
 import { delwj } from "@/api/assistantWork/classEvent";
@@ -335,27 +300,6 @@ export default {
         this.url = window.URL.createObjectURL(res);
       });
       this.lctModal = true;
-    },
-    chehui(row) {
-      cxById({ ...row }).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("撤销成功");
-          this.query();
-        } else {
-          this.$message.error("撤销失败");
-        }
-      });
-    },
-    tj() {
-      var data = this.val;
-      tjById(data).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("提交成功");
-          this.query();
-        } else {
-          this.$message.error("提交失败");
-        }
-      });
     },
     getCode(val) {
       const data = { codeTableEnglish: val };
@@ -432,7 +376,7 @@ export default {
       formData.append("id", data.id);
       formData.append("zsbh", data.zsbh);
       formData.append("zslx", data.zslx);
-      formData.append("xh", this.$store.getters.userId);
+      formData.append("xh", this.$route.query.xh);
       if (this.fileListAdd.length > 0) {
         this.fileListAdd.map((file) => {
           formData.append("files", file.raw);
@@ -459,7 +403,7 @@ export default {
       //formData.append("id", data.id);
       formData.append("zsbh", data.zsbh);
       formData.append("zslx", data.zslx);
-      formData.append("xh", this.$store.getters.userId);
+      formData.append("xh", this.$route.query.xh);
       if (this.fileList.length > 0) {
         this.fileList.map((file) => {
           formData.append("files", file.raw);
@@ -477,7 +421,7 @@ export default {
     },
     query() {
       var data = {
-        xh: this.$store.getters.userId,
+        xh: this.$route.query.xh,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         //orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",

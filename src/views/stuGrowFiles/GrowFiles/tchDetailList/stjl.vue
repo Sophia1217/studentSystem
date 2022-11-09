@@ -12,9 +12,6 @@
           <div class="btns borderGreen" @click="xinzeng">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
-          <div class="btns borderGreen" @click="submit">
-            <i class="icon greenIcon"></i><span class="title1">提交</span>
-          </div>
         </div>
       </div>
       <div class="mt15">
@@ -73,40 +70,9 @@
                 type="text"
                 size="small"
                 @click="bianji(scope.row)"
-                v-if="scope.row.status === '01' || scope.row.status === '08'"
               >
                 <i class="scopeIncon Edit"></i>
                 <span>编辑</span>
-              </el-button>
-              <el-button
-                type="text"
-                size="small"
-                :disabled="true"
-                @click="bianji(scope.row)"
-                v-if="scope.row.status !== '01' && scope.row.status !== '08'"
-              >
-                <i class="scopeIncon EditDis"></i>
-                <span>编辑</span>
-              </el-button>
-
-              <el-button
-                type="text"
-                size="small"
-                @click="chehui(scope.row)"
-                v-if="scope.row.status === '02'"
-              >
-                <i class="scopeIncon ch"></i>
-                <span>撤回</span>
-              </el-button>
-              <el-button
-                type="text"
-                size="small"
-                :disabled="true"
-                @click="chehui(scope.row)"
-                v-if="scope.row.status !== '02'"
-              >
-                <i class="scopeIncon chDis"></i>
-                <span style="color: #bfbfbf">撤回</span>
               </el-button>
               <el-button type="text" size="small" @click="lct(scope.row)">
                 <i class="scopeIncon lct"></i>
@@ -234,19 +200,6 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="提交" :visible.sync="submitModal" width="30%">
-        <template>
-          <div>
-            <span>确认提交？</span>
-          </div>
-        </template>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="subCancel">取 消</el-button>
-          <el-button type="primary" class="confirm" @click="submitConfirm"
-            >确 定</el-button
-          >
-        </span>
-      </el-dialog>
       <pagination
         v-show="queryParams.totalCount > 0"
         :total="queryParams.totalCount"
@@ -262,8 +215,6 @@ import {
   edit,
   del,
   query,
-  stjlTj,
-  stjlCx,
 } from "@/api/stuDangan/detailList/stjl";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
@@ -273,7 +224,6 @@ export default {
       ztStatus: [],
       addModal: false,
       editModal: false,
-      submitModal: false,
       addData: [],
       editData: [],
       tableDate: [],
@@ -284,7 +234,6 @@ export default {
         xh: "",
       },
       delArr: [],
-      subArr: [],
       val: [],
     };
   },
@@ -301,11 +250,7 @@ export default {
       });
     },
     del() {
-      var falg = 1;
-      for (var i = 0; i < this.val.length; i++) {
-        if (this.val[i].status !== "01") falg = 2;
-      }
-      if (falg == 1) {
+
         if (this.delArr && this.delArr.length > 0) {
           del({ ids: this.delArr }).then((res) => {
             this.$message.success("删除成功");
@@ -314,9 +259,7 @@ export default {
         } else {
           this.$message.error("请先勾选数据");
         }
-      } else {
-        this.$message.error("存在草稿状态数据，不可以删除");
-      }
+  
     },
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
@@ -326,7 +269,6 @@ export default {
     handleSelectionChange(val) {
       this.val = val;
       this.delArr = val.map((item) => item.id);
-      this.subArr = val.map((item) => item.id);
     },
     bianji(row) {
       this.editData = [];
@@ -347,7 +289,7 @@ export default {
       //   jssj: data.jssj,
       //   zdlsxm: data.zdlsxm,
       //   id: data.id,
-      //   xh: this.$store.getters.userId,
+      //   xh: this.$route.query.xh,
       // };
       edit(data).then((res) => {
         if (res.errcode == "00") {
@@ -369,7 +311,7 @@ export default {
         kssj: data.kssj,
         jssj: data.jssj,
         zdlsxm: data.zdlsxm,
-        xh: this.$store.getters.userId,
+        xh: this.$route.query.xh,
       };
       edit(params).then((res) => {
         if (res.errcode == "00") {
@@ -383,7 +325,7 @@ export default {
     },
     query() {
       var data = {
-        xh: this.$store.getters.userId,
+        xh: this.$route.query.xh,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",
@@ -407,44 +349,6 @@ export default {
       };
       this.addData.push(newLine);
       this.addModal = true;
-    },
-    //提交
-    submit() {
-      var falg = 1;
-      for (var i = 0; i < this.val.length; i++) {
-        if (this.val[i].status !== "01") falg = 2;
-      }
-      if (falg == 1) {
-        if (this.subArr && this.subArr.length > 0) {
-          this.submitModal = true;
-        } else {
-          this.$message.error("请先勾选数据");
-        }
-      } else {
-        this.$message.error("不是草稿状态数据，不可以提交");
-      }
-    },
-    submitConfirm() {
-      var data = this.val;
-      stjlTj(data).then((res) => {
-        console.log(111);
-        this.$message.success("提交成功");
-        this.query();
-        this.submitModal = false;
-      });
-    },
-    subCancel() {
-      this.submitModal = false;
-    },
-    chehui(row) {
-      stjlCx({ ...row }).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("撤销成功");
-          this.query();
-        } else {
-          this.$message.error("撤销失败");
-        }
-      });
     },
     addCance() {
       this.addModal = false;

@@ -2701,7 +2701,7 @@
                 <div class="wrap">
                   <div class="title">是否专业学位</div>
                   <div v-if="isEdit == 1" class="content">
-                    {{ detailInfo.xsXjxx.sfzyxw }}
+                    {{ detailInfo.xsXjxx.sfzyxw_chinese }}
                   </div>
                   <div v-if="isEdit == 2" class="content">
                     <!-- <el-input

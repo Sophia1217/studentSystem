@@ -45,24 +45,20 @@
 
 <script>
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+import { lct, lctTable } from "@/api/stuDangan/detailList/xiaoneiwai";
 export default {
   name: "lctCom",
 
   data() {
-    return {};
+    return {
+      url: "",
+      tableLct: [],
+    };
   },
   props: {
-    url: {
-      type: String,
-      default: "",
-    },
     lctModal: {
       type: Boolean,
       default: false,
-    },
-    tableLct: {
-      type: Array,
-      default: [],
     },
   },
 
@@ -71,6 +67,15 @@ export default {
   },
 
   methods: {
+    inner(val) {
+      var processInstanceId = val;
+      lct({ processInstanceId }).then((res) => {
+        this.url = window.URL.createObjectURL(res);
+      });
+      lctTable({ processInstanceId }).then((res) => {
+        this.tableLct = res.data;
+      });
+    },
     handleCloseDia() {
       this.$emit("handleCloseLct");
     },

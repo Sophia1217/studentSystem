@@ -400,8 +400,7 @@
       </span>
     </el-dialog>
     <lctCom
-      :tableLct="tableLct"
-      :url="url"
+      ref="child"
       :lctModal="lctModal"
       @handleCloseLct="handleCloseLct"
     ></lctCom>
@@ -425,8 +424,6 @@ export default {
   components: { lctCom },
   data() {
     return {
-      tableLct: [],
-      url: "",
       lctModal: false,
       addModal: false,
       editModal: false,
@@ -503,6 +500,10 @@ export default {
     handleCloseLct() {
       this.lctModal = false;
     },
+    lctClick(row) {
+      this.$refs.child.inner(row.processid);
+      this.lctModal = true;
+    },
     checkFormEdit() {
       // 1.校验必填项
       let validForm = false;
@@ -514,18 +515,6 @@ export default {
       }
 
       return true;
-    },
-    lctClick(row) {
-      this.tableLct = [];
-      this.url = "";
-      var processInstanceId = row.processid;
-      lct({ processInstanceId }).then((res) => {
-        this.url = window.URL.createObjectURL(res);
-      });
-      lctTable({ processInstanceId }).then((res) => {
-        this.tableLct = res.data;
-      });
-      this.lctModal = true;
     },
 
     chehui(row) {

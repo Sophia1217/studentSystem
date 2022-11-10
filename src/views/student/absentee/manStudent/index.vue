@@ -241,20 +241,20 @@
       <div class="headerTop">
         <div class="headerLeft">
           <span class="title">学生信息列表</span> <i class="Updataicon"></i>
-        </div>
-        <div class="headerRight">
           <div class="btns borderBlue" @click="modal(1)">
-            <i class="icon blueIcon"></i><span class="title">毕业生登记表</span>
+            <i class="icon blueIcon"></i
+            ><span class="title2">毕业生登记表</span>
           </div>
           <div class="btns borderBlue" @click="modal(2)">
-            <i class="icon orangeIcon"></i><span class="title">学生登记表</span>
+            <i class="icon orangeIcon"></i
+            ><span class="title2">学生登记表</span>
           </div>
           <div class="btns borderBlue" @click="modal(3)">
-            <i class="icon lightIcon"></i><span class="title">学生卡片</span>
+            <i class="icon lightIcon"></i><span class="title2">学生卡片</span>
           </div>
-          <div class="btns" style="background: #ebfafd" @click="dynamicTable">
-            <i class="el-icon-s-operation"></i>
-          </div>
+        </div>
+
+        <div class="headerRight">
           <div class="btns borderGreen" @click="mbDown">
             <span class="title">模板下载</span>
           </div>
@@ -278,6 +278,9 @@
 
           <div class="btns borderGreen" @click="openAdd">
             <i class="icon addIcon"></i><span class="title">新增</span>
+          </div>
+          <div class="btns" style="background: #ffffff" @click="dynamicTable">
+            <i class="el-icon-s-operation"></i>
           </div>
         </div>
       </div>
@@ -1255,11 +1258,19 @@ export default {
       justify-content: space-between;
       align-items: center;
       .headerLeft {
+        display: flex;
+
         .title {
           font-weight: 600;
           font-size: 20px;
           color: #1f1f1f;
           line-height: 28px;
+        }
+        .title2 {
+          font-size: 14px;
+          text-align: center;
+          line-height: 22px;
+          // vertical-align: middle;
         }
         .Updataicon {
           display: inline-block;
@@ -1269,9 +1280,6 @@ export default {
           height: 20px;
           background: url("../../../../assets/images/updata.png") no-repeat;
         }
-      }
-      .headerRight {
-        display: flex;
         .borderBlue {
           border: 1px solid #0d84e0;
           color: #0d84e0;
@@ -1287,6 +1295,37 @@ export default {
           color: #0090a1;
           background: #e7fcfc;
         }
+        .btns {
+          margin-left: 15px;
+          padding: 5px 10px;
+          cursor: pointer;
+          .title {
+            font-size: 14px;
+            text-align: center;
+            line-height: 22px;
+            // vertical-align: middle;
+          }
+          .icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            vertical-align: top;
+            margin-right: 5px;
+          }
+          .blueIcon {
+            background: url("~@/assets/images/icon_1.png") no-repeat;
+          }
+          .orangeIcon {
+            background: url("~@/assets/images/icon_2.png") no-repeat;
+          }
+          .lightIcon {
+            background: url("~@/assets/images/icon_3.png") no-repeat;
+          }
+        }
+      }
+      .headerRight {
+        display: flex;
+
         .borderGreen {
           border: 1px solid #005657;
           color: #005657;

@@ -476,8 +476,12 @@ export default {
       this.lctModal = false;
     },
     lctClick(row) {
-      this.$refs.child.inner(row.processid);
-      this.lctModal = true;
+      if (!!row.processid) {
+        this.$refs.child.inner(row.processid);
+        this.lctModal = true;
+      } else {
+        this.$message.warning("此项经历为管理员新增，暂无流程数据");
+      }
     },
     getCode(val) {
       const data = { codeTableEnglish: val };

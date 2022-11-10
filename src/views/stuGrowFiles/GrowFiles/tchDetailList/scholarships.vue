@@ -6,7 +6,7 @@
           <span class="title">校内外奖项</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderLight" @click="del">
+          <div class="btns borderLight" @click="showDel">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
           <div class="btns borderGreen" @click="xinzeng">
@@ -67,15 +67,11 @@
             width="240"
           >
             <template slot-scope="scope">
-              <el-button
-                type="text"
-                size="small"
-                @click="bianji(scope.row)"
-              >
+              <el-button type="text" size="small" @click="bianji(scope.row)">
                 <i class="scopeIncon Edit"></i>
                 <span>编辑</span>
               </el-button>
-              <el-button type="text" size="small" @click="lct(scope.row)">
+              <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
                 <span>流程图</span>
               </el-button>
@@ -329,18 +325,11 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="流程图" :visible.sync="lctModal" width="40%">
-        <el-image :src="url"
-          ><div slot="placeholder" class="image-slot">
-            加载中<span class="dot">...</span>
-          </div></el-image
-        >
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" class="confirm" @click="editClick"
-            >确 定</el-button
-          >
-        </span>
-      </el-dialog>
+      <lctCom
+        ref="child"
+        :lctModal="lctModal"
+        @handleCloseLct="handleCloseLct"
+      ></lctCom>
       <pagination
         v-show="queryParams.totalCount > 0"
         :total="queryParams.totalCount"
@@ -349,6 +338,15 @@
         @pagination="getinList"
       />
     </div>
+    <el-dialog title="删除" :visible.sync="delModal" width="20%">
+      <span>确认删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="del()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -358,14 +356,17 @@ import {
   queryJxjList,
   updateJxj,
 } from "@/api/growFiles/scholarships";
+import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
   name: "scholarships",
+  components: { lctCom },
   data() {
     return {
       lctModal: false,
       addModal: false,
       editModal: false,
+      delModal: false,
       detailInfoData: {},
       formAdd: { addData: [] },
       formEdit: { editData: [] },
@@ -464,11 +465,18 @@ export default {
         })
         .catch((err) => {});
     },
-    lct(row) {
-      var processInstanceId = row.processid;
-      lct({ processInstanceId }).then((res) => {
-        this.url = window.URL.createObjectURL(res);
-      });
+    // lct(row) {
+    //   var processInstanceId = row.processid;
+    //   lct({ processInstanceId }).then((res) => {
+    //     this.url = window.URL.createObjectURL(res);
+    //   });
+    //   this.lctModal = true;
+    // },
+    handleCloseLct() {
+      this.lctModal = false;
+    },
+    lctClick(row) {
+      this.$refs.child.inner(row.processid);
       this.lctModal = true;
     },
     getCode(val) {
@@ -491,14 +499,14 @@ export default {
       });
     },
     del() {
-      if (this.delArr && this.delArr.length > 0) {
-        deleteJxj(this.delArr).then((res) => {
-          this.$message.success("删除成功");
-          this.getinList();
-        });
-      } else {
-        this.$message.error("请先勾选数据");
-      }
+      // if (this.delArr && this.delArr.length > 0) {
+      deleteJxj(this.delArr).then((res) => {
+        this.$message.success("删除成功");
+        this.getinList();
+      });
+      // } else {
+      //   this.$message.error("请先勾选数据");
+      // }
     },
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
@@ -584,38 +592,24 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.getinList();
     },
-    // editButtonClick() {
-    //   this.isEdit = 2; // 控制是否可以编辑的字段
-    // },
-    // handleCancle() {
-    //   this.isEdit = 1;
-    // },
-    // handleUpdata() {
-    //   updateJxj().then((res) => {
-    //     if (res.errcode == "00") {
-    //       this.getinList(this.queryParams);
-    //     }
-    //   });
-    // },
-    // addDetailInfoData() {
-    //   this.detailInfoData.xnJxj.push({});
-
-    //   insertJxj(data).then((res) => {
-    //     if (res.errcode == "00") {
-    //       console.log(res);
-    //       this.getinList(this.queryParams);
-    //     }
-    //   });
-    // },
-    // delDetailInfoData() {
-    //   deleteJxj().then((res) => {
-    //     if (res.errcode == "00") {
-    //       this.getinList(this.queryParams);
-    //     }
-    //   });
-    // },
-    // //撤回
-    // deleteDetail() {},
+    delCancel() {
+      this.delModal = false;
+    },
+    showDel() {
+      var falg = 1;
+      for (var i = 0; i < this.val.length; i++) {
+        if (this.val[i].status !== "01") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.delArr && this.delArr.length > 0) {
+          this.delModal = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("存在非草稿状态数据，不可以删除");
+      }
+    },
   },
 };
 </script>

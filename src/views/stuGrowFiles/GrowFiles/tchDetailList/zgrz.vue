@@ -6,7 +6,7 @@
           <span class="title">资格认证</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderLight" @click="del">
+          <div class="btns borderLight" @click="showDel">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
           <div class="btns borderGreen" @click="xinzeng">
@@ -29,17 +29,25 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="zslx" label="证书类型"> </el-table-column>
-          <el-table-column prop="cj" label="成绩"> </el-table-column>
-          <el-table-column prop="djm" label="等级"> </el-table-column>
-          <el-table-column prop="fxlb" label="方向/类别"> </el-table-column>
-          <el-table-column prop="zsbh" label="证书编号"> </el-table-column>
-          <el-table-column prop="fzdw" label="发证单位"> </el-table-column>
-          <el-table-column prop="fzsj" label="发证时间"> </el-table-column>
+          <el-table-column prop="zslx" label="证书类型" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="cj" label="成绩" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="djm" label="等级" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="fxlb" label="方向/类别" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="zsbh" label="证书编号" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="fzdw" label="发证单位" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="fzsj" label="发证时间" sortable="custom">
+          </el-table-column>
 
           <el-table-column
             prop="fileList"
             label="附件"
+            sortable="custom"
             align="center"
             width="300"
           >
@@ -54,7 +62,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="status" label="审核状态">
+          <el-table-column prop="status" label="审核状态" sortable="custom">
             <template slot-scope="scope">
               <el-select
                 v-model="scope.row.status"
@@ -77,16 +85,12 @@
             width="240"
           >
             <template slot-scope="scope">
-              <el-button
-                type="text"
-                size="small"
-                @click="bianji(scope.row)"
-              >
+              <el-button type="text" size="small" @click="bianji(scope.row)">
                 <i class="scopeIncon Edit"></i>
                 <span>编辑</span>
               </el-button>
 
-              <el-button type="text" size="small" @click="lct(scope.row)">
+              <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
                 <span>流程图</span>
               </el-button>
@@ -307,18 +311,11 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="流程图" :visible.sync="lctModal" width="40%">
-        <el-image :src="url"
-          ><div slot="placeholder" class="image-slot">
-            加载中<span class="dot">...</span>
-          </div></el-image
-        >
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" class="confirm" @click="editClick"
-            >确 定</el-button
-          >
-        </span>
-      </el-dialog>
+      <lctCom
+        ref="child"
+        :lctModal="lctModal"
+        @handleCloseLct="handleCloseLct"
+      ></lctCom>
       <pagination
         v-show="queryParams.totalCount > 0"
         :total="queryParams.totalCount"
@@ -327,6 +324,15 @@
         @pagination="query"
       />
     </div>
+    <el-dialog title="删除" :visible.sync="delModal" width="20%">
+      <span>确认删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="del()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -335,16 +341,18 @@ import {
   queryZgrzList,
   importCzdaZgrz,
 } from "@/api/growFiles/zgrz";
-import { lct } from "@/api/stuDangan/detailList/xiaoneiwai";
+import lctCom from "../../../components/lct";
 import { delwj } from "@/api/assistantWork/classEvent";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
 export default {
+  components: { lctCom },
   data() {
     return {
       lctModal: false,
       addModal: false,
       editModal: false,
+      delModal: false,
       formAdd: { addData: [] },
       formEdit: { editData: [] },
       tableDate: [],
@@ -421,11 +429,11 @@ export default {
 
       return true;
     },
-    lct(row) {
-      var processInstanceId = row.processid;
-      lct({ processInstanceId }).then((res) => {
-        this.url = window.URL.createObjectURL(res);
-      });
+    handleCloseLct() {
+      this.lctModal = false;
+    },
+    lctClick(row) {
+      this.$refs.child.inner(row.processid);
       this.lctModal = true;
     },
     getCode(val) {
@@ -435,14 +443,15 @@ export default {
       });
     },
     del() {
-      if (this.delArr && this.delArr.length > 0) {
-        deleteZgrz({ ids: this.delArr }).then((res) => {
-          this.$message.success("删除成功");
-          this.query();
-        });
-      } else {
-        this.$message.error("请先勾选数据");
-      }
+      // if (this.delArr && this.delArr.length > 0) {
+      deleteZgrz({ ids: this.delArr }).then((res) => {
+        this.$message.success("删除成功");
+        this.query();
+      });
+      // } else {
+      //   this.$message.error("请先勾选数据");
+      // }
+      this.delModal = false;
     },
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
@@ -586,6 +595,24 @@ export default {
     },
     addCance() {
       this.addModal = false;
+    },
+    delCancel() {
+      this.delModal = false;
+    },
+    showDel() {
+      var falg = 1;
+      for (var i = 0; i < this.val.length; i++) {
+        if (this.val[i].status !== "01") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.delArr && this.delArr.length > 0) {
+          this.delModal = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("存在非草稿状态数据，不可以删除");
+      }
     },
   },
 };

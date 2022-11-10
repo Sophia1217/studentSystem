@@ -12,7 +12,7 @@
           <div class="btns borderGreen" @click="xinzeng">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
-          <div class="btns borderGreen" @click="tj">
+          <div class="btns borderGreen" @click="submit">
             <i class="icon greenIcon"></i><span class="title1">提交</span>
           </div>
         </div>
@@ -109,7 +109,7 @@
                 <i class="scopeIncon chDis"></i>
                 <span style="color: #bfbfbf">撤回</span>
               </el-button>
-              <el-button type="text" size="small" @click="lct(scope.row)">
+              <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
                 <span>流程图</span>
               </el-button>
@@ -363,18 +363,11 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="流程图" :visible.sync="lctModal" width="40%">
-        <el-image :src="url"
-          ><div slot="placeholder" class="image-slot">
-            加载中<span class="dot">...</span>
-          </div></el-image
-        >
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" class="confirm" @click="editClick"
-            >确 定</el-button
-          >
-        </span>
-      </el-dialog>
+      <lctCom
+        ref="child"
+        :lctModal="lctModal"
+        @handleCloseLct="handleCloseLct"
+      ></lctCom>
 
       <pagination
         v-show="queryParams.totalCount > 0"
@@ -393,6 +386,19 @@
         >
       </span>
     </el-dialog>
+    <el-dialog title="提交" :visible.sync="submitModal" width="30%">
+      <template>
+        <div>
+          <span>确认提交？</span>
+        </div>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="subCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="tj()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -404,15 +410,18 @@ import {
   commitJxj,
   RollBackJxj,
 } from "@/api/growFiles/scholarships";
+import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
   name: "scholarships",
+  components: { lctCom },
   data() {
     return {
       lctModal: false,
       addModal: false,
       editModal: false,
       delModal: false,
+      submitModal: false,
       detailInfoData: {},
       formAdd: { addData: [] },
       formEdit: { editData: [] },
@@ -512,12 +521,19 @@ export default {
         })
         .catch((err) => {});
     },
-    lct(row) {
-      var processInstanceId = row.processid;
-      lct({ processInstanceId }).then((res) => {
-        this.url = window.URL.createObjectURL(res);
-      });
+    // lct(row) {
+    //   var processInstanceId = row.processid;
+    //   lct({ processInstanceId }).then((res) => {
+    //     this.url = window.URL.createObjectURL(res);
+    //   });
+    //   this.lctModal = true;
+    // },
+    lctClick(row) {
+      this.$refs.child.inner(row.processid);
       this.lctModal = true;
+    },
+    handleCloseLct() {
+      this.lctModal = false;
     },
     chehui(row) {
       RollBackJxj({ ...row }).then((res) => {
@@ -560,14 +576,14 @@ export default {
       });
     },
     del() {
-      if (this.delArr && this.delArr.length > 0) {
-        deleteJxj(this.delArr).then((res) => {
-          this.$message.success("删除成功");
-          this.getinList();
-        });
-      } else {
-        this.$message.error("请先勾选数据");
-      }
+      //if (this.delArr && this.delArr.length > 0) {
+      deleteJxj(this.delArr).then((res) => {
+        this.$message.success("删除成功");
+        this.getinList();
+      });
+      // } else {
+      //   this.$message.error("请先勾选数据");
+      // }
       this.delModal = false;
     },
     changeTableSort(column) {
@@ -658,7 +674,39 @@ export default {
       this.delModal = false;
     },
     showDel() {
-      this.delModal = true;
+      var falg = 1;
+      for (var i = 0; i < this.val.length; i++) {
+        if (this.val[i].status !== "01") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.delArr && this.delArr.length > 0) {
+          this.delModal = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("存在非草稿状态数据，不可以删除");
+      }
+    },
+    //提交
+    submit() {
+      var falg = 1;
+      for (var i = 0; i < this.val.length; i++) {
+        if (this.val[i].status !== "01") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.subArr && this.subArr.length > 0) {
+          this.submitModal = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("不是草稿状态数据，不可以提交");
+      }
+    },
+
+    subCancel() {
+      this.submitModal = false;
     },
   },
 };

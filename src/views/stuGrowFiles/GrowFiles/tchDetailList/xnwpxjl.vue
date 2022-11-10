@@ -86,16 +86,12 @@
             width="240"
           >
             <template slot-scope="scope">
-              <el-button
-                type="text"
-                size="small"
-                @click="bianji(scope.row)"
-              >
+              <el-button type="text" size="small" @click="bianji(scope.row)">
                 <i class="scopeIncon Edit"></i>
                 <span>编辑</span>
               </el-button>
 
-              <el-button type="text" size="small" @click="lct(scope.row)">
+              <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
                 <span>流程图</span>
               </el-button>
@@ -349,30 +345,11 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="流程图" :visible.sync="lctModal" width="40%">
-        <div>
-          <el-image :src="url"
-            ><div slot="placeholder" class="image-slot">
-              加载中<span class="dot">...</span>
-            </div></el-image
-          >
-          <el-table :data="tableLct">
-            <el-table-column prop="userId" label="操作人" sortable="custom">
-            </el-table-column>
-            <el-table-column prop="opTime" label="操作时间" sortable="custom">
-            </el-table-column>
-            <el-table-column prop="opType" label="操作类型" sortable="custom">
-            </el-table-column>
-            <el-table-column prop="msg" label="审核意见" sortable="custom">
-            </el-table-column>
-          </el-table>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" class="confirm" @click="editClick"
-            >确 定</el-button
-          >
-        </span>
-      </el-dialog>
+      <lctCom
+        ref="child"
+        :lctModal="lctModal"
+        @handleCloseLct="handleCloseLct"
+      ></lctCom>
       <pagination
         v-show="queryParams.totalCount > 0"
         :total="queryParams.totalCount"
@@ -391,13 +368,14 @@ import {
   lct,
   lctTable,
 } from "@/api/stuDangan/detailList/xiaoneiwai";
+import lctCom from "../../../components/lct";
 import { delwj } from "@/api/assistantWork/classEvent";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
 export default {
+  components: { lctCom },
   data() {
     return {
-      tableLct: [],
       lctModal: false,
       addModal: false,
       editModal: false,
@@ -416,7 +394,6 @@ export default {
       ztStatus: [],
       val: [],
       url: "",
-      tableLct:[],
       rules: {
         pxxmmc: [
           {
@@ -457,6 +434,17 @@ export default {
   },
 
   methods: {
+    handleCloseLct() {
+      this.lctModal = false;
+    },
+    lctClick(row) {
+      if (!!row.processid) {
+        this.$refs.child.inner(row.processid);
+        this.lctModal = true;
+      } else {
+        this.$message.warning("此项经历为管理员新增，暂无流程数据");
+      }
+    },
     // 表单校验
     checkFormAdd() {
       // 1.校验必填项
@@ -482,19 +470,6 @@ export default {
 
       return true;
     },
-    lct(row) {
-      this.tableLct = [];
-      this.url = "";
-      var processInstanceId = row.processid;
-      lct({ processInstanceId }).then((res) => {
-        this.url = window.URL.createObjectURL(res);
-      });
-      lctTable({ processInstanceId }).then((res) => {
-        console.log("res", res);
-        this.tableLct = res.data;
-      });
-      this.lctModal = true;
-    },
     getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
@@ -502,16 +477,14 @@ export default {
       });
     },
     del() {
-  
-        if (this.delArr && this.delArr.length > 0) {
-          del({ ids: this.delArr }).then((res) => {
-            this.$message.success("删除成功");
-            this.query();
-          });
-        } else {
-          this.$message.error("请先勾选数据");
-        }
-
+      if (this.delArr && this.delArr.length > 0) {
+        del({ ids: this.delArr }).then((res) => {
+          this.$message.success("删除成功");
+          this.query();
+        });
+      } else {
+        this.$message.error("请先勾选数据");
+      }
     },
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;

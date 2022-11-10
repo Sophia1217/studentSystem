@@ -1,6 +1,11 @@
 <template>
   <div>
-    <el-dialog title="流程图" :visible.sync="lctModal" width="40%">
+    <el-dialog
+      title="流程图"
+      :visible.sync="lctModal"
+      :before-close="close"
+      width="40%"
+    >
       <div>
         <el-image :src="url"
           ><div slot="placeholder" class="image-slot">
@@ -53,6 +58,7 @@ export default {
     return {
       url: "",
       tableLct: [],
+      czlx: [],
     };
   },
   props: {
@@ -67,6 +73,9 @@ export default {
   },
 
   methods: {
+    close() {
+      this.$emit("handleCloseLct");
+    },
     inner(val) {
       var processInstanceId = val;
       lct({ processInstanceId }).then((res) => {

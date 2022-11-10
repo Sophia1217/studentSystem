@@ -142,7 +142,7 @@
             <el-table-column label="服务地点" width="240px">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'addData.' + scope.$index + '.stmfwddc'"
+                  :prop="'addData.' + scope.$index + '.fwdd'"
                   :rules="rules.fwdd"
                 >
                   <el-input v-model="scope.row.fwdd" />
@@ -451,7 +451,7 @@ export default {
         this.$refs.child.inner(row.processid);
         this.lctModal = true;
       } else {
-         this.$message.warning("此项经历为管理员新增，暂无流程数据");
+        this.$message.warning("此项经历为管理员新增，暂无流程数据");
       }
     },
     getCode(val) {

@@ -6,13 +6,13 @@
           <span class="title">校内外培训经历</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderLight" @click="del">
+          <div class="btns borderLight" @click="showDel">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
           <div class="btns borderGreen" @click="xinzeng">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
-          <div class="btns borderGreen" @click="tj">
+          <div class="btns borderGreen" @click="tjModal">
             <i class="icon greenIcon"></i><span class="title1">提交</span>
           </div>
         </div>
@@ -93,7 +93,7 @@
                 type="text"
                 size="small"
                 @click="bianji(scope.row)"
-                v-if="scope.row.status === '01' || scope.row.status === '08'"
+                v-show="scope.row.status === '01' || scope.row.status === '08'"
               >
                 <i class="scopeIncon Edit"></i>
                 <span>编辑</span>
@@ -101,9 +101,9 @@
               <el-button
                 type="text"
                 size="small"
-                :disabled="true"
+                disabled
                 @click="bianji(scope.row)"
-                v-if="scope.row.status !== '01' && scope.row.status !== '08'"
+                v-show="scope.row.status !== '01' && scope.row.status !== '08'"
               >
                 <i class="scopeIncon EditDis"></i>
                 <span>编辑</span>
@@ -113,7 +113,7 @@
                 type="text"
                 size="small"
                 @click="chehui(scope.row)"
-                v-if="scope.row.status === '02'"
+                v-show="scope.row.status === '02'"
               >
                 <i class="scopeIncon ch"></i>
                 <span>撤回</span>
@@ -121,9 +121,9 @@
               <el-button
                 type="text"
                 size="small"
-                :disabled="true"
+                disabled
                 @click="chehui(scope.row)"
-                v-if="scope.row.status !== '02'"
+                v-show="scope.row.status !== '02'"
               >
                 <i class="scopeIncon chDis"></i>
                 <span style="color: #bfbfbf">撤回</span>
@@ -169,6 +169,7 @@
                     v-model="scope.row.pxkssj"
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
+                    @change="changeDate(scope.row.pxkssj, true)"
                     value-format="yyyy-MM-dd"
                     placeholder="选择日期"
                   >
@@ -187,6 +188,7 @@
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
+                    @change="changeDate(scope.row.pxjssj, false)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -399,6 +401,17 @@
         >
       </span>
     </el-dialog>
+    <el-dialog title="提交" :visible.sync="submitModal" width="30%">
+      <template>
+        <div>
+          <span>确认提交？</span>
+        </div>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="subCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="tj">确 定</el-button>
+      </span>
+    </el-dialog>
     <lctCom
       ref="child"
       :lctModal="lctModal"
@@ -424,6 +437,25 @@ export default {
   components: { lctCom },
   data() {
     return {
+      // pickerOptionsStart: {
+      //   disabledDate: (time) => {
+      //     let endDateVal = this.overDate;
+      //     if (endDateVal) {
+      //       return time.getTime() < new Date(endDateVal).getTime();
+      //     }
+      //   },
+      // },
+      // pickerOptionsEnd: {
+      //   disabledDate: (time) => {
+      //     let beginDateVal = this.createDate;
+      //     if (beginDateVal) {
+      //       return time.getTime() < new Date(beginDateVal).getTime();
+      //     }
+      //   },
+      // },
+      overDate: "",
+      createDate: "",
+      submitModal: false,
       lctModal: false,
       addModal: false,
       editModal: false,
@@ -484,6 +516,57 @@ export default {
   },
 
   methods: {
+    // 判断 开始时间 结束时间
+    // 时间开始选择器
+    startTimeStatus(row) {
+      this.createDate = row.pxkssj;
+      this.overDate = row.pxjssj;
+    },
+    //获取焦点后，开始/完成时间为当前行的开始/完成时间
+    focusStartTime(row) {
+      this.createDate = row.pxkssj;
+      this.overDate = row.pxjssj;
+    },
+    // 时间结束选择器
+    endTimeStatus(row) {
+      this.createDate = row.pxkssj;
+      this.overDate = row.pxjssj;
+    },
+    //获取焦点后，开始/完成时间为当前行的开始/完成时间
+    focusEndTime(row) {
+      this.createDate = row.pxkssj;
+      this.overDate = row.pxjssj;
+    },
+    tjModal() {
+      var falg = 1;
+      for (var i = 0; i < this.val.length; i++) {
+        if (this.val[i].status !== "01") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.tjArr && this.tjArr.length > 0) {
+          this.submitModal = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("不是草稿状态数据，不可以提交");
+      }
+    },
+    tj() {
+      var data = this.val;
+      tj(data).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("提交成功");
+          this.query();
+          this.submitModal = false;
+        } else {
+          this.$message.error("提交失败");
+        }
+      });
+    },
+    subCancel() {
+      this.submitModal = false;
+    },
     // 表单校验
     checkFormAdd() {
       // 1.校验必填项
@@ -541,29 +624,7 @@ export default {
         }
       });
     },
-    tj() {
-      var data = this.val;
-      var falg = 1;
-      for (var i = 0; i < this.val.length; i++) {
-        if (this.val[i].status !== "01") falg = 2;
-      }
-      if (falg == 1) {
-        if (this.tjArr && this.tjArr.length > 0) {
-          tj(data).then((res) => {
-            if (res.errcode == "00") {
-              this.$message.success("提交成功");
-              this.query();
-            } else {
-              this.$message.error("提交失败");
-            }
-          });
-        } else {
-          this.$message.error("请先勾选数据");
-        }
-      } else {
-        this.$message.error("存在非草稿状态数据，不可以提交");
-      }
-    },
+
     del() {
       var falg = 1;
       for (var i = 0; i < this.val.length; i++) {

@@ -159,7 +159,7 @@
           <span class="title">已处理列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderBlue">
+          <!-- <div class="btns borderBlue">
             <el-upload
               accept=".xlsx,.xls"
               :auto-upload="true"
@@ -171,10 +171,10 @@
             >
               <i class="icon blueIcon"></i><span class="title">导入</span>
             </el-upload>
-          </div>
-          <div class="btns borderOrange" @click="expor">
+          </div> -->
+          <!-- <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="mt15">

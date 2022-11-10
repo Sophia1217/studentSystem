@@ -345,6 +345,19 @@
           >
         </span>
       </el-dialog>
+      <el-dialog title="提交" :visible.sync="submitModal" width="30%">
+        <template>
+          <div>
+            <span>确认提交？</span>
+          </div>
+        </template>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="subCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="tj"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
       <lctCom
         ref="child"
         :lctModal="lctModal"
@@ -376,6 +389,7 @@ export default {
   components: { lctCom },
   data() {
     return {
+      submitModal: false,
       lctModal: false,
       addModal: false,
       editModal: false,
@@ -434,6 +448,36 @@ export default {
   },
 
   methods: {
+    tjModal() {
+      var falg = 1;
+      for (var i = 0; i < this.val.length; i++) {
+        if (this.val[i].status !== "01") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.tjArr && this.tjArr.length > 0) {
+          this.submitModal = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("不是草稿状态数据，不可以提交");
+      }
+    },
+    tj() {
+      var data = this.val;
+      tj(data).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("提交成功");
+          this.query();
+          this.submitModal = false;
+        } else {
+          this.$message.error("提交失败");
+        }
+      });
+    },
+    subCancel() {
+      this.submitModal = false;
+    },
     handleCloseLct() {
       this.lctModal = false;
     },

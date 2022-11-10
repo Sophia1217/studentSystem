@@ -142,7 +142,6 @@
           ref="multipleTable"
           style="width: 100%"
           :default-sort="{ prop: 'date', order: 'descending' }"
-          @sort-change="changeTableSort"
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55"></el-table-column>
@@ -151,25 +150,14 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="xm" label="姓名" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="dwhmc" label="培养单位" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="pyccmmc" label="培养层次" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="zydmmc" label="专业" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="bjmmc" label="班级" sortable="custom">
-          </el-table-column
-          ><el-table-column prop="mk" label="所属模块" sortable="custom">
-          </el-table-column
-          ><el-table-column
-            prop="createTime"
-            label="申报日期"
-            sortable="custom"
-          >
+          <el-table-column prop="xh" label="学号"> </el-table-column>
+          <el-table-column prop="xm" label="姓名"> </el-table-column>
+          <el-table-column prop="dwhmc" label="培养单位"> </el-table-column>
+          <el-table-column prop="pyccmmc" label="培养层次"> </el-table-column>
+          <el-table-column prop="zydmmc" label="专业"> </el-table-column>
+          <el-table-column prop="bjmmc" label="班级"> </el-table-column
+          ><el-table-column prop="mk" label="所属模块"> </el-table-column
+          ><el-table-column prop="createTime" label="申报日期">
           </el-table-column>
 
           <el-table-column fixed="right" label="操作" width="140">
@@ -197,7 +185,7 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="退回选择" :visible.sync="thTableModal" width="30%">
+      <el-dialog title="退回选择" :visible.sync="thTableModal" width="20%">
         <template>
           <el-table
             :data="tableInner"
@@ -220,8 +208,6 @@
               label="序号"
               width="50"
             ></el-table-column>
-            <el-table-column prop="actId" label="节点Id" sortable="custom">
-            </el-table-column>
             <el-table-column prop="actName" label="节点名称" sortable="custom">
             </el-table-column>
           </el-table>

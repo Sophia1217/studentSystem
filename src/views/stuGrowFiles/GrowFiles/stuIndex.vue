@@ -17,11 +17,6 @@
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
-            <el-option label="身份证号" value="sfzjh"></el-option>
-            <el-option label="手机号" value="yddh"></el-option>
-            <el-option label="籍贯" value="jg"></el-option>
-            <el-option label="出生地" value="csdm"></el-option>
-            <el-option label="户口所在地" value="gjdqm"></el-option>
           </el-select>
           <el-button
             slot="append"
@@ -41,24 +36,6 @@
       <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20">
           <el-col :span="6">
-            <span>培养单位：</span>
-            <el-select
-              v-model="moreIform.manageReg"
-              @change="changeXY"
-              multiple
-              collapse-tags
-              placeholder="请选择"
-              size="small"
-            >
-              <el-option
-                v-for="(item, index) in allDwh"
-                :key="index"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="6">
             <span>专 业：</span>
             <el-select
               v-model="moreIform.stuInfo"
@@ -69,23 +46,6 @@
             >
               <el-option
                 v-for="(item, index) in zyOps"
-                :key="index"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="6">
-            <span>班 级：</span>
-            <el-select
-              v-model="moreIform.pread"
-              multiple
-              collapse-tags
-              placeholder="请选择"
-              size="small"
-            >
-              <el-option
-                v-for="(item, index) in bjOps"
                 :key="index"
                 :label="item.mc"
                 :value="item.dm"
@@ -123,31 +83,6 @@
             </div>
           </el-col>
         </el-row>
-
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">学 籍：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :objProp="studentStatus"
-                @training="studentStatusAll"
-                @checkedTraining="studentStatusCheck"
-              ></checkboxCom>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">是否在校：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :objProp="inSchool"
-                @training="inSchoolAll"
-                @checkedTraining="inSchoolCheck"
-              ></checkboxCom>
-            </div>
-          </el-col>
-        </el-row>
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">是否全日制：</el-col>
           <el-col :span="20">
@@ -156,18 +91,6 @@
                 :objProp="isQuan"
                 @training="isQuanAll"
                 @checkedTraining="isQuanCheck"
-              ></checkboxCom>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">性别：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :objProp="dmxbmOPs"
-                @training="dmxbmAll"
-                @checkedTraining="dmxbmCheck"
               ></checkboxCom>
             </div>
           </el-col>
@@ -212,25 +135,6 @@
                 @training="politicaAll"
                 @checkedTraining="politicaCheck"
               ></checkboxCom>
-            </div>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">出生日期：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <el-date-picker
-                v-model="datePicker"
-                type="daterange"
-                unlink-panels
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyy-MM-dd"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-              >
-              </el-date-picker>
             </div>
           </el-col>
         </el-row>
@@ -669,11 +573,6 @@ export default {
       let data = {
         xh: this.select == "xh" ? this.searchVal : null,
         xm: this.select == "xm" ? this.searchVal : null,
-        sfzjh: this.select == "sfzjh" ? this.searchVal : null,
-        yddh: this.select == "yddh" ? this.searchVal : null,
-        jg: this.select == "jg" ? this.searchVal : "",
-        csdm: this.select == "csdm" ? this.searchVal : "",
-        gjdqm: this.select == "gjdqm" ? this.searchVal : "",
         xbm: this.dmxbmOPs.choose,
         csrqs: csrqs,
         csrqe: csrqe,

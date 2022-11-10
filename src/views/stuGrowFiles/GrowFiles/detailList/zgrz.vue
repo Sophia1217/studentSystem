@@ -513,6 +513,7 @@ export default {
           this.$message.error("提交失败");
         }
       });
+      this.submitModal = false;
     },
     getCode(val) {
       const data = { codeTableEnglish: val };
@@ -699,7 +700,7 @@ export default {
         if (this.val[i].status !== "01") falg = 2;
       }
       if (falg == 1) {
-        if (this.subArr && this.subArr.length > 0) {
+        if (this.delArr && this.delArr.length > 0) {
           this.submitModal = true;
         } else {
           this.$message.error("请先勾选数据");

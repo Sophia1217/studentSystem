@@ -36,7 +36,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" class="confirm" @click="handleCloseDia"
-          >确 定</el-button
+          >取 消</el-button
         >
       </span>
     </el-dialog>

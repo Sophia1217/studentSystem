@@ -108,7 +108,7 @@
                 <i class="scopeIncon chDis"></i>
                 <span style="color: #bfbfbf">撤回</span>
               </el-button>
-              <el-button type="text" size="small" @click="lct(scope.row)">
+              <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
                 <span>流程图</span>
               </el-button>
@@ -238,7 +238,7 @@
             <el-table-column label="服务地点" width="240px">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'editData.' + scope.$index + '.stmfwddc'"
+                  :prop="'editData.' + scope.$index + '.fwdd'"
                   :rules="rules.fwdd"
                 >
                   <el-input v-model="scope.row.fwdd" />
@@ -338,20 +338,28 @@
         >
       </span>
     </el-dialog>
+    <lctCom
+      ref="child"
+      :lctModal="lctModal"
+      @handleCloseLct="handleCloseLct"
+    ></lctCom>
   </div>
 </template>
 <script>
 import { edit, del, query, tj, back } from "@/api/stuDangan/detailList/zyfw";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+import lctCom from "../../../components/lct";
 
 export default {
+  components: { lctCom },
   data() {
     return {
+      lctModal: false,
+      delModal: false,
       ztStatus: [],
       addModal: false,
       editModal: false,
       submitModal: false,
-      delModal: false,
       formAdd: { addData: [] },
       formEdit: { editData: [] },
 
@@ -435,6 +443,17 @@ export default {
 
       return true;
     },
+    handleCloseLct() {
+      this.lctModal = false;
+    },
+    lctClick(row) {
+      if (!!row.processid) {
+        this.$refs.child.inner(row.processid);
+        this.lctModal = true;
+      } else {
+         this.$message.warning("此项经历为管理员新增，暂无流程数据");
+      }
+    },
     getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
@@ -442,22 +461,28 @@ export default {
       });
     },
     del() {
+      del({ ids: this.delArr }).then((res) => {
+        this.$message.success("删除成功");
+        this.query();
+        this.delModal = false;
+      });
+    },
+    showDel() {
       var falg = 1;
       for (var i = 0; i < this.val.length; i++) {
         if (this.val[i].status !== "01") falg = 2;
       }
       if (falg == 1) {
         if (this.delArr && this.delArr.length > 0) {
-          del({ ids: this.delArr }).then((res) => {
-            this.$message.success("删除成功");
-            this.query();
-          });
+          this.delModal = true;
         } else {
           this.$message.error("请先勾选数据");
         }
       } else {
-        this.$message.error("存在草稿状态数据，不可以删除");
+        this.$message.error("存在非草稿状态数据，不可以删除");
       }
+    },
+    delCancel() {
       this.delModal = false;
     },
     changeTableSort(column) {
@@ -589,12 +614,6 @@ export default {
     },
     addCance() {
       this.addModal = false;
-    },
-    delCancel() {
-      this.delModal = false;
-    },
-    showDel() {
-      this.delModal = true;
     },
   },
 };

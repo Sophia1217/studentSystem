@@ -6,7 +6,7 @@
           <span class="title">志愿服务</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderLight" @click="del">
+          <div class="btns borderLight" @click="showDel">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
           <div class="btns borderGreen" @click="xinzeng">
@@ -75,7 +75,7 @@
                 <span>编辑</span>
               </el-button>
 
-              <el-button type="text" size="small" @click="lct(scope.row)">
+              <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
                 <span>流程图</span>
               </el-button>
@@ -283,15 +283,33 @@
         @pagination="query"
       />
     </div>
+    <el-dialog title="删除" :visible.sync="delModal" width="20%">
+      <span>确认删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="del()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <lctCom
+      ref="child"
+      :lctModal="lctModal"
+      @handleCloseLct="handleCloseLct"
+    ></lctCom>
   </div>
 </template>
 <script>
 import { edit, del, query } from "@/api/stuDangan/detailList/zyfw";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+import lctCom from "../../../components/lct";
 
 export default {
+  components: { lctCom },
   data() {
     return {
+      lctModal: false,
+      delModal: false,
       ztStatus: [],
       addModal: false,
       editModal: false,
@@ -377,6 +395,17 @@ export default {
 
       return true;
     },
+    handleCloseLct() {
+      this.lctModal = false;
+    },
+    lctClick(row) {
+      if (!!row.processid) {
+        this.$refs.child.inner(row.processid);
+        this.lctModal = true;
+      } else {
+         this.$message.warning("此项经历为管理员新增，暂无流程数据");
+      }
+    },
     getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
@@ -384,16 +413,22 @@ export default {
       });
     },
     del() {
+      del({ ids: this.delArr }).then((res) => {
+        this.$message.success("删除成功");
+        this.query();
+        this.delModal = false;
+      });
 
-        if (this.delArr && this.delArr.length > 0) {
-          del({ ids: this.delArr }).then((res) => {
-            this.$message.success("删除成功");
-            this.query();
-          });
+    },
+    showDel() {
+      if (this.delArr && this.delArr.length > 0) {
+        this.delModal = true;
         } else {
           this.$message.error("请先勾选数据");
         }
-
+    },
+    delCancel() {
+      this.delModal = false;
     },
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;

@@ -112,7 +112,7 @@
                 <i class="scopeIncon chDis"></i>
                 <span style="color: #bfbfbf">撤回</span>
               </el-button>
-              <el-button type="text" size="small" @click="lct(scope.row)">
+              <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
                 <span>流程图</span>
               </el-button>
@@ -382,15 +382,23 @@
         >
       </span>
     </el-dialog>
+    <lctCom
+      ref="child"
+      :lctModal="lctModal"
+      @handleCloseLct="handleCloseLct"
+    ></lctCom>
   </div>
 </template>
 <script>
 import { edit, del, query, tj, back } from "@/api/stuDangan/detailList/shsj";
+import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
 export default {
+  components: { lctCom },
   data() {
     return {
+      lctModal: false,
       ztStatus: [],
       addModal: false,
       editModal: false,
@@ -451,7 +459,7 @@ export default {
   },
   mounted() {
     this.query();
-    this.getCode("dmsplcm"); //性别
+    this.getCode("dmsplcm"); //状态
   },
 
   methods: {
@@ -479,6 +487,17 @@ export default {
       }
 
       return true;
+    },
+    handleCloseLct() {
+      this.lctModal = false;
+    },
+    lctClick(row) {
+      if (!!row.processid) {
+        this.$refs.child.inner(row.processid);
+        this.lctModal = true;
+      } else {
+         this.$message.warning("此项经历为管理员新增，暂无流程数据");
+      }
     },
     getCode(val) {
       const data = { codeTableEnglish: val };
@@ -639,11 +658,23 @@ export default {
     addCance() {
       this.addModal = false;
     },
+    showDel() {
+      var falg = 1;
+      for (var i = 0; i < this.val.length; i++) {
+        if (this.val[i].status !== "01") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.delArr && this.delArr.length > 0) {
+          this.delModal = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("存在非草稿状态数据，不可以删除");
+      }
+    },
     delCancel() {
       this.delModal = false;
-    },
-    showDel() {
-      this.delModal = true;
     },
   },
 };

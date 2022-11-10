@@ -73,7 +73,7 @@
                 type="text"
                 size="small"
                 @click="bianji(scope.row)"
-                v-if="scope.row.status === '01' || scope.row.status === '08'"
+                v-show="scope.row.status === '01' || scope.row.status === '08'"
               >
                 <i class="scopeIncon Edit"></i>
                 <span>编辑</span>
@@ -83,7 +83,7 @@
                 size="small"
                 :disabled="true"
                 @click="bianji(scope.row)"
-                v-if="scope.row.status !== '01' && scope.row.status !== '08'"
+                v-show="scope.row.status !== '01' && scope.row.status !== '08'"
               >
                 <i class="scopeIncon EditDis"></i>
                 <span>编辑</span>
@@ -93,7 +93,7 @@
                 type="text"
                 size="small"
                 @click="chehui(scope.row)"
-                v-if="scope.row.status === '02'"
+                v-show="scope.row.status === '02'"
               >
                 <i class="scopeIncon ch"></i>
                 <span>撤回</span>
@@ -103,7 +103,7 @@
                 size="small"
                 :disabled="true"
                 @click="chehui(scope.row)"
-                v-if="scope.row.status !== '02'"
+                v-show="scope.row.status !== '02'"
               >
                 <i class="scopeIncon chDis"></i>
                 <span style="color: #bfbfbf">撤回</span>
@@ -170,6 +170,7 @@
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
+                    @change="changeDate(1)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -187,6 +188,7 @@
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
+                    @change="changeDate(2)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -266,6 +268,7 @@
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
+                    @change="changeDate(3)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -283,6 +286,7 @@
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
+                    @change="changeDate(4)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -633,6 +637,40 @@ export default {
     delCancel() {
       this.delModal = false;
     },
+    // 判断 开始时间 结束时间
+    changeDate(flag) {
+      let addParams = this.formAdd.addData[0];
+      let editParams = this.formEdit.editData[0];
+      if (flag==1) {//新增开始时间
+        if (addParams.jssj) {
+          if (addParams.kssj > addParams.jssj) {
+            addParams.kssj = null;
+            this.$message.error("开始时间不能大于结束时间！");
+          }
+        }
+      } else if (flag==2) {//新增结束时间
+        if (addParams.kssj) {
+          if (addParams.kssj > addParams.jssj) {
+            addParams.jssj = null;
+            this.$message.error("结束时间不能小于开始时间！");
+          }
+        }
+      } else if (flag==3) {
+        if (editParams.jssj) {
+          if (editParams.kssj > editParams.jssj) {
+            editParams.kssj = null;
+            this.$message.error("开始时间不能大于结束时间！");
+          }
+        }
+      } else {
+        if (editParams.kssj) {
+          if (editParams.kssj > editParams.jssj) {
+            editParams.jssj = null;
+            this.$message.error("结束时间不能小于开始时间！");
+          }
+        }
+      }
+    }
   },
 };
 </script>

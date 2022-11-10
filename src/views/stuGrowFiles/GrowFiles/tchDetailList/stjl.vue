@@ -136,6 +136,7 @@
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
+                    @change="changeDate(1)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -153,6 +154,7 @@
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
+                    @change="changeDate(2)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -232,6 +234,7 @@
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
+                    @change="changeDate(3)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -249,6 +252,7 @@
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
+                    @change="changeDate(4)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -364,6 +368,24 @@ export default {
           { required: true, message: "指导老师不能为空", trigger: "blur" },
         ],
       },
+      // startOption: {
+      //   disabledDate: (time)=> {
+      //     if (this.formAdd.addData[0].jssj){
+      //       return (
+      //         time.getTime() > this.formAdd.addData[0].jssj
+      //       )
+      //     }
+      //   }
+      // },
+      // endOption: {
+      //   disabledDate: (time)=> {
+      //     if (this.formAdd.addData[0].kssj){
+      //       return (
+      //         time.getTime() > this.formAdd.addData[0].kssj
+      //       )
+      //     }
+      //   }
+      // },
     };
   },
   mounted() {
@@ -535,6 +557,41 @@ export default {
     addCance() {
       this.addModal = false;
     },
+    // 判断 开始时间 结束时间
+    changeDate(flag) {
+      let addParams = this.formAdd.addData[0];
+      let editParams = this.formEdit.editData[0];
+      if (flag==1) {//新增开始时间
+        if (addParams.jssj) {
+          if (addParams.kssj > addParams.jssj) {
+            addParams.kssj = null;
+            this.$message.error("开始时间不能大于结束时间！");
+          }
+        }
+      } else if (flag==2) {//新增结束时间
+        if (addParams.kssj) {
+          if (addParams.kssj > addParams.jssj) {
+            addParams.jssj = null;
+            this.$message.error("结束时间不能小于开始时间！");
+          }
+        }
+      } else if (flag==3) {
+        if (editParams.jssj) {
+          if (editParams.kssj > editParams.jssj) {
+            editParams.kssj = null;
+            this.$message.error("开始时间不能大于结束时间！");
+          }
+        }
+      } else {
+        if (editParams.kssj) {
+          if (editParams.kssj > editParams.jssj) {
+            editParams.jssj = null;
+            this.$message.error("结束时间不能小于开始时间！");
+          }
+        }
+      }
+    }
+
   },
 };
 </script>

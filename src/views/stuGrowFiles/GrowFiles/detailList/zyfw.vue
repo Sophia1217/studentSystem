@@ -73,7 +73,7 @@
                 type="text"
                 size="small"
                 @click="bianji(scope.row)"
-                v-if="scope.row.status === '01' || scope.row.status === '08'"
+                v-show="scope.row.status === '01' || scope.row.status === '08'"
               >
                 <i class="scopeIncon Edit"></i>
                 <span>编辑</span>
@@ -83,7 +83,7 @@
                 size="small"
                 :disabled="true"
                 @click="bianji(scope.row)"
-                v-if="scope.row.status !== '01' && scope.row.status !== '08'"
+                v-show="scope.row.status !== '01' && scope.row.status !== '08'"
               >
                 <i class="scopeIncon EditDis"></i>
                 <span>编辑</span>
@@ -93,7 +93,7 @@
                 type="text"
                 size="small"
                 @click="chehui(scope.row)"
-                v-if="scope.row.status === '02'"
+                v-show="scope.row.status === '02'"
               >
                 <i class="scopeIncon ch"></i>
                 <span>撤回</span>
@@ -103,7 +103,7 @@
                 size="small"
                 :disabled="true"
                 @click="chehui(scope.row)"
-                v-if="scope.row.status !== '02'"
+                v-show="scope.row.status !== '02'"
               >
                 <i class="scopeIncon chDis"></i>
                 <span style="color: #bfbfbf">撤回</span>

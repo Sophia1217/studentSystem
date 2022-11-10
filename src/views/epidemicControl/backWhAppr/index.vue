@@ -244,7 +244,7 @@ export default {
         })
         .catch((err) => {});
     },
-    handleExport() {
+    async handleExport() {
       if (this.delArr && this.delArr.length > 0) {
         this.len = this.delArr.length;
       } else {
@@ -269,14 +269,18 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      getQuerylist(data)
+      await getQuerylist(data)
         .then((res) => {
           this.len = res.totalCount; 
         })
         .catch((err) => {});
       }
-      this.showExport = true;
-      this.title = "导出";
+      if (this.len > 0) {
+        this.showExport = true;
+        this.title = "导出";
+      } else {
+        this.$message.warning("当前无数据导出");
+      }
     },
     handleCancel() {
       this.showExport = false;

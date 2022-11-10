@@ -62,8 +62,8 @@
               <el-date-picker
                 v-model="dateArrayOut"
                 unlink-panels
-                type="datetimerange"
-                value-format="yyyy-MM-dd-hh-mm"
+                type="daterange"
+                value-format="yyyy-MM-dd"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
@@ -79,8 +79,8 @@
               <el-date-picker
                 v-model="dateArrayBack"
                 unlink-panels
-                type="datetimerange"
-                value-format="yyyy-MM-dd-hh-mm"
+                type="daterange"
+                value-format="yyyy-MM-dd"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
@@ -161,7 +161,7 @@
       />
     </div>
     <el-dialog :title="title" :visible.sync="showExport" width="30%">
-      <span>确认导出？</span>
+      <span>确认导出{{ len }}条数据？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="exp">确 定</el-button>
@@ -309,6 +309,7 @@ export default {
         pageSize: 10,
         total: 0,
       },
+      len: 0,
     };
   },
 
@@ -329,8 +330,46 @@ export default {
         .catch((err) => {});
     },
     handleExport() {
-      this.showExport = true;
-      this.title = "导出";
+      if (this.delArr && this.delArr.length > 0) {
+        this.len = this.delArr.length;
+      } else {
+        let data = {
+        sqxm: this.select == "sqxm" ? this.searchVal : null,
+        sqxh: this.select == "sqxh" ? this.searchVal : null,
+        sqlxfs: this.select == "sqlxfs" ? this.searchVal : null,
+        cxsy: this.select == "cxsy" ? this.searchVal : null,
+        mdd: this.select == "mdd" ? this.searchVal : null,
+        fdyspxm: this.select == "fdyspxm" ? this.searchVal : null,
+        dwhList: this.moreIform.sqxydm,
+        nfhsjStart:
+          this.dateArrayBack && this.dateArrayBack.length > 0
+            ? this.dateArrayBack[0]
+            : "",
+        nfhsjEnd:
+          this.dateArrayBack && this.dateArrayBack.length > 0
+            ? this.dateArrayBack[1]
+            : "",
+        lhsjStart:
+          this.dateArrayOut && this.dateArrayOut.length > 0
+            ? this.dateArrayOut[0]
+            : "",
+        lhsjEnd:
+          this.dateArrayOut && this.dateArrayOut.length > 0
+            ? this.dateArrayOut[1]
+            : "",
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+      };
+      getQuerylist(data)
+        .then((res) => {
+          this.len = res.totalCount; 
+        })
+        .catch((err) => {});
+      }
+        this.showExport = true;
+        this.title = "导出";
     },
     handleCancel() {
       this.showExport = false;

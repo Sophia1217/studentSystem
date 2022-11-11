@@ -179,7 +179,7 @@
         />
       </div>
     </div>
-    <el-dialog :title="title" :visible.sync="showExport" width="30%">
+    <el-dialog title="导出" :visible.sync="showExport" width="30%">
       <span>确认导出{{ len }}条数据？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
@@ -473,8 +473,8 @@ export default {
       });
     },
     async handleExport() {
-      if (this.multipleSelection.length > 0) {
-        this.len = this.multipleSelection.length;
+      if (this.list.length > 0) {
+        this.len = this.list.length;
       } else {
         let data = {
           xm: this.select == "xm" ? this.searchVal : "",
@@ -502,8 +502,6 @@ export default {
       } else {
         this.$message.warning("当前无数据导出");
       }
-
-      this.title = "导出";
     },
     // 导出取消
     handleCancel() {

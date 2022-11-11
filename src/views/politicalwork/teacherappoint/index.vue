@@ -296,7 +296,7 @@
     </el-dialog>
     <!-- 导出确认对话框 -->
     <el-dialog :title="title" :visible.sync="showExport" width="30%">
-      <span>确认导出？</span>
+      <span>确认导出{{ len }}条数据？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="handleConfirm"

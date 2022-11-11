@@ -485,7 +485,7 @@ export default {
   methods: {
     //模板下载
     mbDown() {
-      downLoad().then((res) => this.downloadFn(res, "导入模板下载", "xlsx"));
+      downLoad().then((res) => this.downloadFn(res, "学籍异动模板下载", "xlsx"));
     },
     ///上传
     upLoadSuccess(res, file, fileList) {

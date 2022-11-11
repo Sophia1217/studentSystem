@@ -96,14 +96,14 @@
           <el-col :span="20">
             <div class="checkbox">
               <el-select
-                v-model="moreIform.fhff"
+                v-model="moreIform.fhfs"
                 multiple
                 collapse-tags
                 placeholder="请选择"
                 size="medium"
               >
                 <el-option
-                  v-for="item in allDwh"
+                  v-for="item in jtgjOps"
                   :key="item.dm"
                   :label="item.mc"
                   :value="item.dm"
@@ -196,6 +196,7 @@ import CheckboxCom from "../../components/checkboxCom";
 import {
   getQuerylist,
   exp,
+  queryJtgj
 } from "@/api/epidemicControl/backWhAppr";
 import { getCollege } from "@/api/class/maintenanceClass";
 export default {
@@ -212,6 +213,7 @@ export default {
       delArr: [],
       searchVal: "",
       allDwh: [], // 学院下拉框
+      jtgjOps: [], // 交通工具下拉框
       select: "",
       isMore: false,
       showExport: false,
@@ -231,6 +233,7 @@ export default {
   mounted() {
     this.handleSearch();
     this.getAllCollege();
+    this.getAllJtgj();
   },
   activated() {
     this.handleSearch();
@@ -244,6 +247,14 @@ export default {
         })
         .catch((err) => {});
     },
+    //交通工具
+    getAllJtgj(){
+      queryJtgj()
+        .then((res) => {
+          this.jtgjOps = res.data;
+        })
+        .catch((err) => {});
+    },
     async handleExport() {
       if (this.delArr && this.delArr.length > 0) {
         this.len = this.delArr.length;
@@ -254,7 +265,7 @@ export default {
         sjh: this.select == "sjh" ? this.searchVal : null,
         shrXm: this.select == "shrXm" ? this.searchVal : null,
         dwhList: this.moreIform.xydm,
-        fhfsList: null,
+        fhfsList: this.moreIform.fhfs,
         szdqList: null,
         fxsjStart:
           this.dateArrayBack && this.dateArrayBack.length > 0
@@ -299,7 +310,7 @@ export default {
           sjh: this.select == "sjh" ? this.searchVal : null,
           shrXm: this.select == "shrXm" ? this.searchVal : null,
           dwhList: this.moreIform.xydm,
-          fhfsList: null,
+          fhfsList: this.moreIform.fhfs,
           szdqList: null,
           fxsjStart:
             this.dateArrayBack && this.dateArrayBack.length > 0
@@ -349,7 +360,7 @@ export default {
         sjh: this.select == "sjh" ? this.searchVal : null,
         shrXm: this.select == "shrXm" ? this.searchVal : null,
         dwhList: this.moreIform.xydm,
-        fhfsList: null,
+        fhfsList: this.moreIform.fhfs,
         szdqList: null,
         fxsjStart:
           this.dateArrayBack && this.dateArrayBack.length > 0

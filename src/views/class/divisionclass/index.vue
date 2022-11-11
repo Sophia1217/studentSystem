@@ -283,7 +283,7 @@ export default {
   activated() {},
   methods: {
     mbDown() {
-      mbDown().then((res) => this.downloadFn(res, "标准模板下载", "xlsx"));
+      mbDown().then((res) => this.downloadFn(res, "分班管理模板下载", "xlsx"));
     },
     upLoadSuccess(res, file, fileList) {
       if (res.errcode == "00") {

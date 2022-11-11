@@ -24,3 +24,12 @@ export function exp(query) {
       responseType:'blob'
   })
 }
+
+//交通工具下拉列表
+export function queryJtgj(query) {
+  return request({
+      url: '/yqgkFhsq/queryJtgj',
+      method: 'post',
+      data: query,
+  })
+}

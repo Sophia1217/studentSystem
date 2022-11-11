@@ -717,7 +717,7 @@ export default {
     },
     //模板下载
     mbDown() {
-      fileDown().then((res) => this.downloadFn(res, "导入模板下载", "xlsx"));
+      fileDown().then((res) => this.downloadFn(res, "在籍学生信息模板下载", "xlsx"));
     },
     ///上传
     upLoadSuccess(res, file, fileList) {

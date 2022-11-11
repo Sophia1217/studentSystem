@@ -581,7 +581,7 @@ export default {
       });
     },
     mbDown() {
-      mbDown().then((res) => this.downloadFn(res, "标准模板下载", "xlsx"));
+      mbDown().then((res) => this.downloadFn(res, "分班管理模板下载", "xlsx"));
     },
     // 查询某一特定班级学生列表
     getList(queryParams) {

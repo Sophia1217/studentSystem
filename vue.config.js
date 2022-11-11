@@ -32,13 +32,28 @@ module.exports = {
     host: "0.0.0.0",
     port: port,
     open: true,
+   
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
         // target: `http://10.222.7.139:8081`, //华师测试服务器
-        target: `http://172.30.66.41:8081`, //基地测试服务器
-        
-
+        target: `http://172.30.66.59:8081`, //基地测试服务器
+        // target: `http://10.255.1.38:8081`, //招哥服务器
+        // target: `http://10.255.1.30:8081`, //卢晨测试服务器
+        // target: `http://10.255.1.10:8081`, //胡燕测试服务器
+        // target: `http://10.255.1.178:8081`, //文俊测试服务器
+        changeOrigin: true,
+        pathRewrite: {
+          // ["^" + process.env.VUE_APP_BASE_API]: "",
+        },
+      },
+      ['/sfile']: {
+        // target: `http://10.222.7.139:8081`, //华师测试服务器
+        target: `http://172.30.129.27`, //基地测试服务器
+        // target: `http://10.255.1.38:8081`, //招哥服务器
+        // target: `http://10.255.1.30:8081`, //卢晨测试服务器
+        // target: `http://10.255.1.10:8081`, //胡燕测试服务器
+        // target: `http://10.255.1.178:8081`, //文俊测试服务器
         changeOrigin: true,
         pathRewrite: {
           // ["^" + process.env.VUE_APP_BASE_API]: "",

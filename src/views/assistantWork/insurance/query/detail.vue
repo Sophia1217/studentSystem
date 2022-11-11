@@ -194,7 +194,7 @@
 </template>
 
 <script>
-// import pdf from "vue-pdf";
+import pdf from "vue-pdf";
 import { getToken } from "@/utils/auth";
 import {
   queryList,
@@ -205,6 +205,9 @@ import {
 import { querywj, Exportwj } from "@/api/assistantWork/classEvent";
 
 export default {
+  components: {
+    pdf,
+  },
   data() {
     return {
       viewVisible: true,
@@ -237,9 +240,7 @@ export default {
     this.getDatail();
     this.queryXzmc();
   },
-  components: {
-    pdf,
-  },
+
   methods: {
     queryXzmc() {
       queryXzmc().then((res) => {
@@ -322,9 +323,7 @@ export default {
       };
       querywj(businesId).then((res) => {
         this.fileList = res.data;
-        this.pdfsrc = res.data
-          ? `http://172.30.129.27/sfile/${res.data[0].proId}`
-          : "";
+        this.pdfsrc = res.data ? `/sfile/${res.data[0].proId}` : "";
         this.fileList = this.fileList.map((ele) => {
           return {
             name: ele.fileName,

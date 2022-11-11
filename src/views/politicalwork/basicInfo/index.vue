@@ -179,6 +179,15 @@
         />
       </div>
     </div>
+    <el-dialog :title="title" :visible.sync="showExport" width="30%">
+      <span>确认导出{{ len }}条数据？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="handleConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -198,6 +207,7 @@ export default {
   data() {
     return {
       expand: true,
+      len: 0,
       queryParams: {
         xm: "",
         gh: "",
@@ -222,7 +232,7 @@ export default {
       tableData: [],
       multipleSelection: [],
       gzdwOptions: [],
-
+      showExport: false,
       list: [],
       gender: {
         // 性别
@@ -462,7 +472,44 @@ export default {
         },
       });
     },
-    handleExport() {
+    async handleExport() {
+      if (this.multipleSelection.length > 0) {
+        this.len = this.multipleSelection.length;
+      } else {
+        let data = {
+          xm: this.select == "xm" ? this.searchVal : "",
+          gh: this.select == "gh" ? this.searchVal : "",
+          sfzjh: this.select == "sfzjh" ? this.searchVal : "",
+          yddh: this.select == "yddh" ? this.searchVal : "",
+          zybj: this.select == "zybj" ? this.searchVal : "",
+          jg: this.select == "jg" ? this.searchVal : "",
+          byyx: this.select == "byyx" ? this.searchVal : "",
+          genderList: this.gender.choose,
+          mzList: this.ethnic.choose,
+          zzmmList: this.politica.choose,
+          dwmcList: this.workPlace,
+          gwList: this.position.choose,
+        };
+        this.exportParams = data;
+        await getPoliticalWorkList(data)
+          .then((res) => {
+            this.len = res.count;
+          })
+          .catch((err) => {});
+      }
+      if (this.len > 0) {
+        this.showExport = true;
+      } else {
+        this.$message.warning("当前无数据导出");
+      }
+
+      this.title = "导出";
+    },
+    // 导出取消
+    handleCancel() {
+      this.showExport = false;
+    },
+    handleConfirm() {
       var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
 
       var exportParams = this.queryParams;

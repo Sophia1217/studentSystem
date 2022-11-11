@@ -239,7 +239,7 @@
     </el-dialog>
     <!-- 导出确认对话框 -->
     <el-dialog :title="title" :visible.sync="showExport" width="30%">
-      <span>确认导出？</span>
+      <span>确认导出{{ len }}条数据？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="handleConfirm"
@@ -424,6 +424,7 @@ export default {
         gh: "",
       },
       list: [],
+      len: 0,
     };
   },
   computed: {},
@@ -609,8 +610,31 @@ export default {
       this.queryParams.lbList = this.category.choose;
     },
     // 打开导出弹窗
-    handleExport() {
-      this.showExport = true;
+    async handleExport() {
+      if (this.multipleSelection.length > 0) {
+        this.len = this.multipleSelection.length;
+      } else {
+        let data = {
+          gh: this.select == 1 ? this.searchVal : "",
+          xm: this.select == 2 ? this.searchVal : "",
+          dwmcList: this.workPlace,
+          genderList: this.sex.choose,
+          sfdbList: this.status.choose,
+          lbList: this.category.choose,
+        };
+        this.exportParams = data;
+        await fdyList(data)
+          .then((res) => {
+            this.len = res.count;
+          })
+          .catch((err) => {});
+      }
+      if (this.len > 0) {
+        this.showExport = true;
+      } else {
+        this.$message.warning("当前无数据导出");
+      }
+
       this.title = "导出";
     },
     // 导出取消
@@ -619,7 +643,6 @@ export default {
     },
     // 导出确认
     handleConfirm() {
-      this.showExport = false;
       var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
 
       var exportParams = this.queryParams;
@@ -629,6 +652,8 @@ export default {
       outAssistant(exportParams)
         .then((res) => this.downloadFn(res, "辅导员任命导出", "xlsx"))
         .catch((err) => {});
+
+      this.showExport = false;
     },
     //批量移除
     rmAssistant() {

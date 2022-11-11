@@ -363,6 +363,7 @@ export default {
       },
       Sxpycc: [],
       list: [],
+      len: 0,
       searchVal: "",
       select: "",
       isMore: false,
@@ -533,8 +534,30 @@ export default {
       this.list = [...val];
     },
     // 打开导出弹窗
-    handleExport() {
-      this.showExport = true;
+    async handleExport() {
+      if (this.multipleSelection.length > 0) {
+        this.len = this.multipleSelection.length;
+      } else {
+        let data = {
+          xm: this.select == "xm" ? this.searchVal : "",
+          gh: this.select == "gh" ? this.searchVal : "",
+          dwmcList: this.workPlace,
+          genderList: this.sex.choose,
+          sfdbList: this.status.choose,
+        };
+        this.exportParams = data;
+        await getTeacherDetailList(data)
+          .then((res) => {
+            this.len = res.count;
+          })
+          .catch((err) => {});
+      }
+      if (this.len > 0) {
+        this.showExport = true;
+      } else {
+        this.$message.warning("当前无数据导出");
+      }
+
       this.title = "导出";
     },
     // 导出取消

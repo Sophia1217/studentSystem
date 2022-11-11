@@ -199,7 +199,7 @@
     <!-- 批量撤任对话框：cancelAllocate-->
     <el-dialog title="取消分配" :visible.sync="cancelAllocate" width="50%">
       <el-form :model="formDismission" :rules="rules" height="150px">
-        <el-form-item label="撤任理由">
+        <el-form-item label="撤任理由" :rules="rules.crly">
           <el-select v-model="formDismission.reason" placeholder="请选择">
             <el-option
               v-for="item in cxlyOptions"
@@ -209,7 +209,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="撤任日期">
+        <el-form-item label="撤任日期" :rules="rules.crrq">
           <el-date-picker
             type="date"
             style="width: 30%"
@@ -270,7 +270,7 @@
         :rules="rules"
         label-width="150px"
       >
-        <el-form-item label="任命日期">
+        <el-form-item label="任命日期" :rules="rules.rmsj">
           <el-date-picker
             type="date"
             style="width: 80%"
@@ -279,7 +279,7 @@
             v-model="form.rmsj"
           ></el-date-picker>
         </el-form-item>
-        <el-form-item label="班干部职位" prop="bgbid">
+        <el-form-item label="班干部职位" prop="bgbid" :rules="rules.bgbid">
           <!-- <el-input v-model="form.bgbid"></el-input> -->
           <el-select v-model="form.bgbid" placeholder="请选择" clearable>
             <!-- 班干部职位筛选框 -->
@@ -421,17 +421,17 @@ export default {
       },
       // 表单校验
       rules: {
-        noticeTitle: [
+        crly: [
           { required: true, message: "公告标题不能为空", trigger: "blur" },
         ],
-        noticeType: [
+        crrq: [
           { required: true, message: "公告类型不能为空", trigger: "change" },
         ],
         bgbid: [
-          { required: true, message: "公告类型不能为空", trigger: "change" },
+          { required: true, message: "班干部不能为空", trigger: "change" },
         ],
-        reason: [
-          { required: true, message: "公告类型不能为空", trigger: "change" },
+        rmsj: [
+          { required: true, message: "任命时间不能为空", trigger: "change" },
         ],
       },
     };
@@ -557,10 +557,17 @@ export default {
     },
     // 批量取消分配-确认操作
     cancelAllocateConfirm() {
-      this.cancelAllocate = false;
-      setTimeout(() => {
-        this.doubleCheck = true;
-      }, 500);
+      if(this.formDismission.reason== ""){
+        this.$message.error("撤任理由不能为空！");
+      } else if (this.formDismission.offDate == "") {
+        this.$message.error("撤任时间不能为空!");
+      } else {
+        this.cancelAllocate = false;
+        setTimeout(() => {
+          this.doubleCheck = true;
+        }, 500);
+      }
+      
     },
     // 批量撤任-二次确认按钮
     doubleCheckConfirm() {
@@ -603,23 +610,29 @@ export default {
     // 批量任命班干部-确认操作
     assignBgbConfirm() {
       // console.log("批量任命确认操作");
-      this.openAssignBgb = false;
-      var bgbmc = "";
-      for (let index = 0; index < this.bjzwOptions.length; index++) {
-        const element = this.bjzwOptions[index];
-        if (this.form.bgbid == element.dm) {
-          bgbmc = element.mc;
-          break;
+      if(this.form.rmsj== ""){
+        this.$message.error("任命时间不能为空！");
+      } else if (this.form.bgbid == "") {
+        this.$message.error("班干部职位不能为空!");
+      } else {
+        this.openAssignBgb = false;
+        var bgbmc = "";
+        for (let index = 0; index < this.bjzwOptions.length; index++) {
+          const element = this.bjzwOptions[index];
+          if (this.form.bgbid == element.dm) {
+            bgbmc = element.mc;
+            break;
+          }
         }
+        for (let x = 0; x < this.currentRow.length; x++) {
+          const item = this.currentRow[x];
+          item.bgbmc = bgbmc;
+        }
+        setTimeout(() => {
+          this.doubleAssign = true;
+        }, 500);
       }
-      for (let x = 0; x < this.currentRow.length; x++) {
-        const item = this.currentRow[x];
-        item.bgbmc = bgbmc;
-      }
-
-      setTimeout(() => {
-        this.doubleAssign = true;
-      }, 500);
+      
     },
 
     //班干部批量任命————二次确定操作

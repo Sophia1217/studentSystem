@@ -71,7 +71,7 @@ export default {
       // 任职记录当前行数据
       currentRow: [],
       // 任职记录勾选框收集ids
-      currentRow_ids: [],
+      currentRow_ids:[],
       // 任职记录errcode
       errcode: "-200",
       // 当前班级代码
@@ -121,7 +121,11 @@ export default {
     this.queryParams.bjdm = this.$route.query.bjdm;
     this.getList(this.queryParams);
   },
-  activated() {},
+  activated() {
+     this.table_title = this.$route.query.table_title;
+    this.queryParams.bjdm = this.$route.query.bjdm;
+    this.getList(this.queryParams);
+  },
   methods: {
     getList(x) {
       Object.assign(x, this.queryParams);
@@ -139,25 +143,35 @@ export default {
       // this.zws = this.zws.substring(0, this.zws.length - 1);
       // console.log("this.xhs:", this.xhs);
       // console.log("this.zws:", this.zws);
-      getDeleteBgbRm({ ids: this.currentRow_ids }).then((res) => {
-        // console.log(res);
-        // this.errcode = res.errcode;
-        // console.log("this.errcode:", this.errcode);
-        this.getList({
-          bjdm: this.$route.query.bjdm,
-          pageNum: 1,
-          pageSize: 10,
+      if (this.currentRow_ids && this.currentRow_ids.length > 0) {
+          getDeleteBgbRm({ ids: this.currentRow_ids }).then((res) => {
+          this.getList({
+            bjdm: this.$route.query.bjdm,
+            pageNum: 1,
+            pageSize: 10,
+          });
+          this.currentRow_ids= []
+          this.arr= []
+          console.log("11",this.currentRow_ids);
         });
-      });
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      
       // this.xhs = "";
       // this.zws = "";
       // this.errcode = "-200";
     },
     // 班干部记录删除
     handleSelectionChange(row) {
+      console.log("row",row);
       //待优化
       this.getData(row);
-      var data = Array.from(new Set(this.arr.map((item) => item.id))).join(","); //给后端的参数
+      console.log("this.getData(row)",this.getData(row));
+      console.log("his.arr",this.arr);
+      var data = Array.from(new Set(this.arr.map((item) => item.id))).join(",");
+      console.log("data",data);
+       //给后端的参数
       this.currentRow_ids = data;
     },
     getData(data) {

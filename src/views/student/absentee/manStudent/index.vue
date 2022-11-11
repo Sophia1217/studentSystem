@@ -269,7 +269,7 @@
               :on-success="upLoadSuccess"
               :on-error="upLoadError"
             >
-              <i class="icon greenIcon"></i><span class="title">导入</span>
+              <i class="icon impIcon"></i><span class="title">导入</span>
             </el-upload>
           </div>
           <div class="btns borderGreen" @click="handleExport">
@@ -717,7 +717,9 @@ export default {
     },
     //模板下载
     mbDown() {
-      fileDown().then((res) => this.downloadFn(res, "在籍学生信息模板下载", "xlsx"));
+      fileDown().then((res) =>
+        this.downloadFn(res, "在籍学生信息模板下载", "xlsx")
+      );
     },
     ///上传
     upLoadSuccess(res, file, fileList) {
@@ -1349,6 +1351,10 @@ export default {
           }
           .greenIcon {
             background: url("~@/assets/images/export.png");
+          }
+          .impIcon {
+            margin-top: 2px;
+            background: url("~@/assets/images/import.png") no-repeat;
           }
           .addIcon {
             background: url("~@/assets/images/addicon.png");

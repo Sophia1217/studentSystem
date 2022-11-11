@@ -214,7 +214,14 @@
                 ></el-option>
               </el-select>
             </template> </el-table-column
-          ><el-table-column prop="mk" label="审核进度"> </el-table-column>
+          ><el-table-column prop="mk" label="审核进度">
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="lctClick(scope.row)">
+                <i class="scopeIncon lct"></i>
+                <span>流程图</span>
+              </el-button>
+            </template>
+          </el-table-column>
 
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
@@ -511,6 +518,11 @@
           >
         </span>
       </el-dialog>
+      <lctCom
+        ref="child"
+        :lctModal="lctModal"
+        @handleCloseLct="handleCloseLct"
+      ></lctCom>
       <pagination
         v-show="queryParams.total > 0"
         :total="queryParams.total"
@@ -524,6 +536,7 @@
 
 <script>
 import CheckboxCom from "../../../components/checkboxCom";
+import lctCom from "../../../components/lct";
 import { getToken } from "@/utils/auth";
 import { queryYshList } from "@/api/growFiles/infoAppr";
 import {
@@ -540,7 +553,7 @@ import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getZY, getBJ } from "@/api/student/index";
 export default {
   name: "manStudent",
-  components: { CheckboxCom },
+  components: { CheckboxCom, lctCom },
   computed: {
     fileHeader: {
       get() {
@@ -554,6 +567,7 @@ export default {
   },
   data() {
     return {
+      lctModal: false,
       uploadUrl: process.env.VUE_APP_BASE_API + "/fdyXpx/import",
       searchVal: "",
       select: "",
@@ -669,6 +683,17 @@ export default {
   },
 
   methods: {
+    handleCloseLct() {
+      this.lctModal = false;
+    },
+    lctClick(row) {
+      if (!!row.processid) {
+        this.$refs.child.inner(row.processid);
+        this.lctModal = true;
+      } else {
+        this.$message.warning("此项经历为管理员新增，暂无流程数据");
+      }
+    },
     detailCancel() {
       this.detailModal = false;
     },
@@ -912,6 +937,16 @@ export default {
   }
   .handledie {
     background: url("~@/assets/images/details.png");
+  }
+  .lct {
+    background: url("~@/assets/dangan/lct.png");
+  }
+  .el-button--text {
+    border-color: transparent;
+    color: #005657;
+    background: transparent;
+    padding-left: 0;
+    padding-right: 0;
   }
   .handleName {
     font-weight: 400;

@@ -58,7 +58,7 @@
                   <a>
                     {{ item.fileName }}
                   </a>
-                  <el-button>预览</el-button>
+                  <!-- <el-button>预览</el-button> -->
                 </div>
               </div>
             </template>
@@ -99,7 +99,12 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog title="新增" :visible.sync="addModal" width="80%" :close-on-click-modal="false">
+      <el-dialog
+        title="新增"
+        :visible.sync="addModal"
+        width="80%"
+        :close-on-click-modal="false"
+      >
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
             <el-table-column label="培训项目名称" align="center">
@@ -224,7 +229,12 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="编辑" :visible.sync="editModal" width="80%" :close-on-click-modal="false">
+      <el-dialog
+        title="编辑"
+        :visible.sync="editModal"
+        width="80%"
+        :close-on-click-modal="false"
+      >
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
             <el-table-column label="培训项目名称" align="center">
@@ -363,14 +373,14 @@
         </span>
       </el-dialog>
       <el-dialog title="删除" :visible.sync="delModal" width="20%">
-      <span>确认删除？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="delCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="del()"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
+        <span>确认删除？</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="delCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="del()"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
       <lctCom
         ref="child"
         :lctModal="lctModal"
@@ -404,7 +414,7 @@ export default {
     return {
       submitModal: false,
       lctModal: false,
-      delModal : false,
+      delModal: false,
       addModal: false,
       editModal: false,
       formAdd: { addData: [] },
@@ -539,14 +549,14 @@ export default {
         this.$message.success("删除成功");
         this.query();
         this.delModal = false;
-      }); 
+      });
     },
     showDel() {
       if (this.delArr && this.delArr.length > 0) {
         this.delModal = true;
-        } else {
-          this.$message.error("请先勾选数据");
-        }
+      } else {
+        this.$message.error("请先勾选数据");
+      }
     },
     delCancel() {
       this.delModal = false;
@@ -567,9 +577,6 @@ export default {
       let uid = file.uid;
       let idx = fileList.findIndex((item) => item.uid === uid);
       fileList.splice(idx, 0);
-      if (this.fileListAdd) {
-        this.fileListAdd.splice(idx, 0);
-      }
       this.fileList = fileList;
       if (file.id) {
         //如果是后端返回的文件就走删除接口，不然前端自我删除
@@ -703,21 +710,23 @@ export default {
     changeDate(flag) {
       let addParams = this.formAdd.addData[0];
       let editParams = this.formEdit.editData[0];
-      if (flag==1) {//新增开始时间
+      if (flag == 1) {
+        //新增开始时间
         if (addParams.pxjssj) {
           if (addParams.pxkssj > addParams.pxjssj) {
             addParams.pxkssj = null;
             this.$message.error("开始时间不能大于结束时间！");
           }
         }
-      } else if (flag==2) {//新增结束时间
+      } else if (flag == 2) {
+        //新增结束时间
         if (addParams.pxkssj) {
           if (addParams.pxkssj > addParams.pxjssj) {
             addParams.pxjssj = null;
             this.$message.error("结束时间不能小于开始时间！");
           }
         }
-      } else if (flag==3) {
+      } else if (flag == 3) {
         if (editParams.pxjssj) {
           if (editParams.pxkssj > editParams.pxjssj) {
             editParams.pxkssj = null;
@@ -732,7 +741,7 @@ export default {
           }
         }
       }
-    }
+    },
   },
 };
 </script>

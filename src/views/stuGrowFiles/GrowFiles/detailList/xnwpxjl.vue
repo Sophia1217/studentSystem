@@ -61,7 +61,7 @@
                   <a>
                     {{ item.fileName }}
                   </a>
-                  <el-button>预览</el-button>
+                  <!-- <el-button>预览</el-button> -->
                 </div>
               </div>
             </template>
@@ -681,9 +681,6 @@ export default {
       let uid = file.uid;
       let idx = fileList.findIndex((item) => item.uid === uid);
       fileList.splice(idx, 0);
-      if (this.fileListAdd) {
-        this.fileListAdd.splice(idx, 0);
-      }
       this.fileList = fileList;
       if (file.id) {
         //如果是后端返回的文件就走删除接口，不然前端自我删除
@@ -691,7 +688,7 @@ export default {
       }
     },
     fileChange(file, fileList) {
-      if (Number(file.size / 1024 / 1024) > 2) {
+      if (Number(file.size / 1024 / 1024) > 1) {
         let uid = file.uid;
         let idx = fileList.findIndex((item) => item.uid === uid);
         fileList.splice(idx, 1);

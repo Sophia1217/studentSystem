@@ -457,14 +457,14 @@ export default {
       });
     },
     del() {
-      // if (this.delArr && this.delArr.length > 0) {
+      //if (this.delArr && this.delArr.length > 0) {
       deleteZgrz({ ids: this.delArr }).then((res) => {
         this.$message.success("删除成功");
         this.query();
       });
-      // } else {
-      //   this.$message.error("请先勾选数据");
-      // }
+      //} else {
+      //this.$message.error("请先勾选数据");
+      //}
       this.delModal = false;
     },
     changeTableSort(column) {
@@ -613,18 +613,10 @@ export default {
       this.delModal = false;
     },
     showDel() {
-      var falg = 1;
-      for (var i = 0; i < this.val.length; i++) {
-        if (this.val[i].status !== "01") falg = 2;
-      }
-      if (falg == 1) {
-        if (this.delArr && this.delArr.length > 0) {
-          this.delModal = true;
-        } else {
-          this.$message.error("请先勾选数据");
-        }
+      if (this.delArr && this.delArr.length > 0) {
+        this.delModal = true;
       } else {
-        this.$message.error("存在非草稿状态数据，不可以删除");
+        this.$message.error("请先勾选数据");
       }
     },
   },

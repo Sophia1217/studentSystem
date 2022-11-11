@@ -74,20 +74,12 @@
           <el-col :span="3"> 所在地区： </el-col>
           <el-col :span="20">
             <div class="checkbox">
-              <el-select
+              <el-cascader
                 v-model="moreIform.szdq"
-                multiple
-                collapse-tags
-                placeholder="请选择"
-                size="medium"
-              >
-                <el-option
-                  v-for="item in allDwh"
-                  :key="item.dm"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select>
+                :options="options"
+                @change="handleChangeJg"
+                :props="locationProps"
+              ></el-cascader>
             </div>
           </el-col>
         </el-row>
@@ -199,6 +191,7 @@ import {
   queryJtgj
 } from "@/api/epidemicControl/backWhAppr";
 import { getCollege } from "@/api/class/maintenanceClass";
+import { getLocationjl } from "@/api/student/index";
 export default {
   components: { CheckboxCom },
   data() {
@@ -208,7 +201,7 @@ export default {
       moreIform: {
         xydm: [],
         fhfs: [],
-        szdq:[],
+        szdq:"",
       },
       delArr: [],
       searchVal: "",
@@ -227,6 +220,14 @@ export default {
         total: 0,
       },
       len: 0,
+      //地区级联
+      locationProps: {
+        value: "dm", //匹配响应数据中的id
+        label: "mc", //匹配响应数据中的name
+        checkStrictly: true,
+        children: "dataCodeCascadingList", //匹配响应数据中的children }
+      },
+      options: [],
     };
   },
 
@@ -234,6 +235,8 @@ export default {
     this.handleSearch();
     this.getAllCollege();
     this.getAllJtgj();
+    this.getLocationjl();
+
   },
   activated() {
     this.handleSearch();
@@ -266,7 +269,7 @@ export default {
         shrXm: this.select == "shrXm" ? this.searchVal : null,
         dwhList: this.moreIform.xydm,
         fhfsList: this.moreIform.fhfs,
-        szdqList: null,
+        szdq: this.moreIform.szdq,
         fxsjStart:
           this.dateArrayBack && this.dateArrayBack.length > 0
             ? this.dateArrayBack[0]
@@ -311,7 +314,7 @@ export default {
           shrXm: this.select == "shrXm" ? this.searchVal : null,
           dwhList: this.moreIform.xydm,
           fhfsList: this.moreIform.fhfs,
-          szdqList: null,
+          szdq: this.moreIform.szdq,
           fxsjStart:
             this.dateArrayBack && this.dateArrayBack.length > 0
               ? this.dateArrayBack[0]
@@ -361,7 +364,7 @@ export default {
         shrXm: this.select == "shrXm" ? this.searchVal : null,
         dwhList: this.moreIform.xydm,
         fhfsList: this.moreIform.fhfs,
-        szdqList: null,
+        szdq: this.moreIform.szdq,
         fxsjStart:
           this.dateArrayBack && this.dateArrayBack.length > 0
             ? this.dateArrayBack[0]
@@ -381,6 +384,22 @@ export default {
           this.queryParams.total = res.totalCount;
         })
         .catch((err) => {});
+    },
+    //地区级联
+    getLocationjl() {
+      getLocationjl().then((res) => {
+        this.options = res.data;
+      });
+    },
+    handleChangeJg(value) {
+      if (value.length == 1) {
+        this.moreIform.szdq = value[0];
+      } else if (value.length == 2) {
+        this.moreIform.szdq = value[1];
+      } else {
+        this.moreIform.szdq = value[2];
+      }
+      console.log("this.moreIform.szdq", this.moreIform.szdq);
     },
     // 点击更多
     handleMore() {

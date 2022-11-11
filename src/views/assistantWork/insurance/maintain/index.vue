@@ -207,7 +207,7 @@ export default {
     expBx() {
       if (this.delArr && this.delArr.length > 0) {
         var ids = this.delArr;
-        maintainExp({ ids: ids }).then((res) => {
+        maintainExp({ idList: ids }).then((res) => {
           this.downloadFn(res, "保险维护信息下载", "xlsx");
           this.handleSearch();
         });

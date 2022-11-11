@@ -89,7 +89,9 @@
               >
             </el-form-item>
           </el-col>
-          <el-col :span="3.5" style="margin-left: 100px">
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="3.5">
             <el-form-item label="金额">
               <el-input
                 placeholder="请输入"
@@ -192,7 +194,7 @@
 </template>
 
 <script>
-import pdf from "vue-pdf";
+// import pdf from "vue-pdf";
 import { getToken } from "@/utils/auth";
 import {
   queryList,
@@ -228,6 +230,7 @@ export default {
         mc: [],
         lx: [],
       },
+      xzmcOptions: [],
     };
   },
   mounted() {
@@ -243,11 +246,12 @@ export default {
         this.xzmcOptions = res.data;
       });
     },
-    // pptpreview() {
-    //   this.viewVisible = true;
-    //   this.pdfsrc = pdf.createLoadingTask({ url: this.pdfsrc });
-    //   this.loadPdfHandler();
-    // },
+    pptpreview() {
+      this.viewVisible = true;
+      this.pdfsrc = pdf.createLoadingTask({ url: this.pdfsrc });
+      console.log("this.pdfsrc", this.pdfsrc);
+      this.loadPdfHandler();
+    },
     loadPdfHandler() {
       this.pdfsrc.promise.then((pdf) => {
         // 获取pdf文件相关信息，页码等

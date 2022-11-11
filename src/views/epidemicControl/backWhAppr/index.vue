@@ -79,6 +79,7 @@
                 :options="options"
                 @change="handleChangeJg"
                 :props="locationProps"
+                clearable
               ></el-cascader>
             </div>
           </el-col>
@@ -185,11 +186,7 @@
 
 <script>
 import CheckboxCom from "../../components/checkboxCom";
-import {
-  getQuerylist,
-  exp,
-  queryJtgj
-} from "@/api/epidemicControl/backWhAppr";
+import { getQuerylist, exp, queryJtgj } from "@/api/epidemicControl/backWhAppr";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getLocationjl } from "@/api/student/index";
 export default {
@@ -201,7 +198,7 @@ export default {
       moreIform: {
         xydm: [],
         fhfs: [],
-        szdq:"",
+        szdq: "",
       },
       delArr: [],
       searchVal: "",
@@ -236,7 +233,6 @@ export default {
     this.getAllCollege();
     this.getAllJtgj();
     this.getLocationjl();
-
   },
   activated() {
     this.handleSearch();
@@ -251,7 +247,7 @@ export default {
         .catch((err) => {});
     },
     //交通工具
-    getAllJtgj(){
+    getAllJtgj() {
       queryJtgj()
         .then((res) => {
           this.jtgjOps = res.data;
@@ -263,31 +259,31 @@ export default {
         this.len = this.delArr.length;
       } else {
         let data = {
-        xm: this.select == "xm" ? this.searchVal : null,
-        xh: this.select == "xh" ? this.searchVal : null,
-        sjh: this.select == "sjh" ? this.searchVal : null,
-        shrXm: this.select == "shrXm" ? this.searchVal : null,
-        dwhList: this.moreIform.xydm,
-        fhfsList: this.moreIform.fhfs,
-        szdq: this.moreIform.szdq,
-        fxsjStart:
-          this.dateArrayBack && this.dateArrayBack.length > 0
-            ? this.dateArrayBack[0]
-            : "",
-        fxsjEnd:
-          this.dateArrayBack && this.dateArrayBack.length > 0
-            ? this.dateArrayBack[1]
-            : "",
-        pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
-      };
-      await getQuerylist(data)
-        .then((res) => {
-          this.len = res.totalCount; 
-        })
-        .catch((err) => {});
+          xm: this.select == "xm" ? this.searchVal : null,
+          xh: this.select == "xh" ? this.searchVal : null,
+          sjh: this.select == "sjh" ? this.searchVal : null,
+          shrXm: this.select == "shrXm" ? this.searchVal : null,
+          dwhList: this.moreIform.xydm,
+          fhfsList: this.moreIform.fhfs,
+          szdq: this.moreIform.szdq,
+          fxsjStart:
+            this.dateArrayBack && this.dateArrayBack.length > 0
+              ? this.dateArrayBack[0]
+              : "",
+          fxsjEnd:
+            this.dateArrayBack && this.dateArrayBack.length > 0
+              ? this.dateArrayBack[1]
+              : "",
+          pageNum: this.queryParams.pageNum,
+          pageSize: this.queryParams.pageSize,
+          orderZd: this.queryParams.orderZd,
+          orderPx: this.queryParams.orderPx,
+        };
+        await getQuerylist(data)
+          .then((res) => {
+            this.len = res.totalCount;
+          })
+          .catch((err) => {});
       }
       if (this.len > 0) {
         this.showExport = true;
@@ -350,7 +346,6 @@ export default {
           id: row.id,
         },
       });
-     
     },
     changeSelect() {
       this.searchVal = "";

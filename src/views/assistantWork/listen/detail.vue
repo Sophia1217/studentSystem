@@ -713,15 +713,33 @@ export default {
     },
     getDetail() {
       getDetail({ id: this.lgnSn }).then((res) => {
-        var lsXhList = res.data.rklsgh.split(",");
-        var lsXmList = res.data.rkls.split(",");
-        var lsList = lsXhList.map((v, i) => ({
-          xh: lsXhList[i],
-          xm: lsXmList[i],
-          value: lsXmList[i] + "/" + lsXhList[i],
-        }));
+        var lsXhList = res.data.rklsgh ? res.data.rklsgh.split(",") : [];
+        var lsXmList = res.data.rkls ? res.data.rkls.split(",") : [];
+        var lsList =
+          lsXhList.length > 0
+            ? lsXhList.map((v, i) => ({
+                xh: lsXhList[i] ? lsXhList[i] : "",
+                xm: lsXmList[i] ? lsXmList[i] : "",
+                value: lsXmList[i] ? lsXmList[i] + "/" + lsXhList[i] : "",
+              }))
+            : [
+                {
+                  xh: "",
+                  xm: "",
+                  value: "",
+                },
+              ];
         this.flag = res.data.tjlx == "0" ? true : false; //0是列表数据不让修改，1是新增单条数据
-        this.Form.kksj = res.data.kcsksjList; //后台给的处理数据
+        this.Form.kksj = res.data.kcsksjList
+          ? res.data.kcsksjList
+          : [
+              {
+                xingqi: "",
+                jieKs: "",
+                jieJs: "",
+                week: "",
+              },
+            ]; //后台给的处理数据
         this.Form.xq = res.data.kckksj; //后台给的未处理时间数据
         this.defaultForm.jlrgh = res.data.jlrgh;
         this.defaultForm.jlrxm = res.data.jlrxm;

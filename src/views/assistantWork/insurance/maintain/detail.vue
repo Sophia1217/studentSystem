@@ -53,7 +53,7 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col>
+          <el-col :sapn="4">
             <el-form-item label="附件">
               <el-upload
                 accept=".pdf"
@@ -418,13 +418,13 @@ export default {
     position: relative;
     overflow: hidden;
   }
-  ::v-deep .el-upload-list__item .el-icon-close {
-    position: absolute;
-    top: 5px;
-    left: 350px;
-    cursor: pointer;
-    opacity: 0.75;
-    color: #606266;
-  }
+  // ::v-deep .el-upload-list__item .el-icon-close {
+  //   position: absolute;
+  //   top: 5px;
+  //   left: 350px;
+  //   cursor: pointer;
+  //   opacity: 0.75;
+  //   color: #606266;
+  // }
 }
 </style>

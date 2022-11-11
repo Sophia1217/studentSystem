@@ -6,7 +6,7 @@
           <span class="title">校内外培训经历</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderLight" @click="del">
+          <div class="btns borderLight" @click="showDel">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
           <div class="btns borderGreen" @click="xinzeng">
@@ -99,7 +99,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog title="新增" :visible.sync="addModal" width="80%">
+      <el-dialog title="新增" :visible.sync="addModal" width="80%" :close-on-click-modal="false">
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
             <el-table-column label="培训项目名称" align="center">
@@ -133,6 +133,7 @@
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
+                    @change="changeDate(1)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -150,6 +151,7 @@
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
+                    @change="changeDate(2)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -222,7 +224,7 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="编辑" :visible.sync="editModal" width="80%">
+      <el-dialog title="编辑" :visible.sync="editModal" width="80%" :close-on-click-modal="false">
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
             <el-table-column label="培训项目名称" align="center">
@@ -256,6 +258,7 @@
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
+                    @change="changeDate(3)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -273,6 +276,7 @@
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
+                    @change="changeDate(4)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -358,6 +362,15 @@
           >
         </span>
       </el-dialog>
+      <el-dialog title="删除" :visible.sync="delModal" width="20%">
+      <span>确认删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="del()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
       <lctCom
         ref="child"
         :lctModal="lctModal"
@@ -391,6 +404,7 @@ export default {
     return {
       submitModal: false,
       lctModal: false,
+      delModal : false,
       addModal: false,
       editModal: false,
       formAdd: { addData: [] },
@@ -521,14 +535,21 @@ export default {
       });
     },
     del() {
+      del({ ids: this.delArr }).then((res) => {
+        this.$message.success("删除成功");
+        this.query();
+        this.delModal = false;
+      }); 
+    },
+    showDel() {
       if (this.delArr && this.delArr.length > 0) {
-        del({ ids: this.delArr }).then((res) => {
-          this.$message.success("删除成功");
-          this.query();
-        });
-      } else {
-        this.$message.error("请先勾选数据");
-      }
+        this.delModal = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+    },
+    delCancel() {
+      this.delModal = false;
     },
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
@@ -675,6 +696,40 @@ export default {
     addCance() {
       this.addModal = false;
     },
+    // 判断 开始时间 结束时间
+    changeDate(flag) {
+      let addParams = this.formAdd.addData[0];
+      let editParams = this.formEdit.editData[0];
+      if (flag==1) {//新增开始时间
+        if (addParams.pxjssj) {
+          if (addParams.pxkssj > addParams.pxjssj) {
+            addParams.pxkssj = null;
+            this.$message.error("开始时间不能大于结束时间！");
+          }
+        }
+      } else if (flag==2) {//新增结束时间
+        if (addParams.pxkssj) {
+          if (addParams.pxkssj > addParams.pxjssj) {
+            addParams.pxjssj = null;
+            this.$message.error("结束时间不能小于开始时间！");
+          }
+        }
+      } else if (flag==3) {
+        if (editParams.pxjssj) {
+          if (editParams.pxkssj > editParams.pxjssj) {
+            editParams.pxkssj = null;
+            this.$message.error("开始时间不能大于结束时间！");
+          }
+        }
+      } else {
+        if (editParams.pxkssj) {
+          if (editParams.pxkssj > editParams.pxjssj) {
+            editParams.pxjssj = null;
+            this.$message.error("结束时间不能小于开始时间！");
+          }
+        }
+      }
+    }
   },
 };
 </script>

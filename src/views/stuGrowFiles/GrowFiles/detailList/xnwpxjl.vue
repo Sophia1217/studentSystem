@@ -136,7 +136,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog title="新增" :visible.sync="addModal" width="80%">
+      <el-dialog title="新增" :visible.sync="addModal" width="80%" :close-on-click-modal="false">
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
             <el-table-column label="培训项目名称" align="center">
@@ -169,7 +169,7 @@
                     v-model="scope.row.pxkssj"
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
-                    @change="changeDate(scope.row.pxkssj, true)"
+                    @change="changeDate(1)"
                     value-format="yyyy-MM-dd"
                     placeholder="选择日期"
                   >
@@ -188,7 +188,7 @@
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
-                    @change="changeDate(scope.row.pxjssj, false)"
+                    @change="changeDate(2)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -261,7 +261,7 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="编辑" :visible.sync="editModal" width="80%">
+      <el-dialog title="编辑" :visible.sync="editModal" width="80%" :close-on-click-modal="false">
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
             <el-table-column label="培训项目名称" align="center">
@@ -295,6 +295,7 @@
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
+                    @change="changeDate(3)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -312,6 +313,7 @@
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
+                    @change="changeDate(4)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -626,22 +628,28 @@ export default {
     },
 
     del() {
+      del({ ids: this.delArr }).then((res) => {
+        this.$message.success("删除成功");
+        this.query();
+        this.delModal = false;
+      }); 
+    },
+    showDel() {
       var falg = 1;
       for (var i = 0; i < this.val.length; i++) {
         if (this.val[i].status !== "01") falg = 2;
       }
       if (falg == 1) {
         if (this.delArr && this.delArr.length > 0) {
-          del({ ids: this.delArr }).then((res) => {
-            this.$message.success("删除成功");
-            this.query();
-          });
+          this.delModal = true;
         } else {
           this.$message.error("请先勾选数据");
         }
       } else {
-        this.$message.error("存在草稿状态数据，不可以删除");
+        this.$message.error("存在非草稿状态数据，不可以删除");
       }
+    },
+    delCancel() {
       this.delModal = false;
     },
     changeTableSort(column) {
@@ -790,12 +798,40 @@ export default {
     addCance() {
       this.addModal = false;
     },
-    delCancel() {
-      this.delModal = false;
-    },
-    showDel() {
-      this.delModal = true;
-    },
+    // 判断 开始时间 结束时间
+    changeDate(flag) {
+      let addParams = this.formAdd.addData[0];
+      let editParams = this.formEdit.editData[0];
+      if (flag==1) {//新增开始时间
+        if (addParams.pxjssj) {
+          if (addParams.pxkssj > addParams.pxjssj) {
+            addParams.pxkssj = null;
+            this.$message.error("开始时间不能大于结束时间！");
+          }
+        }
+      } else if (flag==2) {//新增结束时间
+        if (addParams.pxkssj) {
+          if (addParams.pxkssj > addParams.pxjssj) {
+            addParams.pxjssj = null;
+            this.$message.error("结束时间不能小于开始时间！");
+          }
+        }
+      } else if (flag==3) {
+        if (editParams.pxjssj) {
+          if (editParams.pxkssj > editParams.pxjssj) {
+            editParams.pxkssj = null;
+            this.$message.error("开始时间不能大于结束时间！");
+          }
+        }
+      } else {
+        if (editParams.pxkssj) {
+          if (editParams.pxkssj > editParams.pxjssj) {
+            editParams.pxjssj = null;
+            this.$message.error("结束时间不能小于开始时间！");
+          }
+        }
+      }
+    }
   },
 };
 </script>

@@ -92,7 +92,7 @@
                 type="text"
                 size="small"
                 @click="bianji(scope.row)"
-                v-if="scope.row.status === '01' || scope.row.status === '08'"
+                v-show="scope.row.status === '01' || scope.row.status === '08'"
               >
                 <i class="scopeIncon Edit"></i>
                 <span>编辑</span>
@@ -102,7 +102,7 @@
                 size="small"
                 :disabled="true"
                 @click="bianji(scope.row)"
-                v-if="scope.row.status !== '01' && scope.row.status !== '08'"
+                v-show="scope.row.status !== '01' && scope.row.status !== '08'"
               >
                 <i class="scopeIncon EditDis"></i>
                 <span>编辑</span>
@@ -112,7 +112,7 @@
                 type="text"
                 size="small"
                 @click="chehui(scope.row)"
-                v-if="scope.row.status === '02'"
+                v-show="scope.row.status === '02'"
               >
                 <i class="scopeIncon ch"></i>
                 <span>撤回</span>
@@ -122,7 +122,7 @@
                 size="small"
                 :disabled="true"
                 @click="chehui(scope.row)"
-                v-if="scope.row.status !== '02'"
+                v-show="scope.row.status !== '02'"
               >
                 <i class="scopeIncon chDis"></i>
                 <span style="color: #bfbfbf">撤回</span>
@@ -135,7 +135,12 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog title="新增" :visible.sync="addModal" width="80%">
+      <el-dialog
+        title="新增"
+        :visible.sync="addModal"
+        width="80%"
+        :close-on-click-modal="false"
+      >
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
             <el-table-column label="证书类型" align="center" width="180px">
@@ -242,7 +247,12 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="编辑" :visible.sync="editModal" width="80%">
+      <el-dialog
+        title="编辑"
+        :visible.sync="editModal"
+        width="80%"
+        :close-on-click-modal="false"
+      >
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
             <el-table-column label="证书类型" align="center" width="180px">

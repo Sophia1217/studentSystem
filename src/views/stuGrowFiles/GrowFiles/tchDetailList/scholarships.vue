@@ -79,7 +79,12 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog title="新增" :visible.sync="addModal" width="80%">
+      <el-dialog
+        title="新增"
+        :visible.sync="addModal"
+        width="80%"
+        :close-on-click-modal="false"
+      >
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
             <el-table-column label="奖学金名称" align="center">
@@ -202,7 +207,12 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="编辑" :visible.sync="editModal" width="80%">
+      <el-dialog
+        title="编辑"
+        :visible.sync="editModal"
+        width="80%"
+        :close-on-click-modal="false"
+      >
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
             <el-table-column label="奖学金名称" align="center">

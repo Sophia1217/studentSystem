@@ -595,7 +595,7 @@ export default {
         xjzt:
           this.studentStatus.choose && this.studentStatus.choose.length > 0
             ? this.studentStatus.choose.join(",")
-            : "01,03",
+            : "",
         // zzmmm: this.politica.choose&&this.politica.choose.length>0?this.politica.choose.join(','):'',
         // mzm: this.ethnic.choose&&this.ethnic.choose.length>0?this.ethnic.choose.join(','):'',
         bjm:
@@ -869,7 +869,7 @@ export default {
           xjzt:
             this.studentStatus.choose && this.studentStatus.choose.length > 0
               ? this.studentStatus.choose.join(",")
-              : "01,03",
+              : "",
           bjm:
             this.moreIform.pread && this.moreIform.pread.length > 0
               ? this.moreIform.pread.join(",")

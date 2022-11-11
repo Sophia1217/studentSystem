@@ -241,15 +241,15 @@
       <div class="headerTop">
         <div class="headerLeft">
           <span class="title">学生信息列表</span> <i class="Updataicon"></i>
-          <div class="btns borderBlue" @click="modal(1)">
+          <div class="btns2 borderBlue" @click="modal(1)">
             <i class="icon blueIcon"></i
             ><span class="title2">毕业生登记表</span>
           </div>
-          <div class="btns borderBlue" @click="modal(2)">
+          <div class="btns2 borderBlue" @click="modal(2)">
             <i class="icon orangeIcon"></i
             ><span class="title2">学生登记表</span>
           </div>
-          <div class="btns borderBlue" @click="modal(3)">
+          <div class="btns2 borderBlue" @click="modal(3)">
             <i class="icon lightIcon"></i><span class="title2">学生卡片</span>
           </div>
         </div>
@@ -280,7 +280,7 @@
             <i class="icon addIcon"></i><span class="title">新增</span>
           </div>
           <div class="btns" style="background: #ffffff" @click="dynamicTable">
-            <i class="el-icon-s-operation"></i>
+            <i class="icon controlIcon"></i>
           </div>
         </div>
       </div>
@@ -1285,17 +1285,7 @@ export default {
           color: #0d84e0;
           background: #ebfafd;
         }
-        .borderOrange {
-          border: 1px solid #cc3014;
-          color: #cc3014;
-          background: #fdf6f3;
-        }
-        .borderLight {
-          border: 1px solid #0090a1;
-          color: #0090a1;
-          background: #e7fcfc;
-        }
-        .btns {
+        .btns2 {
           margin-left: 15px;
           padding: 5px 10px;
           cursor: pointer;
@@ -1362,6 +1352,9 @@ export default {
           }
           .addIcon {
             background: url("~@/assets/images/addicon.png");
+          }
+          .controlIcon {
+            background: url("~@/assets/images/control.png");
           }
         }
       }

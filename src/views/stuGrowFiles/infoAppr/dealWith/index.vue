@@ -172,9 +172,9 @@
               <i class="icon blueIcon"></i><span class="title">导入</span>
             </el-upload>
           </div> -->
-          <!-- <div class="btns borderOrange" @click="expor">
+          <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
-          </div> -->
+          </div>
         </div>
       </div>
       <div class="mt15">
@@ -194,7 +194,7 @@
           ></el-table-column>
           <el-table-column prop="xh" label="学号"> </el-table-column>
           <el-table-column prop="xm" label="姓名"> </el-table-column>
-          <el-table-column prop="xzmc" label="培养单位"> </el-table-column>
+          <el-table-column prop="dwhmc" label="培养单位"> </el-table-column>
           <el-table-column prop="pyccmmc" label="培养层次"> </el-table-column>
           <el-table-column prop="zydmmc" label="专业"> </el-table-column>
           <el-table-column prop="bjmmc" label="班级"> </el-table-column
@@ -531,6 +531,15 @@
         @pagination="handleSearch"
       />
     </div>
+    <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
+      <span>确认导出{{ leng }}条数据？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="handleConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -538,7 +547,7 @@
 import CheckboxCom from "../../../components/checkboxCom";
 import lctCom from "../../../components/lct";
 import { getToken } from "@/utils/auth";
-import { queryYshList } from "@/api/growFiles/infoAppr";
+import { queryYshList, excelExportCzdaFlowed } from "@/api/growFiles/infoAppr";
 import {
   query1,
   query2,
@@ -567,6 +576,7 @@ export default {
   },
   data() {
     return {
+      showExport: false,
       lctModal: false,
       uploadUrl: process.env.VUE_APP_BASE_API + "/fdyXpx/import",
       searchVal: "",
@@ -575,6 +585,8 @@ export default {
       moreIform: {
         dwh: [],
       },
+      exportParams: {},
+      leng: 0,
       tableData: [],
       allDwh: [], // 学院下拉框
       zyOps: [], // 专业下拉
@@ -683,6 +695,60 @@ export default {
   },
 
   methods: {
+    // 导出取消
+    handleCancel() {
+      this.showExport = false;
+    },
+    // 导出确认
+    handleConfirm() {
+      //let that = this;
+      let ids = [];
+      for (let item_row of this.multipleSelection) {
+        ids.push(item_row.businesId);
+      }
+      this.exportParams.pageNum = 0;
+      this.$set(this.exportParams, "ids", ids);
+      //this.$set(this.exportParams, "status", "1");
+      excelExportCzdaFlowed(this.exportParams)
+        .then((res) => {
+          this.downloadFn(res, "成长档案已处理列表导出.xlsx", "xlsx");
+        })
+        .catch((err) => {});
+
+      this.showExport = false;
+    },
+    async expor() {
+      let data = {
+        xm: this.select == "xm" ? this.searchVal : null,
+        xh: this.select == "xh" ? this.searchVal : null,
+
+        dwh: this.moreIform.dwh || [],
+        zydm: this.moreIform.zydm || [],
+        bjm: this.moreIform.bjm || [],
+        mk: this.moreIform.mk || [],
+        status: this.moreIform.status || [],
+        pyccm: this.training.choose || [],
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+      }; //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
+      this.exportParams = data;
+      if (this.multipleSelection.length > 0) {
+        this.leng = this.multipleSelection.length;
+      } else {
+        await queryYshList(data)
+          .then((res) => {
+            this.leng = res.totalCount;
+          })
+          .catch((err) => {});
+      }
+      if (this.leng > 0) {
+        this.showExport = true;
+      } else {
+        this.$message.warning("当前无数据导出");
+      }
+    },
     handleCloseLct() {
       this.lctModal = false;
     },
@@ -733,41 +799,6 @@ export default {
             this.bjOps = res.data;
           })
           .catch((err) => {});
-      }
-    },
-    expor() {
-      var rqs = "";
-      var rqe = "";
-      if (this.datePicker && this.datePicker.length > 0) {
-        var rqs = this.datePicker[0];
-        rqe = this.datePicker[1];
-      }
-      var idList = [];
-      this.multipleSelection.map((item) => idList.push(item.id));
-      var data = {
-        xm: this.select == "xm" ? this.searchVal : null,
-        xh: this.select == "xh" ? this.searchVal : null,
-        xzmc: this.select == "xzmc" ? this.xzmc : null,
-
-        dwh: this.moreIform.dwh || [],
-        zydm: this.moreIform.zydm || [],
-        bjm: this.moreIform.bjm || [],
-        mk: this.moreIform.mk || [],
-        // pyccm: this.training.choose || [],
-        pyccm: [],
-        pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
-      };
-      if (this.multipleSelection.length > 0) {
-        expor({ idList: idList }).then((res) =>
-          this.downloadFn(res, "学平险列表下载", "xlsx")
-        );
-      } else {
-        expor(data).then((res) =>
-          this.downloadFn(res, "学平险列表下载", "xlsx")
-        );
       }
     },
 

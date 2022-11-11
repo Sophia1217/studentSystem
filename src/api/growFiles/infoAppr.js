@@ -51,3 +51,21 @@ export function thFinal(query) {
     data: query
   })
 }
+//待审核成长档案待审核列表导出
+export function texcelExportCzdaFlow(query) {
+  return request({
+    url: '/czdaFlow/excelExportCzdaFlow',
+    method: 'post',
+    responseType:"blob",
+    data: query
+  })
+}
+//成长档案已处理列表导出
+export function excelExportCzdaFlowed(query) {
+  return request({
+    url: '/czdaFlow/excelExportCzdaFlowed',
+    method: 'post',
+    responseType:"blob",
+    data: query
+  })
+}

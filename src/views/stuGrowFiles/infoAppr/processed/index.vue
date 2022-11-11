@@ -122,9 +122,9 @@
           <span class="title">待审核列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <!-- <div class="btns borderOrange" @click="expor">
+          <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
-          </div> -->
+          </div>
           <div class="btns borderRed" @click="back">
             <i class="icon orangeIcon"></i><span class="title">退回</span>
           </div>
@@ -662,6 +662,15 @@
         @pagination="handleSearch"
       />
     </div>
+    <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
+      <span>确认导出{{ leng }}条数据？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="handleConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -673,6 +682,7 @@ import {
   jjFlow,
   backFlow,
   thFinal,
+  texcelExportCzdaFlow,
 } from "@/api/growFiles/infoAppr";
 import {
   query1,
@@ -691,6 +701,7 @@ export default {
   components: { CheckboxCom },
   data() {
     return {
+      showExport: false,
       ztStatus: [],
       searchVal: "",
       select: "",
@@ -701,6 +712,8 @@ export default {
         bjm: [],
         mk: [],
       },
+      exportParams: {},
+      leng: 0,
       tableData: [],
       allDwh: [],
       zyOps: [], // 专业下拉
@@ -816,6 +829,58 @@ export default {
   },
 
   methods: {
+    // 导出取消
+    handleCancel() {
+      this.showExport = false;
+    },
+    // 导出确认
+    handleConfirm() {
+      let ids = [];
+      for (let item_row of this.multipleSelection) {
+        ids.push(item_row.businesId);
+      }
+      this.exportParams.pageNum = 0;
+      this.$set(this.exportParams, "ids", ids);
+      //this.$set(this.exportParams, "status", "1");
+      texcelExportCzdaFlow(this.exportParams)
+        .then((res) => {
+          this.downloadFn(res, "成长档案待审核列表导出.xlsx", "xlsx");
+        })
+        .catch((err) => {});
+
+      this.showExport = false;
+    },
+    async expor() {
+      let data = {
+        xm: this.select == "xm" ? this.searchVal : null,
+        xh: this.select == "xh" ? this.searchVal : null,
+        dwh: this.moreIform.dwh,
+        zydm: this.moreIform.zydm,
+        bjm: this.moreIform.bjm,
+        mk: this.moreIform.mk,
+        pyccm: this.training.choose || [],
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+      }; //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
+      this.exportParams = data;
+      if (this.multipleSelection.length > 0) {
+        this.leng = this.multipleSelection.length;
+      } else {
+        await queryDshList(data)
+          .then((res) => {
+            this.leng = res.totalCount;
+          })
+          .catch((err) => {});
+      }
+      console.log(this.leng);
+      if (this.leng > 0) {
+        this.showExport = true;
+      } else {
+        this.$message.warning("当前无数据导出");
+      }
+    },
     detailCancel() {
       this.detailModal = false;
       this.commonParams = [];
@@ -958,36 +1023,36 @@ export default {
           .catch((err) => {});
       }
     },
-    expor() {
-      var rqs = "";
-      var rqe = "";
-      var idList = [];
-      this.multipleSelection.map((item) => idList.push(item.id));
-      var data = {
-        xm: this.select == "xm" ? this.searchVal : null,
-        xh: this.select == "xh" ? this.searchVal : null,
-        xzmc: this.select == "xzmc" ? this.xzmc : null,
-        buyEndTime: rqs,
-        buyStartTime: rqe,
-        cbgs: this.select == "cbgs" ? this.cbgs : null,
-        lxr: this.select == "lxr" ? this.lxr : null,
-        lxdh: this.select == "lxdh" ? this.lxdh : null,
-        xzlxList: this.moreIform.xzlx,
-        pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
-      };
-      if (this.multipleSelection.length > 0) {
-        expor({ idList: idList }).then((res) =>
-          this.downloadFn(res, "学平险列表下载", "xlsx")
-        );
-      } else {
-        expor(data).then((res) =>
-          this.downloadFn(res, "学平险列表下载", "xlsx")
-        );
-      }
-    },
+    // expor() {
+    //   var rqs = "";
+    //   var rqe = "";
+    //   var idList = [];
+    //   this.multipleSelection.map((item) => idList.push(item.id));
+    //   var data = {
+    //     xm: this.select == "xm" ? this.searchVal : null,
+    //     xh: this.select == "xh" ? this.searchVal : null,
+    //     xzmc: this.select == "xzmc" ? this.xzmc : null,
+    //     buyEndTime: rqs,
+    //     buyStartTime: rqe,
+    //     cbgs: this.select == "cbgs" ? this.cbgs : null,
+    //     lxr: this.select == "lxr" ? this.lxr : null,
+    //     lxdh: this.select == "lxdh" ? this.lxdh : null,
+    //     xzlxList: this.moreIform.xzlx,
+    //     pageNum: this.queryParams.pageNum,
+    //     pageSize: this.queryParams.pageSize,
+    //     orderZd: this.queryParams.orderZd,
+    //     orderPx: this.queryParams.orderPx,
+    //   };
+    //   if (this.multipleSelection.length > 0) {
+    //     expor({ idList: idList }).then((res) =>
+    //       this.downloadFn(res, "学平险列表下载", "xlsx")
+    //     );
+    //   } else {
+    //     expor(data).then((res) =>
+    //       this.downloadFn(res, "学平险列表下载", "xlsx")
+    //     );
+    //   }
+    // },
 
     async hadleDetail(row) {
       this.defaultRes = row;

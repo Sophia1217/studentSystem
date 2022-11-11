@@ -230,7 +230,7 @@ export function download(url, params, filename) {
     } else {
       const resText = await data.text();
       const rspObj = JSON.parse(resText);
-      const errMsg = errorCode[rspObj.code] || rspObj.msg || errorCode['default']
+      const errMsg = errorCode[rspObj.code] || rspObj.errmsg || errorCode['default']
       Message.error(errMsg);
     }
     downloadLoadingInstance.close();

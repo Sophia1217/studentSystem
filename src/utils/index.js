@@ -1,4 +1,7 @@
 import { parseTime } from './ruoyi'
+import { blobValidate } from "@/utils/ruoyi";
+import errorCode from '@/utils/errorCode'
+
 
 /**
  * 表格时间格式化
@@ -389,38 +392,47 @@ export function isNumberStr(str) {
 }
 
 // 下载表格
-export function downloadFn(data, filename,type) { //第三个参数是文件类型,必传不然就默认都为text
+ export async function downloadFn(data, filename,type) { //第三个参数是文件类型,必传不然就默认都为text
   console.log(data);
-var ls = ""
-  if (type == "doc"){
-    ls ="application/msword;charset=utf-8"
-  } else if(type == "docx"){
-    ls ="application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8"
-  }else if(type == "xls"){
-    ls =" application/vnd.ms-excel;charset=utf-8"
-  } else if(type == "xlsx" ){
-    ls ="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
-  } else if (type == 'zip') {
-    ls ="application/zip"
-  }else if (type == '.png') {
-    ls ="image/png"
-  } else if (type == '.pdf') {
-    ls ="application/pdf"
-  }else if (type == '.jpe' ||type == '.jpeg'  || type == '.jpg'  ) {
-    ls ="image/jpeg"
-  } else{
-    ls ="text/plain;charset=utf-8"
+  const isblob = await blobValidate(data);
+  if (isblob) {
+    var ls = ""
+    if (type == "doc"){
+      ls ="application/msword;charset=utf-8"
+    } else if(type == "docx"){
+      ls ="application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8"
+    }else if(type == "xls"){
+      ls =" application/vnd.ms-excel;charset=utf-8"
+    } else if(type == "xlsx" ){
+      ls ="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+    } else if (type == 'zip') {
+      ls ="application/zip"
+    }else if (type == '.png') {
+      ls ="image/png"
+    } else if (type == '.pdf') {
+      ls ="application/pdf"
+    }else if (type == '.jpe' ||type == '.jpeg'  || type == '.jpg'  ) {
+      ls ="image/jpeg"
+    } else{
+      ls ="text/plain;charset=utf-8"
+    }
+    if (!data) {
+      return
+    }        
+    let url = window.URL.createObjectURL(new Blob([data], { type: ls }))
+    let link = document.createElement('a')
+    link.style.display = 'none'
+    link.href = url
+    link.setAttribute('download', filename)
+    document.body.appendChild(link)
+    link.click()
+  } else {
+    const resText = await data.text();
+    const rspObj = JSON.parse(resText);
+    const errMsg = errorCode[rspObj.code] || rspObj.errmsg || errorCode['default']
+    this.$message.error(errMsg);
   }
-  if (!data) {
-    return
-  }        
-  let url = window.URL.createObjectURL(new Blob([data], { type: ls }))
-  let link = document.createElement('a')
-  link.style.display = 'none'
-  link.href = url
-  link.setAttribute('download', filename)
-  document.body.appendChild(link)
-  link.click()
+
 }
 
 //当前时间减去三十分钟

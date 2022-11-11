@@ -2,18 +2,15 @@
   <div class="addHomeSchool">
     <div class="permissions">
       <div>
-        <span class="title">基础人员</span>
+        <span class="title">学生信息</span>
       </div>
       <el-form ref="formTop" label-width="80px">
         <el-row :gutter="20">
-          <el-col :span="1.5">
-            <el-form-item label="学生信息"> </el-form-item>
-          </el-col>
           <el-col :span="4">
             <el-form-item label="学号">
               <el-input
                 placeholder="请输入"
-                v-model="form.xh"
+                v-model="formId.xh"
                 :disabled="true"
               ></el-input>
             </el-form-item>
@@ -22,31 +19,39 @@
             <el-form-item label="姓名">
               <el-input
                 placeholder="请输入"
-                v-model="form.xm"
+                v-model="formId.xm"
                 :disabled="true"
               ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
+        <div>
+          <span class="title">保险信息</span>
+        </div>
         <el-row :gutter="20">
-          <el-col :span="1.5">
-            <el-form-item label="保险信息"> </el-form-item>
-          </el-col>
-
           <el-col :span="4">
             <el-form-item label="名称">
-              <el-input
-                placeholder="请输入"
-                v-model="form.xzmc"
-                :disabled="true"
-              ></el-input>
+              <el-select
+                v-model="formXzdm.xzmc"
+                :disabled="edit == '1' ? true : false"
+                @change="changeMc"
+                placeholder="请输入险种名称"
+              >
+                <el-option
+                  v-for="item in xzmcOptions"
+                  :key="item.dm"
+                  :label="item.mc"
+                  :value="item.dm"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="3">
             <el-form-item label="类型">
               <el-input
                 placeholder="请输入"
-                v-model="form.xzlx"
+                v-model="formXzdm.xzlx"
                 :disabled="true"
               ></el-input>
             </el-form-item>
@@ -56,14 +61,14 @@
               <el-input
                 placeholder="请输入"
                 :disabled="edit == '1' ? true : false"
-                v-model="form.bdh"
+                v-model="formId.bdh"
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="3.5">
             <el-form-item label="购买时间">
               <el-date-picker
-                v-model="form.createTime"
+                v-model="formId.createTime"
                 :disabled="edit == '1' ? true : false"
                 format="yyyy-MM-dd"
                 value-format="yyyy-MM-dd"
@@ -78,7 +83,7 @@
               <el-input
                 placeholder="请输入"
                 :disabled="edit == '1' ? true : false"
-                v-model="form.gmnx"
+                v-model="formId.gmnx"
               >
                 <template slot="append">年</template></el-input
               >
@@ -89,7 +94,7 @@
               <el-input
                 placeholder="请输入"
                 :disabled="edit == '1' ? true : false"
-                v-model="form.je"
+                v-model="formId.je"
               >
                 <template slot="append">元</template></el-input
               >
@@ -97,8 +102,6 @@
           </el-col>
         </el-row>
       </el-form>
-    </div>
-    <div class="permissions">
       <el-form ref="formTop" label-width="80px">
         <div>
           <div>
@@ -109,7 +112,7 @@
               <el-form-item label="承保公司">
                 <el-input
                   placeholder="请输入"
-                  v-model="form.cbgs"
+                  v-model="formXzdm.cbgs"
                   :disabled="true"
                 ></el-input>
               </el-form-item>
@@ -118,7 +121,7 @@
               <el-form-item label="联系人">
                 <el-input
                   placeholder="请输入"
-                  v-model="form.lxr"
+                  v-model="formXzdm.lxr"
                   :disabled="true"
                 ></el-input>
               </el-form-item>
@@ -127,13 +130,12 @@
               <el-form-item label="联系电话">
                 <el-input
                   placeholder="请输入"
-                  v-model="form.lxdh"
+                  v-model="formXzdm.lxdh"
                   :disabled="true"
                 ></el-input>
               </el-form-item>
             </el-col>
           </el-row>
-          <span class="title">保险内容</span>
           <el-form-item label="附件">
             <el-upload
               action="#"
@@ -145,6 +147,7 @@
               :disabled="true"
             >
             </el-upload>
+            <!-- <el-button @click="pptpreview">预览</el-button> -->
           </el-form-item>
         </div>
       </el-form>
@@ -160,7 +163,6 @@
           :on-success="upLoadSuccess"
           :on-error="upLoadError"
         >
-          <el-button class="export"> 更新</el-button>
         </el-upload>
         <el-button class="export" v-if="edit == '1'" @click="editDetail">
           编辑</el-button
@@ -169,46 +171,101 @@
         <el-button v-if="edit == '2'" @click="cancel"> 取消</el-button>
       </div>
     </div>
+    <el-dialog
+      title="预览"
+      :visible.sync="viewVisible"
+      width="50%"
+      height="100%"
+      center
+    >
+      <div class="pdf">
+        <pdf
+          v-for="currentPage in numPages"
+          :key="currentPage"
+          :src="pdfsrc"
+          :page="currentPage"
+          @loaded="loadPdfHandler"
+        ></pdf>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import pdf from "vue-pdf";
 import { getToken } from "@/utils/auth";
-import { queryList, updateXpx } from "@/api/assistantWork/baoxian";
+import {
+  queryList,
+  updateXpx,
+  queryXzmc,
+  maintainDetail,
+} from "@/api/assistantWork/baoxian";
 import { querywj, Exportwj } from "@/api/assistantWork/classEvent";
 
 export default {
   data() {
     return {
+      viewVisible: true,
+      // pdfsrc: "/PdfDemo/demo.pdf",
+      pdfsrc: "",
+      numPages: 1,
+      currentPage: 1, // pdf文件页码
+      pageCount: 1, // pdf文件总页数
+      viewVisible: false,
       edit: "1",
       uploadUrl: process.env.VUE_APP_BASE_API + "/fdyXpx/importAppend",
       fileList: [],
-      form: {
+      xzdm: "",
+      formId: {
         xh: "",
         xm: "",
-        pycc: "",
-        nj: "",
-        mc: [],
-        lx: [],
         bxdh: [],
         startSj: [],
         endSj: [],
       },
+      addXzdm: "",
+      formXzdm: {
+        mc: [],
+        lx: [],
+      },
     };
   },
   mounted() {
-    this.querywj();
     this.getDatail();
+    this.queryXzmc();
+  },
+  components: {
+    pdf,
   },
   methods: {
+    queryXzmc() {
+      queryXzmc().then((res) => {
+        this.xzmcOptions = res.data;
+      });
+    },
+    // pptpreview() {
+    //   this.viewVisible = true;
+    //   this.pdfsrc = pdf.createLoadingTask({ url: this.pdfsrc });
+    //   this.loadPdfHandler();
+    // },
+    loadPdfHandler() {
+      this.pdfsrc.promise.then((pdf) => {
+        // 获取pdf文件相关信息，页码等
+        this.numPages = pdf.numPages;
+      });
+      this.currentPage = 1; // 加载的时候先加载第一页
+      // 强制刷新
+      this.$forceUpdate();
+    },
     baocun() {
-      const { bdh, gmnx, gmsj, je } = this.form;
+      const { bdh, gmnx, gmsj, je } = this.formId;
       var data = {
         bdh: bdh,
         gmsj: gmsj,
         je: je,
         id: this.$route.query.id,
         gmnx: gmnx,
+        xzdm: this.addXzdm,
       };
       updateXpx(data).then((res) => {
         if (res.errcode == "00") {
@@ -217,6 +274,16 @@ export default {
         }
       });
     },
+    changeMc(val) {
+      this.addXzdm = val;
+      maintainDetail({ xzdm: val })
+        .then((res) => {
+          this.formXzdm = res.data;
+          this.xzdmWj = res.data.xzdm;
+          this.querywj();
+        })
+        .catch((err) => {});
+    },
     editDetail() {
       this.edit = 2; //1是详情 二是编辑
     },
@@ -224,20 +291,36 @@ export default {
       this.edit = 1; //1是详情 二是编辑
     },
     getDatail() {
+      //根据id查的信息
       queryList({ id: this.$route.query.id })
         .then((res) => {
-          this.form = res.data[0];
-          // this.form.je = res.data[0].je + "元";
+          this.formId = res.data[0];
+          this.xzdmWj = res.data[0].xzdm;
+        })
+        .catch((err) => {});
+      //根据xzdm查的信息
+      maintainDetail({ xzdm: this.$route.query.xzdmOld })
+        .then((res) => {
+          this.formXzdm = res.data;
+          this.xzdmWj = res.data.xzdm;
+          this.querywj();
         })
         .catch((err) => {});
     },
+
     handleExceed() {
       this.$message.warning(`当前限制选择 1 个文件`);
     },
     querywj() {
       //用于文件查询
-      querywj({ businesId: 0 }).then((res) => {
+      var businesId = {
+        businesId: this.xzdmWj,
+      };
+      querywj(businesId).then((res) => {
         this.fileList = res.data;
+        this.pdfsrc = res.data
+          ? `http://172.30.129.27/sfile/${res.data[0].proId}`
+          : "";
         this.fileList = this.fileList.map((ele) => {
           return {
             name: ele.fileName,
@@ -254,7 +337,6 @@ export default {
       });
     },
     upLoadSuccess(res, file, fileList) {
-      console.log("jinlaile");
       if (res.errcode == "00") {
         this.$message({
           type: "success",

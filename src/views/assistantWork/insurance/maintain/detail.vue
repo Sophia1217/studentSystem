@@ -380,6 +380,7 @@ export default {
       background: #005657;
       color: #fff;
     }
+
     .shishi {
       width: 10px;
     }
@@ -416,6 +417,14 @@ export default {
     cursor: pointer;
     position: relative;
     overflow: hidden;
+  }
+  ::v-deep .el-upload-list__item .el-icon-close {
+    position: absolute;
+    top: 5px;
+    left: 350px;
+    cursor: pointer;
+    opacity: 0.75;
+    color: #606266;
   }
 }
 </style>

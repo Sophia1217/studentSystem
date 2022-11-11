@@ -96,6 +96,14 @@ import request from "@/utils/request.js"
     })
   }
 
+  export function queryXzmc(query) {
+    return request({
+        url: '/fdyXpx//queryXzmc',
+        method: 'post',
+        data: query
+    })
+  }
+
  
   
 

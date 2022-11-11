@@ -241,7 +241,13 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="申报详情" :visible.sync="detailModal" width="80%">
+
+      <el-dialog
+        title="申报详情"
+        :visible.sync="detailModal"
+        :before-close="detailCancel"
+        width="80%"
+      >
         <template>
           <el-form>
             <el-row :gutter="20">
@@ -812,6 +818,7 @@ export default {
   methods: {
     detailCancel() {
       this.detailModal = false;
+      this.commonParams = [];
     },
     getCode1(val) {
       const data = { codeTableEnglish: val };
@@ -872,7 +879,7 @@ export default {
     },
     async back() {
       if (this.commonParams.length > 0) {
-        var processId = { processId: this.commonParams[0].processId };
+        var processId = { processId: this.commonParams[0].taskId };
         await backFlow(processId).then((res) => {
           this.tableInner = res.data;
         });
@@ -1140,9 +1147,6 @@ export default {
       this.training.checkAll = checkedCount === this.training.checkBox.length;
       this.training.isIndeterminate =
         checkedCount > 0 && checkedCount < this.training.checkBox.length;
-    },
-    handleSelectionChange1(val) {
-      this.multipleSelection1 = val;
     },
     // 多选
     handleSelectionChange(val) {

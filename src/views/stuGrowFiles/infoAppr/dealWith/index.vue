@@ -192,21 +192,14 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="xm" label="姓名" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="xzmc" label="培养单位" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="pyccmmc" label="培养层次" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="zydmmc" label="专业" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="bjmmc" label="班级" sortable="custom">
-          </el-table-column
-          ><el-table-column prop="mk" label="所属模块" sortable="custom">
-          </el-table-column
-          ><el-table-column prop="status" label="审核结果" sortable="custom">
+          <el-table-column prop="xh" label="学号"> </el-table-column>
+          <el-table-column prop="xm" label="姓名"> </el-table-column>
+          <el-table-column prop="xzmc" label="培养单位"> </el-table-column>
+          <el-table-column prop="pyccmmc" label="培养层次"> </el-table-column>
+          <el-table-column prop="zydmmc" label="专业"> </el-table-column>
+          <el-table-column prop="bjmmc" label="班级"> </el-table-column
+          ><el-table-column prop="mk" label="所属模块"> </el-table-column
+          ><el-table-column prop="status" label="审核结果">
             <template slot-scope="scope">
               <el-select
                 v-model="scope.row.status"
@@ -221,8 +214,7 @@
                 ></el-option>
               </el-select>
             </template> </el-table-column
-          ><el-table-column prop="mk" label="审核进度" sortable="custom">
-          </el-table-column>
+          ><el-table-column prop="mk" label="审核进度"> </el-table-column>
 
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">

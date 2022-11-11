@@ -283,6 +283,7 @@ export default {
         path: "/assistantWork/detailBX",
         query: {
           id: row.id,
+          xzdmOld: row.xzdm,
         },
       });
     },

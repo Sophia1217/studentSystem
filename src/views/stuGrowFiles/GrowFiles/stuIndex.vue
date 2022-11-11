@@ -36,6 +36,24 @@
       <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20">
           <el-col :span="6">
+            <span>培养单位：</span>
+            <el-select
+              v-model="moreIform.manageReg"
+              @change="changeXY"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="(item, index) in allDwh"
+                :key="index"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="6">
             <span>专 业：</span>
             <el-select
               v-model="moreIform.stuInfo"

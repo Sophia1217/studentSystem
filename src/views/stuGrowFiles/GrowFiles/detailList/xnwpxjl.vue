@@ -136,7 +136,12 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog title="新增" :visible.sync="addModal" width="80%" :close-on-click-modal="false">
+      <el-dialog
+        title="新增"
+        :visible.sync="addModal"
+        width="80%"
+        :close-on-click-modal="false"
+      >
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
             <el-table-column label="培训项目名称" align="center">
@@ -261,7 +266,12 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="编辑" :visible.sync="editModal" width="80%" :close-on-click-modal="false">
+      <el-dialog
+        title="编辑"
+        :visible.sync="editModal"
+        width="80%"
+        :close-on-click-modal="false"
+      >
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
             <el-table-column label="培训项目名称" align="center">
@@ -632,7 +642,7 @@ export default {
         this.$message.success("删除成功");
         this.query();
         this.delModal = false;
-      }); 
+      });
     },
     showDel() {
       var falg = 1;
@@ -666,6 +676,8 @@ export default {
       console.log("yulan");
     },
     beforeRemove(file, fileList) {
+      console.log("file", file);
+      console.log("fileList", fileList);
       let uid = file.uid;
       let idx = fileList.findIndex((item) => item.uid === uid);
       fileList.splice(idx, 0);
@@ -680,6 +692,9 @@ export default {
     },
     fileChange(file, fileList) {
       if (Number(file.size / 1024 / 1024) > 2) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
         this.$message.error("单个文件大小不得超过2M");
       } else if (file.status == "ready") {
         this.fileListAdd = [];
@@ -689,12 +704,12 @@ export default {
     },
     bianji(row) {
       this.formEdit.editData = [];
-      // row.fileList = row.fileList.map((ele) => {
-      //   return {
-      //     name: ele.fileName,
-      //     ...ele,
-      //   };
-      // });
+      row.fileList = row.fileList.map((ele) => {
+        return {
+          name: ele.fileName,
+          ...ele,
+        };
+      });
       this.formEdit.editData.push(row);
       this.editModal = true;
     },
@@ -802,21 +817,23 @@ export default {
     changeDate(flag) {
       let addParams = this.formAdd.addData[0];
       let editParams = this.formEdit.editData[0];
-      if (flag==1) {//新增开始时间
+      if (flag == 1) {
+        //新增开始时间
         if (addParams.pxjssj) {
           if (addParams.pxkssj > addParams.pxjssj) {
             addParams.pxkssj = null;
             this.$message.error("开始时间不能大于结束时间！");
           }
         }
-      } else if (flag==2) {//新增结束时间
+      } else if (flag == 2) {
+        //新增结束时间
         if (addParams.pxkssj) {
           if (addParams.pxkssj > addParams.pxjssj) {
             addParams.pxjssj = null;
             this.$message.error("结束时间不能小于开始时间！");
           }
         }
-      } else if (flag==3) {
+      } else if (flag == 3) {
         if (editParams.pxjssj) {
           if (editParams.pxkssj > editParams.pxjssj) {
             editParams.pxkssj = null;
@@ -831,7 +848,7 @@ export default {
           }
         }
       }
-    }
+    },
   },
 };
 </script>

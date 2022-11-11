@@ -494,7 +494,9 @@ export default {
     },
     fileChange(file, fileList) {
       if (Number(file.size / 1024 / 1024) > 2) {
-        this.$message.error("单个文件大小不得超过2M");
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
       } else if (file.status == "ready") {
         this.fileListAdd = [];
         this.fileListAdd.push(file); //修改编辑的文件参数

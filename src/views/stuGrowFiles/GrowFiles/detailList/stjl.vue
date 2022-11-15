@@ -86,7 +86,7 @@
                 v-show="scope.row.status !== '01' && scope.row.status !== '08'"
               >
                 <i class="scopeIncon EditDis"></i>
-                <span>编辑</span>
+                <span style="color: #bfbfbf">编辑</span>
               </el-button>
 
               <el-button

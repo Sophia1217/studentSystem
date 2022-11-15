@@ -753,8 +753,8 @@ export default {
       this.lctModal = false;
     },
     lctClick(row) {
-      if (!!row.processid) {
-        this.$refs.child.inner(row.processid);
+      if (!!row.processId) {
+        this.$refs.child.inner(row.processId);
         this.lctModal = true;
       } else {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");

@@ -102,7 +102,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">是否全日制：</el-col>
+          <el-col :span="3">学习形式：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -599,7 +599,7 @@ export default {
         xjzt: this.studentStatus.choose,
         zzmmm: this.politica.choose,
         sfzx: this.inSchool.choose,
-        // 是否全日制
+        // 学习形式
         xxxs: this.isQuan.choose,
         mzm: this.ethnic.choose,
         bjm: this.moreIform.pread,

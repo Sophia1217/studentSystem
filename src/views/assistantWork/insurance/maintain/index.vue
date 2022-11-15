@@ -73,7 +73,7 @@
           </el-table-column>
           <el-table-column prop="xzlx" label="险种类型" sortable="custom">
           </el-table-column>
-          <el-table-column prop="cbgs" label="承包公司" sortable="custom">
+          <el-table-column prop="cbgs" label="承保公司" sortable="custom">
           </el-table-column>
           <el-table-column prop="lxr" label="联系人" sortable="custom">
           </el-table-column>

@@ -149,7 +149,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">是否全日制：</el-col>
+          <el-col :span="3">学习形式：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -299,6 +299,18 @@
             type="index"
             label="序号"
             width="50"
+          ></el-table-column>
+          <el-table-column
+            fixed="left"
+            label="学号"
+            prop="xh"
+            width="120"
+          ></el-table-column>
+          <el-table-column
+            fixed="left"
+            label="姓名"
+            prop="xm"
+            width="80"
           ></el-table-column>
           <div v-for="(item, index) in tableHeader" :key="index">
             <el-table-column
@@ -516,8 +528,6 @@ export default {
       },
       dynamicModal: false,
       tableHeader: [
-        { dm: "xh", mc: "学号" },
-        { dm: "xm", mc: "姓名" },
         { dm: "zzmmc", mc: "政治面貌" },
         { dm: "mzmc", mc: "民族" },
         { dm: "dwmc", mc: "学院" },
@@ -898,7 +908,7 @@ export default {
         xjzt: this.studentStatus.choose,
         zzmmm: this.politica.choose,
         sfzx: this.inSchool.choose,
-        // 是否全日制
+        // 学习形式
         xxxs: this.isQuan.choose,
         mzm: this.ethnic.choose,
         bjm: this.moreIform.pread,

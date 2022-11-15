@@ -20,9 +20,9 @@
           <button class="span2" v-if="edit == 2" @click="save()">保存</button>
         </div>
       </div>
-      <el-form ref="form" label-width="80px">
-        <el-row :gutter="20">
-          <el-col :span="4">
+      <el-form ref="form" label-width="75px">
+        <el-row>
+          <el-col :span="4.5">
             <el-form-item label="谈话人">
               <el-input
                 :disabled="true"
@@ -30,30 +30,30 @@
                 placeholder="请输入"
               ></el-input> </el-form-item
           ></el-col>
-          <el-col :span="4">
-            <el-form-item label="姓名">
+          <el-col :span="4.5">
+            <el-form-item label="姓名" label-width="40px">
               <el-input
                 :disabled="true"
                 v-model="thrxm"
                 placeholder="请输入"
               ></el-input> </el-form-item></el-col
-          ><el-col :span="4">
-            <el-form-item label="单位">
+          ><el-col :span="4.5">
+            <el-form-item label="单位" label-width="40px">
               <el-input
                 :disabled="true"
                 v-model="rzdw"
                 placeholder="请输入"
               ></el-input> </el-form-item></el-col
-          ><el-col :span="4">
-            <el-form-item label="岗位">
+          ><el-col :span="4.5">
+            <el-form-item label="岗位" label-width="40px">
               <el-input
                 :disabled="true"
                 v-model="thrgw"
                 placeholder="请输入"
               ></el-input> </el-form-item
           ></el-col>
-          <el-col :span="4">
-            <el-form-item label="类型">
+          <el-col :span="4.5">
+            <el-form-item label="类型" label-width="40px">
               <el-input
                 :disabled="true"
                 v-model="thrlb"
@@ -114,7 +114,7 @@
           </el-row>
         </el-form-item>
         <el-row :gutter="20">
-          <el-col :span="3">
+          <el-col :span="5">
             <el-form-item label="谈话主题">
               <el-input
                 v-model="Zhuti"
@@ -132,7 +132,7 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="16" v-if="edit == 2">
+          <el-col :span="14" v-if="edit == 2">
             <el-tag
               v-for="(item, i) in tags.themeTags"
               :key="i"
@@ -638,7 +638,7 @@ export default {
         } else {
           this.inputVisible = true;
           this.$nextTick((_) => {
-            this.$refs.saveTagInput$refs.input.focus();
+            this.$refs.saveTagInput.$refs.input.focus();
           });
         }
       } else {

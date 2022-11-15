@@ -99,8 +99,8 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="kcbh" label="课程编号" sortable="custom">
-          </el-table-column>
+          <!-- <el-table-column prop="kcbh" label="课程编号" sortable="custom">
+          </el-table-column> -->
           <el-table-column prop="kcmc" label="课程名称" sortable="custom">
           </el-table-column>
           <el-table-column prop="jxdd" label="教室" sortable="custom">
@@ -111,12 +111,12 @@
           </el-table-column>
           <el-table-column prop="rkls" label="任课教师" sortable="custom">
           </el-table-column>
-          <el-table-column prop="rklsgh" label="教师工号" sortable="custom">
-          </el-table-column>
+          <!-- <el-table-column prop="rklsgh" label="教师工号" sortable="custom">
+          </el-table-column> -->
           <el-table-column prop="jlrxm" label="记录人" sortable="custom">
           </el-table-column>
-          <el-table-column prop="jlrgh" label="记录人工号" sortable="custom">
-          </el-table-column>
+          <!-- <el-table-column prop="jlrgh" label="记录人工号" sortable="custom">
+          </el-table-column> -->
           <el-table-column prop="jlrlx" label="类型" sortable="custom">
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="140">

@@ -126,7 +126,12 @@
           </el-table-column>
           <el-table-column prop="sqlxfs" label="手机号" sortable="custom">
           </el-table-column>
-          <el-table-column prop="cxsy" label="出行事由" sortable="custom">
+          <el-table-column
+            prop="cxsy"
+            label="出行事由"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
           </el-table-column>
           <el-table-column prop="mdd" label="目的地" sortable="custom">
           </el-table-column>
@@ -171,7 +176,7 @@
       title="离汉审批详情"
       :visible.sync="detailModal"
       width="40%"
-      style="height: 78vh"
+      style="height: 750px"
     >
       <div>
         <el-row>
@@ -216,13 +221,15 @@
             </div>
           </el-col> </el-row
         ><el-row>
-          <el-col :span="12" class="yiny">
+          <el-col :span="24" class="yiny">
             <div style="display: flex; height: 50px">
               <div class="hs">出行事由</div>
-              <div class="bs">{{ res.cxsy }}</div>
+              <div class="bsSp" :title="res.cxsy">{{ res.cxsy }}</div>
             </div>
           </el-col>
-          <el-col :span="12" class="yiny">
+        </el-row>
+        <el-row>
+          <el-col :span="24" class="yiny">
             <div style="display: flex; height: 50px">
               <div class="hs">目的地</div>
               <div class="bs">{{ res.mdd }}</div>
@@ -334,39 +341,39 @@ export default {
         this.len = this.delArr.length;
       } else {
         let data = {
-        sqxm: this.select == "sqxm" ? this.searchVal : null,
-        sqxh: this.select == "sqxh" ? this.searchVal : null,
-        sqlxfs: this.select == "sqlxfs" ? this.searchVal : null,
-        cxsy: this.select == "cxsy" ? this.searchVal : null,
-        mdd: this.select == "mdd" ? this.searchVal : null,
-        fdyspxm: this.select == "fdyspxm" ? this.searchVal : null,
-        dwhList: this.moreIform.sqxydm,
-        nfhsjStart:
-          this.dateArrayBack && this.dateArrayBack.length > 0
-            ? this.dateArrayBack[0]
-            : "",
-        nfhsjEnd:
-          this.dateArrayBack && this.dateArrayBack.length > 0
-            ? this.dateArrayBack[1]
-            : "",
-        lhsjStart:
-          this.dateArrayOut && this.dateArrayOut.length > 0
-            ? this.dateArrayOut[0]
-            : "",
-        lhsjEnd:
-          this.dateArrayOut && this.dateArrayOut.length > 0
-            ? this.dateArrayOut[1]
-            : "",
-        pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
-      };
-      await getQuerylist(data)
-        .then((res) => {
-          this.len = res.totalCount; 
-        })
-        .catch((err) => {});
+          sqxm: this.select == "sqxm" ? this.searchVal : null,
+          sqxh: this.select == "sqxh" ? this.searchVal : null,
+          sqlxfs: this.select == "sqlxfs" ? this.searchVal : null,
+          cxsy: this.select == "cxsy" ? this.searchVal : null,
+          mdd: this.select == "mdd" ? this.searchVal : null,
+          fdyspxm: this.select == "fdyspxm" ? this.searchVal : null,
+          dwhList: this.moreIform.sqxydm,
+          nfhsjStart:
+            this.dateArrayBack && this.dateArrayBack.length > 0
+              ? this.dateArrayBack[0]
+              : "",
+          nfhsjEnd:
+            this.dateArrayBack && this.dateArrayBack.length > 0
+              ? this.dateArrayBack[1]
+              : "",
+          lhsjStart:
+            this.dateArrayOut && this.dateArrayOut.length > 0
+              ? this.dateArrayOut[0]
+              : "",
+          lhsjEnd:
+            this.dateArrayOut && this.dateArrayOut.length > 0
+              ? this.dateArrayOut[1]
+              : "",
+          pageNum: this.queryParams.pageNum,
+          pageSize: this.queryParams.pageSize,
+          orderZd: this.queryParams.orderZd,
+          orderPx: this.queryParams.orderPx,
+        };
+        await getQuerylist(data)
+          .then((res) => {
+            this.len = res.totalCount;
+          })
+          .catch((err) => {});
       }
       if (this.len > 0) {
         this.showExport = true;
@@ -374,7 +381,6 @@ export default {
       } else {
         this.$message.warning("当前无数据导出");
       }
-        
     },
     handleCancel() {
       this.showExport = false;
@@ -518,6 +524,22 @@ export default {
 
 <style lang="scss" scoped>
 .talkRec {
+  .bsSp {
+    padding-left: 40px;
+    padding-top: 8px;
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  // .bsSp:hover {
+  //   display: block;
+  //   width: 100%;
+  //   overflow: auto;
+  //   white-space: normal;
+  // }
   .yiny {
     border: 1px solid grey;
     background: rgba(0, 0, 0, 0.0001);
@@ -529,12 +551,12 @@ export default {
   .hs {
     flex: 0 0 100px;
     background: #ccc;
-    padding-left: 20px;
-    padding-top: 14px;
+    text-align: center;
+    line-height: 50px;
   }
   .bs {
     padding-left: 40px;
-    padding-top: 14px;
+    line-height: 50px;
   }
   .scopeIncon {
     display: inline-block;

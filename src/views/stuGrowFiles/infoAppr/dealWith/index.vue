@@ -228,7 +228,7 @@
               <el-button
                 type="text"
                 size="small"
-                @click="hadleDetail(scope.row)"
+                @click="hadleDetail(scope.row, scope.$index)"
               >
                 <i class="scopeIncon handledie"></i>
                 <span class="handleName">申报详情</span>
@@ -512,10 +512,17 @@
           </el-table>
         </template>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="detailCancel">取 消</el-button>
-          <el-button type="primary" class="confirm" @click="detailCancel"
-            >确 定</el-button
+          <el-button
+            type="primary"
+            class="confirm"
+            @click="upDate"
+            v-if="upDownIndex > 0"
+            >上一条</el-button
           >
+          <el-button type="primary" class="confirm" @click="downDate"
+            >下一条</el-button
+          >
+          <el-button @click="detailCancel">关 闭</el-button>
         </span>
       </el-dialog>
       <lctCom
@@ -613,6 +620,7 @@ export default {
         checkBox: [],
         isIndeterminate: true,
       },
+      updownDate: [],
       datePicker: [],
       multipleSelection: [],
       tableHeader1: [
@@ -684,6 +692,7 @@ export default {
       detailModal: false,
       whatType: "",
       tableDetails: [],
+      upDownIndex: 0,
     };
   },
 
@@ -695,6 +704,216 @@ export default {
   },
 
   methods: {
+    async upDate() {
+      var tarIndex = this.upDownIndex - 1;
+      var tar = this.updownDate[tarIndex];
+      var data = {
+        xh: tar.xh,
+        pageNum: "",
+        pageSize: "",
+        orderZd: "",
+        orderPx: "",
+        businesId: tar.businesId,
+      };
+      switch (tar.mk) {
+        case "奖学金":
+          this.whatType = "7";
+          await query7(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: tar.businesId,
+              mk: tar.mk,
+              processId: tar.processId,
+              status: tar.status,
+              taskId: tar.taskId,
+              xh: tar.xh,
+            }));
+          });
+          break;
+        case "资格认证":
+          this.whatType = "6";
+          await query6(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: tar.businesId,
+              mk: tar.mk,
+              processId: tar.processId,
+              status: tar.status,
+              taskId: tar.taskId,
+              xh: tar.xh,
+            }));
+          });
+          break;
+        case "志愿服务":
+          this.whatType = "4";
+          await query4(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: tar.businesId,
+              mk: tar.mk,
+              processId: tar.processId,
+              status: tar.status,
+              taskId: tar.taskId,
+              xh: tar.xh,
+            }));
+          });
+          break;
+        case "社会实践":
+          this.whatType = "3";
+          await query3(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: tar.businesId,
+              mk: tar.mk,
+              processId: tar.processId,
+              status: tar.status,
+              taskId: tar.taskId,
+              xh: tar.xh,
+            }));
+          });
+          break;
+        case "社团经历":
+          this.whatType = "2";
+          await query2(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: tar.businesId,
+              mk: tar.mk,
+              processId: tar.processId,
+              status: tar.status,
+              taskId: tar.taskId,
+              xh: tar.xh,
+            }));
+          });
+          break;
+        case "校内外培训":
+          await query1(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: tar.businesId,
+              mk: tar.mk,
+              processId: tar.processId,
+              status: tar.status,
+              taskId: tar.taskId,
+              xh: tar.xh,
+            }));
+          });
+          this.whatType = "1";
+          break;
+      }
+      this.upDownIndex = this.upDownIndex - 1;
+    },
+    async downDate() {
+      if (
+        this.upDownIndex == 9 ||
+        (this.queryParams.total < 10 &&
+          this.upDownIndex == this.queryParams.total - 1) ||
+        (this.queryParams.pageSize > 1 &&
+          this.queryParams.pageNum * 10 - this.queryParams.total > 0 &&
+          this.upDownIndex ==
+            this.queryParams.total - (this.queryParams.pageNum - 1) * 10 - 1)
+      ) {
+        this.$message.warning("已到最后一行");
+      } else {
+        var tarIndex = this.upDownIndex + 1;
+        var tar = this.updownDate[tarIndex];
+        var data = {
+          xh: tar.xh,
+          pageNum: "",
+          pageSize: "",
+          orderZd: "",
+          orderPx: "",
+          businesId: tar.businesId,
+        };
+        switch (tar.mk) {
+          case "奖学金":
+            this.whatType = "7";
+            await query7(data).then((res) => {
+              this.tableDetails = res.data;
+              this.commonParams = res.data.map((v) => ({
+                businesId: tar.businesId,
+                mk: tar.mk,
+                processId: tar.processId,
+                status: tar.status,
+                taskId: tar.taskId,
+                xh: tar.xh,
+              }));
+            });
+            break;
+          case "资格认证":
+            this.whatType = "6";
+            await query6(data).then((res) => {
+              this.tableDetails = res.data;
+              this.commonParams = res.data.map((v) => ({
+                businesId: tar.businesId,
+                mk: tar.mk,
+                processId: tar.processId,
+                status: tar.status,
+                taskId: tar.taskId,
+                xh: tar.xh,
+              }));
+            });
+            break;
+          case "志愿服务":
+            this.whatType = "4";
+            await query4(data).then((res) => {
+              this.tableDetails = res.data;
+              this.commonParams = res.data.map((v) => ({
+                businesId: tar.businesId,
+                mk: tar.mk,
+                processId: tar.processId,
+                status: tar.status,
+                taskId: tar.taskId,
+                xh: tar.xh,
+              }));
+            });
+            break;
+          case "社会实践":
+            this.whatType = "3";
+            await query3(data).then((res) => {
+              this.tableDetails = res.data;
+              this.commonParams = res.data.map((v) => ({
+                businesId: tar.businesId,
+                mk: tar.mk,
+                processId: tar.processId,
+                status: tar.status,
+                taskId: tar.taskId,
+                xh: tar.xh,
+              }));
+            });
+            break;
+          case "社团经历":
+            this.whatType = "2";
+            await query2(data).then((res) => {
+              this.tableDetails = res.data;
+              this.commonParams = res.data.map((v) => ({
+                businesId: tar.businesId,
+                mk: tar.mk,
+                processId: tar.processId,
+                status: tar.status,
+                taskId: tar.taskId,
+                xh: tar.xh,
+              }));
+            });
+            break;
+          case "校内外培训":
+            await query1(data).then((res) => {
+              this.tableDetails = res.data;
+              this.commonParams = res.data.map((v) => ({
+                businesId: tar.businesId,
+                mk: tar.mk,
+                processId: tar.processId,
+                status: tar.status,
+                taskId: tar.taskId,
+                xh: tar.xh,
+              }));
+            });
+            this.whatType = "1";
+            break;
+        }
+        this.upDownIndex = this.upDownIndex + 1;
+      }
+    },
     // 导出取消
     handleCancel() {
       this.showExport = false;
@@ -822,9 +1041,10 @@ export default {
         });
       }
     },
-    async hadleDetail(row) {
+    async hadleDetail(row, index) {
       this.defaultRes = row;
       this.detailModal = true;
+      this.upDownIndex = index;
       var data = {
         xh: row.xh,
         pageNum: "",
@@ -901,6 +1121,7 @@ export default {
       queryYshList(data)
         .then((res) => {
           this.tableData = res.data;
+          this.updownDate = res.data;
           this.queryParams.total = res.totalCount;
         })
         .catch((err) => {});

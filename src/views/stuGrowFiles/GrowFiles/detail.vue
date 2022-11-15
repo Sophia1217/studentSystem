@@ -2,39 +2,49 @@
   <div class="wrap">
     <div class="detail_left">
       <el-tabs v-model="activeName" class="tab_left" tab-position="left">
-        <!-- <el-tab-pane label="荣誉称号" name="0"> </el-tab-pane>    暂时屏蔽 -->
-        <el-tab-pane label="奖学金" name="1"></el-tab-pane>
-        <el-tab-pane label="资格认证" name="2"></el-tab-pane>
-        <el-tab-pane label="社会实践" name="3"></el-tab-pane>
-        <el-tab-pane label="志愿服务" name="4"></el-tab-pane>
-        <el-tab-pane label="社团经历" name="5"></el-tab-pane>
-        <!-- <el-tab-pane label="双创工作" name="6"></el-tab-pane> -->
-        <el-tab-pane label="学习成绩" name="7"></el-tab-pane>
-        <el-tab-pane label="校内外培训经历" name="8"></el-tab-pane>
+        <el-tab-pane label="学生干部经历" name="0"> </el-tab-pane>
+        <el-tab-pane label="科研成果" name="1"> </el-tab-pane>
+        <el-tab-pane label="荣誉称号" name="2"> </el-tab-pane>
+        <el-tab-pane label="奖学金" name="3"></el-tab-pane>
+        <el-tab-pane label="资格认证" name="4"></el-tab-pane>
+        <el-tab-pane label="社会实践" name="5"></el-tab-pane>
+        <el-tab-pane label="志愿服务" name="6"></el-tab-pane>
+        <el-tab-pane label="社团经历" name="7"></el-tab-pane>
+        <el-tab-pane label="双创工作" name="8"></el-tab-pane>
+        <el-tab-pane label="学习成绩" name="9"></el-tab-pane>
+        <el-tab-pane label="校内外培训经历" name="10"></el-tab-pane>
       </el-tabs>
     </div>
-    <div class="detail_right" v-if="activeName == '0'"></div>
+    <div class="detail_right" v-if="activeName == '0'">
+      <gbjl></gbjl>
+    </div>
     <div class="detail_right" v-if="activeName == '1'">
-      <scholarships></scholarships>
+      <kycg></kycg>
     </div>
     <div class="detail_right" v-if="activeName == '2'">
+      <rych></rych>
+    </div>
+    <div class="detail_right" v-if="activeName == '3'">
+      <scholarships></scholarships>
+    </div>
+    <div class="detail_right" v-if="activeName == '4'">
       <zgrz></zgrz>
     </div>
 
-    <div class="detail_right" v-if="activeName == '3'">
+    <div class="detail_right" v-if="activeName == '5'">
       <shsj></shsj>
     </div>
-    <div class="detail_right" v-if="activeName == '4'">
+    <div class="detail_right" v-if="activeName == '6'">
       <zyfw></zyfw>
     </div>
-    <div class="detail_right" v-if="activeName == '5'">
+    <div class="detail_right" v-if="activeName == '7'">
       <stjl></stjl>
     </div>
-    <div class="detail_right" v-if="activeName == '6'"></div>
-    <div class="detail_right" v-if="activeName == '7'">
+    <div class="detail_right" v-if="activeName == '8'"></div>
+    <div class="detail_right" v-if="activeName == '9'">
       <xxcj></xxcj>
     </div>
-    <div class="detail_right" v-if="activeName == '8'">
+    <div class="detail_right" v-if="activeName == '10'">
       <xnwpxjlVue></xnwpxjlVue>
     </div>
   </div>
@@ -47,11 +57,15 @@ import shsj from "./detailList/shsj";
 import zgrz from "./detailList/zgrz";
 import xxcj from "./detailList/xxcj";
 import scholarships from "./detailList/scholarships.vue";
+import gbjl from "./detailList/gbjl";
+import kycg from "./detailList/kycg";
+import rych from "./detailList/rych";
+import scgz from "./detailList/scgz";
 export default {
-  components: { xnwpxjlVue, stjl, zyfw, shsj, scholarships, zgrz, xxcj },
+  components: { xnwpxjlVue, stjl, zyfw, shsj, scholarships, zgrz, xxcj, gbjl, kycg, rych, scgz},
   data() {
     return {
-      activeName: "1",
+      activeName: "0",
     };
   },
 };

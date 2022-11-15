@@ -77,7 +77,7 @@
         </div>
         <!-- 辅导员信息 -->
         <div class="headline" id="tag_1">
-          <div>辅导员信息</div>
+          <div>带班情况</div>
           <div class="boxSelect">
             <el-checkbox
               v-model="basicCheckBox.fdyrmzd"
@@ -176,7 +176,7 @@
         </div>
         <!-- 行政职务发展 -->
         <div class="headline" id="tag_3">
-          <div>行政职务发展</div>
+          <div>行政职务</div>
           <div class="boxSelect">
             <el-checkbox
               v-model="basicCheckBox.dzzwzd"
@@ -225,7 +225,7 @@
         </div>
         <!-- 行政级别发展 -->
         <div class="headline" id="tag_4">
-          <div>行政级别发展</div>
+          <div>行政级别</div>
           <div class="boxSelect">
             <el-checkbox
               v-model="basicCheckBox.dzzjzd"
@@ -274,7 +274,7 @@
         </div>
         <!-- 专业技术职务 -->
         <div class="headline" id="tag_5">
-          <div>专业技术职务</div>
+          <div>专技职称</div>
           <div class="boxSelect">
             <el-checkbox
               v-model="basicCheckBox.zyjszwzd"
@@ -372,7 +372,7 @@
         </div>
         <!-- 教职工职员聘任信息 -->
         <div class="headline" id="tag_7">
-          <div>教职工职员聘任信息</div>
+          <div>职员职级</div>
           <div class="boxSelect">
             <el-checkbox
               v-model="basicCheckBox.prxxzd"
@@ -422,7 +422,7 @@
 
         <!-- 学习培训 -->
         <div class="headline" id="tag_8">
-          <div>培训</div>
+          <div>培训经历</div>
           <div class="boxSelect">
             <el-checkbox
               v-model="basicCheckBox.xxpxzd"
@@ -668,7 +668,7 @@
         </div>
         <!-- 科研情况（论文） -->
         <div class="headline" id="tag_13">
-          <div>科研情况（论文）</div>
+          <div>科研论文</div>
           <div class="boxSelect">
             <el-checkbox
               v-model="basicCheckBox.lwkyqkzd"
@@ -717,7 +717,7 @@
         </div>
         <!-- 科研情况（项目） -->
         <div class="headline" id="tag_14">
-          <div>科研情况（项目）</div>
+          <div>科研项目</div>
           <div class="boxSelect">
             <el-checkbox
               v-model="basicCheckBox.xmkyqkzd"
@@ -767,7 +767,7 @@
 
         <!-- 科研情况（著作） -->
         <div class="headline" id="tag_15">
-          <div>科研情况（著作）</div>
+          <div>科研著作</div>
           <div class="boxSelect">
             <el-checkbox
               v-model="basicCheckBox.zzkyqkzd"
@@ -816,7 +816,7 @@
         </div>
         <!-- 科研情况（qita） -->
         <div class="headline" id="tag_16">
-          <div>科研情况（其他）</div>
+          <div>科研情况</div>
           <div class="boxSelect">
             <el-checkbox
               v-model="basicCheckBox.qtkyqkzd"
@@ -865,7 +865,7 @@
         </div>
         <!-- 年度考核 -->
         <div class="headline" id="tag_17">
-          <div>学校年度考核结果</div>
+          <div>年度考核</div>
           <div class="boxSelect">
             <el-checkbox
               v-model="basicCheckBox.ndkhzd"
@@ -915,7 +915,7 @@
 
         <!-- 奖励表彰信息 -->
         <div class="headline" id="tag_18">
-          <div>奖励表彰信息</div>
+          <div>奖励表彰</div>
           <div class="boxSelect">
             <el-checkbox
               v-model="basicCheckBox.jlbzzd"
@@ -979,24 +979,24 @@ export default {
     return {
       dtailsList: [
         "基本信息",
-        "辅导员信息",
+        "带班情况",
         "学业成长",
-        "行政职务发展",
-        "行政级别发展",
-        "专业技术职务发展",
+        "行政职务",
+        "行政级别",
+        "专技职称",
         "工作履历",
-        "教职工职员聘任信息",
-        "培训",
+        "职员职级",
+        "培训经历",
         "项目学习",
         "职业资格",
         "岗位锻炼",
         "教学情况",
-        "科研情况（论文）",
-        "科研情况（项目）",
-        "科研情况（著作）",
-        "科研情况（其他）",
-        "学校年度考核结果",
-        "奖励表彰信息",
+        "科研论文",
+        "科研项目",
+        "科研著作",
+        "科研情况",
+        "年度考核",
+        "奖励表彰",
       ],
       current: 0,
       basicCheckBox: {}, // 选中

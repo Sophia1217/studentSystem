@@ -23,8 +23,8 @@
           >
             <div class="wrap" @click="handleClick(item)">
               <img src="@/assets/images/role.png" width="60px" alt="" />
-              <div class="content">{{ item.roleName }}</div>
             </div>
+            <div class="content">{{ item.roleName }}</div>
           </div>
         </div>
         <div class="slideArea2" ref="slideArea2" v-show="user.length > 4">
@@ -190,13 +190,17 @@ export default {
             img {
               margin-bottom: 20px;
             }
-            .content {
-              font-family: PingFangSC-Medium;
-              font-weight: 500;
-              font-size: 24px;
-              width: 200px;
-              color: #1f1f1f;
-            }
+          }
+          .content {
+            position: absolute;
+
+            top: 60%;
+            text-align: center;
+            font-family: PingFangSC-Medium;
+            font-weight: 500;
+            font-size: 24px;
+            width: 200px;
+            color: #1f1f1f;
           }
         }
         .green-bg {
@@ -216,6 +220,7 @@ export default {
         height: 200px;
         .cardItem {
           flex: 0 0 200px;
+
           height: 200px;
           margin-right: 15px;
           margin-left: 15px;
@@ -233,13 +238,17 @@ export default {
             img {
               margin-bottom: 20px;
             }
-            .content {
-              font-family: PingFangSC-Medium;
-              font-weight: 500;
-              font-size: 24px;
-              width: 200px;
-              color: #1f1f1f;
-            }
+          }
+          .content {
+            position: absolute;
+
+            top: 60%;
+            text-align: center;
+            font-family: PingFangSC-Medium;
+            font-weight: 500;
+            font-size: 24px;
+            width: 200px;
+            color: #1f1f1f;
           }
         }
         .green-bg {

@@ -1275,7 +1275,7 @@
             <el-row :gutter="20">
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">是否师范生</div>
+                  <div class="title">师范生类别</div>
                   <div v-if="isEdit == 1" class="content">
                     {{ detailInfo.xsXjxx.sfsfs_chinese }}
                   </div>
@@ -1287,7 +1287,7 @@
                       placeholder="请选择"
                     >
                       <el-option
-                        v-for="item in dmsfbzm"
+                        v-for="item in dmsfslxm"
                         :key="item.dm"
                         :label="item.mc"
                         :value="item.dm"
@@ -3700,6 +3700,7 @@ export default {
         xsGzjlList: [], // 学生工作经历
         xsXszpb: {}, // 学生信息照片
       },
+      dmsfslxm: [], //shifanshneng
       dmxbmOPs: [], //性别
       dmmzmOps: [], //民族
       dmxjztmOps: [], //学籍状态
@@ -3798,7 +3799,7 @@ export default {
       this.getCode("dmpyfsm"); // 培养方式
       this.getCode("dmxxfsm"); // 学习方式
       this.getCode("dmyjszyxwlbm"); // 专业学位类别
-
+      this.getCode("dmsfslxm");
       this.getCode("dmxsdqztm"); //学生当前状态
       this.getCode("dmjkzkm"); //健康状况
       this.getCode("dmzjxym"); //信仰宗教
@@ -3917,6 +3918,9 @@ export default {
               break;
             case "dmgxm": //关系
               this.dmgxm = res.data;
+              break;
+            case "dmsfslxm":
+              this.dmsfslxm = res.data;
               break;
           }
         })

@@ -3,7 +3,11 @@
     <div class="detail_left">
       <el-tabs v-model="activeName" class="tab_left" tab-position="left">
         <el-tab-pane label="学生干部经历" name="0"> </el-tab-pane>
-        <el-tab-pane label="科研成果" name="1"> </el-tab-pane>
+        <el-tab-pane label="科研论文" name="1"> </el-tab-pane>
+        <el-tab-pane label="科研专利" name="11"> </el-tab-pane>
+        <el-tab-pane label="科研著作" name="12"> </el-tab-pane>
+        <el-tab-pane label="软件著作" name="13"> </el-tab-pane>
+        <el-tab-pane label="研究报告" name="14"> </el-tab-pane>
         <el-tab-pane label="荣誉称号" name="2"> </el-tab-pane>
         <el-tab-pane label="奖学金" name="3"></el-tab-pane>
         <el-tab-pane label="资格认证" name="4"></el-tab-pane>
@@ -47,6 +51,18 @@
     <div class="detail_right" v-if="activeName == '10'">
       <xnwpxjlVue></xnwpxjlVue>
     </div>
+    <div class="detail_right" v-if="activeName == '11'">
+      <kyzl></kyzl>
+    </div>
+    <div class="detail_right" v-if="activeName == '12'">
+      <kyzz></kyzz>
+    </div>
+    <div class="detail_right" v-if="activeName == '13'">
+      <kyrz></kyrz>
+    </div>
+    <div class="detail_right" v-if="activeName == '14'">
+      <yjbg></yjbg>
+    </div>
   </div>
 </template>
 <script>
@@ -61,8 +77,30 @@ import gbjl from "./detailList/gbjl";
 import kycg from "./detailList/kycg";
 import rych from "./detailList/rych";
 import scgz from "./detailList/scgz";
+import kyzl from "./detailList/kyzl";
+import kyzz from "./detailList/kyzz";
+import kyrz from "./detailList/kyrz";
+import yjbg from "./detailList/yjbg";
+import Kyzl from "./detailList/kyzl.vue";
 export default {
-  components: { xnwpxjlVue, stjl, zyfw, shsj, scholarships, zgrz, xxcj, gbjl, kycg, rych, scgz},
+  components: {
+    xnwpxjlVue,
+    stjl,
+    zyfw,
+    shsj,
+    scholarships,
+    zgrz,
+    xxcj,
+    gbjl,
+    kycg,
+    rych,
+    scgz,
+    kyzl,
+    kyzz,
+    kyrz,
+    yjbg,
+    Kyzl,
+  },
   data() {
     return {
       activeName: "0",

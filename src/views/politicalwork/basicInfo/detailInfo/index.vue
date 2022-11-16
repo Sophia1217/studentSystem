@@ -681,7 +681,7 @@
           </div>
           </div>
 
-           <div id="tag_1" class="headline" v-if="detailInfoData.sffdy===1">辅导员信息</div>
+           <div id="tag_1" class="headline" v-if="detailInfoData.sffdy===1">带班情况</div>
            <div class="tableStyle" v-if="detailInfoData.sffdy===1">
             <div class="information">
               <el-row :gutter="20">
@@ -1120,7 +1120,7 @@
     <!-- 职业发展 -->
      <div class="detail_right" v-if="activeName == '3'&&detailInfoData.sffdy==1">
         <div id="tag_31" class="headline">
-          <div>行政职务发展</div>
+          <div>行政职务</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(2)">
             <i class="addIcon" /> 添加
           </div>
@@ -1192,7 +1192,7 @@
           </el-table>
         </div>
          <div id="tag_34" class="headline">
-          <div>行政级别发展</div>
+          <div>行政级别</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(16)">
             <i class="addIcon" /> 添加
           </div>
@@ -1264,7 +1264,7 @@
           </el-table>
         </div>
           <div id="tag_32" class="headline">
-          <div>专业技术职务发展</div>
+          <div>专技职称</div>
           <!-- <div v-if="isEdit == 2&&detailInfoData.zgZyjszws.sftb==0" class="editBtn" @click="addDetailInfoData(3)">
             <i class="addIcon" /> 添加
           </div> -->
@@ -1404,7 +1404,7 @@
           </el-table>
         </div>
          <div id="tag_35" class="headline">
-          <div>教职工职员聘任信息</div>
+          <div>职员职级</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(17)">
             <i class="addIcon" /> 添加
           </div>
@@ -1588,7 +1588,7 @@
     <!-- 学习培训 -->
     <div class="detail_right" v-if="activeName == '4'&&detailInfoData.sffdy==1">
         <div id="tag_41" class="headline">
-          <div>培训</div>
+          <div>培训经历</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(5)">
             <i class="addIcon" /> 添加
           </div>
@@ -1968,7 +1968,7 @@
           </el-table>
         </div>
           <div id="tag_72" class="headline">
-          <div>科研情况（论文）</div>
+          <div>科研论文</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(10)">
             <i class="addIcon" /> 添加
           </div>
@@ -2045,7 +2045,7 @@
           </el-table>
         </div>
         <div id="tag_73" class="headline">
-          <div>科研情况（项目）</div>
+          <div>科研项目</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(11)">
             <i class="addIcon" /> 添加
           </div>
@@ -2139,7 +2139,7 @@
           </el-table>
         </div>
          <div id="tag_74" class="headline">
-          <div>科研情况（著作）</div>
+          <div>科研著作</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(12)">
             <i class="addIcon" /> 添加
           </div>
@@ -2206,7 +2206,7 @@
           </el-table>
         </div>
          <div id="tag_75" class="headline">
-          <div>科研情况（其他）</div>
+          <div>科研情况</div>
           <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(13)">
             <i class="addIcon" /> 添加
           </div>
@@ -2267,7 +2267,7 @@
     <!-- 考核评价 -->
     <div class="detail_right" v-if="activeName == '8'&&detailInfoData.sffdy==1">
         <div id="tag_8" class="headline">
-          <div>学校年度考核结果</div>
+          <div>年度考核</div>
           <!-- <div v-if="isEdit == 2" class="editBtn" @click="addDetailInfoData(14)">
             <i class="addIcon" /> 添加
           </div> -->

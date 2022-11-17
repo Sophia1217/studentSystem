@@ -79,11 +79,11 @@ import gbjl from "./detailList/gbjl";
 import kycg from "./detailList/kycg";
 import rych from "./detailList/rych";
 import scgz from "./detailList/scgz";
-// import kyzl from "./detailList/kyzl";
-// import kyzz from "./detailList/kyzz";
-// import kyrz from "./detailList/kyrz";
-// import yjbg from "./detailList/yjbg";
-// import Kyzl from "./detailList/kyzl.vue";
+import kyzl from "./detailList/kyzl";
+import kyzz from "./detailList/kyzz";
+import kyrz from "./detailList/kyrz";
+import yjbg from "./detailList/yjbg";
+
 export default {
   components: {
     xnwpxjlVue,
@@ -101,7 +101,6 @@ export default {
     kyzz,
     kyrz,
     yjbg,
-    Kyzl,
   },
   data() {
     return {

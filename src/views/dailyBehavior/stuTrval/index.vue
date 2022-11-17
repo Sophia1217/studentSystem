@@ -15,11 +15,11 @@
             @change="selectChange"
             placeholder="查询条件"
           >
-            <el-option label="家访学生" value="1" />
-            <el-option label="学号" value="2" />
-            <el-option label="家访人" value="3" />
-            <el-option label="工号" value="4" />
-            <el-option label="共同参与人" value="5" />
+            <el-option label="记录人" value="1" />
+            <el-option label="工号" value="2" />
+            <el-option label="活动地点" value="3" />
+            <el-option label="活动主题" value="4" />
+            <el-option label="组织单位" value="5" />
           </el-select>
           <el-button
             slot="append"
@@ -41,27 +41,27 @@
       <div v-if="isMore" class="moreSelect">
         <el-row :gutter="20" class="mt15">
           <el-col :span="20">
-            <span>家访形式：</span>
+            <span>工作单位：</span>
             <el-select
-              v-model="homeModel"
+              v-model="workPlace"
               multiple
               placeholder="请选择"
               collapse-tags
-              @change="homeModelChange"
+              @change="workPlaceChange"
             >
               <el-option
-                v-for="item in jfxsOps"
-                :key= item.label
-                :label="item.label"
-                :value="item.label"
+                v-for="(item, index) in gzdwOptions"
+                :key="index"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option>
             </el-select>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
           <el-col :span="20">
-            <span>家访时间：</span>
-            <el-date-picker 
+            <span>活动日期：</span>
+              <el-date-picker 
                 type="daterange" 
                 placeholder="选择日期" 
                 v-model="datePicker" 
@@ -74,6 +74,18 @@
               ></el-date-picker>
           </el-col>
         </el-row>
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="3">类 别：</el-col>
+          <el-col :span="20">
+            <div class="checkbox">
+              <checkboxCom
+                :obj-prop="category"
+                @training="handleCheckAllCategoryChange"
+                @checkedTraining="handleCheckedCategoryChange"
+              />
+            </div>
+          </el-col>
+        </el-row>
       </div>
     </div>
 
@@ -81,7 +93,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">家校联系</span> <i class="Updataicon" />
+          <span class="title">班团活动</span> <i class="Updataicon" />
         </div>
         <div class="headerRight">
           <div class="btns borderGreen" @click="handleExport">
@@ -100,20 +112,20 @@
           ref="multipleTable"
           :data="basicInfoList"
           style="width: 100%"
-          :default-sort="{ prop: 'data', order: 'descending' }"
+          :default-sort="{ prop: 'gh', order: 'ascending' }"
           @selection-change="handleSelectionChange"
           @sort-change="changeTableSort"
         >
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
-          <el-table-column prop="xh" label="学号" sortable />
-          <el-table-column prop="xm" label="家访学生" sortable="custom" />
-          <el-table-column prop="sbrxm" label="家访人" sortable="custom" />
-          <el-table-column prop="sbrgh" label="工号" sortable="custom" />
-          <el-table-column prop="sbrdw" label="工作单位" sortable="custom" />
-          <el-table-column prop="gtcyrxm" label="共同参与" sortable="custom" />
-          <el-table-column prop="jfxs" label="家访形式" sortable="custom" />
-          <el-table-column prop="jfsj" label="家访时间" sortable="custom" />
+          <el-table-column prop="hdzt" label="活动主题" sortable />
+          <el-table-column prop="hddz" label="活动地点" sortable="custom" />
+          <el-table-column prop="hdksrq" label="活动日期" sortable="custom" />
+          <el-table-column prop="zzdw" label="组织单位" sortable="custom" />
+          <el-table-column prop="createXm" label="记录人" sortable="custom" />
+          <el-table-column prop="createXh" label="工号" sortable="custom" />
+          <el-table-column prop="createDwhMc" label="工作单位" sortable="custom" />
+          <el-table-column prop="createSfjzfdyMc" label="类型" sortable="custom" />
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
               <el-button
@@ -150,8 +162,8 @@
     <!-- 批量删除对话框 -->
     <el-dialog :title="title" :visible.sync="showDelete" width="30%">
       <template v-for="item in multipleSelection">
-        <div :key="item.gh">
-          <span>确认删除【{{ item.xh }}】【{{ item.xm }}】的家访记录？</span>
+        <div :key="item.createXh">
+          <span>确认删除【{{ item.createXm }}】记录的【{{ item.hdzt }}】活动记录？</span>
         </div>
       </template>
       <span slot="footer" class="dialog-footer">
@@ -169,16 +181,17 @@ import {
   updateUser,
 } from "@/api/system/user";
 import CheckboxCom from "../../components/checkboxCom";
-import { 
-  queryJxlxList,
-  excelExport,
-  deleteJxlx,
-} from "@/api/assistantWork/homeSchool";
 import {
   removeMoreAssistant,
   outAssistant,
   getGzdw,
 } from "@/api/politicalWork/assistantappoint";
+import { 
+  queryFdyBthdList,
+  insertFdyBthd,
+  excelFdyBthd,
+  deleteFdyBthd,
+ } from "@/api/assistantWork/classEvent";
 export default {
   name: "BasicInfo",
   components: { CheckboxCom },
@@ -192,45 +205,50 @@ export default {
       showDelete: false,
       // 详情框显示
       open: false,
+
       // // 查询参数
 
       searchVal: "",
       select: "",
       isMore: false,
       gzdwOptions: [],
-      homeModel: [],
+      category: {
+        // 类别
+        checkAll: false,
+        choose: [],
+        checkBox: [
+          { mc: "兼职", dm: 1 },
+          { mc: "专职", dm: 0 },
+        ],
+        isIndeterminate: true,
+      },
+      workPlace: [],
       rules: {
         ghContent: [
           { required: true, message: "工号不能为空", trigger: "blur" },
         ],
       },
-      detailGh: "",
       basicInfoList: [],
       multipleSelection: [],
       showExport: false,
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        jfsj:"",  
-        jfxsList:[],//家访形式
+        createDwh: [],//工作单位
+        createSfjzfdy: [],//类别
+        createXh:"",
+        createXm:"",
+        hddz:"",
         hdksrqEnd:"",
         hdksrqStrat:"",
+        hdzt:"",
+        zzdw:"",//组织单位
         orderZd: "",
         orderPx: "",
-        xm: "",
-        xh: "",
-        sbrxm: "",
-        sbrgh: "",
-        gtcyrxm: "",
       },
       list: [],
-      datePicker: [],//日期
-      jfxsOps:[
-        {label:"线下走访"},
-        {label:"线上视频"}
-      ],
-      exportParams: {},//导出数据
-      
+      datePicker: [],
+      exportParams: {},
     };
   },
   computed: {},
@@ -238,18 +256,16 @@ export default {
   created() {},
   mounted() {
     this.getList(this.queryParams);
-    // this.getCode("dmxbm");
-    // this.getCode("dmpyccm");
+
     this.getOption();
   },
 
   methods: {
-    //家访形式
-    homeModelChange() {
-      this.queryParams.jfxsList = this.homeModel;
+    //工作单位勾选
+    workPlaceChange() {
+      this.queryParams.createDwh = this.workPlace;
       // this.getList(this.queryParams);
     },
-    //查询条件
     selectChange() {
       this.searchVal = "";
     },
@@ -267,16 +283,17 @@ export default {
     },
     //获取数据列表
     getList() {
-      this.queryParams.xm = this.select == 1 ? this.searchVal : "";
-      this.queryParams.xh = this.select == 2 ? this.searchVal : "";
-      this.queryParams.sbrxm = this.select == 3 ? this.searchVal : "";
-      this.queryParams.sbrgh = this.select == 4 ? this.searchVal : "";
-      this.queryParams.gtcyrxm = this.select == 5 ? this.searchVal : "";
-      queryJxlxList(this.queryParams)
+      // console.log(this.select, "select");
+      this.queryParams.createXm = this.select == 1 ? this.searchVal : "";
+      this.queryParams.createXh = this.select == 2 ? this.searchVal : "";
+      this.queryParams.hddz = this.select == 3 ? this.searchVal : "";
+      this.queryParams.hdzt = this.select == 4 ? this.searchVal : "";
+      this.queryParams.zzdw = this.select == 5 ? this.searchVal : "";
+      queryFdyBthdList(this.queryParams)
         .then((response) => {
-          this.basicInfoList = response.data; // 根据状态码接收数据
-          this.total = response.totalCount; //总条数
-          // this.exportParams = this.queryParams;
+            this.basicInfoList = response.data; // 根据状态码接收数据
+            this.total = response.totalCount; //总条数
+            // this.exportParams = this.queryParams;
         })
         .catch((err) => {
           // this.$message.error(err.errmsg);
@@ -286,9 +303,38 @@ export default {
     dialogCancel() {
       this.showDelete = false;
     },
+
+    // 详情对话框关闭按钮
+    cancel() {
+      this.open = false;
+    },
+   
     // 点击更多
     handleMore() {
       this.isMore = !this.isMore;
+    },
+    // 类别全选
+    handleCheckAllCategoryChange(val) {
+      const allCheck = [];
+      for (const i in this.category.checkBox) {
+        allCheck.push(this.category.checkBox[i].dm);
+      }
+      this.category.choose = val ? allCheck : [];
+
+      this.category.isIndeterminate = false;
+      this.queryParams.createDwh = this.workPlace;
+
+      this.queryParams.createSfjzfdy = this.category.choose;
+    },
+    // 类别单选
+    handleCheckedCategoryChange(value) {
+      const checkedCount = value.length;
+      this.category.checkAll = checkedCount === this.category.checkBox.length;
+      this.category.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.category.checkBox.length;
+      this.queryParams.createDwh = this.workPlace;
+ 
+      this.queryParams.createSfjzfdy = this.category.choose;
     },
 
     // 列表多选
@@ -297,7 +343,6 @@ export default {
       this.multipleSelection = val;
       this.list = [...val]; // 存储已被勾选的数据
     },
-
     // 打开导出弹窗
     handleExport() {
       this.showExport = true;
@@ -310,32 +355,32 @@ export default {
     // 导出确认
     handleConfirm() {
       this.showExport = false;
-      var arr = this.list.length > 0 ? this.list.map((item) => item.id) : []; 
+      var arr = this.list.length > 0 ? this.list.map((item) => item.id) : [];   
       let data ={
-        pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize,
-        jfsj: this.queryParams.jfsj,
-        jfxsList: this.queryParams.jfxsList,
-        hdksrqEnd: this.queryParams.hdksrqEnd,
         hdksrqStrat: this.queryParams.hdksrqStrat,
+        hdksrqEnd: this.queryParams.hdksrqEnd, 
+        createXm: this.queryParams.createXm,
+        createXh: this.queryParams.createXh,
+        hddz: this.queryParams.hddz,
+        hdzt: this.queryParams.hdzt,
+        zzdw: this.queryParams.zzdw,
+        pageNum: this.queryParams.pageNum,
+        createDwh: this.queryParams.createDwh,
+        createSfjzfdy: this.queryParams.createSfjzfdy,
+        pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
-        xm: this.queryParams.xm,
-        xh: this.queryParams.xh,
-        sbrxm: this.queryParams.sbrxm,
-        sbrgh: this.queryParams.sbrgh,
-        gtcyrxm: this.queryParams.gtcyrxm,
         ids: arr,
-      }
-      // let exportParams = this.queryParams;        
+      }             
+      // var exportParams = this.queryParams;
       // console.log(this.queryParams);
       // this.$set(this.exportParams,"ids",arr)
 
-      excelExport(data)
-        .then((res) => this.downloadFn(res, "家校联系记录导出", "xlsx"))
+      excelFdyBthd(data)
+        .then((res) => this.downloadFn(res, "活动记录导出", "xlsx"))
         .catch((err) => {});
     },
-    //批量移除
+    //批量删除
     rmRecord() {
       this.showDelete = false;
       let ids = [];
@@ -345,7 +390,7 @@ export default {
       let data = {
         ids: ids
       }
-      deleteJxlx(data)
+      deleteFdyBthd(data)
         .then((res) => {
           this.$message({
             message: res.errmsg,
@@ -360,14 +405,12 @@ export default {
     //点击详情
     hadleDetail(row) {
       this.$router.push({
-        path: "/assistantWork/detailHomeSchool",
+        path: "/assistantWork/detailClassEvent",
         query: {
           id: row.id,
-
         },
       });
     },
-
     /**批量删除按钮*/
     handleDelete() {
       if (this.multipleSelection.length > 0) {
@@ -383,7 +426,7 @@ export default {
     //新增
     handleNew(){
       this.$router.push({
-        path: "/assistantWork/addHomeSchool",
+        path: "/assistantWork/addClassEvent",
       });
     },
     /** 下载模板操作 */
@@ -394,43 +437,46 @@ export default {
         `user_template_${new Date().getTime()}.xlsx`
       );
     },
-
     // 搜索查询按钮
     searchClick() {
-      // let name, xuehao, sbrname,sbrgh,gtcy;
+      // let name, gonghao,place,topic,zzdwh;
       // if (this.select == "1") {
       //   name = this.searchVal;
-      //   xuehao = "";
-      //   sbrname = "",
-      //   sbrgh = "",
-      //   gtcy = ""
+      //   gonghao = "";
+      //   place = "";
+      //   topic = "";
+      //   zzdwh = "";
       // } else if (this.select == "2") {
       //   name = "";
-      //   xuehao = this.searchVal;
-      //   sbrname = "",
-      //   sbrgh = "",
-      //   gtcy = ""
+      //   gonghao = this.searchVal
+      //   place = "";
+      //   topic = "";
+      //   zzdwh = "";
       // } else if (this.select == "3") {
       //   name = "";
-      //   xuehao = "";
-      //   sbrname = this.searchVal
-      //   sbrgh = "",
-      //   gtcy = ""
+      //   gonghao = "";
+      //   place = this.searchVal
+      //   topic = "";
+      //   zzdwh = "";
       // } else if (this.select == "4") {
       //   name = "";
-      //   xuehao = "";
-      //   sbrname = "",
-      //   sbrgh = this.searchVal
-      //   gtcy = ""
+      //   gonghao = "";
+      //   place = "";
+      //   topic = this.searchVal
+      //   zzdwh = "";
       // } else {
       //   name = "";
-      //   xuehao = "";
-      //   sbrname = "",
-      //   sbrgh = "",
-      //   gtcy = this.searchVal
+      //   gonghao = "";
+      //   place = "";
+      //   topic = "";
+      //   zzdwh = this.searchVal
       // }
+      
+
       this.queryParams.pageNum = 1;
-      this.queryParams.jfxsList = this.homeModel;
+      this.queryParams.createDwh = this.workPlace;//工作单位
+      this.queryParams.createSfjzfdy = this.category.choose;//类别
+      //日期
       let rqs,rqe = "";
       if (this.datePicker && this.datePicker.length > 0) {
         rqs = this.datePicker[0];
@@ -439,11 +485,11 @@ export default {
       this.queryParams.hdksrqStrat = rqs;
       this.queryParams.hdksrqEnd = rqe;
 
-      // this.queryParams.xm = name;
-      // this.queryParams.xh = xuehao;
-      // this.queryParams.sbrxm = sbrname;
-      // this.queryParams.sbrgh = sbrgh;
-      // this.queryParams.gtcyrxm = gtcy;
+      // this.queryParams.createXm = name;
+      // this.queryParams.createXh = gonghao;
+      // this.queryParams.hddz = place;
+      // this.queryParams.hdzt = topic;
+      // this.queryParams.zzdw = zzdwh;
       this.getList(this.queryParams);
     },
     //排序

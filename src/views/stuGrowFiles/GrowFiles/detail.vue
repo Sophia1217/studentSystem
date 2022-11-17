@@ -44,7 +44,9 @@
     <div class="detail_right" v-if="activeName == '7'">
       <stjl></stjl>
     </div>
-    <div class="detail_right" v-if="activeName == '8'"></div>
+    <div class="detail_right" v-if="activeName == '8'">
+      <scgz></scgz>
+    </div>
     <div class="detail_right" v-if="activeName == '9'">
       <xxcj></xxcj>
     </div>
@@ -77,11 +79,11 @@ import gbjl from "./detailList/gbjl";
 import kycg from "./detailList/kycg";
 import rych from "./detailList/rych";
 import scgz from "./detailList/scgz";
-import kyzl from "./detailList/kyzl";
-import kyzz from "./detailList/kyzz";
-import kyrz from "./detailList/kyrz";
-import yjbg from "./detailList/yjbg";
-import Kyzl from "./detailList/kyzl.vue";
+// import kyzl from "./detailList/kyzl";
+// import kyzz from "./detailList/kyzz";
+// import kyrz from "./detailList/kyrz";
+// import yjbg from "./detailList/yjbg";
+// import Kyzl from "./detailList/kyzl.vue";
 export default {
   components: {
     xnwpxjlVue,

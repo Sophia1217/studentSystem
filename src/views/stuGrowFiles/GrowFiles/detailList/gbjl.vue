@@ -3,7 +3,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">社会实践</span> <i class="Updataicon"></i>
+          <span class="title">学生干部经历</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
           <div class="btns borderLight" @click="showDel">
@@ -32,19 +32,17 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xmmc" label="项目名称" sortable="custom">
+          <el-table-column prop="rzzz" label="任职组织" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zzdw" label="组织单位" sortable="custom">
+          <el-table-column prop="sldw" label="设立单位" sortable="custom">
           </el-table-column>
-          <el-table-column prop="djm" label="等级" sortable="custom">
+          <el-table-column prop="jb" label="级别" sortable="custom">
           </el-table-column>
-          <el-table-column prop="lx" label="类型" sortable="custom">
+          <el-table-column prop="rzzw" label="任职职务" sortable="custom">
           </el-table-column>
-          <el-table-column prop="sjdd" label="实践地点" sortable="custom">
+          <el-table-column prop="kssj" label="开始日期" sortable="custom">
           </el-table-column>
-          <el-table-column prop="kssj" label="开始时间" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="jssj" label="结束时间" sortable="custom">
+          <el-table-column prop="jssj" label="结束日期" sortable="custom">
           </el-table-column>
           <el-table-column prop="zmr" label="证明人" sortable="custom">
           </el-table-column>
@@ -123,57 +121,67 @@
       <el-dialog title="新增" :visible.sync="addModal" width="80%" :close-on-click-modal="false">
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
-            <el-table-column label="项目名称" align="center">
+            <el-table-column label="任职组织" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'addData.' + scope.$index + '.xmmc'"
-                  :rules="rules.xmmc"
+                  :prop="'addData.' + scope.$index + '.rzzz'"
+                  :rules="rules.rzzz"
                 >
-                  <el-input v-model="scope.row.xmmc" />
+                  <el-input v-model="scope.row.rzzz" />
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="组织单位" align="center">
+            <el-table-column label="设立单位" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'addData.' + scope.$index + '.zzdw'"
-                  :rules="rules.zzdw"
+                  :prop="'addData.' + scope.$index + '.sldw'"
+                  :rules="rules.sldw"
                 >
-                  <el-input v-model="scope.row.zzdw" />
+                  <el-input v-model="scope.row.sldw" />
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="等级" width="150px" align="center">
+            <el-table-column label="级别" width="150px" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'addData.' + scope.$index + '.djm'"
-                  :rules="rules.djm"
+                  :prop="'addData.' + scope.$index + '.jbm'"
+                  :rules="rules.jbm"
                 >
-                  <el-input v-model="scope.row.djm" />
+                  <el-select
+                    v-model="scope.row.jbm"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in jbOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="类型" width="150px" align="center">
+            <el-table-column label="任职职务" width="150px" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'addData.' + scope.$index + '.lx'"
-                  :rules="rules.lx"
+                  :prop="'addData.' + scope.$index + '.rzzwm'"
+                  :rules="rules.rzzwm"
                 >
-                  <el-input v-model="scope.row.lx" />
+                  <el-select
+                    v-model="scope.row.rzzwm"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in zwOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="实践地点" width="150px" align="center">
-              <template slot-scope="scope">
-                <el-form-item
-                  :prop="'addData.' + scope.$index + '.sjdd'"
-                  :rules="rules.sjdd"
-                >
-                  <el-input v-model="scope.row.sjdd" />
-                </el-form-item>
-              </template>
-            </el-table-column>
-            <el-table-column label="开始时间" align="center">
+            <el-table-column label="开始日期" align="center">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.kssj'"
@@ -191,7 +199,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="结束时间" align="center">
+            <el-table-column label="结束日期" align="center">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.jssj'"
@@ -241,57 +249,67 @@
       <el-dialog title="编辑" :visible.sync="editModal" width="80%" :close-on-click-modal="false">
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
-            <el-table-column label="项目名称" align="center">
+            <el-table-column label="任职组织" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'editData.' + scope.$index + '.xmmc'"
-                  :rules="rules.xmmc"
+                  :prop="'editData.' + scope.$index + '.rzzz'"
+                  :rules="rules.rzzz"
                 >
-                  <el-input v-model="scope.row.xmmc" />
+                  <el-input v-model="scope.row.rzzz" />
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="组织单位" align="center">
+            <el-table-column label="设立单位" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'editData.' + scope.$index + '.zzdw'"
-                  :rules="rules.zzdw"
+                  :prop="'editData.' + scope.$index + '.sldw'"
+                  :rules="rules.sldw"
                 >
-                  <el-input v-model="scope.row.zzdw" />
+                  <el-input v-model="scope.row.sldw" />
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="等级" width="150px" align="center">
+            <el-table-column label="级别" width="150px" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'editData.' + scope.$index + '.djm'"
-                  :rules="rules.djm"
+                  :prop="'editData.' + scope.$index + '.jbm'"
+                  :rules="rules.jbm"
                 >
-                  <el-input v-model="scope.row.djm" />
+                  <el-select
+                    v-model="scope.row.jbm"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in jbOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="类型" width="150px" align="center">
+            <el-table-column label="任职职务" width="150px" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'editData.' + scope.$index + '.lx'"
-                  :rules="rules.lx"
+                  :prop="'editData.' + scope.$index + '.rzzwm'"
+                  :rules="rules.rzzwm"
                 >
-                  <el-input v-model="scope.row.lx" />
+                  <el-select
+                    v-model="scope.row.rzzwm"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in zwOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="实践地点" width="150px" align="center">
-              <template slot-scope="scope">
-                <el-form-item
-                  :prop="'editData.' + scope.$index + '.sjdd'"
-                  :rules="rules.sjdd"
-                >
-                  <el-input v-model="scope.row.sjdd" />
-                </el-form-item>
-              </template>
-            </el-table-column>
-            <el-table-column label="开始时间" align="center">
+            <el-table-column label="开始日期" align="center">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.kssj'"
@@ -309,7 +327,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="结束时间" align="center">
+            <el-table-column label="结束日期" align="center">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.jssj'"
@@ -394,7 +412,7 @@
   </div>
 </template>
 <script>
-import { edit, del, query, tj, back } from "@/api/stuDangan/detailList/shsj";
+import { edit, del, query, tj, back } from "@/api/stuDangan/detailList/gbjl";
 import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
@@ -420,22 +438,21 @@ export default {
       delArr: [],
       subArr: [],
       val: [],
+      jbOps: [],
+      zwOps: [],
       rules: {
-        xmmc: [
+        rzzz: [
           {
             required: true,
-            message: "项目名称不能为空",
+            message: "任职组织不能为空",
             trigger: "blur",
           },
         ],
-        zzdw: [
-          { required: true, message: "组织单位不能为空", trigger: "change" },
+        sldw: [
+          { required: true, message: "设立单位不能为空", trigger: "blur" },
         ],
-        djm: [{ required: true, message: "等级不能为空", trigger: "change" }],
-        lx: [{ required: true, message: "类型不能为空", trigger: "blur" }],
-        sjdd: [
-          { required: true, message: "时间地点不能为空", trigger: "change" },
-        ],
+        jbm: [{ required: true, message: "级别不能为空", trigger: "change" }],
+        rzzwm: [{ required: true, message: "任职职务不能为空", trigger: "change" }],
         zmr: [{ required: true, message: "证明人不能为空", trigger: "blur" }],
         kssj: [
           {
@@ -455,15 +472,14 @@ export default {
         lxfs: [
           { required: true, message: "联系方式不能为空", trigger: "blur" },
         ],
-        shzt: [
-          { required: true, message: "审核状态不能为空", trigger: "blur" },
-        ],
       },
     };
   },
   mounted() {
     this.query();
     this.getCode("dmsplcm"); //状态
+    this.getCode("dmbgbzwdm"); //职位
+    this.getCode("dmxgjljbm"); //级别
   },
 
   methods: {
@@ -506,7 +522,17 @@ export default {
     getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
-        this.ztStatus = res.data;
+        switch (val) {
+          case "dmsplcm":
+            this.ztStatus = res.data; //状态
+            break;
+          case "dmxgjljbm":
+            this.jbOps = res.data; //级别
+            break;
+          case "dmbgbzwdm":
+            this.zwOps = res.data; //职位
+            break;
+        }
       });
     },
     del() {
@@ -570,11 +596,10 @@ export default {
       } else {
         var data = this.formAdd.addData[0];
         var params = {
-          xmmc: data.xmmc,
-          zzdw: data.zzdw,
-          djm: data.djm,
-          lx: data.lx,
-          sjdd: data.sjdd,
+          rzzwm: data.rzzwm,
+          rzzz: data.rzzz,
+          jbm: data.jbm,
+          sldw: data.sldw,
           kssj: data.kssj,
           jssj: data.jssj,
           zmr: data.zmr,
@@ -608,15 +633,14 @@ export default {
     xinzeng() {
       this.formAdd.addData = []; // 每次打开弹框先将弹框的table数组置空
       var newLine = {
-        xmmc: "",
-        zzdw: "",
-        djm: "",
-        lx: "",
-        kssj: "",
-        sjdd: "",
+        jbm: "",
         jssj: "",
-        zmr: "",
+        kssj: "",
         lxfs: "",
+        rzzwm: "",
+        rzzz: "",
+        sldw: "",
+        zmr: "",
       };
       this.formAdd.addData.push(newLine);
       this.addModal = true;

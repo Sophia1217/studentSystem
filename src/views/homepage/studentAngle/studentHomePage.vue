@@ -188,7 +188,7 @@
           </div>
         </div>
       </div>
-      <div class="item">
+      <div class="item stuInfoClick" @click="chengcheClick">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
         </div>
@@ -254,6 +254,11 @@ export default {
     stuInfoClick() {
       this.$router.push({
         path: "/student/studetails",
+      });
+    },
+    chengcheClick() {
+      this.$router.push({
+        path: "/dailyBehavior/stuTravelDetails",
       });
     },
   },

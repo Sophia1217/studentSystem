@@ -739,7 +739,7 @@ export default {
               this.partDate[i].value = "";
             }
           }
-          if (this.form.homeModel == "线下实地") {
+          if (this.form.homeModel == "线下走访") {
             this.getCity(this.form.proPlace);
             this.getXian(this.form.cityPlace);
           }
@@ -877,12 +877,12 @@ export default {
       } else if (this.form.homeModel == "") {
         this.$message.error("家访形式不能为空!");
       } else if (
-        this.form.homeModel == "线下实地" &&
+        this.form.homeModel == "线下走访" &&
         this.form.countryPlace == ""
       ) {
         this.$message.error("家访地点不能为空!");
       } else if (
-        this.form.homeModel == "线下实地" &&
+        this.form.homeModel == "线下走访" &&
         this.form.detailPlace == ""
       ) {
         this.$message.error("详细地址不能为空!");

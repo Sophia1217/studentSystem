@@ -48,3 +48,12 @@ export function queryDetail(data){
     data: data
   })
 }
+
+// 通过学号获得家庭住址
+export function getJtzz(data){
+  return request({
+    url: '/rcswChyh/getJtzzByXh',
+    method: 'post',
+    data: data
+  })
+}

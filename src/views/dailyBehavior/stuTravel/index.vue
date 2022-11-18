@@ -154,7 +154,12 @@
         />
       </div>
     </div>
-    <el-dialog title="新增申请" :visible.sync="addModal" width="40%" :close-on-click-modal="false">
+    <el-dialog title="新增申请" 
+      :visible.sync="addModal" 
+      width="40%" 
+      :close-on-click-modal="false"
+      @close="emptyAdd()"
+      >
         <el-form ref="formAdd" :model="formAdd" :rules="rules" label-width="100px">
           <el-row :gutter="20">  
             <el-col :span="20">           
@@ -163,7 +168,7 @@
               prop="jtdz"
               :rules="rules.jtdz"
             >
-              <el-input v-model="formAdd.jtdz"/>
+              <el-input v-model="formAdd.jtdz" disabled/>
             </el-form-item>
             </el-col>
           </el-row>
@@ -195,6 +200,7 @@
               <el-select
                 v-model="formAdd.chqjeid"
                 placeholder="请输入车站"
+                :rules="rules.chqjeid"
                 collapse-tags
               >
                 <el-option
@@ -219,6 +225,7 @@
                 format="yyyy 年 MM 月 dd 日"
                 value-format="yyyy-MM-dd"
                 placeholder="选择日期"
+                disabled
               >
               </el-date-picker>
             </el-form-item>
@@ -248,25 +255,125 @@
           >
         </span>
       </el-dialog>
-    <!-- 导出确认对话框 -->
-    <!-- <el-dialog :title="title" :visible.sync="submitModal" width="30%">
-      <span>确认导出？</span>
+      <el-dialog 
+        title="申请详情" 
+        :visible.sync="editModal" 
+        width="40%" 
+        :close-on-click-modal="false"
+        @close="emptyEdit()"
+      >
+        <el-form ref="formEdit" :model="formEdit" :rules="rules" label-width="100px">
+          <el-row :gutter="20">  
+            <el-col :span="20">           
+            <el-form-item label="家庭地址" 
+              
+              prop="jtdz"
+              :rules="rules.jtdz"
+            >
+              <el-input 
+                v-model="formEdit.jtdz"
+                disabled
+              ></el-input>
+            </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20"> 
+            <el-col :span="12"> 
+            <el-form-item label="乘车区间" 
+              
+              prop="chqjsid"
+              :rules="rules.chqjsid"
+            >
+              <el-select
+                v-model="formEdit.chqjsid"
+                placeholder="请输入车站"
+                collapse-tags
+              >
+                <el-option
+                  v-for="(item, index) in zdOps"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+            </el-select>
+            </el-form-item>
+            </el-col>
+            <el-col :span="1">
+              <div><span>-</span></div>
+            </el-col>
+            <el-col :span="7"> 
+              <el-select
+                v-model="formEdit.chqjeid"
+                placeholder="请输入车站"
+                :rules="rules.chqjeid"
+                collapse-tags
+              >
+                <el-option
+                  v-for="(item, index) in zdOps"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+            </el-select>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">  
+            <el-col :span="20"> 
+            <el-form-item label="申报时间" 
+              
+              prop="sqsj"
+              :rules="rules.sqsj"
+            >
+              <el-date-picker
+                v-model="formEdit.sqsj"
+                type="date"
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
+                placeholder="选择日期"
+              >
+              </el-date-picker>
+            </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">  
+            <el-col :span="20"> 
+            <el-form-item label="申请备注" 
+              
+              prop="sqbz"
+              :rules="rules.sqbz"
+            >
+              <el-input 
+                v-model="formEdit.sqbz" 
+                type="textarea"
+                maxlength="1000"
+                placeholder="请输入"
+              ></el-input>
+            </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="editCance">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="editClick"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
+    <!-- 确认提交对话框 -->
+    <el-dialog title="提交" :visible.sync="submitModal" width="30%">
+      <span>确认提交？</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="handleConfirm"
+        <el-button @click="subCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="submitConfirm"
           >确 定</el-button
         >
       </span>
-    </el-dialog> -->
+    </el-dialog>
     <!-- 批量删除对话框 -->
-    <el-dialog :title="title" :visible.sync="showDelete" width="30%">
-      <template v-for="item in multipleSelection">
-        <div :key="item.createXh">
-          <span>确认删除【{{ item.createXm }}】记录的【{{ item.hdzt }}】活动记录？</span>
-        </div>
-      </template>
+    <el-dialog title="删除" :visible.sync="showDelete" width="30%">
+      <span>确认删除？</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogCancel">取 消</el-button>
+        <el-button @click="delCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="rmRecord"
           >确 定</el-button
         >
@@ -287,12 +394,14 @@
   tj,
   queryAllZd,
   queryDetail,
+  getJtzz,
  } from "@/api/dailyBehavior/stuTravel";
  import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
-//  import lctCom from "../../../components/lct";
+// import lctCom from "../../../components/lct";
+import lctCom from "../../components/lct";
 export default {
   name: "BasicInfo",
-  // components: { lctCom },
+  components: { lctCom },
   props: [],
   data() {
     return {
@@ -310,6 +419,7 @@ export default {
       select: "",
       isMore: false,
       lctModal: false,
+      ztStatus: [],//状态
       zdOps: [],
       status: [],
       basicInfoList: [],
@@ -328,9 +438,7 @@ export default {
         orderPx: "",
         xh: this.$store.getters.userId,
       },
-      list: [],
       datePicker: [],
-      exportParams: {},
       addModal: false,
       editModal: false,
       formAdd: { 
@@ -359,10 +467,10 @@ export default {
           { required: true, message: "到达站点不能为空", trigger: "change" },
         ],
         sqsj: [
-          { required: true, message: "家庭地址不能为空", trigger: "blur" },
+          { required: true, message: "申请时间不能为空", trigger: "blur" },
         ],
         sqbz: [
-          { required: true, message: "家庭地址不能为空", trigger: "blur" },
+          { required: true, message: "申请备注不能为空", trigger: "blur" },
         ],
       },
     };
@@ -400,6 +508,17 @@ export default {
         return false;
       }
       return true;
+    },
+    //弹窗关闭置空
+    emptyEdit() {
+      this.$nextTick(() => {
+        this.$refs.formEdit.resetFields();
+      });
+    },
+    emptyAdd() {
+      this.$nextTick(() => {
+        this.$refs.formAdd.resetFields();
+      });
     },
     handleCloseLct() {
       this.lctModal = false;
@@ -442,12 +561,11 @@ export default {
         .then((response) => {
             this.basicInfoList = response.data; // 根据状态码接收数据
             this.total = response.totalCount; //总条数
-            this.formAdd.jtdz = response.data[0].jtdz;
         })
         .catch((err) => {});
     },
     //批量删除对话框关闭
-    dialogCancel() {
+    delCancel() {
       this.showDelete = false;
     },
 
@@ -465,13 +583,13 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       this.subArr = val.map((item) => item.id);
-      this.list = [...val]; // 存储已被勾选的数据
+      this.delArr = val.map((item) => item.id);
     },
     //提交
     handleSubmit() {
       var falg = 1;
-      for (var i = 0; i < this.val.length; i++) {
-        if (this.val[i].status !== "01") falg = 2;
+      for (var i = 0; i < this.multipleSelection.length; i++) {
+        if (this.multipleSelection[i].status !== "01") falg = 2;
       }
       if (falg == 1) {
         if (this.subArr && this.subArr.length > 0) {
@@ -484,7 +602,7 @@ export default {
       }
     },
     submitConfirm() {
-      var data = this.val;
+      var data = this.multipleSelection;
       tj(data).then((res) => {
         console.log(111);
         this.$message.success("提交成功");
@@ -498,50 +616,39 @@ export default {
     //批量删除
     rmRecord() {
       this.showDelete = false;
-      let ids = [];
-      for (let item_row of this.multipleSelection) {
-        ids.push(item_row.id);
-      }
-      let data = {
-        ids: ids
-      }
-      del(data)
-        .then((res) => {
-          this.$message({
-            message: res.errmsg,
-            type: "success",
+        del({ ids: this.delArr }).then((res) => {
+            this.$message.success("删除成功");
+            this.getList();
           })
-          this.getList();
-        })
-        .catch((err) => {
-          //this.$message.error(err.errmsg);
-        });
-    },
-    //点击详情
-    hadleDetail(row) {
-      this.$router.push({
-        path: "/assistantWork/detailClassEvent",
-        query: {
-          id: row.id,
-        },
-      });
+          .catch((err) => {});
     },
     /**批量删除按钮*/
     handleDelete() {
-      if (this.multipleSelection.length > 0) {
-        this.showDelete = true;
-        this.title = "删除";
+      var falg = 1;
+      for (var i = 0; i < this.multipleSelection.length; i++) {
+        if (this.multipleSelection[i].status !== "01") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.delArr && this.delArr.length > 0) {
+          this.showDelete = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
       } else {
-        this.$message({
-          message: "请至少选择一名家访学生！",
-          type: "warning",
-        });
+        this.$message.error("存在非草稿状态数据，不可以删除");
       }
     },
     //新增
     handleNew(){
-      this.formAdd = {}; 
+      this.formAdd = { sqsj: this.formatDate(new Date()) }; 
       this.addModal = true;
+      this.formAdd.jtdz = "22222";
+      // getJtzz({xh: this.$store.getters.userId})
+      //   .then((res) => {
+      //     this.formAdd.jtdz = res.data;
+      //     console.log("this.formAdd.jtdz",this.formAdd.jtdz);
+      //   })
+      //   .catch((err) => {});
     },
     addCance() {
       this.addModal = false;
@@ -570,6 +677,34 @@ export default {
           }
         });
         this.addModal = false;
+      }
+    },
+    //点击详情
+    hadleDetail(row) {
+      this.editModal = true;
+      queryDetail({ id: row.id }).then((res) => {
+        this.formEdit = res.data;
+      });
+    },
+    //详情编辑
+    editCance() {
+      this.editModal = false;
+    },
+    editClick() {
+      if (!this.checkFormEdit()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        var data = this.formEdit;
+        edit(data).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("新增成功");
+            this.getList();
+          } else {
+            this.$message.error("新增失败");
+          }
+        });
+        this.editModal = false;
       }
     },
     // 搜索查询按钮

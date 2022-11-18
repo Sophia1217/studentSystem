@@ -166,12 +166,13 @@
           </div>
         </div>
       </div>
-      <div class="item">
+
+      <div class="item stuInfoClick" @click="zhengjianClick">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
         </div>
         <div class="content">
-          <div class="title1"><span class="stuinfoTitle">困难生申请</span></div>
+          <div class="title1"><span class="stuinfoTitle">证件补办</span></div>
           <div class="title2">
             <span class="baseInfo">模块建设中</span>
           </div>
@@ -259,6 +260,11 @@ export default {
     chengcheClick() {
       this.$router.push({
         path: "/dailyBehavior/stuTravelDetails",
+      });
+    },
+    zhengjianClick() {
+      this.$router.push({
+        path: "/dailyBehavior/docReplace",
       });
     },
   },

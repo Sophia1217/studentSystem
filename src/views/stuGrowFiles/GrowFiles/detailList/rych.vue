@@ -32,17 +32,17 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xmmc" label="荣誉名称" sortable="custom">
+          <el-table-column prop="rymc" label="荣誉名称" sortable="custom">
           </el-table-column>
-          <el-table-column prop="djm" label="级别" sortable="custom">
+          <el-table-column prop="jb" label="级别" sortable="custom">
           </el-table-column>
-          <el-table-column prop="djm" label="等级" sortable="custom">
+          <el-table-column prop="dj" label="等级" sortable="custom">
           </el-table-column>
-          <el-table-column prop="lx" label="表彰单位" sortable="custom">
+          <el-table-column prop="bzdw" label="表彰单位" sortable="custom">
           </el-table-column>
-          <el-table-column prop="kssj" label="获奖时间" sortable="custom">
+          <el-table-column prop="hjsj" label="获奖时间" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zmr" label="证书编号" sortable="custom">
+          <el-table-column prop="zsbh" label="证书编号" sortable="custom">
           </el-table-column>
           <el-table-column prop="status" label="审核状态" sortable="custom">
             <template slot-scope="scope">
@@ -120,20 +120,30 @@
             <el-table-column label="荣誉名称" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'addData.' + scope.$index + '.xmmc'"
-                  :rules="rules.xmmc"
+                  :prop="'addData.' + scope.$index + '.rymc'"
+                  :rules="rules.rymc"
                 >
-                  <el-input v-model="scope.row.xmmc" />
+                  <el-input v-model="scope.row.rymc" />
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="级别" align="center">
+            <el-table-column label="级别" width="150px" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'addData.' + scope.$index + '.zzdw'"
-                  :rules="rules.zzdw"
+                  :prop="'addData.' + scope.$index + '.jbm'"
+                  :rules="rules.jbm"
                 >
-                  <el-input v-model="scope.row.zzdw" />
+                  <el-select
+                    v-model="scope.row.jbm"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in jbOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -143,32 +153,41 @@
                   :prop="'addData.' + scope.$index + '.djm'"
                   :rules="rules.djm"
                 >
-                  <el-input v-model="scope.row.djm" />
+                  <el-select
+                    v-model="scope.row.djm"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in djOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column label="表彰单位" width="150px" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'addData.' + scope.$index + '.lx'"
-                  :rules="rules.lx"
+                  :prop="'addData.' + scope.$index + '.bzdw'"
+                  :rules="rules.bzdw"
                 >
-                  <el-input v-model="scope.row.lx" />
+                  <el-input v-model="scope.row.bzdw" />
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column label="获奖时间" width="150px" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'addData.' + scope.$index + '.kssj'"
-                  :rules="rules.kssj"
+                  :prop="'addData.' + scope.$index + '.hjsj'"
+                  :rules="rules.hjsj"
                 >
                   <el-date-picker
-                    v-model="scope.row.kssj"
+                    v-model="scope.row.hjsj"
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
-                    @change="changeDate(1)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -178,10 +197,10 @@
             <el-table-column label="证书编号" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'addData.' + scope.$index + '.lxfs'"
-                  :rules="rules.lxfs"
+                  :prop="'addData.' + scope.$index + '.zsbh'"
+                  :rules="rules.zsbh"
                 >
-                  <el-input v-model="scope.row.lxfs" />
+                  <el-input v-model="scope.row.zsbh" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -200,20 +219,30 @@
             <el-table-column label="荣誉名称" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'editData.' + scope.$index + '.xmmc'"
-                  :rules="rules.xmmc"
+                  :prop="'editData.' + scope.$index + '.rymc'"
+                  :rules="rules.rymc"
                 >
-                  <el-input v-model="scope.row.xmmc" />
+                  <el-input v-model="scope.row.rymc" />
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column label="级别" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'editData.' + scope.$index + '.zzdw'"
-                  :rules="rules.zzdw"
+                  :prop="'editData.' + scope.$index + '.jbm'"
+                  :rules="rules.jbm"
                 >
-                  <el-input v-model="scope.row.zzdw" />
+                  <el-select
+                    v-model="scope.row.jbm"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in jbOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -223,32 +252,41 @@
                   :prop="'editData.' + scope.$index + '.djm'"
                   :rules="rules.djm"
                 >
-                  <el-input v-model="scope.row.djm" />
+                  <el-select
+                    v-model="scope.row.djm"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in djOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column label="表彰单位" width="150px" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'editData.' + scope.$index + '.lx'"
-                  :rules="rules.lx"
+                  :prop="'editData.' + scope.$index + '.bzdw'"
+                  :rules="rules.bzdw"
                 >
-                  <el-input v-model="scope.row.lx" />
+                  <el-input v-model="scope.row.bzdw" />
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column label="获奖时间" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'editData.' + scope.$index + '.kssj'"
-                  :rules="rules.kssj"
+                  :prop="'editData.' + scope.$index + '.hjsj'"
+                  :rules="rules.hjsj"
                 >
                   <el-date-picker
-                    v-model="scope.row.kssj"
+                    v-model="scope.row.hjsj"
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
-                    @change="changeDate(3)"
                     placeholder="选择日期"
                   >
                   </el-date-picker>
@@ -258,10 +296,10 @@
             <el-table-column label="证书编号" align="center">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'editData.' + scope.$index + '.lxfs'"
-                  :rules="rules.lxfs"
+                  :prop="'editData.' + scope.$index + '.zsbh'"
+                  :rules="rules.zsbh"
                 >
-                  <el-input v-model="scope.row.lxfs" />
+                  <el-input v-model="scope.row.zsbh" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -312,7 +350,7 @@
   </div>
 </template>
 <script>
-import { edit, del, query, tj, back } from "@/api/stuDangan/detailList/shsj";
+import { edit, del, query, tj, back } from "@/api/stuDangan/detailList/rych";
 import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
@@ -338,43 +376,30 @@ export default {
       delArr: [],
       subArr: [],
       val: [],
+      jbOps: [],
+      djOps: [],
       rules: {
-        xmmc: [
+        bzdw: [
           {
             required: true,
-            message: "项目名称不能为空",
+            message: "表彰单位不能为空",
             trigger: "blur",
           },
         ],
-        zzdw: [
-          { required: true, message: "组织单位不能为空", trigger: "change" },
+        rymc: [
+          { required: true, message: "荣誉名称不能为空", trigger: "blur" },
         ],
         djm: [{ required: true, message: "等级不能为空", trigger: "change" }],
-        lx: [{ required: true, message: "类型不能为空", trigger: "blur" }],
-        sjdd: [
-          { required: true, message: "时间地点不能为空", trigger: "change" },
-        ],
-        zmr: [{ required: true, message: "证明人不能为空", trigger: "blur" }],
-        kssj: [
+        jbm: [{ required: true, message: "级别不能为空", trigger: "change" }],
+        hjsj: [
           {
             required: true,
-            message: "开始时间不能为空",
+            message: "获奖时间不能为空",
             trigger: "blur",
           },
         ],
-        jssj: [
-          {
-            required: true,
-            message: "结束时间不能为空",
-
-            trigger: "blur",
-          },
-        ],
-        lxfs: [
-          { required: true, message: "联系方式不能为空", trigger: "blur" },
-        ],
-        shzt: [
-          { required: true, message: "审核状态不能为空", trigger: "blur" },
+        zsbh: [
+          { required: true, message: "证书编号不能为空", trigger: "blur" },
         ],
       },
     };
@@ -382,6 +407,8 @@ export default {
   mounted() {
     this.query();
     this.getCode("dmsplcm"); //状态
+    this.getCode("dmjldjm"); //等级
+    this.getCode("dmxgjljbm"); //级别
   },
 
   methods: {
@@ -424,7 +451,17 @@ export default {
     getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
-        this.ztStatus = res.data;
+        switch (val) {
+          case "dmsplcm":
+            this.ztStatus = res.data; //状态
+            break;
+          case "dmxgjljbm":
+            this.jbOps = res.data; //级别
+            break;
+          case "dmjldjm":
+            this.djOps = res.data; //职位
+            break;
+        }
       });
     },
     del() {
@@ -488,15 +525,12 @@ export default {
       } else {
         var data = this.formAdd.addData[0];
         var params = {
-          xmmc: data.xmmc,
-          zzdw: data.zzdw,
+          bzdw: data.bzdw,
           djm: data.djm,
-          lx: data.lx,
-          sjdd: data.sjdd,
-          kssj: data.kssj,
-          jssj: data.jssj,
-          zmr: data.zmr,
-          lxfs: data.lxfs,
+          hjsj: data.hjsj,
+          jbm: data.jbm,
+          rymc: data.rymc,
+          zsbh: data.zsbh,
           xh: this.$store.getters.userId,
         };
         edit(params).then((res) => {
@@ -526,15 +560,12 @@ export default {
     xinzeng() {
       this.formAdd.addData = []; // 每次打开弹框先将弹框的table数组置空
       var newLine = {
-        xmmc: "",
-        zzdw: "",
+        bzdw: "",
         djm: "",
-        lx: "",
-        kssj: "",
-        sjdd: "",
-        jssj: "",
-        zmr: "",
-        lxfs: "",
+        hjsj: "",
+        jbm: "",
+        rymc: "",
+        zsbh: "",
       };
       this.formAdd.addData.push(newLine);
       this.addModal = true;
@@ -598,40 +629,6 @@ export default {
     delCancel() {
       this.delModal = false;
     },
-    // 判断 开始时间 结束时间
-    changeDate(flag) {
-      let addParams = this.formAdd.addData[0];
-      let editParams = this.formEdit.editData[0];
-      if (flag==1) {//新增开始时间
-        if (addParams.jssj) {
-          if (addParams.kssj > addParams.jssj) {
-            addParams.kssj = null;
-            this.$message.error("开始时间不能大于结束时间！");
-          }
-        }
-      } else if (flag==2) {//新增结束时间
-        if (addParams.kssj) {
-          if (addParams.kssj > addParams.jssj) {
-            addParams.jssj = null;
-            this.$message.error("结束时间不能小于开始时间！");
-          }
-        }
-      } else if (flag==3) {
-        if (editParams.jssj) {
-          if (editParams.kssj > editParams.jssj) {
-            editParams.kssj = null;
-            this.$message.error("开始时间不能大于结束时间！");
-          }
-        }
-      } else {
-        if (editParams.kssj) {
-          if (editParams.kssj > editParams.jssj) {
-            editParams.jssj = null;
-            this.$message.error("结束时间不能小于开始时间！");
-          }
-        }
-      }
-    }
   },
 };
 </script>

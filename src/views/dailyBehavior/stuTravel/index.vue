@@ -15,11 +15,8 @@
             @change="selectChange"
             placeholder="查询条件"
           >
-            <el-option label="记录人" value="1" />
-            <el-option label="工号" value="2" />
-            <el-option label="活动地点" value="3" />
-            <el-option label="活动主题" value="4" />
-            <el-option label="组织单位" value="5" />
+            <el-option label="乘车站点" value="1" />
+            <el-option label="家庭地址" value="2" />
           </el-select>
           <el-button
             slot="append"
@@ -41,26 +38,7 @@
       <div v-if="isMore" class="moreSelect">
         <el-row :gutter="20" class="mt15">
           <el-col :span="20">
-            <span>工作单位：</span>
-            <el-select
-              v-model="workPlace"
-              multiple
-              placeholder="请选择"
-              collapse-tags
-              @change="workPlaceChange"
-            >
-              <el-option
-                v-for="(item, index) in gzdwOptions"
-                :key="index"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="20">
-            <span>活动日期：</span>
+            <span>申请时间：</span>
               <el-date-picker 
                 type="daterange" 
                 placeholder="选择日期" 
@@ -75,15 +53,21 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">类 别：</el-col>
           <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :obj-prop="category"
-                @training="handleCheckAllCategoryChange"
-                @checkedTraining="handleCheckedCategoryChange"
-              />
-            </div>
+            <span>审核状态：</span>
+            <el-select
+              v-model="status"
+              multiple
+              placeholder="请选择"
+              collapse-tags
+            >
+              <el-option
+                v-for="(item, index) in ztStatus"
+                :key="index"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
           </el-col>
         </el-row>
       </div>
@@ -93,14 +77,14 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">班团活动</span> <i class="Updataicon" />
+          <span class="title">火车乘车区间填写列表</span> <i class="Updataicon" />
         </div>
         <div class="headerRight">
-          <div class="btns borderGreen" @click="handleExport">
-            <i class="icon orangeIcon" /><span class="title">导出</span>
-          </div>
           <div class="btns borderRed" @click="handleDelete">
             <i class="icon lightIcon" /><span class="title">删除</span>
+          </div>
+          <div class="btns borderGreen" @click="handleSubmit">
+            <i class="icon orangeIcon" /><span class="title">提交</span>
           </div>
           <div class="btns fullGreen" @click="handleNew">
             <i class="icon greenIcon" /><span class="title1">新增</span>
@@ -118,14 +102,35 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
-          <el-table-column prop="hdzt" label="活动主题" sortable />
-          <el-table-column prop="hddz" label="活动地点" sortable="custom" />
-          <el-table-column prop="hdksrq" label="活动日期" sortable="custom" />
-          <el-table-column prop="zzdw" label="组织单位" sortable="custom" />
-          <el-table-column prop="createXm" label="记录人" sortable="custom" />
-          <el-table-column prop="createXh" label="工号" sortable="custom" />
-          <el-table-column prop="createDwhMc" label="工作单位" sortable="custom" />
-          <el-table-column prop="createSfjzfdyMc" label="类型" sortable="custom" />
+          <el-table-column prop="xh" label="学号" sortable />
+          <el-table-column prop="xm" label="姓名" sortable="custom" />
+          <el-table-column prop="jtdz" label="家庭地址" sortable="custom" />
+          <el-table-column prop="chqj" label="乘车区间" sortable="custom" />
+          <el-table-column prop="sqsj" label="申请时间" sortable="custom" />
+          <el-table-column prop="status" label="审核状态" sortable="custom">
+            <template slot-scope="scope">
+              <el-select
+                v-model="scope.row.status"
+                placeholder="请选择"
+                :disabled="true"
+              >
+                <el-option
+                  v-for="(item, index) in ztStatus"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </template>
+          </el-table-column>
+          <el-table-column prop="createDwhMc" label="审核进度">
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="lctClick(scope.row)">
+                <i class="scopeIncon lct"></i>
+                <span class="handleName">流转记录</span>
+              </el-button>
+            </template>
+          </el-table-column>
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
               <el-button
@@ -134,7 +139,7 @@
                 @click="hadleDetail(scope.row)"
               >
                 <i class="scopeIncon handledie" />
-                <span class="handleName">联系详情</span>
+                <span class="handleName">详情</span>
               </el-button>
             </template>
           </el-table-column>
@@ -149,8 +154,102 @@
         />
       </div>
     </div>
+    <el-dialog title="新增申请" :visible.sync="addModal" width="40%" :close-on-click-modal="false">
+        <el-form ref="formAdd" :model="formAdd" :rules="rules" label-width="100px">
+          <el-row :gutter="20">  
+            <el-col :span="20">           
+            <el-form-item label="家庭地址" 
+              
+              prop="jtdz"
+              :rules="rules.jtdz"
+            >
+              <el-input v-model="formAdd.jtdz"/>
+            </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20"> 
+            <el-col :span="12"> 
+            <el-form-item label="乘车区间" 
+              
+              prop="chqjsid"
+              :rules="rules.chqjsid"
+            >
+              <el-select
+                v-model="formAdd.chqjsid"
+                placeholder="请输入车站"
+                collapse-tags
+              >
+                <el-option
+                  v-for="(item, index) in zdOps"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+            </el-select>
+            </el-form-item>
+            </el-col>
+            <el-col :span="1">
+              <div><span>-</span></div>
+            </el-col>
+            <el-col :span="7"> 
+              <el-select
+                v-model="formAdd.chqjeid"
+                placeholder="请输入车站"
+                collapse-tags
+              >
+                <el-option
+                  v-for="(item, index) in zdOps"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+            </el-select>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">  
+            <el-col :span="20"> 
+            <el-form-item label="申报时间" 
+              
+              prop="sqsj"
+              :rules="rules.sqsj"
+            >
+              <el-date-picker
+                v-model="formAdd.sqsj"
+                type="date"
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
+                placeholder="选择日期"
+              >
+              </el-date-picker>
+            </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">  
+            <el-col :span="20"> 
+            <el-form-item label="申请备注" 
+              
+              prop="sqbz"
+              :rules="rules.sqbz"
+            >
+              <el-input 
+                v-model="formAdd.sqbz" 
+                type="textarea"
+                maxlength="1000"
+                placeholder="请输入"
+              ></el-input>
+            </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="addCance">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="addClick"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
     <!-- 导出确认对话框 -->
-    <el-dialog :title="title" :visible.sync="showExport" width="30%">
+    <!-- <el-dialog :title="title" :visible.sync="submitModal" width="30%">
       <span>确认导出？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
@@ -158,7 +257,7 @@
           >确 定</el-button
         >
       </span>
-    </el-dialog>
+    </el-dialog> -->
     <!-- 批量删除对话框 -->
     <el-dialog :title="title" :visible.sync="showDelete" width="30%">
       <template v-for="item in multipleSelection">
@@ -173,28 +272,27 @@
         >
       </span>
     </el-dialog>
+    <lctCom
+      ref="child"
+      :lctModal="lctModal"
+      @handleCloseLct="handleCloseLct"
+    ></lctCom>
   </div>
 </template>
 <script>
-import {
-  addUser,
-  updateUser,
-} from "@/api/system/user";
-import CheckboxCom from "../../components/checkboxCom";
-import {
-  removeMoreAssistant,
-  outAssistant,
-  getGzdw,
-} from "@/api/politicalWork/assistantappoint";
-import { 
-  queryFdyBthdList,
-  insertFdyBthd,
-  excelFdyBthd,
-  deleteFdyBthd,
- } from "@/api/assistantWork/classEvent";
+ import { 
+  edit,
+  del,
+  query,
+  tj,
+  queryAllZd,
+  queryDetail,
+ } from "@/api/dailyBehavior/stuTravel";
+ import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+//  import lctCom from "../../../components/lct";
 export default {
   name: "BasicInfo",
-  components: { CheckboxCom },
+  // components: { lctCom },
   props: [],
   data() {
     return {
@@ -211,44 +309,62 @@ export default {
       searchVal: "",
       select: "",
       isMore: false,
-      gzdwOptions: [],
-      category: {
-        // 类别
-        checkAll: false,
-        choose: [],
-        checkBox: [
-          { mc: "兼职", dm: 1 },
-          { mc: "专职", dm: 0 },
-        ],
-        isIndeterminate: true,
-      },
-      workPlace: [],
-      rules: {
-        ghContent: [
-          { required: true, message: "工号不能为空", trigger: "blur" },
-        ],
-      },
+      lctModal: false,
+      zdOps: [],
+      status: [],
       basicInfoList: [],
       multipleSelection: [],
-      showExport: false,
+      submitModal: false,
       queryParams: {
+        cczd: "",//乘车站点
+        jtdz: "",//家庭地址
+        sqsjEnd:"",
+        sqsjStart:"",
+        statusList: [],
+
         pageNum: 1,
         pageSize: 10,
-        createDwh: [],//工作单位
-        createSfjzfdy: [],//类别
-        createXh:"",
-        createXm:"",
-        hddz:"",
-        hdksrqEnd:"",
-        hdksrqStrat:"",
-        hdzt:"",
-        zzdw:"",//组织单位
         orderZd: "",
         orderPx: "",
+        xh: this.$store.getters.userId,
       },
       list: [],
       datePicker: [],
       exportParams: {},
+      addModal: false,
+      editModal: false,
+      formAdd: { 
+        jtdz: "" ,
+        chqjsid: "" ,
+        chqjeid: "" ,
+        sqsj: "" ,
+        sqbz: "" ,
+      },
+      formEdit: { 
+        jtdz: "" ,
+        chqjsid: "" ,
+        chqjeid: "" ,
+        sqsj: "" ,
+        sqbz: "" ,
+
+      },
+      rules: {
+        jtdz: [
+          { required: true, message: "家庭地址不能为空", trigger: "blur" },
+        ],
+        chqjsid: [
+          { required: true, message: "出发站点不能为空", trigger: "change" },
+        ],
+        chqjeid: [
+          { required: true, message: "到达站点不能为空", trigger: "change" },
+        ],
+        sqsj: [
+          { required: true, message: "家庭地址不能为空", trigger: "blur" },
+        ],
+        sqbz: [
+          { required: true, message: "家庭地址不能为空", trigger: "blur" },
+        ],
+      },
     };
   },
   computed: {},
@@ -257,24 +373,61 @@ export default {
   mounted() {
     this.getList(this.queryParams);
 
-    this.getOption();
+    this.getAllZd();
+    this.getCode("dmsplcm"); //状态
   },
 
   methods: {
-    //工作单位勾选
-    workPlaceChange() {
-      this.queryParams.createDwh = this.workPlace;
-      // this.getList(this.queryParams);
+    // 表单校验
+    checkFormAdd() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formAdd.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
+    checkFormEdit() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formEdit.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
+    handleCloseLct() {
+      this.lctModal = false;
+    },
+    //流程
+    lctClick(row) {
+      if (!!row.processid) {
+        this.$refs.child.inner(row.processid);
+        this.lctModal = true;
+      } else {
+         this.$message.warning("此项经历为管理员新增，暂无流程数据");
+      }
+    },
+    getCode(val) {
+      const data = { codeTableEnglish: val };
+      getCodeInfoByEnglish(data).then((res) => {
+        this.ztStatus = res.data;
+      });
     },
     selectChange() {
       this.searchVal = "";
     },
-    getOption() {
-      this.gzdwOptions = [];
-      getGzdw()
+    getAllZd() {
+      this.zdOps = [];
+      queryAllZd()
         .then((res) => {
           if (res.errcode == "00") {
-            this.gzdwOptions = res.data.rows;
+            this.zdOps = res.data.rows;
           }
         })
         .catch((err) => {
@@ -283,23 +436,17 @@ export default {
     },
     //获取数据列表
     getList() {
-      // console.log(this.select, "select");
-      this.queryParams.createXm = this.select == 1 ? this.searchVal : "";
-      this.queryParams.createXh = this.select == 2 ? this.searchVal : "";
-      this.queryParams.hddz = this.select == 3 ? this.searchVal : "";
-      this.queryParams.hdzt = this.select == 4 ? this.searchVal : "";
-      this.queryParams.zzdw = this.select == 5 ? this.searchVal : "";
-      queryFdyBthdList(this.queryParams)
+      this.queryParams.cczd = this.select == 1 ? this.searchVal : "";
+      this.queryParams.jtdz = this.select == 2 ? this.searchVal : "";
+      query(this.queryParams)
         .then((response) => {
             this.basicInfoList = response.data; // 根据状态码接收数据
             this.total = response.totalCount; //总条数
-            // this.exportParams = this.queryParams;
+            this.formAdd.jtdz = response.data[0].jtdz;
         })
-        .catch((err) => {
-          // this.$message.error(err.errmsg);
-        });
+        .catch((err) => {});
     },
-    //批量免去对话框关闭
+    //批量删除对话框关闭
     dialogCancel() {
       this.showDelete = false;
     },
@@ -313,72 +460,40 @@ export default {
     handleMore() {
       this.isMore = !this.isMore;
     },
-    // 类别全选
-    handleCheckAllCategoryChange(val) {
-      const allCheck = [];
-      for (const i in this.category.checkBox) {
-        allCheck.push(this.category.checkBox[i].dm);
-      }
-      this.category.choose = val ? allCheck : [];
-
-      this.category.isIndeterminate = false;
-      this.queryParams.createDwh = this.workPlace;
-
-      this.queryParams.createSfjzfdy = this.category.choose;
-    },
-    // 类别单选
-    handleCheckedCategoryChange(value) {
-      const checkedCount = value.length;
-      this.category.checkAll = checkedCount === this.category.checkBox.length;
-      this.category.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.category.checkBox.length;
-      this.queryParams.createDwh = this.workPlace;
- 
-      this.queryParams.createSfjzfdy = this.category.choose;
-    },
 
     // 列表多选
     handleSelectionChange(val) {
-      // console.log("val", val);
       this.multipleSelection = val;
+      this.subArr = val.map((item) => item.id);
       this.list = [...val]; // 存储已被勾选的数据
     },
-    // 打开导出弹窗
-    handleExport() {
-      this.showExport = true;
-      this.title = "导出";
+    //提交
+    handleSubmit() {
+      var falg = 1;
+      for (var i = 0; i < this.val.length; i++) {
+        if (this.val[i].status !== "01") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.subArr && this.subArr.length > 0) {
+          this.submitModal = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("不是草稿状态数据，不可以提交");
+      }
     },
-    // 导出取消
-    handleCancel() {
-      this.showExport = false;
+    submitConfirm() {
+      var data = this.val;
+      tj(data).then((res) => {
+        console.log(111);
+        this.$message.success("提交成功");
+        this.getList();
+        this.submitModal = false;
+      });
     },
-    // 导出确认
-    handleConfirm() {
-      this.showExport = false;
-      var arr = this.list.length > 0 ? this.list.map((item) => item.id) : [];   
-      let data ={
-        hdksrqStrat: this.queryParams.hdksrqStrat,
-        hdksrqEnd: this.queryParams.hdksrqEnd, 
-        createXm: this.queryParams.createXm,
-        createXh: this.queryParams.createXh,
-        hddz: this.queryParams.hddz,
-        hdzt: this.queryParams.hdzt,
-        zzdw: this.queryParams.zzdw,
-        pageNum: this.queryParams.pageNum,
-        createDwh: this.queryParams.createDwh,
-        createSfjzfdy: this.queryParams.createSfjzfdy,
-        pageSize: this.queryParams.pageSize,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
-        ids: arr,
-      }             
-      // var exportParams = this.queryParams;
-      // console.log(this.queryParams);
-      // this.$set(this.exportParams,"ids",arr)
-
-      excelFdyBthd(data)
-        .then((res) => this.downloadFn(res, "活动记录导出", "xlsx"))
-        .catch((err) => {});
+    subCancel() {
+      this.submitModal = false;
     },
     //批量删除
     rmRecord() {
@@ -390,7 +505,7 @@ export default {
       let data = {
         ids: ids
       }
-      deleteFdyBthd(data)
+      del(data)
         .then((res) => {
           this.$message({
             message: res.errmsg,
@@ -425,71 +540,50 @@ export default {
     },
     //新增
     handleNew(){
-      this.$router.push({
-        path: "/assistantWork/addClassEvent",
-      });
+      this.formAdd = {}; 
+      this.addModal = true;
     },
-    /** 下载模板操作 */
-    importTemplate() {
-      this.download(
-        "system/user/importTemplate",
-        {},
-        `user_template_${new Date().getTime()}.xlsx`
-      );
+    addCance() {
+      this.addModal = false;
+    },
+    addClick() {
+      if (!this.checkFormAdd()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        // var data = this.formAdd.addData[0];
+        var params = {
+          jtdz: this.formAdd.jtdz,
+          chqjsid: this.formAdd.chqjsid,
+          chqjeid: this.formAdd.chqjeid,
+          sqsj: this.formAdd.sqsj,
+          sqbz: this.formAdd.sqbz,
+
+          xh: this.$store.getters.userId,
+        };
+        edit(params).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("新增成功");
+            this.getList();
+          } else {
+            this.$message.error("新增失败");
+          }
+        });
+        this.addModal = false;
+      }
     },
     // 搜索查询按钮
     searchClick() {
-      // let name, gonghao,place,topic,zzdwh;
-      // if (this.select == "1") {
-      //   name = this.searchVal;
-      //   gonghao = "";
-      //   place = "";
-      //   topic = "";
-      //   zzdwh = "";
-      // } else if (this.select == "2") {
-      //   name = "";
-      //   gonghao = this.searchVal
-      //   place = "";
-      //   topic = "";
-      //   zzdwh = "";
-      // } else if (this.select == "3") {
-      //   name = "";
-      //   gonghao = "";
-      //   place = this.searchVal
-      //   topic = "";
-      //   zzdwh = "";
-      // } else if (this.select == "4") {
-      //   name = "";
-      //   gonghao = "";
-      //   place = "";
-      //   topic = this.searchVal
-      //   zzdwh = "";
-      // } else {
-      //   name = "";
-      //   gonghao = "";
-      //   place = "";
-      //   topic = "";
-      //   zzdwh = this.searchVal
-      // }
-      
-
       this.queryParams.pageNum = 1;
-      this.queryParams.createDwh = this.workPlace;//工作单位
-      this.queryParams.createSfjzfdy = this.category.choose;//类别
       //日期
       let rqs,rqe = "";
       if (this.datePicker && this.datePicker.length > 0) {
         rqs = this.datePicker[0];
         rqe = this.datePicker[1];
       }
-      this.queryParams.hdksrqStrat = rqs;
-      this.queryParams.hdksrqEnd = rqe;
-
-      // this.queryParams.createXm = name;
-      // this.queryParams.createXh = gonghao;
-      // this.queryParams.hddz = place;
-      // this.queryParams.hdzt = topic;
-      // this.queryParams.zzdw = zzdwh;
+      this.queryParams.sqsjStart = rqs;
+      this.queryParams.sqsjEnd = rqe;
+      this.queryParams.statusList = this.status;
       this.getList(this.queryParams);
     },
     //排序
@@ -503,6 +597,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.lct {
+  background: url("~@/assets/dangan/lct.png");
+}
 .basicInfo {
   .mt15 {
     margin-top: 15px;

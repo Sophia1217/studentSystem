@@ -2,7 +2,7 @@
   <div class="wrap">
     <div class="detail_left">
       <el-tabs v-model="activeName" class="tab_left" tab-position="left">
-        <el-tab-pane label="学生干部经历" name="0"> </el-tab-pane>
+        <el-tab-pane label="干部经历" name="0"> </el-tab-pane>
         <el-tab-pane label="科研论文" name="1"> </el-tab-pane>
         <el-tab-pane label="科研专利" name="11"> </el-tab-pane>
         <el-tab-pane label="科研著作" name="12"> </el-tab-pane>
@@ -16,7 +16,7 @@
         <el-tab-pane label="社团经历" name="7"></el-tab-pane>
         <el-tab-pane label="双创工作" name="8"></el-tab-pane>
         <el-tab-pane label="学习成绩" name="9"></el-tab-pane>
-        <el-tab-pane label="校内外培训经历" name="10"></el-tab-pane>
+        <el-tab-pane label="培训经历" name="10"></el-tab-pane>
       </el-tabs>
     </div>
     <div class="detail_right" v-if="activeName == '0'">
@@ -115,8 +115,8 @@ export default {
   flex-direction: row;
 
   .detail_left {
-    flex: 0 0 198px;
-    margin-right: 24px;
+    flex: 0 0 120px;
+    margin-right: 18px;
     background: #fff;
     // height: calc(100vh - 170px);
     padding: 20px;

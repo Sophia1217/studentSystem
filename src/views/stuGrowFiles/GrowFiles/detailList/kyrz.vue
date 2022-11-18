@@ -23,7 +23,7 @@
             <el-col :span="24" class="rowStyle">
               <div class="wrap">
                 <div class="title">软著名称</div>
-                <div class="content">{{ ele.lwzwmc }}</div>
+                <div class="content">{{ ele.rjzzmc }}</div>
               </div>
             </el-col>
           </el-row>
@@ -32,13 +32,13 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">软件著作权类型</div>
-                <div class="content">{{ ele.fbkw }}</div>
+                <div class="content">{{ ele.rjzzqlx }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">音像制品类型</div>
-                <div class="content">{{ ele.cbwlx }}</div>
+                <div class="content">{{ ele.yxzplx }}</div>
               </div>
             </el-col>
           </el-row>
@@ -46,13 +46,13 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">证书号</div>
-                <div class="content">{{ ele.sm }}</div>
+                <div class="content">{{ ele.zsh }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">登记号</div>
-                <div class="content">{{ ele.sllb }}</div>
+                <div class="content">{{ ele.djh }}</div>
               </div>
             </el-col>
           </el-row>
@@ -60,7 +60,7 @@
             <el-col :span="24" class="rowStyle">
               <div class="wrap">
                 <div class="title">著作权人</div>
-                <div class="content">{{ ele.flh }}</div>
+                <div class="content">{{ ele.zzqr }}</div>
               </div>
             </el-col>
           </el-row>
@@ -69,7 +69,7 @@
             <el-col :span="24" class="rowStyle">
               <div class="wrap">
                 <div class="title">学校署名顺序</div>
-                <div class="content">{{ ele.cgssdw }}</div>
+                <div class="content">{{ ele.xxsmsx }}</div>
               </div>
             </el-col>
           </el-row>
@@ -193,13 +193,13 @@
             <div class="formRight">
               <el-row>
                 <el-col :span="24" class="rowStyle">
-                  <el-form-item prop="lwzwmc">
+                  <el-form-item prop="rjzzmc">
                     <div class="wrap">
                       <div class="title">软著名称</div>
 
                       <div class="content">
                         <el-input
-                          v-model="formAddLw.lwzwmc"
+                          v-model="formAddLw.rjzzmc"
                           style="width: 300%"
                         ></el-input>
                       </div>
@@ -210,21 +210,21 @@
 
               <el-row>
                 <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="fbkw">
+                  <el-form-item prop="rjzzqlx">
                     <div class="wrap">
                       <div class="title">软件著作权类型</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.fbkw"></el-input>
+                        <el-input v-model="formAddLw.rjzzqlx"></el-input>
                       </div>
                     </div>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="cbwlx">
+                  <el-form-item prop="yxzplx">
                     <div class="wrap">
                       <div class="title">音像制品类型</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.cbwlx"></el-input>
+                        <el-input v-model="formAddLw.yxzplx"></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -232,21 +232,21 @@
               </el-row>
               <el-row>
                 <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="sm">
+                  <el-form-item prop="zsh">
                     <div class="wrap">
                       <div class="title">证书号</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.sm"></el-input>
+                        <el-input v-model="formAddLw.zsh"></el-input>
                       </div>
                     </div>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="sllb">
+                  <el-form-item prop="djh">
                     <div class="wrap">
                       <div class="title">登记号</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.sllb"></el-input>
+                        <el-input v-model="formAddLw.djh"></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -254,11 +254,14 @@
               </el-row>
               <el-row>
                 <el-col :span="24" class="rowStyle">
-                  <el-form-item prop="flh">
+                  <el-form-item prop="zzqr">
                     <div class="wrap">
                       <div class="title">著作权人</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.flh"></el-input>
+                        <el-input
+                          v-model="formAddLw.zzqr"
+                          style="width: 300%"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -266,11 +269,14 @@
               </el-row>
               <el-row>
                 <el-col :span="24" class="rowStyle">
-                  <el-form-item prop="jq">
+                  <el-form-item prop="xxsmsx">
                     <div class="wrap">
                       <div class="title">学校署名顺序</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.jq"></el-input>
+                        <el-input
+                          v-model="formAddLw.xxsmsx"
+                          style="width: 300%"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -320,18 +326,78 @@
         <el-form ref="formEditLw" :model="formEditLw" :rules="rules">
           <div class="backDetail">
             <div class="formLeft">
-              <div class="title">论文期刊</div>
+              <div class="title">软件著作</div>
             </div>
             <div class="formRight">
               <el-row>
                 <el-col :span="24" class="rowStyle">
-                  <el-form-item prop="lwzwmc">
+                  <el-form-item prop="rjzzmc">
                     <div class="wrap">
-                      <div class="title">论文名称</div>
+                      <div class="title">软著名称</div>
 
                       <div class="content">
                         <el-input
-                          v-model="formEditLw.lwzwmc"
+                          v-model="formEditLw.rjzzmc"
+                          style="width: 300%"
+                        ></el-input>
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="rjzzqlx">
+                    <div class="wrap">
+                      <div class="title">软件著作权类型</div>
+                      <div class="content">
+                        <el-input v-model="formEditLw.rjzzqlx"></el-input>
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="yxzplx">
+                    <div class="wrap">
+                      <div class="title">音像制品类型</div>
+                      <div class="content">
+                        <el-input v-model="formEditLw.yxzplx"></el-input>
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="zsh">
+                    <div class="wrap">
+                      <div class="title">证书号</div>
+                      <div class="content">
+                        <el-input v-model="formEditLw.zsh"></el-input>
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="djh">
+                    <div class="wrap">
+                      <div class="title">登记号</div>
+                      <div class="content">
+                        <el-input v-model="formEditLw.djh"></el-input>
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="24" class="rowStyle">
+                  <el-form-item prop="zzqr">
+                    <div class="wrap">
+                      <div class="title">著作权人</div>
+                      <div class="content">
+                        <el-input
+                          v-model="formEditLw.zzqr"
                           style="width: 300%"
                         ></el-input>
                       </div>
@@ -341,12 +407,12 @@
               </el-row>
               <el-row>
                 <el-col :span="24" class="rowStyle">
-                  <el-form-item prop="lwywmc">
+                  <el-form-item prop="xxsmsx">
                     <div class="wrap">
-                      <div class="title">英文名</div>
+                      <div class="title">学校署名顺序</div>
                       <div class="content">
                         <el-input
-                          v-model="formEditLw.lwywmc"
+                          v-model="formEditLw.xxsmsx"
                           style="width: 300%"
                         ></el-input>
                       </div>
@@ -354,121 +420,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="fbkw">
-                    <div class="wrap">
-                      <div class="title">发表刊物</div>
-                      <div class="content">
-                        <el-input v-model="formEditLw.fbkw"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="cbwlx">
-                    <div class="wrap">
-                      <div class="title">出版物类型</div>
-                      <div class="content">
-                        <el-input v-model="formEditLw.cbwlx"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="sm">
-                    <div class="wrap">
-                      <div class="title">署名</div>
-                      <div class="content">
-                        <el-input v-model="formEditLw.sm"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="sllb">
-                    <div class="wrap">
-                      <div class="title">收录类别</div>
-                      <div class="content">
-                        <el-input v-model="formEditLw.sllb"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="flb">
-                    <div class="wrap">
-                      <div class="title">分类号</div>
-                      <div class="content">
-                        <el-input v-model="formEditLw.flh"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="bm">
-                    <div class="wrap">
-                      <div class="title">版面</div>
-                      <div class="content">
-                        <el-input v-model="formEditLw.bm"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="jq">
-                    <div class="wrap">
-                      <div class="title">卷期</div>
-                      <div class="content">
-                        <el-input v-model="formEditLw.jq"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="qzy">
-                    <div class="wrap">
-                      <div class="title">起止页</div>
-                      <div class="content">
-                        <el-input v-model="formEditLw.qzy"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="cgssdw">
-                    <div class="wrap">
-                      <div class="title">成果所属单位</div>
-                      <div class="content">
-                        <el-input v-model="formEditLw.cgssdw"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="fbrq">
-                    <div class="wrap">
-                      <div class="title">发表时间</div>
-                      <div class="content">
-                        <el-date-picker
-                          v-model="formEditLw.fbrq"
-                          format="yyyy-MM-dd"
-                          value-format="yyyy-MM-dd"
-                          placeholder="选择日期"
-                        />
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
+
               <el-row>
                 <el-col :span="24" class="rowStyle">
                   <div class="wrap">
@@ -540,7 +492,7 @@ import {
   cxLwqk,
   importCzdaLwqk,
   tjLwqk,
-} from "@/api/growFiles/kycg";
+} from "@/api/growFiles/kyrz";
 import { delwj } from "@/api/assistantWork/classEvent";
 import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
@@ -563,46 +515,32 @@ export default {
       ztStatus: [],
       url: "",
       rules: {
-        lwzwmc: [
-          { required: true, message: "论文名称不能为空", trigger: "blur" },
+        djh: [{ required: true, message: "登记号不能为空", trigger: "blur" }],
+        rjzzmc: [
+          { required: true, message: "软件著作名称不能为空", trigger: "blur" },
         ],
-        lwywmc: [
-          { required: true, message: "英文名不能为空", trigger: "blur" },
-        ],
-        sm: [{ required: true, message: "署名不能为空", trigger: "blur" }],
-        jq: [{ required: true, message: "卷期不能为空", trigger: "blur" }],
-        qzy: [{ required: true, message: "起止页不能为空", trigger: "blur" }],
-        bm: [
+        rjzzqlx: [
           {
             required: true,
-            message: "版面不能为空",
+            message: "软件著作权类型不能为空",
             trigger: "blur",
           },
         ],
-        cbwlx: [
-          { required: true, message: "出版物类型不能为空", trigger: "blur" },
+        xxsmsx: [
+          { required: true, message: "学校署名顺序不能为空", trigger: "blur" },
         ],
-        cbwlxdm: [
-          { required: true, message: "收录类别不能为空", trigger: "blur" },
+        yxzplx: [
+          { required: true, message: "音像制品类型不能为空", trigger: "blur" },
         ],
-        cgssdw: [
-          { required: true, message: "所属单位不能为空", trigger: "blur" },
-        ],
-        fbkw: [
-          { required: true, message: "发表刊物不能为空", trigger: "blur" },
-        ],
-        fbrq: [
-          { required: true, message: "发表日期不能为空", trigger: "blur" },
-        ],
-        sllb: [
-          { required: true, message: "收录类别不能为空", trigger: "blur" },
-        ],
-        flh: [
+        zsh: [
           {
             required: true,
-            message: "分类号不能为空",
+            message: "证书号不能为空",
             trigger: "blur",
           },
+        ],
+        zzqr: [
+          { required: true, message: "著作权人不能为空", trigger: "blur" },
         ],
       },
     };
@@ -717,19 +655,14 @@ export default {
       } else {
         var data = this.formEditLw;
         let formData = new FormData();
-        formData.append("bm", data.bm);
-        formData.append("cbwlx", data.cbwlx);
-        formData.append("cgssdw", data.cgssdw);
-        formData.append("fbkw", data.fbkw);
-        formData.append("fbrq", data.fbrq);
+        formData.append("xxsmsx", data.xxsmsx);
+        formData.append("yxzplx", data.yxzplx);
+        formData.append("zsh", data.zsh);
+        formData.append("zzqr", data.zzqr);
+        formData.append("djh", data.djh);
+        formData.append("rjzzmc", data.rjzzmc);
+        formData.append("rjzzqlx", data.rjzzqlx);
         formData.append("id", data.id);
-        formData.append("flh", data.flh);
-        formData.append("jq", data.jq);
-        formData.append("lwzwmc", data.lwzwmc);
-        formData.append("lwywmc", data.lwywmc);
-        formData.append("qzy", data.qzy);
-        formData.append("sllb", data.sllb);
-        formData.append("sm", data.sm);
         formData.append("xh", this.$store.getters.userId);
         if (this.fileListAdd.length > 0) {
           this.fileListAdd.map((file) => {
@@ -761,20 +694,16 @@ export default {
       } else {
         var data = this.formAddLw;
         let formData = new FormData();
-        formData.append("bm", data.bm);
-        formData.append("cbwlx", data.cbwlx);
-        formData.append("cgssdw", data.cgssdw);
-        formData.append("fbkw", data.fbkw);
-        formData.append("fbrq", data.fbrq);
-        //formData.append("id", data.id);
-        formData.append("flh", data.flh);
-        formData.append("jq", data.jq);
-        formData.append("lwzwmc", data.lwzwmc);
-        formData.append("lwywmc", data.lwywmc);
-        formData.append("qzy", data.qzy);
-        formData.append("sllb", data.sllb);
-        formData.append("sm", data.sm);
+        formData.append("xxsmsx", data.xxsmsx);
+        formData.append("yxzplx", data.yxzplx);
+        formData.append("zsh", data.zsh);
+        formData.append("zzqr", data.zzqr);
+        formData.append("djh", data.djh);
+        formData.append("rjzzmc", data.rjzzmc);
+        formData.append("rjzzqlx", data.rjzzqlx);
         formData.append("xh", this.$store.getters.userId);
+        //formData.append("id", data.id);
+
         if (this.fileList.length > 0) {
           this.fileList.map((file) => {
             formData.append("files", file.raw);

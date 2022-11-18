@@ -784,6 +784,50 @@
                 </div>
               </el-col>
             </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">原师范生类别</div>
+                  <div
+                    class="content"
+                    :class="
+                      infoRes.xjydFormatList[16].isRed == 1 ? 'redcontent' : ''
+                    "
+                  >
+                    {{ infoRes.xjydFormatList[16].ydqsx }}
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">现师范生类别</div>
+                  <div
+                    v-if="isEdit == 1"
+                    class="content"
+                    :class="
+                      infoRes.xjydFormatList[16].isRed == 1 ? 'redcontent' : ''
+                    "
+                  >
+                    {{ infoRes.xjydFormatList[16].ydhsx }}
+                  </div>
+                  <div v-else class="content">
+                    <el-select
+                      v-model="infoRes.xsXjyd.ydhsfslx"
+                      size="small"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        v-for="item in sfslbOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      >
+                      </el-option>
+                    </el-select>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
           </div>
         </div>
 
@@ -856,7 +900,7 @@ export default {
       xzOps: [],
       xjztOps: [],
       dwhOps: [],
-
+      sfslbOps: [],
       njOps: [],
       zxztOps: [],
       xqOps: [],
@@ -875,7 +919,8 @@ export default {
     this.getCode("dmxjztm");
     this.getCode("dmxqm");
     this.getCode("dmzxztm");
-    this.getOption();
+    this.getCode("dmzxztm");
+    this.getCode("dmsfslxm");
     this.getshowStuStatusChangeInfoRes();
   },
 
@@ -902,6 +947,9 @@ export default {
               break;
             case "dmzxztm":
               this.zxztOps = res.data;
+              break;
+            case "dmsfslxm":
+              this.sfslbOps = res.data;
               break;
           }
         })
@@ -982,6 +1030,7 @@ export default {
         ydqxxx: this.infoRes.xsXjyd.ydqxxx,
         ydsxxnm: this.infoRes.xsXjyd.ydsxxnm,
         ydsxxqm: this.infoRes.xsXjyd.ydsxxqm,
+        ydhsfslx: this.infoRes.xsXjyd.ydhsfslx,
         status: this.isConfirm == 1 ? "0" : "1",
       };
       updateStuStatusChangeInfo(data)

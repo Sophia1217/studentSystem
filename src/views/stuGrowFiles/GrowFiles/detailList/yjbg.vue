@@ -23,7 +23,7 @@
             <el-col :span="24" class="rowStyle">
               <div class="wrap">
                 <div class="title">报告名称</div>
-                <div class="content">{{ ele.lwzwmc }}</div>
+                <div class="content">{{ ele.bgmc }}</div>
               </div>
             </el-col>
           </el-row>
@@ -32,13 +32,13 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">编号</div>
-                <div class="content">{{ ele.fbkw }}</div>
+                <div class="content">{{ ele.bh }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">字数</div>
-                <div class="content">{{ ele.cbwlx }}</div>
+                <div class="content">{{ ele.zs }}</div>
               </div>
             </el-col>
           </el-row>
@@ -46,13 +46,13 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">提交单位</div>
-                <div class="content">{{ ele.sm }}</div>
+                <div class="content">{{ ele.tjdw }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">单位级别</div>
-                <div class="content">{{ ele.sllb }}</div>
+                <div class="content">{{ ele.dwjb }}</div>
               </div>
             </el-col>
           </el-row>
@@ -60,13 +60,13 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">是否采纳</div>
-                <div class="content">{{ ele.flh }}</div>
+                <div class="content">{{ ele.sfcn }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">采纳时间</div>
-                <div class="content">{{ ele.bm }}</div>
+                <div class="content">{{ ele.cnrq }}</div>
               </div>
             </el-col>
           </el-row>
@@ -74,7 +74,7 @@
             <el-col :span="24" class="rowStyle">
               <div class="wrap">
                 <div class="title">作者</div>
-                <div class="content">{{ ele.jq }}</div>
+                <div class="content">{{ ele.zzxm }}</div>
               </div>
             </el-col>
           </el-row>
@@ -206,13 +206,13 @@
             <div class="formRight">
               <el-row>
                 <el-col :span="24" class="rowStyle">
-                  <el-form-item prop="lwzwmc">
+                  <el-form-item prop="bgmc">
                     <div class="wrap">
                       <div class="title">报告名称</div>
 
                       <div class="content">
                         <el-input
-                          v-model="formAddLw.lwzwmc"
+                          v-model="formAddLw.bgmc"
                           style="width: 300%"
                         ></el-input>
                       </div>
@@ -223,21 +223,21 @@
 
               <el-row>
                 <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="fbkw">
+                  <el-form-item prop="bh">
                     <div class="wrap">
                       <div class="title">编号</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.fbkw"></el-input>
+                        <el-input v-model="formAddLw.bh"></el-input>
                       </div>
                     </div>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="cbwlx">
+                  <el-form-item prop="zs">
                     <div class="wrap">
                       <div class="title">字数</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.cbwlx"></el-input>
+                        <el-input v-model="formAddLw.zs"></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -245,21 +245,21 @@
               </el-row>
               <el-row>
                 <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="sm">
+                  <el-form-item prop="tjdw">
                     <div class="wrap">
                       <div class="title">提交单位</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.sm"></el-input>
+                        <el-input v-model="formAddLw.tjdw"></el-input>
                       </div>
                     </div>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="sllb">
+                  <el-form-item prop="dwjb">
                     <div class="wrap">
                       <div class="title">单位级别</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.sllb"></el-input>
+                        <el-input v-model="formAddLw.dwjb"></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -267,22 +267,33 @@
               </el-row>
               <el-row>
                 <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="flh">
+                  <el-form-item prop="sfcn">
                     <div class="wrap">
                       <div class="title">是否采纳</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.flh"></el-input>
+                        <!-- <el-input v-model="formAddLw.sfcn"></el-input> -->
+                        <el-select
+                          v-model="formAddLw.sfcn"
+                          placeholder="请选择"
+                        >
+                          <el-option
+                            v-for="(item, index) in sfcnOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          ></el-option>
+                        </el-select>
                       </div>
                     </div>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="bm">
+                  <el-form-item prop="cnrq">
                     <div class="wrap">
                       <div class="title">采纳时间</div>
                       <div class="content">
                         <el-date-picker
-                          v-model="formAddLw.fbrq"
+                          v-model="formAddLw.cnrq"
                           format="yyyy-MM-dd"
                           value-format="yyyy-MM-dd"
                           placeholder="选择日期"
@@ -294,11 +305,14 @@
               </el-row>
               <el-row>
                 <el-col :span="24" class="rowStyle">
-                  <el-form-item prop="jq">
+                  <el-form-item prop="zzxm">
                     <div class="wrap">
                       <div class="title">作者</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.jq"></el-input>
+                        <el-input
+                          v-model="formAddLw.zzxm"
+                          style="width: 300%"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -310,7 +324,10 @@
                     <div class="wrap">
                       <div class="title">成果所属单位</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.cgssdw"></el-input>
+                        <el-input
+                          v-model="formAddLw.cgssdw"
+                          style="width: 300%"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -359,18 +376,116 @@
         <el-form ref="formEditLw" :model="formEditLw" :rules="rules">
           <div class="backDetail">
             <div class="formLeft">
-              <div class="title">论文期刊</div>
+              <div class="title">研究报告</div>
             </div>
             <div class="formRight">
               <el-row>
                 <el-col :span="24" class="rowStyle">
-                  <el-form-item prop="lwzwmc">
+                  <el-form-item prop="bgmc">
                     <div class="wrap">
-                      <div class="title">论文名称</div>
+                      <div class="title">报告名称</div>
 
                       <div class="content">
                         <el-input
-                          v-model="formEditLw.lwzwmc"
+                          v-model="formEditLw.bgmc"
+                          style="width: 300%"
+                        ></el-input>
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="bh">
+                    <div class="wrap">
+                      <div class="title">编号</div>
+                      <div class="content">
+                        <el-input v-model="formEditLw.bh"></el-input>
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="zs">
+                    <div class="wrap">
+                      <div class="title">字数</div>
+                      <div class="content">
+                        <el-input v-model="formEditLw.zs"></el-input>
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="tjdw">
+                    <div class="wrap">
+                      <div class="title">提交单位</div>
+                      <div class="content">
+                        <el-input v-model="formEditLw.tjdw"></el-input>
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="dwjb">
+                    <div class="wrap">
+                      <div class="title">单位级别</div>
+                      <div class="content">
+                        <el-input v-model="formEditLw.dwjb"></el-input>
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="sfcn">
+                    <div class="wrap">
+                      <div class="title">是否采纳</div>
+                      <div class="content">
+                        <!-- <el-input v-model="formEditLw.sfcn"></el-input> -->
+                        <el-select
+                          v-model="formEditLw.sfcn"
+                          placeholder="请选择"
+                        >
+                          <el-option
+                            v-for="(item, index) in sfcnOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          ></el-option>
+                        </el-select>
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="cnrq">
+                    <div class="wrap">
+                      <div class="title">采纳时间</div>
+                      <div class="content">
+                        <el-date-picker
+                          v-model="formEditLw.cnrq"
+                          format="yyyy-MM-dd"
+                          value-format="yyyy-MM-dd"
+                          placeholder="选择日期"
+                        />
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="24" class="rowStyle">
+                  <el-form-item prop="zzxm">
+                    <div class="wrap">
+                      <div class="title">作者</div>
+                      <div class="content">
+                        <el-input
+                          v-model="formEditLw.zzxm"
                           style="width: 300%"
                         ></el-input>
                       </div>
@@ -380,129 +495,14 @@
               </el-row>
               <el-row>
                 <el-col :span="24" class="rowStyle">
-                  <el-form-item prop="lwywmc">
-                    <div class="wrap">
-                      <div class="title">英文名</div>
-                      <div class="content">
-                        <el-input
-                          v-model="formEditLw.lwywmc"
-                          style="width: 300%"
-                        ></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="fbkw">
-                    <div class="wrap">
-                      <div class="title">发表刊物</div>
-                      <div class="content">
-                        <el-input v-model="formEditLw.fbkw"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="cbwlx">
-                    <div class="wrap">
-                      <div class="title">出版物类型</div>
-                      <div class="content">
-                        <el-input v-model="formEditLw.cbwlx"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="sm">
-                    <div class="wrap">
-                      <div class="title">署名</div>
-                      <div class="content">
-                        <el-input v-model="formEditLw.sm"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="sllb">
-                    <div class="wrap">
-                      <div class="title">收录类别</div>
-                      <div class="content">
-                        <el-input v-model="formEditLw.sllb"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="flb">
-                    <div class="wrap">
-                      <div class="title">分类号</div>
-                      <div class="content">
-                        <el-input v-model="formEditLw.flh"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="bm">
-                    <div class="wrap">
-                      <div class="title">版面</div>
-                      <div class="content">
-                        <el-input v-model="formEditLw.bm"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="jq">
-                    <div class="wrap">
-                      <div class="title">卷期</div>
-                      <div class="content">
-                        <el-input v-model="formEditLw.jq"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="qzy">
-                    <div class="wrap">
-                      <div class="title">起止页</div>
-                      <div class="content">
-                        <el-input v-model="formEditLw.qzy"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
                   <el-form-item prop="cgssdw">
                     <div class="wrap">
                       <div class="title">成果所属单位</div>
                       <div class="content">
-                        <el-input v-model="formEditLw.cgssdw"></el-input>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="fbrq">
-                    <div class="wrap">
-                      <div class="title">发表时间</div>
-                      <div class="content">
-                        <el-date-picker
-                          v-model="formEditLw.fbrq"
-                          format="yyyy-MM-dd"
-                          value-format="yyyy-MM-dd"
-                          placeholder="选择日期"
-                        />
+                        <el-input
+                          v-model="formEditLw.cgssdw"
+                          style="width: 300%"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -579,7 +579,7 @@ import {
   cxLwqk,
   importCzdaLwqk,
   tjLwqk,
-} from "@/api/growFiles/kycg";
+} from "@/api/growFiles/yjbg";
 import { delwj } from "@/api/assistantWork/classEvent";
 import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
@@ -601,47 +601,35 @@ export default {
       isEdit: 1,
       ztStatus: [],
       url: "",
+      sfcnOps: [
+        { dm: "是", mc: "是" },
+        { dm: "否", mc: "否" },
+      ],
       rules: {
-        lwzwmc: [
-          { required: true, message: "论文名称不能为空", trigger: "blur" },
+        bgmc: [
+          { required: true, message: "报告名称不能为空", trigger: "blur" },
         ],
-        lwywmc: [
-          { required: true, message: "英文名不能为空", trigger: "blur" },
+        bh: [{ required: true, message: "编号不能为空", trigger: "blur" }],
+        cnrq: [
+          { required: true, message: "采纳时间不能为空", trigger: "blur" },
         ],
-        sm: [{ required: true, message: "署名不能为空", trigger: "blur" }],
-        jq: [{ required: true, message: "卷期不能为空", trigger: "blur" }],
-        qzy: [{ required: true, message: "起止页不能为空", trigger: "blur" }],
-        bm: [
+        dwjb: [
+          { required: true, message: "单位级别不能为空", trigger: "blur" },
+        ],
+        sfcn: [
+          { required: true, message: "是否采纳不能为空", trigger: "blur" },
+        ],
+        tjdw: [
           {
             required: true,
-            message: "版面不能为空",
+            message: "提交单位不能为空",
             trigger: "blur",
           },
         ],
-        cbwlx: [
-          { required: true, message: "出版物类型不能为空", trigger: "blur" },
-        ],
-        cbwlxdm: [
-          { required: true, message: "收录类别不能为空", trigger: "blur" },
-        ],
+        zzxm: [{ required: true, message: "作者不能为空", trigger: "blur" }],
+        zs: [{ required: true, message: "字数不能为空", trigger: "blur" }],
         cgssdw: [
           { required: true, message: "所属单位不能为空", trigger: "blur" },
-        ],
-        fbkw: [
-          { required: true, message: "发表刊物不能为空", trigger: "blur" },
-        ],
-        fbrq: [
-          { required: true, message: "发表日期不能为空", trigger: "blur" },
-        ],
-        sllb: [
-          { required: true, message: "收录类别不能为空", trigger: "blur" },
-        ],
-        flh: [
-          {
-            required: true,
-            message: "分类号不能为空",
-            trigger: "blur",
-          },
         ],
       },
     };
@@ -756,19 +744,16 @@ export default {
       } else {
         var data = this.formEditLw;
         let formData = new FormData();
-        formData.append("bm", data.bm);
-        formData.append("cbwlx", data.cbwlx);
+        formData.append("bgmc", data.bgmc);
+        formData.append("bh", data.bh);
         formData.append("cgssdw", data.cgssdw);
-        formData.append("fbkw", data.fbkw);
-        formData.append("fbrq", data.fbrq);
+        formData.append("cnrq", data.cnrq);
+        formData.append("dwjb", data.dwjb);
         formData.append("id", data.id);
-        formData.append("flh", data.flh);
-        formData.append("jq", data.jq);
-        formData.append("lwzwmc", data.lwzwmc);
-        formData.append("lwywmc", data.lwywmc);
-        formData.append("qzy", data.qzy);
-        formData.append("sllb", data.sllb);
-        formData.append("sm", data.sm);
+        formData.append("sfcn", data.sfcn);
+        formData.append("tjdw", data.tjdw);
+        formData.append("zs", data.zs);
+        formData.append("zzxm", data.zzxm);
         formData.append("xh", this.$store.getters.userId);
         if (this.fileListAdd.length > 0) {
           this.fileListAdd.map((file) => {
@@ -800,19 +785,16 @@ export default {
       } else {
         var data = this.formAddLw;
         let formData = new FormData();
-        formData.append("bm", data.bm);
-        formData.append("cbwlx", data.cbwlx);
+        formData.append("bgmc", data.bgmc);
+        formData.append("bh", data.bh);
         formData.append("cgssdw", data.cgssdw);
-        formData.append("fbkw", data.fbkw);
-        formData.append("fbrq", data.fbrq);
+        formData.append("cnrq", data.cnrq);
+        formData.append("dwjb", data.dwjb);
         //formData.append("id", data.id);
-        formData.append("flh", data.flh);
-        formData.append("jq", data.jq);
-        formData.append("lwzwmc", data.lwzwmc);
-        formData.append("lwywmc", data.lwywmc);
-        formData.append("qzy", data.qzy);
-        formData.append("sllb", data.sllb);
-        formData.append("sm", data.sm);
+        formData.append("sfcn", data.sfcn);
+        formData.append("tjdw", data.tjdw);
+        formData.append("zs", data.zs);
+        formData.append("zzxm", data.zzxm);
         formData.append("xh", this.$store.getters.userId);
         if (this.fileList.length > 0) {
           this.fileList.map((file) => {

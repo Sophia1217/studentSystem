@@ -16,7 +16,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="开始时间" prop="deployTime">
+      <!-- <el-form-item label="开始时间" prop="deployTime">
         <el-date-picker
           clearable
           size="small"
@@ -26,7 +26,7 @@
           placeholder="选择时间"
         >
         </el-date-picker>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item>
         <el-button
           type="primary"
@@ -62,7 +62,7 @@
           >新增</el-button
         >
       </el-col>
-      <el-col :span="1.5">
+      <!-- <el-col :span="1.5">
         <el-button
           type="danger"
           plain
@@ -72,8 +72,8 @@
           @click="handleDelete"
           >删除</el-button
         >
-      </el-col>
-      <el-col :span="1.5">
+      </el-col> -->
+      <!-- <el-col :span="1.5">
         <el-button
           type="warning"
           plain
@@ -83,7 +83,7 @@
           v-hasPermi="['system:deployment:export']"
           >导出</el-button
         >
-      </el-col>
+      </el-col> -->
       <right-toolbar
         :showSearch.sync="showSearch"
         @queryTable="getList"
@@ -140,7 +140,7 @@
         prop="deploymentTime"
         width="180"
       />
-      <el-table-column
+      <!-- <el-table-column
         label="操作"
         align="center"
         class-name="small-padding fixed-width"
@@ -188,7 +188,7 @@
             </el-dropdown-menu>
           </el-dropdown>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
 
     <pagination

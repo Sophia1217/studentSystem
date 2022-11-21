@@ -43,6 +43,24 @@ export function updateState(params) {
   })
 }
 
+
+
+export function queryControl(data) {
+  return request({
+    url: '/flowBusiness/queryFlowBusinessList',
+    method: 'post',
+    data: data
+  })
+}
+
+export function edit(data) {
+  return request({
+    url: '/flowBusiness/updateFlowBusiness',
+    method: 'post',
+    data: data
+  })
+}
+
 // 指定流程办理人员列表
 export function userList(query) {
   return request({

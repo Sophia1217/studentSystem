@@ -91,14 +91,13 @@ export default {
     },
     /** 保存xml */
     save(data) {
-      console.log("data", data);
       const params = {
         name: data.process.name,
         category: data.process.category,
         xml: data.xml,
       };
       saveXml(params).then((res) => {
-        this.$message(res.msg);
+        this.$message(res.errmsg);
         // 关闭当前标签页并返回上个页面
         this.$store.dispatch("tagsView/delView", this.$route);
         this.$router.go(-1);

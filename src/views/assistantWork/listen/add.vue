@@ -543,6 +543,7 @@ export default {
 
   methods: {
     getRow(index, row) {
+      console.log("测试哈");
       this.multipleSelection = row;
     },
     wh(val, index) {

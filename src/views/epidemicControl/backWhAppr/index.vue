@@ -13,7 +13,7 @@
             @change="changeSelect"
             class="elSelect"
             slot="prepend"
-            placeholder="查询条件"
+            placeholder="请选择查询条件"
           >
             <el-option label="申请人" value="xm"></el-option>
             <el-option label="学号" value="xh"></el-option>
@@ -474,7 +474,7 @@ export default {
       flex-direction: row;
       align-items: center;
       .elSelect {
-        width: 110px;
+        width: 150px;
       }
       .inputSelect {
         width: 50%;

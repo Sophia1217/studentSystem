@@ -8,7 +8,7 @@
             @change="changeSelect"
             class="elSelect"
             slot="prepend"
-            placeholder="查询条件"
+            placeholder="请选择查询条件"
           >
             <el-option label="学号" value="1"></el-option>
             <el-option label="姓名" value="2"></el-option>
@@ -471,7 +471,7 @@ export default {
       }
 
       .elSelect {
-        width: 110px;
+        width: 150px;
       }
 
       .inputSelect {

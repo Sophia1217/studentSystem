@@ -13,7 +13,7 @@
             v-model="select"
             class="elSelect"
             @change="selectChange"
-            placeholder="查询条件"
+            placeholder="请选择查询条件"
           >
             <el-option label="审核人" value="1" />
           </el-select>
@@ -744,7 +744,7 @@ export default {
       align-items: center;
       background: #fff;
       .elSelect {
-        width: 110px;
+        width: 150px;
       }
       .inputSelect {
         width: 50%;

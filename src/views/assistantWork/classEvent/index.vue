@@ -13,7 +13,7 @@
             v-model="select"
             class="elSelect"
             @change="selectChange"
-            placeholder="查询条件"
+            placeholder="请选择查询条件"
           >
             <el-option label="记录人" value="1" />
             <el-option label="工号" value="2" />
@@ -61,17 +61,17 @@
         <el-row :gutter="20" class="mt15">
           <el-col :span="20">
             <span>活动日期：</span>
-              <el-date-picker 
-                type="daterange" 
-                placeholder="选择日期" 
-                v-model="datePicker" 
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyy-MM-dd"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                style="width= 60px;"
-              ></el-date-picker>
+            <el-date-picker
+              type="daterange"
+              placeholder="选择日期"
+              v-model="datePicker"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              style="width= 60px;"
+            ></el-date-picker>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
@@ -124,8 +124,16 @@
           <el-table-column prop="zzdw" label="组织单位" sortable="custom" />
           <el-table-column prop="createXm" label="记录人" sortable="custom" />
           <el-table-column prop="createXh" label="工号" sortable="custom" />
-          <el-table-column prop="createDwhMc" label="工作单位" sortable="custom" />
-          <el-table-column prop="createSfjzfdyMc" label="类型" sortable="custom" />
+          <el-table-column
+            prop="createDwhMc"
+            label="工作单位"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="createSfjzfdyMc"
+            label="类型"
+            sortable="custom"
+          />
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
               <el-button
@@ -163,7 +171,11 @@
     <el-dialog :title="title" :visible.sync="showDelete" width="30%">
       <template v-for="item in multipleSelection">
         <div :key="item.createXh">
-          <span>确认删除【{{ item.createXm }}】记录的【{{ item.hdzt }}】活动记录？</span>
+          <span
+            >确认删除【{{ item.createXm }}】记录的【{{
+              item.hdzt
+            }}】活动记录？</span
+          >
         </div>
       </template>
       <span slot="footer" class="dialog-footer">
@@ -176,22 +188,19 @@
   </div>
 </template>
 <script>
-import {
-  addUser,
-  updateUser,
-} from "@/api/system/user";
+import { addUser, updateUser } from "@/api/system/user";
 import CheckboxCom from "../../components/checkboxCom";
 import {
   removeMoreAssistant,
   outAssistant,
   getGzdw,
 } from "@/api/politicalWork/assistantappoint";
-import { 
+import {
   queryFdyBthdList,
   insertFdyBthd,
   excelFdyBthd,
   deleteFdyBthd,
- } from "@/api/assistantWork/classEvent";
+} from "@/api/assistantWork/classEvent";
 export default {
   name: "BasicInfo",
   components: { CheckboxCom },
@@ -234,15 +243,15 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        createDwh: [],//工作单位
-        createSfjzfdy: [],//类别
-        createXh:"",
-        createXm:"",
-        hddz:"",
-        hdksrqEnd:"",
-        hdksrqStrat:"",
-        hdzt:"",
-        zzdw:"",//组织单位
+        createDwh: [], //工作单位
+        createSfjzfdy: [], //类别
+        createXh: "",
+        createXm: "",
+        hddz: "",
+        hdksrqEnd: "",
+        hdksrqStrat: "",
+        hdzt: "",
+        zzdw: "", //组织单位
         orderZd: "",
         orderPx: "",
       },
@@ -291,9 +300,9 @@ export default {
       this.queryParams.zzdw = this.select == 5 ? this.searchVal : "";
       queryFdyBthdList(this.queryParams)
         .then((response) => {
-            this.basicInfoList = response.data; // 根据状态码接收数据
-            this.total = response.totalCount; //总条数
-            // this.exportParams = this.queryParams;
+          this.basicInfoList = response.data; // 根据状态码接收数据
+          this.total = response.totalCount; //总条数
+          // this.exportParams = this.queryParams;
         })
         .catch((err) => {
           // this.$message.error(err.errmsg);
@@ -308,7 +317,7 @@ export default {
     cancel() {
       this.open = false;
     },
-   
+
     // 点击更多
     handleMore() {
       this.isMore = !this.isMore;
@@ -333,7 +342,7 @@ export default {
       this.category.isIndeterminate =
         checkedCount > 0 && checkedCount < this.category.checkBox.length;
       this.queryParams.createDwh = this.workPlace;
- 
+
       this.queryParams.createSfjzfdy = this.category.choose;
     },
 
@@ -355,10 +364,10 @@ export default {
     // 导出确认
     handleConfirm() {
       this.showExport = false;
-      var arr = this.list.length > 0 ? this.list.map((item) => item.id) : [];   
-      let data ={
+      var arr = this.list.length > 0 ? this.list.map((item) => item.id) : [];
+      let data = {
         hdksrqStrat: this.queryParams.hdksrqStrat,
-        hdksrqEnd: this.queryParams.hdksrqEnd, 
+        hdksrqEnd: this.queryParams.hdksrqEnd,
         createXm: this.queryParams.createXm,
         createXh: this.queryParams.createXh,
         hddz: this.queryParams.hddz,
@@ -371,7 +380,7 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
         ids: arr,
-      }             
+      };
       // var exportParams = this.queryParams;
       // console.log(this.queryParams);
       // this.$set(this.exportParams,"ids",arr)
@@ -388,14 +397,14 @@ export default {
         ids.push(item_row.id);
       }
       let data = {
-        ids: ids
-      }
+        ids: ids,
+      };
       deleteFdyBthd(data)
         .then((res) => {
           this.$message({
             message: res.errmsg,
             type: "success",
-          })
+          });
           this.getList();
         })
         .catch((err) => {
@@ -424,7 +433,7 @@ export default {
       }
     },
     //新增
-    handleNew(){
+    handleNew() {
       this.$router.push({
         path: "/assistantWork/addClassEvent",
       });
@@ -471,13 +480,13 @@ export default {
       //   topic = "";
       //   zzdwh = this.searchVal
       // }
-      
 
       this.queryParams.pageNum = 1;
-      this.queryParams.createDwh = this.workPlace;//工作单位
-      this.queryParams.createSfjzfdy = this.category.choose;//类别
+      this.queryParams.createDwh = this.workPlace; //工作单位
+      this.queryParams.createSfjzfdy = this.category.choose; //类别
       //日期
-      let rqs,rqe = "";
+      let rqs,
+        rqe = "";
       if (this.datePicker && this.datePicker.length > 0) {
         rqs = this.datePicker[0];
         rqe = this.datePicker[1];
@@ -516,7 +525,7 @@ export default {
       align-items: center;
       background: #fff;
       .elSelect {
-        width: 110px;
+        width: 150px;
       }
       .inputSelect {
         width: 50%;
@@ -587,11 +596,10 @@ export default {
           border: 1px solid grey;
           background: #fff;
         }
-        .borderRed{
+        .borderRed {
           border: 1px solid grey;
           color: red;
           background: #fff;
-
         }
         .fullGreen {
           // border:1px solid #005657;
@@ -635,7 +643,6 @@ export default {
             margin-top: 10px;
             background: url("~@/assets/assistantPng/add.png") no-repeat;
           }
-          
         }
       }
     }

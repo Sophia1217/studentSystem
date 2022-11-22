@@ -12,7 +12,7 @@
             v-model="select"
             class="elSelect"
             slot="prepend"
-            placeholder="查询条件"
+            placeholder="请选择查询条件"
             @change="clear"
           >
             <el-option label="学号" value="xh"></el-option>
@@ -485,7 +485,9 @@ export default {
   methods: {
     //模板下载
     mbDown() {
-      downLoad().then((res) => this.downloadFn(res, "学籍异动模板下载", "xlsx"));
+      downLoad().then((res) =>
+        this.downloadFn(res, "学籍异动模板下载", "xlsx")
+      );
     },
     ///上传
     upLoadSuccess(res, file, fileList) {
@@ -1045,7 +1047,7 @@ export default {
       //   color:#fff;
       // }
       .elSelect {
-        width: 110px;
+        width: 150px;
       }
       .inputSelect {
         width: 50%;

@@ -12,7 +12,7 @@
             slot="prepend"
             v-model="select"
             class="elSelect"
-            placeholder="查询条件"
+            placeholder="请选择查询条件"
             @change="clear"
           >
             <el-option label="工号" value="gh" />
@@ -570,7 +570,7 @@ export default {
       align-items: center;
       background: #fff;
       .elSelect {
-        width: 130px;
+        width: 150px;
       }
       .inputSelect {
         width: 50%;

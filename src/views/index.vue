@@ -29,7 +29,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 220px);
   background-image: url("../assets/images/home.png");
   background-size: cover;
 }

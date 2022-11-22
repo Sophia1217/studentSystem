@@ -225,7 +225,7 @@ export default {
       align-items: center;
       background: #fff;
       .elSelect {
-        width: 130px;
+        width: 150px;
       }
       .inputSelect {
         width: 20%;

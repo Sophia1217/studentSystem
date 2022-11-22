@@ -13,7 +13,7 @@
             v-model="select"
             class="elSelect"
             @change="selectChange"
-            placeholder="查询条件"
+            placeholder="请选择查询条件"
           >
             <el-option label="家访学生" value="1" />
             <el-option label="学号" value="2" />
@@ -51,7 +51,7 @@
             >
               <el-option
                 v-for="item in jfxsOps"
-                :key= item.label
+                :key="item.label"
                 :label="item.label"
                 :value="item.label"
               ></el-option>
@@ -61,17 +61,17 @@
         <el-row :gutter="20" class="mt15">
           <el-col :span="20">
             <span>家访时间：</span>
-            <el-date-picker 
-                type="daterange" 
-                placeholder="选择日期" 
-                v-model="datePicker" 
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyy-MM-dd"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                style="width= 60px;"
-              ></el-date-picker>
+            <el-date-picker
+              type="daterange"
+              placeholder="选择日期"
+              v-model="datePicker"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              style="width= 60px;"
+            ></el-date-picker>
           </el-col>
         </el-row>
       </div>
@@ -164,12 +164,9 @@
   </div>
 </template>
 <script>
-import {
-  addUser,
-  updateUser,
-} from "@/api/system/user";
+import { addUser, updateUser } from "@/api/system/user";
 import CheckboxCom from "../../components/checkboxCom";
-import { 
+import {
   queryJxlxList,
   excelExport,
   deleteJxlx,
@@ -211,10 +208,10 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        jfsj:"",  
-        jfxsList:[],//家访形式
-        hdksrqEnd:"",
-        hdksrqStrat:"",
+        jfsj: "",
+        jfxsList: [], //家访形式
+        hdksrqEnd: "",
+        hdksrqStrat: "",
         orderZd: "",
         orderPx: "",
         xm: "",
@@ -224,13 +221,9 @@ export default {
         gtcyrxm: "",
       },
       list: [],
-      datePicker: [],//日期
-      jfxsOps:[
-        {label:"线下走访"},
-        {label:"线上视频"}
-      ],
-      exportParams: {},//导出数据
-      
+      datePicker: [], //日期
+      jfxsOps: [{ label: "线下走访" }, { label: "线上视频" }],
+      exportParams: {}, //导出数据
     };
   },
   computed: {},
@@ -310,8 +303,8 @@ export default {
     // 导出确认
     handleConfirm() {
       this.showExport = false;
-      var arr = this.list.length > 0 ? this.list.map((item) => item.id) : []; 
-      let data ={
+      var arr = this.list.length > 0 ? this.list.map((item) => item.id) : [];
+      let data = {
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         jfsj: this.queryParams.jfsj,
@@ -326,8 +319,8 @@ export default {
         sbrgh: this.queryParams.sbrgh,
         gtcyrxm: this.queryParams.gtcyrxm,
         ids: arr,
-      }
-      // let exportParams = this.queryParams;        
+      };
+      // let exportParams = this.queryParams;
       // console.log(this.queryParams);
       // this.$set(this.exportParams,"ids",arr)
 
@@ -343,14 +336,14 @@ export default {
         ids.push(item_row.id);
       }
       let data = {
-        ids: ids
-      }
+        ids: ids,
+      };
       deleteJxlx(data)
         .then((res) => {
           this.$message({
             message: res.errmsg,
             type: "success",
-          })
+          });
           this.getList();
         })
         .catch((err) => {
@@ -363,7 +356,6 @@ export default {
         path: "/assistantWork/detailHomeSchool",
         query: {
           id: row.id,
-
         },
       });
     },
@@ -381,7 +373,7 @@ export default {
       }
     },
     //新增
-    handleNew(){
+    handleNew() {
       this.$router.push({
         path: "/assistantWork/addHomeSchool",
       });
@@ -431,7 +423,8 @@ export default {
       // }
       this.queryParams.pageNum = 1;
       this.queryParams.jfxsList = this.homeModel;
-      let rqs,rqe = "";
+      let rqs,
+        rqe = "";
       if (this.datePicker && this.datePicker.length > 0) {
         rqs = this.datePicker[0];
         rqe = this.datePicker[1];
@@ -470,7 +463,7 @@ export default {
       align-items: center;
       background: #fff;
       .elSelect {
-        width: 110px;
+        width: 150px;
       }
       .inputSelect {
         width: 50%;
@@ -541,11 +534,10 @@ export default {
           border: 1px solid grey;
           background: #fff;
         }
-        .borderRed{
+        .borderRed {
           border: 1px solid grey;
           color: red;
           background: #fff;
-
         }
         .fullGreen {
           // border:1px solid #005657;
@@ -589,7 +581,6 @@ export default {
             margin-top: 10px;
             background: url("~@/assets/assistantPng/add.png") no-repeat;
           }
-          
         }
       }
     }

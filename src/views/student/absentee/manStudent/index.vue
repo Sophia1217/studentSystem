@@ -13,7 +13,7 @@
             @change="changeSelect"
             class="elSelect"
             slot="prepend"
-            placeholder="查询条件"
+            placeholder="请选择查询条件"
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
@@ -161,7 +161,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">性别：</el-col>
+          <el-col :span="3">性 别：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -1227,7 +1227,7 @@ export default {
       .searchBtn {
       }
       .elSelect {
-        width: 130px;
+        width: 150px;
       }
       .inputSelect {
         width: 50%;

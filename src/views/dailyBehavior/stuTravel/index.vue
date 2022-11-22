@@ -13,7 +13,7 @@
             v-model="select"
             class="elSelect"
             @change="selectChange"
-            placeholder="查询条件"
+            placeholder="请选择查询条件"
           >
             <el-option label="乘车站点" value="1" />
             <el-option label="家庭地址" value="2" />
@@ -39,17 +39,17 @@
         <el-row :gutter="20" class="mt15">
           <el-col :span="20">
             <span>申请时间：</span>
-              <el-date-picker 
-                type="daterange" 
-                placeholder="选择日期" 
-                v-model="datePicker" 
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyy-MM-dd"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                style="width= 60px;"
-              ></el-date-picker>
+            <el-date-picker
+              type="daterange"
+              placeholder="选择日期"
+              v-model="datePicker"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              style="width= 60px;"
+            ></el-date-picker>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
@@ -77,7 +77,8 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">火车乘车区间填写列表</span> <i class="Updataicon" />
+          <span class="title">火车乘车区间填写列表</span>
+          <i class="Updataicon" />
         </div>
         <div class="headerRight">
           <div class="btns borderRed" @click="handleDelete">
@@ -154,26 +155,30 @@
         />
       </div>
     </div>
-    <el-dialog title="新增申请" 
-      :visible.sync="addModal" 
-      width="40%" 
+    <el-dialog
+      title="新增申请"
+      :visible.sync="addModal"
+      width="40%"
       :close-on-click-modal="false"
       @close="emptyAdd()"
+    >
+      <el-form
+        ref="formAdd"
+        :model="formAdd"
+        :rules="rules"
+        label-width="100px"
       >
-        <el-form ref="formAdd" :model="formAdd" :rules="rules" label-width="100px">
-          <el-row :gutter="20">  
-            <el-col :span="20">           
-            <el-form-item label="家庭地址"  
-              prop="jtdz"
-            >
-              <el-input v-model="formAdd.jtdz" disabled/>
+        <el-row :gutter="20">
+          <el-col :span="20">
+            <el-form-item label="家庭地址" prop="jtdz">
+              <el-input v-model="formAdd.jtdz" disabled />
             </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20"> 
-            <el-col :span="12"> 
-            <el-form-item label="乘车区间" 
-              
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item
+              label="乘车区间"
               prop="chqjsid"
               :rules="rules.chqjsid"
             >
@@ -188,35 +193,31 @@
                   :label="item.mc"
                   :value="item.dm"
                 ></el-option>
-            </el-select>
+              </el-select>
             </el-form-item>
-            </el-col>
-            <el-col :span="1">
-              <div><span>-</span></div>
-            </el-col>
-            <el-col :span="7"> 
-              <el-select
-                v-model="formAdd.chqjeid"
-                placeholder="请输入车站"
-                :rules="rules.chqjeid"
-                collapse-tags
-              >
-                <el-option
-                  v-for="(item, index) in zdOps"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-            </el-select>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">  
-            <el-col :span="20"> 
-            <el-form-item label="申报时间" 
-              
-              prop="sqsj"
-              :rules="rules.sqsj"
+          </el-col>
+          <el-col :span="1">
+            <div><span>-</span></div>
+          </el-col>
+          <el-col :span="7">
+            <el-select
+              v-model="formAdd.chqjeid"
+              placeholder="请输入车站"
+              :rules="rules.chqjeid"
+              collapse-tags
             >
+              <el-option
+                v-for="(item, index) in zdOps"
+                :key="index"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="20">
+            <el-form-item label="申报时间" prop="sqsj" :rules="rules.sqsj">
               <el-date-picker
                 v-model="formAdd.sqsj"
                 type="date"
@@ -227,56 +228,52 @@
               >
               </el-date-picker>
             </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">  
-            <el-col :span="20"> 
-            <el-form-item label="申请备注" 
-              
-              prop="sqbz"
-              :rules="rules.sqbz"
-            >
-              <el-input 
-                v-model="formAdd.sqbz" 
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="20">
+            <el-form-item label="申请备注" prop="sqbz" :rules="rules.sqbz">
+              <el-input
+                v-model="formAdd.sqbz"
                 type="textarea"
                 maxlength="1000"
                 placeholder="请输入"
               ></el-input>
             </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="addCance">取 消</el-button>
-          <el-button type="primary" class="confirm" @click="addClick"
-            >确 定</el-button
-          >
-        </span>
-      </el-dialog>
-      <el-dialog 
-        title="申请详情" 
-        :visible.sync="editModal" 
-        width="40%" 
-        :close-on-click-modal="false"
-        @close="emptyEdit()"
+          </el-col>
+        </el-row>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addCance">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="addClick"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="申请详情"
+      :visible.sync="editModal"
+      width="40%"
+      :close-on-click-modal="false"
+      @close="emptyEdit()"
+    >
+      <el-form
+        ref="formEdit"
+        :model="formEdit"
+        :rules="rules"
+        label-width="100px"
       >
-        <el-form ref="formEdit" :model="formEdit" :rules="rules" label-width="100px">
-          <el-row :gutter="20">  
-            <el-col :span="20">           
-            <el-form-item label="家庭地址" 
-              prop="jtdz"
-            > 
-              <el-input 
-                v-model="formEdit.jtdz"
-                disabled
-              ></el-input>
+        <el-row :gutter="20">
+          <el-col :span="20">
+            <el-form-item label="家庭地址" prop="jtdz">
+              <el-input v-model="formEdit.jtdz" disabled></el-input>
             </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20"> 
-            <el-col :span="12"> 
-            <el-form-item label="乘车区间" 
-              
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item
+              label="乘车区间"
               prop="chqjsid"
               :rules="rules.chqjsid"
             >
@@ -292,36 +289,32 @@
                   :label="item.mc"
                   :value="item.dm"
                 ></el-option>
-            </el-select>
+              </el-select>
             </el-form-item>
-            </el-col>
-            <el-col :span="1">
-              <div><span>-</span></div>
-            </el-col>
-            <el-col :span="7"> 
-              <el-select
-                v-model="formEdit.chqjeid"
-                :disabled="isEdit == 0"
-                placeholder="请输入车站"
-                :rules="rules.chqjeid"
-                collapse-tags
-              >
-                <el-option
-                  v-for="(item, index) in zdOps"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-            </el-select>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">  
-            <el-col :span="20"> 
-            <el-form-item label="申报时间" 
-              
-              prop="sqsj"
-              :rules="rules.sqsj"
+          </el-col>
+          <el-col :span="1">
+            <div><span>-</span></div>
+          </el-col>
+          <el-col :span="7">
+            <el-select
+              v-model="formEdit.chqjeid"
+              :disabled="isEdit == 0"
+              placeholder="请输入车站"
+              :rules="rules.chqjeid"
+              collapse-tags
             >
+              <el-option
+                v-for="(item, index) in zdOps"
+                :key="index"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="20">
+            <el-form-item label="申报时间" prop="sqsj" :rules="rules.sqsj">
               <el-date-picker
                 v-model="formEdit.sqsj"
                 type="datetime"
@@ -332,42 +325,38 @@
               >
               </el-date-picker>
             </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">  
-            <el-col :span="20"> 
-            <el-form-item label="申请备注" 
-              
-              prop="sqbz"
-              :rules="rules.sqbz"
-            >
-              <el-input 
-                v-model="formEdit.sqbz" 
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="20">
+            <el-form-item label="申请备注" prop="sqbz" :rules="rules.sqbz">
+              <el-input
+                v-model="formEdit.sqbz"
                 type="textarea"
                 maxlength="1000"
                 :disabled="isEdit == 0"
                 placeholder="请输入"
               ></el-input>
             </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-        <span
-          slot="footer"
-          class="dialog-footer"
-          v-if="formEdit.status == '01' && isEdit == 0"
+          </el-col>
+        </el-row>
+      </el-form>
+      <span
+        slot="footer"
+        class="dialog-footer"
+        v-if="formEdit.status == '01' && isEdit == 0"
+      >
+        <el-button type="primary" class="confirm" @click="EditStatus"
+          >编 辑</el-button
         >
-          <el-button type="primary" class="confirm" @click="EditStatus"
-            >编 辑</el-button
-          >
-        </span>
-        <span slot="footer" class="dialog-footer" v-if="isEdit == 1">
-          <el-button @click="editCance">取 消</el-button>
-          <el-button type="primary" class="confirm" @click="editClick"
-            >确 定</el-button
-          >
-        </span>
-      </el-dialog>
+      </span>
+      <span slot="footer" class="dialog-footer" v-if="isEdit == 1">
+        <el-button @click="editCance">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="editClick"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
     <!-- 确认提交对话框 -->
     <el-dialog title="提交" :visible.sync="submitModal" width="30%">
       <span>确认提交？</span>
@@ -396,7 +385,7 @@
   </div>
 </template>
 <script>
- import { 
+import {
   edit,
   del,
   query,
@@ -404,8 +393,8 @@
   queryAllZd,
   queryDetail,
   getJtzz,
- } from "@/api/dailyBehavior/stuTravel";
- import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+} from "@/api/dailyBehavior/stuTravel";
+import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 // import lctCom from "../../../components/lct";
 import lctCom from "../../components/lct";
 export default {
@@ -428,17 +417,17 @@ export default {
       select: "",
       isMore: false,
       lctModal: false,
-      ztStatus: [],//状态
+      ztStatus: [], //状态
       zdOps: [],
       status: [],
       basicInfoList: [],
       multipleSelection: [],
       submitModal: false,
       queryParams: {
-        cczd: "",//乘车站点
-        jtdz: "",//家庭地址
-        sqsjEnd:"",
-        sqsjStart:"",
+        cczd: "", //乘车站点
+        jtdz: "", //家庭地址
+        sqsjEnd: "",
+        sqsjStart: "",
         statusList: [],
 
         pageNum: 1,
@@ -450,19 +439,19 @@ export default {
       datePicker: [],
       addModal: false,
       editModal: false,
-      formAdd: { 
-        jtdz: "" ,
-        chqjsid: "" ,
-        chqjeid: "" ,
-        sqsj: "" ,
-        sqbz: "" ,
+      formAdd: {
+        jtdz: "",
+        chqjsid: "",
+        chqjeid: "",
+        sqsj: "",
+        sqbz: "",
       },
-      formEdit: { 
-        jtdz: "" ,
-        chqjsid: "" ,
-        chqjeid: "" ,
-        sqsj: "" ,
-        sqbz: "" ,
+      formEdit: {
+        jtdz: "",
+        chqjsid: "",
+        chqjeid: "",
+        sqsj: "",
+        sqbz: "",
       },
       isEdit: 0, //0详情1编辑
       rules: {
@@ -535,7 +524,7 @@ export default {
         this.$refs.child.inner(row.processid);
         this.lctModal = true;
       } else {
-         this.$message.warning("此项经历为管理员新增，暂无流程数据");
+        this.$message.warning("此项经历为管理员新增，暂无流程数据");
       }
     },
     getCode(val) {
@@ -565,8 +554,8 @@ export default {
       this.queryParams.jtdz = this.select == 2 ? this.searchVal : "";
       query(this.queryParams)
         .then((response) => {
-            this.basicInfoList = response.data; // 根据状态码接收数据
-            this.total = response.totalCount; //总条数
+          this.basicInfoList = response.data; // 根据状态码接收数据
+          this.total = response.totalCount; //总条数
         })
         .catch((err) => {});
     },
@@ -579,7 +568,7 @@ export default {
     cancel() {
       this.open = false;
     },
-   
+
     // 点击更多
     handleMore() {
       this.isMore = !this.isMore;
@@ -622,11 +611,12 @@ export default {
     //批量删除
     rmRecord() {
       this.showDelete = false;
-        del({ ids: this.delArr }).then((res) => {
-            this.$message.success("删除成功");
-            this.getList();
-          })
-          .catch((err) => {});
+      del({ ids: this.delArr })
+        .then((res) => {
+          this.$message.success("删除成功");
+          this.getList();
+        })
+        .catch((err) => {});
     },
     /**批量删除按钮*/
     handleDelete() {
@@ -645,9 +635,9 @@ export default {
       }
     },
     //新增
-    handleNew(){
-      this.formAdd = { sqsj: this.formatDate(new Date()) }; 
-      getJtzz( this.$store.getters.userId )
+    handleNew() {
+      this.formAdd = { sqsj: this.formatDate(new Date()) };
+      getJtzz(this.$store.getters.userId)
         .then((res) => {
           this.formAdd.jtdz = res.data;
           this.addModal = true;
@@ -720,7 +710,8 @@ export default {
     searchClick() {
       this.queryParams.pageNum = 1;
       //日期
-      let rqs,rqe = "";
+      let rqs,
+        rqe = "";
       if (this.datePicker && this.datePicker.length > 0) {
         rqs = this.datePicker[0];
         rqe = this.datePicker[1];
@@ -757,7 +748,7 @@ export default {
       align-items: center;
       background: #fff;
       .elSelect {
-        width: 110px;
+        width: 150px;
       }
       .inputSelect {
         width: 50%;
@@ -828,11 +819,10 @@ export default {
           border: 1px solid grey;
           background: #fff;
         }
-        .borderRed{
+        .borderRed {
           border: 1px solid grey;
           color: red;
           background: #fff;
-
         }
         .fullGreen {
           // border:1px solid #005657;
@@ -876,7 +866,6 @@ export default {
             margin-top: 10px;
             background: url("~@/assets/assistantPng/add.png") no-repeat;
           }
-          
         }
       }
     }

@@ -13,7 +13,7 @@
             @change="changeSelect"
             class="elSelect"
             slot="prepend"
-            placeholder="查询条件"
+            placeholder="请选择查询条件"
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
@@ -1031,7 +1031,8 @@ export default {
         { dm: "sldw", mc: "设立单位" },
         { dm: "hjsj", mc: "获奖时间" },
       ],
-      tableHeader8: [//干部经历
+      tableHeader8: [
+        //干部经历
         { dm: "rzzz", mc: "任职组织" },
         { dm: "sldw", mc: "设立单位" },
         { dm: "jb", mc: "级别" },
@@ -1041,7 +1042,8 @@ export default {
         { dm: "zmr", mc: "证明人" },
         { dm: "lxfs", mc: "联系方式" },
       ],
-      tableHeader9: [//荣誉称号
+      tableHeader9: [
+        //荣誉称号
         { dm: "rymc", mc: "荣誉名称" },
         { dm: "jb", mc: "级别" },
         { dm: "dj", mc: "等级" },
@@ -1049,7 +1051,8 @@ export default {
         { dm: "hjsj", mc: "获奖时间" },
         { dm: "zsbh", mc: "证书编号" },
       ],
-      tableHeader10: [//活动信息
+      tableHeader10: [
+        //活动信息
         { dm: "hdssmc", mc: "活动/赛事名称" },
         { dm: "zzdw", mc: "组织单位" },
         { dm: "jb", mc: "级别" },
@@ -1058,7 +1061,8 @@ export default {
         { dm: "pm", mc: "排名" },
         { dm: "hdsj", mc: "活动时间" },
       ],
-      tableHeader11: [//创业经历
+      tableHeader11: [
+        //创业经历
         { dm: "gsmc", mc: "公司名称" },
         { dm: "zcrq", mc: "注册日期" },
         { dm: "zczj", mc: "注册资金" },
@@ -1920,7 +1924,7 @@ export default {
       flex-direction: row;
       align-items: center;
       .elSelect {
-        width: 110px;
+        width: 150px;
       }
       .inputSelect {
         width: 50%;

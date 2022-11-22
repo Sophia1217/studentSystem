@@ -12,7 +12,7 @@
             v-model="select"
             class="elSelect"
             slot="prepend"
-            placeholder="查询条件"
+            placeholder="请选择查询条件"
             @change="clear"
           >
             <el-option label="学号" value="xh"></el-option>
@@ -848,7 +848,7 @@ export default {
         // color:#fff;
       }
       .elSelect {
-        width: 120px;
+        width: 150px;
       }
       .inputSelect {
         width: 50%;

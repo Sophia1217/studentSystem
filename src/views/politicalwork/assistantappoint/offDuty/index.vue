@@ -12,7 +12,7 @@
             slot="prepend"
             v-model="select"
             class="elSelect"
-            placeholder="查询条件"
+            placeholder="请选择查询条件"
           >
             <el-option label="工号" value="1" />
             <el-option label="姓名" value="2" />
@@ -325,7 +325,7 @@ export default {
         allCheck.push(this.category.checkBox[i].val);
       }
       this.category.choose = val ? allCheck : [];
-     
+
       this.category.isIndeterminate = false;
     },
     // 类别单选
@@ -334,7 +334,6 @@ export default {
       this.category.checkAll = checkedCount === this.category.checkBox.length;
       this.category.isIndeterminate =
         checkedCount > 0 && checkedCount < this.category.checkBox.length;
-     
     },
     // 性别全选
     handleCheckAllSexChange(val) {
@@ -352,7 +351,6 @@ export default {
       this.sex.checkAll = checkedCount === this.sex.checkBox.length;
       this.sex.isIndeterminate =
         checkedCount > 0 && checkedCount < this.sex.checkBox.length;
-    
     },
     // 类别全选
     handleCheckAllWorkPlaceChange(val) {
@@ -370,12 +368,10 @@ export default {
       this.workPlace.checkAll = checkedCount === this.workPlace.checkBox.length;
       this.workPlace.isIndeterminate =
         checkedCount > 0 && checkedCount < this.workPlace.checkBox.length;
-    
     },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-    
     },
     // 状态全选
     handleCheckAllStatusChange(val) {
@@ -384,7 +380,7 @@ export default {
         allCheck.push(this.status.checkBox[i].val);
       }
       this.status.choose = val ? allCheck : [];
-    
+
       this.status.isIndeterminate = false;
     },
     // 状态单选
@@ -393,7 +389,6 @@ export default {
       this.status.checkAll = checkedCount === this.status.checkBox.length;
       this.status.isIndeterminate =
         checkedCount > 0 && checkedCount < this.status.checkBox.length;
-    
     },
     // 打开导出弹窗
     handleExport() {
@@ -416,7 +411,7 @@ export default {
       lookDetail(ghdata).then((res) => {
         if (res.errcode == "00") {
           //this.moreIform.classNum = res.assistantDetailRes[0].bjbh;
-        
+
           this.tableData = res.assistantDetailRes;
         }
       });
@@ -551,7 +546,7 @@ export default {
         lbList: this.category.choose,
         genderList: this.sex.choose,
       };
-     
+
       this.getList(queryParams);
     },
     /** 详细信息查询 */
@@ -576,7 +571,7 @@ export default {
       flex-direction: row;
       align-items: center;
       .elSelect {
-        width: 110px;
+        width: 150px;
       }
       .inputSelect {
         width: 50%;

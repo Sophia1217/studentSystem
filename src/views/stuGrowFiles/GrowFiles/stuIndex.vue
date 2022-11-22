@@ -13,7 +13,7 @@
             @change="changeSelect"
             class="elSelect"
             slot="prepend"
-            placeholder="查询条件"
+            placeholder="请选择查询条件"
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
@@ -863,7 +863,7 @@ export default {
       align-items: center;
       background: #fff;
       .elSelect {
-        width: 130px;
+        width: 150px;
       }
       .inputSelect {
         width: 50%;

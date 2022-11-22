@@ -41,7 +41,7 @@
       <!-- 更多选择 -->
       <div v-if="isMore" class="moreSelect">
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">培养单位：</el-col>
+          <el-col :span="3">培养单位:</el-col>
           <el-col :span="20">
             <el-select
               v-model="workPlace"
@@ -60,7 +60,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">活动时间 ：</el-col>
+          <el-col :span="3">活动时间:</el-col>
 
           <el-col :span="20">
             <div class="checkbox">
@@ -79,7 +79,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">专兼职类型：</el-col>
+          <el-col :span="3">专兼职类型:</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom

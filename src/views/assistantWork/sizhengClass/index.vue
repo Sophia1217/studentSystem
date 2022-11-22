@@ -32,7 +32,7 @@
       <!-- 更多选择 -->
       <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3"> 工作单位 ： </el-col>
+          <el-col :span="3"> 工作单位:</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <el-select
@@ -53,7 +53,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">岗位：</el-col>
+          <el-col :span="3">岗<span v-html="'\u3000\u3000'"></span>位:</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -65,7 +65,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">类型：</el-col>
+          <el-col :span="3">类<span v-html="'\u3000\u3000'"></span>型:</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -78,7 +78,7 @@
         </el-row>
         <el-row :gutter="20" class="mt15">
           <el-col :span="8">
-            <span>开课学年：</span>
+            <span>开课学年:</span>
             <el-select
               v-model="moreIform.kkxn"
               multiple
@@ -95,7 +95,7 @@
             </el-select>
           </el-col>
           <el-col :span="8">
-            <span>开课学期：</span>
+            <span>开课学期:</span>
             <el-select
               v-model="moreIform.kkxq"
               multiple

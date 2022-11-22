@@ -50,7 +50,7 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <span>专业：</span>
+            <span>专<span v-html="'\u3000\u3000'"></span>业：</span>
             <el-select
               v-model="moreIform.zydm"
               multiple
@@ -67,7 +67,7 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <span>班级：</span>
+            <span>班<span v-html="'\u3000\u3000'"></span>级：</span>
             <el-select
               v-model="moreIform.bjm"
               multiple

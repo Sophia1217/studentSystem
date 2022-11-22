@@ -49,13 +49,13 @@ export default {
       margin-right: 8px;
     }
     .tabsicon_ke {
-      background: url("../../../assets/images/icon_ke.png");
+      background: url("../../../assets/images/icon_warning.png");
       background-repeat: no-repeat;
       background-position: center;
       vertical-align: middle;
     }
     .tabsicon_quan {
-      background: url("../../../assets/images/icon_quan.png");
+      background: url("../../../assets/images/icon_confirm.png");
       background-repeat: no-repeat;
       background-position: center;
       vertical-align: middle;

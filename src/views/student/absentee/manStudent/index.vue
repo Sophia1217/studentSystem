@@ -59,7 +59,7 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <span>专 业：</span>
+            <span>专<span v-html="'\u3000\u3000'"></span>业：</span>
             <el-select
               v-model="moreIform.stuInfo"
               multiple
@@ -76,7 +76,7 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <span>班 级：</span>
+            <span>班<span v-html="'\u3000\u3000'"></span>级：</span>
             <el-select
               v-model="moreIform.pread"
               multiple
@@ -93,7 +93,7 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <span>年 级：</span>
+            <span>年<span v-html="'\u3000\u3000'"></span>级：</span>
             <el-select
               v-model="moreIform.grade"
               multiple
@@ -125,7 +125,7 @@
         </el-row>
 
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">学 籍：</el-col>
+          <el-col :span="3">学<span v-html="'\u3000\u3000'"></span>籍：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -161,7 +161,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">性 别：</el-col>
+          <el-col :span="3">性<span v-html="'\u3000\u3000'"></span>别：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -174,7 +174,7 @@
         </el-row>
 
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">学 制：</el-col>
+          <el-col :span="3">学<span v-html="'\u3000\u3000'"></span>制：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -187,7 +187,7 @@
         </el-row>
 
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">民 族：</el-col>
+          <el-col :span="3">民<span v-html="'\u3000\u3000'"></span>族：</el-col>
           <el-col :span="20">
             <div :class="expand ? 'expandOpen' : 'expandClose'">
               <checkboxCom
@@ -241,7 +241,7 @@
       <div class="headerTop">
         <div class="headerLeft">
           <span class="title">学生信息列表</span> <i class="Updataicon"></i>
-          <div class="btns2 borderBlue" @click="modal(1)">
+          <!-- <div class="btns2 borderBlue" @click="modal(1)">
             <i class="icon blueIcon"></i
             ><span class="title2">毕业生登记表</span>
           </div>
@@ -251,10 +251,18 @@
           </div>
           <div class="btns2 borderBlue" @click="modal(3)">
             <i class="icon lightIcon"></i><span class="title2">学生卡片</span>
-          </div>
+          </div>-->
         </div>
 
         <div class="headerRight">
+          <el-dropdown split-button @command="modal">
+            <span class="el-dropdown-link"> 学生表格下载 </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="1">毕业生登记表</el-dropdown-item>
+              <el-dropdown-item command="2">学生登记表</el-dropdown-item>
+              <el-dropdown-item command="3">学生卡片</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
           <div class="btns borderGreen" @click="mbDown">
             <span class="title">模板下载</span>
           </div>

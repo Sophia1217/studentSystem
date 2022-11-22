@@ -56,7 +56,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">离汉时间</el-col>
+          <el-col :span="3">离汉时间:</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <el-date-picker
@@ -73,7 +73,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">拟返回时间</el-col>
+          <el-col :span="3">拟返回时间:</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <el-date-picker

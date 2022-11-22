@@ -37,7 +37,7 @@
       <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20">
           <el-col :span="8">
-            <span class="titleStyle">培养单位：</span>
+            <span class="titleStyle">现培养单位：</span>
             <el-select
               v-model="moreIform.manageReg"
               multiple
@@ -55,7 +55,7 @@
             </el-select>
           </el-col>
           <el-col :span="8">
-            <span>专 业：</span>
+            <span>现专业：</span>
             <el-select
               v-model="moreIform.stuInfo"
               multiple
@@ -72,7 +72,7 @@
             </el-select>
           </el-col>
           <el-col :span="8">
-            <span>班 级：</span>
+            <span>现班级：</span>
             <el-select
               v-model="moreIform.pread"
               multiple
@@ -157,7 +157,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">性别：</el-col>
+          <el-col :span="3">性<span v-html="'\u3000\u3000'"></span>别：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -193,7 +193,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">学 籍：</el-col>
+          <el-col :span="3">学<span v-html="'\u3000\u3000'"></span>籍：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom

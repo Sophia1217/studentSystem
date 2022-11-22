@@ -41,7 +41,7 @@
       <div v-if="isMore" class="moreSelect">
         <el-row :gutter="20" class="mt15">
           <el-col :span="20">
-            <span>家访形式：</span>
+            <span>家访形式:</span>
             <el-select
               v-model="homeModel"
               multiple
@@ -60,7 +60,7 @@
         </el-row>
         <el-row :gutter="20" class="mt15">
           <el-col :span="20">
-            <span>家访时间：</span>
+            <span>家访时间:</span>
             <el-date-picker
               type="daterange"
               placeholder="选择日期"

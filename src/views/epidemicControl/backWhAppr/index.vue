@@ -33,7 +33,7 @@
       <!-- 更多选择 -->
       <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3"> 培养单位： </el-col>
+          <el-col :span="3"> 培养单位:</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <el-select
@@ -54,7 +54,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">拟返校时间</el-col>
+          <el-col :span="3">拟返校时间:</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <el-date-picker
@@ -71,7 +71,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3"> 所在地区： </el-col>
+          <el-col :span="3"> 所在地区：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <el-cascader
@@ -85,7 +85,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3"> 返汉方式： </el-col>
+          <el-col :span="3"> 返汉方式：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <el-select

@@ -104,7 +104,9 @@
           </el-row>
 
           <el-row :gutter="20" class="mt15">
-            <el-col :span="3">岗 位：</el-col>
+            <el-col :span="3"
+              >岗<span v-html="'\u3000\u3000'"></span>位：</el-col
+            >
             <el-col :span="20">
               <div class="checkbox">
                 <checkboxCom
@@ -149,12 +151,14 @@
           <el-table-column prop="gh" label="工号" sortable />
           <el-table-column prop="xm" label="姓名" sortable />
           <el-table-column prop="xb" label="性别" sortable> </el-table-column>
-          <el-table-column prop="lxdh" label="手机号码" sortable />
+          <!-- <el-table-column prop="lxdh" label="手机号码" sortable /> -->
           <el-table-column prop="gzdwListString" label="工作单位" sortable />
-          <el-table-column prop="zgxl" label="最高学历" sortable />
-          <el-table-column prop="zgxlbyxx" label="毕业院校" sortable />
-          <el-table-column prop="zybj" label="专业" sortable />
+          <!-- <el-table-column prop="zgxl" label="最高学历" sortable /> -->
+          <!-- <el-table-column prop="zgxlbyxx" label="毕业院校" sortable /> -->
+          <!-- <el-table-column prop="zybj" label="专业" sortable /> -->
           <el-table-column prop="gwListString" label="岗位" sortable />
+          <el-table-column prop="lx" label="类型" sortable />
+          <el-table-column prop="sfzg" label="是否在岗" sortable />
           <el-table-column prop="cjgzsj" label="参加工作时间" sortable />
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">

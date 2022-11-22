@@ -56,7 +56,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">类 别：</el-col>
+          <el-col :span="3">类<span v-html="'\u3000\u3000'"></span>别：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -68,7 +68,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">性 别：</el-col>
+          <el-col :span="3">性<span v-html="'\u3000\u3000'"></span>别：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom

@@ -35,7 +35,7 @@
       <!-- 更多选择 -->
       <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">类型：</el-col>
+          <el-col :span="3">类<span v-html="'\u3000\u3000'"></span>型:</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -47,7 +47,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">课程时间</el-col>
+          <el-col :span="3">课程时间:</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <el-date-picker

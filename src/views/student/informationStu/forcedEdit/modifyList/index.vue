@@ -56,7 +56,7 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <span>专 业：</span>
+            <span>专<span v-html="'\u3000\u3000'"></span>业：</span>
             <el-select
               v-model="moreIform.stuInfo"
               multiple
@@ -73,7 +73,7 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <span>班 级：</span>
+            <span>班<span v-html="'\u3000\u3000'"></span>级：</span>
             <el-select
               v-model="moreIform.pread"
               multiple
@@ -90,7 +90,7 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <span>年 级：</span>
+            <span>年<span v-html="'\u3000\u3000'"></span>级：</span>
             <el-select
               v-model="moreIform.grade"
               multiple

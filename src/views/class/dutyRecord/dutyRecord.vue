@@ -58,7 +58,7 @@
           </el-col>
 
           <el-col :span="12">
-            <span>年 级：</span>
+            <span>年<span v-html="'\u3000\u3000'"></span>级：</span>
             <el-select v-model="nj" multiple placeholder="请选择" collapse-tags>
               <el-option
                 v-for="(item, index) in njOps"
@@ -70,7 +70,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">类 别：</el-col>
+          <el-col :span="3">类<span v-html="'\u3000\u3000'"></span>别：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -82,7 +82,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">岗 位：</el-col>
+          <el-col :span="3">岗<span v-html="'\u3000\u3000'"></span>位：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom

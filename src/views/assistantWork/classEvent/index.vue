@@ -41,7 +41,7 @@
       <div v-if="isMore" class="moreSelect">
         <el-row :gutter="20" class="mt15">
           <el-col :span="20">
-            <span>工作单位：</span>
+            <span>工作单位:</span>
             <el-select
               v-model="workPlace"
               multiple
@@ -60,7 +60,7 @@
         </el-row>
         <el-row :gutter="20" class="mt15">
           <el-col :span="20">
-            <span>活动日期：</span>
+            <span>活动日期:</span>
             <el-date-picker
               type="daterange"
               placeholder="选择日期"
@@ -75,7 +75,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">类 别：</el-col>
+          <el-col :span="3">类<span v-html="'\u3000\u3000'"></span>别:</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom

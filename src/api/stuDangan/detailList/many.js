@@ -60,3 +60,36 @@ export function query5(query) {
       data: query
     })
   }
+  //干部经历列表查询
+  export function queryGbjl(data){
+    return request({
+      url: '/czdaGbjl/queryGbjlList',
+      method: 'post',
+      data: data
+    })
+  }
+  //荣誉称号列表查询
+  export function queryRych(data){
+    return request({
+      url: '/czdaRych/queryRychList',
+      method: 'post',
+      data: data
+    })
+  }
+  //活动信息列表查询
+  export function queryHdxx(data){
+    return request({
+      url: '/czdaHdxx/queryHdxxList',
+      method: 'post',
+      data: data
+    })
+  }
+  //创业经历列表查询
+  export function queryCyjl(data){
+    return request({
+      url: '/czdaCyjl/queryCyjlList',
+      method: 'post',
+      data: data
+    })
+  }
+  

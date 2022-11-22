@@ -163,10 +163,8 @@
         <el-form ref="formAdd" :model="formAdd" :rules="rules" label-width="100px">
           <el-row :gutter="20">  
             <el-col :span="20">           
-            <el-form-item label="家庭地址" 
-              
+            <el-form-item label="家庭地址"  
               prop="jtdz"
-              :rules="rules.jtdz"
             >
               <el-input v-model="formAdd.jtdz" disabled/>
             </el-form-item>
@@ -266,10 +264,8 @@
           <el-row :gutter="20">  
             <el-col :span="20">           
             <el-form-item label="家庭地址" 
-              
               prop="jtdz"
-              :rules="rules.jtdz"
-            >
+            > 
               <el-input 
                 v-model="formEdit.jtdz"
                 disabled
@@ -286,6 +282,7 @@
             >
               <el-select
                 v-model="formEdit.chqjsid"
+                :disabled="isEdit == 0"
                 placeholder="请输入车站"
                 collapse-tags
               >
@@ -304,6 +301,7 @@
             <el-col :span="7"> 
               <el-select
                 v-model="formEdit.chqjeid"
+                :disabled="isEdit == 0"
                 placeholder="请输入车站"
                 :rules="rules.chqjeid"
                 collapse-tags
@@ -326,9 +324,10 @@
             >
               <el-date-picker
                 v-model="formEdit.sqsj"
-                type="date"
+                type="datetime"
                 format="yyyy 年 MM 月 dd 日"
                 value-format="yyyy-MM-dd"
+                :disabled="isEdit == 0"
                 placeholder="选择日期"
               >
               </el-date-picker>
@@ -346,13 +345,23 @@
                 v-model="formEdit.sqbz" 
                 type="textarea"
                 maxlength="1000"
+                :disabled="isEdit == 0"
                 placeholder="请输入"
               ></el-input>
             </el-form-item>
             </el-col>
           </el-row>
         </el-form>
-        <span slot="footer" class="dialog-footer">
+        <span
+          slot="footer"
+          class="dialog-footer"
+          v-if="formEdit.status == '01' && isEdit == 0"
+        >
+          <el-button type="primary" class="confirm" @click="EditStatus"
+            >编 辑</el-button
+          >
+        </span>
+        <span slot="footer" class="dialog-footer" v-if="isEdit == 1">
           <el-button @click="editCance">取 消</el-button>
           <el-button type="primary" class="confirm" @click="editClick"
             >确 定</el-button
@@ -454,12 +463,9 @@ export default {
         chqjeid: "" ,
         sqsj: "" ,
         sqbz: "" ,
-
       },
+      isEdit: 0, //0详情1编辑
       rules: {
-        jtdz: [
-          { required: true, message: "家庭地址不能为空", trigger: "blur" },
-        ],
         chqjsid: [
           { required: true, message: "出发站点不能为空", trigger: "change" },
         ],
@@ -641,14 +647,12 @@ export default {
     //新增
     handleNew(){
       this.formAdd = { sqsj: this.formatDate(new Date()) }; 
-      this.addModal = true;
-      this.formAdd.jtdz = "22222";
-      // getJtzz({xh: this.$store.getters.userId})
-      //   .then((res) => {
-      //     this.formAdd.jtdz = res.data;
-      //     console.log("this.formAdd.jtdz",this.formAdd.jtdz);
-      //   })
-      //   .catch((err) => {});
+      getJtzz( this.$store.getters.userId )
+        .then((res) => {
+          this.formAdd.jtdz = res.data;
+          this.addModal = true;
+        })
+        .catch((err) => {});
     },
     addCance() {
       this.addModal = false;
@@ -686,9 +690,13 @@ export default {
         this.formEdit = res.data;
       });
     },
+    EditStatus() {
+      this.isEdit = 1;
+    },
     //详情编辑
     editCance() {
       this.editModal = false;
+      this.isEdit = 0;
     },
     editClick() {
       if (!this.checkFormEdit()) {
@@ -698,13 +706,14 @@ export default {
         var data = this.formEdit;
         edit(data).then((res) => {
           if (res.errcode == "00") {
-            this.$message.success("新增成功");
+            this.$message.success("编辑成功");
             this.getList();
           } else {
-            this.$message.error("新增失败");
+            this.$message.error("编辑失败");
           }
         });
         this.editModal = false;
+        this.isEdit = "0";
       }
     },
     // 搜索查询按钮

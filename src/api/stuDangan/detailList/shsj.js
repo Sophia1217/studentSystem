@@ -24,7 +24,7 @@ export function query(data){
       data: data
     })
   }
-//社团经历提交审核
+//社会实践提交审核
 export function tj(data){
   return request({
     url: '/czdaShsj/tjById',
@@ -32,7 +32,7 @@ export function tj(data){
     data: data
   })
 }
-//社团经历审核撤销
+//社会实践审核撤销
 export function back(data){
   return request({
     url: '/czdaShsj/cxById',

@@ -16,7 +16,7 @@ export function del(data){
     data: data
   })
 }
-//社会实践列表查询
+//荣誉称号列表查询
 export function query(data){
     return request({
       url: '/czdaRych/queryRychList',
@@ -24,7 +24,7 @@ export function query(data){
       data: data
     })
   }
-//社团经历提交审核
+//荣誉称号提交审核
 export function tj(data){
   return request({
     url: '/czdaRych/tjById',
@@ -32,7 +32,7 @@ export function tj(data){
     data: data
   })
 }
-//社团经历审核撤销
+//荣誉称号审核撤销
 export function back(data){
   return request({
     url: '/czdaRych/cxById',

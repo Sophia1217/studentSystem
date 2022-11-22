@@ -646,6 +646,233 @@
               </template>
             </el-table-column>
           </el-table>
+          <el-table :data="tableDetails" v-if="whatType == '8'">
+            <el-table-column
+              fixed="left"
+              type="index"
+              label="序号"
+              width="50"
+            ></el-table-column>
+            <div v-for="(item, index) in tableHeader8" :key="index">
+              <el-table-column
+                :prop="item.dm"
+                :label="item.mc"
+                sortable="custom"
+              ></el-table-column>
+            </div>
+            <el-table-column prop="status" label="审核状态" sortable="custom">
+              <template slot-scope="scope" fixed="right">
+                <el-select
+                  v-model="scope.row.status"
+                  placeholder="请选择"
+                  :disabled="true"
+                >
+                  <el-option
+                    v-for="(item, index) in ztStatus"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              label="操作"
+              align="center"
+              width="230"
+            >
+              <template slot-scope="scope">
+                <el-button type="text" size="small" @click="back">
+                  <i class="scopeIncon handledie"></i>
+                  <span class="handleName">退回</span>
+                </el-button>
+                <el-button type="text" size="small" @click="refuse">
+                  <i class="scopeIncon handleEdit"></i>
+                  <span class="handleName">拒绝</span>
+                </el-button>
+                <el-button type="text" size="small" @click="pass">
+                  <i class="scopeIncon handleEdit"></i>
+                  <span class="handleName">通过</span>
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-table :data="tableDetails" v-if="whatType == '9'">
+            <el-table-column
+              fixed="left"
+              type="index"
+              label="序号"
+              width="50"
+            ></el-table-column>
+            <div v-for="(item, index) in tableHeader9" :key="index">
+              <el-table-column
+                :prop="item.dm"
+                :label="item.mc"
+                sortable="custom"
+              ></el-table-column>
+            </div>
+            <el-table-column prop="status" label="审核状态" sortable="custom">
+              <template slot-scope="scope" fixed="right">
+                <el-select
+                  v-model="scope.row.status"
+                  placeholder="请选择"
+                  :disabled="true"
+                >
+                  <el-option
+                    v-for="(item, index) in ztStatus"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              label="操作"
+              align="center"
+              width="230"
+            >
+              <template slot-scope="scope">
+                <el-button type="text" size="small" @click="back">
+                  <i class="scopeIncon handledie"></i>
+                  <span class="handleName">退回</span>
+                </el-button>
+                <el-button type="text" size="small" @click="refuse">
+                  <i class="scopeIncon handleEdit"></i>
+                  <span class="handleName">拒绝</span>
+                </el-button>
+                <el-button type="text" size="small" @click="pass">
+                  <i class="scopeIncon handleEdit"></i>
+                  <span class="handleName">通过</span>
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-table :data="tableDetails" v-if="whatType == '10'">
+            <el-table-column
+              fixed="left"
+              type="index"
+              label="序号"
+              width="50"
+            ></el-table-column>
+            <div v-for="(item, index) in tableHeader10" :key="index">
+              <el-table-column
+                :prop="item.dm"
+                :label="item.mc"
+                sortable="custom"
+              ></el-table-column>
+            </div>
+            <el-table-column
+              prop="fileList"
+              label="参赛凭证"
+              sortable="custom"
+              align="center"
+              width="200"
+              fixed="right"
+            >
+              <template slot-scope="scope">
+                <div v-for="item in scope.row.fileList">
+                  <div style="display: flex; justify-content: space-between">
+                    <a>
+                      {{ item.fileName }}
+                    </a>
+                    <el-button>预览</el-button>
+                  </div>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="status" label="审核状态" sortable="custom">
+              <template slot-scope="scope" fixed="right">
+                <el-select
+                  v-model="scope.row.status"
+                  placeholder="请选择"
+                  :disabled="true"
+                >
+                  <el-option
+                    v-for="(item, index) in ztStatus"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              label="操作"
+              align="center"
+              width="230"
+            >
+              <template slot-scope="scope">
+                <el-button type="text" size="small" @click="back">
+                  <i class="scopeIncon handledie"></i>
+                  <span class="handleName">退回</span>
+                </el-button>
+                <el-button type="text" size="small" @click="refuse">
+                  <i class="scopeIncon handleEdit"></i>
+                  <span class="handleName">拒绝</span>
+                </el-button>
+                <el-button type="text" size="small" @click="pass">
+                  <i class="scopeIncon handleEdit"></i>
+                  <span class="handleName">通过</span>
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-table :data="tableDetails" v-if="whatType == '11'">
+            <el-table-column
+              fixed="left"
+              type="index"
+              label="序号"
+              width="50"
+            ></el-table-column>
+            <div v-for="(item, index) in tableHeader11" :key="index">
+              <el-table-column
+                :prop="item.dm"
+                :label="item.mc"
+                sortable="custom"
+              ></el-table-column>
+            </div>
+            <el-table-column prop="status" label="审核状态" sortable="custom">
+              <template slot-scope="scope" fixed="right">
+                <el-select
+                  v-model="scope.row.status"
+                  placeholder="请选择"
+                  :disabled="true"
+                >
+                  <el-option
+                    v-for="(item, index) in ztStatus"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              label="操作"
+              align="center"
+              width="230"
+            >
+              <template slot-scope="scope">
+                <el-button type="text" size="small" @click="back">
+                  <i class="scopeIncon handledie"></i>
+                  <span class="handleName">退回</span>
+                </el-button>
+                <el-button type="text" size="small" @click="refuse">
+                  <i class="scopeIncon handleEdit"></i>
+                  <span class="handleName">拒绝</span>
+                </el-button>
+                <el-button type="text" size="small" @click="pass">
+                  <i class="scopeIncon handleEdit"></i>
+                  <span class="handleName">通过</span>
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </template>
         <span slot="footer" class="dialog-footer">
           <el-button
@@ -699,6 +926,10 @@ import {
   query5,
   query6,
   query7,
+  queryGbjl,
+  queryRych,
+  queryHdxx,
+  queryCyjl,
 } from "@/api/stuDangan/detailList/many";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
@@ -799,6 +1030,42 @@ export default {
         { dm: "jxjlx", mc: "奖学金类型" },
         { dm: "sldw", mc: "设立单位" },
         { dm: "hjsj", mc: "获奖时间" },
+      ],
+      tableHeader8: [//干部经历
+        { dm: "rzzz", mc: "任职组织" },
+        { dm: "sldw", mc: "设立单位" },
+        { dm: "jb", mc: "级别" },
+        { dm: "rzzw", mc: "任职职务" },
+        { dm: "kssj", mc: "开始日期" },
+        { dm: "jssj", mc: "结束日期" },
+        { dm: "zmr", mc: "证明人" },
+        { dm: "lxfs", mc: "联系方式" },
+      ],
+      tableHeader9: [//荣誉称号
+        { dm: "rymc", mc: "荣誉名称" },
+        { dm: "jb", mc: "级别" },
+        { dm: "dj", mc: "等级" },
+        { dm: "bzdw", mc: "表彰单位" },
+        { dm: "hjsj", mc: "获奖时间" },
+        { dm: "zsbh", mc: "证书编号" },
+      ],
+      tableHeader10: [//活动信息
+        { dm: "hdssmc", mc: "活动/赛事名称" },
+        { dm: "zzdw", mc: "组织单位" },
+        { dm: "jb", mc: "级别" },
+        { dm: "cszp", mc: "参赛作品" },
+        { dm: "cy", mc: "成员" },
+        { dm: "pm", mc: "排名" },
+        { dm: "hdsj", mc: "活动时间" },
+      ],
+      tableHeader11: [//创业经历
+        { dm: "gsmc", mc: "公司名称" },
+        { dm: "zcrq", mc: "注册日期" },
+        { dm: "zczj", mc: "注册资金" },
+        { dm: "sshy", mc: "所属行业" },
+        { dm: "frdb", mc: "法人代表" },
+        { dm: "zyyw", mc: "主营业务" },
+        { dm: "srzw", mc: "所任职务" },
       ],
       commonParams: [],
       queryParams: {
@@ -934,6 +1201,62 @@ export default {
           });
           this.whatType = "1";
           break;
+        case "干部经历":
+          this.whatType = "8";
+          await queryGbjl(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: tar.businesId,
+              mk: tar.mk,
+              processId: tar.processId,
+              status: tar.status,
+              taskId: tar.taskId,
+              xh: tar.xh,
+            }));
+          });
+          break;
+        case "荣誉称号":
+          this.whatType = "9";
+          await queryRych(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: tar.businesId,
+              mk: tar.mk,
+              processId: tar.processId,
+              status: tar.status,
+              taskId: tar.taskId,
+              xh: tar.xh,
+            }));
+          });
+          break;
+        case "活动信息":
+          this.whatType = "10";
+          await queryHdxx(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: tar.businesId,
+              mk: tar.mk,
+              processId: tar.processId,
+              status: tar.status,
+              taskId: tar.taskId,
+              xh: tar.xh,
+            }));
+          });
+          break;
+        case "创业经历":
+          this.whatType = "11";
+          await queryCyjl(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: tar.businesId,
+              mk: tar.mk,
+              processId: tar.processId,
+              status: tar.status,
+              taskId: tar.taskId,
+              xh: tar.xh,
+            }));
+          });
+          break;
       }
       this.upDownIndex = this.upDownIndex - 1;
     },
@@ -1043,6 +1366,62 @@ export default {
               }));
             });
             this.whatType = "1";
+            break;
+          case "干部经历":
+            this.whatType = "8";
+            await queryGbjl(data).then((res) => {
+              this.tableDetails = res.data;
+              this.commonParams = res.data.map((v) => ({
+                businesId: tar.businesId,
+                mk: tar.mk,
+                processId: tar.processId,
+                status: tar.status,
+                taskId: tar.taskId,
+                xh: tar.xh,
+              }));
+            });
+            break;
+          case "荣誉称号":
+            this.whatType = "9";
+            await queryRych(data).then((res) => {
+              this.tableDetails = res.data;
+              this.commonParams = res.data.map((v) => ({
+                businesId: tar.businesId,
+                mk: tar.mk,
+                processId: tar.processId,
+                status: tar.status,
+                taskId: tar.taskId,
+                xh: tar.xh,
+              }));
+            });
+            break;
+          case "活动信息":
+            this.whatType = "10";
+            await queryHdxx(data).then((res) => {
+              this.tableDetails = res.data;
+              this.commonParams = res.data.map((v) => ({
+                businesId: tar.businesId,
+                mk: tar.mk,
+                processId: tar.processId,
+                status: tar.status,
+                taskId: tar.taskId,
+                xh: tar.xh,
+              }));
+            });
+            break;
+          case "创业经历":
+            this.whatType = "11";
+            await queryCyjl(data).then((res) => {
+              this.tableDetails = res.data;
+              this.commonParams = res.data.map((v) => ({
+                businesId: tar.businesId,
+                mk: tar.mk,
+                processId: tar.processId,
+                status: tar.status,
+                taskId: tar.taskId,
+                xh: tar.xh,
+              }));
+            });
             break;
         }
         this.upDownIndex = this.upDownIndex + 1;
@@ -1370,6 +1749,62 @@ export default {
             }));
           });
           this.whatType = "1";
+          break;
+        case "干部经历":
+          this.whatType = "8";
+          await queryGbjl(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: row.businesId,
+              mk: row.mk,
+              processId: row.processId,
+              status: row.status,
+              taskId: row.taskId,
+              xh: row.xh,
+            }));
+          });
+          break;
+        case "荣誉称号":
+          this.whatType = "9";
+          await queryRych(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: row.businesId,
+              mk: row.mk,
+              processId: row.processId,
+              status: row.status,
+              taskId: row.taskId,
+              xh: row.xh,
+            }));
+          });
+          break;
+        case "活动信息":
+          this.whatType = "10";
+          await queryHdxx(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: row.businesId,
+              mk: row.mk,
+              processId: row.processId,
+              status: row.status,
+              taskId: row.taskId,
+              xh: row.xh,
+            }));
+          });
+          break;
+        case "创业经历":
+          this.whatType = "11";
+          await queryCyjl(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: row.businesId,
+              mk: row.mk,
+              processId: row.processId,
+              status: row.status,
+              taskId: row.taskId,
+              xh: row.xh,
+            }));
+          });
           break;
       }
     },

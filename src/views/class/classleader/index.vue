@@ -111,6 +111,12 @@
         sortable
       />
       <el-table-column
+        label="已在任干部数量"
+        align="center"
+        prop="bgbNumOfClass"
+        sortable
+      />
+      <el-table-column
         label="创建时间"
         align="center"
         prop="createTime"

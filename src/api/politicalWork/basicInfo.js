@@ -108,3 +108,12 @@ export function getGw() {
     // params: query
   })
 }
+
+// 导出字段展示
+export function exportQuery(data) {
+  return request({
+    url: '/zg/exportQuery',
+    method: 'get',
+    params: data
+  })
+}

@@ -179,15 +179,25 @@
         />
       </div>
     </div>
-    <el-dialog title="导出" :visible.sync="showExport" width="30%">
+    <el-dialog title="导出" :visible.sync="daochuModal" width="30%">
       <span>确认导出{{ len }}条数据？</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCancel">取 消</el-button>
+        <el-button @click="handleCancelB">取 消</el-button>
         <el-button type="primary" class="confirm" @click="handleConfirm"
           >确 定</el-button
         >
       </span>
     </el-dialog>
+    <exportView
+      v-if="showExport"
+      :tag="1"
+      :showExport="showExport"
+      :multipleSelection="multipleSelection"
+      :manageRegStuInfoParam="manageRegStuInfoParam"
+      :op="op"
+      @handleCancel="handleCancel"
+      @handleConfirm="handleConfirm"
+    ></exportView>
   </div>
 </template>
 <script>
@@ -199,15 +209,18 @@ import {
   getGw,
 } from "@/api/politicalWork/basicInfo";
 import CheckboxCom from "../../components/checkboxCom";
-
+import exportView from "./exportView/index.vue";
 export default {
   name: "BasicInfo",
-  components: { CheckboxCom },
+  components: { CheckboxCom, exportView },
   props: [],
   data() {
     return {
+      manageRegStuInfoParam: {},
+      op: [],
       expand: true,
       len: 0,
+
       queryParams: {
         xm: "",
         gh: "",
@@ -233,7 +246,7 @@ export default {
       multipleSelection: [],
       gzdwOptions: [],
       showExport: false,
-      list: [],
+      daochuModal: false,
       gender: {
         // 性别
         checkAll: false,
@@ -459,7 +472,7 @@ export default {
     },
     // 多选
     handleSelectionChange(arr, index) {
-      this.list = [...arr]; // 存储已被勾选的数据
+      this.multipleSelection = [...arr]; // 存储已被勾选的数据
     },
 
     hadleDetail(row, flag) {
@@ -473,8 +486,9 @@ export default {
       });
     },
     async handleExport() {
-      if (this.list.length > 0) {
-        this.len = this.list.length;
+      if (this.multipleSelection.length > 0) {
+        this.len = this.multipleSelection.length;
+        //console.log("ces", this.multipleSelection);
       } else {
         let data = {
           xm: this.select == "xm" ? this.searchVal : "",
@@ -490,7 +504,7 @@ export default {
           dwmcList: this.workPlace,
           gwList: this.position.choose,
         };
-        this.exportParams = data;
+        this.manageRegStuInfoParam = data;
         await getPoliticalWorkList(data)
           .then((res) => {
             this.len = res.count;
@@ -498,24 +512,33 @@ export default {
           .catch((err) => {});
       }
       if (this.len > 0) {
-        this.showExport = true;
+        this.daochuModal = true;
       } else {
         this.$message.warning("当前无数据导出");
       }
     },
     // 导出取消
+    // handleCancel() {
+    //   this.daochuModal = false;
+    // },
+    handleCancelB() {
+      this.daochuModal = false;
+    }, // 导出取消
     handleCancel() {
       this.showExport = false;
     },
     handleConfirm() {
-      var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
+      //   var arr = this.multipleSelection.length > 0 ? this.multipleSelection.map((item) => item.gh) : [];
 
-      var exportParams = this.queryParams;
-      exportParams.pageSize = 0;
-      this.$set(exportParams, "ghList", arr);
-      exportBasicInfo(exportParams)
-        .then((res) => this.downloadFn(res, "政工干部信息表", "xlsx"))
-        .catch((err) => {});
+      //   var exportParams = this.queryParams;
+      //   exportParams.pageSize = 0;
+      //   this.$set(exportParams, "ghList", arr);
+      //   exportBasicInfo(exportParams)
+      //     .then((res) => this.downloadFn(res, "政工干部信息表", "xlsx"))
+      //     .catch((err) => {});
+      // },
+      this.daochuModal = false;
+      this.showExport = true;
     },
   },
 };

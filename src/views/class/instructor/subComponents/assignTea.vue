@@ -501,7 +501,7 @@ export default {
     assignTable,
   },
   mounted() {
-    this.bjdm = this.$route.query.bjdm; // 班级编号
+    this.queryParams.bjdm = this.$route.query.bjdm; // 班级编号
     this.getInstructorList();
     this.getOptions();
   },

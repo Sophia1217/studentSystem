@@ -458,7 +458,7 @@ export default {
         xgh: "", // 学工号
         xm: "", // 姓名 新增字段查询
         xy: "", // 学院代码
-        bjdm: this.$route.query.bjdm, // 班级代码
+        bjdm: "", // 班级代码
         sffp: "0",
       },
       // 是给一个班级任命一个还是多个班主任
@@ -481,20 +481,14 @@ export default {
     };
   },
   mounted() {
-    //this.getTeacherList(this.queryParams);
+    this.queryParams.bjdm = this.$route.query.bjdm;
     this.getGradeOptions();
-    // this.queryParams.xgh = "";
-    // this.queryParams.xy = "";
     this.getTeacherList(this.queryParams);
   },
   // 组件激活时清除筛选框 重新发送请求
   activated() {
-    // this.queryParams.bjdm = this.$route.query.bjdm; // 班级代码
-    // this.getTeacherList(this.queryParams);
-    // this.getGradeOptions();
-    // this.queryParams.xgh = "";
-    // this.queryParams.xy = "";
-    // this.getTeacherList(this.queryParams);
+    this.queryParams.bjdm = this.$route.query.bjdm;
+    this.getTeacherList(this.queryParams);
   },
   methods: {
     // 搜索按钮
@@ -504,10 +498,8 @@ export default {
     // tab栏切换
     tabClick(index) {
       this.currentIndex = index;
-      // console.log("sffp", this.currentIndex);
       this.queryParams.pageNum = 1;
       this.queryParams.sffp = index.toString();
-      // console.log("sffp", this.queryParams.sffp);
       this.$bus.$emit("index", this.currentIndex);
       this.getTeacherList(this.queryParams);
     },

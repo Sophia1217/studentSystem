@@ -296,7 +296,7 @@
                         class="el-upload"
                         :auto-upload="false"
                         ref="upload"
-                        :file-list="formAddLw.fileList"
+                        :file-list="formAddLw.files"
                         :on-change="fileChange"
                         accept=".pdf,.jpg"
                         :before-remove="beforeRemove"

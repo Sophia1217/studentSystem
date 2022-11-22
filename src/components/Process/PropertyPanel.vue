@@ -128,7 +128,6 @@ export default {
     handleModeler() {
       this.modeler.on("root.added", (e) => {
         if (e.element.type === "bpmn:Process") {
-          console.log("kongde");
           this.element = null;
           this.$nextTick().then(() => {
             this.element = e.element;

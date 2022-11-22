@@ -69,7 +69,6 @@ export default {
     };
   },
   created() {
-    console.log("ceassdasdasd");
     const deployId = this.$route.query && this.$route.query.deployId;
     //  查询流程xml
     if (deployId) {
@@ -91,6 +90,7 @@ export default {
     },
     /** 保存xml */
     save(data) {
+      console.log("data 保存xml", data);
       const params = {
         name: data.process.name,
         category: data.process.category,
@@ -123,7 +123,6 @@ export default {
           val.peoValue = "${" + val.peoValue.toString() + "}";
         });
         this.users = res.data;
-        console.log("this.users", this.users);
       });
       // roleList().then((res) => {
       //   res.data.forEach((val) => {
@@ -134,14 +133,13 @@ export default {
     },
     /** 展示xml */
     showXML(data) {
+      console.log("data 展示xml", data);
       this.xmlTitle = "xml查看";
       this.xmlOpen = true;
-      debugger;
       this.xmlContent = vkbeautify.xml(data);
     },
     /** 获取数据类型 */
     dataType(data) {
-      console.log("触发datatype");
       this.users = [];
       this.groups = [];
       if (data) {

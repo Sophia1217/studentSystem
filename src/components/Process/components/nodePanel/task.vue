@@ -19,8 +19,8 @@
       </template>
       <template #multiInstance>
         <el-badge :is-dot="hasMultiInstance">
-          <el-button size="small" @click="dialogName = 'multiInstanceDialog'"
-            >编辑</el-button
+          <el-button size="middum" @click="dialogName = 'multiInstanceDialog'"
+            >确定</el-button
           >
         </el-badge>
       </template>
@@ -398,7 +398,6 @@ export default {
     },
   },
   created() {
-    console.log("jinqutask");
     let cache = commonParse(this.element);
     cache = userTaskParse(cache);
     this.formData = cache;

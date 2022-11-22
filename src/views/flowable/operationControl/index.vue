@@ -148,8 +148,11 @@ export default {
     save() {
       var data = this.addParams;
       edit(data).then((res) => {
-        if ((errcode = "00")) {
+        if ((res.errcode = "00")) {
           this.$message.success("配置流程修改成功");
+          this.handleSearch();
+          this.showExport = false;
+          this.addParams = { flowid: "", flowkey: "", flowname: "", id: "" };
         }
       });
     },
@@ -159,7 +162,7 @@ export default {
         return i.deploymentId === val;
       });
       this.addParams.flowid = obj.deploymentId;
-      this.addParams.flowkey = obj.flowkey;
+      this.addParams.flowkey = obj.flowKey;
       this.addParams.flowname = obj.name;
     },
     // 查询

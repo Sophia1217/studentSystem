@@ -32,9 +32,9 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="rzzz" label="任职组织" sortable="custom">
+          <el-table-column prop="rzzz" label="任职组织" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="sldw" label="设立单位" sortable="custom">
+          <el-table-column prop="sldw" label="设立单位" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="jb" label="级别" sortable="custom">
           </el-table-column>
@@ -44,7 +44,7 @@
           </el-table-column>
           <el-table-column prop="jssj" label="结束日期" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zmr" label="证明人" sortable="custom">
+          <el-table-column prop="zmr" label="证明人" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="lxfs" label="联系方式" sortable="custom">
           </el-table-column>

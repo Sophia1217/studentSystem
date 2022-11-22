@@ -3,7 +3,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">校内荣誉称号</span> <i class="Updataicon"></i>
+          <span class="title">校内外荣誉称号</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
           <div class="btns borderLight" @click="showDel">

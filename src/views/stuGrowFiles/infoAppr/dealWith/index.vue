@@ -653,6 +653,550 @@
               </template>
             </el-table-column>
           </el-table>
+          <div v-if="whatType == '12'">
+          <div class="backDetail" v-for="(ele, index) in tableDetails" :key="index">
+            <div class="formLeft">
+              <div class="title">论文期刊</div>
+            </div>
+            <div class="formRight">
+              <el-row>
+                <el-col :span="24" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">论文名称</div>
+                    <div class="content">{{ ele.lwzwmc }}</div>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="24" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">英文名</div>
+                    <div class="content">{{ ele.lwywmc }}</div>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">发表刊物</div>
+                    <div class="content">{{ ele.fbkw }}</div>
+                  </div>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">出版物类型</div>
+                    <div class="content">{{ ele.cbwlx }}</div>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">署名</div>
+                    <div class="content">{{ ele.sm }}</div>
+                  </div>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">收录类别</div>
+                    <div class="content">{{ ele.sllb }}</div>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">分类号</div>
+                    <div class="content">{{ ele.flh }}</div>
+                  </div>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">版面</div>
+                    <div class="content">{{ ele.bm }}</div>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">卷期</div>
+                    <div class="content">{{ ele.jq }}</div>
+                  </div>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">起止页</div>
+                    <div class="content">{{ ele.qzy }}</div>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">成果所属单位</div>
+                    <div class="content">{{ ele.cgssdw }}</div>
+                  </div>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">发表时间</div>
+                    <div class="content">{{ ele.fbrq }}</div>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="24" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">附件</div>
+                    <div class="content">
+                      <div v-for="item in ele.fileList">
+                        <div style="display: flex; justify-content: space-between">
+                          <a>
+                            {{ item.fileName }}
+                          </a>
+                          <!-- <el-button>预览</el-button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="24" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">审核状态</div>
+                    <div class="content">
+                      <el-select
+                        v-model="ele.status"
+                        placeholder="请选择"
+                        :disabled="true"
+                      >
+                        <el-option
+                          v-for="(item, index) in spjgOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        ></el-option>
+                      </el-select>
+                    </div>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
+          </div>
+          <div v-if="whatType == '13'">
+            <div class="backDetail" v-for="(ele, index) in tableDetails" :key="index">
+              <div class="formLeft">
+                <div class="title">专利</div>
+              </div>
+              <div class="formRight">
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">专利名称</div>
+                      <div class="content">{{ ele.zlmc }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">专利号</div>
+                      <div class="content">{{ ele.zlh }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">专利类型</div>
+                      <div class="content">{{ ele.zllx }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">申请日</div>
+                      <div class="content">{{ ele.sqrq }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">申请人</div>
+                      <div class="content">{{ ele.sqr }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">成果所属单位</div>
+                      <div class="content">{{ ele.cgssdw }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">附件</div>
+                      <div class="content">
+                        <div v-for="item in ele.fileList">
+                          <div style="display: flex; justify-content: space-between">
+                            <a>
+                              {{ item.fileName }}
+                            </a>
+                            <!-- <el-button>预览</el-button> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">审核状态</div>
+                      <div class="content">
+                        <el-select
+                          v-model="ele.status"
+                          placeholder="请选择"
+                          :disabled="true"
+                        >
+                          <el-option
+                            v-for="(item, index) in spjgOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          ></el-option>
+                        </el-select>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+
+              </div>
+            </div>
+          </div>
+          <div v-if="whatType == '14'">
+            <div class="backDetail" v-for="(ele, index) in tableDetails" :key="index">
+              <div class="formLeft">
+                <div class="title">著作</div>
+              </div>
+              <div class="formRight">
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">著作名称</div>
+                      <div class="content">{{ ele.zzmc }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">类别</div>
+                      <div class="content">{{ ele.zzlb }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">出版时间</div>
+                      <div class="content">{{ ele.cbrq }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">出版社</div>
+                      <div class="content">{{ ele.cbs }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">出版社级别</div>
+                      <div class="content">{{ ele.cbsjb }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">作者</div>
+                      <div class="content">{{ ele.gtzz }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">成果所属单位</div>
+                      <div class="content">{{ ele.cgssdw }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">附件</div>
+                      <div class="content">
+                        <div v-for="item in ele.fileList">
+                          <div style="display: flex; justify-content: space-between">
+                            <a>
+                              {{ item.fileName }}
+                            </a>
+                            <!-- <el-button>预览</el-button> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">审核状态</div>
+                      <div class="content">
+                        <el-select
+                          v-model="ele.status"
+                          placeholder="请选择"
+                          :disabled="true"
+                        >
+                          <el-option
+                            v-for="(item, index) in spjgOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          ></el-option>
+                        </el-select>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+
+              </div>
+            </div>
+          </div>
+          <div v-if="whatType == '15'">
+            <div class="backDetail" v-for="(ele, index) in tableDetails" :key="index">
+              <div class="formLeft">
+                <div class="title">软件著作</div>
+              </div>
+              <div class="formRight">
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">软著名称</div>
+                      <div class="content">{{ ele.rjzzmc }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">软件著作权类型</div>
+                      <div class="content">{{ ele.rjzzqlx }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">音像制品类型</div>
+                      <div class="content">{{ ele.yxzplx }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">证书号</div>
+                      <div class="content">{{ ele.zsh }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">登记号</div>
+                      <div class="content">{{ ele.djh }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">著作权人</div>
+                      <div class="content">{{ ele.zzqr }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">学校署名顺序</div>
+                      <div class="content">{{ ele.xxsmsx }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">附件</div>
+                      <div class="content">
+                        <div v-for="item in ele.fileList">
+                          <div style="display: flex; justify-content: space-between">
+                            <a>
+                              {{ item.fileName }}
+                            </a>
+                            <!-- <el-button>预览</el-button> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">审核状态</div>
+                      <div class="content">
+                        <el-select
+                          v-model="ele.status"
+                          placeholder="请选择"
+                          :disabled="true"
+                        >
+                          <el-option
+                            v-for="(item, index) in spjgOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          ></el-option>
+                        </el-select>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+
+              </div>
+            </div>
+          </div>
+          <div v-if="whatType == '16'">
+            <div class="backDetail" v-for="(ele, index) in tableDetails" :key="index">
+              <div class="formLeft">
+                <div class="title">研究报告</div>
+              </div>
+              <div class="formRight">
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">报告名称</div>
+                      <div class="content">{{ ele.bgmc }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">编号</div>
+                      <div class="content">{{ ele.bh }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">字数</div>
+                      <div class="content">{{ ele.zs }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">提交单位</div>
+                      <div class="content">{{ ele.tjdw }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">单位级别</div>
+                      <div class="content">{{ ele.dwjb }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">是否采纳</div>
+                      <div class="content">{{ ele.sfcn }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">采纳时间</div>
+                      <div class="content">{{ ele.cnrq }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">作者</div>
+                      <div class="content">{{ ele.zzxm }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">成果所属单位</div>
+                      <div class="content">{{ ele.cgssdw }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">附件</div>
+                      <div class="content">
+                        <div v-for="item in ele.fileList">
+                          <div style="display: flex; justify-content: space-between">
+                            <a>
+                              {{ item.fileName }}
+                            </a>
+                            <!-- <el-button>预览</el-button> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">审核状态</div>
+                      <div class="content">
+                        <el-select
+                          v-model="ele.status"
+                          placeholder="请选择"
+                          :disabled="true"
+                        >
+                          <el-option
+                            v-for="(item, index) in spjgOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          ></el-option>
+                        </el-select>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
+          </div>
         </template>
         <span slot="footer" class="dialog-footer">
           <el-button
@@ -710,6 +1254,7 @@ import {
   queryRych,
   queryHdxx,
   queryCyjl,
+  queryLwqk, queryKyzl, queryKyzz, queryRjzz, queryYjbg,
 } from "@/api/stuDangan/detailList/many";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
@@ -1047,6 +1592,76 @@ export default {
             }));
           });
           break;
+        case "科研论文":
+          this.whatType = "12";
+          await queryLwqk(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: tar.businesId,
+              mk: tar.mk,
+              processId: tar.processId,
+              status: tar.status,
+              taskId: tar.taskId,
+              xh: tar.xh,
+            }));
+          });
+          break;
+        case "专利":
+          this.whatType = "13";
+          await queryKyzl(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: tar.businesId,
+              mk: tar.mk,
+              processId: tar.processId,
+              status: tar.status,
+              taskId: tar.taskId,
+              xh: tar.xh,
+            }));
+          });
+          break;
+        case "著作":
+          this.whatType = "14";
+          await queryKyzz(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: tar.businesId,
+              mk: tar.mk,
+              processId: tar.processId,
+              status: tar.status,
+              taskId: tar.taskId,
+              xh: tar.xh,
+            }));
+          });
+          break;
+        case "软件著作":
+          this.whatType = "15";
+          await queryRjzz(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: tar.businesId,
+              mk: tar.mk,
+              processId: tar.processId,
+              status: tar.status,
+              taskId: tar.taskId,
+              xh: tar.xh,
+            }));
+          });
+          break;
+        case "研究报告":
+          this.whatType = "16";
+          await queryYjbg(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: tar.businesId,
+              mk: tar.mk,
+              processId: tar.processId,
+              status: tar.status,
+              taskId: tar.taskId,
+              xh: tar.xh,
+            }));
+          });
+          break;
       }
       this.upDownIndex = this.upDownIndex - 1;
     },
@@ -1202,6 +1817,76 @@ export default {
           case "创业经历":
             this.whatType = "11";
             await queryCyjl(data).then((res) => {
+              this.tableDetails = res.data;
+              this.commonParams = res.data.map((v) => ({
+                businesId: tar.businesId,
+                mk: tar.mk,
+                processId: tar.processId,
+                status: tar.status,
+                taskId: tar.taskId,
+                xh: tar.xh,
+              }));
+            });
+            break;
+          case "科研论文":
+            this.whatType = "12";
+            await queryLwqk(data).then((res) => {
+              this.tableDetails = res.data;
+              this.commonParams = res.data.map((v) => ({
+                businesId: tar.businesId,
+                mk: tar.mk,
+                processId: tar.processId,
+                status: tar.status,
+                taskId: tar.taskId,
+                xh: tar.xh,
+              }));
+            });
+            break;
+          case "专利":
+            this.whatType = "13";
+            await queryKyzl(data).then((res) => {
+              this.tableDetails = res.data;
+              this.commonParams = res.data.map((v) => ({
+                businesId: tar.businesId,
+                mk: tar.mk,
+                processId: tar.processId,
+                status: tar.status,
+                taskId: tar.taskId,
+                xh: tar.xh,
+              }));
+            });
+            break;
+          case "著作":
+            this.whatType = "14";
+            await queryKyzz(data).then((res) => {
+              this.tableDetails = res.data;
+              this.commonParams = res.data.map((v) => ({
+                businesId: tar.businesId,
+                mk: tar.mk,
+                processId: tar.processId,
+                status: tar.status,
+                taskId: tar.taskId,
+                xh: tar.xh,
+              }));
+            });
+            break;
+          case "软件著作":
+            this.whatType = "15";
+            await queryRjzz(data).then((res) => {
+              this.tableDetails = res.data;
+              this.commonParams = res.data.map((v) => ({
+                businesId: tar.businesId,
+                mk: tar.mk,
+                processId: tar.processId,
+                status: tar.status,
+                taskId: tar.taskId,
+                xh: tar.xh,
+              }));
+            });
+            break;
+          case "研究报告":
+            this.whatType = "16";
+            await queryYjbg(data).then((res) => {
               this.tableDetails = res.data;
               this.commonParams = res.data.map((v) => ({
                 businesId: tar.businesId,
@@ -1449,6 +2134,76 @@ export default {
             }));
           });
           break;
+        case "科研论文":
+          this.whatType = "12";
+          await queryLwqk(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: row.businesId,
+              mk: row.mk,
+              processId: row.processId,
+              status: row.status,
+              taskId: row.taskId,
+              xh: row.xh,
+            }));
+          });
+          break;
+        case "专利":
+          this.whatType = "13";
+          await queryKyzl(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: row.businesId,
+              mk: row.mk,
+              processId: row.processId,
+              status: row.status,
+              taskId: row.taskId,
+              xh: row.xh,
+            }));
+          });
+          break;
+        case "著作":
+          this.whatType = "14";
+          await queryKyzz(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: row.businesId,
+              mk: row.mk,
+              processId: row.processId,
+              status: row.status,
+              taskId: row.taskId,
+              xh: row.xh,
+            }));
+          });
+          break;
+        case "软件著作":
+          this.whatType = "15";
+          await queryRjzz(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: row.businesId,
+              mk: row.mk,
+              processId: row.processId,
+              status: row.status,
+              taskId: row.taskId,
+              xh: row.xh,
+            }));
+          });
+          break;
+        case "研究报告":
+          this.whatType = "16";
+          await queryYjbg(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: row.businesId,
+              mk: row.mk,
+              processId: row.processId,
+              status: row.status,
+              taskId: row.taskId,
+              xh: row.xh,
+            }));
+          });
+          break;
       }
     },
     changeSelect() {
@@ -1670,6 +2425,76 @@ export default {
             background: url("~@/assets/assistantPng/out.png") no-repeat;
           }
         }
+      }
+    }
+  }
+  .backDetail {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #cccccc;
+    .formLeft {
+      width: 15%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      .title {
+        width: 100%;
+        text-align: center;
+      }
+    }
+    .formRight {
+      width: 85%;
+      .rowStyle {
+        padding: 0 !important;
+        margin: 0;
+        border-bottom: 1px solid #cccccc;
+      }
+      .wrap {
+        display: flex;
+        align-items: center;
+        .title {
+          flex: 0 0 160px;
+          line-height: 48px;
+          background: #e0e0e0;
+          text-align: right;
+          padding-right: 5px;
+          margin: 0 !important;
+        }
+        .content {
+          font-weight: 400;
+          font-size: 14px;
+          color: #1f1f1f;
+          line-height: 22px;
+          margin-left: 16px;
+        }
+      }
+
+      .GreenButton {
+        //border: 1px solid grey;
+        height: 49px;
+        border-radius: 2px;
+        background: #005657;
+      }
+      .title1 {
+        font-size: 16px;
+        text-align: center;
+        line-height: 48px;
+        color: #fff;
+        // vertical-align: middle;
+      }
+      .icon {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        vertical-align: top;
+        margin-right: 5px;
+      }
+      .greenIcon {
+        margin: 15px;
+        background: url("~@/assets/assistantPng/add.png") no-repeat;
       }
     }
   }

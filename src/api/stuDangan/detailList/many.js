@@ -92,4 +92,45 @@ export function query5(query) {
       data: data
     })
   }
+  // 论文期刊列表查询
+export function queryLwqk(query) {
+  return request({
+    url: '/czdaLwqk/queryLwqkList',
+    method: 'post',
+    data: query
+  })
+}
+// 科研专利列表查询
+export function queryKyzl(query) {
+  return request({
+    url: '/czdaZl/queryZlList',
+    method: 'post',
+    data: query
+  })
+}
+// 科研著作列表查询
+export function queryKyzz(query) {
+  return request({
+    url: '/czdaZz/queryZzList',
+    method: 'post',
+    data: query
+  })
+}
+// 软件著作列表查询
+export function queryRjzz(query) {
+  return request({
+    url: '/czdaRjzz/queryRjzzList',
+    method: 'post',
+    data: query
+  })
+}
+
+// 研究报告列表查询
+export function queryYjbg(query) {
+  return request({
+    url: '/czdaYjbg/queryYjbgList',
+    method: 'post',
+    data: query
+  })
+}
   

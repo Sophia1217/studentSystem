@@ -82,28 +82,31 @@
         班级列表<span class="iconfont repeat_icon">&#xe7b1; </span>
       </h3>
       <el-row :gutter="10" class="mb8" style="float: right; margin-top: 15px">
-        <!-- <el-col :span="1.5" style="float: left"> 班级列表 </el-col> -->
         <el-col :span="1.5">
-          <el-button
+          <!-- <el-button
             type="primary"
             class="create"
             icon="el-icon-search"
             @click="handleAdd"
           >
             新建班级</el-button
-          >
+          > -->
+          <div class="btns borderGreen" @click="handleAdd">
+            <i class="icon greenIcon"></i><span class="title1">新建班级</span>
+          </div>
         </el-col>
         <el-col :span="1.5">
-          <el-button class="export" @click="handleExport">
+          <!-- <el-button class="export" @click="handleExport">
             <span class="iconfont icon-daochu-06"></span>
             导出班级名单</el-button
-          >
+          > -->
+          <div class="btns borderOrange" @click="handleExport">
+            <i class="icon orangeIcon"></i><span class="title">导出</span>
+          </div>
         </el-col>
-        <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
       </el-row>
     </div>
 
-    <!-- v-loading="loading" -->
     <el-table
       :data="noticeList"
       @selection-change="handleSelectionChange"
@@ -695,5 +698,47 @@ export default {
 
 .deleteClass {
   cursor: pointer;
+}
+.borderOrange {
+  border: 1px solid grey;
+  background: #fff;
+}
+.borderGreen {
+  border: 1px solid grey;
+  background: #005657;
+}
+.btns {
+  margin-right: 15px;
+  padding: 0px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.title {
+  font-size: 14px;
+  text-align: center;
+  line-height: 32px;
+}
+.title1 {
+  font-size: 14px;
+  text-align: center;
+  line-height: 32px;
+  color: #fff;
+}
+.icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: top;
+  margin-right: 5px;
+}
+
+.orangeIcon {
+  margin-top: 10px;
+  background: url("~@/assets/assistantPng/out.png") no-repeat;
+}
+
+.greenIcon {
+  margin-top: 10px;
+  background: url("~@/assets/assistantPng/add.png") no-repeat;
 }
 </style>

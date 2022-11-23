@@ -5,15 +5,18 @@
         {{ table_title }}<span class="iconfont repeat_icon">&#xe7b1; </span>
       </h3>
       <el-row :gutter="10" class="mb8" style="float: right; margin-top: 15px">
-        <el-col :span="1.5">
-          <el-button
+        <!-- <el-col :span="1.5"> -->
+        <!-- <el-button
             icon="el-icon-delete"
             style="color: #eb3842; border-color: #eb3842"
             @click="deleteRecord"
           >
             删除</el-button
           >
-        </el-col>
+        </el-col> -->
+        <div class="btns borderLight" @click="deleteRecord">
+          <i class="icon lightIcon"></i><span class="title">删除</span>
+        </div>
       </el-row>
     </div>
 
@@ -71,7 +74,7 @@ export default {
       // 任职记录当前行数据
       currentRow: [],
       // 任职记录勾选框收集ids
-      currentRow_ids:[],
+      currentRow_ids: [],
       // 任职记录errcode
       errcode: "-200",
       // 当前班级代码
@@ -122,7 +125,7 @@ export default {
     this.getList(this.queryParams);
   },
   activated() {
-     this.table_title = this.$route.query.table_title;
+    this.table_title = this.$route.query.table_title;
     this.queryParams.bjdm = this.$route.query.bjdm;
     this.getList(this.queryParams);
   },
@@ -144,34 +147,34 @@ export default {
       // console.log("this.xhs:", this.xhs);
       // console.log("this.zws:", this.zws);
       if (this.currentRow_ids && this.currentRow_ids.length > 0) {
-          getDeleteBgbRm({ ids: this.currentRow_ids }).then((res) => {
+        getDeleteBgbRm({ ids: this.currentRow_ids }).then((res) => {
           this.getList({
             bjdm: this.$route.query.bjdm,
             pageNum: 1,
             pageSize: 10,
           });
-          this.currentRow_ids= []
-          this.arr= []
-          console.log("11",this.currentRow_ids);
+          this.currentRow_ids = [];
+          this.arr = [];
+          console.log("11", this.currentRow_ids);
         });
-        } else {
-          this.$message.error("请先勾选数据");
-        }
-      
+      } else {
+        this.$message.error("请先勾选数据");
+      }
+
       // this.xhs = "";
       // this.zws = "";
       // this.errcode = "-200";
     },
     // 班干部记录删除
     handleSelectionChange(row) {
-      console.log("row",row);
+      console.log("row", row);
       //待优化
       this.getData(row);
-      console.log("this.getData(row)",this.getData(row));
-      console.log("his.arr",this.arr);
+      console.log("this.getData(row)", this.getData(row));
+      console.log("his.arr", this.arr);
       var data = Array.from(new Set(this.arr.map((item) => item.id))).join(",");
-      console.log("data",data);
-       //给后端的参数
+      console.log("data", data);
+      //给后端的参数
       this.currentRow_ids = data;
     },
     getData(data) {
@@ -185,7 +188,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style scoped lang="scss">
 .app-container {
   /* height: 100vh; */
   background-color: white;
@@ -278,5 +281,41 @@ export default {
 }
 .allocate_none {
   color: red;
+}
+.borderLight {
+  border: 1px solid grey;
+  color: red;
+  background: #fff;
+}
+.btns {
+  margin-right: 15px;
+  padding: 0px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  .title {
+    font-size: 14px;
+    text-align: center;
+    line-height: 32px;
+    // vertical-align: middle;
+  }
+  .title1 {
+    font-size: 14px;
+    text-align: center;
+    line-height: 32px;
+    color: #fff;
+    // vertical-align: middle;
+  }
+  .icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: top;
+    margin-right: 5px;
+  }
+
+  .lightIcon {
+    margin-top: 9px;
+    background: url("~@/assets/assistantPng/delete.png") no-repeat;
+  }
 }
 </style>

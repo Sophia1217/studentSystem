@@ -16,7 +16,7 @@
 
       <div class="table-content">
         <div class="classLeader" v-show="currentIndex == 0">
-          <div class="title" icon="el-icon-refresh">
+          <!-- <div class="title" icon="el-icon-refresh">
             <span class="title-item">{{ table_title }}</span>
             <span class="iconfont">&#xe631;</span>
             <el-row :gutter="10" class="mb8" style="float: right">
@@ -39,29 +39,44 @@
                 >
               </el-col>
             </el-row>
+          </div> -->
+          <div class="content_top">
+            <div class="headerLeft">
+              <span class="title">{{ table_title }}</span>
+              <i class="Updataicon"></i>
+            </div>
+            <div class="headerRight">
+              <div class="btns borderBlue" @click="studentRecord1">
+                <span class="title">任职记录</span>
+              </div>
+              <div class="btns borderBlue" @click="deleteSome">
+                <i class="icon removeIcon"></i
+                ><span class="title">批量撤任</span>
+              </div>
+            </div>
           </div>
-          <!-- v-loading="loading" -->
-          <el-table
-            :data="queryBgbList"
-            @selection-change="handleSelectionChangeBgb"
-          >
-            <el-table-column type="selection" align="center" />
-            <el-table-column
-              label="序号"
-              align="center"
-              prop="id"
-              width="60px"
-              type="index"
-            />
-            <el-table-column label="学号" align="center" prop="xh" />
-            <el-table-column label="姓名" align="center" prop="xm">
-            </el-table-column>
-            <el-table-column label="性别" align="center" prop="sex" />
-            <el-table-column label="班级职位" align="center" prop="zwdm" />
-            <el-table-column label="任命人" align="center" prop="rmrgh" />
-            <el-table-column label="任命时间" align="center" prop="rmsj" />
+          <div class="mt15">
+            <el-table
+              :data="queryBgbList"
+              @selection-change="handleSelectionChangeBgb"
+            >
+              <el-table-column type="selection" align="center" />
+              <el-table-column
+                label="序号"
+                align="center"
+                prop="id"
+                width="60px"
+                type="index"
+              />
+              <el-table-column label="学号" align="center" prop="xh" />
+              <el-table-column label="姓名" align="center" prop="xm">
+              </el-table-column>
+              <el-table-column label="性别" align="center" prop="sex" />
+              <el-table-column label="班级职位" align="center" prop="zwdm" />
+              <el-table-column label="任命人" align="center" prop="rmrgh" />
+              <el-table-column label="任命时间" align="center" prop="rmsj" />
 
-            <!-- <el-table-column label="操作" align="center" prop="level">
+              <!-- <el-table-column label="操作" align="center" prop="level">
               <template slot-scope="scope">
                 <span
                   class="iconfont allocate_teacher"
@@ -76,15 +91,16 @@
                 </span>
               </template>
             </el-table-column> -->
-          </el-table>
-          <pagination
-            id="pagenation"
-            v-show="total > 0"
-            :total="total"
-            :page.sync="queryParams.pageNum"
-            :limit.sync="queryParams.pageSize"
-            @pagination="getList"
-          />
+            </el-table>
+            <pagination
+              id="pagenation"
+              v-show="total > 0"
+              :total="total"
+              :page.sync="queryParams.pageNum"
+              :limit.sync="queryParams.pageSize"
+              @pagination="getList"
+            />
+          </div>
         </div>
         <div class="allClassmates" v-show="currentIndex == 1">
           <div>
@@ -132,7 +148,7 @@
               </div>
             </el-form>
           </div>
-          <div class="title" icon="el-icon-refresh">
+          <!-- <div class="title" icon="el-icon-refresh">
             <span class="title-item">{{ table_title }}</span>
             <span class="iconfont">&#xe631;</span>
             <el-row :gutter="10" class="mb8" style="float: right">
@@ -153,22 +169,37 @@
                 >
               </el-col>
             </el-row>
+          </div> -->
+          <div class="content_top">
+            <div class="headerLeft">
+              <span class="title">{{ table_title }}</span>
+              <i class="Updataicon"></i>
+            </div>
+            <div class="headerRight">
+              <div class="btns borderBlue" @click="studentRecord1">
+                <span class="title">任职记录</span>
+              </div>
+              <div class="btns borderBlue" @click="actionAssignBgb">
+                <i class="icon plCancelIcon"></i
+                ><span class="title">批量任命</span>
+              </div>
+            </div>
           </div>
-          <!-- v-loading="loading" -->
-          <el-table :data="stuList" @selection-change="handleSelectionChange">
-            <el-table-column type="selection" align="center" />
-            <el-table-column
-              label="序号"
-              align="center"
-              type="index"
-              width="60px"
-            />
-            <el-table-column label="学号" align="center" prop="xh" />
-            <el-table-column label="姓名" align="center" prop="xm">
-            </el-table-column>
-            <el-table-column label="性别" align="center" prop="sex" />
-            <el-table-column label="班级职位" align="center" prop="zwdm" />
-            <!-- <el-table-column label="操作" align="center" prop="level">
+          <div class="mt15">
+            <el-table :data="stuList" @selection-change="handleSelectionChange">
+              <el-table-column type="selection" align="center" />
+              <el-table-column
+                label="序号"
+                align="center"
+                type="index"
+                width="60px"
+              />
+              <el-table-column label="学号" align="center" prop="xh" />
+              <el-table-column label="姓名" align="center" prop="xm">
+              </el-table-column>
+              <el-table-column label="性别" align="center" prop="sex" />
+              <el-table-column label="班级职位" align="center" prop="zwdm" />
+              <!-- <el-table-column label="操作" align="center" prop="level">
               <template slot-scope="scope">
                 <span
                   class="iconfont allocate_teacher"
@@ -183,15 +214,16 @@
                 </span>
               </template>
             </el-table-column> -->
-          </el-table>
-          <pagination
-            id="pagenation"
-            v-show="total > 0"
-            :total="total"
-            :page.sync="queryParams1.pageNum"
-            :limit.sync="queryParams1.pageSize"
-            @pagination="handleQueryClass"
-          />
+            </el-table>
+            <pagination
+              id="pagenation"
+              v-show="total > 0"
+              :total="total"
+              :page.sync="queryParams1.pageNum"
+              :limit.sync="queryParams1.pageSize"
+              @pagination="handleQueryClass"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -557,7 +589,7 @@ export default {
     },
     // 批量取消分配-确认操作
     cancelAllocateConfirm() {
-      if(this.formDismission.reason== ""){
+      if (this.formDismission.reason == "") {
         this.$message.error("撤任理由不能为空！");
       } else if (this.formDismission.offDate == "") {
         this.$message.error("撤任时间不能为空!");
@@ -567,7 +599,6 @@ export default {
           this.doubleCheck = true;
         }, 500);
       }
-      
     },
     // 批量撤任-二次确认按钮
     doubleCheckConfirm() {
@@ -610,7 +641,7 @@ export default {
     // 批量任命班干部-确认操作
     assignBgbConfirm() {
       // console.log("批量任命确认操作");
-      if(this.form.rmsj== ""){
+      if (this.form.rmsj == "") {
         this.$message.error("任命时间不能为空！");
       } else if (this.form.bgbid == "") {
         this.$message.error("班干部职位不能为空!");
@@ -632,7 +663,6 @@ export default {
           this.doubleAssign = true;
         }, 500);
       }
-      
     },
 
     //班干部批量任命————二次确定操作
@@ -690,7 +720,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .assign-table {
   background-color: #ffffff;
 }
@@ -700,7 +730,88 @@ export default {
   transform: translateX(-50%);
   text-align: center;
 }
-
+.mt15 {
+  margin-top: 15px;
+}
+.content_top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+.headerLeft {
+  .title {
+    font-weight: 600;
+    font-size: 20px;
+    color: #1f1f1f;
+    line-height: 28px;
+  }
+  .Updataicon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    width: 20px;
+    height: 20px;
+    background: url("~@/assets/images/updata.png") no-repeat;
+  }
+}
+.headerRight {
+  display: flex;
+  .borderBlue {
+    background: #fff;
+    border: 1px solid grey;
+  }
+  .btns {
+    margin-right: 15px;
+    padding: 0px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    .title {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      // vertical-align: middle;
+    }
+    .title1 {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      color: #fff;
+      // vertical-align: middle;
+    }
+    .icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      vertical-align: top;
+      margin-right: 5px;
+    }
+    .blueIcon {
+      margin-top: 10px;
+      background: url("~@/assets/assistantPng/in.png") no-repeat;
+    }
+    .orangeIcon {
+      margin-top: 10px;
+      background: url("~@/assets/assistantPng/out.png") no-repeat;
+    }
+    .lightIcon {
+      margin-top: 9px;
+      background: url("~@/assets/assistantPng/delete.png") no-repeat;
+    }
+    .greenIcon {
+      margin-top: 10px;
+      background: url("~@/assets/assistantPng/add.png") no-repeat;
+    }
+    .removeIcon {
+      margin-top: 10px;
+      background: url("~@/assets/images/icon_remove.png") no-repeat;
+    }
+    .plCancelIcon {
+      margin-top: 10px;
+      background: url("~@/assets/images/plCancel.png") no-repeat;
+    }
+  }
+}
 .table-content {
   padding-left: 40px;
   padding-right: 40px;

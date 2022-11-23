@@ -79,10 +79,16 @@
       </el-form-item>
     </el-form>
     <div class="table-content">
-      <div class="title" icon="el-icon-refresh">
-        <span class="title-itemll">分班管理列表</span>
-        <span class="iconfont">&#xe631;</span>
-        <el-row :gutter="10" class="mb8" style="float: right">
+      <div class="content_top" icon="el-icon-refresh">
+        <div class="headerLeft">
+          <span class="title">分班管理列表</span>
+          <i class="Updataicon"></i>
+        </div>
+        <!-- <div class="headerLeft">
+          <span class="title-itemll">分班管理列表</span>
+          <span class="iconfont">&#xe631;</span>
+        </div> -->
+        <!-- <el-row :gutter="10" class="mb8" style="float: right">
           <el-col :span="1.5">
             <el-button class="export" @click="mbDown"> 模板下载</el-button>
           </el-col>
@@ -100,25 +106,45 @@
               <el-button class="export"> 导入</el-button>
             </el-upload>
           </el-col>
-        </el-row>
+        </el-row> -->
+        <div class="headerRight">
+          <div class="btns borderBlue" @click="mbDown">
+            <i class="icon downIcon"></i><span class="title">模板下载</span>
+          </div>
+
+          <div class="btns borderBlue">
+            <el-upload
+              accept=".xlsx,.xls"
+              :auto-upload="true"
+              :action="uploadUrl"
+              :show-file-list="false"
+              :data="fileData"
+              :headers="fileHeader"
+              :on-success="upLoadSuccess"
+              :on-error="upLoadError"
+            >
+              <i class="icon blueIcon"></i><span class="title">导入</span>
+            </el-upload>
+          </div>
+        </div>
       </div>
-      <!-- v-loading="loading" -->
-      <el-table :data="noticeList" @sort-change="changeTableSort">
-        <el-table-column label="序号" align="center" type="index" />
-        <el-table-column
-          label="班级编号"
-          align="center"
-          prop="bjdm"
-          sortable="custom"
-        />
-        <el-table-column
-          label="班级名称"
-          align="center"
-          width="250px"
-          prop="bjmc"
-          sortable="custom"
-        >
-          <!-- <template slot-scope="{ row }">
+      <div class="mt15">
+        <el-table :data="noticeList" @sort-change="changeTableSort">
+          <el-table-column label="序号" align="center" type="index" />
+          <el-table-column
+            label="班级编号"
+            align="center"
+            prop="bjdm"
+            sortable="custom"
+          />
+          <el-table-column
+            label="班级名称"
+            align="center"
+            width="250px"
+            prop="bjmc"
+            sortable="custom"
+          >
+            <!-- <template slot-scope="{ row }">
             <el-input
               v-model="row.bjmc"
               clearable
@@ -126,65 +152,66 @@
               @keyup.enter.native="alterClassName(row)"
             />
           </template> -->
-        </el-table-column>
-        <el-table-column
-          label="培养单位"
-          align="center"
-          prop="ssdwmc"
-          sortable="custom"
-        >
-        </el-table-column>
-        <el-table-column
-          label="培养层次"
-          align="center"
-          prop="pyccName"
-          sortable="custom"
+          </el-table-column>
+          <el-table-column
+            label="培养单位"
+            align="center"
+            prop="ssdwmc"
+            sortable="custom"
+          >
+          </el-table-column>
+          <el-table-column
+            label="培养层次"
+            align="center"
+            prop="pyccName"
+            sortable="custom"
+          />
+          <el-table-column
+            label="年级"
+            align="center"
+            prop="ssnj"
+            sortable="custom"
+          />
+          <el-table-column
+            label="班级人数"
+            align="center"
+            prop="stuNumOfClass"
+            sortable="custom"
+          />
+          <el-table-column
+            label="创建时间"
+            align="center"
+            prop="createTime"
+            sortable="custom"
+          />
+          <el-table-column
+            label="更新时间"
+            align="center"
+            prop="updateTime"
+            sortable="custom"
+            class-name="small-padding fixed-width"
+          />
+          <el-table-column
+            label="操作"
+            align="center"
+            sortable
+            class-name="small-padding fixed-width"
+          >
+            <template slot-scope="scope">
+              <div @click="operate(scope.row)" class="operate">
+                <span class="operateSpan" v-if="fbgl">分班管理</span>
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+        <pagination
+          v-show="total > 0"
+          :total="total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="getList"
         />
-        <el-table-column
-          label="年级"
-          align="center"
-          prop="ssnj"
-          sortable="custom"
-        />
-        <el-table-column
-          label="班级人数"
-          align="center"
-          prop="stuNumOfClass"
-          sortable="custom"
-        />
-        <el-table-column
-          label="创建时间"
-          align="center"
-          prop="createTime"
-          sortable="custom"
-        />
-        <el-table-column
-          label="更新时间"
-          align="center"
-          prop="updateTime"
-          sortable="custom"
-          class-name="small-padding fixed-width"
-        />
-        <el-table-column
-          label="操作"
-          align="center"
-          sortable
-          class-name="small-padding fixed-width"
-        >
-          <template slot-scope="scope">
-            <div @click="operate(scope.row)" class="operate">
-              <span class="operateSpan" v-if="fbgl">分班管理</span>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-      <pagination
-        v-show="total > 0"
-        :total="total"
-        :page.sync="queryParams.pageNum"
-        :limit.sync="queryParams.pageSize"
-        @pagination="getList"
-      />
+      </div>
     </div>
   </div>
 </template>
@@ -373,14 +400,16 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style scoped lang="scss">
 .division-class {
   background-color: #fff;
   margin-top: 10px;
   padding-bottom: 20px;
   /* height: 100%; */
 }
-
+.mt15 {
+  margin-top: 15px;
+}
 .table-header {
   background-color: #ffffff;
   height: 80px;
@@ -390,7 +419,22 @@ export default {
   padding-left: 20px;
   padding-right: 20px;
 }
-
+.headerLeft {
+  .title {
+    font-weight: 600;
+    font-size: 20px;
+    color: #1f1f1f;
+    line-height: 28px;
+  }
+  .Updataicon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    width: 20px;
+    height: 20px;
+    background: url("../../../assets/images/updata.png") no-repeat;
+  }
+}
 .header-item {
   display: flex;
   justify-content: center;
@@ -435,10 +479,6 @@ export default {
   /* margin-top: 24px; */
 }
 
-.title {
-  margin-bottom: 32px;
-  text-align: left;
-}
 .title-itemlll {
   width: 10%;
   height: 28px;
@@ -466,5 +506,64 @@ export default {
   right: 50%;
   position: absolute;
   transform: translateX(50%);
+}
+.content_top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+.headerRight {
+  display: flex;
+  .borderBlue {
+    background: #fff;
+    border: 1px solid grey;
+  }
+  .btns {
+    margin-right: 15px;
+    padding: 0px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    .title {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      // vertical-align: middle;
+    }
+    .title1 {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      color: #fff;
+      // vertical-align: middle;
+    }
+    .icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      vertical-align: top;
+      margin-right: 5px;
+    }
+    .blueIcon {
+      margin-top: 10px;
+      background: url("~@/assets/assistantPng/in.png") no-repeat;
+    }
+    .orangeIcon {
+      margin-top: 10px;
+      background: url("~@/assets/assistantPng/out.png") no-repeat;
+    }
+    .lightIcon {
+      margin-top: 9px;
+      background: url("~@/assets/assistantPng/delete.png") no-repeat;
+    }
+    .greenIcon {
+      margin-top: 10px;
+      background: url("~@/assets/assistantPng/add.png") no-repeat;
+    }
+    .downIcon {
+      margin-top: 10px;
+      background: url("~@/assets/images/down.png") no-repeat;
+    }
+  }
 }
 </style>

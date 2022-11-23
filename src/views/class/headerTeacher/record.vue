@@ -6,7 +6,7 @@
       </h3>
       <el-row :gutter="10" class="mb8" style="float: right; margin-top: 15px">
         <!-- <el-col :span="1.5" style="float: left"> 班级列表 </el-col> -->
-        <el-col :span="1.5">
+        <!-- <el-col :span="1.5">
           <el-button
             icon="el-icon-delete"
             style="color: #eb3842; border-color: #eb3842"
@@ -14,7 +14,10 @@
           >
             删除</el-button
           >
-        </el-col>
+        </el-col> -->
+        <div class="btns borderLight" @click="deleteRecord()">
+          <i class="icon lightIcon"></i><span class="title">删除</span>
+        </div>
         <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
       </el-row>
     </div>
@@ -193,7 +196,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style scoped lang="scss">
 .app-container {
   /* height: 100vh; */
   background-color: white;
@@ -280,5 +283,41 @@ export default {
 }
 .el-pagination {
   margin-top: 20px;
+}
+.borderLight {
+  border: 1px solid grey;
+  color: red;
+  background: #fff;
+}
+.btns {
+  margin-right: 15px;
+  padding: 0px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  .title {
+    font-size: 14px;
+    text-align: center;
+    line-height: 32px;
+    // vertical-align: middle;
+  }
+  .title1 {
+    font-size: 14px;
+    text-align: center;
+    line-height: 32px;
+    color: #fff;
+    // vertical-align: middle;
+  }
+  .icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: top;
+    margin-right: 5px;
+  }
+
+  .lightIcon {
+    margin-top: 9px;
+    background: url("~@/assets/assistantPng/delete.png") no-repeat;
+  }
 }
 </style>

@@ -74,20 +74,10 @@
       <div class="assign-table">
         <div class="haveDesigned" v-show="currentIndex == 0">
           <div class="table-content">
-            <div class="title" icon="el-icon-refresh">
+            <!-- <div class="title" icon="el-icon-refresh">
               <span class="fptitle-item">{{ this.$route.query.bjmc }}</span>
               <span class="iconfont">&#xe631;</span>
               <el-row :gutter="10" class="mb8" style="float: right">
-                <!-- <el-col :span="1.5">
-                <el-button
-                  type="primary"
-                  class="create"
-                  icon="el-icon-search"
-                  @click="handleAssignMore"
-                >
-                  批量分配</el-button
-                >
-              </el-col> -->
                 <el-col :span="1.5">
                   <el-button
                     class="delete"
@@ -97,93 +87,105 @@
                   >
                 </el-col>
               </el-row>
+            </div> -->
+            <div class="content_top">
+              <div class="headerLeft">
+                <span class="title">{{ this.$route.query.bjmc }}</span>
+                <i class="Updataicon"></i>
+              </div>
+              <div class="headerRight">
+                <div class="btns borderBlue" @click="deleteAssignMore">
+                  <i class="icon removeIcon"></i
+                  ><span class="title">批量免去</span>
+                </div>
+              </div>
             </div>
-            <!-- v-loading="loading" -->
-            <el-table
-              :data="placementPageList"
-              @selection-change="handleSelectionChange"
-              @sort-change="changeTableSort"
-            >
-              <el-table-column type="selection" align="center" />
-              <el-table-column
-                label="序号"
-                align="center"
-                type="index"
-                width="60px"
-              />
-              <el-table-column
-                label="学工号"
-                align="center"
-                prop="gh"
-                sortable="custom"
-              />
-              <el-table-column
-                label="姓名"
-                align="center"
-                prop="xm"
-                sortable="custom"
+            <div class="mt15">
+              <el-table
+                :data="placementPageList"
+                @selection-change="handleSelectionChange"
+                @sort-change="changeTableSort"
               >
-                <!-- <el-input
+                <el-table-column type="selection" align="center" />
+                <el-table-column
+                  label="序号"
+                  align="center"
+                  type="index"
+                  width="60px"
+                />
+                <el-table-column
+                  label="学工号"
+                  align="center"
+                  prop="gh"
+                  sortable="custom"
+                />
+                <el-table-column
+                  label="姓名"
+                  align="center"
+                  prop="xm"
+                  sortable="custom"
+                >
+                  <!-- <el-input
               :value="noticeList[0].className"
               clearable
               @keyup.enter.native="handleQuery"
             /> -->
-              </el-table-column>
-              <el-table-column
-                label="性别"
-                align="center"
-                prop="xb"
-                sortable="custom"
-              />
-              <el-table-column
-                label="工作单位"
-                align="center"
-                prop="dwmc"
-                sortable="custom"
-              />
-              <el-table-column
-                label="已任职班级数量"
-                align="center"
-                prop="sl"
-                sortable="custom"
-              />
-              <el-table-column label="操作" align="center" width="150px">
-                <template slot-scope="scope">
-                  <div>
-                    <el-button
-                      type="text"
-                      size="small"
-                      :disabled="scope.row.sffp == '1' ? true : false"
-                      @click="allocateNone(scope.row)"
-                    >
-                      <span
-                        class="iconfont"
-                        :class="
-                          scope.row.sffp == '1'
-                            ? 'allocate_none'
-                            : 'allocate_class'
-                        "
-                        >&#xe638;</span
+                </el-table-column>
+                <el-table-column
+                  label="性别"
+                  align="center"
+                  prop="xb"
+                  sortable="custom"
+                />
+                <el-table-column
+                  label="工作单位"
+                  align="center"
+                  prop="dwmc"
+                  sortable="custom"
+                />
+                <el-table-column
+                  label="已任职班级数量"
+                  align="center"
+                  prop="sl"
+                  sortable="custom"
+                />
+                <el-table-column label="操作" align="center" width="150px">
+                  <template slot-scope="scope">
+                    <div>
+                      <el-button
+                        type="text"
+                        size="small"
+                        :disabled="scope.row.sffp == '1' ? true : false"
+                        @click="allocateNone(scope.row)"
                       >
-                      <span style="margin-left: 5px; font-size: 16px"
-                        >取消分配</span
-                      >
-                    </el-button>
-                  </div>
-                </template>
-              </el-table-column>
-            </el-table>
-            <pagination
-              id="pagenation"
-              v-show="total > 0"
-              :total="total"
-              :page.sync="queryParams.pageNum"
-              :limit.sync="queryParams.pageSize"
-              @pagination="getInstructorList"
-            />
+                        <span
+                          class="iconfont"
+                          :class="
+                            scope.row.sffp == '1'
+                              ? 'allocate_none'
+                              : 'allocate_class'
+                          "
+                          >&#xe638;</span
+                        >
+                        <span style="margin-left: 5px; font-size: 16px"
+                          >取消分配</span
+                        >
+                      </el-button>
+                    </div>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <pagination
+                id="pagenation"
+                v-show="total > 0"
+                :total="total"
+                :page.sync="queryParams.pageNum"
+                :limit.sync="queryParams.pageSize"
+                @pagination="getInstructorList"
+              />
+            </div>
           </div>
         </div>
-
         <div class="unDesigned" v-show="currentIndex == 1">
           <div class="table-content">
             <div class="title" icon="el-icon-refresh">
@@ -873,10 +875,88 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .assign_tea {
   background-color: white;
   padding: 10px;
+}
+.mt15 {
+  margin-top: 15px;
+}
+.content_top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+.headerLeft {
+  .title {
+    font-weight: 600;
+    font-size: 20px;
+    color: #1f1f1f;
+    line-height: 28px;
+  }
+  .Updataicon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    width: 20px;
+    height: 20px;
+    background: url("~@/assets/images/updata.png") no-repeat;
+  }
+}
+.headerRight {
+  display: flex;
+  .borderBlue {
+    background: #fff;
+    border: 1px solid grey;
+  }
+  .btns {
+    margin-right: 15px;
+    padding: 0px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    .title {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      // vertical-align: middle;
+    }
+    .title1 {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      color: #fff;
+      // vertical-align: middle;
+    }
+    .icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      vertical-align: top;
+      margin-right: 5px;
+    }
+    .blueIcon {
+      margin-top: 10px;
+      background: url("~@/assets/assistantPng/in.png") no-repeat;
+    }
+    .orangeIcon {
+      margin-top: 10px;
+      background: url("~@/assets/assistantPng/out.png") no-repeat;
+    }
+    .lightIcon {
+      margin-top: 9px;
+      background: url("~@/assets/assistantPng/delete.png") no-repeat;
+    }
+    .greenIcon {
+      margin-top: 10px;
+      background: url("~@/assets/assistantPng/add.png") no-repeat;
+    }
+    .removeIcon {
+      margin-top: 10px;
+      background: url("~@/assets/images/icon_remove.png") no-repeat;
+    }
+  }
 }
 /* 搜索 */
 .table-header {

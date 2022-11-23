@@ -87,7 +87,7 @@
     <!-- 辅导员管理首页列表 -->
     <div class="tea-table">
       <div class="table-content">
-        <div class="title" icon="el-icon-refresh" v-if="fpfdy">
+        <!-- <div class="title" icon="el-icon-refresh" v-if="fpfdy">
           <span class="title-itemopn">辅导员管理列表</span>
           <span class="iconfont">&#xe631;</span>
           <el-row :gutter="10" class="mb8" style="float: right">
@@ -102,96 +102,112 @@
               >
             </el-col>
           </el-row>
+        </div> -->
+        <div class="content_top">
+          <div class="headerLeft">
+            <span class="title">辅导员管理列表</span>
+            <i class="Updataicon"></i>
+          </div>
+          <div class="headerRight">
+            <div class="btns borderBlue" @click="assignClick">
+              <i class="icon plCancelIcon"></i
+              ><span class="title">批量分配</span>
+            </div>
+          </div>
         </div>
-        <!-- v-loading="loading" -->
-        <el-table
-          :data="noticeList"
-          @selection-change="handleSelectionChange"
-          @sort-change="changeTableSort"
-        >
-          <el-table-column type="selection" width="55" />
-          <el-table-column label="序号" align="center" type="index" />
-          <el-table-column
-            label="班级编号"
-            align="center"
-            prop="bjdm"
-            sortable
-          />
-          <el-table-column
-            label="班级名称"
-            align="center"
-            width="250px"
-            prop="bjmc"
-            sortable
-          />
-          <el-table-column
-            label="培养单位"
-            align="center"
-            prop="ssdwmc"
-            sortable
-          />
-          <el-table-column
-            label="培养层次"
-            align="center"
-            prop="pyccName"
-            sortable
-          />
-          <el-table-column
-            label="班级人数"
-            align="center"
-            prop="stuNumOfClass"
-            sortable
-          />
-          <el-table-column
-            label="创建时间"
-            align="center"
-            prop="createTime"
-            sortable
-          />
-          <el-table-column
-            label="操作"
-            align="center"
-            sortable
-            class-name="small-padding fixed-width"
+        <div class="mt15">
+          <el-table
+            :data="noticeList"
+            @selection-change="handleSelectionChange"
+            @sort-change="changeTableSort"
           >
-            <template slot-scope="scope">
-              <div class="ins-handle" v-if="fpfdy">
-                <!-- @click="assignTea(scope.row)" class="operate" -->
-                <!-- <span class="assignTea">分配辅导员</span> -->
-                <span
-                  class="iconfont allocate_teacher"
-                  @click="assignTea(scope.row)"
-                  >&#xe638;</span
-                >
-                <span
-                  style="color: #005657; margin-left: 5px; margin-right: 5px"
-                  @click="assignTea(scope.row)"
-                >
-                  分配辅导员
-                </span>
-              </div>
-              <div class="ins-handle" v-if="rejl">
-                <span
-                  class="iconfont record_icon"
-                  style="margin-left: 5px"
-                  @click="empRecordClick(scope.row)"
-                  >&#xe694;</span
-                >
-                <span style="color: #005657" @click="empRecordClick(scope.row)">
-                  任职记录
-                </span>
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
-        <pagination
-          id="pagenation"
-          v-show="total > 0"
-          :total="total"
-          :page.sync="queryParams.pageNum"
-          :limit.sync="queryParams.pageSize"
-          @pagination="getList"
-        />
+            <el-table-column type="selection" width="55" />
+            <el-table-column label="序号" align="center" type="index" />
+            <el-table-column
+              label="班级编号"
+              align="center"
+              prop="bjdm"
+              sortable
+            />
+            <el-table-column
+              label="班级名称"
+              align="center"
+              width="250px"
+              prop="bjmc"
+              sortable
+            />
+            <el-table-column
+              label="培养单位"
+              align="center"
+              prop="ssdwmc"
+              sortable
+            />
+            <el-table-column
+              label="培养层次"
+              align="center"
+              prop="pyccName"
+              sortable
+            />
+            <el-table-column
+              label="班级人数"
+              align="center"
+              prop="stuNumOfClass"
+              sortable
+            />
+            <el-table-column
+              label="创建时间"
+              align="center"
+              prop="createTime"
+              sortable
+            />
+            <el-table-column
+              label="操作"
+              align="center"
+              sortable
+              class-name="small-padding fixed-width"
+            >
+              <template slot-scope="scope">
+                <div class="ins-handle" v-if="fpfdy">
+                  <!-- @click="assignTea(scope.row)" class="operate" -->
+                  <!-- <span class="assignTea">分配辅导员</span> -->
+                  <span
+                    class="iconfont allocate_teacher"
+                    @click="assignTea(scope.row)"
+                    >&#xe638;</span
+                  >
+                  <span
+                    style="color: #005657; margin-left: 5px; margin-right: 5px"
+                    @click="assignTea(scope.row)"
+                  >
+                    分配辅导员
+                  </span>
+                </div>
+                <div class="ins-handle" v-if="rejl">
+                  <span
+                    class="iconfont record_icon"
+                    style="margin-left: 5px"
+                    @click="empRecordClick(scope.row)"
+                    >&#xe694;</span
+                  >
+                  <span
+                    style="color: #005657"
+                    @click="empRecordClick(scope.row)"
+                  >
+                    任职记录
+                  </span>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+          <pagination
+            id="pagenation"
+            v-show="total > 0"
+            :total="total"
+            :page.sync="queryParams.pageNum"
+            :limit.sync="queryParams.pageSize"
+            @pagination="getList"
+          />
+        </div>
       </div>
     </div>
     <!-- <tea-table :table_content="noticeList" :total="total"></tea-table> -->
@@ -649,10 +665,82 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .instructor {
   padding: 20px;
   background-color: #fff;
+}
+.mt15 {
+  margin-top: 15px;
+}
+.headerLeft {
+  .title {
+    font-weight: 600;
+    font-size: 20px;
+    color: #1f1f1f;
+    line-height: 28px;
+  }
+  .Updataicon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    width: 20px;
+    height: 20px;
+    background: url("../../../assets/images/updata.png") no-repeat;
+  }
+}
+.headerRight {
+  display: flex;
+  .borderBlue {
+    background: #fff;
+    border: 1px solid grey;
+  }
+  .btns {
+    margin-right: 15px;
+    padding: 0px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    .title {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      // vertical-align: middle;
+    }
+    .title1 {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      color: #fff;
+      // vertical-align: middle;
+    }
+    .icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      vertical-align: top;
+      margin-right: 5px;
+    }
+    .blueIcon {
+      margin-top: 10px;
+      background: url("~@/assets/assistantPng/in.png") no-repeat;
+    }
+    .orangeIcon {
+      margin-top: 10px;
+      background: url("~@/assets/assistantPng/out.png") no-repeat;
+    }
+    .lightIcon {
+      margin-top: 9px;
+      background: url("~@/assets/assistantPng/delete.png") no-repeat;
+    }
+    .greenIcon {
+      margin-top: 10px;
+      background: url("~@/assets/assistantPng/add.png") no-repeat;
+    }
+    .plCancelIcon {
+      margin-top: 10px;
+      background: url("~@/assets/images/plCancel.png") no-repeat;
+    }
+  }
 }
 /* 搜索 */
 .table-header {
@@ -747,5 +835,11 @@ export default {
   font-weight: 600;
   font-size: 14px;
   color: #ffffff;
+}
+.content_top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
 }
 </style>

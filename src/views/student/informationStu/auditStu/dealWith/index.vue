@@ -230,7 +230,7 @@
                 size="small"
                 @click="hadleDetail(scope.row, 2)"
               >
-                <i class="scopeIncon handledie"></i>
+                <i class="scopeIncon detail"></i>
                 <span class="handleName">详情</span>
               </el-button>
             </template>
@@ -768,6 +768,9 @@ export default {
     }
     .handledie {
       background: url("~@/assets/images/auditIcon.png");
+    }
+    .detail {
+      background: url("~@/assets/images/details.png");
     }
   }
 }

@@ -131,15 +131,9 @@
           <span class="title">带班记录</span> <i class="Updataicon" />
         </div>
         <div class="headerRight">
-          <div class="btns fullGreen" @click="handleRemove">
-            <span class="title">取消带班</span>
+          <div class="btns borderLight" @click="handleRemove">
+            <i class="icon removeIcon"></i><span class="title">取消带班</span>
           </div>
-          <!-- <div class="btns borderGreen" @click="handleImport">
-            <i class="icon greenIcon" /><span class="title">添加辅导员</span>
-          </div>
-          <div class="btns borderGreen" @click="handleExport">
-            <i class="icon greenIcon" /><span class="title">导出</span>
-          </div> -->
         </div>
       </div>
       <div class="mt15">
@@ -652,39 +646,28 @@ export default {
       }
       .headerRight {
         display: flex;
-        .borderBlue {
-          border: 1px solid #0d84e0;
-          color: #0d84e0;
-          background: #ebfafd;
-        }
-        .borderOrange {
-          border: 1px solid #cc3014;
-          color: #cc3014;
-          background: #fdf6f3;
-        }
+        align-items: center;
         .borderLight {
-          border: 1px solid #0090a1;
-          color: #0090a1;
-          background: #e7fcfc;
-        }
-        .borderGreen {
-          border: 1px solid #005657;
-          color: #005657;
+          border: 1px solid grey;
+          color: red;
           background: #fff;
-        }
-        .fullGreen {
-          // border:1px solid #005657;
-          color: #fff;
-          background: #005657;
         }
         .btns {
           margin-right: 15px;
-          padding: 5px 10px;
+          padding: 0px 10px;
           cursor: pointer;
+          border-radius: 4px;
           .title {
             font-size: 14px;
             text-align: center;
-            line-height: 22px;
+            line-height: 32px;
+            // vertical-align: middle;
+          }
+          .title1 {
+            font-size: 14px;
+            text-align: center;
+            line-height: 32px;
+            color: #fff;
             // vertical-align: middle;
           }
           .icon {
@@ -694,20 +677,9 @@ export default {
             vertical-align: top;
             margin-right: 5px;
           }
-          .blueIcon {
-            background: url("~@/assets/images/icon_1.png") no-repeat;
-          }
-          .orangeIcon {
-            background: url("~@/assets/images/icon_2.png") no-repeat;
-          }
-          .lightIcon {
-            background: url("~@/assets/images/icon_3.png") no-repeat;
-          }
-          .greenIcon {
-            background: url("~@/assets/images/export.png");
-          }
-          .removeButton {
-            background: url("~@/assets/images/icon_remove.png");
+          .removeIcon {
+            margin-top: 10px;
+            background: url("~@/assets/images/icon_remove.png") no-repeat;
           }
         }
       }

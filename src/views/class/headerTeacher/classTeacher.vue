@@ -71,19 +71,16 @@
     <div class="assign-table">
       <div class="haveDesigned" v-show="currentIndex == 0">
         <div class="table-content">
-          <div class="title" icon="el-icon-refresh">
+          <div class="content_top">
+          <div class="headerLeft">
+          <span class="title">{{ this.$route.query.bjmc }}</span>
+          <i class="Updataicon"></i>
+        </div>
+          <!-- <div class="title" icon="el-icon-refresh">
             <span class="fptitle-item">{{ this.$route.query.bjmc }}</span>
-            <span class="iconfont">&#xe631;</span>
-            <el-row :gutter="10" class="mb8" style="float: right">
-              <!-- <el-col :span="1.5" style="float: left"> 班级列表 </el-col> -->
-              <!-- <el-col :span="1.5">
-          <el-button class="allocate" @click="distributeSomeClass">
-            <span class="iconfont allocate_icon" @click="distributeSomeClass"
-              >&#xe638;</span
-            >
-            批量分配</el-button
-          >
-        </el-col> -->
+            <span class="iconfont">&#xe631;</span> -->
+            <!-- <el-row :gutter="10" class="mb8" style="float: right">
+             
               <el-col :span="1.5">
                 <el-button class="onrecord" @click="cancelDistributeSomeClass">
                   <span
@@ -94,10 +91,15 @@
                   批量取消</el-button
                 >
               </el-col>
-              <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
-            </el-row>
+            </el-row> -->
+            <div class="headerRight">
+          <div class="btns borderBlue" @click="cancelDistributeSomeClass">
+            <i class="icon plCancelIcon"></i><span class="title">批量取消</span>
           </div>
-
+            </div>
+          </div>
+       
+<div class="mt15">
           <!-- 班主任列表 -->
           <el-table
             :data="noticeList"
@@ -208,6 +210,7 @@
           />
         </div>
       </div>
+      </div>
       <div class="unDesigned" v-show="currentIndex == 1">
         <div class="table-content">
           <div class="title" icon="el-icon-refresh">
@@ -215,6 +218,7 @@
             <span class="iconfont">&#xe631;</span>
           </div>
           <!-- 班主任列表 -->
+          <div class="mt15">
           <el-table
             :data="noticeList"
             @selection-change="handleSelectionChange"
@@ -323,7 +327,9 @@
             @pagination="getTeacherList"
           />
         </div>
+        </div>
       </div>
+    </div>
       <!-- 给班主任分配班级操作：teacherClass-->
       <!-- :before-close="handleClose" -->
       <el-dialog title="分配班级" :visible.sync="teacherClass" width="30%">
@@ -705,11 +711,83 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .app-container {
   /* height: 100vh; */
   background-color: white;
   padding: 10px;
+}
+.mt15 {
+  margin-top: 15px;
+}
+.headerLeft {
+  .title {
+    font-weight: 600;
+    font-size: 20px;
+    color: #1f1f1f;
+    line-height: 28px;
+  }
+  .Updataicon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    width: 20px;
+    height: 20px;
+    background: url("../../../assets/images/updata.png") no-repeat;
+  }
+}
+.headerRight {
+  display: flex;
+  .borderBlue {
+    background: #fff;
+    border: 1px solid grey;
+  }
+  .btns {
+    margin-right: 15px;
+    padding: 0px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    .title {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      // vertical-align: middle;
+    }
+    .title1 {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      color: #fff;
+      // vertical-align: middle;
+    }
+    .icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      vertical-align: top;
+      margin-right: 5px;
+    }
+    .blueIcon {
+      margin-top: 10px;
+      background: url("~@/assets/assistantPng/in.png") no-repeat;
+    }
+    .orangeIcon {
+      margin-top: 10px;
+      background: url("~@/assets/assistantPng/out.png") no-repeat;
+    }
+    .lightIcon {
+      margin-top: 9px;
+      background: url("~@/assets/assistantPng/delete.png") no-repeat;
+    }
+    .greenIcon {
+      margin-top: 10px;
+      background: url("~@/assets/assistantPng/add.png") no-repeat;
+    }
+    .plCancelIcon {
+      margin-top: 10px;
+      background: url("~@/assets/images/plCancel.png") no-repeat;
+    }
+  }
 }
 .search {
   background: #005657;
@@ -872,6 +950,12 @@ li {
   justify-content: center;
   align-items: center;
   margin-top: 30px;
+}
+.content_top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
 }
 .table-content {
   padding-top: 32px;

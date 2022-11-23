@@ -5,9 +5,12 @@
         <span class="title-item">辅导员任职记录</span>
         <span class="iconfont">&#xe631;</span>
         <el-row :gutter="10" class="mb8" style="float: right">
-          <el-button class="delete" icon="el-icon-delete" @click="handleDelete"
+          <!-- <el-button class="delete" icon="el-icon-delete" @click="handleDelete"
             >删除</el-button
-          >
+          > -->
+          <div class="btns borderLight" @click="handleDelete">
+            <i class="icon lightIcon"></i><span class="title">删除</span>
+          </div>
         </el-row>
       </div>
       <!-- v-loading="loading" -->
@@ -298,7 +301,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .emp-table {
   height: 100vh;
   background-color: #ffffff;
@@ -359,5 +362,41 @@ export default {
   font-weight: 600;
   font-size: 14px;
   color: #ffffff;
+}
+.borderLight {
+  border: 1px solid grey;
+  color: red;
+  background: #fff;
+}
+.btns {
+  margin-right: 15px;
+  padding: 0px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  .title {
+    font-size: 14px;
+    text-align: center;
+    line-height: 32px;
+    // vertical-align: middle;
+  }
+  .title1 {
+    font-size: 14px;
+    text-align: center;
+    line-height: 32px;
+    color: #fff;
+    // vertical-align: middle;
+  }
+  .icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: top;
+    margin-right: 5px;
+  }
+
+  .lightIcon {
+    margin-top: 9px;
+    background: url("~@/assets/assistantPng/delete.png") no-repeat;
+  }
 }
 </style>

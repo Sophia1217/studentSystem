@@ -123,7 +123,7 @@
         </div>
         <div class="headerRight">
           <div class="btns borderBlue" @click="mbDown">
-            <i class="icon blueIcon"></i><span class="title">模板下载</span>
+            <i class="icon downIcon"></i><span class="title">模板下载</span>
           </div>
           <div class="btns borderBlue">
             <el-upload
@@ -855,6 +855,10 @@ export default {
           .greenIcon {
             margin-top: 10px;
             background: url("~@/assets/assistantPng/add.png") no-repeat;
+          }
+          .downIcon {
+            margin-top: 10px;
+            background: url("~@/assets/images/down.png") no-repeat;
           }
         }
       }

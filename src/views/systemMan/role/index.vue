@@ -41,25 +41,27 @@
     </el-form>
 
     <div class="content">
-        <div class="content-top">
-            <h3 class="title-item">
-        角色列表<span class="iconfont repeat_icon">&#xe7b1; </span>
-      </h3>
-      <el-row :gutter="10" class="mb8" style="float: right; margin-top: 15px">
-        <el-col :span="1.5">
-          <el-button
-            type="primary"
-            class="create"
-            size="small"
-            @click="handleAdd(1)"
-          >
-            <i class="addIcon"></i>
-            新增角色
-          </el-button>
-        </el-col>
-      </el-row>
-        </div>
-      
+      <div class="content-top">
+        <h3 class="title-item">
+          角色列表<span class="iconfont repeat_icon">&#xe7b1; </span>
+        </h3>
+        <el-row :gutter="10" class="mb8" style="float: right; margin-top: 15px">
+          <el-col :span="1.5">
+            <!-- <el-button
+              type="primary"
+              class="create"
+              size="small"
+              @click="handleAdd(1)"
+            >
+              <i class="addIcon"></i>
+              新增角色
+            </el-button> -->
+            <div class="btns borderGreen" @click="handleAdd(1)">
+              <i class="icon greenIcon"></i><span class="title1">新增角色</span>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
 
       <el-table :data="noticeList" @sort-change="changeTableSort">
         <el-table-column
@@ -82,19 +84,15 @@
           prop="modTime"
           sortable
         /> -->
-        <el-table-column
-          label="创建人"
-          align="center"
-         
-          sortable
-        >
+        <el-table-column label="创建人" align="center" sortable>
           <template slot-scope="scope">
             <div>
               <!-- 同时显示姓名和工号 -->
-              {{noticeList[scope.$index].createUserName}}（{{noticeList[scope.$index].createUserId}}）
+              {{ noticeList[scope.$index].createUserName }}（{{
+                noticeList[scope.$index].createUserId
+              }}）
             </div>
           </template>
-        
         </el-table-column>
         <el-table-column label="角色状态" align="center" prop="isUse" sortable>
           <template slot-scope="scope">
@@ -245,7 +243,7 @@ export default {
         });
     },
     delete(id) {
-      let data = {  roleId: id };// userId: "1234",
+      let data = { roleId: id }; // userId: "1234",
       deleteList(data)
         .then((res) => {
           if (res.errcode == "00") {
@@ -264,8 +262,8 @@ export default {
 </script>
 <style scoped lang="scss">
 .app-container {
-    padding: 20px;
-    // height: 100%;
+  padding: 20px;
+  // height: 100%;
 }
 .queryForm {
   background: #fff;
@@ -287,7 +285,6 @@ export default {
   background: #fff;
   padding: 20px;
   margin-top: 20px;
-  
 
   .content-top {
     display: flex;
@@ -305,15 +302,49 @@ export default {
       margin-left: 5px;
     }
   }
-  .create {
+  // .create {
+  //   background: #005657;
+  // .addIcon {
+  //   display: inline-block;
+  //   width: 20px;
+  //   height: 20px;
+  //   background: url("~@/assets/assistantPng/add.png") no-repeat;
+  //   vertical-align: middle;
+  //   margin-right: 5px;
+  //   margin-top: 10px;
+  // }
+  .borderGreen {
+    border: 1px solid grey;
     background: #005657;
-    .addIcon {
+  }
+  .btns {
+    margin-right: 15px;
+    padding: 0px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    .title {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      // vertical-align: middle;
+    }
+    .title1 {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      color: #fff;
+      // vertical-align: middle;
+    }
+    .icon {
       display: inline-block;
       width: 20px;
       height: 20px;
-      background: url("~@/assets/images/addIcon_w.png");
-      vertical-align: middle;
+      vertical-align: top;
       margin-right: 5px;
+    }
+    .greenIcon {
+      margin-top: 10px;
+      background: url("~@/assets/assistantPng/add.png") no-repeat;
     }
   }
   .operation {

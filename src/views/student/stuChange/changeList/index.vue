@@ -232,7 +232,7 @@
         </div>
         <div class="headerRight">
           <div class="btns borderOrange" @click="mbDown">
-            <span class="title">模板下载</span>
+            <i class="icon downIcon"></i><span class="title">模板下载</span>
           </div>
           <div class="btns borderOrange">
             <el-upload
@@ -1208,6 +1208,10 @@ export default {
           .rollbackIcon {
             margin-top: 10px;
             background: url("~@/assets/images/rollback.png") no-repeat;
+          }
+          .downIcon {
+            margin-top: 10px;
+            background: url("~@/assets/images/down.png") no-repeat;
           }
         }
       }

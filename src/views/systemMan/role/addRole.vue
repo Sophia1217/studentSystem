@@ -47,12 +47,8 @@
     </div>
 
     <div class="editBottom">
-      <div class="btn cancel" @click="cancel()">
-        <i class="icon noIcon"></i> 取消
-      </div>
-      <div class="btn confirm" @click="sava()">
-        <i class="icon yesIcon"></i> 提交
-      </div>
+      <div class="btn cancel" @click="cancel()">取消</div>
+      <div class="btn confirm" @click="sava()">保存</div>
     </div>
   </div>
 </template>

@@ -211,7 +211,7 @@
         <div class="headerRight" v-if="tableData.length > 0">
           <div class="btns borderGreen" @click="handleExport">
             <i class="icon greenIcon"></i
-            ><span class="title">添加强制修改名单</span>
+            ><span class="title1">添加强制修改名单</span>
           </div>
         </div>
       </div>
@@ -745,34 +745,28 @@ export default {
       }
       .headerRight {
         display: flex;
-        .borderBlue {
-          border: 1px solid #0d84e0;
-          color: #0d84e0;
-          background: #ebfafd;
-        }
-        .borderOrange {
-          border: 1px solid #cc3014;
-          color: #cc3014;
-          background: #fdf6f3;
-        }
-        .borderLight {
-          border: 1px solid #0090a1;
-          color: #0090a1;
-          background: #e7fcfc;
-        }
+        display: flex;
+        align-items: center;
         .borderGreen {
-          border: 1px solid #005657;
-          color: #005657;
-          background: #fff;
+          border: 1px solid grey;
+          background: #005657;
         }
         .btns {
           margin-right: 15px;
-          padding: 5px 10px;
+          padding: 0px 10px;
           cursor: pointer;
+          border-radius: 4px;
           .title {
             font-size: 14px;
             text-align: center;
-            line-height: 22px;
+            line-height: 32px;
+            // vertical-align: middle;
+          }
+          .title1 {
+            font-size: 14px;
+            text-align: center;
+            line-height: 32px;
+            color: #fff;
             // vertical-align: middle;
           }
           .icon {
@@ -782,19 +776,22 @@ export default {
             vertical-align: top;
             margin-right: 5px;
           }
+          .blueIcon {
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/in.png") no-repeat;
+          }
+          .orangeIcon {
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/out.png") no-repeat;
+          }
+          .lightIcon {
+            margin-top: 9px;
+            background: url("~@/assets/assistantPng/delete.png") no-repeat;
+          }
           .greenIcon {
-            background: url("~@/assets/images/export.png") no-repeat;
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/add.png") no-repeat;
           }
-          .deteIcon {
-            background: url("~@/assets/images/detelIcon.png") no-repeat;
-          }
-        }
-        .deteBtn {
-          font-weight: 400;
-          font-size: 14px;
-          color: #005657;
-          border: 1px solid #005657;
-          border-radius: 2px;
         }
       }
     }

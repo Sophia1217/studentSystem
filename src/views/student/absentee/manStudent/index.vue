@@ -255,18 +255,20 @@
         </div>
 
         <div class="headerRight">
-          <el-dropdown split-button @command="modal">
-            <span class="el-dropdown-link"> 学生表格下载 </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="1">毕业生登记表</el-dropdown-item>
-              <el-dropdown-item command="2">学生登记表</el-dropdown-item>
-              <el-dropdown-item command="3">学生卡片</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-          <div class="btns borderGreen" @click="mbDown">
-            <span class="title">模板下载</span>
+          <div class="dropDown">
+            <el-dropdown split-button @command="modal">
+              <span class="el-dropdown-link"> 学生表格下载 </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="1">毕业生登记表</el-dropdown-item>
+                <el-dropdown-item command="2">学生登记表</el-dropdown-item>
+                <el-dropdown-item command="3">学生卡片</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </div>
-          <div class="btns borderGreen">
+          <div class="btns borderBlue" @click="mbDown">
+            <i class="icon downIcon"></i><span class="title">模板下载</span>
+          </div>
+          <div class="btns borderBlue">
             <!-- <i class="icon greenIcon"></i><span class="title">导入</span> -->
             <el-upload
               accept=".xlsx,.xls"
@@ -277,15 +279,15 @@
               :on-success="upLoadSuccess"
               :on-error="upLoadError"
             >
-              <i class="icon impIcon"></i><span class="title">导入</span>
+              <i class="icon blueIcon"></i><span class="title">导入</span>
             </el-upload>
           </div>
-          <div class="btns borderGreen" @click="handleExport">
-            <i class="icon greenIcon"></i><span class="title">导出</span>
+          <div class="btns borderOrange" @click="handleExport">
+            <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
 
           <div class="btns borderGreen" @click="openAdd">
-            <i class="icon addIcon"></i><span class="title">新增</span>
+            <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
           <div class="btns" style="background: #ffffff" @click="dynamicTable">
             <i class="icon controlIcon"></i>
@@ -1333,20 +1335,42 @@ export default {
       }
       .headerRight {
         display: flex;
-
-        .borderGreen {
-          border: 1px solid #005657;
-          color: #005657;
+        .dropDown {
+          margin-right: 20px;
+        }
+        .borderBlue {
           background: #fff;
+          border: 1px solid grey;
+        }
+        .borderOrange {
+          border: 1px solid grey;
+          background: #fff;
+        }
+        .borderLight {
+          border: 1px solid grey;
+          color: red;
+          background: #fff;
+        }
+        .borderGreen {
+          border: 1px solid grey;
+          background: #005657;
         }
         .btns {
           margin-right: 15px;
-          padding: 5px 10px;
+          padding: 0px 10px;
           cursor: pointer;
+          border-radius: 4px;
           .title {
             font-size: 14px;
             text-align: center;
-            line-height: 22px;
+            line-height: 32px;
+            // vertical-align: middle;
+          }
+          .title1 {
+            font-size: 14px;
+            text-align: center;
+            line-height: 32px;
+            color: #fff;
             // vertical-align: middle;
           }
           .icon {
@@ -1357,23 +1381,24 @@ export default {
             margin-right: 5px;
           }
           .blueIcon {
-            background: url("~@/assets/images/icon_1.png") no-repeat;
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/in.png") no-repeat;
           }
           .orangeIcon {
-            background: url("~@/assets/images/icon_2.png") no-repeat;
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/out.png") no-repeat;
           }
           .lightIcon {
-            background: url("~@/assets/images/icon_3.png") no-repeat;
+            margin-top: 9px;
+            background: url("~@/assets/assistantPng/delete.png") no-repeat;
           }
           .greenIcon {
-            background: url("~@/assets/images/export.png");
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/add.png") no-repeat;
           }
-          .impIcon {
-            margin-top: 2px;
-            background: url("~@/assets/images/import.png") no-repeat;
-          }
-          .addIcon {
-            background: url("~@/assets/images/addicon.png");
+          .downIcon {
+            margin-top: 10px;
+            background: url("~@/assets/images/down.png") no-repeat;
           }
           .controlIcon {
             background: url("~@/assets/images/control.png");

@@ -1143,8 +1143,8 @@ export default {
             background: url("~@/assets/assistantPng/in.png") no-repeat;
           }
           .confirmIcon {
-            margin-top: 5px;
-            background: url("~@/assets/images/yesW.png") no-repeat;
+            margin-top: 10px;
+            background: url("~@/assets/images/passWhite.png") no-repeat;
           }
           .rollbackIcon {
             margin-top: 10px;

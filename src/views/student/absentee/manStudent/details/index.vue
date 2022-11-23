@@ -3622,7 +3622,7 @@
       >
         取消
       </div>
-      <div
+      <!-- <div
         v-show="!this.$route.query.xh"
         class="btns borderBlue"
         @click="getGraStu"
@@ -3642,6 +3642,20 @@
         @click="getStu"
       >
         <i class="icon lightIcon"></i><span class="title">学生卡片</span>
+      </div> -->
+      <div class="dropDown" v-show="!this.$route.query.xh">
+        <el-dropdown
+          split-button
+          @command="modal"
+          v-show="!this.$route.query.xh"
+        >
+          <span class="el-dropdown-link"> 学生表格下载 </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="1">毕业生登记表</el-dropdown-item>
+            <el-dropdown-item command="2">学生登记表</el-dropdown-item>
+            <el-dropdown-item command="3">学生卡片</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
       <div class="btn confirm" @click="handlUpdata">保存</div>
     </div>
@@ -4246,6 +4260,19 @@ export default {
           });
       }
     },
+    modal(ind) {
+      switch (ind) {
+        case "1":
+          this.getGraStu();
+          break;
+        case "2":
+          this.getStuReg();
+          break;
+        case "3":
+          this.getStu();
+          break;
+      }
+    },
     // 毕业生登记表
     getGraStu() {
       let xhs = [this.xh];
@@ -4448,6 +4475,9 @@ export default {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    .dropDown {
+      margin-right: 20px;
+    }
     .btn {
       width: 84px;
       height: 36px;

@@ -68,15 +68,19 @@
         <h3 class="title-item">
           字典管理<span class="iconfont repeat_icon">&#xe7b1; </span>
         </h3>
-        <div class="headerRight"></div>
-        <el-row :gutter="10" class="mb8" style="float: right">
-          <el-col :span="1.5">
-            <el-button class="export" @click="mbDown">
-              <!-- <span class="iconfont icon-daochu-06"></span> -->
+        <div class="headerRight">
+          <!-- <el-row :gutter="10" class="mb8" style="float: right">
+            <el-col :span="1.5"> -->
+          <!-- <el-button class="export" @click="mbDown">
+             
               模板下载</el-button
-            >
-          </el-col>
-          <el-col :span="1.5">
+            > -->
+          <div class="btns borderBlue" @click="mbDown">
+            <i class="icon downIcon"></i><span class="title">模板下载</span>
+          </div>
+          <!-- </el-col> -->
+          <!-- <el-col :span="1.5"> -->
+          <div class="btns borderBlue">
             <el-upload
               accept=".xlsx,.xls"
               :auto-upload="true"
@@ -86,10 +90,12 @@
               :on-success="upLoadSuccess"
               :on-error="upLoadError"
             >
-              <el-button class="export"> 导入</el-button>
+              <i class="icon blueIcon"></i><span class="title">导入</span>
             </el-upload>
-          </el-col>
-        </el-row>
+          </div>
+          <!-- </el-col>
+          </el-row> -->
+        </div>
       </div>
 
       <el-table
@@ -384,23 +390,25 @@ export default {
     .headerRight {
       display: flex;
       .borderBlue {
-        border: 1px solid #005657;
-        color: #fff;
-        background: #005657;
-      }
-      .borderOrange {
-        border: 1px solid #eb3842;
-        color: #eb3842;
-        background: #fdf6f3;
+        background: #fff;
+        border: 1px solid grey;
       }
       .btns {
         margin-right: 15px;
-        padding: 5px 10px;
+        padding: 0px 10px;
         cursor: pointer;
+        border-radius: 4px;
         .title {
           font-size: 14px;
           text-align: center;
-          line-height: 22px;
+          line-height: 32px;
+          // vertical-align: middle;
+        }
+        .title1 {
+          font-size: 14px;
+          text-align: center;
+          line-height: 32px;
+          color: #fff;
           // vertical-align: middle;
         }
         .icon {
@@ -411,10 +419,24 @@ export default {
           margin-right: 5px;
         }
         .blueIcon {
-          background: url("~@/assets/images/addIcon_w.png") no-repeat;
+          margin-top: 10px;
+          background: url("~@/assets/assistantPng/in.png") no-repeat;
         }
         .orangeIcon {
-          background: url("~@/assets/images/delete_r.png") no-repeat;
+          margin-top: 10px;
+          background: url("~@/assets/assistantPng/out.png") no-repeat;
+        }
+        .lightIcon {
+          margin-top: 9px;
+          background: url("~@/assets/assistantPng/delete.png") no-repeat;
+        }
+        .greenIcon {
+          margin-top: 10px;
+          background: url("~@/assets/assistantPng/add.png") no-repeat;
+        }
+        .downIcon {
+          margin-top: 10px;
+          background: url("~@/assets/images/down.png") no-repeat;
         }
       }
     }

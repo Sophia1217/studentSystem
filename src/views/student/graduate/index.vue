@@ -209,17 +209,18 @@
           <span class="title">毕业学生信息列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderBlue" @click="modal(1)">
-            <i class="icon blueIcon"></i><span class="title">毕业生登记表</span>
+          <div class="dropDown">
+            <el-dropdown split-button @command="modal">
+              <span class="el-dropdown-link"> 学生表格下载 </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="1">毕业生登记表</el-dropdown-item>
+                <el-dropdown-item command="2">学生登记表</el-dropdown-item>
+                <el-dropdown-item command="3">学生卡片</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </div>
-          <div class="btns borderBlue" @click="modal(2)">
-            <i class="icon orangeIcon"></i><span class="title">学生登记表</span>
-          </div>
-          <div class="btns borderBlue" @click="modal(3)">
-            <i class="icon lightIcon"></i><span class="title">学生卡片</span>
-          </div>
-          <div class="btns borderGreen" @click="handleExport">
-            <i class="icon greenIcon"></i><span class="title">导出</span>
+          <div class="btns borderOrange" @click="handleExport">
+            <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
         </div>
       </div>
@@ -906,34 +907,44 @@ export default {
       }
       .headerRight {
         display: flex;
+        align-items: center;
+        .dropDown {
+          margin-right: 20px;
+        }
+
         .borderBlue {
-          border: 1px solid #0d84e0;
-          color: #0d84e0;
-          background: #ebfafd;
+          background: #fff;
+          border: 1px solid grey;
         }
         .borderOrange {
-          border: 1px solid #cc3014;
-          color: #cc3014;
-          background: #fdf6f3;
+          border: 1px solid grey;
+          background: #fff;
         }
         .borderLight {
-          border: 1px solid #0090a1;
-          color: #0090a1;
-          background: #e7fcfc;
+          border: 1px solid grey;
+          color: red;
+          background: #fff;
         }
         .borderGreen {
-          border: 1px solid #005657;
-          color: #005657;
-          background: #fff;
+          border: 1px solid grey;
+          background: #005657;
         }
         .btns {
           margin-right: 15px;
-          padding: 5px 10px;
+          padding: 0px 10px;
           cursor: pointer;
+          border-radius: 4px;
           .title {
             font-size: 14px;
             text-align: center;
-            line-height: 22px;
+            line-height: 32px;
+            // vertical-align: middle;
+          }
+          .title1 {
+            font-size: 14px;
+            text-align: center;
+            line-height: 32px;
+            color: #fff;
             // vertical-align: middle;
           }
           .icon {
@@ -944,16 +955,24 @@ export default {
             margin-right: 5px;
           }
           .blueIcon {
-            background: url("../../../assets/images/icon_1.png") no-repeat;
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/in.png") no-repeat;
           }
           .orangeIcon {
-            background: url("../../../assets/images/icon_2.png") no-repeat;
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/out.png") no-repeat;
           }
           .lightIcon {
-            background: url("../../../assets/images/icon_3.png") no-repeat;
+            margin-top: 9px;
+            background: url("~@/assets/assistantPng/delete.png") no-repeat;
           }
           .greenIcon {
-            background: url("../../../assets/images/export.png");
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/add.png") no-repeat;
+          }
+          .downIcon {
+            margin-top: 10px;
+            background: url("~@/assets/images/down.png") no-repeat;
           }
         }
       }

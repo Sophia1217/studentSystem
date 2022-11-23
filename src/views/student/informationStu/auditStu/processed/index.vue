@@ -181,14 +181,14 @@
           <span class="title">待审核列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderGreen" @click="handleExport">
-            <i class="icon greenIcon"></i><span class="title">导出</span>
+          <div class="btns borderOrange" @click="handleExport">
+            <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns deteBtn" @click="pass">
-            <i class="icon deteIcon"></i><span class="title">通过</span>
+          <div class="btns borderOrange" @click="pass">
+            <i class="icon passIcon"></i><span class="title">通过</span>
           </div>
-          <div class="btns deteBtn" @click="bacK">
-            <i class="icon deteIcon2"></i><span class="title">拒绝</span>
+          <div class="btns borderLight" @click="bacK">
+            <i class="icon refuseIcon"></i><span class="title">拒绝</span>
           </div>
         </div>
       </div>
@@ -819,34 +819,40 @@ export default {
       }
       .headerRight {
         display: flex;
+        align-items: center;
         .borderBlue {
-          border: 1px solid #0d84e0;
-          color: #0d84e0;
-          background: #ebfafd;
+          background: #fff;
+          border: 1px solid grey;
         }
         .borderOrange {
-          border: 1px solid #cc3014;
-          color: #cc3014;
-          background: #fdf6f3;
+          border: 1px solid grey;
+          background: #fff;
         }
         .borderLight {
-          border: 1px solid #0090a1;
-          color: #0090a1;
-          background: #e7fcfc;
+          border: 1px solid grey;
+          color: red;
+          background: #fff;
         }
         .borderGreen {
-          border: 1px solid #005657;
-          color: #fff;
+          border: 1px solid grey;
           background: #005657;
         }
         .btns {
           margin-right: 15px;
-          padding: 5px 10px;
+          padding: 0px 10px;
           cursor: pointer;
+          border-radius: 4px;
           .title {
             font-size: 14px;
             text-align: center;
-            line-height: 22px;
+            line-height: 32px;
+            // vertical-align: middle;
+          }
+          .title1 {
+            font-size: 14px;
+            text-align: center;
+            line-height: 32px;
+            color: #fff;
             // vertical-align: middle;
           }
           .icon {
@@ -856,23 +862,22 @@ export default {
             vertical-align: top;
             margin-right: 5px;
           }
-          .greenIcon {
-            color: #fff;
-            background: url("~@/assets/images/export2.png") no-repeat;
+          .blueIcon {
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/in.png") no-repeat;
           }
-          .deteIcon {
-            background: url("~@/assets/images/yes.png") no-repeat;
+          .orangeIcon {
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/out.png") no-repeat;
           }
-          .deteIcon2 {
-            background: url("~@/assets/images/no.png") no-repeat;
+          .passIcon {
+            margin-top: 10px;
+            background: url("~@/assets/images/pass.png") no-repeat;
           }
-        }
-        .deteBtn {
-          font-weight: 400;
-          font-size: 14px;
-          color: #005657;
-          border: 1px solid #005657;
-          border-radius: 2px;
+          .refuseIcon {
+            margin-top: 10px;
+            background: url("~@/assets/images/refuse.png") no-repeat;
+          }
         }
       }
     }

@@ -132,9 +132,9 @@
 
             <i class="icon greenIcon" /><span class="title">导入</span>
           </div> -->
-          <div class="btns borderGreen" @click="handleExport">
+          <div class="btns borderOrange" @click="handleExport">
             <!-- <div class="btns borderGreen" @click="handleExport"> -->
-            <i class="icon greenIcon" /><span class="title">导出</span>
+            <i class="icon orangeIcon" /><span class="title">导出</span>
           </div>
         </div>
       </div>
@@ -632,34 +632,40 @@ export default {
       }
       .headerRight {
         display: flex;
+        align-items: center;
         .borderBlue {
-          border: 1px solid #0d84e0;
-          color: #0d84e0;
-          background: #ebfafd;
+          background: #fff;
+          border: 1px solid grey;
         }
         .borderOrange {
-          border: 1px solid #cc3014;
-          color: #cc3014;
-          background: #fdf6f3;
+          border: 1px solid grey;
+          background: #fff;
         }
         .borderLight {
-          border: 1px solid #0090a1;
-          color: #0090a1;
-          background: #e7fcfc;
+          border: 1px solid grey;
+          color: red;
+          background: #fff;
         }
         .borderGreen {
-          border: 1px solid #005657;
-          color: #005657;
-          background: #fff;
+          border: 1px solid grey;
+          background: #005657;
         }
         .btns {
           margin-right: 15px;
-          padding: 5px 10px;
+          padding: 0px 10px;
           cursor: pointer;
+          border-radius: 4px;
           .title {
             font-size: 14px;
             text-align: center;
-            line-height: 22px;
+            line-height: 32px;
+            // vertical-align: middle;
+          }
+          .title1 {
+            font-size: 14px;
+            text-align: center;
+            line-height: 32px;
+            color: #fff;
             // vertical-align: middle;
           }
           .icon {
@@ -670,16 +676,24 @@ export default {
             margin-right: 5px;
           }
           .blueIcon {
-            background: url("~@/assets/images/icon_1.png") no-repeat;
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/in.png") no-repeat;
           }
           .orangeIcon {
-            background: url("~@/assets/images/icon_2.png") no-repeat;
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/out.png") no-repeat;
           }
           .lightIcon {
-            background: url("~@/assets/images/icon_3.png") no-repeat;
+            margin-top: 9px;
+            background: url("~@/assets/assistantPng/delete.png") no-repeat;
           }
           .greenIcon {
-            background: url("~@/assets/images/export.png");
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/add.png") no-repeat;
+          }
+          .downIcon {
+            margin-top: 10px;
+            background: url("~@/assets/images/down.png") no-repeat;
           }
         }
       }

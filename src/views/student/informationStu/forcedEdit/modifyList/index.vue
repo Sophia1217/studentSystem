@@ -132,8 +132,8 @@
           <!-- <div class="btns borderGreen" @click="handleExport">
             <i class="icon greenIcon"></i><span class="title">导出</span>
           </div> -->
-          <div class="btns deteBtn" @click="del">
-            <i class="icon deteIcon"></i><span class="title">删除</span>
+          <div class="btns borderLight" @click="del">
+            <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
         </div>
       </div>
@@ -577,36 +577,29 @@ export default {
       }
       .headerRight {
         display: flex;
-        .borderBlue {
-          border: 1px solid #0d84e0;
-          color: #0d84e0;
-          background: #ebfafd;
-        }
-        .borderOrange {
-          border: 1px solid #cc3014;
-          color: #cc3014;
-          background: #fdf6f3;
-        }
-        .borderLight {
-          border: 1px solid #0090a1;
-          color: #0090a1;
-          background: #e7fcfc;
-        }
+        align-items: center;
         .borderGreen {
           border: 1px solid #005657;
           color: #005657;
           background: #fff;
         }
+        .borderLight {
+          border: 1px solid grey;
+          color: red;
+          background: #fff;
+        }
         .btns {
           margin-right: 15px;
-          padding: 5px 10px;
+          padding: 0px 10px;
           cursor: pointer;
+          border-radius: 4px;
           .title {
             font-size: 14px;
             text-align: center;
-            line-height: 22px;
+            line-height: 32px;
             // vertical-align: middle;
           }
+
           .icon {
             display: inline-block;
             width: 20px;
@@ -617,17 +610,18 @@ export default {
           .greenIcon {
             background: url("~@/assets/images/export.png") no-repeat;
           }
-          .deteIcon {
-            background: url("~@/assets/images/detelIcon.png") no-repeat;
+          .lightIcon {
+            margin-top: 9px;
+            background: url("~@/assets/assistantPng/delete.png") no-repeat;
           }
         }
-        .deteBtn {
-          font-weight: 400;
-          font-size: 14px;
-          color: #005657;
-          border: 1px solid #005657;
-          border-radius: 2px;
-        }
+        // .deteBtn {
+        //   font-weight: 400;
+        //   font-size: 14px;
+        //   color: #005657;
+        //   border: 1px solid #005657;
+        //   border-radius: 2px;
+        // }
       }
     }
     .noData {

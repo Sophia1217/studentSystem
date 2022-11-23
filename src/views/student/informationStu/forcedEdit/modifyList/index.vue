@@ -152,19 +152,19 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" sortable="custom">
+          <el-table-column prop="xh" label="学号" width="120" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xm" label="姓名" sortable="custom">
+          <el-table-column prop="xm" label="姓名" width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="dwhmc" label="培养单位" sortable="custom">
+          <el-table-column prop="dwhmc" label="培养单位" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zydmc" label="专业" sortable="custom">
+          <el-table-column prop="zydmc" label="专业" min-width="110" sortable="custom">
           </el-table-column>
-          <el-table-column prop="bjmc" label="班级" sortable="custom">
+          <el-table-column prop="bjmc" label="班级" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xslbmc" label="学生类别" sortable="custom">
+          <el-table-column prop="xslbmc" label="学生类别" width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="updateTime" label="修改时间" sortable="custom">
+          <el-table-column prop="updateTime" label="修改时间" min-width="100" sortable="custom">
           </el-table-column>
         </el-table>
         <pagination

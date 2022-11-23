@@ -89,12 +89,13 @@
         label="班级编号"
         align="center"
         prop="bjdm"
+        width="115" 
         sortable="custom"
       />
       <el-table-column
         label="班级名称"
         align="center"
-        width="250px"
+        width="230px"
         prop="bjmc"
         sortable="custom"
       />
@@ -102,30 +103,35 @@
         label="培养单位"
         align="center"
         prop="ssdwmc"
+        min-width="100" 
         sortable="custom"
       />
       <el-table-column
         label="培养层次"
         align="center"
         prop="pyccName"
+        min-width="100" 
         sortable="custom"
       />
       <el-table-column
         label="年级"
         align="center"
         prop="ssnj"
+        width="70" 
         sortable="custom"
       />
       <el-table-column
         label="班级人数"
         align="center"
         prop="stuNumOfClass"
+        width="100" 
         sortable="custom"
       />
       <el-table-column
         label="创建时间"
         align="center"
         prop="createTime"
+        min-width="100" 
         sortable="custom"
       />
       <el-table-column
@@ -133,6 +139,7 @@
         align="center"
         prop="updateTime"
         sortable="custom"
+        min-width="100" 
         class-name="small-padding fixed-width"
       />
       <el-table-column

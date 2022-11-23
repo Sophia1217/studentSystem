@@ -314,7 +314,7 @@
             fixed="left"
             label="学号"
             prop="xh"
-            width="120"
+            width="100"
           ></el-table-column>
           <el-table-column
             fixed="left"

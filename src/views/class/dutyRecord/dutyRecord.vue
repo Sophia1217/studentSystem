@@ -147,16 +147,16 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
-          <el-table-column prop="gh" label="工号" sortable />
-          <el-table-column prop="xm" label="姓名" sortable="custom" />
-          <el-table-column prop="gwmc" label="岗位" sortable="custom" />
-          <el-table-column prop="lxmc" label="类型" sortable="custom" />
-          <el-table-column prop="bjdm" label="班级编号" sortable="custom" />
-          <el-table-column prop="bjmc" label="班级名称" sortable="custom" />
-          <el-table-column prop="dwmc" label="培养单位" sortable="custom" />
-          <el-table-column prop="pyccmc" label="培养层次" sortable="custom" />
-          <el-table-column prop="nj" label="年级" sortable="custom" />
-          <el-table-column prop="rzrq" label="任职日期" sortable="custom" />
+          <el-table-column prop="gh" label="工号" width="100" sortable />
+          <el-table-column prop="xm" label="姓名" width="85" sortable="custom" />
+          <el-table-column prop="gwmc" label="岗位" min-width="85" sortable="custom" />
+          <el-table-column prop="lxmc" label="类型" width="70" sortable="custom" />
+          <el-table-column prop="bjdm" label="班级编号" width="115" sortable="custom" />
+          <el-table-column prop="bjmc" label="班级名称" min-width="100" sortable="custom" />
+          <el-table-column prop="dwmc" label="培养单位" min-width="100" sortable="custom" />
+          <el-table-column prop="pyccmc" label="培养层次" width="100" sortable="custom" />
+          <el-table-column prop="nj" label="年级" width="70" sortable="custom" />
+          <el-table-column prop="rzrq" label="任职日期" width="100" sortable="custom" />
         </el-table>
         <pagination
           v-show="total > 0"

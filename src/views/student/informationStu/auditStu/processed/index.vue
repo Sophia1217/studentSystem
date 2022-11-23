@@ -210,15 +210,16 @@
           <el-table-column
             prop="userId"
             label="学号"
+            width="120" 
             sortable="custom"
           ></el-table-column>
-          <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
-          <el-table-column prop="dwmc" label="培养单位" sortable>
+          <el-table-column prop="xm" label="姓名" width="90" sortable> </el-table-column>
+          <el-table-column prop="dwmc" label="培养单位" min-width="100" sortable>
           </el-table-column>
-          <el-table-column prop="zydmc" label="专业" sortable>
+          <el-table-column prop="zydmc" label="专业" min-width="100" sortable>
           </el-table-column>
-          <el-table-column prop="bjmc" label="班级" sortable> </el-table-column>
-          <el-table-column prop="pyccmc" label="培养层次" sortable>
+          <el-table-column prop="bjmc" label="班级" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="pyccmc" label="培养层次" width="100" sortable>
           </el-table-column>
 
           <el-table-column fixed="right" label="操作" width="180">

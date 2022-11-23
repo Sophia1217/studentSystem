@@ -239,31 +239,31 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" sortable="custom">
+          <el-table-column prop="xh" label="学号" width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xm" label="姓名" sortable="custom">
+          <el-table-column prop="xm" label="姓名" width="85" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zzmmc" label="政治面貌" sortable="custom">
+          <el-table-column prop="zzmmc" label="政治面貌" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="mzmc" label="民族" sortable="custom">
+          <el-table-column prop="mzmc" label="民族" min-width="85" sortable="custom">
           </el-table-column>
-          <el-table-column prop="dwmc" label="培养单位" sortable="custom">
+          <el-table-column prop="dwmc" label="培养单位" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zydmc" label="专业" sortable="custom">
+          <el-table-column prop="zydmc" label="专业" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="nj" label="年级" sortable="custom">
+          <el-table-column prop="nj" label="年级" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="pyccmc" label="培养层次" sortable="custom">
+          <el-table-column prop="pyccmc" label="培养层次" width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xz" label="学制" sortable="custom">
+          <el-table-column prop="xz" label="学制" width="70" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xjxs" label="学习形式" sortable="custom">
+          <el-table-column prop="xjxs" label="学习形式" width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="wxjyy" label="无学籍原因" sortable="custom">
+          <el-table-column prop="wxjyy" label="无学籍原因" min-width="110" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xjztmc" label="学籍状态" sortable="custom">
+          <el-table-column prop="xjztmc" label="学籍状态" width="100" sortable="custom">
           </el-table-column>
-          <el-table-column fixed="right" label="操作" width="180">
+          <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
               <el-button
                 type="text"

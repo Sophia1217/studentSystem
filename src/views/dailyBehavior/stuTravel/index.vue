@@ -171,6 +171,7 @@
         <el-row :gutter="20">
           <el-col :span="20">
             <el-form-item label="家庭地址" prop="jtdz">
+              <!-- {{formAdd.jtdz}} -->
               <el-input v-model="formAdd.jtdz" disabled />
             </el-form-item>
           </el-col>
@@ -267,6 +268,7 @@
           <el-col :span="20">
             <el-form-item label="家庭地址" prop="jtdz">
               <el-input v-model="formEdit.jtdz" disabled></el-input>
+              <!-- <div>{{formAdd.jtdz}}</div> -->
             </el-form-item>
           </el-col>
         </el-row>
@@ -636,11 +638,13 @@ export default {
     },
     //新增
     handleNew() {
+      this.addModal = true;
       this.formAdd = { sqsj: this.formatDate(new Date()) };
       getJtzz(this.$store.getters.userId)
         .then((res) => {
-          this.formAdd.jtdz = res.data;
-          this.addModal = true;
+          // this.formAdd.jtdz = res.data;
+          // this.$forceUpdate();
+          this.$set(this.formAdd,"jtdz",res.data);
         })
         .catch((err) => {});
     },
@@ -665,12 +669,13 @@ export default {
         edit(params).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("新增成功");
+            this.addModal = false;
             this.getList();
           } else {
             this.$message.error("新增失败");
           }
         });
-        this.addModal = false;
+        
       }
     },
     //点击详情

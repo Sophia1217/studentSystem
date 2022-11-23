@@ -118,8 +118,8 @@
               <span v-if="scope.row.xb == 2">女</span>
             </template> -->
           </el-table-column>
-          <el-table-column prop="gzdw" label="工作单位" sortable />
-          <el-table-column prop="dbzt" label="带班状态" sortable>
+          <el-table-column prop="gzdw" label="工作单位" min-width="100" sortable />
+          <el-table-column prop="dbzt" label="带班状态" min-width="100" sortable>
             <!-- <template slot-scope="scope">
               <div v-if="scope.row.dbzt == 1">
                 <span class="greenDot">●</span><span>是</span>

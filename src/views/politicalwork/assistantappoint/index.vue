@@ -127,8 +127,8 @@
           <el-table-column prop="xm" label="姓名" sortable="custom" />
           <el-table-column prop="lb" label="类别" sortable="custom" />
           <el-table-column prop="xb" label="性别" sortable="custom" />
-          <el-table-column prop="gzdw" label="工作单位" sortable="custom" />
-          <el-table-column prop="dbzt" label="带班状态" sortable="custom" />
+          <el-table-column prop="gzdw" label="工作单位" min-width="100" sortable="custom" />
+          <el-table-column prop="dbzt" label="带班状态" min-width="100" sortable="custom" />
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
               <el-button

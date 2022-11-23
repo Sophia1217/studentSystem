@@ -89,47 +89,53 @@
       @sort-change="changeTableSort"
     >
       <el-table-column label="序号" align="center" type="index" />
-      <el-table-column label="班级编号" align="center" prop="bjdm" sortable />
+      <el-table-column label="班级编号" align="center" prop="bjdm" width="115" sortable />
       <el-table-column
         label="班级名称"
         align="center"
-        width="250px"
+        width="230px"
         prop="bjmc"
         sortable
       />
-      <el-table-column label="培养单位" align="center" prop="ssdwmc" sortable />
+      <el-table-column label="培养单位" align="center" prop="ssdwmc" min-width="100" sortable />
       <el-table-column
         label="培养层次"
         align="center"
         prop="pyccName"
+        min-width="100" 
         sortable
       />
       <el-table-column
         label="班级人数"
         align="center"
         prop="stuNumOfClass"
+        width="100" 
         sortable
       />
       <el-table-column
         label="已在任干部数量"
         align="center"
         prop="bgbNumOfClass"
+        width="135" 
         sortable
       />
       <el-table-column
         label="创建时间"
         align="center"
         prop="createTime"
+        min-width="100" 
         sortable
       />
       <el-table-column
         label="更新时间"
         align="center"
         prop="updateTime"
+        min-width="100" 
         sortable
         class-name="small-padding fixed-width"
       />
       <el-table-column
+        fixed="right"
         label="操作"
         align="center"
         sortable

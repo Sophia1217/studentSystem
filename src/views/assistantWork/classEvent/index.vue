@@ -118,20 +118,22 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
-          <el-table-column prop="hdzt" label="活动主题" sortable />
-          <el-table-column prop="hddz" label="活动地点" sortable="custom" />
-          <el-table-column prop="hdksrq" label="活动日期" sortable="custom" />
-          <el-table-column prop="zzdw" label="组织单位" sortable="custom" />
-          <el-table-column prop="createXm" label="记录人" sortable="custom" />
-          <el-table-column prop="createXh" label="工号" sortable="custom" />
+          <el-table-column prop="hdzt" label="活动主题" min-width="100" sortable />
+          <el-table-column prop="hddz" label="活动地点" min-width="100" sortable="custom" />
+          <el-table-column prop="hdksrq" label="活动日期" width="100" sortable="custom" />
+          <el-table-column prop="zzdw" label="组织单位" min-width="100" sortable="custom" />
+          <el-table-column prop="createXm" label="记录人" width="85" sortable="custom" />
+          <el-table-column prop="createXh" label="工号" width="100" sortable="custom" />
           <el-table-column
             prop="createDwhMc"
             label="工作单位"
+            min-width="100" 
             sortable="custom"
           />
           <el-table-column
             prop="createSfjzfdyMc"
             label="类型"
+            width="70"
             sortable="custom"
           />
           <el-table-column fixed="right" label="操作" width="180">

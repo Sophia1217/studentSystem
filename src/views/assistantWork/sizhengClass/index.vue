@@ -163,36 +163,40 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="gh" label="工号" sortable="custom">
+          <el-table-column prop="gh" label="工号" width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xm" label="姓名" sortable="custom">
+          <el-table-column prop="xm" label="姓名" min-width="70" sortable="custom">
           </el-table-column>
-          <el-table-column prop="gzdw" label="工作单位" sortable="custom">
+          <el-table-column prop="gzdw" label="工作单位" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="gwmc" label="岗位" sortable="custom">
+          <el-table-column prop="gwmc" label="岗位" min-width="70" sortable="custom">
           </el-table-column>
-          <el-table-column prop="lxmc" label="类型" sortable="custom">
+          <el-table-column prop="lxmc" label="类型" width="70" sortable="custom">
           </el-table-column>
-          <el-table-column prop="kcmc" label="课程名称" sortable="custom">
+          <el-table-column prop="kcmc" label="课程名称" min-width="100" sortable="custom">
           </el-table-column>
           <el-table-column
             prop="kxxn"
             label="开课学年"
+            width="100"
             sortable="custom"
           ></el-table-column>
           <el-table-column
             prop="kxxq"
             label="开课学期"
+            width="100"
             sortable="custom"
           ></el-table-column>
           <el-table-column
             prop="xs"
             label="学时"
+            width="70"
             sortable="custom"
           ></el-table-column>
           <el-table-column
             prop="rs"
             label="人数"
+            width="70"
             sortable="custom"
           ></el-table-column>
         </el-table>

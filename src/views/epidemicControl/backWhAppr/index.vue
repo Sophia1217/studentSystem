@@ -134,23 +134,23 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xm" label="申请人" sortable="custom">
+          <el-table-column prop="xm" label="申请人" width="85" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xh" label="学号" sortable="custom">
+          <el-table-column prop="xh" label="学号" width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="dwmc" label="培养单位" sortable="custom">
+          <el-table-column prop="dwmc" label="培养单位" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="sjh" label="手机号" sortable="custom">
+          <!-- <el-table-column prop="sjh" label="手机号" sortable="custom">
+          </el-table-column> -->
+          <el-table-column prop="szdq" label="所在地区" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="szdq" label="所在地区" sortable="custom">
+          <el-table-column prop="fxsj" label="拟返校时间" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="fxsj" label="拟返校时间" sortable="custom">
+          <el-table-column prop="fhfs" label="返汉方式" width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="fhfs" label="返汉方式" sortable="custom">
+          <el-table-column prop="shrXm" label="审核人" width="85" sortable="custom">
           </el-table-column>
-          <el-table-column prop="shrXm" label="审核人" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="shsj" label="审核时间" sortable="custom">
+          <el-table-column prop="shsj" label="审核时间" width="100" sortable="custom">
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">

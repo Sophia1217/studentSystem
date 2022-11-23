@@ -140,13 +140,13 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
-          <el-table-column prop="zfss" label="走访宿舍" sortable />
-          <el-table-column prop="zfzt" label="走访主题" sortable="custom" />
-          <el-table-column prop="xm" label="走访人" sortable="custom" />
-          <el-table-column prop="gh" label="工号" sortable="custom" />
-          <el-table-column prop="dwmc" label="工作单位" sortable="custom" />
-          <el-table-column prop="fdylx" label="类型" sortable="custom" />
-          <el-table-column prop="zfrq" label="走访日期" sortable="custom" />
+          <el-table-column prop="zfss" label="走访宿舍" min-width="100" sortable />
+          <el-table-column prop="zfzt" label="走访主题" min-width="100" sortable="custom" />
+          <el-table-column prop="xm" label="走访人" width="85" sortable="custom" />
+          <el-table-column prop="gh" label="工号" width="100" sortable="custom" />
+          <el-table-column prop="dwmc" label="工作单位" min-width="100" sortable="custom" />
+          <el-table-column prop="fdylx" label="类型" width="70" sortable="custom" />
+          <el-table-column prop="zfrq" label="走访日期" width="100" sortable="custom" />
 
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">

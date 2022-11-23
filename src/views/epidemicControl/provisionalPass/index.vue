@@ -118,25 +118,25 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="sqxm" label="申请人" sortable="custom">
+          <el-table-column prop="sqxm" label="申请人" width="85" sortable="custom">
           </el-table-column>
-          <el-table-column prop="sqxh" label="学号" sortable="custom">
+          <el-table-column prop="sqxh" label="学号" width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="sqxymc" label="培养单位" sortable="custom">
+          <el-table-column prop="sqxymc" label="培养单位" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="sqsjh" label="手机号" sortable="custom">
+          <!-- <el-table-column prop="sqsjh" label="手机号" sortable="custom">
+          </el-table-column> -->
+          <el-table-column prop="sqwcyymc" label="外出原因" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="sqwcyymc" label="外出原因" sortable="custom">
+          <el-table-column prop="sqwcmdd" label="目的地" min-width="85" sortable="custom">
           </el-table-column>
-          <el-table-column prop="sqwcmdd" label="目的地" sortable="custom">
+          <el-table-column prop="wcsj" label="外出时间" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="wcsj" label="外出时间" sortable="custom">
+          <el-table-column prop="fxsj" label="拟返回时间" min-width="110" sortable="custom">
           </el-table-column>
-          <el-table-column prop="fxsj" label="拟返回时间" sortable="custom">
+          <el-table-column prop="fdysprxm" label="审核人" width="85" sortable="custom">
           </el-table-column>
-          <el-table-column prop="fdysprxm" label="审核人" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="fdyspsj" label="审核时间" sortable="custom">
+          <el-table-column prop="fdyspsj" label="审核时间" width="100" sortable="custom">
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">

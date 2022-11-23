@@ -106,14 +106,14 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
-          <el-table-column prop="xh" label="学号" sortable />
-          <el-table-column prop="xm" label="家访学生" sortable="custom" />
-          <el-table-column prop="sbrxm" label="家访人" sortable="custom" />
-          <el-table-column prop="sbrgh" label="工号" sortable="custom" />
-          <el-table-column prop="sbrdw" label="工作单位" sortable="custom" />
-          <el-table-column prop="gtcyrxm" label="共同参与" sortable="custom" />
-          <el-table-column prop="jfxs" label="家访形式" sortable="custom" />
-          <el-table-column prop="jfsj" label="家访时间" sortable="custom" />
+          <el-table-column prop="xh" label="学号" width="100" sortable />
+          <el-table-column prop="xm" label="家访学生" min-width="100" sortable="custom" />
+          <el-table-column prop="sbrxm" label="家访人" width="85" sortable="custom" />
+          <el-table-column prop="sbrdw" label="工作单位" min-width="100" sortable="custom" />
+          <el-table-column prop="gtcyrxm" label="共同参与" min-width="100" sortable="custom" />
+          <el-table-column prop="jfxs" label="家访形式" width="100" sortable="custom" />
+          <el-table-column prop="jfdd" label="家访地点" min-width="100" sortable="custom" />
+          <el-table-column prop="jfsj" label="家访时间" width="100" sortable="custom" />
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
               <el-button

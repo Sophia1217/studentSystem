@@ -124,7 +124,7 @@
           </el-table-column>
           <el-table-column prop="xm" label="谈话对象" sortable="custom">
           </el-table-column>
-          <el-table-column prop="thrxm" label="谈话人" sortable="custom">
+          <el-table-column prop="thrxm" label="谈话人" width="85" sortable="custom">
           </el-table-column>
           <el-table-column prop="thrgh" label="工号" sortable="custom">
           </el-table-column>

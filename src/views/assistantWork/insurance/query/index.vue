@@ -118,23 +118,23 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" sortable="custom">
+          <el-table-column prop="xh" label="学号" width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xm" label="购买人" sortable="custom">
+          <el-table-column prop="xm" label="购买人" width="85" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xzmc" label="险种名称" sortable="custom">
+          <el-table-column prop="xzmc" label="险种名称" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="bdh" label="保单号" sortable="custom">
+          <el-table-column prop="bdh" label="保单号" min-width="85" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xzlx" label="险种类型" sortable="custom">
+          <el-table-column prop="xzlx" label="险种类型" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="cbgs" label="承保公司" sortable="custom">
+          <el-table-column prop="cbgs" label="承保公司" min-width="100" sortable="custom">
           </el-table-column
-          ><el-table-column prop="lxr" label="联系人" sortable="custom">
+          ><el-table-column prop="lxr" label="联系人" width="85" sortable="custom">
           </el-table-column
-          ><el-table-column prop="lxdh" label="联系电话" sortable="custom">
+          ><el-table-column prop="lxdh" label="联系电话" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="gmsj" label="购买时间" sortable="custom">
+          <el-table-column prop="gmsj" label="购买时间" width="100" sortable="custom">
           </el-table-column>
 
           <el-table-column fixed="right" label="操作" width="140">

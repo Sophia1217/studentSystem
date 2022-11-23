@@ -101,23 +101,23 @@
           ></el-table-column>
           <!-- <el-table-column prop="kcbh" label="课程编号" sortable="custom">
           </el-table-column> -->
-          <el-table-column prop="kcmc" label="课程名称" sortable="custom">
+          <el-table-column prop="kcmc" label="课程名称" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="jxdd" label="教室" sortable="custom">
+          <el-table-column prop="jxdd" label="教室" min-width="70" sortable="custom">
           </el-table-column>
-          <el-table-column prop="kckksj" label="开课时间" sortable="custom">
+          <el-table-column prop="kckksj" label="开课时间" min-width="200" sortable="custom">
           </el-table-column>
-          <el-table-column prop="kcsksj" label="授课日期" sortable="custom">
+          <el-table-column prop="kcsksj" label="授课日期" width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="rkls" label="任课教师" sortable="custom">
+          <el-table-column prop="rkls" label="任课教师" width="100" sortable="custom">
           </el-table-column>
           <!-- <el-table-column prop="rklsgh" label="教师工号" sortable="custom">
           </el-table-column> -->
-          <el-table-column prop="jlrxm" label="记录人" sortable="custom">
+          <el-table-column prop="jlrxm" label="记录人" width="85" sortable="custom">
           </el-table-column>
           <!-- <el-table-column prop="jlrgh" label="记录人工号" sortable="custom">
           </el-table-column> -->
-          <el-table-column prop="jlrlx" label="类型" sortable="custom">
+          <el-table-column prop="jlrlx" label="类型" width="70" sortable="custom">
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">

@@ -393,7 +393,6 @@ export function isNumberStr(str) {
 
 // 下载表格
  export async function downloadFn(data, filename,type) { //第三个参数是文件类型,必传不然就默认都为text
-  console.log(data);
   const isblob = await blobValidate(data);
   if (isblob) {
     var ls = ""
@@ -432,8 +431,20 @@ export function isNumberStr(str) {
     const errMsg = errorCode[rspObj.code] || rspObj.errmsg || errorCode['default']
     this.$message.error(errMsg);
   }
-
 }
+
+//按钮鉴权，只读和可编辑 0只读 1可写  可读只有查询权限 可写有所有的功能
+export function authConfirm(data){
+  var flag ='1'
+  var all =this.$store.state.permission.AUTH
+  all.map((item)=>{
+    if(item.name == data && item.AUTH == "1"){return flag = "1"}
+    return flag = "2" 
+  }
+  )
+  this.$store.commit("SET_AUTHFLAG", flag)
+  // return flag === '1' ? true :false
+} 
 
 //当前时间减去三十分钟
 export function  transTime(date) {

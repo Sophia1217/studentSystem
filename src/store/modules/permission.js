@@ -17,7 +17,9 @@ const permission = {
     addRoutes: [],
     defaultRoutes: [],
     topbarRouters: [],
-    sidebarRouters: []
+    sidebarRouters: [],
+    AUTH:[],
+    AUTHFLAG:false
   },
   mutations: {
     SET_ROUTES: (state, routes) => {
@@ -34,6 +36,12 @@ const permission = {
     SET_SIDEBAR_ROUTERS: (state, routes) => {
       state.sidebarRouters = routes
     },
+    SET_AUTH: (state, AUTH) => {
+      state.AUTH = AUTH
+    },
+    SET_AUTHFLAG: (state, AUTHFLAG) => {
+      state.AUTHFLAG = AUTHFLAG == "1" ?true :false
+    }
   },
   actions: {
     // 生成路由
@@ -49,7 +57,14 @@ const permission = {
             setToken(token)
             const sdata = JSON.parse(JSON.stringify(res.menuRows))
             const rdata = JSON.parse(JSON.stringify(res.menuRows))
+            const Adata = JSON.parse(JSON.stringify(res.menuRows))
             const sidebarRoutes = filterAsyncRouter(sdata)
+           var arr =Adata&& Adata.map(e => e.children);
+           var arr1 =arr&& arr.flat();
+           var tar =arr1&&arr1.map((item,index)=>{
+            return Object.assign({},{"auth":item.auth?item.auth:"","name":item.path?item.path:""})
+           })
+           commit('SET_AUTH', tar)
             const rewriteRoutes = filterAsyncRouter(rdata, false, true)
             rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true })
             router.addRoutes(sidebarRoutes);
@@ -130,7 +145,7 @@ function filterChildren(childrenMap, lastRouter = false) {
       }
     }
     if (lastRouter) {
-      el.path = lastRouter.path + '/' + el.path
+      el.path = lastRouter.path + '/' + el.path 
     }
     children = children.concat(el)
   })

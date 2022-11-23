@@ -151,6 +151,7 @@ export default {
         createUserId: "",
         createUserName: "",
       },
+      AUTHFLAG: false,
       roleNameOps: [
         { label: "所有", value: "" },
         { label: "启用", value: "0" },
@@ -161,6 +162,8 @@ export default {
     };
   },
   created() {
+    this.authConfirm(this.$route.name);
+    this.AUTHFLAG = this.$store.state.permission.AUTHFLAG;
     // this.handleQuery();
   },
   activated() {

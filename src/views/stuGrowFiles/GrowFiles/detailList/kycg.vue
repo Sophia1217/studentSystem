@@ -191,7 +191,7 @@
                     <i class="scopeIncon del"></i>
                     <span>删除</span>
                   </el-button>
-                  <el-button type="text" size="small" @click="lctClick()">
+                  <el-button type="text" size="small" @click="lctClick(index)">
                     <i class="scopeIncon lct"></i>
                     <span>流程图</span>
                   </el-button>
@@ -741,9 +741,9 @@ export default {
         })
         .catch((err) => {});
     },
-    lctClick(row) {
-      if (!!row.processid) {
-        this.$refs.child.inner(row.processid);
+    lctClick(index) {
+      if (!!this.LwDetail[index].processid) {
+        this.$refs.child.inner(this.LwDetail[index].processid);
         this.lctModal = true;
       } else {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");

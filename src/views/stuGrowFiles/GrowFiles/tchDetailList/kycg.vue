@@ -167,7 +167,7 @@
                     <i class="scopeIncon del"></i>
                     <span>删除</span>
                   </el-button>
-                  <el-button type="text" size="small" @click="lctClick()">
+                  <el-button type="text" size="small" @click="lctClick(index)">
                     <i class="scopeIncon lct"></i>
                     <span>流程图</span>
                   </el-button>
@@ -713,9 +713,9 @@ export default {
         })
         .catch((err) => {});
     },
-    lctClick(row) {
-      if (!!row.processid) {
-        this.$refs.child.inner(row.processid);
+    lctClick(index) {
+      if (!!this.LwDetail[index].processid) {
+        this.$refs.child.inner(this.LwDetail[index].processid);
         this.lctModal = true;
       } else {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");
@@ -863,12 +863,12 @@ export default {
       this.delModal = false;
     },
     showDel(index) {
-     //   if (this.LwDetail[index].status == "01") {
-        this.delModal = true;
-         this.delIndex = index;
-    //   } else {
-    //     this.$message.error("存在非草稿状态数据，不可以删除");
-    //   }
+      //   if (this.LwDetail[index].status == "01") {
+      this.delModal = true;
+      this.delIndex = index;
+      //   } else {
+      //     this.$message.error("存在非草稿状态数据，不可以删除");
+      //   }
     },
     //提交
     submit(index) {

@@ -127,6 +127,7 @@
               label="班级编号"
               align="center"
               prop="bjdm"
+              width="115" 
               sortable
             />
             <el-table-column
@@ -140,28 +141,33 @@
               label="培养单位"
               align="center"
               prop="ssdwmc"
+              min-width="100" 
               sortable
             />
             <el-table-column
               label="培养层次"
               align="center"
               prop="pyccName"
+              width="100" 
               sortable
             />
             <el-table-column
               label="班级人数"
               align="center"
               prop="stuNumOfClass"
+              width="100" 
               sortable
             />
             <el-table-column
               label="创建时间"
               align="center"
               prop="createTime"
+              min-width="100" 
               sortable
             />
             <el-table-column
               label="操作"
+              fixed="right"
               align="center"
               sortable
               class-name="small-padding fixed-width"

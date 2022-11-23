@@ -143,6 +143,7 @@
         class-name="small-padding fixed-width"
       />
       <el-table-column
+        fixed="right"
         label="操作"
         align="center"
         sortable

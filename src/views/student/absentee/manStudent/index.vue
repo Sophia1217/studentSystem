@@ -326,6 +326,7 @@
             <el-table-column
               :prop="item.dm"
               :label="item.mc"
+              min-width="100"
               sortable="custom"
             ></el-table-column>
           </div>

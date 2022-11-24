@@ -137,12 +137,24 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
-          <el-table-column prop="jyzt" label="教育主题" :show-overflow-tooltip="true" sortable />
-          <el-table-column prop="gjc" label="关键词" width="90" sortable="custom" />
+          <el-table-column prop="jyzt" 
+            label="教育主题" 
+            :show-overflow-tooltip="true" 
+            min-width="100" 
+            sortable 
+          />
+          <el-table-column prop="gjc" label="关键词" 
+            :show-overflow-tooltip="true" 
+            width="90" 
+            sortable="custom" 
+            />
           <el-table-column prop="jydx" label="教育对象" width="130" sortable="custom" />
           <el-table-column prop="ssdwmc" label="培养单位" width="100" sortable="custom" />
           <el-table-column prop="hdksrq" label="活动时间" width="100" sortable="custom" />
-          <el-table-column prop="hddd" label="开展地点" width="100" sortable="custom" />
+          <el-table-column prop="hddd" label="开展地点" 
+            width="100" 
+            :show-overflow-tooltip="true" 
+            sortable="custom" />
           <el-table-column prop="jlrxm" label="教职工姓名" width="110" sortable="custom" />
           <el-table-column prop="jlrlx" label="类型" width="70" sortable="custom" />
           <el-table-column fixed="right" label="操作" width="180">

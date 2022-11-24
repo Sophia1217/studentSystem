@@ -112,7 +112,7 @@
           <el-table-column prop="sbrdw" label="工作单位" min-width="100" sortable="custom" />
           <el-table-column prop="gtcyrxm" label="共同参与" min-width="100" sortable="custom" />
           <el-table-column prop="jfxs" label="家访形式" width="100" sortable="custom" />
-          <el-table-column prop="jfdd" label="家访地点" min-width="100" sortable="custom" />
+          <el-table-column prop="jfdd" label="家访地点" min-width="120" sortable="custom" />
           <el-table-column prop="jfsj" label="家访时间" width="100" sortable="custom" />
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">

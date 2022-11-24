@@ -120,21 +120,29 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" sortable="custom">
+          <el-table-column prop="xh" label="学号" 
+            min-width="100" 
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
           </el-table-column>
-          <el-table-column prop="xm" label="谈话对象" sortable="custom">
+          <el-table-column prop="xm" label="谈话对象" 
+            min-width="100" 
+            sortable="custom"
+             :show-overflow-tooltip="true"
+          >
           </el-table-column>
           <el-table-column prop="thrxm" label="谈话人" width="85" sortable="custom">
           </el-table-column>
-          <el-table-column prop="thrgh" label="工号" sortable="custom">
+          <el-table-column prop="thrgh" label="工号" width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="gzdw" label="工作单位" sortable="custom">
+          <el-table-column prop="gzdw" label="工作单位" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="thzt" label="谈话主题" sortable="custom">
+          <el-table-column prop="thzt" label="谈话主题" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="thzttype" label="谈话标签" sortable="custom">
+          <el-table-column prop="thzttype" label="谈话标签" min-width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zt" label="记录状态" sortable="custom">
+          <el-table-column prop="zt" label="记录状态" min-width="100" sortable="custom">
             <template slot-scope="scope">
               <div v-if="scope.row.sfjl == 1">
                 <i class="scopeIncon1 ywc"></i>

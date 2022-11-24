@@ -895,23 +895,24 @@ export default {
             height: 20px;
             vertical-align: top;
             margin-right: 5px;
-          }
-          .orangeIcon {
-            margin-top: 10px;
-            background: url("~@/assets/assistantPng/out.png") no-repeat;
-          }
-          .lightIcon {
-            margin-top: 9px;
-            background: url("~@/assets/assistantPng/delete.png") no-repeat;
-          }
-          .greenIcon {
-            margin-top: 10px;
-            background: url("~@/assets/assistantPng/add.png") no-repeat;
-          }
-          .tjIcon {
-            margin-top: 17px;
-            margin-left: 10px;
-            background: url("~@/assets/images/passWhite.png") no-repeat;
+
+            .orangeIcon {
+              margin-top: 10px;
+              background: url("~@/assets/assistantPng/out.png") no-repeat;
+            }
+            .lightIcon {
+              margin-top: 9px;
+              background: url("~@/assets/assistantPng/delete.png") no-repeat;
+            }
+            .greenIcon {
+              margin-top: 10px;
+              background: url("~@/assets/assistantPng/add.png") no-repeat;
+            }
+            .tjIcon {
+              margin-top: 17px;
+              margin-left: 10px;
+              background: url("~@/assets/images/passWhite.png") no-repeat;
+            }
           }
         }
       }
@@ -986,6 +987,11 @@ export default {
       .greenIcon {
         margin: 15px;
         background: url("~@/assets/assistantPng/add.png") no-repeat;
+      }
+      .tjIcon {
+        margin-top: 17px;
+        margin-left: 10px;
+        background: url("~@/assets/images/passWhite.png") no-repeat;
       }
     }
   }

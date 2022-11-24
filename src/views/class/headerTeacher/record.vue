@@ -15,7 +15,7 @@
             删除</el-button
           >
         </el-col> -->
-        <div class="btns borderLight" @click="deleteRecord()">
+        <div class="btns borderLight" @click="deleteRecord()" v-show="AUTHFLAG">
           <i class="icon lightIcon"></i><span class="title">删除</span>
         </div>
         <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
@@ -145,6 +145,10 @@ export default {
   mounted() {
     this.queryParams.bjdm = this.$route.query.bjdm;
     this.getList(this.queryParams);
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   activated() {
     // this.queryParams.bjdm = this.$route.query.bjdm;

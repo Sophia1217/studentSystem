@@ -76,10 +76,10 @@
           <div class="btns borderOrange" @click="handleExport">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns borderLight" @click="del()">
+          <div class="btns borderLight" @click="del()" v-show="AUTHFLAG">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
-          <div class="btns borderGreen" @click="hadleDetail1()">
+          <div class="btns borderGreen" @click="hadleDetail1()" v-show="AUTHFLAG">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
         </div>
@@ -201,6 +201,10 @@ export default {
 
   mounted() {
     this.handleSearch();
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   activated() {
     this.handleSearch();

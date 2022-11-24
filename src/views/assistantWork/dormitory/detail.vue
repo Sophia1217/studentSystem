@@ -263,7 +263,7 @@
       "
       class="editBottom"
     >
-      <div class="btn editIcon" @click="editButtonClick">编辑</div>
+      <div class="btn editIcon" @click="editButtonClick" v-show="AUTHFLAG">编辑</div>
     </div>
 
     <div v-if="isEdit == 2" class="editBottom">
@@ -339,7 +339,10 @@ export default {
   },
   computed: {},
   watch: {},
-  created() {},
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
+  },
   mounted() {
     this.lgnSn = this.$route.query.id; //逻辑主键
     this.getDetailPage();

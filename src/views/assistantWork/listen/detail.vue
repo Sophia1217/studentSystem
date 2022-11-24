@@ -316,7 +316,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="p2" v-if="state == 0 && sf == 0">
+    <div class="p2" v-if="state == 0 && sf == 0" v-show="AUTHFLAG">
       <el-button
         style="background: #005657; color: white; margin-left: 10px"
         @click="edit"
@@ -632,6 +632,10 @@ export default {
     this.querywj();
     this.getYears();
     this.getDetail();
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
 
   methods: {

@@ -121,10 +121,10 @@
           <div class="btns borderOrange" @click="handleExport">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns borderLight" @click="handleRemoveDialog">
+          <div class="btns borderLight" @click="handleRemoveDialog" v-show="AUTHFLAG">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
-          <div class="btns borderGreen" @click="handleAdd">
+          <div class="btns borderGreen" @click="handleAdd" v-show="AUTHFLAG">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
         </div>
@@ -211,6 +211,7 @@ export default {
   props: [],
   data() {
     return {
+      AUTHFLAG: false,
       title: "",
       // // 总条数
       total: 0,
@@ -262,7 +263,11 @@ export default {
   },
   computed: {},
   watch: {},
-  created() {},
+  created() {
+    
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
+  },
   mounted() {
     this.getList();
     // this.getCode("dmxbm");

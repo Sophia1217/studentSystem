@@ -108,7 +108,7 @@
             <span class="title">辅导员管理列表</span>
             <i class="Updataicon"></i>
           </div>
-          <div class="headerRight">
+          <div class="headerRight" v-show="AUTHFLAG">
             <div class="btns borderBlue" @click="assignClick">
               <i class="icon plCancelIcon"></i
               ><span class="title">批量分配</span>
@@ -173,7 +173,7 @@
               class-name="small-padding fixed-width"
             >
               <template slot-scope="scope">
-                <div class="ins-handle" v-if="fpfdy">
+                <div class="ins-handle" v-if="fpfdy" v-show="AUTHFLAG">
                   <!-- @click="assignTea(scope.row)" class="operate" -->
                   <!-- <span class="assignTea">分配辅导员</span> -->
                   <span
@@ -358,6 +358,11 @@ export default {
     this.fpfdy = this.Jr.includes("0310");
     this.rejl = this.Jr.includes("0309");
   },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
+  },
+
   activated() {
     // this.getOptions();
     // this.getList();

@@ -91,7 +91,7 @@
           >
             新建班级</el-button
           > -->
-          <div class="btns borderGreen" @click="handleAdd">
+          <div class="btns borderGreen" @click="handleAdd" v-show="AUTHFLAG">
             <i class="icon greenIcon"></i><span class="title1">新建班级</span>
           </div>
         </el-col>
@@ -189,7 +189,10 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="scope">
-          <div class="deleteBtn" @click="handleDelete(scope.row.bjdm)">
+          <div class="deleteBtn" 
+            @click="handleDelete(scope.row.bjdm)" 
+            v-show="AUTHFLAG"
+          >
             <i class="el-icon-delete"></i>删除空班级
           </div>
         </template>
@@ -403,6 +406,10 @@ export default {
     // });
     this.getList(this.queryParams);
     this.getOptions();
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   activated() {},
   methods: {

@@ -8,7 +8,7 @@
           <!-- <el-button class="delete" icon="el-icon-delete" @click="handleDelete"
             >删除</el-button
           > -->
-          <div class="btns borderLight" @click="handleDelete">
+          <div class="btns borderLight" @click="handleDelete" v-show="AUTHFLAG">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
         </el-row>
@@ -111,6 +111,10 @@ import { getDeleteFdyRecords, getQueryRecords } from "@/api/class/instructor";
 export default {
   name: "empTable", //辅导员任职记录
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
+  },
   data() {
     return {
       // 遮罩层

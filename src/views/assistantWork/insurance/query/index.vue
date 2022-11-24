@@ -82,10 +82,10 @@
           <span class="title">学平险查询列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderBlue" @click="mbDown">
+          <div class="btns borderBlue" @click="mbDown" v-show="AUTHFLAG">
             <i class="icon blueIcon"></i><span class="title">模板下载</span>
           </div>
-          <div class="btns borderBlue">
+          <div class="btns borderBlue" v-show="AUTHFLAG">
             <el-upload
               accept=".xlsx,.xls"
               :auto-upload="true"
@@ -210,6 +210,10 @@ export default {
   mounted() {
     this.handleSearch();
     this.queryXzlx();
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
 
   methods: {

@@ -101,10 +101,10 @@
           <span class="title">在岗辅导员列表</span> <i class="Updataicon" />
         </div>
         <div class="headerRight">
-          <div class="btns borderOrange" @click="handleRemove">
+          <div class="btns borderOrange" @click="handleRemove" v-show="AUTHFLAG">
             <i class="icon removeButton" /><span class="title">批量免去</span>
           </div>
-          <div class="btns borderGreen" @click="handleImport">
+          <div class="btns borderGreen" @click="handleImport" v-show="AUTHFLAG">
             <i class="icon greenIcon" /><span class="title1">添加辅导员</span>
           </div>
           <div class="btns borderOrange" @click="handleExport">
@@ -435,6 +435,10 @@ export default {
     this.getCode("dmxbm");
     this.getCode("dmpyccm");
     this.getOption();
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
 
   methods: {

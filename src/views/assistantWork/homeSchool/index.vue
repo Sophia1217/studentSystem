@@ -87,10 +87,10 @@
           <div class="btns borderGreen" @click="handleExport">
             <i class="icon orangeIcon" /><span class="title">导出</span>
           </div>
-          <div class="btns borderRed" @click="handleDelete">
+          <div class="btns borderRed" @click="handleDelete" v-show="AUTHFLAG">
             <i class="icon lightIcon" /><span class="title">删除</span>
           </div>
-          <div class="btns fullGreen" @click="handleNew">
+          <div class="btns fullGreen" @click="handleNew" v-show="AUTHFLAG">
             <i class="icon greenIcon" /><span class="title1">新增</span>
           </div>
         </div>
@@ -228,7 +228,10 @@ export default {
   },
   computed: {},
   watch: {},
-  created() {},
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
+  },
   mounted() {
     this.getList(this.queryParams);
     // this.getCode("dmxbm");

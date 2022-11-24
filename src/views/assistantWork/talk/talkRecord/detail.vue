@@ -5,7 +5,7 @@
         <div class="headRight">
           <span class="title">谈话详情</span>
         </div>
-        <div class="headLeft">
+        <div class="headLeft" v-show="AUTHFLAG">
           <button
             class="span1"
             v-if="
@@ -357,6 +357,10 @@ export default {
     this.$nextTick((_) => {
       this.queryDetail();
     });
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
 
   methods: {

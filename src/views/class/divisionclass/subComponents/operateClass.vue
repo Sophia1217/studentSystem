@@ -100,12 +100,12 @@
                 <i class="Updataicon"></i>
               </div>
               <div class="headerRight">
-                <div class="btns borderBlue" @click="mbDown">
+                <div class="btns borderBlue" @click="mbDown" v-show="AUTHFLAG">
                   <i class="icon downIcon"></i
                   ><span class="title">模板下载</span>
                 </div>
 
-                <div class="btns borderBlue">
+                <div class="btns borderBlue" v-show="AUTHFLAG">
                   <el-upload
                     accept=".xlsx,.xls"
                     :auto-upload="true"
@@ -122,7 +122,7 @@
                 <div class="btns borderOrange" @click="handleExport">
                   <i class="icon orangeIcon"></i><span class="title">导出</span>
                 </div>
-                <div class="btns borderGreen" @click="handleChange(0)">
+                <div class="btns borderGreen" @click="handleChange(0)" v-show="AUTHFLAG">
                   <i class="icon greenIcon"></i
                   ><span class="title1">调整班级</span>
                 </div>
@@ -332,7 +332,7 @@
                 <i class="Updataicon"></i>
               </div>
               <div class="headerRight">
-                <div class="btns borderGreen" @click="handleChange(1)">
+                <div class="btns borderGreen" @click="handleChange(1)" v-show="AUTHFLAG">
                   <i class="icon greenIcon"></i
                   ><span class="title1">调入班级</span>
                 </div>
@@ -583,6 +583,10 @@ export default {
     this.queryParams.bjdm = this.$route.query.bjdm; // 班级编号
     this.getList(this.queryParams); // 页面一挂载就默认展示某一特定班级学生名单
     this.getOptions(); // 获取生源地、专业、性别筛选框数据
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   activated() {},
   methods: {

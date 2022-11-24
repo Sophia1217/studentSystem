@@ -166,7 +166,7 @@
           :on-error="upLoadError"
         >
         </el-upload>
-        <el-button class="export" v-if="edit == '1'" @click="editDetail">
+        <el-button class="export" v-if="edit == '1'" @click="editDetail" v-show="AUTHFLAG">
           编辑</el-button
         >
         <el-button v-if="edit == '2'" @click="baocun"> 保存</el-button>
@@ -239,6 +239,10 @@ export default {
   mounted() {
     this.getDatail();
     this.queryXzmc();
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
 
   methods: {

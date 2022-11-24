@@ -94,10 +94,10 @@
           <span class="title">离岗辅导员列表</span> <i class="Updataicon" />
         </div>
         <div class="headerRight">
-          <div class="btns fullGreen" @click="handleAdd">
+          <div class="btns fullGreen" @click="handleAdd" v-show="AUTHFLAG">
             <i class="icon addIcon" /><span class="title">批量任命</span>
           </div>
-          <div class="btns borderGreen" @click="handleImport">
+          <div class="btns borderGreen" @click="handleImport" v-show="AUTHFLAG">
             <i class="icon greenIcon" /><span class="title">导入</span>
           </div>
           <div class="btns borderGreen" @click="handleExport">
@@ -308,6 +308,10 @@ export default {
   created() {},
   mounted() {
     this.getList(this.queryParams);
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   methods: {
     // 查询

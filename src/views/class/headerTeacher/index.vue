@@ -150,7 +150,7 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="scope">
-          <div class="tea-handle" v-if="fpbzr">
+          <div class="tea-handle" v-if="fpbzr" v-show="AUTHFLAG">
             <span class="iconfont allocate_teacher" @click="action(scope.row)"
               >&#xe638;</span
             >
@@ -314,6 +314,10 @@ export default {
     this.getData(this.menuVal);
     this.rejl = this.Jr.includes("0302");
     this.fpbzr = this.Jr.includes("0307");
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   activated() {
     // this.getList(this.queryParams);

@@ -354,7 +354,7 @@
           </el-upload>
         </el-form-item>
       </el-form>
-      <div class="headLeft">
+      <div class="headLeft" v-show="AUTHFLAG">
         <button
           class="span1"
           v-if="
@@ -444,6 +444,10 @@ export default {
     };
   },
 
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
+  },
   mounted() {
     this.id = this.$route.query.id;
     this.queryTag();

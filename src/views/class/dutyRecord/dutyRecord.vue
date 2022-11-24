@@ -130,7 +130,7 @@
         <div class="headerLeft">
           <span class="title">带班记录</span> <i class="Updataicon" />
         </div>
-        <div class="headerRight">
+        <div class="headerRight" v-show="AUTHFLAG">
           <div class="btns borderLight" @click="handleRemove">
             <i class="icon removeIcon"></i><span class="title">取消带班</span>
           </div>
@@ -287,6 +287,10 @@ export default {
 
     this.getCode("dmpyccm");
     this.getOption();
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
 
   methods: {

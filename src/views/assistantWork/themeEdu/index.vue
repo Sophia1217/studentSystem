@@ -106,6 +106,7 @@
           <div
             class="btns borderLight"
             @click="handleRemoveDialog"
+             v-show="AUTHFLAG"
             v-if="
               this.$store.getters.roleId == '06' ||
               this.$store.getters.roleId == '01'
@@ -120,6 +121,7 @@
               this.$store.getters.roleId == '01'
             "
             @click="handleAdd"
+            v-show="AUTHFLAG"
           >
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
@@ -262,7 +264,10 @@ export default {
   },
   computed: {},
   watch: {},
-  created() {},
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
+  },
   mounted() {
     this.getList();
 

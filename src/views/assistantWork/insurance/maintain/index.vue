@@ -33,10 +33,10 @@
           <span class="title">险种信息维护</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderOrange" @click="mbDown1()">
+          <div class="btns borderOrange" @click="mbDown1()" v-show="AUTHFLAG">
             <i class="icon lightIcon"></i><span class="title">模板下载</span>
           </div>
-          <div class="btns borderBlue">
+          <div class="btns borderBlue" v-show="AUTHFLAG">
             <el-upload
               accept=".xlsx,.xls"
               :auto-upload="true"
@@ -166,6 +166,10 @@ export default {
 
   mounted() {
     this.handleSearch();
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   activated() {
     this.handleSearch();

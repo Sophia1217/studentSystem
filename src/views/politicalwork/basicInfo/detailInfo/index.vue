@@ -2431,7 +2431,7 @@
         </div>
     </div>
     </div>
-    <div v-if="isEdit != 2" class="editBottom">
+    <div v-if="isEdit != 2" class="editBottom" v-show="AUTHFLAG">
           <div class="btn editIcon" @click="editButtonClick">编辑</div>
         </div>
 
@@ -2549,6 +2549,10 @@ export default {
 
     this.getListWorkPlace();
     this.getDetail();
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   methods: {
     handleClick() {

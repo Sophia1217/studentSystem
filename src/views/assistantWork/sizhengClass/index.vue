@@ -122,10 +122,10 @@
           <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderBlue" @click="mbDown">
+          <div class="btns borderBlue" @click="mbDown" v-show="AUTHFLAG">
             <i class="icon downIcon"></i><span class="title">模板下载</span>
           </div>
-          <div class="btns borderBlue">
+          <div class="btns borderBlue" v-show="AUTHFLAG">
             <el-upload
               accept=".xlsx,.xls"
               :auto-upload="true"
@@ -141,10 +141,10 @@
           <div class="btns borderOrange" @click="handleExport">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns borderLight" @click="del">
+          <div class="btns borderLight" @click="del" v-show="AUTHFLAG">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
-          <div class="btns borderGreen" @click="addClass">
+          <div class="btns borderGreen" @click="addClass" v-show="AUTHFLAG">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
         </div>
@@ -466,6 +466,10 @@ export default {
     this.querySelect();
     this.getAllCollege();
     this.getGwList();
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
 
   methods: {

@@ -273,7 +273,7 @@
           </el-upload>
         </el-form-item>
       </el-form>
-      <div class="headLeft">
+      <div class="headLeft" v-show="AUTHFLAG">
         <button
           class="span1"
           v-if="
@@ -304,6 +304,7 @@ import { queryTag, addTag, delTag } from "@/api/assistantWork/talk";
 export default {
   data() {
     return {
+      AUTHFLAG: false,
       // videoSrc: "",
       urlArr: [],
       fileList: [],
@@ -341,6 +342,8 @@ export default {
   },
 
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.id = this.$route.query.id;
     (this.form.date = new Date()),
       (this.form.endTime = new Date()),

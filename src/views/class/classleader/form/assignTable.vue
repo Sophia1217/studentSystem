@@ -49,7 +49,7 @@
               <div class="btns borderBlue" @click="studentRecord1">
                 <span class="title">任职记录</span>
               </div>
-              <div class="btns borderBlue" @click="deleteSome">
+              <div class="btns borderBlue" @click="deleteSome" v-show="AUTHFLAG">
                 <i class="icon removeIcon"></i
                 ><span class="title">批量撤任</span>
               </div>
@@ -179,7 +179,7 @@
               <div class="btns borderBlue" @click="studentRecord1">
                 <span class="title">任职记录</span>
               </div>
-              <div class="btns borderBlue" @click="actionAssignBgb">
+              <div class="btns borderBlue" @click="actionAssignBgb" v-show="AUTHFLAG">
                 <i class="icon plCancelIcon"></i
                 ><span class="title">批量任命</span>
               </div>
@@ -478,6 +478,10 @@ export default {
       }
     });
     this.getList();
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   activated() {
     this.queryParams.bjdm = this.$route.query.bjdm;

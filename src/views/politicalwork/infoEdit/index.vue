@@ -19,7 +19,10 @@
         <div class="right_top">
           <p class="title">
             信息修改字段设置
-            <el-button class="saveButton" type="primary" @click="onSubmit"
+            <el-button class="saveButton" 
+              type="primary" 
+              @click="onSubmit"
+               v-show="AUTHFLAG"
               >保存</el-button
             >
           </p>
@@ -1006,6 +1009,10 @@ export default {
   created() {},
   mounted() {
     this.getloadStaffColumns();
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
 
   methods: {

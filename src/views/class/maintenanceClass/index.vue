@@ -118,14 +118,14 @@
         label="班级编号"
         align="center"
         prop="bjdm"
-        width="115" 
+        width="115"
         sortable="custom"
       />
       <el-table-column
         label="班级名称"
         align="center"
         prop="bjmc"
-        min-width="220" 
+        min-width="220"
         sortable="custom"
       >
         <template slot-scope="{ row }">
@@ -142,28 +142,28 @@
         label="培养单位"
         align="center"
         prop="ssdwmc"
-        min-width="100" 
+        min-width="100"
         sortable="custom"
       />
       <el-table-column
         label="年级"
         align="center"
         prop="ssnj"
-        width="70" 
+        width="70"
         sortable="custom"
       />
       <el-table-column
         label="培养层次"
         align="center"
         prop="pyccName"
-        min-width="100" 
+        min-width="100"
         sortable="custom"
       />
       <el-table-column
         label="班级人数"
         align="center"
         prop="stuNumOfClass"
-        width="100" 
+        width="100"
         sortable="custom"
       />
       <!-- <el-table-column
@@ -178,7 +178,7 @@
         align="center"
         prop="updateTime"
         sortable="custom"
-        min-width="100" 
+        min-width="100"
         class-name="small-padding fixed-width"
       />
       <el-table-column
@@ -189,8 +189,9 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="scope">
-          <div class="deleteBtn" 
-            @click="handleDelete(scope.row.bjdm)" 
+          <div
+            class="deleteBtn"
+            @click="handleDelete(scope.row.bjdm)"
             v-show="AUTHFLAG"
           >
             <i class="el-icon-delete"></i>删除空班级
@@ -476,24 +477,29 @@ export default {
       } else {
         var bjdm = this.bjdmEdit;
         var bjmc = this.bjmcEdit;
-        modifyClassName({ bjdm, bjmc }).then((response) => {
-          if (response.flag == true) {
-            this.$message({
-              showClose: true,
-              message: "修改班级名称成功",
-              type: "success",
-            });
-          } else {
-            this.$message({
-              showClose: true,
-              message: "修改班级名称失败",
-              type: "error",
-            });
-            this.handleQuery();
-          }
-          this.sureModal = false;
-        });
+        modifyClassName({ bjdm, bjmc })
+          .then((response) => {
+            if (response.flag == true) {
+              this.$message({
+                showClose: true,
+                message: "修改班级名称成功",
+                type: "success",
+              });
+            } else {
+              this.$message({
+                showClose: true,
+                message: "修改班级名称失败",
+                type: "error",
+              });
+            }
+          })
+          .catch((err) => {
+            console.log("rer");
+            this.sureModal = false;
+          });
       }
+      this.handleQuery();
+      this.sureModal = false;
     },
     sureCancel() {
       this.sureModal = false;

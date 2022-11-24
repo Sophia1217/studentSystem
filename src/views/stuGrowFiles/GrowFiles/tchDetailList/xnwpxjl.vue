@@ -29,9 +29,19 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="pxxmmc" label="培训项目名称" sortable="custom" :show-overflow-tooltip="true">
+          <el-table-column
+            prop="pxxmmc"
+            label="培训项目名称"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
           </el-table-column>
-          <el-table-column prop="dwh" label="组织单位" sortable="custom" :show-overflow-tooltip="true">
+          <el-table-column
+            prop="dwh"
+            label="组织单位"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
           </el-table-column>
           <el-table-column prop="pxkssj" label="培训开始时间" sortable="custom">
           </el-table-column>
@@ -39,17 +49,75 @@
           </el-table-column>
           <el-table-column prop="zxs" label="总学时" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xz" label="性质" sortable="custom" :show-overflow-tooltip="true">
+          <el-table-column
+            prop="xz"
+            label="性质"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
+            <template slot-scope="scope">
+              <el-select
+                v-model="scope.row.xz"
+                placeholder="请选择"
+                :disabled="true"
+              >
+                <el-option
+                  v-for="(item, index) in dmpxxzm"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </template>
           </el-table-column>
-          <el-table-column prop="pxdwlb" label="培训单位类别" sortable="custom" :show-overflow-tooltip="true">
+          <el-table-column
+            prop="pxdwlb"
+            label="培训单位类别"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
+            <template slot-scope="scope">
+              <el-select
+                v-model="scope.row.pxdwlb"
+                placeholder="请选择"
+                :disabled="true"
+              >
+                <el-option
+                  v-for="(item, index) in dmpxdwlbm"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </template>
           </el-table-column>
-          <el-table-column prop="jg" label="结果" sortable="custom" :show-overflow-tooltip="true">
+          <el-table-column
+            prop="jg"
+            label="结果"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
+            <template slot-scope="scope">
+              <el-select
+                v-model="scope.row.jg"
+                placeholder="请选择"
+                :disabled="true"
+              >
+                <el-option
+                  v-for="(item, index) in dmjypxjgm"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </template>
           </el-table-column>
           <el-table-column
             prop="fileList"
             label="结业证书"
             align="center"
-            width="300"
+            width="200px"
+            :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
               <div v-for="item in scope.row.fileList">
@@ -172,23 +240,37 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="性质" align="center">
+            <el-table-column label="性质" align="center" width="130px">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.xz'"
                   :rules="rules.xz"
                 >
-                  <el-input v-model="scope.row.xz" />
+                  <el-select v-model="scope.row.xz" placeholder="请选择">
+                    <el-option
+                      v-for="(item, index) in dmpxxzm"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="培训单位类别" align="center">
+            <el-table-column label="培训单位类别" align="center" width="130px">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.pxdwlb'"
                   :rules="rules.pxdwlb"
                 >
-                  <el-input v-model="scope.row.pxdwlb" />
+                  <el-select v-model="scope.row.pxdwlb" placeholder="请选择">
+                    <el-option
+                      v-for="(item, index) in dmpxdwlbm"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -198,7 +280,14 @@
                   :prop="'addData.' + scope.$index + '.jg'"
                   :rules="rules.jg"
                 >
-                  <el-input v-model="scope.row.jg" />
+                  <el-select v-model="scope.row.jg" placeholder="请选择">
+                    <el-option
+                      v-for="(item, index) in dmjypxjgm"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -302,23 +391,37 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="性质" align="center">
+            <el-table-column label="性质" align="center" width="130px">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.xz'"
                   :rules="rules.xz"
                 >
-                  <el-input v-model="scope.row.xz" />
+                  <el-select v-model="scope.row.xz" placeholder="请选择">
+                    <el-option
+                      v-for="(item, index) in dmpxxzm"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="培训单位类别" align="center">
+            <el-table-column label="培训单位类别" align="center" width="130px">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.pxdwlb'"
                   :rules="rules.pxdwlb"
                 >
-                  <el-input v-model="scope.row.pxdwlb" />
+                  <el-select v-model="scope.row.pxdwlb" placeholder="请选择">
+                    <el-option
+                      v-for="(item, index) in dmpxdwlbm"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -328,7 +431,14 @@
                   :prop="'editData.' + scope.$index + '.jg'"
                   :rules="rules.jg"
                 >
-                  <el-input v-model="scope.row.jg" />
+                  <el-select v-model="scope.row.jg" placeholder="请选择">
+                    <el-option
+                      v-for="(item, index) in dmjypxjgm"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -429,6 +539,9 @@ export default {
       delArr: [],
       fileListAdd: [],
       ztStatus: [],
+      dmjypxjgm: [],
+      dmpxdwlbm: [],
+      dmpxxzm: [],
       val: [],
       url: "",
       rules: {
@@ -468,6 +581,9 @@ export default {
   mounted() {
     this.query();
     this.getCode("dmsplcm"); //性别
+    this.getCode("dmjypxjgm"); //教育培训结果码_公用
+    this.getCode("dmpxdwlbm"); //培训单位类别码_公用
+    this.getCode("dmpxxzm"); //培训性质码_公用
   },
 
   methods: {
@@ -540,7 +656,20 @@ export default {
     getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
-        this.ztStatus = res.data;
+        switch (val) {
+          case "dmsplcm":
+            this.ztStatus = res.data; //状态
+            break;
+          case "dmjypxjgm":
+            this.dmjypxjgm = res.data; //教育培训结果码_公用
+            break;
+          case "dmpxdwlbm":
+            this.dmpxdwlbm = res.data; //培训单位类别码_公用
+            break;
+          case "dmpxxzm":
+            this.dmpxxzm = res.data; //培训性质码_公用
+            break;
+        }
       });
     },
     del() {
@@ -700,8 +829,7 @@ export default {
         jg: "",
         files: [],
       };
-      this.fileList = [],
-      this.formAdd.addData.push(newLine);
+      (this.fileList = []), this.formAdd.addData.push(newLine);
       this.addModal = true;
     },
     addCance() {

@@ -200,7 +200,7 @@
             <!-- </el-col>
             <el-col :span="3"> -->
             <div class="GreenButton" @click="submit(index)">
-              <i class="icon greenIcon"></i><span class="title1">提交</span>
+              <i class="icon tjIcon"></i><span class="title1">提交</span>
             </div>
             <!-- </el-col> -->
           </el-row>
@@ -862,6 +862,7 @@ export default {
     },
     bianji(index) {
       this.formEditLw = this.LwDetail[index];
+      this.fileListAdd = [];
       this.editModal = true;
     },
     editClick() {
@@ -986,6 +987,8 @@ export default {
         //如果是后端返回的文件就走删除接口，不然前端自我删除
         delwj({ id: file.id.toString() }).then();
       }
+      // console.log("fileList删除", this.fileList);
+      // console.log("fileListAdd删除", this.fileListAdd);
     },
     fileChange(file, fileList) {
       if (Number(file.size / 1024 / 1024) > 2) {
@@ -998,6 +1001,8 @@ export default {
         this.fileListAdd.push(file); //修改编辑的文件参数
       }
       this.fileList = fileList;
+      // console.log("fileList改变", this.fileList);
+      // console.log("fileListAdd改变", this.fileListAdd);
     },
   },
 };
@@ -1211,6 +1216,11 @@ export default {
       .greenIcon {
         margin: 15px;
         background: url("~@/assets/assistantPng/add.png") no-repeat;
+      }
+      .tjIcon {
+        margin-top: 17px;
+        margin-left: 10px;
+        background: url("~@/assets/images/passWhite.png") no-repeat;
       }
     }
   }

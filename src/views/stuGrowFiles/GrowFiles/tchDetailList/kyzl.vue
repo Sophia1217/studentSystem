@@ -605,6 +605,7 @@ export default {
     },
     bianji(index) {
       this.formEditLw = this.LwDetail[index];
+      this.fileListAdd = [];
       this.editModal = true;
     },
     editClick() {

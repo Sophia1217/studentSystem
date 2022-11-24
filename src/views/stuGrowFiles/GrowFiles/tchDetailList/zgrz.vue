@@ -41,9 +41,19 @@
           </el-table-column>
           <el-table-column prop="fxlb" label="类别" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zsbh" label="证书编号" sortable="custom">
+          <el-table-column
+            prop="zsbh"
+            label="证书编号"
+            :show-overflow-tooltip="true"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="fzdw" label="发证单位" sortable="custom">
+          <el-table-column
+            prop="fzdw"
+            label="发证单位"
+            :show-overflow-tooltip="true"
+            sortable="custom"
+          >
           </el-table-column>
           <el-table-column prop="fzsj" label="发证时间" sortable="custom">
           </el-table-column>
@@ -51,7 +61,6 @@
           <el-table-column
             prop="fileList"
             label="附件"
-            sortable="custom"
             align="center"
             width="300"
           >
@@ -570,6 +579,7 @@ export default {
         };
       });
       this.formEdit.editData.push(row);
+      this.fileListAdd = [];
       this.editModal = true;
     },
     editCance() {

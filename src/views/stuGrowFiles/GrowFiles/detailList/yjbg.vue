@@ -181,7 +181,7 @@
             <!-- </el-col>
             <el-col :span="3"> -->
             <div class="GreenButton" @click="submit(index)">
-              <i class="icon greenIcon"></i><span class="title1">提交</span>
+              <i class="icon tjIcon"></i><span class="title1">提交</span>
             </div>
             <!-- </el-col> -->
           </el-row>
@@ -731,6 +731,7 @@ export default {
     },
     bianji(index) {
       this.formEditLw = this.LwDetail[index];
+      this.fileListAdd = [];
       this.editModal = true;
     },
     editClick() {
@@ -999,6 +1000,10 @@ export default {
             margin-top: 10px;
             background: url("~@/assets/assistantPng/add.png") no-repeat;
           }
+          .tjIcon {
+            margin-top: 10px;
+            background: url("~@/assets/images/passWhite.png") no-repeat;
+          }
         }
       }
     }
@@ -1072,6 +1077,11 @@ export default {
       .greenIcon {
         margin: 15px;
         background: url("~@/assets/assistantPng/add.png") no-repeat;
+      }
+      .tjIcon {
+        margin-top: 17px;
+        margin-left: 10px;
+        background: url("~@/assets/images/passWhite.png") no-repeat;
       }
     }
   }

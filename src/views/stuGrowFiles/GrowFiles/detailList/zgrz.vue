@@ -13,7 +13,7 @@
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
           <div class="btns borderGreen" @click="submit">
-            <i class="icon greenIcon"></i><span class="title1">提交</span>
+            <i class="icon tjIcon"></i><span class="title1">提交</span>
           </div>
         </div>
       </div>
@@ -44,9 +44,19 @@
           </el-table-column>
           <el-table-column prop="fxlb" label="类别" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zsbh" label="证书编号" sortable="custom">
+          <el-table-column
+            prop="zsbh"
+            label="证书编号"
+            :show-overflow-tooltip="true"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="fzdw" label="发证单位" sortable="custom">
+          <el-table-column
+            prop="fzdw"
+            label="发证单位"
+            sort:show-overflow-tooltip="true"
+            able="custom"
+          >
           </el-table-column>
           <el-table-column prop="fzsj" label="发证时间" sortable="custom">
           </el-table-column>
@@ -56,7 +66,6 @@
             label="附件"
             align="center"
             width="300"
-            sortable="custom"
           >
             <template slot-scope="scope">
               <div v-for="item in scope.row.fileList">
@@ -647,6 +656,7 @@ export default {
         };
       });
       this.formEdit.editData.push(row);
+      this.fileListAdd = [];
       this.editModal = true;
     },
     editCance() {
@@ -901,6 +911,10 @@ export default {
         .greenIcon {
           margin-top: 10px;
           background: url("~@/assets/assistantPng/add.png") no-repeat;
+        }
+        .tjIcon {
+          margin-top: 10px;
+          background: url("~@/assets/images/passWhite.png") no-repeat;
         }
       }
     }

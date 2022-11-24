@@ -29,17 +29,32 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="jxjmc" label="奖学金名称" sortable="custom">
+          <el-table-column
+            prop="jxjmc"
+            label="奖学金名称"
+            :show-overflow-tooltip="true"
+            sortable="custom"
+          >
           </el-table-column>
           <el-table-column prop="jb" label="级别" sortable="custom">
           </el-table-column>
           <el-table-column prop="dj" label="等级" sortable="custom">
           </el-table-column>
-          <el-table-column prop="je" label="金额" sortable="custom">
+          <el-table-column
+            prop="je"
+            label="金额"
+            :show-overflow-tooltip="true"
+            sortable="custom"
+          >
           </el-table-column>
           <el-table-column prop="jxjlx" label="奖学金类型" sortable="custom">
           </el-table-column>
-          <el-table-column prop="sldw" label="设立单位" sortable="custom">
+          <el-table-column
+            prop="sldw"
+            label="设立单位"
+            :show-overflow-tooltip="true"
+            sortable="custom"
+          >
           </el-table-column>
           <el-table-column prop="hjsj" label="获奖时间" sortable="custom">
           </el-table-column>

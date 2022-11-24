@@ -13,7 +13,7 @@
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
           <div class="btns borderGreen" @click="submit">
-            <i class="icon greenIcon"></i><span class="title1">提交</span>
+            <i class="icon tjIcon"></i><span class="title1">提交</span>
           </div>
         </div>
       </div>
@@ -32,17 +32,32 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="jxjmc" label="奖学金名称" sortable="custom">
+          <el-table-column
+            prop="jxjmc"
+            label="奖学金名称"
+            :show-overflow-tooltip="true"
+            sortable="custom"
+          >
           </el-table-column>
           <el-table-column prop="jb" label="级别" sortable="custom">
           </el-table-column>
           <el-table-column prop="dj" label="等级" sortable="custom">
           </el-table-column>
-          <el-table-column prop="je" label="金额" sortable="custom">
+          <el-table-column
+            prop="je"
+            label="金额"
+            :show-overflow-tooltip="true"
+            sortable="custom"
+          >
           </el-table-column>
           <el-table-column prop="jxjlx" label="奖学金类型" sortable="custom">
           </el-table-column>
-          <el-table-column prop="sldw" label="设立单位" sortable="custom">
+          <el-table-column
+            prop="sldw"
+            label="设立单位"
+            :show-overflow-tooltip="true"
+            sortable="custom"
+          >
           </el-table-column>
           <el-table-column prop="hjsj" label="获奖时间" sortable="custom">
           </el-table-column>
@@ -860,6 +875,10 @@ export default {
           .greenIcon {
             margin-top: 10px;
             background: url("~@/assets/assistantPng/add.png") no-repeat;
+          }
+          .tjIcon {
+            margin-top: 10px;
+            background: url("~@/assets/images/passWhite.png") no-repeat;
           }
         }
       }

@@ -184,7 +184,7 @@
             <el-table-column
               :prop="item.dm"
               :label="item.mc"
-              min-width="100" 
+              min-width="100"
               sortable="custom"
             ></el-table-column>
           </div>
@@ -324,14 +324,14 @@ export default {
       tableHeader: [
         { dm: "xh", mc: "学号" },
         { dm: "xm", mc: "姓名" },
-        { dm: "zzmmc", mc: "政治面貌" },
-        { dm: "mzmc", mc: "民族" },
+        // { dm: "zzmmc", mc: "政治面貌" },
+        // { dm: "mzmc", mc: "民族" },
         { dm: "dwmc", mc: "学院" },
         { dm: "zydmc", mc: "专业" },
-        { dm: "xxxs", mc: "学制" },
+        { dm: "xxxs", mc: "学习形式" },
         { dm: "nj", mc: "年级" },
         { dm: "pyccmc", mc: "培养层次" },
-        { dm: "xz", mc: "学制(年)" },
+        { dm: "xz", mc: "学制" },
         { dm: "xjztmc", mc: "学籍状态" },
       ],
       politica: {

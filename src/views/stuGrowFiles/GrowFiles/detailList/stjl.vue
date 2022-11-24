@@ -32,19 +32,19 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="stmc" label="社团名称" sortable="custom">
+          <el-table-column prop="stmc" label="社团名称" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="stlx" label="社团类型" sortable="custom">
+          <el-table-column prop="stlxChinese" label="社团类型" sortable="custom">
           </el-table-column>
           <el-table-column prop="gkdwmc" label="挂靠单位" sortable="custom">
           </el-table-column>
-          <el-table-column prop="rzzw" label="任职职务" sortable="custom">
+          <el-table-column prop="rzzwChinese" label="任职职务" sortable="custom">
           </el-table-column>
           <el-table-column prop="kssj" label="开始时间" sortable="custom">
           </el-table-column>
           <el-table-column prop="jssj" label="结束时间" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zdlsxm" label="指导老师" sortable="custom">
+          <el-table-column prop="zdlsxm" label="指导老师" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="status" label="审核状态" sortable="custom">
             <template slot-scope="scope">
@@ -135,17 +135,37 @@
                   :prop="'addData.' + scope.$index + '.stlx'"
                   :rules="rules.stlx"
                 >
-                  <el-input v-model="scope.row.stlx" />
+                  <el-select
+                    v-model="scope.row.stlx"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in lxOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column label="挂靠单位" width="240px">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'addData.' + scope.$index + '.gkdwmc'"
-                  :rules="rules.gkdwmc"
+                  :prop="'addData.' + scope.$index + '.gkdwh'"
+                  :rules="rules.gkdwh"
                 >
-                  <el-input v-model="scope.row.gkdwmc" />
+                  <el-select
+                    v-model="scope.row.gkdwh"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in dwOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -155,7 +175,17 @@
                   :prop="'addData.' + scope.$index + '.rzzw'"
                   :rules="rules.rzzw"
                 >
-                  <el-input v-model="scope.row.rzzw" />
+                  <el-select
+                    v-model="scope.row.rzzw"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in zwOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -233,17 +263,37 @@
                   :prop="'editData.' + scope.$index + '.stlx'"
                   :rules="rules.stlx"
                 >
-                  <el-input v-model="scope.row.stlx" />
+                  <el-select
+                    v-model="scope.row.stlx"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in lxOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column label="挂靠单位" width="240px">
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'editData.' + scope.$index + '.gkdwmc'"
-                  :rules="rules.gkdwmc"
+                  :prop="'editData.' + scope.$index + '.gkdwh'"
+                  :rules="rules.gkdwh"
                 >
-                  <el-input v-model="scope.row.gkdwmc" />
+                  <el-select
+                    v-model="scope.row.gkdwh"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in dwOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -253,7 +303,17 @@
                   :prop="'editData.' + scope.$index + '.rzzw'"
                   :rules="rules.rzzw"
                 >
-                  <el-input v-model="scope.row.rzzw" />
+                  <el-select
+                    v-model="scope.row.rzzw"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in zwOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -357,7 +417,7 @@ import {
   stjlTj,
   stjlCx,
 } from "@/api/stuDangan/detailList/stjl";
-import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+import { getCodeInfoByEnglish, queryAllDwh } from "@/api/politicalWork/basicInfo";
 import lctCom from "../../../components/lct";
 
 export default {
@@ -367,6 +427,9 @@ export default {
       lctModal: false,
       delModal: false,
       ztStatus: [],
+      lxOps: [],
+      zwOps: [],
+      dwOps: [],
       addModal: false,
       editModal: false,
       submitModal: false,
@@ -394,7 +457,7 @@ export default {
         stlx: [
           { required: true, message: "社团类型不能为空", trigger: "blur" },
         ],
-        gkdwmc: [
+        gkdwh: [
           { required: true, message: "挂靠单位不能为空", trigger: "blur" },
         ],
         rzzw: [
@@ -425,6 +488,9 @@ export default {
   mounted() {
     this.query();
     this.getCode("dmsplcm"); //性别
+    this.getCode("dmstlxm"); //社团类型
+    this.getCode("dmstrzzwm"); //任职职务
+    this.getAllDwh();
   },
 
   methods: {
@@ -467,8 +533,25 @@ export default {
     getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
-        this.ztStatus = res.data;
+        switch (val) {
+          case "dmsplcm":
+            this.ztStatus = res.data; //状态
+            break;
+          case "dmstlxm":
+            this.lxOps = res.data; //类型
+            break;
+          case "dmstrzzwm":
+            this.zwOps = res.data; //职务
+            break;
+        }
       });
+    },
+    getAllDwh(){
+      queryAllDwh()
+        .then((res) => {
+          this.dwOps = res.data.rows;
+        })
+        .catch((err) => {});
     },
     del() {
       del({ ids: this.delArr }).then((res) => {
@@ -504,7 +587,7 @@ export default {
         // var params = {
         //   stmc: data.stmc,
         //   stlx: data.stlx,
-        //   gkdwmc: data.gkdwmc,
+        //   gkdwh: data.gkdwh,
         //   rzzw: data.rzzw,
         //   kssj: data.kssj,
         //   jssj: data.jssj,
@@ -532,7 +615,7 @@ export default {
         var params = {
           stmc: data.stmc,
           stlx: data.stlx,
-          gkdwmc: data.gkdwmc,
+          gkdwh: data.gkdwh,
           rzzw: data.rzzw,
           kssj: data.kssj,
           jssj: data.jssj,
@@ -568,7 +651,7 @@ export default {
       var newLine = {
         stmc: "",
         stlx: "",
-        gkdwmc: "",
+        gkdwh: "",
         rzzw: "",
         kssj: "",
         jssj: "",

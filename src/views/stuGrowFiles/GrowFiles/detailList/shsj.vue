@@ -32,23 +32,23 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xmmc" label="项目名称" sortable="custom">
+          <el-table-column prop="xmmc" label="项目名称" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="zzdw" label="组织单位" sortable="custom">
+          <el-table-column prop="zzdw" label="组织单位" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="djm" label="等级" sortable="custom">
+          <el-table-column prop="dj" label="等级" sortable="custom">
           </el-table-column>
-          <el-table-column prop="lx" label="类型" sortable="custom">
+          <el-table-column prop="lxchinese" label="类型" sortable="custom">
           </el-table-column>
-          <el-table-column prop="sjdd" label="实践地点" sortable="custom">
+          <el-table-column prop="sjdd" label="实践地点" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="kssj" label="开始时间" sortable="custom">
           </el-table-column>
           <el-table-column prop="jssj" label="结束时间" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zmr" label="证明人" sortable="custom">
+          <el-table-column prop="zmr" label="证明人" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="lxfs" label="联系方式" sortable="custom">
+          <el-table-column prop="lxfs" label="联系方式" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="status" label="审核状态" sortable="custom">
             <template slot-scope="scope">
@@ -149,7 +149,17 @@
                   :prop="'addData.' + scope.$index + '.djm'"
                   :rules="rules.djm"
                 >
-                  <el-input v-model="scope.row.djm" />
+                  <el-select
+                    v-model="scope.row.djm"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in djOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -159,7 +169,17 @@
                   :prop="'addData.' + scope.$index + '.lx'"
                   :rules="rules.lx"
                 >
-                  <el-input v-model="scope.row.lx" />
+                  <el-select
+                    v-model="scope.row.lx"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in lxOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -267,7 +287,17 @@
                   :prop="'editData.' + scope.$index + '.djm'"
                   :rules="rules.djm"
                 >
-                  <el-input v-model="scope.row.djm" />
+                  <el-select
+                    v-model="scope.row.djm"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in djOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -277,7 +307,17 @@
                   :prop="'editData.' + scope.$index + '.lx'"
                   :rules="rules.lx"
                 >
-                  <el-input v-model="scope.row.lx" />
+                  <el-select
+                    v-model="scope.row.lx"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in lxOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -404,6 +444,8 @@ export default {
     return {
       lctModal: false,
       ztStatus: [],
+      lxOps: [],
+      djOps: [],
       addModal: false,
       editModal: false,
       submitModal: false,
@@ -464,6 +506,8 @@ export default {
   mounted() {
     this.query();
     this.getCode("dmsplcm"); //状态
+    this.getCode("dmshsjlxm"); //类型
+    this.getCode("dmshsjdjm"); //等级
   },
 
   methods: {
@@ -506,7 +550,17 @@ export default {
     getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
-        this.ztStatus = res.data;
+        switch (val) {
+          case "dmsplcm":
+            this.ztStatus = res.data; //状态
+            break;
+          case "dmshsjlxm":
+            this.lxOps = res.data; //类型
+            break;
+          case "dmshsjdjm":
+            this.djOps = res.data; //等级
+            break;
+        }
       });
     },
     del() {

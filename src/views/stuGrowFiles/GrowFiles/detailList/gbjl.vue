@@ -32,7 +32,9 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="rzzz" label="任职组织" sortable="custom" :show-overflow-tooltip="true">
+          <el-table-column prop="rzzz" label="任职组织" sortable="custom" 
+            :show-overflow-tooltip="true"
+          >
           </el-table-column>
           <el-table-column prop="sldw" label="设立单位" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>

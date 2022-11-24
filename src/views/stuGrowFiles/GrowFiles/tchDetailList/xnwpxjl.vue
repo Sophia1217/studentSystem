@@ -29,9 +29,9 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="pxxmmc" label="培训项目名称" sortable="custom">
+          <el-table-column prop="pxxmmc" label="培训项目名称" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="dwh" label="组织单位" sortable="custom">
+          <el-table-column prop="dwh" label="组织单位" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="pxkssj" label="培训开始时间" sortable="custom">
           </el-table-column>
@@ -39,16 +39,15 @@
           </el-table-column>
           <el-table-column prop="zxs" label="总学时" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xz" label="性质" sortable="custom">
+          <el-table-column prop="xz" label="性质" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="pxdwlb" label="培训单位类别" sortable="custom">
+          <el-table-column prop="pxdwlb" label="培训单位类别" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="jg" label="结果" sortable="custom">
+          <el-table-column prop="jg" label="结果" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column
             prop="fileList"
             label="结业证书"
-            sortable="custom"
             align="center"
             width="300"
           >
@@ -604,6 +603,7 @@ export default {
       //   };
       // });
       this.formEdit.editData.push(row);
+      this.fileListAdd = [];
       this.editModal = true;
     },
     editCance() {

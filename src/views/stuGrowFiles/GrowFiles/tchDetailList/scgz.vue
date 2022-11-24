@@ -29,17 +29,17 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="hdssmc" label="活动/赛事名称" sortable="custom">
+          <el-table-column prop="hdssmc" label="活动/赛事名称" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="zzdw" label="组织单位" sortable="custom">
+          <el-table-column prop="zzdw" label="组织单位" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="jb" label="级别" sortable="custom">
           </el-table-column>
-          <el-table-column prop="cszp" label="参赛作品" sortable="custom">
+          <el-table-column prop="cszp" label="参赛作品" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="cy" label="成员" sortable="custom">
+          <el-table-column prop="cy" label="成员" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="pm" label="排名" sortable="custom">
+          <el-table-column prop="pm" label="排名" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="hdsj" label="活动时间" sortable="custom">
           </el-table-column>
@@ -48,7 +48,6 @@
             label="参赛凭证"
             align="center"
             width="150"
-            sortable="custom"
           >
             <template slot-scope="scope">
               <div v-for="item in scope.row.fileList">
@@ -392,19 +391,19 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="gsmc" label="公司名称" sortable="custom">
+          <el-table-column prop="gsmc" label="公司名称" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="zcrq" label="注册日期" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zczj" label="注册资金" sortable="custom">
+          <el-table-column prop="zczj" label="注册资金" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="sshy" label="所属行业" sortable="custom">
+          <el-table-column prop="sshy" label="所属行业" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="frdb" label="法人代表" sortable="custom">
+          <el-table-column prop="frdb" label="法人代表" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="zyyw" label="主营业务" sortable="custom">
+          <el-table-column prop="zyyw" label="主营业务" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="srzw" label="所任职务" sortable="custom">
+          <el-table-column prop="srzw" label="所任职务" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="status" label="审核状态" sortable="custom">
             <template slot-scope="scope">
@@ -872,6 +871,7 @@ export default {
         };
       });
       this.formEdit.editData.push(row);
+      this.fileListAdd = [];
       this.editModal = true;
     },
     editCance() {

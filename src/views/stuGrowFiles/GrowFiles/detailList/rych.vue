@@ -32,17 +32,17 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="rymc" label="荣誉名称" sortable="custom">
+          <el-table-column prop="rymc" label="荣誉名称" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="jb" label="级别" sortable="custom">
           </el-table-column>
           <el-table-column prop="dj" label="等级" sortable="custom">
           </el-table-column>
-          <el-table-column prop="bzdw" label="表彰单位" sortable="custom">
+          <el-table-column prop="bzdw" label="表彰单位" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="hjsj" label="获奖时间" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zsbh" label="证书编号" sortable="custom">
+          <el-table-column prop="zsbh" label="证书编号" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="status" label="审核状态" sortable="custom">
             <template slot-scope="scope">
@@ -464,6 +464,7 @@ export default {
         }
       });
     },
+    
     del() {
       var falg = 1;
       for (var i = 0; i < this.val.length; i++) {

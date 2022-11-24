@@ -494,7 +494,6 @@ export default {
             }
           })
           .catch((err) => {
-            console.log("rer");
             this.sureModal = false;
           });
       }

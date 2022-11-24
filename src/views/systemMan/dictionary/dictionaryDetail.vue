@@ -93,12 +93,16 @@
                 :headers="fileHeader"
                 :on-success="upLoadSuccess"
                 :on-error="upLoadError"
+                v-show="AUTHFLAG"
               >
                 <el-button class="export"> 导入</el-button>
               </el-upload>
             </el-col>
             <el-col :span="1.5">
-              <el-button class="btns borderBlue" @click="handleAdd1()"
+              <el-button
+                class="btns borderBlue"
+                v-show="AUTHFLAG"
+                @click="handleAdd1()"
                 ><i class="icon blueIcon"></i
                 ><span class="title">新增字典</span></el-button
               >
@@ -153,7 +157,11 @@
         <el-table-column label="操作" width="200" sortable>
           <template slot-scope="scope">
             <div class="operation">
-              <div class="editBtn" @click="handleAdd(scope.row)">
+              <div
+                class="editBtn"
+                @click="handleAdd(scope.row)"
+                v-show="AUTHFLAG"
+              >
                 <i class="icon editIcon"></i> 编辑
               </div>
             </div>
@@ -203,6 +211,8 @@ export default {
 
   data() {
     return {
+      AUTHFLAG: false,
+
       uploadUrl: process.env.VUE_APP_BASE_API + "/codeTable/importTableInfo",
 
       state1: [
@@ -268,6 +278,8 @@ export default {
   },
   created() {
     this.handleQuery();
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   methods: {
     //模板下载

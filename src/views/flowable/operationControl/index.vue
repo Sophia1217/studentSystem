@@ -64,7 +64,7 @@
     <el-dialog title="配置流程" :visible.sync="showExport" width="25%">
       <el-form>
         <el-form-item label="业务名称" label-width="120px"
-          ><el-input v-model="businessName" :disable="true"></el-input
+          ><el-input v-model="businessName" :disabled="true"></el-input
         ></el-form-item>
         <el-form-item label="流程选择" label-width="120px">
           <el-select
@@ -147,14 +147,18 @@ export default {
   methods: {
     save() {
       var data = this.addParams;
-      edit(data).then((res) => {
-        if ((res.errcode = "00")) {
-          this.$message.success("配置流程修改成功");
-          this.handleSearch();
-          this.showExport = false;
-          this.addParams = { flowid: "", flowkey: "", flowname: "", id: "" };
-        }
-      });
+      if (this.value == "") {
+        this.$message.error("相关流程不能为空");
+      } else {
+        edit(data).then((res) => {
+          if ((res.errcode = "00")) {
+            this.$message.success("配置流程修改成功");
+            this.handleSearch();
+            this.showExport = false;
+            this.addParams = { flowid: "", flowkey: "", flowname: "", id: "" };
+          }
+        });
+      }
     },
     seletChange(val) {
       var obj = {};
@@ -187,6 +191,7 @@ export default {
     },
     hadleDetail(row) {
       this.businessName = row.businessname;
+      this.value = row.flowname;
       this.addParams.id = row.id;
       this.showExport = true;
     },

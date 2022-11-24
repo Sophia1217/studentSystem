@@ -77,7 +77,7 @@
         <div class="headerLeft">
           <span class="title">用户列表</span> <i class="Updataicon"></i>
         </div>
-        <div class="headerRight">
+        <div class="headerRight" v-show="AUTHFLAG">
           <el-dropdown split-button @command="handleCommand">
             <span class="el-dropdown-link"> 用户状态控制 </span>
             <el-dropdown-menu slot="dropdown">
@@ -123,6 +123,7 @@
                 type="text"
                 size="small"
                 @click="handlePermiss(scope.row)"
+                v-show="AUTHFLAG"
               >
                 <i class="scopeIncon handleEdit"></i>
                 <span class="handleName">数据权限</span>
@@ -202,6 +203,7 @@ export default {
       tableData: [],
       multipleSelection: [],
       checkboxWrap: [],
+      AUTHFLAG: false,
       queryParams: {
         orderZd: "",
         orderPx: "",
@@ -213,6 +215,8 @@ export default {
   },
 
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG; //
     // this.handleSearch();
     this.getCode("dmxbm"); // 获取性别
     this.getqueryRoleList(); // 获取角色

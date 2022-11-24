@@ -47,16 +47,11 @@
         </h3>
         <el-row :gutter="10" class="mb8" style="float: right; margin-top: 15px">
           <el-col :span="1.5">
-            <!-- <el-button
-              type="primary"
-              class="create"
-              size="small"
+            <div
+              class="btns borderGreen"
               @click="handleAdd(1)"
+              v-show="AUTHFLAG"
             >
-              <i class="addIcon"></i>
-              新增角色
-            </el-button> -->
-            <div class="btns borderGreen" @click="handleAdd(1)">
               <i class="icon greenIcon"></i><span class="title1">新增角色</span>
             </div>
           </el-col>
@@ -108,11 +103,15 @@
         </el-table-column>
         <el-table-column label="操作" width="150" sortable>
           <template slot-scope="scope">
-            <div class="operation">
+            <div class="operation" v-show="AUTHFLAG">
               <div class="editBtn" @click="handleAdd(2, scope.row)">
                 <i class="icon editIcon"></i> 编辑
               </div>
-              <div class="deleteBtn" @click="handleDetele(scope.row)">
+              <div
+                class="deleteBtn"
+                @click="handleDetele(scope.row)"
+                v-show="AUTHFLAG"
+              >
                 <i class="icon deteleIcon"></i>删除
               </div>
             </div>
@@ -163,7 +162,7 @@ export default {
   },
   created() {
     this.authConfirm(this.$route.path.split("/")[2]);
-    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG; // true是拥有所有按钮权限  false是只有查询和详情权限
   },
   activated() {
     this.handleQuery();

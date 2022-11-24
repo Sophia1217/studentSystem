@@ -80,7 +80,7 @@
           </div>
           <!-- </el-col> -->
           <!-- <el-col :span="1.5"> -->
-          <div class="btns borderBlue">
+          <div class="btns borderBlue" v-show="AUTHFLAG">
             <el-upload
               accept=".xlsx,.xls"
               :auto-upload="true"
@@ -144,7 +144,7 @@
         /> -->
         <el-table-column label="操作" width="200" sortable>
           <template slot-scope="scope">
-            <div class="operation">
+            <div class="operation" v-show="AUTHFLAG">
               <div class="editBtn" @click="handleAdd(scope.row)">
                 <i class="icon editIcon"></i> 编辑
               </div>
@@ -212,6 +212,7 @@ export default {
         pageSize: 10,
         total: 0,
       },
+      AUTHFLAG: false,
       noticeList: [],
       multipleSelection: [],
       dialogVisible: false,
@@ -223,6 +224,7 @@ export default {
   created() {
     this.handleQuery();
     this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   computed: {
     fileHeader: {

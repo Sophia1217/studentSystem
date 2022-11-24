@@ -645,7 +645,9 @@ export default {
       this.editModal = false;
     },
     xinzeng() {
-      this.formAddLw = {}; // 每次打开弹框先将弹框的table数组置空
+      this.formAddLw = {};
+      this.formAddLw.files = [];
+      this.fileList = [];
       this.addModal = true;
     },
     addClick() {

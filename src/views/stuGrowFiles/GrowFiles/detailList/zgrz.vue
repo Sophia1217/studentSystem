@@ -32,13 +32,17 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="zslx" label="证书类型" sortable="custom">
+          <el-table-column
+            prop="zslxchinese"
+            label="证书类型"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="cj" label="成绩" sortable="custom">
+          <!-- <el-table-column prop="cj" label="成绩" sortable="custom">
+          </el-table-column> -->
+          <el-table-column prop="dj" label="等级" sortable="custom">
           </el-table-column>
-          <el-table-column prop="djm" label="等级" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="fxlb" label="方向/类别" sortable="custom">
+          <el-table-column prop="fxlb" label="类别" sortable="custom">
           </el-table-column>
           <el-table-column prop="zsbh" label="证书编号" sortable="custom">
           </el-table-column>
@@ -149,11 +153,18 @@
                   :prop="'addData.' + scope.$index + '.zslx'"
                   :rules="rules.zslx"
                 >
-                  <el-input v-model="scope.row.zslx" />
+                  <el-select v-model="scope.row.zslx" placeholder="请选择">
+                    <el-option
+                      v-for="(item, index) in zslxOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="成绩" align="center" width="150px">
+            <!-- <el-table-column label="成绩" align="center" width="150px">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.cj'"
@@ -162,24 +173,39 @@
                   <el-input v-model="scope.row.cj" />
                 </el-form-item>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="等级" align="center" width="150px">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.djm'"
                   :rules="rules.djm"
                 >
-                  <el-input v-model="scope.row.djm" />
+                  <el-select v-model="scope.row.djm" placeholder="请选择">
+                    <el-option
+                      v-for="(item, index) in djmOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="方向/类别" align="center" width="150px">
+            <el-table-column label="类别" align="center" width="150px">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.fxlb'"
                   :rules="rules.fxlb"
                 >
-                  <el-input v-model="scope.row.fxlb" />
+                  <!-- <el-input v-model="scope.row.fxlb" /> -->
+                  <el-select v-model="scope.row.fxlb">
+                    <el-option
+                      v-for="(item, index) in fxlbOps"
+                      :key="index"
+                      :label="item"
+                      :value="item"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -261,11 +287,18 @@
                   :prop="'editData.' + scope.$index + '.zslx'"
                   :rules="rules.zslx"
                 >
-                  <el-input v-model="scope.row.zslx" />
+                  <el-select v-model="scope.row.zslx" placeholder="请选择">
+                    <el-option
+                      v-for="(item, index) in zslxOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="成绩" align="center" width="150px">
+            <!-- <el-table-column label="成绩" align="center" width="150px">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.cj'"
@@ -274,24 +307,39 @@
                   <el-input v-model="scope.row.cj" />
                 </el-form-item>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="等级" align="center" width="150px">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.djm'"
                   :rules="rules.djm"
                 >
-                  <el-input v-model="scope.row.djm" />
+                  <el-select v-model="scope.row.djm" placeholder="请选择">
+                    <el-option
+                      v-for="(item, index) in djmOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="方向/类别" align="center" width="150px">
+            <el-table-column label="类别" align="center" width="150px">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.fxlb'"
                   :rules="rules.fxlb"
                 >
-                  <el-input v-model="scope.row.fxlb" />
+                  <!-- <el-input v-model="scope.row.fxlb" /> -->
+                  <el-select v-model="scope.row.fxlb">
+                    <el-option
+                      v-for="(item, index) in fxlbOps"
+                      :key="index"
+                      :label="item"
+                      :value="item"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -418,7 +466,7 @@ export default {
       delModal: false,
       formAdd: { addData: [] },
       formEdit: { editData: [] },
-
+      fxlbOps: ["准入类", "水平评价类"],
       tableDate: [],
       queryParams: {
         pageNum: 1,
@@ -430,6 +478,8 @@ export default {
       delArr: [],
       fileListAdd: [],
       ztStatus: [],
+      djmOps: [],
+      zslxOps: [],
       val: [],
       url: "",
       rules: {
@@ -440,7 +490,7 @@ export default {
             trigger: "blur",
           },
         ],
-        cj: [{ required: true, message: "成绩不能为空", trigger: "change" }],
+        // cj: [{ required: true, message: "成绩不能为空", trigger: "change" }],
         djm: [{ required: true, message: "等级不能为空", trigger: "change" }],
         fxlb: [
           { required: true, message: "方向类别不能为空", trigger: "blur" },
@@ -464,6 +514,8 @@ export default {
   mounted() {
     this.query();
     this.getCode("dmsplcm");
+    this.getCode("dmzslxm");
+    this.getCode("dmgjzyzgdjm");
   },
 
   methods: {
@@ -528,7 +580,17 @@ export default {
     getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
-        this.ztStatus = res.data;
+        switch (val) {
+          case "dmzslxm":
+            this.zslxOps = res.data;
+            break;
+          case "dmgjzyzgdjm":
+            this.djmOps = res.data;
+            break;
+          case "dmsplcm":
+            this.ztStatus = res.data;
+            break;
+        }
       });
     },
     del() {
@@ -597,7 +659,7 @@ export default {
       } else {
         var data = this.formEdit.editData[0];
         let formData = new FormData();
-        formData.append("cj", data.cj);
+        // formData.append("cj", data.cj);
         formData.append("djm", data.djm);
         formData.append("fxlb", data.fxlb);
         formData.append("fzdw", data.fzdw);
@@ -629,7 +691,7 @@ export default {
       } else {
         var data = this.formAdd.addData[0];
         let formData = new FormData();
-        formData.append("cj", data.cj);
+        // formData.append("cj", data.cj);
         formData.append("djm", data.djm);
         formData.append("fxlb", data.fxlb);
         formData.append("fzdw", data.fzdw);
@@ -668,9 +730,10 @@ export default {
       });
     },
     xinzeng() {
+      this.fileList = [];
       this.formAdd.addData = []; // 每次打开弹框先将弹框的table数组置空
       var newLine = {
-        cj: "",
+        // cj: "",
         djm: "",
         fxlb: "",
         fzdw: "",

@@ -6,7 +6,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">著作</span>
+          <span class="title">科研著作</span>
         </div>
         <div class="headerRight">
           <div class="btns borderGreen" @click="xinzeng">
@@ -649,7 +649,9 @@ export default {
       this.editModal = false;
     },
     xinzeng() {
-      this.formAddLw = {}; // 每次打开弹框先将弹框的table数组置空
+      this.formAddLw = {};
+      this.formAddLw.files = [];
+      this.fileList = [];
       this.addModal = true;
     },
     addClick() {

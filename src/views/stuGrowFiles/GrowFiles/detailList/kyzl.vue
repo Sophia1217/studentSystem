@@ -102,70 +102,66 @@
               </div>
             </el-col>
           </el-row>
-          <el-row>
-            <el-col :span="22" class="rowStyle">
-              <div class="wrap">
-                <div class="title">操作</div>
-                <div class="content">
-                  <el-button
-                    type="text"
-                    size="small"
-                    @click="bianji(index)"
-                    v-show="ele.status === '01' || ele.status === '08'"
-                  >
-                    <i class="scopeIncon Edit"></i>
-                    <span>编辑</span>
-                  </el-button>
-                  <el-button
-                    type="text"
-                    size="small"
-                    :disabled="true"
-                    @click="bianji(index)"
-                    v-show="ele.status !== '01' && ele.status !== '08'"
-                  >
-                    <i class="scopeIncon EditDis"></i>
-                    <span style="color: #bfbfbf">编辑</span>
-                  </el-button>
+          <el-row type="flex" justify="space-between">
+            <!-- <el-col :span="21" class="rowStyle"> -->
+            <div class="wrap">
+              <div class="title">操作</div>
+              <div class="content">
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="bianji(index)"
+                  v-show="ele.status === '01' || ele.status === '08'"
+                >
+                  <i class="scopeIncon Edit"></i>
+                  <span>编辑</span>
+                </el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  :disabled="true"
+                  @click="bianji(index)"
+                  v-show="ele.status !== '01' && ele.status !== '08'"
+                >
+                  <i class="scopeIncon EditDis"></i>
+                  <span style="color: #bfbfbf">编辑</span>
+                </el-button>
 
-                  <el-button
-                    type="text"
-                    size="small"
-                    @click="chehui(index)"
-                    v-show="ele.status === '02'"
-                  >
-                    <i class="scopeIncon ch"></i>
-                    <span>撤回</span>
-                  </el-button>
-                  <el-button
-                    type="text"
-                    size="small"
-                    :disabled="true"
-                    @click="chehui(index)"
-                    v-show="ele.status !== '02'"
-                  >
-                    <i class="scopeIncon chDis"></i>
-                    <span style="color: #bfbfbf">撤回</span>
-                  </el-button>
-                  <el-button type="text" size="small" @click="showDel(index)">
-                    <i class="scopeIncon del"></i>
-                    <span>删除</span>
-                  </el-button>
-                  <el-button type="text" size="small" @click="lctClick(index)">
-                    <i class="scopeIncon lct"></i>
-                    <span>流程图</span>
-                  </el-button>
-                </div>
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="chehui(index)"
+                  v-show="ele.status === '02'"
+                >
+                  <i class="scopeIncon ch"></i>
+                  <span>撤回</span>
+                </el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  :disabled="true"
+                  @click="chehui(index)"
+                  v-show="ele.status !== '02'"
+                >
+                  <i class="scopeIncon chDis"></i>
+                  <span style="color: #bfbfbf">撤回</span>
+                </el-button>
+                <el-button type="text" size="small" @click="showDel(index)">
+                  <i class="scopeIncon del"></i>
+                  <span>删除</span>
+                </el-button>
+                <el-button type="text" size="small" @click="lctClick(index)">
+                  <i class="scopeIncon lct"></i>
+                  <span>流程图</span>
+                </el-button>
               </div>
-            </el-col>
-            <el-col :span="2">
-              <div class="GreenButton" @click="submit(index)">
-                <i class="icon greenIcon"></i><span class="title1">提交</span>
-              </div>
-              <!-- <el-button color="#005657" :dark="isDark" @click="submit(index)">
-                <i class="icon greenIcon"></i>
-                <span>提交</span>
-              </el-button> -->
-            </el-col>
+            </div>
+            <!-- </el-col>
+            <el-col :span="3"> -->
+            <div class="GreenButton" @click="submit(index)">
+              <i class="icon greenIcon"></i><span class="title1">提交</span>
+            </div>
+            <!-- </el-col> -->
           </el-row>
         </div>
       </div>
@@ -683,7 +679,9 @@ export default {
       this.editModal = false;
     },
     xinzeng() {
-      this.formAddLw = {}; // 每次打开弹框先将弹框的table数组置空
+      this.formAddLw = {};
+      this.formAddLw.files = [];
+      this.fileList = [];
       this.addModal = true;
     },
     addClick() {
@@ -949,6 +947,7 @@ export default {
           margin: 0 !important;
         }
         .content {
+          display: flex;
           font-weight: 400;
           font-size: 14px;
           color: #1f1f1f;
@@ -958,6 +957,7 @@ export default {
       }
 
       .GreenButton {
+        width: 100px;
         //border: 1px solid grey;
         height: 49px;
         border-radius: 2px;

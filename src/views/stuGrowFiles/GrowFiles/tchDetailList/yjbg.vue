@@ -134,11 +134,7 @@
                     <span>编辑</span>
                   </el-button>
 
-                  <el-button
-                    type="text"
-                    size="small"
-                    @click="showDelshowDel(index)"
-                  >
+                  <el-button type="text" size="small" @click="showDel(index)">
                     <i class="scopeIncon del"></i>
                     <span>删除</span>
                   </el-button>
@@ -742,7 +738,9 @@ export default {
       this.editModal = false;
     },
     xinzeng() {
-      this.formAddLw = {}; // 每次打开弹框先将弹框的table数组置空
+      this.formAddLw = {};
+      this.formAddLw.files = [];
+      this.fileList = [];
       this.addModal = true;
     },
     addClick() {

@@ -20,8 +20,9 @@
             :class="isActived === index ? 'green-bg' : ''"
             @mouseenter="mouseOver(index)"
             @mouseleave="mouseLeave"
+            @click="handleClick(item)"
           >
-            <div class="wrap" @click="handleClick(item)">
+            <div class="wrap">
               <img src="@/assets/images/role.png" width="60px" alt="" />
             </div>
             <div class="content">{{ item.roleName }}</div>
@@ -36,8 +37,9 @@
             :class="isActived === index ? 'green-bg' : ''"
             @mouseenter="mouseOver(index)"
             @mouseleave="mouseLeave"
+            @click="handleClick(item)"
           >
-            <div class="wrap" @click="handleClick(item)">
+            <div class="wrap">
               <img src="@/assets/images/role.png" width="60px" alt="" />
               <div class="content">{{ item.roleName }}</div>
             </div>
@@ -193,8 +195,9 @@ export default {
           }
           .content {
             position: absolute;
-
-            top: 60%;
+            left: 50%;
+            top: 75%;
+            transform: translate(-50%, -50%);
             text-align: center;
             font-family: PingFangSC-Medium;
             font-weight: 500;
@@ -241,8 +244,9 @@ export default {
           }
           .content {
             position: absolute;
-
-            top: 60%;
+            left: 50%;
+            top: 80%;
+            transform: translate(-50%, 0);
             text-align: center;
             font-family: PingFangSC-Medium;
             font-weight: 500;

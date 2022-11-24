@@ -965,7 +965,7 @@
                         v-model="scope.row.xlm"
                         placeholder="请选择"
                         size="small"
-                        :disabled="zgXlxwsAuth.XLM == 2||scope.row.sftb=='1'"
+                        :disabled="zgXlxwsAuth.XLM == 2||scope.row.sftb=='0'"
                       >
                         <el-option
                           v-for="(item,index) in zgxlmOps"
@@ -981,16 +981,44 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.byxxhdw }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.byxxhdw" placeholder="请输入" :disabled="zgXlxwsAuth.BYXXHDW==2||scope.row.sftb=='1'"/>
+                  <el-input v-model="scope.row.byxxhdw" placeholder="请输入" :disabled="zgXlxwsAuth.BYXXHDW==2||scope.row.sftb=='0'"/>
                   </div>
               </template>
             </el-table-column>   
             <el-table-column prop="byxxlb" label="毕业学校类型">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.byxxlb }}</div>
+                <!-- <div v-if="isEdit == 1">{{ scope.row.byxxlb }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.byxxlb" placeholder="请输入" :disabled="zgXlxwsAuth.BYXXLB==2||scope.row.sftb=='1'"/>
-                  </div>
+                  <el-input v-model="scope.row.byxxlb" placeholder="请输入" :disabled="zgXlxwsAuth.BYXXLB==2||scope.row.sftb=='0'"/>
+                  </div> -->
+                   <div v-if="isEdit == 1"><el-select
+                        v-model="scope.row.byxxlb"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in byxxlbOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
+                <div v-else>
+                 <el-select
+                        v-model="scope.row.byxxlb"
+                        placeholder="请选择"
+                        size="small"
+                        filterable
+                       :disabled="zgXlxwsAuth.BYXXLB==2||scope.row.sftb=='0'"
+                      >
+                        <el-option
+                          v-for="(item,index) in byxxlbOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
               </template>
             </el-table-column> 
             <el-table-column prop="sxzym" label="专业">
@@ -1013,7 +1041,8 @@
                         v-model="scope.row.sxzym"
                         placeholder="请选择"
                         size="small"
-                        :disabled="zgXlxwsAuth.SXZYM == 2 ||scope.row.sftb=='1'"
+                        filterable
+                        :disabled="zgXlxwsAuth.SXZYM == 2 ||scope.row.sftb=='0'"
                       >
                         <el-option
                           v-for="(item,index) in sxzymOps"
@@ -1028,7 +1057,7 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.bysj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.bysj" placeholder="请输入" :disabled="zgXlxwsAuth.BYSJ==2||scope.row.sftb=='1'"/>
+                  <el-input v-model="scope.row.bysj" placeholder="请输入" :disabled="zgXlxwsAuth.BYSJ==2||scope.row.sftb=='0'"/>
                   </div>
               </template>
             </el-table-column> 
@@ -1052,7 +1081,7 @@
                         v-model="scope.row.xz"
                         placeholder="请选择"
                         size="small"
-                        :disabled="zgXlxwsAuth.XZ == 2||scope.row.sftb=='1'"
+                        :disabled="zgXlxwsAuth.XZ == 2||scope.row.sftb=='0'"
                       >
                         <el-option
                           v-for="(item,index) in xzOps"
@@ -1083,7 +1112,7 @@
                         v-model="scope.row.xwm"
                         placeholder="请选择"
                         size="small"
-                        :disabled="zgXlxwsAuth.XWM == 2||scope.row.sftb=='1' "
+                        :disabled="zgXlxwsAuth.XWM == 2||scope.row.sftb=='0' "
                       >
                         <el-option
                           v-for="(item,index) in zgxwmOps"
@@ -1099,7 +1128,7 @@
                 <div v-if="isEdit == 1">{{ scope.row.xwsysj }}</div>
                 <div v-else>
                   
-                  <el-input v-model="scope.row.xwsysj" placeholder="请输入" :disabled="zgXlxwsAuth.XWSYSJ==2||scope.row.sftb=='1'"/>
+                  <el-input v-model="scope.row.xwsysj" placeholder="请输入" :disabled="zgXlxwsAuth.XWSYSJ==2||scope.row.sftb=='0'"/>
                   </div>
                  
               </template>
@@ -1149,7 +1178,7 @@
                         v-model="scope.row.zwmcm"
                         placeholder="请选择"
                         size="small"
-                        :disabled="zgDzzwsAuth.ZWMCM==2||scope.row.sftb=='1'"
+                        :disabled="zgDzzwsAuth.ZWMCM==2||scope.row.sftb=='0'"
                       >
                         <el-option
                           v-for="(item,index) in zwmcmOps"
@@ -1166,7 +1195,7 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.jdhtmrzrq }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.jdhtmrzrq" placeholder="请输入" :disabled="zgDzzwsAuth.JDHTMRZRQ==2||scope.row.sftb=='1'"/>
+                  <el-input v-model="scope.row.jdhtmrzrq" placeholder="请输入" :disabled="zgDzzwsAuth.JDHTMRZRQ==2||scope.row.sftb=='0'"/>
                   </div>
                 
               </template>
@@ -1175,7 +1204,7 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.jdhtmmzdrq }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.jdhtmmzdrq" placeholder="请输入" :disabled="zgDzzwsAuth.JDHTMMZDRQ==2||scope.row.sftb=='1'"/>
+                  <el-input v-model="scope.row.jdhtmmzdrq" placeholder="请输入" :disabled="zgDzzwsAuth.JDHTMMZDRQ==2||scope.row.sftb=='0'"/>
                   </div>
                   </template>
             </el-table-column> 
@@ -1221,7 +1250,7 @@
                         v-model="scope.row.zwjbm"
                         placeholder="请选择"
                         size="small"
-                        :disabled="zgDzzjsAuth.ZWJBM==2||scope.row.sftb=='1'"
+                        :disabled="zgDzzjsAuth.ZWJBM==2||scope.row.sftb=='0'"
                       >
                         <el-option
                           v-for="(item,index) in zwjbmOps"
@@ -1238,7 +1267,7 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.zjpzrq }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.zjpzrq" placeholder="请输入" :disabled="zgDzzjsAuth.ZJPZRQ==2||scope.row.sftb=='1'"/>
+                  <el-input v-model="scope.row.zjpzrq" placeholder="请输入" :disabled="zgDzzjsAuth.ZJPZRQ==2||scope.row.sftb=='0'"/>
                   </div>
                 
               </template>
@@ -1247,7 +1276,7 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.zjzzrq }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.zjzzrq" placeholder="请输入" :disabled="zgDzzjsAuth.ZJZZRQ==2||scope.row.sftb=='1'"/>
+                  <el-input v-model="scope.row.zjzzrq" placeholder="请输入" :disabled="zgDzzjsAuth.ZJZZRQ==2||scope.row.sftb=='0'"/>
                   </div>
                   </template>
             </el-table-column> 
@@ -1432,7 +1461,7 @@
                         v-model="scope.row.przwdj"
                         placeholder="请选择"
                         size="small"
-                        :disabled="zgPrxxesAuth.PRZWDJ==2||scope.row.sftb=='1'"
+                        :disabled="zgPrxxesAuth.PRZWDJ==2||scope.row.sftb=='0'"
                       >
                         <el-option
                           v-for="(item,index) in przwdjOps"
@@ -1449,7 +1478,7 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.prsj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.prsj" placeholder="请输入" :disabled="zgPrxxesAuth.PRSJ==2||scope.row.sftb=='1'"/>
+                  <el-input v-model="scope.row.prsj" placeholder="请输入" :disabled="zgPrxxesAuth.PRSJ==2||scope.row.sftb=='0'"/>
                   </div>
                   
               </template>
@@ -1458,7 +1487,7 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.prwh }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.prwh" placeholder="请输入" :disabled="zgPrxxesAuth.PRWH==2||scope.row.sftb=='1'"/>
+                  <el-input v-model="scope.row.prwh" placeholder="请输入" :disabled="zgPrxxesAuth.PRWH==2||scope.row.sftb=='0'"/>
                   </div>
                  
               </template>
@@ -1467,7 +1496,7 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.zylb }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.zylb" placeholder="请输入" :disabled="zgPrxxesAuth.ZYLB==2||scope.row.sftb=='1'"/>
+                  <el-input v-model="scope.row.zylb" placeholder="请输入" :disabled="zgPrxxesAuth.ZYLB==2||scope.row.sftb=='0'"/>
                   </div>
                  
               </template>
@@ -1492,7 +1521,7 @@
                         v-model="scope.row.jslb"
                         placeholder="请选择"
                         size="small"
-                        :disabled="zgPrxxesAuth.JSLB==2||scope.row.sftb=='1'"
+                        :disabled="zgPrxxesAuth.JSLB==2||scope.row.sftb=='0'"
                       >
                         <el-option
                           v-for="(item,index) in jslbOps"
@@ -1525,7 +1554,7 @@
                         v-model="scope.row.rmbz"
                         placeholder="请选择"
                         size="small"
-                        :disabled="zgPrxxesAuth.RMBZ==2||scope.row.sftb=='1'"
+                        :disabled="zgPrxxesAuth.RMBZ==2||scope.row.sftb=='0'"
                       >
                         <el-option
                           v-for="(item,index) in sfOps"
@@ -1558,7 +1587,7 @@
                         v-model="scope.row.stateId"
                         placeholder="请选择"
                         size="small"
-                        :disabled="zgPrxxesAuth.STATE_ID==2||scope.row.sftb=='1'"
+                        :disabled="zgPrxxesAuth.STATE_ID==2||scope.row.sftb=='0'"
                       >
                         <el-option
                           v-for="(item,index) in sfOps"
@@ -2449,6 +2478,7 @@ export default {
       gzdwOps: [], //工作单位
       przwdjOps: [], //聘任职务等级
       jslbOps: [], //晋升类别
+      byxxlbOps: [], //毕业学校类别
       zgZgjbxxesAuth: {},
       zgFdyrmsAuth: {},
       zgXlxwsAuth: {},
@@ -2515,6 +2545,8 @@ export default {
     this.getCode("dmzzbzwjbm");
     this.getCode("dmrsprzwdjm");
     this.getCode("dmrsjslbm");
+    this.getCode("dmbyxxlxm");
+
     this.getListWorkPlace();
     this.getDetail();
   },
@@ -2578,6 +2610,9 @@ export default {
               break;
             case "dmrsjslbm":
               this.jslbOps = res.data;
+              break;
+            case "dmbyxxlxm":
+              this.byxxlbOps = res.data;
               break;
           }
         })

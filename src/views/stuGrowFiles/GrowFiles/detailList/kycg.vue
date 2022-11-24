@@ -1,12 +1,12 @@
 <template>
   <div class="kycg">
     <div class="right_top">
-      <p class="toptitle">科研成果</p>
+      <p class="toptitle">科研论文</p>
     </div>
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">论文</span>
+          <span class="title">科研论文</span>
         </div>
         <div class="headerRight">
           <div class="btns borderGreen" @click="xinzeng">
@@ -143,70 +143,66 @@
               </div>
             </el-col>
           </el-row>
-          <el-row>
-            <el-col :span="22" class="rowStyle">
-              <div class="wrap">
-                <div class="title">操作</div>
-                <div class="content">
-                  <el-button
-                    type="text"
-                    size="small"
-                    @click="bianji(index)"
-                    v-show="ele.status === '01' || ele.status === '08'"
-                  >
-                    <i class="scopeIncon Edit"></i>
-                    <span>编辑</span>
-                  </el-button>
-                  <el-button
-                    type="text"
-                    size="small"
-                    :disabled="true"
-                    @click="bianji(index)"
-                    v-show="ele.status !== '01' && ele.status !== '08'"
-                  >
-                    <i class="scopeIncon EditDis"></i>
-                    <span style="color: #bfbfbf">编辑</span>
-                  </el-button>
+          <el-row type="flex" justify="space-between">
+            <!-- <el-col :span="21" class="rowStyle"> -->
+            <div class="wrap">
+              <div class="title">操作</div>
+              <div class="content">
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="bianji(index)"
+                  v-show="ele.status === '01' || ele.status === '08'"
+                >
+                  <i class="scopeIncon Edit"></i>
+                  <span>编辑</span>
+                </el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  :disabled="true"
+                  @click="bianji(index)"
+                  v-show="ele.status !== '01' && ele.status !== '08'"
+                >
+                  <i class="scopeIncon EditDis"></i>
+                  <span style="color: #bfbfbf">编辑</span>
+                </el-button>
 
-                  <el-button
-                    type="text"
-                    size="small"
-                    @click="chehui(index)"
-                    v-show="ele.status === '02'"
-                  >
-                    <i class="scopeIncon ch"></i>
-                    <span>撤回</span>
-                  </el-button>
-                  <el-button
-                    type="text"
-                    size="small"
-                    :disabled="true"
-                    @click="chehui(index)"
-                    v-show="ele.status !== '02'"
-                  >
-                    <i class="scopeIncon chDis"></i>
-                    <span style="color: #bfbfbf">撤回</span>
-                  </el-button>
-                  <el-button type="text" size="small" @click="showDel(index)">
-                    <i class="scopeIncon del"></i>
-                    <span>删除</span>
-                  </el-button>
-                  <el-button type="text" size="small" @click="lctClick(index)">
-                    <i class="scopeIncon lct"></i>
-                    <span>流程图</span>
-                  </el-button>
-                </div>
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="chehui(index)"
+                  v-show="ele.status === '02'"
+                >
+                  <i class="scopeIncon ch"></i>
+                  <span>撤回</span>
+                </el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  :disabled="true"
+                  @click="chehui(index)"
+                  v-show="ele.status !== '02'"
+                >
+                  <i class="scopeIncon chDis"></i>
+                  <span style="color: #bfbfbf">撤回</span>
+                </el-button>
+                <el-button type="text" size="small" @click="showDel(index)">
+                  <i class="scopeIncon del"></i>
+                  <span>删除</span>
+                </el-button>
+                <el-button type="text" size="small" @click="lctClick(index)">
+                  <i class="scopeIncon lct"></i>
+                  <span>流程图</span>
+                </el-button>
               </div>
-            </el-col>
-            <el-col :span="2">
-              <div class="GreenButton" @click="submit(index)">
-                <i class="icon greenIcon"></i><span class="title1">提交</span>
-              </div>
-              <!-- <el-button color="#005657" :dark="isDark" @click="submit(index)">
-                <i class="icon greenIcon"></i>
-                <span>提交</span>
-              </el-button> -->
-            </el-col>
+            </div>
+            <!-- </el-col>
+            <el-col :span="3"> -->
+            <div class="GreenButton" @click="submit(index)">
+              <i class="icon greenIcon"></i><span class="title1">提交</span>
+            </div>
+            <!-- </el-col> -->
           </el-row>
         </div>
       </div>
@@ -233,6 +229,7 @@
                         <el-input
                           v-model="formAddLw.lwzwmc"
                           style="width: 300%"
+                          maxlength="500"
                         ></el-input>
                       </div>
                     </div>
@@ -248,6 +245,7 @@
                         <el-input
                           v-model="formAddLw.lwywmc"
                           style="width: 300%"
+                          maxlength="500"
                         ></el-input>
                       </div>
                     </div>
@@ -260,7 +258,10 @@
                     <div class="wrap">
                       <div class="title">发表刊物</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.fbkw"></el-input>
+                        <el-input
+                          v-model="formAddLw.fbkw"
+                          maxlength="128"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -270,7 +271,10 @@
                     <div class="wrap">
                       <div class="title">出版物类型</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.cbwlx"></el-input>
+                        <el-input
+                          v-model="formAddLw.cbwlx"
+                          maxlength="128"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -282,7 +286,10 @@
                     <div class="wrap">
                       <div class="title">署名</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.sm"></el-input>
+                        <el-input
+                          v-model="formAddLw.sm"
+                          maxlength="500"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -292,7 +299,10 @@
                     <div class="wrap">
                       <div class="title">收录类别</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.sllb"></el-input>
+                        <el-input
+                          v-model="formAddLw.sllb"
+                          maxlength="128"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -304,7 +314,10 @@
                     <div class="wrap">
                       <div class="title">分类号</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.flh"></el-input>
+                        <el-input
+                          v-model="formAddLw.flh"
+                          maxlength="128"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -314,7 +327,10 @@
                     <div class="wrap">
                       <div class="title">版面</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.bm"></el-input>
+                        <el-input
+                          v-model="formAddLw.bm"
+                          maxlength="32"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -326,7 +342,10 @@
                     <div class="wrap">
                       <div class="title">卷期</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.jq"></el-input>
+                        <el-input
+                          v-model="formAddLw.jq"
+                          maxlength="32"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -336,7 +355,10 @@
                     <div class="wrap">
                       <div class="title">起止页</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.qzy"></el-input>
+                        <el-input
+                          v-model="formAddLw.qzy"
+                          maxlength="32"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -348,7 +370,10 @@
                     <div class="wrap">
                       <div class="title">成果所属单位</div>
                       <div class="content">
-                        <el-input v-model="formAddLw.cgssdw"></el-input>
+                        <el-input
+                          v-model="formAddLw.cgssdw"
+                          maxlength="128"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -425,6 +450,7 @@
                         <el-input
                           v-model="formEditLw.lwzwmc"
                           style="width: 300%"
+                          maxlength="500"
                         ></el-input>
                       </div>
                     </div>
@@ -439,6 +465,7 @@
                       <div class="content">
                         <el-input
                           v-model="formEditLw.lwywmc"
+                          maxlength="500"
                           style="width: 300%"
                         ></el-input>
                       </div>
@@ -452,7 +479,10 @@
                     <div class="wrap">
                       <div class="title">发表刊物</div>
                       <div class="content">
-                        <el-input v-model="formEditLw.fbkw"></el-input>
+                        <el-input
+                          v-model="formEditLw.fbkw"
+                          maxlength="128"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -462,7 +492,10 @@
                     <div class="wrap">
                       <div class="title">出版物类型</div>
                       <div class="content">
-                        <el-input v-model="formEditLw.cbwlx"></el-input>
+                        <el-input
+                          v-model="formEditLw.cbwlx"
+                          maxlength="128"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -474,7 +507,10 @@
                     <div class="wrap">
                       <div class="title">署名</div>
                       <div class="content">
-                        <el-input v-model="formEditLw.sm"></el-input>
+                        <el-input
+                          v-model="formEditLw.sm"
+                          maxlength="500"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -484,7 +520,10 @@
                     <div class="wrap">
                       <div class="title">收录类别</div>
                       <div class="content">
-                        <el-input v-model="formEditLw.sllb"></el-input>
+                        <el-input
+                          v-model="formEditLw.sllb"
+                          maxlength="128"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -496,7 +535,10 @@
                     <div class="wrap">
                       <div class="title">分类号</div>
                       <div class="content">
-                        <el-input v-model="formEditLw.flh"></el-input>
+                        <el-input
+                          v-model="formEditLw.flh"
+                          maxlength="128"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -506,7 +548,10 @@
                     <div class="wrap">
                       <div class="title">版面</div>
                       <div class="content">
-                        <el-input v-model="formEditLw.bm"></el-input>
+                        <el-input
+                          v-model="formEditLw.bm"
+                          maxlength="32"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -518,7 +563,10 @@
                     <div class="wrap">
                       <div class="title">卷期</div>
                       <div class="content">
-                        <el-input v-model="formEditLw.jq"></el-input>
+                        <el-input
+                          v-model="formEditLw.jq"
+                          maxlength="32"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -528,7 +576,10 @@
                     <div class="wrap">
                       <div class="title">起止页</div>
                       <div class="content">
-                        <el-input v-model="formEditLw.qzy"></el-input>
+                        <el-input
+                          v-model="formEditLw.qzy"
+                          maxlength="32"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -540,7 +591,10 @@
                     <div class="wrap">
                       <div class="title">成果所属单位</div>
                       <div class="content">
-                        <el-input v-model="formEditLw.cgssdw"></el-input>
+                        <el-input
+                          v-model="formEditLw.cgssdw"
+                          maxlength="128"
+                        ></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -705,6 +759,14 @@ export default {
     this.getCode("dmsplcm");
   },
   methods: {
+    // reset(formname) {
+    //   if (formname == "add") {
+    //     this.$refs.formAddLw.resetFields();
+    //   }
+    //   if (formname == "edit") {
+    //     this.$refs.formEditLw.resetFields();
+    //   }
+    // },
     // 表单校验
     checkFormAdd() {
       // 1.校验必填项
@@ -843,7 +905,9 @@ export default {
       this.editModal = false;
     },
     xinzeng() {
-      this.formAddLw = {}; // 每次打开弹框先将弹框的table数组置空
+      this.formAddLw = {};
+      this.formAddLw.files = [];
+      this.fileList = [];
       this.addModal = true;
     },
     addClick() {
@@ -880,10 +944,12 @@ export default {
             this.$message.error("新增失败");
           }
         });
+        //this.reset("add");
         this.addModal = false;
       }
     },
     addCance() {
+      //this.reset("add");
       this.addModal = false;
     },
 
@@ -1112,6 +1178,7 @@ export default {
           margin: 0 !important;
         }
         .content {
+          display: flex;
           font-weight: 400;
           font-size: 14px;
           color: #1f1f1f;
@@ -1122,6 +1189,7 @@ export default {
 
       .GreenButton {
         //border: 1px solid grey;
+        width: 100px;
         height: 49px;
         border-radius: 2px;
         background: #005657;

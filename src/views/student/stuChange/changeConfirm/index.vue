@@ -234,7 +234,11 @@
           <div class="btns borderBlue" @click="handleCommand">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns borderGreen" @click="ConfirmDialog">
+          <div
+            class="btns borderGreen"
+            @click="ConfirmDialog"
+            v-show="AUTHFLAG"
+          >
             <i class="icon confirmIcon"></i><span class="title1">确认</span>
           </div>
         </div>
@@ -255,20 +259,48 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" width="100" sortable> </el-table-column>
-          <el-table-column prop="xm" label="姓名" width="85" sortable> </el-table-column>
-          <el-table-column prop="dwhmc" label="培养单位" min-width="100" sortable>
+          <el-table-column prop="xh" label="学号" width="100" sortable>
+          </el-table-column>
+          <el-table-column prop="xm" label="姓名" width="85" sortable>
+          </el-table-column>
+          <el-table-column
+            prop="dwhmc"
+            label="培养单位"
+            min-width="100"
+            sortable
+          >
           </el-table-column>
           <el-table-column prop="zydmc" label="专业" min-width="100" sortable>
           </el-table-column>
-          <el-table-column prop="bjm" label="班级" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="ydlbmc" label="异动类别" min-width="100" sortable>
+          <el-table-column prop="bjm" label="班级" min-width="100" sortable>
           </el-table-column>
-          <el-table-column prop="ydyy" label="异动原因" min-width="100" sortable="custom">
+          <el-table-column
+            prop="ydlbmc"
+            label="异动类别"
+            min-width="100"
+            sortable
+          >
           </el-table-column>
-          <el-table-column prop="ydczrgh" label="异动操作人" min-width="110" sortable="custom">
+          <el-table-column
+            prop="ydyy"
+            label="异动原因"
+            min-width="100"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="ydrq" label="异动日期" width="100" sortable="custom">
+          <el-table-column
+            prop="ydczrgh"
+            label="异动操作人"
+            min-width="110"
+            sortable="custom"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="ydrq"
+            label="异动日期"
+            width="100"
+            sortable="custom"
+          >
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
@@ -431,10 +463,13 @@ export default {
         pageSize: 10,
         total: 0,
       },
+      AUTHFLAG: false,
     };
   },
 
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getSpread();
     this.getAllCollege();
     this.getCode("dmpyccm"); // 培养层次

@@ -18,7 +18,9 @@
       <div class="detail_right">
         <div class="right_top">
           <p class="title">学生信息修改字段设置</p>
-          <div class="saveBtn" @click="getUpdateStuColumns">保存</div>
+          <div class="saveBtn" @click="getUpdateStuColumns" v-show="AUTHFLAG">
+            保存
+          </div>
         </div>
         <!-- 基本信息 -->
         <div class="headline" id="tag_0">
@@ -326,6 +328,7 @@ export default {
 
   data() {
     return {
+      AUTHFLAG: false,
       dtailsList: [
         "基本信息",
         "学籍信息",
@@ -348,6 +351,8 @@ export default {
   },
   created() {},
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getloadStuColumns();
   },
 

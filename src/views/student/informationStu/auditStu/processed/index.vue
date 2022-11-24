@@ -184,10 +184,10 @@
           <div class="btns borderOrange" @click="handleExport">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns borderOrange" @click="pass">
+          <div class="btns borderOrange" @click="pass" v-show="AUTHFLAG">
             <i class="icon passIcon"></i><span class="title">通过</span>
           </div>
-          <div class="btns borderLight" @click="bacK">
+          <div class="btns borderLight" @click="bacK" v-show="AUTHFLAG">
             <i class="icon refuseIcon"></i><span class="title">拒绝</span>
           </div>
         </div>
@@ -210,21 +210,29 @@
           <el-table-column
             prop="userId"
             label="学号"
-            width="120" 
+            width="120"
             sortable="custom"
           ></el-table-column>
-          <el-table-column prop="xm" label="姓名" width="90" sortable> </el-table-column>
-          <el-table-column prop="dwmc" label="培养单位" min-width="100" sortable>
+          <el-table-column prop="xm" label="姓名" width="90" sortable>
+          </el-table-column>
+          <el-table-column
+            prop="dwmc"
+            label="培养单位"
+            min-width="100"
+            sortable
+          >
           </el-table-column>
           <el-table-column prop="zydmc" label="专业" min-width="100" sortable>
           </el-table-column>
-          <el-table-column prop="bjmc" label="班级" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="bjmc" label="班级" min-width="100" sortable>
+          </el-table-column>
           <el-table-column prop="pyccmc" label="培养层次" width="100" sortable>
           </el-table-column>
 
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
               <el-button
+                v-show="AUTHFLAG"
                 type="text"
                 size="small"
                 @click="hadleDetail(scope.row, 1)"
@@ -350,10 +358,13 @@ export default {
       tableData: [],
       multipleSelection: [],
       showExport: false,
+      AUTHFLAG: false,
     };
   },
 
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.handleSearch();
     this.getAllCollege();
     this.getAllGrade();

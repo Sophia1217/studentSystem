@@ -72,6 +72,7 @@
             @change="seletChange"
             collapse-tags
             v-model="value"
+            v-show="AUTHFLAG"
           >
             <el-option
               v-for="(item, index) in resOptions"
@@ -102,6 +103,7 @@ export default {
   name: "opControl",
   data() {
     return {
+      AUTHFLAG: false,
       searchVal: "",
       value: "",
       tableHeader: [
@@ -140,6 +142,8 @@ export default {
 
   mounted() {
     this.handleSearch();
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   activated() {
     this.handleSearch();

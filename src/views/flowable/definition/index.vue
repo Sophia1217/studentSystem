@@ -49,6 +49,7 @@
           icon="el-icon-upload"
           size="mini"
           @click="handleImport"
+          v-show="AUTHFLAG"
           >导入</el-button
         >
       </el-col>
@@ -59,6 +60,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleLoadXml"
+          v-show="AUTHFLAG"
           >新增</el-button
         >
       </el-col>
@@ -70,6 +72,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
+          v-show="AUTHFLAG"
           >删除</el-button
         >
       </el-col>
@@ -353,6 +356,7 @@ export default {
   },
   data() {
     return {
+      AUTHFLAG: false,
       // 遮罩层
       loading: true,
       // 选中数组
@@ -430,6 +434,8 @@ export default {
   },
   created() {
     this.getList();
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   computed: {
     fileHeader: {

@@ -5,7 +5,7 @@
         <div class="headerLeft">
           <span class="title">学生干部经历</span> <i class="Updataicon"></i>
         </div>
-        <div class="headerRight">
+        <div class="headerRight" v-show="AUTHFLAG">
           <div class="btns borderLight" @click="showDel">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
@@ -29,9 +29,19 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="rzzz" label="任职组织" sortable="custom" :show-overflow-tooltip="true">
+          <el-table-column
+            prop="rzzz"
+            label="任职组织"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
           </el-table-column>
-          <el-table-column prop="sldw" label="设立单位" sortable="custom" :show-overflow-tooltip="true">
+          <el-table-column
+            prop="sldw"
+            label="设立单位"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
           </el-table-column>
           <el-table-column prop="jb" label="级别" sortable="custom">
           </el-table-column>
@@ -41,7 +51,12 @@
           </el-table-column>
           <el-table-column prop="jssj" label="结束日期" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zmr" label="证明人" sortable="custom" :show-overflow-tooltip="true">
+          <el-table-column
+            prop="zmr"
+            label="证明人"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
           </el-table-column>
           <el-table-column prop="lxfs" label="联系方式" sortable="custom">
           </el-table-column>
@@ -72,6 +87,7 @@
                 type="text"
                 size="small"
                 @click="bianji(scope.row)"
+                v-show="AUTHFLAG"
               >
                 <i class="scopeIncon Edit"></i>
                 <span>编辑</span>
@@ -81,6 +97,7 @@
                 size="small"
                 :disabled="true"
                 @click="bianji(scope.row)"
+                v-show="AUTHFLAG"
               >
                 <i class="scopeIncon EditDis"></i>
                 <span style="color: #bfbfbf">编辑</span>
@@ -93,7 +110,12 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog title="新增" :visible.sync="addModal" width="80%" :close-on-click-modal="false">
+      <el-dialog
+        title="新增"
+        :visible.sync="addModal"
+        width="80%"
+        :close-on-click-modal="false"
+      >
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
             <el-table-column label="任职组织" align="center">
@@ -122,10 +144,7 @@
                   :prop="'addData.' + scope.$index + '.jbm'"
                   :rules="rules.jbm"
                 >
-                  <el-select
-                    v-model="scope.row.jbm"
-                    placeholder="请选择"
-                  >
+                  <el-select v-model="scope.row.jbm" placeholder="请选择">
                     <el-option
                       v-for="(item, index) in jbOps"
                       :key="index"
@@ -142,10 +161,7 @@
                   :prop="'addData.' + scope.$index + '.rzzwm'"
                   :rules="rules.rzzwm"
                 >
-                  <el-select
-                    v-model="scope.row.rzzwm"
-                    placeholder="请选择"
-                  >
+                  <el-select v-model="scope.row.rzzwm" placeholder="请选择">
                     <el-option
                       v-for="(item, index) in zwOps"
                       :key="index"
@@ -221,7 +237,12 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="编辑" :visible.sync="editModal" width="80%" :close-on-click-modal="false">
+      <el-dialog
+        title="编辑"
+        :visible.sync="editModal"
+        width="80%"
+        :close-on-click-modal="false"
+      >
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
             <el-table-column label="任职组织" align="center">
@@ -250,10 +271,7 @@
                   :prop="'editData.' + scope.$index + '.jbm'"
                   :rules="rules.jbm"
                 >
-                  <el-select
-                    v-model="scope.row.jbm"
-                    placeholder="请选择"
-                  >
+                  <el-select v-model="scope.row.jbm" placeholder="请选择">
                     <el-option
                       v-for="(item, index) in jbOps"
                       :key="index"
@@ -270,10 +288,7 @@
                   :prop="'editData.' + scope.$index + '.rzzwm'"
                   :rules="rules.rzzwm"
                 >
-                  <el-select
-                    v-model="scope.row.rzzwm"
-                    placeholder="请选择"
-                  >
+                  <el-select v-model="scope.row.rzzwm" placeholder="请选择">
                     <el-option
                       v-for="(item, index) in zwOps"
                       :key="index"
@@ -374,7 +389,7 @@
   </div>
 </template>
 <script>
-import { edit, del, query,} from "@/api/stuDangan/detailList/gbjl";
+import { edit, del, query } from "@/api/stuDangan/detailList/gbjl";
 import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
@@ -382,6 +397,7 @@ export default {
   components: { lctCom },
   data() {
     return {
+      AUTHFLAG: false,
       lctModal: false,
       ztStatus: [],
       addModal: false,
@@ -413,7 +429,9 @@ export default {
           { required: true, message: "设立单位不能为空", trigger: "blur" },
         ],
         jbm: [{ required: true, message: "级别不能为空", trigger: "change" }],
-        rzzwm: [{ required: true, message: "任职职务不能为空", trigger: "change" }],
+        rzzwm: [
+          { required: true, message: "任职职务不能为空", trigger: "change" },
+        ],
         zmr: [{ required: true, message: "证明人不能为空", trigger: "blur" }],
         kssj: [
           {
@@ -437,6 +455,8 @@ export default {
     };
   },
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.query();
     this.getCode("dmsplcm"); //状态
     this.getCode("dmbgbzwdm"); //职位
@@ -477,7 +497,7 @@ export default {
         this.$refs.child.inner(row.processid);
         this.lctModal = true;
       } else {
-         this.$message.warning("此项经历为管理员新增，暂无流程数据");
+        this.$message.warning("此项经历为管理员新增，暂无流程数据");
       }
     },
     getCode(val) {
@@ -497,11 +517,10 @@ export default {
       });
     },
     del() {
-
-          del({ ids: this.delArr }).then((res) => {
-            this.$message.success("删除成功");
-            this.query();
-          });
+      del({ ids: this.delArr }).then((res) => {
+        this.$message.success("删除成功");
+        this.query();
+      });
       this.delModal = false;
     },
     changeTableSort(column) {
@@ -599,11 +618,11 @@ export default {
       this.addModal = false;
     },
     showDel() {
-        if (this.delArr && this.delArr.length > 0) {
-          this.delModal = true;
-        } else {
-          this.$message.error("请先勾选数据");
-        }
+      if (this.delArr && this.delArr.length > 0) {
+        this.delModal = true;
+      } else {
+        this.$message.error("请先勾选数据");
+      }
     },
     delCancel() {
       this.delModal = false;
@@ -612,21 +631,23 @@ export default {
     changeDate(flag) {
       let addParams = this.formAdd.addData[0];
       let editParams = this.formEdit.editData[0];
-      if (flag==1) {//新增开始时间
+      if (flag == 1) {
+        //新增开始时间
         if (addParams.jssj) {
           if (addParams.kssj > addParams.jssj) {
             addParams.kssj = null;
             this.$message.error("开始时间不能大于结束时间！");
           }
         }
-      } else if (flag==2) {//新增结束时间
+      } else if (flag == 2) {
+        //新增结束时间
         if (addParams.kssj) {
           if (addParams.kssj > addParams.jssj) {
             addParams.jssj = null;
             this.$message.error("结束时间不能小于开始时间！");
           }
         }
-      } else if (flag==3) {
+      } else if (flag == 3) {
         if (editParams.jssj) {
           if (editParams.kssj > editParams.jssj) {
             editParams.kssj = null;
@@ -641,7 +662,7 @@ export default {
           }
         }
       }
-    }
+    },
   },
 };
 </script>

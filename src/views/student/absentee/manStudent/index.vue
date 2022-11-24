@@ -271,6 +271,7 @@
           <div class="btns borderBlue">
             <!-- <i class="icon greenIcon"></i><span class="title">导入</span> -->
             <el-upload
+              v-show="AUTHFLAG"
               accept=".xlsx,.xls"
               :auto-upload="true"
               :action="uploadUrl"
@@ -286,7 +287,7 @@
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
 
-          <div class="btns borderGreen" @click="openAdd">
+          <div class="btns borderGreen" @click="openAdd" v-show="AUTHFLAG">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
           <div class="btns" style="background: #ffffff" @click="dynamicTable">
@@ -344,6 +345,7 @@
                 type="text"
                 size="small"
                 @click="hadleDetail(scope.row, 2)"
+                v-show="AUTHFLAG"
               >
                 <i class="scopeIncon handleEdit"></i>
 
@@ -675,6 +677,7 @@ export default {
         nj: "",
         sfzjh: "",
       },
+      AUTHFLAG: false,
     };
   },
   watch: {},
@@ -690,6 +693,8 @@ export default {
     this.getCode("dmxz"); // 学 制
     this.getCode("dmxbm"); // 性别码
     this.handleSearch();
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   activated() {
     this.handleSearch();

@@ -132,7 +132,7 @@
           <!-- <div class="btns borderGreen" @click="handleExport">
             <i class="icon greenIcon"></i><span class="title">导出</span>
           </div> -->
-          <div class="btns borderLight" @click="del">
+          <div class="btns borderLight" @click="del" v-show="AUTHFLAG">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
         </div>
@@ -156,15 +156,40 @@
           </el-table-column>
           <el-table-column prop="xm" label="姓名" width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="dwhmc" label="培养单位" min-width="100" sortable="custom">
+          <el-table-column
+            prop="dwhmc"
+            label="培养单位"
+            min-width="100"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="zydmc" label="专业" min-width="110" sortable="custom">
+          <el-table-column
+            prop="zydmc"
+            label="专业"
+            min-width="110"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="bjmc" label="班级" min-width="100" sortable="custom">
+          <el-table-column
+            prop="bjmc"
+            label="班级"
+            min-width="100"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="xslbmc" label="学生类别" width="100" sortable="custom">
+          <el-table-column
+            prop="xslbmc"
+            label="学生类别"
+            width="100"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="updateTime" label="修改时间" min-width="100" sortable="custom">
+          <el-table-column
+            prop="updateTime"
+            label="修改时间"
+            min-width="100"
+            sortable="custom"
+          >
           </el-table-column>
         </el-table>
         <pagination
@@ -257,10 +282,13 @@ export default {
       tableData: [],
       multipleSelection: [],
       showExport: false,
+      AUTHFLAG: false,
     };
   },
 
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.handleSearch();
     this.getAllCollege();
     this.getAllGrade();

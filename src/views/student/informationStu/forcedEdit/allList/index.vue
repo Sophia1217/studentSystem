@@ -208,7 +208,7 @@
         <div class="headerLeft">
           <span class="title">学生名单</span> <i class="Updataicon"></i>
         </div>
-        <div class="headerRight" v-if="tableData.length > 0">
+        <div class="headerRight" v-if="tableData.length > 0" v-show="AUTHFLAG">
           <div class="btns borderGreen" @click="handleExport">
             <i class="icon greenIcon"></i
             ><span class="title1">添加强制修改名单</span>
@@ -234,21 +234,56 @@
           </el-table-column>
           <el-table-column prop="xm" label="姓名" width="85" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zzmmc" label="政治面貌" min-width="105" sortable="custom">
+          <el-table-column
+            prop="zzmmc"
+            label="政治面貌"
+            min-width="105"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="mzmc" label="民 族" width="90" sortable="custom">
+          <el-table-column
+            prop="mzmc"
+            label="民 族"
+            width="90"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="dwmc" label="培养单位" min-width="100" sortable="custom">
+          <el-table-column
+            prop="dwmc"
+            label="培养单位"
+            min-width="100"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="zydmc" label="专业" min-width="90" sortable="custom">
+          <el-table-column
+            prop="zydmc"
+            label="专业"
+            min-width="90"
+            sortable="custom"
+          >
           </el-table-column>
           <el-table-column prop="nj" label="年级" width="70" sortable="custom">
           </el-table-column>
-          <el-table-column prop="pyccmc" label="培养层次" width="100" sortable="custom">
+          <el-table-column
+            prop="pyccmc"
+            label="培养层次"
+            width="100"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="xz" label="学制(年)" width="92" sortable="custom">
+          <el-table-column
+            prop="xz"
+            label="学制(年)"
+            width="92"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="xjztmc" label="学籍状态" width="100" sortable="custom">
+          <el-table-column
+            prop="xjztmc"
+            label="学籍状态"
+            width="100"
+            sortable="custom"
+          >
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
@@ -312,6 +347,7 @@ export default {
   components: { CheckboxCom },
   data() {
     return {
+      AUTHFLAG: false,
       showExport: false,
       queryParams: {
         pageNum: 1,
@@ -378,6 +414,8 @@ export default {
   },
 
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getSpread();
     this.getAllCollege();
     this.getAllGrade();

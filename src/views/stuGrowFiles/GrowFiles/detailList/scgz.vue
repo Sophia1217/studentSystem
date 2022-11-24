@@ -134,7 +134,12 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog title="新增" :visible.sync="addModal" width="80%" :close-on-click-modal="false">
+      <el-dialog title="新增"
+        :visible.sync="addModal" 
+        width="80%" 
+        :close-on-click-modal="false"
+        @close="emptyClose()"
+      >
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
             <el-table-column label="活动/赛事名称" align="center">
@@ -517,7 +522,11 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog title="新增" :visible.sync="addModalCy" width="80%" :close-on-click-modal="false">
+      <el-dialog title="新增" 
+        :visible.sync="addModalCy" 
+        width="80%" 
+        :close-on-click-modal="false"
+      >
         <el-form ref="formAddCy" :model="formAddCy" :rules="rules">
           <el-table :data="formAddCy.addDataCy">
             <el-table-column label="公司名称" align="center">
@@ -873,6 +882,12 @@ export default {
 
       return true;
     },
+    //弹窗置空
+    emptyClose(){
+      this.$nextTick(() => {
+        this.$refs.formAdd.resetFields();
+      });
+    },
     handleCloseLct() {
       this.lctModal = false;
     },
@@ -1039,6 +1054,7 @@ export default {
         zzdw: "",
         files: [],
       };
+      this.fileList = [],
       this.formAdd.addData.push(newLine);
       this.addModal = true;
     },

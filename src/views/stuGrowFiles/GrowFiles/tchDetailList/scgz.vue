@@ -965,6 +965,7 @@ export default {
         zzdw: "",
         files: [],
       };
+      this.fileList = [],
       this.formAdd.addData.push(newLine);
       this.addModal = true;
     },

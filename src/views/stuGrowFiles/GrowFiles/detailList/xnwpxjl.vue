@@ -804,6 +804,7 @@ export default {
         jg: "",
         files: [],
       };
+      this.fileList = [],
       this.formAdd.addData.push(newLine);
       this.addModal = true;
     },

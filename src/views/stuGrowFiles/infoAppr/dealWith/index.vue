@@ -1295,14 +1295,19 @@ export default {
         { mc: "奖学金" },
         { mc: "社会实践" },
         { mc: "社团经历" },
-        { mc: "校内外培训" },
+        { mc: "培训经历" },
         { mc: "学习成绩" },
         { mc: "资格认证" },
         { mc: "志愿服务" },
-        { mc: "干部经历" },
         { mc: "荣誉称号" },
+        { mc: "千部经历" },
         { mc: "活动信息" },
         { mc: "创业经历" },
+        { mc: "科研论文" },
+        { mc: "科研专利" },
+        { mc: "科研著作" },
+        { mc: "软件著作" },
+        { mc: "研究报告" },
       ],
       queryParams: {
         pageNum: 1,
@@ -1522,7 +1527,7 @@ export default {
             }));
           });
           break;
-        case "校内外培训":
+        case "培训经历":
           await query1(data).then((res) => {
             this.tableDetails = res.data;
             this.commonParams = res.data.map((v) => ({
@@ -1606,7 +1611,7 @@ export default {
             }));
           });
           break;
-        case "专利":
+        case "科研专利":
           this.whatType = "13";
           await queryKyzl(data).then((res) => {
             this.tableDetails = res.data;
@@ -1620,7 +1625,7 @@ export default {
             }));
           });
           break;
-        case "著作":
+        case "科研著作":
           this.whatType = "14";
           await queryKyzz(data).then((res) => {
             this.tableDetails = res.data;
@@ -1758,7 +1763,7 @@ export default {
               }));
             });
             break;
-          case "校内外培训":
+          case "培训经历":
             await query1(data).then((res) => {
               this.tableDetails = res.data;
               this.commonParams = res.data.map((v) => ({
@@ -1842,7 +1847,7 @@ export default {
               }));
             });
             break;
-          case "专利":
+          case "科研专利":
             this.whatType = "13";
             await queryKyzl(data).then((res) => {
               this.tableDetails = res.data;
@@ -1856,7 +1861,7 @@ export default {
               }));
             });
             break;
-          case "著作":
+          case "科研著作":
             this.whatType = "14";
             await queryKyzz(data).then((res) => {
               this.tableDetails = res.data;
@@ -2072,7 +2077,7 @@ export default {
             this.tableDetails = res.data;
           });
           break;
-        case "校内外培训":
+        case "培训经历":
           await query1(data).then((res) => {
             this.tableDetails = res.data;
           });
@@ -2148,7 +2153,7 @@ export default {
             }));
           });
           break;
-        case "专利":
+        case "科研专利":
           this.whatType = "13";
           await queryKyzl(data).then((res) => {
             this.tableDetails = res.data;
@@ -2162,7 +2167,7 @@ export default {
             }));
           });
           break;
-        case "著作":
+        case "科研著作":
           this.whatType = "14";
           await queryKyzz(data).then((res) => {
             this.tableDetails = res.data;

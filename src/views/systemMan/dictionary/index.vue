@@ -222,6 +222,7 @@ export default {
   },
   created() {
     this.handleQuery();
+    this.authConfirm(this.$route.path.split("/")[2]);
   },
   computed: {
     fileHeader: {

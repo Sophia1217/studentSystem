@@ -436,14 +436,9 @@ export function isNumberStr(str) {
 //按钮鉴权，只读和可编辑 0只读 1可写  可读只有查询权限 可写有所有的功能
 export function authConfirm(data){
   var flag ='1'
-  var all =this.$store.state.permission.AUTH
-  all.map((item)=>{
-    if(item.name == data && item.AUTH == "1"){return flag = "1"}
-    return flag = "2" 
-  }
-  )
+  var all =this.$store.getters.AUTH
+  all.some((item)=> {return item.name ==data && item.auth=="1"}) ? flag=1:flag=2
   this.$store.commit("SET_AUTHFLAG", flag)
-  // return flag === '1' ? true :false
 } 
 
 //当前时间减去三十分钟

@@ -162,9 +162,8 @@ export default {
     };
   },
   created() {
-    this.authConfirm(this.$route.name);
-    this.AUTHFLAG = this.$store.state.permission.AUTHFLAG;
-    // this.handleQuery();
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   activated() {
     this.handleQuery();

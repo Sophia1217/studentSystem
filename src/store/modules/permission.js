@@ -40,7 +40,7 @@ const permission = {
       state.AUTH = AUTH
     },
     SET_AUTHFLAG: (state, AUTHFLAG) => {
-      state.AUTHFLAG = AUTHFLAG == "1" ?true :false
+      state.AUTHFLAG = AUTHFLAG == "1" ? true :false
     }
   },
   actions: {

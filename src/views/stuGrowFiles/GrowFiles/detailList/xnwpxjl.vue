@@ -13,7 +13,7 @@
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
           <div class="btns borderGreen" @click="tjModal">
-            <i class="icon greenIcon"></i><span class="title1">提交</span>
+            <i class="icon tjIcon"></i><span class="title1">提交</span>
           </div>
         </div>
       </div>
@@ -962,6 +962,10 @@ export default {
         .greenIcon {
           margin-top: 10px;
           background: url("~@/assets/assistantPng/add.png") no-repeat;
+        }
+        .tjIcon {
+          margin-top: 10px;
+          background: url("~@/assets/images/passWhite.png") no-repeat;
         }
       }
     }

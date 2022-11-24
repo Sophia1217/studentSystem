@@ -29,19 +29,19 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xmmc" label="项目名称" sortable="custom">
+          <el-table-column prop="xmmc" label="项目名称" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="zzdw" label="组织单位" sortable="custom">
+          <el-table-column prop="zzdw" label="组织单位" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="fwdd" label="服务地点" sortable="custom">
+          <el-table-column prop="fwdd" label="服务地点" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="fwdx" label="服务对象" sortable="custom">
+          <el-table-column prop="fwdx" label="服务对象" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="kssj" label="开始时间" sortable="custom">
           </el-table-column>
           <el-table-column prop="jssj" label="结束时间" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zdlsxm" label="指导老师" sortable="custom">
+          <el-table-column prop="zdlsxm" label="指导老师" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="status" label="审核状态" sortable="custom">
             <template slot-scope="scope">

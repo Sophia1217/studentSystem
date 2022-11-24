@@ -13,7 +13,7 @@
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
           <div class="btns borderGreen" @click="submit">
-            <i class="icon greenIcon"></i><span class="title1">提交</span>
+            <i class="icon tjIcon"></i><span class="title1">提交</span>
           </div>
         </div>
       </div>
@@ -32,19 +32,19 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xmmc" label="项目名称" sortable="custom">
+          <el-table-column prop="xmmc" label="项目名称" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="zzdw" label="组织单位" sortable="custom">
+          <el-table-column prop="zzdw" label="组织单位" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="fwdd" label="服务地点" sortable="custom">
+          <el-table-column prop="fwdd" label="服务地点" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="fwdx" label="服务对象" sortable="custom">
+          <el-table-column prop="fwdx" label="服务对象" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="kssj" label="开始时间" sortable="custom">
           </el-table-column>
           <el-table-column prop="jssj" label="结束时间" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zdlsxm" label="指导老师" sortable="custom">
+          <el-table-column prop="zdlsxm" label="指导老师" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="status" label="审核状态" sortable="custom">
             <template slot-scope="scope">
@@ -780,6 +780,10 @@ export default {
         .greenIcon {
           margin-top: 10px;
           background: url("~@/assets/assistantPng/add.png") no-repeat;
+        }
+        .tjIcon {
+          margin-top: 10px;
+          background: url("~@/assets/images/passWhite.png") no-repeat;
         }
       }
     }

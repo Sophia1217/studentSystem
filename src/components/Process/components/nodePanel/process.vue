@@ -70,6 +70,7 @@ export default {
             name: "id",
             label: "流程标识key",
             rules: [{ required: true, message: "Id 不能为空" }],
+            disabled: true,
           },
           {
             xType: "input",

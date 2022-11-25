@@ -94,7 +94,6 @@
     </el-row>
 
     <el-table
-      v-loading="loading"
       fit
       :data="definitionList"
       border
@@ -451,11 +450,15 @@ export default {
   methods: {
     /** 查询流程定义列表 */
     getList() {
-      this.loading = true;
       listDefinition(this.queryParams).then((response) => {
         this.definitionList = response.data.records;
         this.total = response.data.total;
-        this.loading = false;
+        this.definitionList.forEach((item) => {
+          item.deploymentTime = item.deploymentTime.slice(
+            0,
+            item.deploymentTime.indexOf("T")
+          );
+        });
       });
     },
     // 取消按钮

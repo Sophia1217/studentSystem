@@ -127,7 +127,7 @@
               label="班级编号"
               align="center"
               prop="bjdm"
-              width="115" 
+              width="115"
               sortable
             />
             <el-table-column
@@ -141,28 +141,28 @@
               label="培养单位"
               align="center"
               prop="ssdwmc"
-              min-width="100" 
+              min-width="100"
               sortable
             />
             <el-table-column
               label="培养层次"
               align="center"
               prop="pyccName"
-              width="100" 
+              width="100"
               sortable
             />
             <el-table-column
               label="班级人数"
               align="center"
               prop="stuNumOfClass"
-              width="100" 
+              width="100"
               sortable
             />
             <el-table-column
               label="创建时间"
               align="center"
               prop="createTime"
-              min-width="100" 
+              min-width="100"
               sortable
             />
             <el-table-column
@@ -267,7 +267,7 @@
             type="date"
             style="width: 100%"
             placeholder="选择任命日期"
-            value-format="yyyy-MM-dd hh:mm:ss"
+            value-format="yyyy-MM-dd "
             v-model="form.rmsj"
           ></el-date-picker>
         </el-form-item>

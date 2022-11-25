@@ -87,18 +87,10 @@
                 type="text"
                 size="small"
                 @click="bianji(scope.row)"
+                v-show="AUTHFLAG"
               >
                 <i class="scopeIncon Edit"></i>
                 <span>编辑</span>
-              </el-button>
-              <el-button
-                type="text"
-                size="small"
-                :disabled="true"
-                @click="bianji(scope.row)"
-              >
-                <i class="scopeIncon EditDis"></i>
-                <span style="color: #bfbfbf">编辑</span>
               </el-button>
               <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
@@ -432,20 +424,10 @@
                 type="text"
                 size="small"
                 @click="bianjiCy(scope.row)"
-                v-show="scope.row.status === '01' || scope.row.status === '08'"
+                v-show="AUTHFLAG"
               >
                 <i class="scopeIncon Edit"></i>
                 <span>编辑</span>
-              </el-button>
-              <el-button
-                type="text"
-                size="small"
-                :disabled="true"
-                @click="bianjiCy(scope.row)"
-                v-show="scope.row.status !== '01' && scope.row.status !== '08'"
-              >
-                <i class="scopeIncon EditDis"></i>
-                <span style="color: #bfbfbf">编辑</span>
               </el-button>
               <el-button type="text" size="small" @click="lctClickCy(scope.row)">
                 <i class="scopeIncon lct"></i>
@@ -669,6 +651,7 @@ export default {
   components: { lctCom },
   data() {
     return {
+      AUTHFLAG: false,
       lctModal: false,
       lctModalCy:false,
       ztStatus: [],
@@ -769,6 +752,10 @@ export default {
     this.queryCy();
     this.getCode("dmsplcm"); //状态
     this.getCode("dmxgjljbm"); //级别
+  },
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
 
   methods: {

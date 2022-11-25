@@ -92,16 +92,6 @@
                 <i class="scopeIncon Edit"></i>
                 <span>编辑</span>
               </el-button>
-              <el-button
-                type="text"
-                size="small"
-                :disabled="true"
-                @click="bianji(scope.row)"
-                v-show="AUTHFLAG"
-              >
-                <i class="scopeIncon EditDis"></i>
-                <span style="color: #bfbfbf">编辑</span>
-              </el-button>
               <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
                 <span>流程图</span>

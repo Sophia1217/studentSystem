@@ -51,6 +51,7 @@
               <el-button
                 type="text"
                 size="small"
+                v-show="AUTHFLAG"
                 @click="hadleDetail(scope.row, 1)"
               >
                 <i class="scopeIncon handledie"></i>
@@ -72,7 +73,6 @@
             @change="seletChange"
             collapse-tags
             v-model="value"
-            v-show="AUTHFLAG"
           >
             <el-option
               v-for="(item, index) in resOptions"

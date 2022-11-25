@@ -174,7 +174,7 @@
     </div>
     <!-- 导出确认对话框 -->
     <el-dialog :title="title" :visible.sync="showExport" width="30%">
-      <span>确认导出{{ excelcount }}？</span>
+      <span>确认导出？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="handleConfirm"
@@ -365,12 +365,14 @@ export default {
 
       excelExport(data)
         .then((res) => {
-          this.excelcount = this.$store.getters.excelcount;
-          if (this.$store.getters.excelcount == 0) {
-            this.$message.error("baocuo");
-          }
+          // this.excelcount = this.$store.getters.excelcount;
+          // if (this.$store.getters.excelcount == 0) {
+          //   this.$message.error("baocuo");
+          // }
           this.downloadFn(res, "家校联系记录导出", "xlsx");
-          console.log("styore", this.$store.getters.excelcount);
+          this.$message.success(
+            `已成功导出${this.$store.getters.excelcount}条数据`
+          );
         })
         .catch((err) => {});
     },

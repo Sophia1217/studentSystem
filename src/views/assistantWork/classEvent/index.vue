@@ -393,9 +393,12 @@ export default {
       excelFdyBthd(data)
         .then((res) => {
           this.downloadFn(res, "活动记录导出", "xlsx");
-          this.$message.success(
-            `已成功导出${this.$store.getters.excelcount}条数据`
-          );
+          if(this.$store.getters.excelcount > 0){
+            this.$message.success(
+              `已成功导出${this.$store.getters.excelcount}条数据`
+            );
+          }
+          
         })
         .catch((err) => {});
     },

@@ -213,9 +213,11 @@ export default {
         var ids = this.delArr;
         maintainExp({ idList: ids }).then((res) => {
           this.downloadFn(res, "保险维护信息下载", "xlsx");
-          this.$message.success(
-            `已成功导出${this.$store.getters.excelcount}条数据`
-          );
+          if(this.$store.getters.excelcount > 0){
+            this.$message.success(
+              `已成功导出${this.$store.getters.excelcount}条数据`
+            );
+          }
           this.handleSearch();
         });
       } else {
@@ -232,9 +234,11 @@ export default {
         };
         maintainExp({ ...data }).then((res) => {
           this.downloadFn(res, "保险维护信息下载", "xlsx");
-          this.$message.success(
-            `已成功导出${this.$store.getters.excelcount}条数据`
-          );
+          if(this.$store.getters.excelcount > 0){
+            this.$message.success(
+              `已成功导出${this.$store.getters.excelcount}条数据`
+            );
+          }
           this.handleSearch();
         });
       }

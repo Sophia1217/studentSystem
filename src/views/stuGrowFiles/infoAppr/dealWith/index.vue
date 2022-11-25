@@ -1923,9 +1923,11 @@ export default {
       excelExportCzdaFlowed(this.exportParams)
         .then((res) => {
           this.downloadFn(res, "成长档案已处理列表导出.xlsx", "xlsx");
-          this.$message.success(
-            `已成功导出${this.$store.getters.excelcount}条数据`
-          );
+          if(this.$store.getters.excelcount > 0){
+            this.$message.success(
+              `已成功导出${this.$store.getters.excelcount}条数据`
+            );
+          }
         })
         .catch((err) => {});
 

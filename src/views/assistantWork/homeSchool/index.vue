@@ -375,9 +375,11 @@ export default {
           //   this.$message.error("baocuo");
           // }
           this.downloadFn(res, "家校联系记录导出", "xlsx");
-          this.$message.success(
-            `已成功导出${this.$store.getters.excelcount}条数据`
-          );
+          if(this.$store.getters.excelcount > 0){
+            this.$message.success(
+              `已成功导出${this.$store.getters.excelcount}条数据`
+            );
+          }
         })
         .catch((err) => {});
     },

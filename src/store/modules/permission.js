@@ -19,7 +19,8 @@ const permission = {
     topbarRouters: [],
     sidebarRouters: [],
     AUTH:[],
-    AUTHFLAG:false
+    AUTHFLAG:false,
+    EXCELCOUNT:0
   },
   mutations: {
     SET_ROUTES: (state, routes) => {
@@ -41,6 +42,9 @@ const permission = {
     },
     SET_AUTHFLAG: (state, AUTHFLAG) => {
       state.AUTHFLAG = AUTHFLAG == "1" ? true :false
+    },
+    EXCELCOUNT:(state, EXCELCOUNT) => {
+      state.EXCELCOUNT =  Number(EXCELCOUNT)
     }
   },
   actions: {

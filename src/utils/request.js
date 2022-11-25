@@ -93,6 +93,7 @@ service.interceptors.response.use(res => {
   const msg =  res.data.errmsg || errorCode[code] || errorCode['default']
   // 二进制数据则直接返回
   if (res.request.responseType === 'blob' || res.request.responseType === 'arraybuffer') {
+    store.commit("EXCELCOUNT",res.headers.excelcount)
     return res.data
   }
   

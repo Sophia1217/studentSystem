@@ -14,6 +14,7 @@ const getters = {
   introduction: state => state.user.introduction,
   roles: state => state.user.roles,
   gh:state=>state.user.gh,
+  excelcount:state=>state.permission.EXCELCOUNT,
   AUTHFLAG:state=>state.permission.AUTHFLAG,
   AUTH:state=>state.permission.AUTH,
   permissions: state => state.user.permissions,

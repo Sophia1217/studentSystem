@@ -107,13 +107,48 @@
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
           <el-table-column prop="xh" label="学号" width="100" sortable />
-          <el-table-column prop="xm" label="家访学生" min-width="100" sortable="custom" />
-          <el-table-column prop="sbrxm" label="家访人" width="85" sortable="custom" />
-          <el-table-column prop="sbrdw" label="工作单位" min-width="100" sortable="custom" />
-          <el-table-column prop="gtcyrxm" label="共同参与" min-width="100" sortable="custom" />
-          <el-table-column prop="jfxs" label="家访形式" width="100" sortable="custom" />
-          <el-table-column prop="jfdd" label="家访地点" min-width="120" sortable="custom" />
-          <el-table-column prop="jfsj" label="家访时间" width="100" sortable="custom" />
+          <el-table-column
+            prop="xm"
+            label="家访学生"
+            min-width="100"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="sbrxm"
+            label="家访人"
+            width="85"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="sbrdw"
+            label="工作单位"
+            min-width="100"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="gtcyrxm"
+            label="共同参与"
+            min-width="100"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="jfxs"
+            label="家访形式"
+            width="100"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="jfdd"
+            label="家访地点"
+            min-width="120"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="jfsj"
+            label="家访时间"
+            width="100"
+            sortable="custom"
+          />
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
               <el-button
@@ -139,7 +174,7 @@
     </div>
     <!-- 导出确认对话框 -->
     <el-dialog :title="title" :visible.sync="showExport" width="30%">
-      <span>确认导出？</span>
+      <span>确认导出{{ excelcount }}？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="handleConfirm"
@@ -176,6 +211,7 @@ import {
   outAssistant,
   getGzdw,
 } from "@/api/politicalWork/assistantappoint";
+import { read } from "fs";
 export default {
   name: "BasicInfo",
   components: { CheckboxCom },
@@ -328,7 +364,14 @@ export default {
       // this.$set(this.exportParams,"ids",arr)
 
       excelExport(data)
-        .then((res) => this.downloadFn(res, "家校联系记录导出", "xlsx"))
+        .then((res) => {
+          this.excelcount = this.$store.getters.excelcount;
+          if (this.$store.getters.excelcount == 0) {
+            this.$message.error("baocuo");
+          }
+          this.downloadFn(res, "家校联系记录导出", "xlsx");
+          console.log("styore", this.$store.getters.excelcount);
+        })
         .catch((err) => {});
     },
     //批量移除

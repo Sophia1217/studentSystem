@@ -392,11 +392,6 @@
         >
       </span>
     </el-dialog>
-    <lctCom
-      ref="child"
-      :lctModal="lctModal"
-      @handleCloseLct="handleCloseLct"
-    ></lctCom>
       <pagination
         v-show="queryParams.totalCount > 0"
         :total="queryParams.totalCount"
@@ -735,6 +730,11 @@
     </el-dialog>
     <lctCom
       ref="child"
+      :lctModal="lctModal"
+      @handleCloseLct="handleCloseLct"
+    ></lctCom>
+    <lctCom
+      ref="childCy"
       :lctModal="lctModalCy"
       @handleCloseLct="handleCloseLctCy"
     ></lctCom>
@@ -1149,7 +1149,7 @@ export default {
     },
     lctClickCy(row) {
       if (!!row.processid) {
-        this.$refs.child.inner(row.processid);
+        this.$refs.childCy.inner(row.processid);
         this.lctModalCy = true;
       } else {
          this.$message.warning("此项经历为管理员新增，暂无流程数据");

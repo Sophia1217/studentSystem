@@ -121,7 +121,11 @@
           <div class="btns borderOrange" @click="handleExport">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns borderLight" @click="handleRemoveDialog" v-show="AUTHFLAG">
+          <div
+            class="btns borderLight"
+            @click="handleRemoveDialog"
+            v-show="AUTHFLAG"
+          >
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
           <div class="btns borderGreen" @click="handleAdd" v-show="AUTHFLAG">
@@ -140,13 +144,48 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
-          <el-table-column prop="zfss" label="走访宿舍" min-width="100" sortable />
-          <el-table-column prop="zfzt" label="走访主题" min-width="100" sortable="custom" />
-          <el-table-column prop="xm" label="走访人" width="85" sortable="custom" />
-          <el-table-column prop="gh" label="工号" width="100" sortable="custom" />
-          <el-table-column prop="dwmc" label="工作单位" min-width="100" sortable="custom" />
-          <el-table-column prop="fdylx" label="类型" width="70" sortable="custom" />
-          <el-table-column prop="zfrq" label="走访日期" width="100" sortable="custom" />
+          <el-table-column
+            prop="zfss"
+            label="走访宿舍"
+            min-width="100"
+            sortable
+          />
+          <el-table-column
+            prop="zfzt"
+            label="走访主题"
+            min-width="100"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="xm"
+            label="走访人"
+            width="85"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="gh"
+            label="工号"
+            width="100"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="dwmc"
+            label="工作单位"
+            min-width="100"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="fdylx"
+            label="类型"
+            width="70"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="zfrq"
+            label="走访日期"
+            width="100"
+            sortable="custom"
+          />
 
           <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
@@ -264,7 +303,6 @@ export default {
   computed: {},
   watch: {},
   created() {
-    
     this.authConfirm(this.$route.path.split("/")[2]);
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
@@ -458,7 +496,14 @@ export default {
       };
 
       outDormitory(exportParams)
-        .then((res) => this.downloadFn(res, "寝室走访列表导出", "xlsx"))
+        .then((res) => {
+          this.downloadFn(res, "寝室走访列表导出", "xlsx");
+          if (this.$store.getters.excelcount > 0) {
+            this.$message.success(
+              `已成功导出${this.$store.getters.excelcount}条数据`
+            );
+          }
+        })
         .catch((err) => {});
     },
   },

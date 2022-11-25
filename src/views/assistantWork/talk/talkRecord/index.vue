@@ -304,6 +304,11 @@ export default {
         var ids = this.delArr;
         expTalk({ ids: ids }).then((res) => {
           this.downloadFn(res, "谈心谈话下载", "xlsx");
+          if (this.$store.getters.excelcount > 0) {
+            this.$message.success(
+              `已成功导出${this.$store.getters.excelcount}条数据`
+            );
+          }
           this.handleSearch();
         });
       } else {
@@ -325,6 +330,11 @@ export default {
         };
         expTalk({ ...data }).then((res) => {
           this.downloadFn(res, "谈心谈话下载", "xlsx");
+          if (this.$store.getters.excelcount > 0) {
+            this.$message.success(
+              `已成功导出${this.$store.getters.excelcount}条数据`
+            );
+          }
           this.handleSearch();
         });
       }

@@ -391,7 +391,12 @@ export default {
       // this.$set(this.exportParams,"ids",arr)
 
       excelFdyBthd(data)
-        .then((res) => this.downloadFn(res, "活动记录导出", "xlsx"))
+        .then((res) => {
+          this.downloadFn(res, "活动记录导出", "xlsx");
+          this.$message.success(
+            `已成功导出${this.$store.getters.excelcount}条数据`
+          );
+        })
         .catch((err) => {});
     },
     //批量删除

@@ -383,6 +383,9 @@ export default {
         var ids = this.delArr;
         exp({ idList: ids }).then((res) => {
           this.downloadFn(res, "临时出入申请列表下载", "xlsx");
+          this.$message.success(
+            `已成功导出${this.$store.getters.excelcount}条数据`
+          );
           this.handleSearch();
         });
       } else {
@@ -417,6 +420,9 @@ export default {
         };
         exp({ ...data }).then((res) => {
           this.downloadFn(res, "临时出入申请列表下载", "xlsx");
+          this.$message.success(
+            `已成功导出${this.$store.getters.excelcount}条数据`
+          );
           this.handleSearch();
         });
       }

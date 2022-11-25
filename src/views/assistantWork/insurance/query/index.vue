@@ -98,7 +98,7 @@
               <i class="icon blueIcon"></i><span class="title">导入</span>
             </el-upload>
           </div>
-          <div class="btns borderOrange" @click="expor">
+          <div class="btns borderOrange" @click="handleExport">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
         </div>
@@ -159,6 +159,16 @@
         @pagination="handleSearch"
       />
     </div>
+    <!-- 导出确认对话框 -->
+    <el-dialog title="导出" :visible.sync="showExport" width="30%">
+      <span>确认导出？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="expor"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -191,6 +201,7 @@ export default {
       searchVal: "",
       select: "",
       isMore: false,
+      showExport: false,
       moreIform: {
         xzlx: [],
       },
@@ -217,7 +228,16 @@ export default {
   },
 
   methods: {
+    // 打开导出弹窗
+    handleExport() {
+      this.showExport = true;
+    },
+    // 导出取消
+    handleCancel() {
+      this.showExport = false;
+    },
     expor() {
+      this.showExport = false;
       var rqs = "";
       var rqe = "";
       if (this.datePicker && this.datePicker.length > 0) {
@@ -242,13 +262,19 @@ export default {
         orderPx: this.queryParams.orderPx,
       };
       if (this.multipleSelection.length > 0) {
-        expor({ idList: idList }).then((res) =>
-          this.downloadFn(res, "学平险列表下载", "xlsx")
-        );
+        expor({ idList: idList }).then((res) =>{
+          this.downloadFn(res, "学平险列表下载", "xlsx");
+          this.$message.success(
+            `已成功导出${this.$store.getters.excelcount}条数据`
+          );
+        });
       } else {
-        expor(data).then((res) =>
-          this.downloadFn(res, "学平险列表下载", "xlsx")
-        );
+        expor(data).then((res) =>{
+          this.downloadFn(res, "学平险列表下载", "xlsx");
+          this.$message.success(
+            `已成功导出${this.$store.getters.excelcount}条数据`
+          );
+        });
       }
     },
     queryXzlx() {

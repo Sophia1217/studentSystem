@@ -1017,7 +1017,6 @@
                     <div class="wrap">
                       <div class="title">操作</div>
                       <div class="content">
-                        <template slot-scope="scope">
                           <el-button type="text" size="small" @click="back">
                             <i class="scopeIncon handledie"></i>
                             <span class="handleName">退回</span>
@@ -1030,7 +1029,6 @@
                             <i class="scopeIncon handleEdit"></i>
                             <span class="handleName">通过</span>
                           </el-button>
-                        </template>
                       </div>
                     </div>
                   </el-col>
@@ -2303,6 +2301,9 @@ export default {
       texcelExportCzdaFlow(this.exportParams)
         .then((res) => {
           this.downloadFn(res, "成长档案待审核列表导出.xlsx", "xlsx");
+          this.$message.success(
+            `已成功导出${this.$store.getters.excelcount}条数据`
+          );
         })
         .catch((err) => {});
 

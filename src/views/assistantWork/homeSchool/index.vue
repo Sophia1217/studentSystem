@@ -106,11 +106,15 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
-          <el-table-column prop="xh" label="学号" width="100" sortable />
+          <el-table-column prop="xh" label="学号" 
+            min-width="100" 
+            :show-overflow-tooltip="true"
+            sortable />
           <el-table-column
             prop="xm"
             label="家访学生"
             min-width="100"
+            :show-overflow-tooltip="true"
             sortable="custom"
           />
           <el-table-column
@@ -129,6 +133,7 @@
             prop="gtcyrxm"
             label="共同参与"
             min-width="100"
+            :show-overflow-tooltip="true"
             sortable="custom"
           />
           <el-table-column

@@ -474,6 +474,7 @@ export default {
 
   methods: {
     expTalk() {
+      this.showExport = false;
       var idList = [];
       this.multipleSelection.map((item) => idList.push(item.id));
       var data = {
@@ -491,13 +492,19 @@ export default {
         orderPx: this.queryParams.orderPx,
       };
       if (this.multipleSelection.length > 0) {
-        expor({ idList: idList }).then((res) =>
-          this.downloadFn(res, "思政课程授課列表下载", "xlsx")
-        );
+        expor({ idList: idList }).then((res) =>{
+          this.downloadFn(res, "思政课程授課列表下载", "xlsx");
+          this.$message.success(
+            `已成功导出${this.$store.getters.excelcount}条数据`
+          );
+        });
       } else {
-        expor(data).then((res) =>
-          this.downloadFn(res, "思政课程授課列表下载", "xlsx")
-        );
+        expor(data).then((res) =>{
+          this.downloadFn(res, "思政课程授課列表下载", "xlsx");
+          this.$message.success(
+            `已成功导出${this.$store.getters.excelcount}条数据`
+          );
+        });
       }
     },
     handleExport() {

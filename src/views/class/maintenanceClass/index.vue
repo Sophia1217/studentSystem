@@ -309,6 +309,16 @@
         >
       </span>
     </el-dialog>
+    <!-- 导出确认对话框 -->
+    <el-dialog title="删除" :visible.sync="showExport" width="30%">
+      <span>确认导出？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="handleConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -334,6 +344,7 @@ export default {
       bjdmEdit: "",
       bjmcEdit: "",
       sureModal: false,
+      showExport: false,
       // 2.删除空班级:当前班级编号
       // currentBjbm: { bjdm: "" },
       // 遮罩层
@@ -435,11 +446,24 @@ export default {
         }
       });
     },
-    handleExport() {
+    handleExport(){
+      this.showExport = true;
+    },
+    handleCancel() {
+      this.showExport = false;
+    },
+    handleConfirm() {
+      this.showExport = false;
       var arr = this.list.length > 0 ? this.list.map((item) => item.bjdm) : [];
       var data = { bjdmList: arr };
       Object.assign(data, this.queryParams);
-      expClass(data).then((res) => this.downloadFn(res, "班级名单", "xlsx"));
+      expClass(data).then((res) =>{
+        this.downloadFn(res, "班级名单导出", "xlsx")
+        this.$message.success(
+            `已成功导出${this.$store.getters.excelcount}条数据`
+          );
+      })
+      .catch((err) => {});
     },
     getOptions() {
       this.collegeOptions = [];

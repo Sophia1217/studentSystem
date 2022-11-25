@@ -112,8 +112,8 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="2" class="rowStyle">
-              <div class="wr4ap">
+            <el-col :span="24" class="rowStyle">
+              <div class="wrap">
                 <div class="title">操作</div>
                 <div class="content">
                   <el-button type="text" size="small" @click="bianji(index)">

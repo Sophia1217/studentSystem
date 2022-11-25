@@ -188,9 +188,11 @@
         </div>
         <div class="unDesigned" v-show="currentIndex == 1">
           <div class="table-content">
-            <div class="title" icon="el-icon-refresh">
-              <span class="fptitle-item">{{ this.$route.query.bjmc }}</span>
-              <span class="iconfont">&#xe631;</span>
+            <div class="content_top">
+              <div class="headerLeft">
+                <span class="title">{{ this.$route.query.bjmc }}</span>
+                <i class="Updataicon"></i>
+              </div>
               <!-- <el-row :gutter="10" class="mb8" style="float: right">
               <el-col :span="1.5">
                 <el-button

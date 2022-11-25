@@ -150,16 +150,32 @@
           <el-table-column type="index" label="序号" width="50" />
           <el-table-column prop="gh" label="工号" width="100" sortable />
           <el-table-column prop="xm" label="姓名" width="85" sortable />
-          <el-table-column prop="xb" label="性别" width="70" sortable> </el-table-column>
+          <el-table-column prop="xb" label="性别" width="70" sortable>
+          </el-table-column>
           <!-- <el-table-column prop="lxdh" label="手机号码" sortable /> -->
-          <el-table-column prop="gzdwListString" label="工作单位" min-width="120" sortable />
+          <el-table-column
+            prop="gzdwListString"
+            label="工作单位"
+            min-width="120"
+            sortable
+          />
           <!-- <el-table-column prop="zgxl" label="最高学历" sortable /> -->
           <!-- <el-table-column prop="zgxlbyxx" label="毕业院校" sortable /> -->
           <!-- <el-table-column prop="zybj" label="专业" sortable /> -->
-          <el-table-column prop="gwListString" label="岗位" min-width="120" sortable />
-          <el-table-column prop="lx" label="类型" width="70" sortable />
+          <el-table-column
+            prop="gwListString"
+            label="岗位"
+            min-width="120"
+            sortable
+          />
+          <!-- <el-table-column prop="lx" label="类型" width="70" sortable /> -->
           <el-table-column prop="sfzg" label="是否在岗" width="100" sortable />
-          <el-table-column prop="cjgzsj" label="参加工作时间" width="125" sortable />
+          <el-table-column
+            prop="cjgzsj"
+            label="参加工作时间"
+            width="125"
+            sortable
+          />
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
               <el-button

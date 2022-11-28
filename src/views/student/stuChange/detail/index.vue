@@ -893,7 +893,7 @@ export default {
 
   data() {
     return {
-      dtailsList: ["基本信息", "学籍异动信息", "审核信息"],
+      dtailsList: ["基本信息", "学籍异动", "审核信息"],
       current: 0,
       infoRes: {},
       pyccOps: [],

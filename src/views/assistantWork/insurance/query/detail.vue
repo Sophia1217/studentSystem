@@ -149,7 +149,7 @@
               :disabled="true"
             >
             </el-upload>
-            <!-- <el-button @click="pptpreview">预览</el-button> -->
+            <el-button @click="pptpreview">预览</el-button>
           </el-form-item>
         </div>
       </el-form>
@@ -166,7 +166,12 @@
           :on-error="upLoadError"
         >
         </el-upload>
-        <el-button class="export" v-if="edit == '1'" @click="editDetail" v-show="AUTHFLAG">
+        <el-button
+          class="export"
+          v-if="edit == '1'"
+          @click="editDetail"
+          v-show="AUTHFLAG"
+        >
           编辑</el-button
         >
         <el-button v-if="edit == '2'" @click="baocun"> 保存</el-button>
@@ -184,7 +189,7 @@
         <pdf
           v-for="currentPage in numPages"
           :key="currentPage"
-          :src="pdfsrc"
+          :src="src"
           :page="currentPage"
           @loaded="loadPdfHandler"
         ></pdf>
@@ -221,6 +226,8 @@ export default {
       uploadUrl: process.env.VUE_APP_BASE_API + "/fdyXpx/importAppend",
       fileList: [],
       xzdm: "",
+      src: "",
+      pdfsrc: "",
       formId: {
         xh: "",
         xm: "",
@@ -253,12 +260,11 @@ export default {
     },
     pptpreview() {
       this.viewVisible = true;
-      this.pdfsrc = pdf.createLoadingTask({ url: this.pdfsrc });
-      console.log("this.pdfsrc", this.pdfsrc);
+      this.src = pdf.createLoadingTask({ url: this.pdfsrc });
       this.loadPdfHandler();
     },
     loadPdfHandler() {
-      this.pdfsrc.promise.then((pdf) => {
+      this.src.promise.then((pdf) => {
         // 获取pdf文件相关信息，页码等
         this.numPages = pdf.numPages;
       });

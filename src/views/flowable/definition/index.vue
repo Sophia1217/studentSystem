@@ -64,7 +64,7 @@
           >新增</el-button
         >
       </el-col>
-      <el-col :span="1.5">
+      <!-- <el-col :span="1.5">
         <el-button
           type="danger"
           plain
@@ -75,7 +75,7 @@
           v-show="AUTHFLAG"
           >删除</el-button
         >
-      </el-col>
+      </el-col> -->
       <!-- <el-col :span="1.5">
         <el-button
           type="warning"

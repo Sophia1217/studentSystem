@@ -397,8 +397,7 @@ import {
   getJtzz,
 } from "@/api/dailyBehavior/stuTravel";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
-// import lctCom from "../../../components/lct";
-import lctCom from "../../components/lct";
+import lctCom from "../../../components/lct";
 export default {
   name: "BasicInfo",
   components: { lctCom },
@@ -640,6 +639,7 @@ export default {
     handleNew() {
       this.addModal = true;
       this.formAdd = { sqsj: this.formatDate(new Date()) };
+      this.$set(this.formAdd,"chqjsid","2814");
       getJtzz(this.$store.getters.userId)
         .then((res) => {
           // this.formAdd.jtdz = res.data;

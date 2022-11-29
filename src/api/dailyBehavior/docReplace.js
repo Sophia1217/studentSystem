@@ -41,3 +41,11 @@ export function queryDetail(data){
     data: data
   })
 }
+//撤回
+export function cxById(data){
+  return request({
+    url: '/rcswZjbb/ZjbbcxById',
+    method: 'post',
+    data: data
+  })
+}

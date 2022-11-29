@@ -155,14 +155,14 @@
       <span class="tohead">日常行为管理</span>
     </div>
     <div class="row">
-      <div class="item">
+      <div class="item stuInfoClick" @click="qingjiaClick">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
         </div>
         <div class="content">
           <div class="title1"><span class="stuinfoTitle">请假申请</span></div>
           <div class="title2">
-            <span class="baseInfo">模块建设中</span>
+            <span class="baseInfo">日常请销假</span>
           </div>
         </div>
       </div>
@@ -174,7 +174,7 @@
         <div class="content">
           <div class="title1"><span class="stuinfoTitle">证件补办</span></div>
           <div class="title2">
-            <span class="baseInfo">模块建设中</span>
+            <span class="baseInfo">补办证件</span>
           </div>
         </div>
       </div>
@@ -265,6 +265,11 @@ export default {
     zhengjianClick() {
       this.$router.push({
         path: "/dailyBehavior/docReplace",
+      });
+    },
+    qingjiaClick() {
+      this.$router.push({
+        path: "/vocationStu",
       });
     },
   },

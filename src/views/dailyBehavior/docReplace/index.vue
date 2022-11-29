@@ -117,6 +117,9 @@
           <div class="btns borderRed" @click="showDel">
             <i class="icon lightIcon" /><span class="title">删除</span>
           </div>
+          <div class="btns borderGreen" @click="handleback">
+            <i class="icon backIcon" /><span class="title">撤回</span>
+          </div>
           <div class="btns borderGreen" @click="handleSubmit">
             <i class="icon orangeIcon" /><span class="title">提交</span>
           </div>
@@ -385,6 +388,7 @@ import {
   query,
   tj,
   queryDetail,
+  cxById,
 } from "@/api/dailyBehavior/docReplace";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import lctCom from "../../components/lct";
@@ -723,6 +727,31 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
       this.searchClick();
     },
+    handleback() {
+      var falg = 1;
+      let idList = [];
+      for (var i = 0; i < this.multipleSelection.length; i++) {
+        idList.push(this.multipleSelection[i].id);
+        if (this.multipleSelection[i].status !== "02") falg = 2;
+      }
+      //console.log(idList);
+      if (falg == 1) {
+        if (this.subArr && this.subArr.length > 0) {
+          cxById({ ids: idList }).then((res) => {
+            if (res.errcode == "00") {
+              this.$message.success("撤销成功");
+              this.getList();
+            } else {
+              this.$message.error("撤销失败");
+            }
+          });
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("存在非待审核状态数据，不可以撤回");
+      }
+    },
   },
 };
 </script>
@@ -861,6 +890,10 @@ export default {
           .greenIcon {
             margin-top: 10px;
             background: url("~@/assets/assistantPng/add.png") no-repeat;
+          }
+          .backIcon {
+            margin-top: 10px;
+            background: url("~@/assets/images/chehui.png") no-repeat;
           }
         }
       }

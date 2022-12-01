@@ -41,7 +41,6 @@
         show-checkbox
         node-key="modId"
         :props="defaultProps"
-        @check="currentChecked"
       >
       </el-tree>
     </div>
@@ -83,7 +82,7 @@ export default {
   },
 
   async mounted() {
-    this.isEdit = this.$route.query.isEdit;
+    this.isEdit = this.$route.query.isEdit; //新增是1 编辑是2
     this.roleId1 = this.$route.query?.UpId;
     this.roleName1 = this.$route.query?.roleNameEdit;
     this.queryParams.roleRem = this.$route.query?.rem;
@@ -134,46 +133,52 @@ export default {
       return this.arr;
     },
     //elementUi中自带的方法，可以获取到所有选中的节点
-    currentChecked(nodeObj, SelectedObj) {
-      var that = this;
-      const { checkedNodes, halfCheckedKeys } = SelectedObj;
-      var menuList = checkedNodes.map((item) => item.modId);
-      that.savaData = menuList.concat(halfCheckedKeys); //要获取上级根节点
-    },
+    // currentChecked(nodeObj, SelectedObj) {
+    //   var that = this;
+    //   const { checkedNodes, halfCheckedKeys } = SelectedObj;
+    //   var menuList = checkedNodes.map((item) => item.modId);
+    //   that.savaData = menuList.concat(halfCheckedKeys); //要获取上级根节点
+    // },
     sava() {
-      if (this.isEdit === "1") {
-        let data = {
-          userId: this.$store.getters.userId,
-          menuList: this.savaData,
-          roleName: this.queryParams.roleName,
-          loginRoleId: this.$store.getters.roleId,
-          roleRem: this.queryParams.roleRem,
-        };
-        savaTreeList(data)
-          .then(() => {
-            this.$router.push({
-              path: "/systems/role",
-            });
-          })
-          .catch((err) => {});
+      this.savaData = this.$refs.tree
+        .getHalfCheckedKeys()
+        .concat(this.$refs.tree.getCheckedKeys());
+      if (this.savaData.length > 0) {
+        if (this.isEdit == 1) {
+          let data = {
+            userId: this.$store.getters.userId,
+            menuList: this.savaData,
+            roleName: this.queryParams.roleName,
+            loginRoleId: this.$store.getters.roleId,
+            roleRem: this.queryParams.roleRem,
+          };
+          savaTreeList(data)
+            .then(() => {
+              this.$router.push({
+                path: "/systems/role",
+              });
+            })
+            .catch((err) => {});
+        } else {
+          let data = {
+            userId: this.$store.getters.userId,
+            menuList: this.savaData, //为空会存在问题 EC-000007
+            roleName: this.queryParams.roleName,
+            roleId: this.roleId1,
+            roleRem: this.queryParams.roleRem,
+          };
+          savaEditList(data)
+            .then(() => {
+              this.$router.push({
+                path: "/systems/role",
+              });
+            })
+            .catch((err) => {});
+        }
       } else {
-        let data = {
-          userId: this.$store.getters.userId,
-          menuList: this.savaData.length > 0 ? this.savaData : this.arr, //如果用户进来没编辑，默认前一次筛选出来的树
-          roleName: this.queryParams.roleName,
-          roleId: this.roleId1,
-          roleRem: this.queryParams.roleRem,
-        };
-        savaEditList(data)
-          .then(() => {
-            this.$router.push({
-              path: "/systems/role",
-            });
-          })
-          .catch((err) => {});
+        this.$message.error("请至少勾选一条权限");
       }
     },
-    savaEditList() {},
   },
 };
 </script>

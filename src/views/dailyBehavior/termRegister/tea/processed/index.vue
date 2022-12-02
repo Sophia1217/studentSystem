@@ -103,20 +103,20 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">待审核列表</span> <i class="Updataicon"></i>
+          <span class="title">未注册列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns borderRed" @click="back">
+          <!-- <div class="btns borderRed" @click="back">
             <i class="icon backIcon"></i><span class="title">退回</span>
           </div>
           <div class="btns borderRed" @click="refuse">
             <i class="icon refuseIcon"></i><span class="title">拒绝</span>
-          </div>
+          </div> -->
           <div class="btns fullGreen" @click="pass">
-            <i class="icon passIcon"></i><span class="title1">通过</span>
+            <i class="icon passIcon"></i><span class="title1">注册</span>
           </div>
         </div>
       </div>
@@ -139,19 +139,8 @@
           <el-table-column prop="xm" label="姓名" width="85" sortable> </el-table-column>
           <el-table-column prop="pyccmmc" label="培养层次" width="80" sortable> </el-table-column>
           <el-table-column prop="dwhmc" label="培养单位" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="jtdz" label="家庭地址" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="chqj" label="乘车区间" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="sqsj" label="修改时间" min-width="100" sortable>
-          </el-table-column>
-          <el-table-column prop="createDwhMc" label="审核进度">
-            <template slot-scope="scope">
-              <el-button type="text" size="small" @click="lctClick(scope.row)">
-                <i class="scopeIncon lct"></i>
-                <span class="handleName">流转记录</span>
-              </el-button>
-            </template>
-          </el-table-column>
-
+          <el-table-column prop="jtdz" label="注册状态" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="chqj" label="欠费状态" min-width="100" sortable> </el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
               <el-button
@@ -160,7 +149,7 @@
                 @click="hadleDetail(scope.row, scope.$index)"
               >
                 <i class="scopeIncon handledie"></i>
-                <span class="handleName">申报详情</span>
+                <span class="handleName">注册详情</span>
               </el-button>
             </template>
           </el-table-column>
@@ -238,85 +227,50 @@
         title="申报详情"
         :visible.sync="detailModal"
         :before-close="detailCancel"
-        width="60%"
+        width="80%"
       >
         <template>
-          <div class="baseInfo">
-          <el-form :model="formDetails">
-            <div class="formLeft"><span class="title">基本信息</span></div>
-            <div class="backDetail">
-            
-            <div class="formRight">
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">学号</div>
-                    <div class="content">{{ formDetails.xh }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">姓名</div>
-                    <div class="content">{{ formDetails.xm }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">培养层次</div>
-                    <div class="content">{{ formDetails.pyccmmc }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">培养单位</div>
-                    <div class="content">{{ formDetails.dwhmc }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">专业</div>
-                    <div class="content">{{ formDetails.zydmmc }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">班级</div>
-                    <div class="content">{{ formDetails.bjmmc }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="24" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">家庭地址</div>
-                    <div class="content">{{ formDetails.jtdz }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-            </div>
-            </div>
-            <div class="formLeft"><span class="title">申请信息</span></div>
-            <div>
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="修改乘车区间" label-width="120px" prop="chqj">
-                    {{formDetails.chqj}}
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="申请修改时间" label-width="120px" prop="sqsj">
-                    {{formDetails.sqsj}}
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-            <div class="formLeft"><span class="title">历史乘车区间</span></div>
+          <el-form>
+            <el-row :gutter="20">
+              <el-col :span="4">
+                <el-form-item label="申报人学号" label-width="100px">
+                  <el-input
+                    :disabled="true"
+                    v-model="defaultRes.xh"
+                    placeholder="请输入"
+                  ></el-input> </el-form-item
+              ></el-col>
+              <el-col :span="4">
+                <el-form-item label="姓名" label-width="60px">
+                  <el-input
+                    :disabled="true"
+                    v-model="defaultRes.xm"
+                    placeholder="请输入"
+                  ></el-input> </el-form-item></el-col
+              ><el-col :span="4">
+                <el-form-item label="学院" label-width="60px">
+                  <el-input
+                    :disabled="true"
+                    v-model="defaultRes.dwhmc"
+                    placeholder="请输入"
+                  ></el-input> </el-form-item></el-col
+              ><el-col :span="4">
+                <el-form-item label="专业" label-width="60px">
+                  <el-input
+                    :disabled="true"
+                    v-model="defaultRes.zydmmc"
+                    placeholder="请输入"
+                  ></el-input> </el-form-item
+              ></el-col>
+              <el-col :span="4">
+                <el-form-item label="班级" label-width="60px">
+                  <el-input
+                    :disabled="true"
+                    v-model="defaultRes.bjmmc"
+                    placeholder="请输入"
+                  ></el-input> </el-form-item
+              ></el-col>
+            </el-row>
           </el-form>
           <el-table :data="tableDetails">
             <el-table-column
@@ -325,43 +279,10 @@
               label="序号"
               width="50"
             ></el-table-column>
-            <el-table-column prop="chqj" label="乘车区间"/>
-            <el-table-column prop="sqsj" label="修改时间"/>
-            <el-table-column prop="statusChinese" label="审批结果"/>
+            <el-table-column prop="chqj" label="乘车区间" sortable="custom" />
+            <el-table-column prop="chqj" label="修改时间" sortable="custom" />
+            <el-table-column prop="chqj" label="审批结果" sortable="custom" />
           </el-table>
-          <div class="formLeft"><span class="title">审核信息</span></div>
-          <div>
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="申请审核结果" label-width="120px" prop="shjg">
-                    {{formDetails.chqj}}
-                    <el-select
-                      v-model="shjg"
-                      multiple
-                      collapse-tags
-                      placeholder="请选择"
-                      size="small"
-                    >
-                      <el-option
-                        v-for="item in allDwh"
-                        :key="item.dm"
-                        :label="item.mc"
-                        :value="item.dm"
-                      ></el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="申请审核意见" label-width="120px" prop="shyj">
-                    {{formDetails.sqsj}}
-                    <el-input v-model="shyj"/>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-          </div>
         </template>
         <span slot="footer" class="dialog-footer">
         <el-button @click="detailCancel">取 消</el-button>
@@ -397,14 +318,14 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import {
-  queryDshList,
   tyFlow,
   jjFlow,
   backFlow,
   thFinal,
-  exportZjbbFlow,
-  queryDshDetail,
-  queryDshDetailList,
+  texcelExportCzdaFlow,
+} from "@/api/growFiles/infoAppr";
+import {
+  queryDshList,
 } from "@/api/dailyBehavior/stuTravelTea"
 import { getCollege } from "@/api/class/maintenanceClass";
 import lctCom from "../../../../components/lct";
@@ -425,10 +346,14 @@ export default {
       isMore: false,
       moreIform: {
         dwh: [], // 学院下拉框
+        zydm: [],
+        bjm: [],
+        mk: [],
       },
       exportParams: {},
       leng: 0,
       tableData: [],
+      updownDate: [],
       allDwh: [],
       commonParams: [],
       queryParams: {
@@ -452,12 +377,10 @@ export default {
       thModal: false,
       thly: "",
       tempRadio: false,
+      defaultRes: {},
       detailModal: false,
       whatType: "",
       tableDetails: [],
-      formDetails: [],
-      shjg:"",
-      shyj:""
     };
   },
 
@@ -482,9 +405,9 @@ export default {
       this.exportParams.pageNum = 0;
       this.$set(this.exportParams, "ids", ids);
       //this.$set(this.exportParams, "status", "1");
-      exportZjbbFlow(this.exportParams)
+      texcelExportCzdaFlow(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "乘车优惠待审核列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "成长档案待审核列表导出.xlsx", "xlsx");
           if(this.$store.getters.excelcount > 0){
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -634,34 +557,26 @@ export default {
 
     async hadleDetail(row) {
       console.log("row", row);
-      this.formDetails = row;
+      this.defaultRes = row;
       this.detailModal = true;
       var data = {
         xh: row.xh,
-        pageNum: 1,
-        pageSize: 10,
-        
+        pageNum: "",
+        pageSize: "",
+        orderZd: "",
+        orderPx: "",
         businesId: row.businesId,
       };
-      // var data = {
-      //   xh: row.xh,
-      //   pageNum: "",
-      //   pageSize: "",
-      //   orderZd: "",
-      //   orderPx: "",
-      //   businesId: row.businesId,
-      // };
-      //queryDshDetail queryDshDetailList
-      await queryDshDetailList(data).then((res) => {
-        console.log(22);
+      await queryDshList(data).then((res) => {
         this.tableDetails = res.data;
-        // this.commonParams = res.data.map((v) => ({
-        //   businesId: row.businesId,
-        //   processId: row.processId,
-        //   status: row.status,
-        //   taskId: row.taskId,
-        //   xh: row.xh,
-        // }));
+        this.commonParams = res.data.map((v) => ({
+          businesId: row.businesId,
+          mk: row.mk,
+          processId: row.processId,
+          status: row.status,
+          taskId: row.taskId,
+          xh: row.xh,
+        }));
       });
     },
     editClick(){
@@ -698,6 +613,7 @@ export default {
       queryDshList(data)
         .then((res) => {
           this.tableData = res.data;
+          this.updownDate = res.data;
           this.queryParams.total = res.totalCount;
         })
         .catch((err) => {});
@@ -711,8 +627,8 @@ export default {
     },
       //流程
     lctClick(row) {
-      if (!!row.processId) {
-        this.$refs.child.inner(row.processId);
+      if (!!row.processid) {
+        this.$refs.child.inner(row.processid);
         this.lctModal = true;
       } else {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");
@@ -755,6 +671,7 @@ export default {
       this.multipleSelection = val;
       this.commonParams = this.multipleSelection.map((v) => ({
         businesId: v.businesId,
+        mk: v.mk,
         processId: v.processId,
         status: v.status,
         taskId: v.taskId,
@@ -931,30 +848,25 @@ export default {
       }
     }
   }
-  .baseInfo{
-    // padding: 20px;
-    margin-left: 30px;
-    margin-right: 30px;
+  .backDetail {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #cccccc;
     .formLeft {
+      width: 15%;
       background: #fff;
       display: flex;
       align-items: center;
       .title {
-        font-weight: 600;
-        font-size: 16px;
-        color: #1f1f1f;
-        line-height: 20px;
+        width: 100%;
+        text-align: center;
       }
     }
-  }
-  .backDetail {
-    display: flex;
-    margin-bottom: 20px;
-    flex-direction: row;
-
     .formRight {
-      width: 100%;
-      margin-top: 15px;
+      width: 85%;
       .rowStyle {
         padding: 0 !important;
         margin: 0;

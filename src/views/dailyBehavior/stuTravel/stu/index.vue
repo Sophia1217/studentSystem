@@ -84,6 +84,9 @@
           <div class="btns borderRed" @click="handleDelete">
             <i class="icon lightIcon" /><span class="title">删除</span>
           </div>
+          <div class="btns borderGreen" @click="handleback">
+            <i class="icon backIcon" /><span class="title">撤回</span>
+          </div>
           <div class="btns borderGreen" @click="handleSubmit">
             <i class="icon orangeIcon" /><span class="title">提交</span>
           </div>
@@ -177,7 +180,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="11">
             <el-form-item
               label="乘车区间"
               prop="chqjsid"
@@ -187,6 +190,8 @@
                 v-model="formAdd.chqjsid"
                 placeholder="请输入车站"
                 collapse-tags
+                filterable
+                disabled
               >
                 <el-option
                   v-for="(item, index) in zdOps"
@@ -203,9 +208,11 @@
           <el-col :span="7">
             <el-select
               v-model="formAdd.chqjeid"
-              placeholder="请输入车站"
+              placeholder="请选择车站"
               :rules="rules.chqjeid"
               collapse-tags
+              filterable
+              @change="changeZD(formAdd.chqjeid)"
             >
               <el-option
                 v-for="(item, index) in zdOps"
@@ -214,6 +221,23 @@
                 :value="item.dm"
               ></el-option>
             </el-select>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="19">
+            <el-form-item
+              label="自定义站点"
+              prop="chqjemc"
+              :rules="rules.chqjemc"
+              v-if="qitaShow == true"
+            >
+              <el-input 
+                v-model="formAdd.chqjemc" 
+                placeholder="请输入其他站点"
+              >
+              </el-input>
+            </el-form-item>
+            
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -281,7 +305,7 @@
             >
               <el-select
                 v-model="formEdit.chqjsid"
-                :disabled="isEdit == 0"
+                disabled
                 placeholder="请输入车站"
                 collapse-tags
               >
@@ -303,6 +327,7 @@
               :disabled="isEdit == 0"
               placeholder="请输入车站"
               :rules="rules.chqjeid"
+              @change="changeZD(formEdit.chqjeid)"
               collapse-tags
             >
               <el-option
@@ -312,6 +337,24 @@
                 :value="item.dm"
               ></el-option>
             </el-select>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="19">
+            <el-form-item
+              label="自定义站点"
+              prop="chqjemc"
+              :rules="rules.chqjemc"
+              v-show="qitaShow == true"
+            >
+              <el-input 
+                v-model="formEdit.chqjemc" 
+                :disabled="isEdit == 0"
+                placeholder="请输入其他站点"
+              >
+              </el-input>
+            </el-form-item>
+            
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -395,6 +438,7 @@ import {
   queryAllZd,
   queryDetail,
   getJtzz,
+  cxById,
 } from "@/api/dailyBehavior/stuTravel";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import lctCom from "../../../components/lct";
@@ -446,6 +490,7 @@ export default {
         chqjeid: "",
         sqsj: "",
         sqbz: "",
+        chqjemc:"",
       },
       formEdit: {
         jtdz: "",
@@ -453,8 +498,10 @@ export default {
         chqjeid: "",
         sqsj: "",
         sqbz: "",
+        chqjemc:"",
       },
       isEdit: 0, //0详情1编辑
+      qitaShow: false,
       rules: {
         chqjsid: [
           { required: true, message: "出发站点不能为空", trigger: "change" },
@@ -468,6 +515,9 @@ export default {
         sqbz: [
           { required: true, message: "申请备注不能为空", trigger: "blur" },
         ],
+        // chqjemc:[
+        //   { required: true, message: "自定义站点不能为空", trigger: "blur" },
+        // ],
       },
     };
   },
@@ -510,6 +560,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.formEdit.resetFields();
       });
+      this.qitaShow = false;
     },
     emptyAdd() {
       this.$nextTick(() => {
@@ -663,6 +714,7 @@ export default {
           chqjeid: this.formAdd.chqjeid,
           sqsj: this.formAdd.sqsj,
           sqbz: this.formAdd.sqbz,
+          chqjemc: this.formAdd.chqjemc || "",
 
           xh: this.$store.getters.userId,
         };
@@ -681,8 +733,12 @@ export default {
     //点击详情
     hadleDetail(row) {
       this.editModal = true;
+      console.log("this.qitaShow",this.qitaShow);
       queryDetail({ id: row.id }).then((res) => {
         this.formEdit = res.data;
+        if(res.data.chqjeid==10000){
+          this.qitaShow = true
+        }
       });
     },
     EditStatus() {
@@ -731,6 +787,40 @@ export default {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
       this.searchClick();
+    },
+    handleback() {
+      var falg = 1;
+      let idList = [];
+      for (var i = 0; i < this.multipleSelection.length; i++) {
+        idList.push(this.multipleSelection[i].id);
+        if (this.multipleSelection[i].status !== "02") falg = 2;
+      }
+      //console.log(idList);
+      if (falg == 1) {
+        if (this.subArr && this.subArr.length > 0) {
+          cxById({ ids: idList }).then((res) => {
+            if (res.errcode == "00") {
+              this.$message.success("撤销成功");
+              this.getList();
+            } else {
+              this.$message.error("撤销失败");
+            }
+          });
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("存在非待审核状态数据，不可以撤回");
+      }
+    },
+    changeZD(flag){
+      if( flag && flag == 10000){
+        this.qitaShow = true;
+      } else{ 
+        this.qitaShow = false;
+        this.formAdd.chqjemc = "";
+        this.formEdit.chqjemc = "";
+      }
     },
   },
 };
@@ -870,6 +960,10 @@ export default {
           .greenIcon {
             margin-top: 10px;
             background: url("~@/assets/assistantPng/add.png") no-repeat;
+          }
+          .backIcon {
+            margin-top: 10px;
+            background: url("~@/assets/images/chehui.png") no-repeat;
           }
         }
       }

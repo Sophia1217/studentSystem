@@ -178,14 +178,14 @@
           </div>
         </div>
       </div>
-      <div class="item">
+      <div class="item stuInfoClick" @click="zhusuClick">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
         </div>
         <div class="content">
-          <div class="title1"><span class="stuinfoTitle">困难生结果</span></div>
+          <div class="title1"><span class="stuinfoTitle">住宿申请</span></div>
           <div class="title2">
-            <span class="baseInfo">模块建设中</span>
+            <span class="baseInfo">宿舍异动申请</span>
           </div>
         </div>
       </div>
@@ -270,6 +270,11 @@ export default {
     qingjiaClick() {
       this.$router.push({
         path: "/vocationStu",
+      });
+    },
+    zhusuClick() {
+      this.$router.push({
+        path: "/dormStudent",
       });
     },
   },

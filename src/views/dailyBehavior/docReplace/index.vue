@@ -328,7 +328,9 @@
       <span
         slot="footer"
         class="dialog-footer"
-        v-if="formEdit.status == '01' && isEdit == 0"
+        v-if="
+          (formEdit.status == '01' || formEdit.status == '08') && isEdit == 0
+        "
       >
         <el-button type="primary" class="confirm" @click="EditStatus"
           >编 辑</el-button

@@ -12,6 +12,15 @@ export function getQJList(query) {
   }
   
 
+//日常请销假学生XIAO假单列表查询
+export function getXJList(query) {
+  return request({
+    url: '/rcswrcqxj/queryRcqxjXsXjdList',
+    method: 'post',
+    data: query
+  })
+}
+
 //日常请假新增修改
 export function importRcqxj(query) {
     return request({
@@ -51,6 +60,14 @@ export function selectDetail(query) {
 export function tjById(query) {
   return request({
     url: '/rcswrcqxj/tjById',
+    method: 'post',
+    data: query
+  })
+}
+////rcswrcqxj/extendLeave日常请假学生续假
+export function extendLeave(query) {
+  return request({
+    url: '/rcswrcqxj/extendLeave',
     method: 'post',
     data: query
   })

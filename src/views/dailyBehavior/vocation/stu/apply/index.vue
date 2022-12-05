@@ -155,6 +155,9 @@
           <div class="btns borderGreen" @click="handleback">
             <i class="icon backIcon" /><span class="title">撤回</span>
           </div>
+          <div class="btns borderGreen" @click="handleback">
+            <i class="icon xiaojiaIcon" /><span class="title">销假</span>
+          </div>
           <div class="btns borderGreen" @click="handleSubmit">
             <i class="icon orangeIcon" /><span class="title">提交</span>
           </div>
@@ -620,16 +623,69 @@
         >
       </span>
     </el-dialog>
-    <!-- 导出确认对话框 -->
-    <!-- <el-dialog :title="title" :visible.sync="submitModal" width="30%">
-      <span>确认导出？</span>
+    <!-- 续假对话框 -->
+    <el-dialog
+      title="续假申请"
+      :visible.sync="xjModal"
+      width="60%"
+      :close-on-click-modal="false"
+      @close="emptyXj()"
+    >
+      <el-form ref="formXj" :model="formXj" :rules="rules" label-width="180px">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="续假天数:" prop="xjts" :rules="rules.xjts">
+              <div>
+                <el-input-number
+                  v-model="formXj.xjts"
+                  :min="0"
+                  @change="handleNumChange"
+                ></el-input-number>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="20">
+            <el-form-item label="请假时间:" prop="qjsj">
+              <div>
+                <el-date-picker
+                  type="daterange"
+                  placeholder="选择日期"
+                  v-model="formXj.qjsj"
+                  format="yyyy 年 MM 月 dd 日"
+                  value-format="yyyy-MM-dd"
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                  :disabled="true"
+                ></el-date-picker>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="20">
+            <el-form-item label="续假事由:" prop="qjsy" :rules="rules.qjsy">
+              <div>
+                <el-input
+                  v-model="formXj.qjsy"
+                  type="textarea"
+                  maxlength="500"
+                  placeholder="请输入"
+                ></el-input>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="handleConfirm"
+        <el-button @click="xjCance">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="xjClick"
           >确 定</el-button
         >
       </span>
-    </el-dialog> -->
+    </el-dialog>
     <!-- 批量删除对话框 -->
     <el-dialog title="删除" :visible.sync="delModal" width="30%">
       <span>确认删除？</span>
@@ -661,13 +717,6 @@
   </div>
 </template>
 <script>
-import {
-  edit,
-  del,
-  query,
-  tj,
-  queryDetail,
-} from "@/api/dailyBehavior/docReplace";
 import { getLocationjl } from "@/api/student/index";
 import {
   getQJList,
@@ -676,6 +725,7 @@ import {
   deleteRcqxjById,
   selectDetail,
   tjById,
+  extendLeave,
 } from "@/api/dailyBehavior/vocationStu";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import lctCom from "../../../../components/lct";
@@ -767,10 +817,12 @@ export default {
       exportParams: {},
       addModal: false,
       editModal: false,
+      xjModal: false,
       fileList: [],
       fileListAdd: [],
       formAdd: { qwdzm: [] },
       formEdit: { qwdzm: [] },
+      formXj: {},
       rules: {
         zjlx: [
           {
@@ -835,6 +887,17 @@ export default {
       }
       return true;
     },
+    checkFormXj() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formXj.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
     emptyEdit() {
       this.$nextTick(() => {
         this.$refs.formEdit.resetFields();
@@ -843,6 +906,11 @@ export default {
     emptyAdd() {
       this.$nextTick(() => {
         this.$refs.formAdd.resetFields();
+      });
+    },
+    emptyXj() {
+      this.$nextTick(() => {
+        this.$refs.formXj.resetFields();
       });
     },
     handleCloseLct() {
@@ -920,6 +988,31 @@ export default {
           this.$set(this.formAdd, "qjts", iDays);
         } else this.$set(this.formEdit, "qjts", iDays);
       }
+    },
+    handleNumChange(val) {
+      //var nDate = new Date(this.formXj.qjsj[1]);
+      var nDate = new Date(this.jssjOrigin);
+      var millSeconds = Math.abs(nDate) + val * 24 * 60 * 60 * 1000;
+      var rDate = new Date(millSeconds);
+      var year = rDate.getFullYear();
+      var month = rDate.getMonth() + 1;
+      if (month < 10) month = "0" + month;
+      var date = rDate.getDate();
+      if (date < 10) date = "0" + date;
+      var jssj = year + "-" + month + "-" + date;
+      this.$set(this.formXj, "qjsj", [this.formXj.qjsj[0], jssj]);
+    },
+
+    xjCance() {
+      this.xjModal = false;
+    },
+    xjClick() {
+      this.formXj.jssj = this.formXj.qjsj[1];
+      this.$delete(this.formXj, "qjsj");
+      extendLeave(this.formXj).then((res) => {
+        this.getList(this.queryParams);
+      });
+      this.xjModal = false;
     },
     // 点击更多
     handleMore() {
@@ -1158,7 +1251,14 @@ export default {
         this.$message.error("存在非待审核状态数据，不可以撤回");
       }
     },
-    xujia() {},
+    xujia(row) {
+      this.xjModal = true;
+      selectDetail({ businesId: row.id }).then((res) => {
+        this.formXj = res.data[0];
+        this.jssjOrigin = res.data[0].jssj;
+        this.$set(this.formXj, "qjsj", [res.data[0].kssj, res.data[0].jssj]);
+      });
+    },
     // 请假类型全选
     handleCheckAllChangeQjlx(val) {
       let allCheck = [];
@@ -1391,6 +1491,10 @@ export default {
           .backIcon {
             margin-top: 10px;
             background: url("~@/assets/images/chehui.png") no-repeat;
+          }
+          .xiaojiaIcon {
+            margin-top: 9px;
+            background: url("~@/assets/images/xiaojia.png") no-repeat;
           }
         }
       }

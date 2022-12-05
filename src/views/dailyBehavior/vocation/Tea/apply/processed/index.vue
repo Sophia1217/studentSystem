@@ -437,6 +437,11 @@
         >
       </span>
     </el-dialog>
+    <lctCom
+      ref="child"
+      :lctModal="lctModal"
+      @handleCloseLct="handleCloseLct"
+    ></lctCom>
   </div>
 </template>
 
@@ -470,6 +475,7 @@ export default {
       showExport: false,
       ztStatus: [],
       searchVal: "",
+      lctModal: false,
       select: "",
       isMore: false,
       datePicker: [],
@@ -832,6 +838,9 @@ export default {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.getList();
+    },
+    handleCloseLct() {
+      this.lctModal = false;
     },
   },
 };

@@ -19,61 +19,54 @@ export function queryZjbbFlowedList(query) {
     })
   }
 
-  //火车乘车优惠根据选中节点退回
+  //根据选中节点退回
 export function htFlow(query) {
   return request({
-    url: '/ChyhFlow/htFlow',
+    url: '/zjbbFlow/htFlow',
     method: 'post',
     data: query
   })
 }
 
-//火车乘车优惠拒绝操作
+//拒绝操作
 export function jjFlow(query) {
   return request({
-    url: '/ChyhFlow/jjFlow',
+    url: '/zjbbFlow/jjFlow',
     method: 'post',
     data: query
   })
 }
-//火车乘车优惠详情基本信息
-export function RcswChyhFlowInfo(query) {
+// 证件补办审核详情
+export function queryZjbbFlowInfo(query) {
   return request({
-    url: '/ChyhFlow/RcswChyhFlowInfo',
-    method: 'post',
-    data: query
-  })
-}
-//火车乘车优惠待审核详情历史列表
-export function RcswChyhFlowInfoList(query) {
-  return request({
-    url: '/ChyhFlow/RcswChyhFlowInfoList',
-    method: 'post',
-    data: query
-  })
-}
-//火车乘车优惠同意操作
-export function tyFlow(query) {
-  return request({
-    url: '/ChyhFlow/tyFlow',
+    url: '/zjbbFlow/queryZjbbFlowInfo',
     method: 'post',
     data: query
   })
 }
 
-//火车乘车优惠待审核列表导出
+//同意操作
+export function tyFlow(query) {
+  return request({
+    url: '/zjbbFlow/tyFlow',
+    method: 'post',
+    data: query
+  })
+}
+
+//待审核列表导出
 export function excelExportZjbbFlow(query) {
   return request({
-    url: '/ChyhFlow/excelExportZjbbFlow',
+    url: '/zjbbFlow/excelExportZjbbFlow',
     method: 'post',
     responseType:'blob',
     data: query
   })
 }
-////火车乘车优惠待审核列表导出
+////待审核列表导出
 export function excelExportZjbbFlowed(query) {
   return request({
-    url: '/ChyhFlow/excelExportZjbbFlowed',
+    url: '/zjbbFlow/excelExportZjbbFlowed',
     method: 'post',
     responseType:'blob',
     data: query
@@ -82,7 +75,7 @@ export function excelExportZjbbFlowed(query) {
 //可退回列表查询
 export function backFlow(query) {
   return request({
-    url: '/ChyhFlow/queryNodeFlowed',
+    url: '/zjbbFlow/queryNodeFlowed',
     method: 'get',
     params: query
   })

@@ -51,3 +51,36 @@ export function htqjFlow(query) {
     data: query
   })
 }
+// //学生基本信息
+// export function getXsJbxx(query) {
+//   return request({
+//     url: '/rcswrcqxj/htqjFlow',
+//     method: 'post',
+//     data: query
+//   })
+// }
+
+//日常请销假老师销假已处理列表查询
+export function getXjYclList(query) {
+    return request({
+      url: '/rcswrcqxj/queryRcqxjLsXjYclList',
+      method: 'post',
+      data: query
+    })
+  }
+//日常请销假老师销假待处理列表查询
+  export function getXjDshList(query) {
+    return request({
+      url: '/rcswrcqxj/queryRcqxjLsDclList',
+      method: 'post',
+      data: query
+    })
+  }
+  //老师确认销假
+export function lsqrFlow(query) {
+  return request({
+    url: '/rcswrcqxj/lsqrFlow',
+    method: 'post',
+    data: query
+  })
+}

@@ -72,3 +72,12 @@ export function extendLeave(query) {
     data: query
   })
 }
+
+//日常请假学生提交销假
+export function xjtjById(query) {
+  return request({
+    url: '/rcswrcqxj/xjtjById',
+    method: 'post',
+    data: query
+  })
+}

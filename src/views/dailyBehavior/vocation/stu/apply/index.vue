@@ -155,7 +155,7 @@
           <div class="btns borderGreen" @click="handleback">
             <i class="icon backIcon" /><span class="title">撤回</span>
           </div>
-          <div class="btns borderGreen" @click="handleback">
+          <div class="btns borderGreen" @click="handleCanVoc">
             <i class="icon xiaojiaIcon" /><span class="title">销假</span>
           </div>
           <div class="btns borderGreen" @click="handleSubmit">
@@ -709,6 +709,19 @@
         >
       </span>
     </el-dialog>
+    <el-dialog title="销假" :visible.sync="CanVocModal" width="30%">
+      <template>
+        <div>
+          <span>确认销假？</span>
+        </div>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="CanVocCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="CanVocConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
     <lctCom
       ref="child"
       :lctModal="lctModal"
@@ -726,6 +739,7 @@ import {
   selectDetail,
   tjById,
   extendLeave,
+  xjtjById,
 } from "@/api/dailyBehavior/vocationStu";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import lctCom from "../../../../components/lct";
@@ -818,6 +832,7 @@ export default {
       addModal: false,
       editModal: false,
       xjModal: false,
+      CanVocModal: false,
       fileList: [],
       fileListAdd: [],
       formAdd: { qwdzm: [] },
@@ -1250,6 +1265,34 @@ export default {
       } else {
         this.$message.error("存在非待审核状态数据，不可以撤回");
       }
+    },
+    //销假
+    handleCanVoc() {
+      var falg = 1;
+      for (var i = 0; i < this.multipleSelection.length; i++) {
+        if (this.multipleSelection[i].qjstatus !== "10") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.subArr && this.subArr.length > 0) {
+          this.CanVocModal = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("不是已通过状态数据，不可以销假");
+      }
+    },
+    CanVocCancel() {
+      this.CanVocModal = false;
+    },
+    CanVocConfirm() {
+      var data = this.list;
+      xjtjById(data).then((res) => {
+        //console.log(111);
+        this.$message.success("销假提交成功");
+        this.getList();
+        this.CanVocModal = false;
+      });
     },
     xujia(row) {
       this.xjModal = true;

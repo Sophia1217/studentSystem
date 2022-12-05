@@ -7,7 +7,7 @@
       width="40%"
     >
       <div>
-        <el-image :src="url"
+        <el-image :src="url" v-if="url" lazy
           ><div slot="placeholder" class="image-slot">
             加载中<span class="dot">...</span>
           </div></el-image

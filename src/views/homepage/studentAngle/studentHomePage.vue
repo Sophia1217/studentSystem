@@ -189,6 +189,17 @@
           </div>
         </div>
       </div>
+      <!-- <div class="item" @click="lskn">
+        <div class="medalImage">
+          <img src="~@/assets/images/medal.png" alt="" />
+        </div>
+        <div class="content">
+          <div class="title1"><span class="stuinfoTitle">临时困难</span></div>
+          <div class="title2">
+            <span class="baseInfo">模块建设中</span>
+          </div>
+        </div>
+      </div> -->
       <div class="item stuInfoClick" @click="chengcheClick">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
@@ -204,7 +215,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="item2 itemSpecial">
+      <div class="item">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
         </div>
@@ -215,7 +226,7 @@
           </div>
         </div>
       </div>
-      <div class="item2 itemSpecial">
+      <div class="item">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
         </div>
@@ -228,8 +239,20 @@
           </div>
         </div>
       </div>
-      <div class="item2"></div>
-      <div class="item2"></div>
+      <div class="item stuInfoClick" @click="xjyd">
+        <div class="medalImage">
+          <img src="~@/assets/images/medal.png" alt="" />
+        </div>
+        <div class="content">
+          <div class="title1">
+            <span class="stuinfoTitle">学籍异动事务</span>
+          </div>
+          <div class="title2">
+            <span class="baseInfo">学籍保留、休学等</span>
+          </div>
+        </div>
+      </div>
+      <div class="item"></div>
     </div>
   </div>
 </template>
@@ -246,6 +269,16 @@ export default {
   },
 
   methods: {
+    lskn() {
+      this.$router.push({
+        path: "/lsknStu",
+      });
+    },
+    xjyd() {
+      this.$router.push({
+        path: "/xjydswStu",
+      });
+    },
     //首页基本信息跳转
     danganClick() {
       this.$router.push({

@@ -182,13 +182,13 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">学号</div>
-                  <div class="content">{{}}</div>
+                  <div class="content">{{ tableDetails.xh }}</div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">姓名</div>
-                  <div class="content">{{}}</div>
+                  <div class="content">{{ tableDetails.xm }}</div>
                 </div>
               </el-col>
             </el-row>
@@ -196,13 +196,13 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">培养层次</div>
-                  <div class="content">{{}}</div>
+                  <div class="content">{{ tableDetails.pyccmmc }}</div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">培养单位</div>
-                  <div class="content">{{}}</div>
+                  <div class="content">{{ tableDetails.dwhmc }}</div>
                 </div>
               </el-col>
             </el-row>
@@ -210,13 +210,13 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">专业</div>
-                  <div class="content">{{}}</div>
+                  <div class="content">{{ tableDetails.zydmmc }}</div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">年级</div>
-                  <div class="content">{{}}</div>
+                  <div class="content">{{ tableDetails.nj }}</div>
                 </div>
               </el-col>
             </el-row>
@@ -224,7 +224,7 @@
               <el-col :span="24" class="rowStyle">
                 <div class="wrap">
                   <div class="title">班级</div>
-                  <div class="content">{{}}</div>
+                  <div class="content">{{ tableDetails.bjmmc }}</div>
                 </div>
               </el-col>
             </el-row>
@@ -236,14 +236,14 @@
                 <el-col :span="12">
                   <el-form-item label="请假类型:" prop="qjlxm">
                     <div>
-                      <span>{{}}</span>
+                      <span>{{ formDetails.qjlx }}</span>
                     </div>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="是否离汉:" prop="sflhm">
                     <div>
-                      <span>{{}}</span>
+                      <span>{{ formDetails.sflh }}</span>
                     </div>
                   </el-form-item>
                 </el-col>
@@ -252,7 +252,7 @@
                 <el-col :span="20">
                   <el-form-item label="前往地址:" prop="qwdzm">
                     <div>
-                      <span>{{}}</span>
+                      <span>{{ formDetails.qwdz }}</span>
                     </div>
                   </el-form-item>
                 </el-col>
@@ -261,7 +261,7 @@
                 <el-col :span="20">
                   <el-form-item label="详细地址:" prop="xxdz">
                     <div>
-                      <span>{{}}</span>
+                      <span>{{ formDetails.xxdz }}</span>
                     </div>
                   </el-form-item>
                 </el-col>
@@ -270,14 +270,23 @@
                 <el-col :span="12">
                   <el-form-item label="请假时间:" prop="qjsj">
                     <div>
-                      <span>{{}}</span>
+                      <span
+                        >{{ formDetails.kssj }} 至 {{ formDetails.jssj }}</span
+                      >
                     </div>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="6">
                   <el-form-item label="总天数:" prop="qjts">
                     <div>
-                      <span>{{}}</span>
+                      <span>{{ formDetails.qjts }}</span>
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item label="续假天数:" prop="xjts">
+                    <div>
+                      <span>{{ formDetails.xjts }}</span>
                     </div>
                   </el-form-item>
                 </el-col>
@@ -286,14 +295,14 @@
                 <el-col :span="12">
                   <el-form-item label="紧急联系人:" prop="jjlxr">
                     <div>
-                      <span>{{}}</span>
+                      <span>{{ formDetails.jjlxr }}</span>
                     </div>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="联系电话:" prop="lxdh">
                     <div>
-                      <span>{{}}</span>
+                      <span>{{ formDetails.lxdh }}</span>
                     </div>
                   </el-form-item>
                 </el-col>
@@ -302,7 +311,7 @@
                 <el-col :span="20">
                   <el-form-item label="请假事由:" prop="qjsy">
                     <div>
-                      <span>{{}}</span>
+                      <span>{{ formDetails.qjsy }}</span>
                     </div>
                   </el-form-item>
                 </el-col>
@@ -313,22 +322,29 @@
           <div class="tableStyle">
             <el-form label-width="100px">
               <el-form-item label="申请审核结果">
-                <el-select></el-select>
+                <el-select
+                  v-model="formDetails.qjstatus"
+                  placeholder="请选择"
+                  :disabled="true"
+                >
+                  <el-option
+                    v-for="(item, index) in ztStatus"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
               </el-form-item>
 
               <el-form-item label="申请审核理由" label-width="100px">
-                <el-input
-                  type="textarea"
-                  maxlength="500"
-                  placeholder="请输入"
-                ></el-input>
+                {{ shDetails.msg }}
               </el-form-item>
             </el-form>
           </div>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="handleCancel">取 消</el-button>
-            <el-button type="primary" class="confirm" @click="handleConfirm"
-              >确 定</el-button
+            <el-button @click="detailCancel">取 消</el-button>
+            <el-button type="primary" class="confirm" @click="detailConfirm"
+              >确 认</el-button
             >
           </span>
         </template>
@@ -362,8 +378,14 @@
 import CheckboxCom from "../../../../../components/checkboxCom";
 import lctCom from "../../../../../components/lct";
 import { queryDshList, texcelExportCzdaFlow } from "@/api/growFiles/infoAppr";
-import { getXjDshList, lsqrFlow } from "@/api/dailyBehavior/vocationTea";
+import {
+  getXjDshList,
+  lsqrFlow,
+  getXsJbxx,
+  queryFlowableComment,
+} from "@/api/dailyBehavior/vocationTea";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
+import { selectDetail } from "@/api/dailyBehavior/vocationStu";
 export default {
   name: "manStudent",
   components: { CheckboxCom, lctCom },
@@ -436,6 +458,8 @@ export default {
       detailModal: false,
       whatType: "",
       tableDetails: [],
+      formDetails: {},
+      shDetails: {},
       upDownIndex: 0,
     };
   },
@@ -444,6 +468,7 @@ export default {
     this.getList();
     this.getCode("dmqjlxm"); //请假类型
     this.getCode("dmxqm");
+    this.getCode("dmsplcm");
   },
 
   methods: {
@@ -459,9 +484,9 @@ export default {
           .catch((err) => {});
     },
     lctClick(row) {
-      console.log(row.qjprocessid);
-      if (!!row.qjprocessid) {
-        this.$refs.child.inner(row.qjprocessid);
+      console.log(row.xjprocessid);
+      if (!!row.xjprocessid) {
+        this.$refs.child.inner(row.xjprocessid);
         this.lctModal = true;
       } else {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");
@@ -484,6 +509,24 @@ export default {
       } else {
         this.$message.error("请先选择一条数据");
       }
+    },
+    detailConfirm() {
+      let data = {
+        businesId: this.defaultRes.id,
+        qjprocessid: this.defaultRes.xjprocessid,
+        qjstatus: this.defaultRes.qjstatus,
+        qjts: this.defaultRes.qjts,
+        taskId: this.defaultRes.taskId,
+        xh: this.defaultRes.xh,
+        opMsg: "销假通过",
+      };
+      lsqrFlow([data]).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("销假已通过");
+          this.detailModal = false;
+          this.getList();
+        }
+      });
     },
     // 导出取消
     handleCancel() {
@@ -566,35 +609,24 @@ export default {
       this.multipleSelection1 = row;
     },
 
-    async hadleDetail(row, index) {
-      console.log("row", row);
-      this.upDownIndex = index;
+    hadleDetail(row) {
       this.defaultRes = row;
+      console.log(row);
       this.detailModal = true;
-      var data = {
-        xh: row.xh,
-        pageNum: "",
-        pageSize: "",
-        orderZd: "",
-        orderPx: "",
-        businesId: row.businesId,
-      };
-      switch (row.mk) {
-        case "奖学金":
-          this.whatType = "7";
-          await query7(data).then((res) => {
-            this.tableDetails = res.data;
-            this.commonParams = res.data.map((v) => ({
-              businesId: row.businesId,
-              mk: row.mk,
-              processId: row.processId,
-              status: row.status,
-              taskId: row.taskId,
-              xh: row.xh,
-            }));
-          });
-          break;
-      }
+      getXsJbxx({ xh: row.xh }).then((res) => {
+        this.tableDetails = res.data;
+        //console.log("tableDetails", this.tableDetails);
+      });
+      selectDetail({ businesId: row.id }).then((res) => {
+        this.formDetails = res.data[0];
+        //console.log("formDetails", this.formDetails);
+        //this.$set(this.formEdit, "qjsj", [res.data[0].kssj, res.data[0].jssj]);
+      });
+      queryFlowableComment({ processInstanceId: row.qjprocessid }).then(
+        (res) => {
+          this.shDetails = res.data[0];
+        }
+      );
     },
     changeSelect() {
       this.searchVal = "";
@@ -640,7 +672,7 @@ export default {
               break;
             case "dmsplcm":
               this.ztStatus = res.data;
-              this.$set(this.shzt, "checkBox", res.data);
+              //this.$set(this.shzt, "checkBox", res.data);
               break;
             case "dmqjlxm":
               this.qjlxOps = res.data;

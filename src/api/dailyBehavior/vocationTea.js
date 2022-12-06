@@ -51,14 +51,14 @@ export function htqjFlow(query) {
     data: query
   })
 }
-// //学生基本信息
-// export function getXsJbxx(query) {
-//   return request({
-//     url: '/rcswrcqxj/htqjFlow',
-//     method: 'post',
-//     data: query
-//   })
-// }
+//学生基本信息
+export function getXsJbxx(query) {
+  return request({
+    url: '/commonMethod//queryXsByXh',
+    method: 'get',
+    params: query
+  })
+}
 
 //日常请销假老师销假已处理列表查询
 export function getXjYclList(query) {
@@ -82,5 +82,13 @@ export function lsqrFlow(query) {
     url: '/rcswrcqxj/lsqrFlow',
     method: 'post',
     data: query
+  })
+}
+//根据流程实例号查询流程日志
+export function queryFlowableComment(query) {
+  return request({
+    url: '/rcswrcqxj/queryFlowableComment',
+    method: 'get',
+    params: query
   })
 }

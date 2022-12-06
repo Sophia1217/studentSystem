@@ -234,9 +234,28 @@
                 <i class="scopeIncon handledie" />
                 <span class="handleName">详情</span>
               </el-button>
-              <el-button type="text" size="small" @click="xujia(scope.row)">
+              <el-button
+                type="text"
+                size="small"
+                @click="xujia(scope.row)"
+                v-show="
+                  scope.row.qjstatus == '10' && scope.row.xjstatus == '01'
+                "
+              >
                 <i class="scopeIncon handleEdit"></i>
                 <span class="handleName">续假</span>
+              </el-button>
+              <el-button
+                type="text"
+                size="small"
+                @click="xujia(scope.row)"
+                :disabled="true"
+                v-show="
+                  scope.row.qjstatus !== '10' || scope.row.xjstatus !== '01'
+                "
+              >
+                <i class="scopeIncon EditDis"></i>
+                <span class="handleName" style="color: #bfbfbf">续假</span>
               </el-button>
             </template>
           </el-table-column>
@@ -997,7 +1016,7 @@ export default {
         oDate1 = new Date(aDate[0], aDate[1], aDate[2]);
         aDate = qjjssj.split("-");
         oDate2 = new Date(aDate[0], aDate[1], aDate[2]);
-        iDays = parseInt(Math.abs(oDate1 - oDate2) / 1000 / 60 / 60 / 24);
+        iDays = parseInt(Math.abs(oDate1 - oDate2) / 1000 / 60 / 60 / 24) + 1;
         console.log(iDays);
         if (index == 1) {
           this.$set(this.formAdd, "qjts", iDays);
@@ -1559,6 +1578,9 @@ export default {
     }
     .handleEdit {
       background: url("~@/assets/images/edit.png");
+    }
+    .EditDis {
+      background: url("~@/assets/dangan/editDisable.png") no-repeat;
     }
   }
   .searchButton {

@@ -189,105 +189,173 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog title="申报详情" :visible.sync="detailModal" width="80%">
+      <el-dialog title="申报详情" :visible.sync="detailModal" width="60%">
         <template>
-          <el-form>
+          <div class="headline">基本信息</div>
+          <div class="tableStyle">
             <el-row :gutter="20">
-              <el-col :span="4">
-                <el-form-item label="申报人学号" label-width="100px">
-                  <el-input
-                    :disabled="true"
-                    v-model="defaultRes.xh"
-                    placeholder="请输入"
-                  ></el-input> </el-form-item
-              ></el-col>
-              <el-col :span="4">
-                <el-form-item label="姓名" label-width="60px">
-                  <el-input
-                    :disabled="true"
-                    v-model="defaultRes.xm"
-                    placeholder="请输入"
-                  ></el-input> </el-form-item></el-col
-              ><el-col :span="4">
-                <el-form-item label="学院" label-width="60px">
-                  <el-input
-                    :disabled="true"
-                    v-model="defaultRes.dwhmc"
-                    placeholder="请输入"
-                  ></el-input> </el-form-item></el-col
-              ><el-col :span="4">
-                <el-form-item label="专业" label-width="60px">
-                  <el-input
-                    :disabled="true"
-                    v-model="defaultRes.zydmmc"
-                    placeholder="请输入"
-                  ></el-input> </el-form-item
-              ></el-col>
-              <el-col :span="4">
-                <el-form-item label="班级" label-width="60px">
-                  <el-input
-                    :disabled="true"
-                    v-model="defaultRes.bjmmc"
-                    placeholder="请输入"
-                  ></el-input> </el-form-item
-              ></el-col>
-            </el-row>
-          </el-form>
-          <el-table :data="tableDetails" v-if="whatType == '1'">
-            <el-table-column
-              fixed="left"
-              type="index"
-              label="序号"
-              width="50"
-            ></el-table-column>
-            <div v-for="(item, index) in tableHeader1" :key="index">
-              <el-table-column
-                :prop="item.dm"
-                :label="item.mc"
-                sortable="custom"
-              ></el-table-column>
-            </div>
-            <el-table-column
-              prop="fileList"
-              label="结业证书"
-              sortable="custom"
-              align="center"
-              width="300"
-              fixed="right"
-            >
-              <template slot-scope="scope">
-                <div v-for="item in scope.row.fileList">
-                  <div style="display: flex; justify-content: space-between">
-                    <a>
-                      {{ item.fileName }}
-                    </a>
-                    <el-button>预览</el-button>
-                  </div>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">学号</div>
+                  <div class="content">{{ tableDetails.xh }}</div>
                 </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="status"
-              label="审核状态"
-              sortable="custom"
-              fixed="right"
-            >
-              <template slot-scope="scope">
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">姓名</div>
+                  <div class="content">{{ tableDetails.xm }}</div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">培养层次</div>
+                  <div class="content">{{ tableDetails.pyccmmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">培养单位</div>
+                  <div class="content">{{ tableDetails.dwhmc }}</div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">专业</div>
+                  <div class="content">{{ tableDetails.zydmmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">年级</div>
+                  <div class="content">{{ tableDetails.nj }}</div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="24" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">班级</div>
+                  <div class="content">{{ tableDetails.bjmmc }}</div>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+          <div class="headline">请假信息</div>
+          <div class="tableStyle">
+            <el-form>
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <el-form-item label="请假类型:" prop="qjlxm">
+                    <div>
+                      <span>{{ formDetails.qjlx }}</span>
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="是否离汉:" prop="sflhm">
+                    <div>
+                      <span>{{ formDetails.sflh }}</span>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="前往地址:" prop="qwdzm">
+                    <div>
+                      <span>{{ formDetails.qwdz }}</span>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="详细地址:" prop="xxdz">
+                    <div>
+                      <span>{{ formDetails.xxdz }}</span>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <el-form-item label="请假时间:" prop="qjsj">
+                    <div>
+                      <span
+                        >{{ formDetails.kssj }} 至 {{ formDetails.jssj }}</span
+                      >
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item label="总天数:" prop="qjts">
+                    <div>
+                      <span>{{ formDetails.qjts }}</span>
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                  <el-form-item label="续假天数:" prop="xjts">
+                    <div>
+                      <span>{{ formDetails.xjts }}</span>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <el-form-item label="紧急联系人:" prop="jjlxr">
+                    <div>
+                      <span>{{ formDetails.jjlxr }}</span>
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="联系电话:" prop="lxdh">
+                    <div>
+                      <span>{{ formDetails.lxdh }}</span>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="请假事由:" prop="qjsy">
+                    <div>
+                      <span>{{ formDetails.qjsy }}</span>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
+          </div>
+          <div class="headline">审批信息</div>
+          <div class="tableStyle">
+            <el-form label-width="100px">
+              <el-form-item label="申请审核结果">
                 <el-select
-                  v-model="scope.row.status"
+                  v-model="formDetails.qjstatus"
                   placeholder="请选择"
                   :disabled="true"
                 >
                   <el-option
-                    v-for="(item, index) in spjgOps"
+                    v-for="(item, index) in ztStatus"
                     :key="index"
                     :label="item.mc"
                     :value="item.dm"
                   ></el-option>
                 </el-select>
-              </template>
-            </el-table-column>
-          </el-table>
+              </el-form-item>
+
+              <el-form-item label="申请审核理由" label-width="100px">
+                {{ shDetails.msg }}
+              </el-form-item>
+            </el-form>
+          </div>
         </template>
         <span slot="footer" class="dialog-footer">
           <el-button @click="detailCancel">关 闭</el-button>
@@ -322,9 +390,13 @@
 import CheckboxCom from "../../../../../components/checkboxCom";
 import lctCom from "../../../../../components/lct";
 import { getToken } from "@/utils/auth";
-import { getXjYclList } from "@/api/dailyBehavior/vocationTea";
+import {
+  getXjYclList,
+  getXsJbxx,
+  queryFlowableComment,
+} from "@/api/dailyBehavior/vocationTea";
 import { queryYshList, excelExportCzdaFlowed } from "@/api/growFiles/infoAppr";
-
+import { selectDetail } from "@/api/dailyBehavior/vocationStu";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 
 export default {
@@ -411,7 +483,8 @@ export default {
       detailModal: false,
       whatType: "",
       tableDetails: [],
-      upDownIndex: 0,
+      formDetails: {},
+      shDetails: {},
     };
   },
 
@@ -559,26 +632,22 @@ export default {
         checkedCount > 0 && checkedCount < this.xjzt.checkBox.length;
     },
 
-    async hadleDetail(row, index) {
-      this.defaultRes = row;
+    hadleDetail(row) {
       this.detailModal = true;
-      this.upDownIndex = index;
-      var data = {
-        xh: row.xh,
-        pageNum: "",
-        pageSize: "",
-        orderZd: "",
-        orderPx: "",
-        businesId: row.businesId,
-      };
-      switch (row.mk) {
-        case "奖学金":
-          this.whatType = "7";
-          await query7(data).then((res) => {
-            this.tableDetails = res.data;
-          });
-          break;
-      }
+      getXsJbxx({ xh: row.xh }).then((res) => {
+        this.tableDetails = res.data;
+        //console.log("tableDetails", this.tableDetails);
+      });
+      selectDetail({ businesId: row.id }).then((res) => {
+        this.formDetails = res.data[0];
+        //console.log("formDetails", this.formDetails);
+        //this.$set(this.formEdit, "qjsj", [res.data[0].kssj, res.data[0].jssj]);
+      });
+      queryFlowableComment({ processInstanceId: row.qjprocessid }).then(
+        (res) => {
+          this.shDetails = res.data[0];
+        }
+      );
     },
     changeSelect() {
       this.searchVal = "";
@@ -858,6 +927,47 @@ export default {
       .greenIcon {
         margin: 15px;
         background: url("~@/assets/assistantPng/add.png") no-repeat;
+      }
+    }
+  }
+  .headline {
+    padding: 15px;
+    box-sizing: border-box;
+    font-weight: 600;
+    font-size: 20px;
+    color: #1f1f1f;
+    line-height: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .tableStyle {
+    padding: 0 20px;
+    .rowStyle {
+      padding: 0 !important;
+      margin: 0;
+      border-bottom: 1px solid #cccccc;
+    }
+    .wrap {
+      display: flex;
+      align-items: center;
+      .title {
+        flex: 0 0 160px;
+        line-height: 48px;
+        background: #e0e0e0;
+        text-align: right;
+        padding-right: 5px;
+        margin: 0 !important;
+      }
+      .content {
+        font-weight: 400;
+        font-size: 14px;
+        color: #1f1f1f;
+        line-height: 22px;
+        margin-left: 16px;
+        ::v-deep .el-input {
+          width: 200px;
+        }
       }
     }
   }

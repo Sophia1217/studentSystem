@@ -301,7 +301,7 @@
                 value-format="yyyy-MM-dd HH:mm:ss"
                 placeholder="请选择时间"
                 :append-to-body="false"
-                :disabled="isEdit == 0"
+                :disabled="true"
               >
               </el-date-picker>
             </el-form-item>
@@ -698,6 +698,7 @@ export default {
     },
     EditStatus() {
       this.isEdit = 1;
+      this.$set(this.formEdit, "sqsj", this.formatDate(new Date()));
     },
     // 搜索查询按钮
     searchClick() {

@@ -530,7 +530,6 @@ export default {
       this.formEdit = row;
       this.formEdit.SFTS = row.sfts == 0 ? "否" : "是";
       this.formEdit.SFRZ = row.fxSfsqrz == 0 ? "否" : "是";
-      console.log("this.formEdit", this.formEdit);
       this.querywj(row.id);
     },
     querywj(data) {

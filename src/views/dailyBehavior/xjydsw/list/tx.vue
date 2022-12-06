@@ -432,7 +432,6 @@ export default {
       });
     },
     showDetail(row) {
-      console.log("row", row);
       this.formEdit = row;
       this.formEdit.SFTS = row.sfts == 0 ? "否" : "是";
       this.querywj(row.id);

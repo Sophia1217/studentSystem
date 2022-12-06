@@ -90,7 +90,6 @@ export default {
     },
     /** 保存xml */
     save(data) {
-      console.log("data 保存xml", data);
       const params = {
         name: data.process.name,
         category: data.process.category,

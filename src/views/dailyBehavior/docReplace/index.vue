@@ -670,14 +670,14 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        // var params = {
-        //   zjlx: this.formEdit.zjlx,
-        //   sqsj: this.formEdit.sqsj,
-        //   sqbbly: this.formEdit.sqbbly,
-        //   id: this.formEdit.id,
-        //   xh: this.$store.getters.userId,
-        // };
-        edit(this.formEdit).then((res) => {
+        var params = {
+          zjlx: this.formEdit.zjlx,
+          sqsj: this.formEdit.sqsj,
+          sqbbly: this.formEdit.sqbbly,
+          id: this.formEdit.id,
+          xh: this.$store.getters.userId,
+        };
+        edit(params).then((res) => {
           //edit(params).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("编辑成功");

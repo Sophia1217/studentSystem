@@ -255,13 +255,13 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">学号</div>
-                  <div class="content">{{}}</div>
+                  <div class="content">{{ tableDetails.xh }}</div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">姓名</div>
-                  <div class="content">{{}}</div>
+                  <div class="content">{{ tableDetails.xm }}</div>
                 </div>
               </el-col>
             </el-row>
@@ -269,13 +269,13 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">培养层次</div>
-                  <div class="content">{{}}</div>
+                  <div class="content">{{ tableDetails.pyccmmc }}</div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">培养单位</div>
-                  <div class="content">{{}}</div>
+                  <div class="content">{{ tableDetails.dwhmc }}</div>
                 </div>
               </el-col>
             </el-row>
@@ -283,13 +283,13 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">专业</div>
-                  <div class="content">{{}}</div>
+                  <div class="content">{{ tableDetails.zydmmc }}</div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">年级</div>
-                  <div class="content">{{}}</div>
+                  <div class="content">{{ tableDetails.nj }}</div>
                 </div>
               </el-col>
             </el-row>
@@ -297,7 +297,7 @@
               <el-col :span="24" class="rowStyle">
                 <div class="wrap">
                   <div class="title">班级</div>
-                  <div class="content">{{}}</div>
+                  <div class="content">{{ tableDetails.bjmmc }}</div>
                 </div>
               </el-col>
             </el-row>
@@ -309,14 +309,14 @@
                 <el-col :span="12">
                   <el-form-item label="请假类型:" prop="qjlxm">
                     <div>
-                      <span>{{}}</span>
+                      <span>{{ formDetails.qjlx }}</span>
                     </div>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="是否离汉:" prop="sflhm">
                     <div>
-                      <span>{{}}</span>
+                      <span>{{ formDetails.sflh }}</span>
                     </div>
                   </el-form-item>
                 </el-col>
@@ -325,7 +325,7 @@
                 <el-col :span="20">
                   <el-form-item label="前往地址:" prop="qwdzm">
                     <div>
-                      <span>{{}}</span>
+                      <span>{{ formDetails.qwdz }}</span>
                     </div>
                   </el-form-item>
                 </el-col>
@@ -334,7 +334,7 @@
                 <el-col :span="20">
                   <el-form-item label="详细地址:" prop="xxdz">
                     <div>
-                      <span>{{}}</span>
+                      <span>{{ formDetails.xxdz }}</span>
                     </div>
                   </el-form-item>
                 </el-col>
@@ -343,14 +343,16 @@
                 <el-col :span="12">
                   <el-form-item label="请假时间:" prop="qjsj">
                     <div>
-                      <span>{{}}</span>
+                      <span
+                        >{{ formDetails.kssj }} 至 {{ formDetails.jssj }}</span
+                      >
                     </div>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="总天数:" prop="qjts">
                     <div>
-                      <span>{{}}</span>
+                      <span>{{ formDetails.qjts }}</span>
                     </div>
                   </el-form-item>
                 </el-col>
@@ -359,14 +361,14 @@
                 <el-col :span="12">
                   <el-form-item label="紧急联系人:" prop="jjlxr">
                     <div>
-                      <span>{{}}</span>
+                      <span>{{ formDetails.jjlxr }}</span>
                     </div>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="联系电话:" prop="lxdh">
                     <div>
-                      <span>{{}}</span>
+                      <span>{{ formDetails.lxdh }}</span>
                     </div>
                   </el-form-item>
                 </el-col>
@@ -375,50 +377,69 @@
                 <el-col :span="20">
                   <el-form-item label="请假事由:" prop="qjsy">
                     <div>
-                      <span>{{}}</span>
+                      <span>{{ formDetails.qjsy }}</span>
                     </div>
                   </el-form-item>
                 </el-col>
               </el-row>
+              <div v-for="(item, index) in XjDetails">
+                <el-row :gutter="20">
+                  <el-col :span="12">
+                    <el-form-item label="续假天数:" prop="xjts">
+                      <div>
+                        <span>{{ item.xjts }}</span>
+                      </div>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="续假时间:" prop="xjsj">
+                      <div>
+                        <span>{{ item.kssj }} 至{{ item.jssj }}</span>
+                      </div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="20">
+                    <el-form-item label="续假事由:" prop="qjsy">
+                      <div>
+                        <span>{{ item.qjsy }}</span>
+                      </div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
             </el-form>
           </div>
           <div class="headline">审批信息</div>
           <div class="tableStyle">
-            <!-- <template slot-scope="scope">
-              <el-button type="text" size="small" @click="back">
-                <i class="scopeIncon handledie"></i>
-                <span class="handleName">退回</span>
-              </el-button>
-              <el-button type="text" size="small" @click="refuse">
-                <i class="scopeIncon handleEdit"></i>
-                <span class="handleName">拒绝</span>
-              </el-button>
-              <el-button type="text" size="small" @click="pass">
-                <i class="scopeIncon handleEdit"></i>
-                <span class="handleName">通过</span>
-              </el-button>
-            </template> -->
             <el-form label-width="100px">
               <el-form-item label="申请审核结果">
-                <el-select></el-select>
+                <el-select
+                  v-model="formDetails.sqshjg"
+                  @change="changeJG(formDetails.sqshjg)"
+                >
+                  <el-option
+                    v-for="(item, index) in sqshjgOps"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
               </el-form-item>
 
               <el-form-item label="申请审核理由" label-width="100px">
-                <el-input
-                  type="textarea"
-                  maxlength="500"
-                  placeholder="请输入"
-                ></el-input>
+                <el-input v-model="formDetails.shyj" />
               </el-form-item>
             </el-form>
           </div>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="handleCancel">取 消</el-button>
-            <el-button type="primary" class="confirm" @click="handleConfirm"
-              >确 定</el-button
-            >
-          </span>
         </template>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="detailCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="editClick"
+            >确 定</el-button
+          >
+        </span>
       </el-dialog>
       <pagination
         v-show="total > 0"
@@ -462,10 +483,10 @@ import {
   jjqjFlow,
   htqjFlow,
 } from "@/api/dailyBehavior/vocationTea";
-import { queryZjbbFlowList } from "@/api/dailyBehavior/docReplaceTea";
-import { getCollege, getGrade } from "@/api/class/maintenanceClass";
+import { getXjYclList, getXsJbxx } from "@/api/dailyBehavior/vocationTea";
+import { selectDetail } from "@/api/dailyBehavior/vocationStu";
+
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { getZY, getBJ } from "@/api/student/index";
 export default {
   name: "manStudent",
   components: { CheckboxCom, lctCom },
@@ -522,7 +543,11 @@ export default {
         { dm: "pxdwlb", mc: "培训单位类别" },
         { dm: "jg", mc: "结果" },
       ],
-
+      sqshjgOps: [
+        { mc: "通过", dm: "1" },
+        { mc: "拒绝", dm: "2" },
+        { mc: "退回", dm: "3" },
+      ],
       commonParams: [],
 
       multipleSelection: [],
@@ -538,7 +563,9 @@ export default {
       detailModal: false,
       whatType: "",
       tableDetails: [],
-      upDownIndex: 0,
+      formDetails: {},
+      shDetails: {},
+      XjDetails: [],
     };
   },
 
@@ -567,6 +594,78 @@ export default {
         this.lctModal = true;
       } else {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");
+      }
+    },
+    editClick() {
+      if (!this.checkForm()) {
+        this.$message.error("请选择审核结果！");
+        return;
+      } else {
+        if (this.formDetails.sqshjg == "1") {
+          let data = {
+            businesId: this.defaultRes.id,
+            processId: this.defaultRes.qjprocessid,
+            qjstatus: this.defaultRes.qjstatus,
+            taskId: this.defaultRes.taskId,
+            opMsg: this.formDetails.shyj ? this.formDetails.shyj : "审核通过",
+            xh: this.formDetails.xh,
+          };
+          tyqjFlow([data]).then((res) => {
+            if (res.errcode == "00") {
+              this.$message.success("审核已通过");
+              this.detailModal = false;
+              this.handleSearch();
+            }
+          });
+        } else if (this.formDetails.sqshjg == "2") {
+          let data = {
+            businesId: this.defaultRes.id,
+            processId: this.defaultRes.qjprocessid,
+            qjstatus: this.defaultRes.qjstatus,
+            taskId: this.defaultRes.taskId,
+            opMsg: this.formDetails.shyj ? this.formDetails.shyj : "已拒绝",
+            xh: this.formDetails.xh,
+          };
+          jjqjFlow([data]).then((res) => {
+            if (res.errcode == "00") {
+              this.$message.success("已拒绝");
+              this.detailModal = false;
+              this.handleSearch();
+            }
+          });
+        } else if (this.formDetails.sqshjg == "3") {
+          if (!!this.tempRadio || this.tempRadio === 0) {
+            let data = {
+              businesId: this.defaultRes.id,
+              processId: this.defaultRes.qjprocessid,
+              qjstatus: this.defaultRes.qjstatus,
+              taskId: this.defaultRes.taskId,
+              opMsg: this.formDetails.shyj ? this.formDetails.shyj : "已退回",
+              xh: this.formDetails.xh,
+            };
+            let targ = {
+              czdaFlowNodeRes: this.multipleSelection1,
+              rcswRcqxjFlowOpReqList: [data],
+            };
+            htqjFlow(targ).then((res) => {
+              if (res.errcode == "00") {
+                this.thTableModal2 = false;
+                this.$message.success("退回成功");
+                this.handleSearch();
+              }
+            });
+          }
+        }
+      }
+    },
+    changeJG(val) {
+      if (val & (val == "3")) {
+        var processId = { processId: this.defaultRes.taskId };
+        console.log(this.defaultRes.taskId);
+        backFlow(processId).then((res) => {
+          this.tableInner = res.data;
+        });
+        this.thTableModal = true;
       }
     },
     // 导出取消
@@ -737,35 +836,23 @@ export default {
       });
     },
 
-    async hadleDetail(row, index) {
-      console.log("row", row);
-      this.upDownIndex = index;
+    hadleDetail(row) {
       this.defaultRes = row;
       this.detailModal = true;
-      var data = {
-        xh: row.xh,
-        pageNum: "",
-        pageSize: "",
-        orderZd: "",
-        orderPx: "",
-        businesId: row.businesId,
-      };
-      switch (row.mk) {
-        case "奖学金":
-          this.whatType = "7";
-          await query7(data).then((res) => {
-            this.tableDetails = res.data;
-            this.commonParams = res.data.map((v) => ({
-              businesId: row.businesId,
-              mk: row.mk,
-              processId: row.processId,
-              status: row.status,
-              taskId: row.taskId,
-              xh: row.xh,
-            }));
-          });
-          break;
-      }
+      getXsJbxx({ xh: row.xh }).then((res) => {
+        this.tableDetails = res.data;
+        //console.log("tableDetails", this.tableDetails);
+      });
+      selectDetail({ businesId: row.id }).then((res) => {
+        this.formDetails = res.data[0];
+        if (res.data.length > 1) {
+          for (var i = 1; i < res.data.length; i++) {
+            this.XjDetails.push(res.data[i]);
+          }
+        }
+        //console.log("formDetails", this.XjDetails);
+        //this.$set(this.formEdit, "qjsj", [res.data[0].kssj, res.data[0].jssj]);
+      });
     },
     changeSelect() {
       this.searchVal = "";

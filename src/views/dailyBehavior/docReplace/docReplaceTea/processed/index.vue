@@ -442,7 +442,10 @@
                       prop="sqshjg"
                       :rules="rules.sqshjg"
                     >
-                      <el-select v-model="formDetails.sqshjg">
+                      <el-select
+                        v-model="formDetails.sqshjg"
+                        @change="changeJG(formDetails.sqshjg)"
+                      >
                         <el-option
                           v-for="(item, index) in sqshjgOps"
                           :key="index"
@@ -586,7 +589,7 @@ export default {
       detailModal: false,
       whatType: "",
       tableDetails: [],
-      formDetails: [],
+      formDetails: {},
       rules: {
         sqshjg: [
           {
@@ -627,6 +630,15 @@ export default {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");
       }
     },
+    changeJG(val) {
+      if (val & (val == "3")) {
+        var processId = { processId: this.tableDetails.taskId };
+        backFlow(processId).then((res) => {
+          this.tableInner = res.data;
+        });
+        this.thTableModal = true;
+      }
+    },
     editClick() {
       if (!this.checkForm()) {
         this.$message.error("请选择审核结果！");
@@ -638,7 +650,7 @@ export default {
             processId: this.tableDetails.processId,
             status: this.tableDetails.status,
             taskId: this.tableDetails.taskId,
-            opMsg: this.formDetails.shyj,
+            opMsg: this.formDetails.shyj ? this.formDetails.shyj : "审核通过",
             xh: this.formDetails.xh,
           };
           tyFlow([data]).then((res) => {
@@ -654,7 +666,7 @@ export default {
             processId: this.tableDetails.processId,
             status: this.tableDetails.status,
             taskId: this.tableDetails.taskId,
-            opMsg: this.formDetails.shyj,
+            opMsg: this.formDetails.shyj ? this.formDetails.shyj : "已拒绝",
             xh: this.formDetails.xh,
           };
           jjFlow([data]).then((res) => {
@@ -665,11 +677,27 @@ export default {
             }
           });
         } else if (this.formDetails.sqshjg == "3") {
-          var processId = { processId: this.tableDetails.taskId };
-          backFlow(processId).then((res) => {
-            this.tableInner = res.data;
-          });
-          this.thTableModal2 = true;
+          if (!!this.tempRadio || this.tempRadio === 0) {
+            let data = {
+              businesId: this.tableDetails.businesId,
+              processId: this.tableDetails.processId,
+              status: this.tableDetails.status,
+              taskId: this.tableDetails.taskId,
+              opMsg: this.formDetails.shyj ? this.formDetails.shyj : "已退回",
+              xh: this.formDetails.xh,
+            };
+            let targ = {
+              czdaFlowNodeRes: this.multipleSelection1,
+              czdaFlowOpReqList: [data],
+            };
+            htFlow(targ).then((res) => {
+              if (res.errcode == "00") {
+                this.thTableModal2 = false;
+                this.$message.success("退回成功");
+                this.handleSearch();
+              }
+            });
+          }
         }
       }
     },
@@ -797,7 +825,9 @@ export default {
     thTableConfirm() {
       if (!!this.tempRadio || this.tempRadio === 0) {
         this.thTableModal = false;
-        this.thModal = true;
+        if (this.detailModal == false) {
+          this.thModal = true;
+        }
       } else {
         this.$message.error("请先勾选退回的节点");
       }
@@ -812,7 +842,7 @@ export default {
           processId: this.tableDetails.processId,
           status: this.tableDetails.status,
           taskId: this.tableDetails.taskId,
-          opMsg: this.formDetails.shyj,
+          opMsg: this.formDetails.shyj ? this.formDetails.shyj : "已退回",
           xh: this.formDetails.xh,
         };
         let targ = {

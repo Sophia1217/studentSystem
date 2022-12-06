@@ -75,7 +75,7 @@ export function queryDshDetail(query) {
   })
 }
 //乘车优惠待审核详情历史列表
-export function queryDshDetailList(query) {
+export function queryDetailList(query) {
   return request({
     url: '/ChyhFlow/RcswChyhFlowInfoList',
     method: 'post',

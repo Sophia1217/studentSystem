@@ -157,7 +157,7 @@
               <el-button
                 type="text"
                 size="small"
-                @click="hadleDetail(scope.row, scope.$index)"
+                @click="hadleDetail(scope.row)"
               >
                 <i class="scopeIncon handledie"></i>
                 <span class="handleName">申报详情</span>
@@ -238,11 +238,12 @@
         title="申报详情"
         :visible.sync="detailModal"
         :before-close="detailCancel"
+        @close="emptyDetails()"
         width="60%"
       >
         <template>
           <div class="baseInfo">
-          <el-form :model="formDetails">
+          <el-form :data="formDetails">
             <div class="formLeft"><span class="title">基本信息</span></div>
             <div class="backDetail">
             
@@ -330,20 +331,23 @@
             <el-table-column prop="statusChinese" label="审批结果"/>
           </el-table>
           <div class="formLeft"><span class="title">审核信息</span></div>
-          <div>
-              <el-row :gutter="20">
+          <el-form :data="editDetails" ref="editDetails" :rules="rules">
+            <el-row :gutter="20">
                 <el-col :span="20">
-                  <el-form-item label="申请审核结果" label-width="120px" prop="shjg">
-                    {{formDetails.chqj}}
+                  <el-form-item label="申请审核结果"
+                    label-width="120px" 
+                    prop="shjg"
+                    :rules="rules.shjg"
+                  >
                     <el-select
-                      v-model="shjg"
-                      multiple
+                      v-model="editDetails.shjg"
                       collapse-tags
+                      @change="changeJG(editDetails.shjg)"
                       placeholder="请选择"
                       size="small"
                     >
                       <el-option
-                        v-for="item in allDwh"
+                        v-for="item in shjgOps"
                         :key="item.dm"
                         :label="item.mc"
                         :value="item.dm"
@@ -355,12 +359,17 @@
               <el-row :gutter="20">
                 <el-col :span="20">
                   <el-form-item label="申请审核意见" label-width="120px" prop="shyj">
-                    {{formDetails.sqsj}}
-                    <el-input v-model="shyj"/>
+                    <el-input 
+                      v-model="editDetails.shyj"
+                      :autosize="{ minRows: 2 }"
+                      type="textarea"
+                      maxlength="500"
+                    />
                   </el-form-item>
                 </el-col>
               </el-row>
-            </div>
+          </el-form>
+              
           </div>
         </template>
         <span slot="footer" class="dialog-footer">
@@ -404,11 +413,12 @@ import {
   thFinal,
   exportZjbbFlow,
   queryDshDetail,
-  queryDshDetailList,
+  queryDetailList,
 } from "@/api/dailyBehavior/stuTravelTea"
 import { getCollege } from "@/api/class/maintenanceClass";
 import lctCom from "../../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
+import { param } from '../../../../../utils';
 export default {
   name: "manStudent",
   components: { CheckboxCom, lctCom },
@@ -453,11 +463,22 @@ export default {
       thly: "",
       tempRadio: false,
       detailModal: false,
-      whatType: "",
       tableDetails: [],
-      formDetails: [],
-      shjg:"",
-      shyj:""
+      formDetails: {},
+      editDetails:[],
+      shjgOps:[
+        {dm:'01',mc: '通过'},
+        {dm:'02',mc: '拒绝'},
+        {dm:'03',mc: '退回'},
+      ],
+      rules: {
+        shjg: [
+          { required: true, message: "审核结果不能为空", trigger: "change" },
+        ],
+        // shyj: [
+        //   { required: true, message: "审核意见不能为空", trigger: "change" },
+        // ],
+      },
     };
   },
 
@@ -598,7 +619,10 @@ export default {
     thTableConfirm() {
       if (!!this.tempRadio || this.tempRadio === 0) {
         this.thTableModal = false;
-        this.thModal = true;
+        if(this.detailModal == false){
+          this.thModal = true;
+        }
+        
       } else {
         this.$message.error("请先勾选退回的节点");
       }
@@ -643,29 +667,62 @@ export default {
         
         businesId: row.businesId,
       };
-      // var data = {
-      //   xh: row.xh,
-      //   pageNum: "",
-      //   pageSize: "",
-      //   orderZd: "",
-      //   orderPx: "",
-      //   businesId: row.businesId,
-      // };
-      //queryDshDetail queryDshDetailList
-      await queryDshDetailList(data).then((res) => {
-        console.log(22);
+      await queryDetailList(data).then((res) => {
         this.tableDetails = res.data;
-        // this.commonParams = res.data.map((v) => ({
-        //   businesId: row.businesId,
-        //   processId: row.processId,
-        //   status: row.status,
-        //   taskId: row.taskId,
-        //   xh: row.xh,
-        // }));
       });
     },
     editClick(){
-
+      var arr ={
+        businesId: this.formDetails.businesId,
+        processId: this.formDetails.processId,
+        status: this.formDetails.status,
+        taskId: this.formDetails.taskId,
+        xh: this.formDetails.xh,
+      };
+      let brr =[];
+      brr.push(arr);
+      var data = brr.map((item) => ({
+          ...item,
+          opMsg: this.editDetails.shyj,
+      }));
+      console.log("data",data);
+      if(this.editDetails.shjg == "01"){
+        //通过
+        tyFlow(data).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("审核已通过");
+            this.detailModal = false;
+            this.handleSearch();
+          }
+        });
+      } else if(this.editDetails.shjg == "02"){
+        //拒绝
+        jjFlow(data).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("已拒绝");
+          this.detailModal = false;
+          this.handleSearch();
+        }
+      });
+      } else{
+        //退回
+        var targ = {
+          czdaFlowNodeRes: this.multipleSelection1,
+          czdaFlowOpReqList: data,
+        };
+        thFinal(targ).then((res) => {
+          if (res.errcode == "00") {
+            this.detailModal = false;
+            this.$message.success("退回成功");
+            this.handleSearch();
+          }
+        });
+      }
+    },
+    emptyDetails() {
+      this.$nextTick(() => {
+        this.$refs.editDetails.resetFields();
+      });
     },
     detailCancel() {
       this.detailModal = false;
@@ -766,6 +823,21 @@ export default {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
+    },
+    changeJG(val){
+      if(val & val == "03"){
+        console.log("this.editDetails.shjg",this.editDetails.shjg);
+        var processId = { processId: this.formDetails.taskId };
+        backFlow(processId).then((res) => {
+          this.tableInner = res.data;
+        });
+        this.thTableModal = true;
+      } else if(val & val == "02"){
+        console.log(22);
+      } else {
+        console.log(33);
+
+      }
     },
   },
 };
@@ -935,6 +1007,7 @@ export default {
     // padding: 20px;
     margin-left: 30px;
     margin-right: 30px;
+    // overflow-x: auto;
     .formLeft {
       background: #fff;
       display: flex;

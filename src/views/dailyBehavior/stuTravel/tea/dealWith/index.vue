@@ -166,7 +166,11 @@
         width="60%"
       >
         <template>
-          <el-form :model="formDetails">
+          <div class="baseInfo">
+          <el-form :data="formDetails">
+            <div class="formLeft"><span class="title">基本信息</span></div>
+            <div class="backDetail">
+            
             <div class="formRight">
               <el-row>
                 <el-col :span="12" class="rowStyle">
@@ -186,17 +190,58 @@
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">培养层次</div>
-                    <div class="content">{{ formDetails.xh }}</div>
+                    <div class="content">{{ formDetails.pyccmmc }}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">培养单位</div>
-                    <div class="content">{{ formDetails.xh }}</div>
+                    <div class="content">{{ formDetails.dwhmc }}</div>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">专业</div>
+                    <div class="content">{{ formDetails.zydmmc }}</div>
+                  </div>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">班级</div>
+                    <div class="content">{{ formDetails.bjmmc }}</div>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="24" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">家庭地址</div>
+                    <div class="content">{{ formDetails.jtdz }}</div>
                   </div>
                 </el-col>
               </el-row>
             </div>
+            </div>
+            <div class="formLeft"><span class="title">申请信息</span></div>
+            <div>
+              <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="修改乘车区间" label-width="120px" prop="chqj">
+                    {{formDetails.chqj}}
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="申请修改时间" label-width="120px" prop="sqsj">
+                    {{formDetails.sqsj}}
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="formLeft"><span class="title">历史乘车区间</span></div>
           </el-form>
           <el-table :data="tableDetails">
             <el-table-column
@@ -206,15 +251,33 @@
               width="50"
             ></el-table-column>
             <el-table-column prop="chqj" label="乘车区间"/>
-            <el-table-column prop="chqj" label="修改时间"/>
-            <el-table-column prop="chqj" label="审批结果"/>
+            <el-table-column prop="sqsj" label="修改时间"/>
+            <el-table-column prop="statusChinese" label="审批结果"/>
           </el-table>
+          <div class="formLeft"><span class="title">审核信息</span></div>
+          <el-form>
+            <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="申请审核结果"
+                    label-width="120px" 
+                    prop="shjg"
+                  >
+                    {{formDetails.statusChinese}}
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="申请审核意见" label-width="120px">
+                    {{formDetails.shyj}}
+
+                  </el-form-item>
+                </el-col>
+              </el-row>
+          </el-form>
+              
+          </div>
         </template>
-        <span slot="footer" class="dialog-footer">
-        <el-button @click="detailCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="editClick"
-          >确 定</el-button>
-      </span>
       </el-dialog>
       <pagination
         v-show="queryParams.total > 0"
@@ -246,6 +309,7 @@ import CheckboxCom from "../../../../components/checkboxCom";
 import {
   queryYshList,
   exportZjbbFlowed,
+  queryDetailList
 } from "@/api/dailyBehavior/stuTravelTea"
 import { getCollege } from "@/api/class/maintenanceClass";
 import lctCom from "../../../../components/lct";
@@ -289,7 +353,10 @@ export default {
       multipleSelection1: "",
       detailModal: false,
       tableDetails: [],
-      formDetails: [],
+      formDetails: {
+        shyj: "",
+      },
+      editDetails:[],
     };
   },
 
@@ -389,25 +456,16 @@ export default {
     async hadleDetail(row) {
       console.log("row", row);
       this.formDetails = row;
+      this.formDetails.shyj = row.comment[0];
       this.detailModal = true;
       var data = {
         xh: row.xh,
-        pageNum: "",
-        pageSize: "",
-        orderZd: "",
-        orderPx: "",
+        pageNum: 1,
+        pageSize: 10,
         businesId: row.businesId,
       };
-      await queryYshList(data).then((res) => {
+      await queryDetailList(data).then((res) => {
         this.tableDetails = res.data;
-        this.commonParams = res.data.map((v) => ({
-          businesId: row.businesId,
-          mk: row.mk,
-          processId: row.processId,
-          status: row.status,
-          taskId: row.taskId,
-          xh: row.xh,
-        }));
       });
     },
     editClick(){
@@ -679,28 +737,31 @@ export default {
       }
     }
   }
-  .backDetail {
-    margin-top: 15px;
-    display: flex;
-    flex-direction: row;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #cccccc;
+  .baseInfo{
+    // padding: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
+    // overflow-x: auto;
     .formLeft {
-      width: 15%;
       background: #fff;
       display: flex;
       align-items: center;
       .title {
-        width: 100%;
-        text-align: center;
+        font-weight: 600;
+        font-size: 16px;
+        color: #1f1f1f;
+        line-height: 20px;
       }
     }
+  }
+  .backDetail {
+    display: flex;
+    margin-bottom: 20px;
+    flex-direction: row;
+
     .formRight {
       width: 100%;
-      // margin-top: 15px;
-      // display: flex;
-      // flex-direction: row;
+      margin-top: 15px;
       .rowStyle {
         padding: 0 !important;
         margin: 0;

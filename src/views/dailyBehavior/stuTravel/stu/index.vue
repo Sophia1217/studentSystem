@@ -233,6 +233,7 @@
             >
               <el-input 
                 v-model="formAdd.chqjemc" 
+                maxlength="500"
                 placeholder="请输入其他站点"
               >
               </el-input>
@@ -328,6 +329,7 @@
               placeholder="请输入车站"
               :rules="rules.chqjeid"
               @change="changeZD(formEdit.chqjeid)"
+              filterable
               collapse-tags
             >
               <el-option
@@ -350,6 +352,7 @@
               <el-input 
                 v-model="formEdit.chqjemc" 
                 :disabled="isEdit == 0"
+                maxlength="500"
                 placeholder="请输入其他站点"
               >
               </el-input>
@@ -389,7 +392,7 @@
       <span
         slot="footer"
         class="dialog-footer"
-        v-if="formEdit.status == '01' && isEdit == 0"
+        v-if="(formEdit.status == '01' || formEdit.status == '08') && isEdit == 0"
       >
         <el-button type="primary" class="confirm" @click="EditStatus"
           >编 辑</el-button
@@ -448,6 +451,8 @@ export default {
   props: [],
   data() {
     return {
+      delArr: [],
+      subArr: [],
       title: "",
       // // 总条数
       total: 0,
@@ -708,6 +713,9 @@ export default {
         return;
       } else {
         // var data = this.formAdd.addData[0];
+        if (!this.formAdd.chqjeid) {
+        this.$message.error("到达站点不能为空");
+        } else{
         var params = {
           jtdz: this.formAdd.jtdz,
           chqjsid: this.formAdd.chqjsid,
@@ -727,6 +735,7 @@ export default {
             this.$message.error("新增失败");
           }
         });
+        }
         
       }
     },
@@ -754,6 +763,9 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
+        if (!this.formEdit.chqjeid) {
+        this.$message.error("到达站点不能为空");
+        } else{
         var data = this.formEdit;
         edit(data).then((res) => {
           if (res.errcode == "00") {
@@ -763,6 +775,7 @@ export default {
             this.$message.error("编辑失败");
           }
         });
+        }
         this.editModal = false;
         this.isEdit = "0";
       }

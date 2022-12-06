@@ -413,8 +413,13 @@
           </div>
           <div class="headline">审批信息</div>
           <div class="tableStyle">
-            <el-form label-width="100px">
-              <el-form-item label="申请审核结果">
+            <el-form ref="formDetails" :model="formDetails">
+              <el-form-item
+                label="申请审核结果"
+                label-width="120px"
+                prop="sqshjg"
+                :rules="rules.sqshjg"
+              >
                 <el-select
                   v-model="formDetails.sqshjg"
                   @change="changeJG(formDetails.sqshjg)"
@@ -428,7 +433,11 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="申请审核理由" label-width="100px">
+              <el-form-item
+                label="申请审核理由"
+                label-width="120px"
+                prop="shyj"
+              >
                 <el-input v-model="formDetails.shyj" />
               </el-form-item>
             </el-form>
@@ -566,6 +575,15 @@ export default {
       formDetails: {},
       shDetails: {},
       XjDetails: [],
+      rules: {
+        sqshjg: [
+          {
+            required: true,
+            message: "审核结果不能为空",
+            trigger: "change",
+          },
+        ],
+      },
     };
   },
 
@@ -576,6 +594,17 @@ export default {
   },
 
   methods: {
+    checkForm() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formDetails.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
     getList() {
       (this.queryParams.xm = this.select == "xm" ? this.searchVal : ""),
         (this.queryParams.xh = this.select == "xh" ? this.searchVal : ""),
@@ -614,6 +643,7 @@ export default {
             if (res.errcode == "00") {
               this.$message.success("审核已通过");
               this.detailModal = false;
+
               this.handleSearch();
             }
           });
@@ -630,6 +660,7 @@ export default {
             if (res.errcode == "00") {
               this.$message.success("已拒绝");
               this.detailModal = false;
+
               this.handleSearch();
             }
           });
@@ -659,7 +690,7 @@ export default {
       }
     },
     changeJG(val) {
-      if (val & (val == "3")) {
+      if (val && val == "3") {
         var processId = { processId: this.defaultRes.taskId };
         console.log(this.defaultRes.taskId);
         backFlow(processId).then((res) => {
@@ -809,7 +840,9 @@ export default {
     thTableConfirm() {
       if (!!this.tempRadio || this.tempRadio === 0) {
         this.thTableModal = false;
-        this.thModal = true;
+        if (this.detailModal == false) {
+          this.thModal = true;
+        }
       } else {
         this.$message.error("请先勾选退回的节点");
       }

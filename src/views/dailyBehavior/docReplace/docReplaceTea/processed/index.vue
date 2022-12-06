@@ -631,7 +631,7 @@ export default {
       }
     },
     changeJG(val) {
-      if (val & (val == "3")) {
+      if (val && val == "3") {
         var processId = { processId: this.tableDetails.taskId };
         backFlow(processId).then((res) => {
           this.tableInner = res.data;

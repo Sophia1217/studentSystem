@@ -797,7 +797,7 @@ export default {
     jjConfirm() {
       var data = this.commonParams.map((item) => ({
         ...item,
-        opMsg: this.jjly,
+        opMsg: this.jjly ? this.jjly : "已拒绝",
       }));
       jjFlow(data).then((res) => {
         if (res.errcode == "00") {
@@ -867,7 +867,7 @@ export default {
       this.thModal = false;
       var data = this.commonParams.map((item) => ({
         ...item,
-        opMsg: this.thly,
+        opMsg: this.thly ? this.thly : "已退回",
       }));
       var targ = {
         czdaFlowNodeRes: this.multipleSelection1,

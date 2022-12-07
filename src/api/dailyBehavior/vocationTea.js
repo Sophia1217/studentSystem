@@ -92,3 +92,12 @@ export function queryFlowableComment(query) {
     params: query
   })
 }
+
+//老师待审核导出
+export function excelLsDshList(query) {
+  return request({
+    url: '/rcswrcqxj/excelLsDshList',
+    method: 'get',
+    params: query
+  })
+}

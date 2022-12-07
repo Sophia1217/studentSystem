@@ -373,7 +373,6 @@
                     label="申请审核结果"
                     label-width="120px"
                     prop="shjg"
-                    :rules="rules.shjg"
                   >
                     <el-select
                       v-model="editDetails.shjg"
@@ -512,9 +511,9 @@ export default {
         { dm: "03", mc: "退回" },
       ],
       rules: {
-        shjg: [
-          { required: true, message: "审核结果不能为空", trigger: "change" },
-        ],
+        // shjg: [
+        //   { required: true, message: "审核结果不能为空", trigger: "change" },
+        // ],
         // shyj: [
         //   { required: true, message: "审核意见不能为空", trigger: "change" },
         // ],
@@ -710,8 +709,12 @@ export default {
         this.tableDetails = res.data;
       });
     },
-    editClick() {
-      var arr = {
+
+    editClick(){
+      if (!this.editDetails.shjg) {
+        this.$message.error("审核结果不能为空");
+      } else{
+      var arr ={
         businesId: this.formDetails.businesId,
         processId: this.formDetails.processId,
         status: this.formDetails.status,
@@ -720,12 +723,13 @@ export default {
       };
       let brr = [];
       brr.push(arr);
-      var data = brr.map((item) => ({
-        ...item,
-        opMsg: this.editDetails.shyj,
-      }));
+      
       console.log("data", data);
       if (this.editDetails.shjg == "01") {
+        var data = brr.map((item) => ({
+          ...item,
+          opMsg: this.editDetails.shyj ? this.editDetails.shyj : "审核通过",
+        }));
         //通过
         tyFlow(data).then((res) => {
           if (res.errcode == "00") {
@@ -735,6 +739,10 @@ export default {
           }
         });
       } else if (this.editDetails.shjg == "02") {
+        var data = brr.map((item) => ({
+          ...item,
+          opMsg: this.editDetails.shyj ? this.editDetails.shyj : "已拒绝",
+        }));
         //拒绝
         jjFlow(data).then((res) => {
           if (res.errcode == "00") {
@@ -744,6 +752,10 @@ export default {
           }
         });
       } else {
+        var data = brr.map((item) => ({
+          ...item,
+          opMsg: this.editDetails.shyj ? this.editDetails.shyj : "已退回",
+        }));
         //退回
         var targ = {
           czdaFlowNodeRes: this.multipleSelection1,
@@ -756,6 +768,7 @@ export default {
             this.handleSearch();
           }
         });
+      }
       }
     },
     emptyDetails() {
@@ -872,11 +885,12 @@ export default {
           this.tableInner = res.data;
         });
         this.thTableModal = true;
-      } else if (val & (val == "02")) {
-        console.log(22);
-      } else {
-        console.log(33);
-      }
+      } 
+      // else if(val & val == "02"){
+      //   console.log(22);
+      // } else {
+      //   console.log(33);
+      // }
     },
   },
 };

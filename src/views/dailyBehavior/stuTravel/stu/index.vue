@@ -752,6 +752,7 @@ export default {
     },
     EditStatus() {
       this.isEdit = 1;
+      this.formEdit.sqsj = this.formatDate(new Date());
     },
     //详情编辑
     editCance() {

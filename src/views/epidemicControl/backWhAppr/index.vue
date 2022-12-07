@@ -397,9 +397,9 @@ export default {
       });
     },
     handleChangeJg(value) {
-      if (value.length == 1) {
+      if (value && value.length == 1) {
         this.moreIform.szdq = value[0];
-      } else if (value.length == 2) {
+      } else if (value && value.length == 2) {
         this.moreIform.szdq = value[1];
       } else {
         this.moreIform.szdq = value[2];

@@ -97,32 +97,19 @@
         ref="formAdd"
         :model="formAdd"
         :rules="rules"
-        label-width="100px"
+        label-width="120px"
       >
         <el-row :gutter="20">
           <el-col :span="20">
-            <el-form-item label="家庭地址" prop="jtdz">
-              <!-- {{formAdd.jtdz}} -->
-              <el-input v-model="formAdd.jtdz" disabled />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="11">
-            <el-form-item
-              label="乘车区间"
-              prop="chqjsid"
-              :rules="rules.chqjsid"
-            >
+            <el-form-item label="申请住宿类型" prop="zslxm" :rules="rules.zslxm">
               <el-select
-                v-model="formAdd.chqjsid"
-                placeholder="请输入车站"
+                v-model="formAdd.zslxm"
+                placeholder="请选择住宿类型"
+                @change="changeZslx(formAdd.zslxm)"
                 collapse-tags
-                filterable
-                disabled
               >
                 <el-option
-                  v-for="(item, index) in zdOps"
+                  v-for="(item, index) in zslxOps"
                   :key="index"
                   :label="item.mc"
                   :value="item.dm"
@@ -130,68 +117,188 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="1">
-            <div><span>-</span></div>
-          </el-col>
-          <el-col :span="7">
-            <el-select
-              v-model="formAdd.chqjeid"
-              placeholder="请选择车站"
-              :rules="rules.chqjeid"
-              collapse-tags
-              filterable
-              @change="changeZD(formAdd.chqjeid)"
-            >
-              <el-option
-                v-for="(item, index) in zdOps"
-                :key="index"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
-          </el-col>
         </el-row>
         <el-row :gutter="20">
+          <el-col :span="22">
+            <el-form-item
+              label="原住宿地址"
+              prop="yzsdzm"
+            >
+              <div v-show="jzflag ==1">
+                <el-cascader
+                  v-model="formAdd.yzsdzm"
+                  :options="options"
+                  @change="handleChangeJgY"
+                  :props="locationProps"
+                ></el-cascader>
+                <!-- <el-select
+                  v-model="formAdd.yzsdzm"  
+                  placeholder="集中原省市区"
+                  collapse-tags
+                >
+                  <el-option
+                    v-for="(item, index) in zdOps"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select> -->
+                <el-input v-model="formAdd.yzsxxdz" 
+                  maxlength="255"
+                  placeholder="请输入详细地址"/>
+              </div>
+              <div v-show="jzflag ==2">
+                <el-select
+                  v-model="formAdd.sqldid"  
+                  placeholder="非集中原寝室楼栋"
+                  @change="changeLD(formAdd.sqldid)"
+                  disabled
+                  collapse-tags
+                >
+                  <el-option
+                    v-for="(item, index) in ldOps"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+                <el-select
+                  v-model="formAdd.sqfjid"  
+                  placeholder="非集中原寝室房间"
+                  disabled
+                  collapse-tags
+                >
+                  <el-option
+                    v-for="(item, index) in fjOps"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" v-show="jzflag ==2">
+          <el-col :span="12">
+            <el-form-item
+              label="是否退宿"
+              :rules="jzflag ==2 ? rules.sfts :[]"
+              prop="sfts"
+
+            >
+              <el-select
+                v-model="formAdd.sfts"
+                placeholder="非集中是否退宿"
+                collapse-tags
+              >
+                <el-option
+                  v-for="(item, index) in sftsOps"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" v-show="jzflag ==1">
           <el-col :span="19">
             <el-form-item
-              label="自定义站点"
-              prop="chqjemc"
-              :rules="rules.chqjemc"
-              v-if="qitaShow == true"
+              label="申请住宿选择"
+              prop="sqldid"
             >
-              <el-input 
-                v-model="formAdd.chqjemc" 
-                placeholder="请输入其他站点"
-              >
-              </el-input>
+                <el-select
+                  v-model="formAdd.sqldid"  
+                  placeholder="集中寝室楼栋"
+                  @change="changeLD(formAdd.sqldid)"
+                  collapse-tags
+                >
+                  <el-option
+                    v-for="(item, index) in ldOps"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+                <el-select
+                  v-model="formAdd.sqfjid"  
+                  placeholder="集中寝室房间"
+                  collapse-tags
+                >
+                  <el-option
+                    v-for="(item, index) in fjOps"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
             </el-form-item>
-            
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" v-show="jzflag ==2">
+          <el-col :span="19">
+            <el-form-item
+              label="非集中住宿地址"
+              :rules="jzflag ==2 ? rules.xzsdzm :[]"
+              prop="xzsdzm"
+            >
+                <el-cascader
+                  v-model="formAdd.xzsdzm"
+                  :options="options"
+                  @change="handleChangeJgX"
+                  :props="locationProps"
+                ></el-cascader>
+                <el-input v-model="formAdd.xzsxxdz" maxlength="255" placeholder="请输入详细地址"/>
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="20">
-            <el-form-item label="申报时间" prop="sqsj" :rules="rules.sqsj">
+            <el-form-item label="住宿时间" prop="datePickerAdd"  :rules="rules.datePickerAdd">
               <el-date-picker
-                v-model="formAdd.sqsj"
-                type="date"
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyy-MM-dd"
+                type="daterange"
                 placeholder="选择日期"
-                disabled
-              >
-              </el-date-picker>
+                v-model="formAdd.datePickerAdd"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+              ></el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="20">
-            <el-form-item label="申请备注" prop="sqbz" :rules="rules.sqbz">
+            <el-form-item label="申请理由" prop="sqly">
               <el-input
-                v-model="formAdd.sqbz"
+                v-model="formAdd.sqly"
                 type="textarea"
-                maxlength="1000"
+                maxlength="2000"
                 placeholder="请输入"
               ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="20">
+            <el-form-item label="申请材料">
+              <!-- <template slot-scope="scope">
+                <el-upload
+                  action="#"
+                  multiple
+                  class="el-upload"
+                  :auto-upload="false"
+                  ref="upload"
+                  :file-list="scope.row.files"
+                  :on-change="fileChange"
+                  accept=".pdf,.jpg"
+                  :before-remove="beforeRemove"
+                >
+                  <el-button size="small" type="primary">点击上传</el-button>
+                </el-upload>
+              </template> -->
             </el-form-item>
           </el-col>
         </el-row>
@@ -214,31 +321,21 @@
         ref="formEdit"
         :model="formEdit"
         :rules="rules"
-        label-width="100px"
+        label-width="120px"
       >
         <el-row :gutter="20">
           <el-col :span="20">
-            <el-form-item label="家庭地址" prop="jtdz">
-              <el-input v-model="formEdit.jtdz" disabled></el-input>
-              <!-- <div>{{formAdd.jtdz}}</div> -->
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item
-              label="乘车区间"
-              prop="chqjsid"
-              :rules="rules.chqjsid"
-            >
+            <el-form-item label="申请住宿类型" prop="zslxm" :rules="rules.zslxm">
+              <div v-show="isEdit == 0">{{formEdit.zslx}}</div>
               <el-select
-                v-model="formEdit.chqjsid"
-                disabled
-                placeholder="请输入车站"
+                v-model="formEdit.zslxm"
+                v-show="isEdit == 1"
+                placeholder="请选择住宿类型"
+                @change="changeZslx(formEdit.zslxm)"
                 collapse-tags
               >
                 <el-option
-                  v-for="(item, index) in zdOps"
+                  v-for="(item, index) in zslxOps"
                   :key="index"
                   :label="item.mc"
                   :value="item.dm"
@@ -246,70 +343,199 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="1">
-            <div><span>-</span></div>
-          </el-col>
-          <el-col :span="7">
-            <el-select
-              v-model="formEdit.chqjeid"
-              :disabled="isEdit == 0"
-              placeholder="请输入车站"
-              :rules="rules.chqjeid"
-              @change="changeZD(formEdit.chqjeid)"
-              collapse-tags
-            >
-              <el-option
-                v-for="(item, index) in zdOps"
-                :key="index"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
-          </el-col>
         </el-row>
         <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item
+              label="原住宿地址"
+              prop="yzsdzm"
+              :rules="jzflag ==1 ? rules.yzsdzm :[]"
+            >
+              <div v-show="jzflag ==1">
+                <div v-show="isEdit == 0">{{formEdit.yzsdz}}</div>
+                <div v-show="isEdit == 0">{{formEdit.yzsxxdz}}</div>
+                <el-cascader
+                  v-model="formEdit.yzsdzm"
+                  v-show="isEdit == 1"
+                  :options="options"
+                  @change="handleChangeJgY"
+                  :props="locationProps"
+                ></el-cascader>
+                <el-input 
+                  v-model="formEdit.yzsxxdz" 
+                  v-show="isEdit == 1"
+                  maxlength="255" 
+                  placeholder="请输入详细地址"/>
+              </div>
+              <div v-show="jzflag ==2">
+                <div v-show="isEdit == 0">{{formEdit.ld}}</div> 
+                <div v-show="isEdit == 0">{{formEdit.fj}}</div>
+                <el-select
+                  v-model="formEdit.sqldid"  
+                  v-show="isEdit == 1"
+                  placeholder="非集中原寝室楼栋"
+                  @change="changeLD(formEdit.sqldid)"
+                  disabled
+                  collapse-tags
+                >
+                  <el-option
+                    v-for="(item, index) in ldOps"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+                <el-select
+                  v-model="formEdit.sqfjid"  
+                  v-show="isEdit == 1"
+                  placeholder="非集中原寝室房间"
+                  disabled
+                  collapse-tags
+                >
+                  <el-option
+                    v-for="(item, index) in fjOps"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" v-show="jzflag ==2">
+          <el-col :span="12">
+            <el-form-item
+              label="是否退宿"
+              prop="sfts"
+              :rules="jzflag ==2 ? rules.sfts :[]"
+            >
+              <div v-show="isEdit == 0">{{formEdit.sfts}}</div>
+              <el-select
+                v-model="formEdit.sfts"
+                v-show="isEdit == 1"
+                placeholder="非集中是否退宿"
+                collapse-tags
+              >
+                <el-option
+                  v-for="(item, index) in sftsOps"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" v-show="jzflag ==1">
           <el-col :span="19">
             <el-form-item
-              label="自定义站点"
-              prop="chqjemc"
-              :rules="rules.chqjemc"
-              v-show="qitaShow == true"
+              label="申请住宿选择"
+              prop="xzsdzm"
             >
-              <el-input 
-                v-model="formEdit.chqjemc" 
-                :disabled="isEdit == 0"
-                placeholder="请输入其他站点"
-              >
-              </el-input>
+              <div v-show="isEdit == 0">{{formEdit.ld}}</div>
+              <div v-show="isEdit == 0">{{formEdit.fj}}</div>
+              <div v-show="isEdit == 1">
+                <el-select
+                  v-model="formEdit.sqldid"  
+                  placeholder="集中寝室楼栋"
+                  @change="changeLD(formEdit.sqldid)"
+                  collapse-tags
+                >
+                  <el-option
+                    v-for="(item, index) in ldOps"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+                <el-select
+                  v-model="formEdit.sqfjid"  
+                  placeholder="集中寝室房间"
+                  collapse-tags
+                >
+                  <el-option
+                    v-for="(item, index) in fjOps"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+              </div>
             </el-form-item>
-            
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" v-show="jzflag ==2">
+          <el-col :span="19">
+            <el-form-item
+              label="非集中住宿地址"
+              :rules="jzflag ==2 ? rules.xzsdzm :[]"
+              prop="xzsdzm"
+            >
+              <div v-show="isEdit == 0">{{formEdit.xzsdz}}</div>
+              <div v-show="isEdit == 0">{{formEdit.xzsxxdz}}</div>
+              <div v-show="isEdit == 1">
+                <el-cascader
+                  v-model="formAdd.xzsdzm"
+                  :options="options"
+                  @change="handleChangeJgX"
+                  :props="locationProps"
+                ></el-cascader>
+                <el-input v-model="formEdit.xzsxxdz" maxlength="255" placeholder="请输入详细地址"/>
+              </div>
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="20">
-            <el-form-item label="申报时间" prop="sqsj" :rules="rules.sqsj">
+            <el-form-item label="住宿时间" prop="datePickerEdit" :rules="rules.datePickerEdit">
+              <div v-show="isEdit == 0">{{formEdit.zsksrq + " 至 "+ formEdit.zsjsrq}}</div>
+              <div v-show="isEdit == 1">
               <el-date-picker
-                v-model="formEdit.sqsj"
-                type="datetime"
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyy-MM-dd"
-                :disabled="isEdit == 0"
+                type="daterange"
                 placeholder="选择日期"
-              >
-              </el-date-picker>
+                v-model="datePickerEdit"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+              ></el-date-picker>
+              </div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="20">
-            <el-form-item label="申请备注" prop="sqbz" :rules="rules.sqbz">
+            <el-form-item label="申请理由" prop="sqly">
               <el-input
-                v-model="formEdit.sqbz"
+                v-model="formEdit.sqly"
                 type="textarea"
-                maxlength="1000"
+                maxlength="2000"
                 :disabled="isEdit == 0"
                 placeholder="请输入"
               ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="20">
+            <el-form-item label="申请材料">
+              <!-- <template slot-scope="scope">
+                <el-upload
+                  action="#"
+                  multiple
+                  class="el-upload"
+                  :auto-upload="false"
+                  ref="upload"
+                  :file-list="scope.row.fileList"
+                  :on-change="fileChange"
+                  accept=".pdf,.jpg"
+                  :before-remove="beforeRemove"
+                >
+                  <el-button size="small" type="primary">点击上传</el-button>
+                </el-upload>
+              </template> -->
             </el-form-item>
           </el-col>
         </el-row>
@@ -317,7 +543,7 @@
       <span
         slot="footer"
         class="dialog-footer"
-        v-if="formEdit.status == '01' && isEdit == 0"
+        v-if="(formEdit.status == '01' || formEdit.status == '08') && isEdit == 0"
       >
         <el-button type="primary" class="confirm" @click="EditStatus"
           >编 辑</el-button
@@ -359,18 +585,19 @@
 </template>
 <script>
 import {
-  edit,
-  del,
-  tj,
-  queryAllZd,
-  queryDetail,
-  getJtzz,
-  cxById,
-} from "@/api/dailyBehavior/stuTravel";
-import {
   query,
+  del,
+  queryDetail,
+  tj,
+  edit,
+  cxById,
+  queryFj,
+  queryLd,
+  queryLdAndFj,
 } from "@/api/dailyBehavior/dormStu";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+import { getLocationjl } from "@/api/student/index";
+import { delwj } from "@/api/assistantWork/classEvent";
 import lctCom from "../../components/lct";
 export default {
   name: "BasicInfo",
@@ -378,6 +605,8 @@ export default {
   props: [],
   data() {
     return {
+      delArr: [],
+      subArr: [],
       title: "",
       // // 总条数
       total: 0,
@@ -393,7 +622,6 @@ export default {
       isMore: false,
       lctModal: false,
       ztStatus: [], //状态
-      zdOps: [],
       status: [],
       basicInfoList: [],
       multipleSelection: [],
@@ -409,39 +637,56 @@ export default {
       addModal: false,
       editModal: false,
       formAdd: {
-        jtdz: "",
-        chqjsid: "",
-        chqjeid: "",
-        sqsj: "",
-        sqbz: "",
-        chqjemc:"",
+        yzsdzm: "",
+        xzsdzm: "",
       },
       formEdit: {
-        jtdz: "",
-        chqjsid: "",
-        chqjeid: "",
-        sqsj: "",
-        sqbz: "",
-        chqjemc:"",
+        yzsdzm: "",
+        xzsdzm: "",
+        ld:"",
+        fj:"",
       },
       isEdit: 0, //0详情1编辑
-      qitaShow: false,
+      datePickerEdit: [],
+      // datePickerAdd: [],
+      jzflag: 1,//1集中2非集中
+      zslxOps: [
+        {dm: "1", mc: "校内集中住宿"},
+        {dm: "2", mc: "非集中住宿"},
+      ],
+      fjOps:[],
+      ldOps:[],
+      sftsOps:[],
+      //地区级联
+      locationProps: {
+        value: "dm", //匹配响应数据中的id
+        label: "mc", //匹配响应数据中的name
+        checkStrictly: true,
+        children: "dataCodeCascadingList", //匹配响应数据中的children }
+      },
+      options: [],
+      updateJg: "",//若进来自动获取地区则用来更新，简单下拉框不需要
+      fileList: [],
+      fileListAdd: [],
       rules: {
-        chqjsid: [
-          { required: true, message: "出发站点不能为空", trigger: "change" },
+        sfts: [
+          { required: true, message: "是否退宿不能为空", trigger: "change" },
         ],
-        chqjeid: [
-          { required: true, message: "到达站点不能为空", trigger: "change" },
+        zslxm: [
+          { required: true, message: "住宿类型不能为空", trigger: "change" },
         ],
-        sqsj: [
-          { required: true, message: "申请时间不能为空", trigger: "blur" },
+        yzsdzm: [
+          { required: true, message: "原住宿地址不能为空", trigger: "change" },
         ],
-        sqbz: [
-          { required: true, message: "申请备注不能为空", trigger: "blur" },
+        xzsdzm:[
+          { required: true, message: "新住宿地址不能为空", trigger: "change" },
         ],
-        // chqjemc:[
-        //   { required: true, message: "自定义站点不能为空", trigger: "blur" },
-        // ],
+        datePickerEdit:[
+          { required: true, message: "住宿时间不能为空", trigger: "blur" },
+        ],
+        datePickerAdd:[
+          { required: true, message: "住宿时间不能为空", trigger: "blur" },
+        ],
       },
     };
   },
@@ -450,12 +695,21 @@ export default {
   created() {},
   mounted() {
     this.getList(this.queryParams);
-
-    this.getAllZd();
     this.getCode("dmsplcm"); //状态
+    this.getCode("dmsfbzm"); // 是否
+    this.getLocationjl();
   },
 
   methods: {
+    getAllld(){
+      queryLd()
+        .then((res)=>{
+          if (res.errcode == "00") {
+            this.ldOps = res.data;
+          }
+        })
+        .catch((err) => {});
+    },
     // 表单校验
     checkFormAdd() {
       // 1.校验必填项
@@ -484,7 +738,6 @@ export default {
       this.$nextTick(() => {
         this.$refs.formEdit.resetFields();
       });
-      this.qitaShow = false;
     },
     emptyAdd() {
       this.$nextTick(() => {
@@ -506,23 +759,18 @@ export default {
     getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
-        this.ztStatus = res.data;
+        switch (val) {
+          case "dmsplcm":
+            this.ztStatus = res.data; //状态
+            break;
+          case "dmsfbzm":
+            this.sftsOps = res.data; //是否
+            break;
+        }
       });
     },
     selectChange() {
       this.searchVal = "";
-    },
-    getAllZd() {
-      this.zdOps = [];
-      queryAllZd()
-        .then((res) => {
-          if (res.errcode == "00") {
-            this.zdOps = res.data.rows;
-          }
-        })
-        .catch((err) => {
-          //this.$message.error(err.errmsg);
-        });
     },
     //获取数据列表
     getList() {
@@ -554,6 +802,28 @@ export default {
       this.subArr = val.map((item) => item.id);
       this.delArr = val.map((item) => item.id);
     },
+    // beforeRemove(file, fileList) {
+    //   let uid = file.uid;
+    //   let idx = fileList.findIndex((item) => item.uid === uid);
+    //   fileList.splice(idx, 0);
+    //   this.fileList = fileList;
+    //   if (file.id) {
+    //     //如果是后端返回的文件就走删除接口，不然前端自我删除
+    //     delwj({ id: file.id.toString() }).then();
+    //   }
+    // },
+    // fileChange(file, fileList) {
+    //   if (Number(file.size / 1024 / 1024) > 2) {
+    //     let uid = file.uid;
+    //     let idx = fileList.findIndex((item) => item.uid === uid);
+    //     fileList.splice(idx, 1);
+    //     this.$message.error("单个文件大小不得超过2M");
+    //   } else if (file.status == "ready") {
+    //     this.fileListAdd = [];
+    //     this.fileListAdd.push(file); //修改编辑的文件参数
+    //   }
+    //   this.fileList = fileList;
+    // },
     //提交
     handleSubmit() {
       var falg = 1;
@@ -610,16 +880,12 @@ export default {
     },
     //新增
     handleNew() {
+      this.formAdd={};
+      // fils=[] ?要不要
       this.addModal = true;
-      this.formAdd = { sqsj: this.formatDate(new Date()) };
-      this.$set(this.formAdd,"chqjsid","2814");
-      getJtzz(this.$store.getters.userId)
-        .then((res) => {
-          // this.formAdd.jtdz = res.data;
-          // this.$forceUpdate();
-          this.$set(this.formAdd,"jtdz",res.data);
-        })
-        .catch((err) => {});
+      this.getAllld();
+      // this.formAdd = { sqsj: this.formatDate(new Date()) };
+      // this.$set(this.formAdd,"chqjsid","2814");
     },
     addCance() {
       this.addModal = false;
@@ -629,14 +895,24 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        // var data = this.formAdd.addData[0];
+        let rqs,
+          rqe = "";
+        if (this.formAdd.datePickerAdd && this.formAdd.datePickerAdd.length > 0) {
+          rqs = this.formAdd.datePickerAdd[0];
+          rqe = this.formAdd.datePickerAdd[1];
+        }
         var params = {
-          jtdz: this.formAdd.jtdz,
-          chqjsid: this.formAdd.chqjsid,
-          chqjeid: this.formAdd.chqjeid,
-          sqsj: this.formAdd.sqsj,
-          sqbz: this.formAdd.sqbz,
-          chqjemc: this.formAdd.chqjemc || "",
+          zslxm: this.formAdd.zslxm,
+          sfts: this.formAdd.sfts || "",
+          sqfjid: this.formAdd.sqfjid || "",
+          sqldid: this.formAdd.sqldid || "",
+          sqly: this.formAdd.sqly,
+          xzsdzm: this.formAdd.xzsdzm || "",
+          xzsxxdz: this.formAdd.xzsxxdz || "",
+          yzsdzm: this.formAdd.yzsdzm || "",
+          yzsxxdz: this.formAdd.yzsxxdz || "",
+          zsjsrq: rqe,
+          zsksrq: rqs,
 
           xh: this.$store.getters.userId,
         };
@@ -654,17 +930,31 @@ export default {
     },
     //点击详情
     hadleDetail(row) {
+      // this.formEdit = {};
+      // row.fileList = row.fileList.map((ele) => {
+      //   return {
+      //     name: ele.fileName,
+      //     ...ele,
+      //   };
+      // });
+      // this.formEdit.editData.push(row);
+      // this.fileListAdd = [];
       this.editModal = true;
-      console.log("this.qitaShow",this.qitaShow);
-      queryDetail({ id: row.id }).then((res) => {
+      console.log("row",row);
+      queryDetail({ businesId: row.id }).then((res) => {
         this.formEdit = res.data;
-        if(res.data.chqjeid==10000){
-          this.qitaShow = true
-        }
+        this.jzflag = res.data.zslxm;
+        // this.datePickerEdit[0]= res.data.zsksrq;
+        // this.datePickerEdit[1]= res.data.zsjsrq;
+      });
+      queryLdAndFj({xh: this.$store.getters.userId}).then((res) =>{
+        this.formEdit.ld= res.data.ld;
+        this.formEdit.fj= res.data.fj;
       });
     },
     EditStatus() {
       this.isEdit = 1;
+      this.getAllld();
     },
     //详情编辑
     editCance() {
@@ -712,15 +1002,16 @@ export default {
     },
     handleback() {
       var falg = 1;
-      let idList = [];
-      for (var i = 0; i < this.multipleSelection.length; i++) {
-        idList.push(this.multipleSelection[i].id);
-        if (this.multipleSelection[i].status !== "02") falg = 2;
-      }
-      //console.log(idList);
+      var data = this.multipleSelection;
+      // let idList = [];
+      
+      // for (var i = 0; i < this.multipleSelection.length; i++) {
+      //   idList.push(this.multipleSelection[i].id);
+      //   if (this.multipleSelection[i].status !== "02") falg = 2;
+      // }
       if (falg == 1) {
         if (this.subArr && this.subArr.length > 0) {
-          cxById({ ids: idList }).then((res) => {
+          cxById(data).then((res) => {
             if (res.errcode == "00") {
               this.$message.success("撤销成功");
               this.getList();
@@ -735,13 +1026,54 @@ export default {
         this.$message.error("存在非待审核状态数据，不可以撤回");
       }
     },
-    changeZD(flag){
-      if( flag && flag == 10000){
-        this.qitaShow = true;
+    changeZslx(flag){
+      if( flag && flag == 1){
+        this.jzflag = 1;
       } else{ 
-        this.qitaShow = false;
-        this.formAdd.chqjemc = "";
-        this.formEdit.chqjemc = "";
+        this.jzflag = 2;
+      }
+    },
+    changeLD(flag){
+      queryFj({ dm: flag }).then((res) => {
+        if (res.errcode == "00") {
+          this.fjOps = res.data;
+        } else {
+          this.$message.error("获取房间号失败");
+        }
+      });
+    },
+    getLocationjl() {
+      getLocationjl().then((res) => {
+        this.options = res.data;
+      });
+    },
+    handleChangeJgY(value) {
+      if (value && value.length == 1) {
+        console.log("value.length",value.length);
+        //若是简单下拉框，则绑定v-model就可以
+        this.formAdd.yzsdzm= this.formAdd.yzsdzm ? this.formAdd.yzsdzm = value[0]: "";
+        this.formEdit.yzsdzm= this.formEdit.yzsdzm ? this.formedit.yzsdzm = value[0]: "";
+        console.log(this.formAdd.yzsdzm);
+      } else if (value && value.length == 2) {
+        this.formAdd.yzsdzm= this.formAdd.yzsdzm ? this.formAdd.yzsdzm = value[1]: "";
+        this.formEdit.yzsdzm= this.formEdit.yzsdzm ? this.formedit.yzsdzm = value[1]: "";
+        console.log(this.formAdd.yzsdzm);
+      } else {
+        this.formAdd.yzsdzm= this.formAdd.yzsdzm ? this.formAdd.yzsdzm = value[2]: "";
+        this.formEdit.yzsdzm= this.formEdit.yzsdzm ? this.formedit.yzsdzm = value[2]: "";
+        console.log(this.formAdd.yzsdzm);
+      }
+    },
+    handleChangeJgX(value) {
+      if (value && value.length == 1) {
+        this.formAdd.xzsdzm= this.formAdd.xzsdzm ? this.formAdd.xzsdzm = value[0]: "";
+        this.formEdit.xzsdzm= this.formEdit.xzsdzm ? this.formedit.xzsdzm = value[0]: "";
+      } else if (value && value.length == 2) {
+        this.formAdd.xzsdzm= this.formAdd.xzsdzm ? this.formAdd.xzsdzm = value[1]: "";
+        this.formEdit.xzsdzm= this.formEdit.xzsdzm ? this.formedit.xzsdzm = value[1]: "";
+      } else {
+        this.formAdd.xzsdzm= this.formAdd.xzsdzm ? this.formAdd.xzsdzm = value[2]: "";
+        this.formEdit.xzsdzm= this.formEdit.xzsdzm ? this.formedit.xzsdzm = value[2]: "";
       }
     },
   },

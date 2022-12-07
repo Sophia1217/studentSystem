@@ -135,8 +135,8 @@
           </el-row>
           <el-row :gutter="20">
             <el-col :span="20">
-              <el-form-item label="申请类型" prop="sqlx" :rules="rules.sqlx">
-                <el-select v-model="formAdd.sqlx" placeholder="请选择">
+              <el-form-item label="申请类型" prop="oplx" :rules="rules.sqlx">
+                <el-select v-model="formAdd.oplx" placeholder="请选择">
                   <el-option
                     v-for="(item, index) in sqlxList"
                     :key="index"
@@ -979,6 +979,7 @@ export default {
         endTime: "", //结束时间
         sqly: "", //申请理由
         files: [], //申请材料
+        oplx: "",
       }; // 每次打开弹框先将弹框的table数组置空
       this.fileList = [];
       this.addModal = true;

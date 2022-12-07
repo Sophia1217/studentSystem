@@ -967,8 +967,15 @@ export default {
         { dm: "自费境外留学", mc: "自费境外留学" },
       ],
       fxList: [
-        { dm: " 自动采用休学", mc: " 自动采用休学" },
-        { dm: " 保留学籍类型", mc: " 保留学籍类型" },
+        { dm: "身体疾病", mc: "身体疾病" },
+        { dm: "心理疾病", mc: "心理疾病" },
+        { dm: "精神疾病", mc: "精神疾病" },
+        { dm: "自主创业", mc: "自主创业" },
+        { dm: "工作实践", mc: "工作实践" },
+        { dm: "自费境外留学", mc: "自费境外留学" },
+        { dm: "征兵入伍", mc: "征兵入伍" },
+        { dm: "境内交换生项目", mc: "境内交换生项目" },
+        { dm: "境外交换生项目", mc: "境外交换生项目" },
       ],
       ydlbList: [
         { dm: "fx", mc: "复学" },
@@ -1224,7 +1231,7 @@ export default {
     finalConfirm() {
       var data = {
         id: this.tableDetail.businesId,
-        oplx: this.tableDetail.mk,
+        oplx: this.formDetails1.oplx,
         processId: this.tableDetail.processId,
         taskId: this.tableDetail.taskId,
         xh: this.tableDetail.xh,

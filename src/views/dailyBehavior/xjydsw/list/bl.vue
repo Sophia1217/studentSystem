@@ -913,7 +913,7 @@ export default {
         formData.append("blxjBlstart", data.startTime);
         formData.append("blxjCjxm", data.jionPro);
         formData.append("blxjFzbm", data.fzbm);
-        formData.append("oplx", data.sqlx);
+        formData.append("oplx", data.oplx);
         formData.append("sfts", data.sf);
         formData.append("sqmsg", data.sqly); //申请理由
         formData.append("sqlx", this.queryParams.sqlx); //具体类型  保留学籍 退学

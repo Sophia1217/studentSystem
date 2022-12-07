@@ -45,3 +45,107 @@ export function edit(query) {
       data: query
     })
   }
+
+
+  //教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端//教师端
+
+// 教师端-待审核列表查询
+  export function queryDsh(query) {
+    return request({
+      url: '/rcswXjyd/queryRcswXjydFlowList',
+      method: 'post',
+      data: query
+    })
+  }
+
+  // 教师端-待审核已处理列表查询
+  export function queryYcl(query) {
+    return request({
+      url: '/rcswXjyd/queryRcswXjydFlowedList',
+      method: 'post',
+      data: query
+    })
+  }
+  
+  
+
+  //  教师端-已生效列表查询
+  export function queryYsx(query) {
+    return request({
+      url: '/rcswXjyd/queryRcswXjydFlowYSXList',
+      method: 'post',
+      data: query
+    })
+  }
+
+  // 教师端-通过业务主键查询申请信息详情
+  export function getDetail(query) {
+    return request({
+        url: '/rcswXjyd/queryRcswXjydById',
+        method: 'get',
+        params: query
+    })
+}
+
+export function dshExp(query) {
+  return request({
+      url: '/rcswXjyd/excelExportRcswXjyd',
+      method: 'post',
+      data: query,
+      responseType:'blob'
+  })
+}
+export function yclExp(query) {
+  return request({  
+      url: '/rcswXjyd/excelExportRcswXjydFlowed',
+      method: 'post',
+      data: query,
+      responseType:'blob'
+  })
+}
+export function ysxExp(query) {
+  return request({
+      url: '/rcswXjyd/excelExportRcswXjydFlowYSX',
+      method: 'post',
+      data: query,
+      responseType:'blob'
+  })
+}
+
+
+export function xhQuery(query) {
+  return request({
+    url: "/commonMethod/queryXsByXh",
+    method: 'get',
+    params: query
+  })
+}
+
+// 教师端-退回
+
+export function htFlow(query) {
+  return request({
+      url: '/rcswXjyd/htFlow',
+      method: 'post',
+      data: query
+  })
+}
+
+//拒绝
+export function jjFlow(query) {
+  return request({
+      url: '/rcswXjyd/jjFlow',
+      method: 'post',
+      data: query
+  })
+}
+
+// 教师端-同意操作
+export function tyFlow(query) {
+  return request({
+      url: '/rcswXjyd/tyFlow',
+      method: 'post',
+      data: query
+  })
+}
+

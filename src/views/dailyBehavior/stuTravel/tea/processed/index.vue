@@ -135,13 +135,39 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" width="100" sortable> </el-table-column>
-          <el-table-column prop="xm" label="姓名" width="85" sortable> </el-table-column>
-          <el-table-column prop="pyccmmc" label="培养层次" width="80" sortable> </el-table-column>
-          <el-table-column prop="dwhmc" label="培养单位" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="jtdz" label="家庭地址" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="chqj" label="乘车区间" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="sqsj" label="修改时间" min-width="100" sortable>
+          <el-table-column prop="xh" label="学号" width="100" sortable>
+          </el-table-column>
+          <el-table-column prop="xm" label="姓名" width="85" sortable>
+          </el-table-column>
+          <el-table-column prop="pyccmmc" label="培养层次" width="80" sortable>
+          </el-table-column>
+          <el-table-column
+            prop="dwhmc"
+            label="培养单位"
+            min-width="100"
+            sortable
+          >
+          </el-table-column>
+          <el-table-column
+            prop="jtdz"
+            label="家庭地址"
+            min-width="100"
+            sortable
+          >
+          </el-table-column>
+          <el-table-column
+            prop="chqj"
+            label="乘车区间"
+            min-width="100"
+            sortable
+          >
+          </el-table-column>
+          <el-table-column
+            prop="sqsj"
+            label="修改时间"
+            min-width="100"
+            sortable
+          >
           </el-table-column>
           <el-table-column prop="createDwhMc" label="审核进度">
             <template slot-scope="scope">
@@ -243,99 +269,109 @@
       >
         <template>
           <div class="baseInfo">
-          <el-form :data="formDetails">
-            <div class="formLeft"><span class="title">基本信息</span></div>
-            <div class="backDetail">
-            
-            <div class="formRight">
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">学号</div>
-                    <div class="content">{{ formDetails.xh }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">姓名</div>
-                    <div class="content">{{ formDetails.xm }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">培养层次</div>
-                    <div class="content">{{ formDetails.pyccmmc }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">培养单位</div>
-                    <div class="content">{{ formDetails.dwhmc }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">专业</div>
-                    <div class="content">{{ formDetails.zydmmc }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">班级</div>
-                    <div class="content">{{ formDetails.bjmmc }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="24" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">家庭地址</div>
-                    <div class="content">{{ formDetails.jtdz }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-            </div>
-            </div>
-            <div class="formLeft"><span class="title">申请信息</span></div>
-            <div>
+            <el-form :data="formDetails">
+              <div class="formLeft"><span class="title">基本信息</span></div>
+              <div class="backDetail">
+                <div class="formRight">
+                  <el-row>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">学号</div>
+                        <div class="content">{{ formDetails.xh }}</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">姓名</div>
+                        <div class="content">{{ formDetails.xm }}</div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">培养层次</div>
+                        <div class="content">{{ formDetails.pyccmmc }}</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">培养单位</div>
+                        <div class="content">{{ formDetails.dwhmc }}</div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">专业</div>
+                        <div class="content">{{ formDetails.zydmmc }}</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">班级</div>
+                        <div class="content">{{ formDetails.bjmmc }}</div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="24" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">家庭地址</div>
+                        <div class="content">{{ formDetails.jtdz }}</div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                </div>
+              </div>
+              <div class="formLeft"><span class="title">申请信息</span></div>
+              <div>
+                <el-row :gutter="20">
+                  <el-col :span="20">
+                    <el-form-item
+                      label="修改乘车区间"
+                      label-width="120px"
+                      prop="chqj"
+                    >
+                      {{ formDetails.chqj }}
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="20">
+                    <el-form-item
+                      label="申请修改时间"
+                      label-width="120px"
+                      prop="sqsj"
+                    >
+                      {{ formDetails.sqsj }}
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="formLeft">
+                <span class="title">历史乘车区间</span>
+              </div>
+            </el-form>
+            <el-table :data="tableDetails">
+              <el-table-column
+                fixed="left"
+                type="index"
+                label="序号"
+                width="50"
+              ></el-table-column>
+              <el-table-column prop="chqj" label="乘车区间" />
+              <el-table-column prop="sqsj" label="修改时间" />
+              <el-table-column prop="statusChinese" label="审批结果" />
+            </el-table>
+            <div class="formLeft"><span class="title">审核信息</span></div>
+            <el-form :data="editDetails" ref="editDetails">
               <el-row :gutter="20">
                 <el-col :span="20">
-                  <el-form-item label="修改乘车区间" label-width="120px" prop="chqj">
-                    {{formDetails.chqj}}
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="申请修改时间" label-width="120px" prop="sqsj">
-                    {{formDetails.sqsj}}
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-            <div class="formLeft"><span class="title">历史乘车区间</span></div>
-          </el-form>
-          <el-table :data="tableDetails">
-            <el-table-column
-              fixed="left"
-              type="index"
-              label="序号"
-              width="50"
-            ></el-table-column>
-            <el-table-column prop="chqj" label="乘车区间"/>
-            <el-table-column prop="sqsj" label="修改时间"/>
-            <el-table-column prop="statusChinese" label="审批结果"/>
-          </el-table>
-          <div class="formLeft"><span class="title">审核信息</span></div>
-          <el-form :data="editDetails" ref="editDetails" :rules="rules">
-            <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="申请审核结果"
-                    label-width="120px" 
+                  <el-form-item
+                    label="申请审核结果"
+                    label-width="120px"
                     prop="shjg"
                     :rules="rules.shjg"
                   >
@@ -358,8 +394,12 @@
               </el-row>
               <el-row :gutter="20">
                 <el-col :span="20">
-                  <el-form-item label="申请审核意见" label-width="120px" prop="shyj">
-                    <el-input 
+                  <el-form-item
+                    label="申请审核意见"
+                    label-width="120px"
+                    prop="shyj"
+                  >
+                    <el-input
                       v-model="editDetails.shyj"
                       :autosize="{ minRows: 2 }"
                       type="textarea"
@@ -368,15 +408,15 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-          </el-form>
-              
+            </el-form>
           </div>
         </template>
         <span slot="footer" class="dialog-footer">
-        <el-button @click="detailCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="editClick"
-          >确 定</el-button>
-      </span>
+          <el-button @click="detailCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="editClick"
+            >确 定</el-button
+          >
+        </span>
       </el-dialog>
       <pagination
         v-show="queryParams.total > 0"
@@ -414,11 +454,11 @@ import {
   exportZjbbFlow,
   queryDshDetail,
   queryDetailList,
-} from "@/api/dailyBehavior/stuTravelTea"
+} from "@/api/dailyBehavior/stuTravelTea";
 import { getCollege } from "@/api/class/maintenanceClass";
 import lctCom from "../../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { param } from '../../../../../utils';
+import { param } from "../../../../../utils";
 export default {
   name: "manStudent",
   components: { CheckboxCom, lctCom },
@@ -465,11 +505,11 @@ export default {
       detailModal: false,
       tableDetails: [],
       formDetails: {},
-      editDetails:[],
-      shjgOps:[
-        {dm:'01',mc: '通过'},
-        {dm:'02',mc: '拒绝'},
-        {dm:'03',mc: '退回'},
+      editDetails: [],
+      shjgOps: [
+        { dm: "01", mc: "通过" },
+        { dm: "02", mc: "拒绝" },
+        { dm: "03", mc: "退回" },
       ],
       rules: {
         shjg: [
@@ -506,7 +546,7 @@ export default {
       exportZjbbFlow(this.exportParams)
         .then((res) => {
           this.downloadFn(res, "乘车优惠待审核列表导出.xlsx", "xlsx");
-          if(this.$store.getters.excelcount > 0){
+          if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
             );
@@ -619,10 +659,9 @@ export default {
     thTableConfirm() {
       if (!!this.tempRadio || this.tempRadio === 0) {
         this.thTableModal = false;
-        if(this.detailModal == false){
+        if (this.detailModal == false) {
           this.thModal = true;
         }
-        
       } else {
         this.$message.error("请先勾选退回的节点");
       }
@@ -664,29 +703,29 @@ export default {
         xh: row.xh,
         pageNum: 1,
         pageSize: 10,
-        
+
         businesId: row.businesId,
       };
       await queryDetailList(data).then((res) => {
         this.tableDetails = res.data;
       });
     },
-    editClick(){
-      var arr ={
+    editClick() {
+      var arr = {
         businesId: this.formDetails.businesId,
         processId: this.formDetails.processId,
         status: this.formDetails.status,
         taskId: this.formDetails.taskId,
         xh: this.formDetails.xh,
       };
-      let brr =[];
+      let brr = [];
       brr.push(arr);
       var data = brr.map((item) => ({
-          ...item,
-          opMsg: this.editDetails.shyj,
+        ...item,
+        opMsg: this.editDetails.shyj,
       }));
-      console.log("data",data);
-      if(this.editDetails.shjg == "01"){
+      console.log("data", data);
+      if (this.editDetails.shjg == "01") {
         //通过
         tyFlow(data).then((res) => {
           if (res.errcode == "00") {
@@ -695,16 +734,16 @@ export default {
             this.handleSearch();
           }
         });
-      } else if(this.editDetails.shjg == "02"){
+      } else if (this.editDetails.shjg == "02") {
         //拒绝
         jjFlow(data).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("已拒绝");
-          this.detailModal = false;
-          this.handleSearch();
-        }
-      });
-      } else{
+          if (res.errcode == "00") {
+            this.$message.success("已拒绝");
+            this.detailModal = false;
+            this.handleSearch();
+          }
+        });
+      } else {
         //退回
         var targ = {
           czdaFlowNodeRes: this.multipleSelection1,
@@ -733,7 +772,8 @@ export default {
     },
     // 查询
     handleSearch() {
-      let rqs,rqe = "";
+      let rqs,
+        rqe = "";
       if (this.datePicker && this.datePicker.length > 0) {
         rqs = this.datePicker[0];
         rqe = this.datePicker[1];
@@ -766,7 +806,7 @@ export default {
     handleCloseLct() {
       this.lctModal = false;
     },
-      //流程
+    //流程
     lctClick(row) {
       if (!!row.processId) {
         this.$refs.child.inner(row.processId);
@@ -824,19 +864,18 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
     },
-    changeJG(val){
-      if(val & val == "03"){
-        console.log("this.editDetails.shjg",this.editDetails.shjg);
+    changeJG(val) {
+      if (val & (val == "03")) {
+        console.log("this.editDetails.shjg", this.editDetails.shjg);
         var processId = { processId: this.formDetails.taskId };
         backFlow(processId).then((res) => {
           this.tableInner = res.data;
         });
         this.thTableModal = true;
-      } else if(val & val == "02"){
+      } else if (val & (val == "02")) {
         console.log(22);
       } else {
         console.log(33);
-
       }
     },
   },
@@ -1003,15 +1042,15 @@ export default {
       }
     }
   }
-  .baseInfo{
+  .baseInfo {
     // padding: 20px;
     margin-left: 30px;
     margin-right: 30px;
     // overflow-x: auto;
     .formLeft {
       background: #fff;
-      display: flex;
-      align-items: center;
+      // display: flex;
+      align-items: flex-start;
       .title {
         font-weight: 600;
         font-size: 16px;

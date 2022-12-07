@@ -252,7 +252,19 @@
           </div>
         </div>
       </div>
-      <div class="item"></div>
+      <div class="item stuInfoClick" @click="lskn">
+        <div class="medalImage">
+          <img src="~@/assets/images/medal.png" alt="" />
+        </div>
+        <div class="content">
+          <div class="title1">
+            <span class="stuinfoTitle">临时困难</span>
+          </div>
+          <div class="title2">
+            <span class="baseInfo">临时困难</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>

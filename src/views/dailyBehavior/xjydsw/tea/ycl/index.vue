@@ -225,7 +225,7 @@
               <el-button
                 type="text"
                 size="small"
-                @click="hadleDetail(scope.row, 1)"
+                @click="hadleDetail(scope.row)"
               >
                 <i class="scopeIncon handledie"></i>
                 <span class="handleName">异动详情</span>
@@ -235,17 +235,12 @@
         </el-table>
       </div>
     </div>
-
-    <el-dialog :title="title" :visible.sync="showExportA" width="30%">
-      <span>确认导出{{ len }}条学生数据？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCancelA">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="expTalk(ind)"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
-    <el-dialog title="列表显示项" :visible.sync="dynamicModal" width="40%">
+    <el-dialog
+      title="列表显示项"
+      :visible.sync="dynamicModal"
+      width="40%"
+      :close-on-click-modal="false"
+    >
       <div class="checkbox">
         <checkboxComDynic
           :objProp="dynamicsCheckboxs"
@@ -260,48 +255,489 @@
         >
       </span>
     </el-dialog>
-    <el-dialog title="新增" :visible.sync="showExportC" width="30%">
-      <el-form :inline="true">
-        <el-form-item label="培养层次">
-          <el-select v-model="pycc" placeholder="请选择">
-            <el-option
-              v-for="item in pyccOps"
-              :key="item.dm"
-              :label="item.mc"
-              :value="item.dm"
-            />
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCancelC">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="handleAdd"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
     <lctCom
       ref="child"
       :lctModal="lctModal"
       @handleCloseLct="handleCloseLct"
     ></lctCom>
-    <!-- <exportView
-          v-if="showExport"
-          :tag="1"
-          :showExport="showExport"
-          :multipleSelection="multipleSelection"
-          :manageRegStuInfoParam="manageRegStuInfoParam"
-          :op="op"
-          @handleCancel="handleCancel"
-          @handleConfirm="handleConfirm"
-        ></exportView> -->
-    <el-dialog title="导出确认" :visible.sync="daochuModal" width="30%">
-      <span>确认导出{{ leng }}条学生数据？</span>
+    <el-dialog
+      title="导出确认"
+      :visible.sync="daochuModal"
+      width="30%"
+      :close-on-click-modal="false"
+    >
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancelB">取 消</el-button>
         <el-button type="primary" class="confirm" @click="daochu()"
           >确 定</el-button
         >
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="审核记录"
+      :visible.sync="shRecordModal"
+      width="30%"
+      :close-on-click-modal="false"
+    >
+      <span slot="footer" class="dialog-footer">
+        <el-table :data="shRecordTable" ref="multipleTable" style="width: 100%">
+          <el-table-column label="审核人" prop="userId"></el-table-column>
+          <el-table-column
+            fixed="left"
+            label="申请审核结果"
+            prop="opType"
+          ></el-table-column>
+          <el-table-column
+            fixed="left"
+            label="审核时间"
+            prop="opTime"
+          ></el-table-column>
+          <el-table-column
+            fixed="left"
+            label="申请审核意见"
+            prop="msg"
+          ></el-table-column>
+        </el-table>
+        <el-button @click="shRecordcancel">关 闭</el-button>
+      </span>
+    </el-dialog>
+
+    <el-dialog title="申报详情" :visible.sync="detailModal" width="60%">
+      <template>
+        <div class="baseInfo">
+          <el-form :data="formDetails" style="margin-bottom: 0">
+            <div class="formLeft"><span class="title">基本信息</span></div>
+            <div class="backDetail">
+              <div class="formRight">
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">学号</div>
+                      <div class="content">{{ formDetails.xh }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">姓名</div>
+                      <div class="content">{{ formDetails.xm }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">性别</div>
+                      <div class="content">{{ formDetails.xbmmc }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">培养单位</div>
+                      <div class="content">{{ formDetails.dwhmc }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">专业</div>
+                      <div class="content">{{ formDetails.zydmmc }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">联系方式</div>
+                      <div class="content">{{ formDetails.yddh }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col
+                    :span="24"
+                    class="rowStyle"
+                    v-if="flag == '01' || flag == '04'"
+                  >
+                    <div class="wrap">
+                      <div class="title">住宿信息</div>
+                      <div class="content">{{ formDetails.zsxx }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="24" class="rowStyle" v-if="flag == '03'">
+                    <div class="wrap">
+                      <div class="title">原住宿信息</div>
+                      <div class="content">{{ formDetails.zsxx }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle" v-if="flag == '02'">
+                    <div class="wrap">
+                      <div class="title">住宿信息</div>
+                      <div class="content">{{ formDetails.zsxx }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle" v-if="flag == '02'">
+                    <div class="wrap">
+                      <div class="title">辅导员</div>
+                      <div class="content">{{ formDetails.fdyMc }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
+            <div class="formLeft"><span class="title">申请信息</span></div>
+            <div class="backDetail" v-if="flag == '01'">
+              <div class="formRight">
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">申请异动</div>
+                      <div class="content">{{ formDetails1.sqyd }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">申请类型</div>
+                      <div class="content">{{ formDetails1.oplx }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">其他</div>
+                      <div class="content">{{ formDetails1.qt }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">是否退宿</div>
+                      <div class="content">{{ formDetails1.SFTS }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">参加项目</div>
+                      <div class="content">{{ formDetails1.blxjCjxm }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">负责部门</div>
+                      <div class="content">{{ formDetails1.blxjFzbm }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">保留时间</div>
+                      <div class="content">
+                        {{ formDetails1.blxjBlstart }}
+                        <span v-html="'\u3000'"></span> 至
+                        <span v-html="'\u3000'"></span
+                        >{{ formDetails1.blxjBlend }}
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">申请理由</div>
+                      <div class="content">{{ formDetails1.sqmsg }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">申请材料</div>
+                      <div class="content">
+                        <el-upload
+                          action="#"
+                          multiple
+                          :file-list="formDetails1.fileList"
+                          :auto-upload="false"
+                          class="el-upload"
+                          :disabled="true"
+                        >
+                        </el-upload>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
+            <div class="backDetail" v-if="flag == '02'">
+              <div class="formRight">
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">申请异动</div>
+                      <div class="content">{{ formDetails1.sqyd }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">申请理由</div>
+                      <div class="content">{{ formDetails1.sqmsg }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">申请材料</div>
+                      <div class="content">
+                        <div class="content">
+                          <el-upload
+                            action="#"
+                            multiple
+                            :file-list="formDetails1.fileList"
+                            :auto-upload="false"
+                            class="el-upload"
+                            :disabled="true"
+                          >
+                          </el-upload>
+                        </div>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
+            <div class="backDetail" v-if="flag == '03'">
+              <div class="formRight">
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">申请异动</div>
+                      <div class="content">{{ formDetails1.sqyd }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">编入年级</div>
+                      <div class="content">{{ fxNj }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">编入班级</div>
+                      <div class="content">{{ fxBj }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">是否已经退宿</div>
+                      <div class="content">{{ formDetails1.SFTS }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">是否申请入住</div>
+                      <div class="content">{{ formDetails1.SFRZ }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">申请理由</div>
+                      <div class="content">{{ formDetails1.sqmsg }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">申请材料</div>
+                      <div class="content">
+                        <el-upload
+                          action="#"
+                          multiple
+                          :file-list="formDetails1.fileList"
+                          :auto-upload="false"
+                          class="el-upload"
+                          :disabled="true"
+                        >
+                        </el-upload>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
+            <div class="backDetail" v-if="flag == '04'">
+              <div class="formRight">
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">申请异动</div>
+                      <div class="content">{{ formDetails1.sqyd }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">是否退宿</div>
+                      <div class="content">{{ formDetails1.SFTS }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">申请理由</div>
+                      <div class="content">{{ formDetails1.sqmsg }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">申请材料</div>
+                      <div class="content">
+                        <el-upload
+                          action="#"
+                          multiple
+                          :file-list="formDetails1.fileList"
+                          :auto-upload="false"
+                          class="el-upload"
+                          :disabled="true"
+                        >
+                        </el-upload>
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
+          </el-form>
+          <!-- <div class="formLeft"><span class="title">审核信息</span></div>
+          <el-form :data="editDetails" :model="editDetails" ref="editDetails">
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-form-item
+                  label="申请审核结果"
+                  label-width="120px"
+                  prop="shjg"
+                  :rules="rules.shjg"
+                >
+                  <el-select
+                    v-model="editDetails.shjg"
+                    @change="changeJG(editDetails.shjg)"
+                    placeholder="请选择"
+                    size="small"
+                  >
+                    <el-option
+                      v-for="item in shjgOps"
+                      :key="item.dm"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <el-form-item
+                  label="复学类型"
+                  label-width="120px"
+                  prop="shjg"
+                  v-if="flag == '03'"
+                >
+                  <el-select
+                    v-model="formDetails1.oplx"
+                    placeholder="请选择"
+                    size="small"
+                  >
+                    <el-option
+                      v-for="item in fxList"
+                      :key="item.dm"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <el-form-item
+                  label="休学类型"
+                  label-width="120px"
+                  prop="shjg"
+                  v-if="flag == '04'"
+                >
+                  <el-select
+                    v-model="formDetails1.oplx"
+                    placeholder="请选择"
+                    size="small"
+                  >
+                    <el-option
+                      v-for="item in xxList"
+                      :key="item.dm"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="20">
+                <el-form-item
+                  label="申请审核意见"
+                  label-width="120px"
+                  prop="shyj"
+                >
+                  <el-input
+                    v-model="editDetails.shyj"
+                    :autosize="{ minRows: 4 }"
+                    type="textarea"
+                    maxlength="500"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="20">
+                <el-form-item
+                  label="审核材料"
+                  label-width="120px"
+                  v-if="flag == '02'"
+                >
+                  <el-upload
+                    action="#"
+                    multiple
+                    class="el-upload"
+                    ref="upload"
+                    :data="fileData"
+                    :show-file-list="true"
+                    :file-list="SHfileList"
+                    :before-remove="beforeRemove"
+                    :on-preview="handlePreview"
+                    :action="uploadUrl"
+                    :headers="fileHeader"
+                    accept=".pdf,.jpg"
+                  >
+                    <el-button size="small" type="primary">点击上传</el-button>
+                  </el-upload>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form> -->
+        </div>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="shRecord">审核记录</el-button>
+        <el-button @click="detailCancel">关 闭</el-button>
       </span>
     </el-dialog>
     <pagination
@@ -318,71 +754,91 @@
 import CheckboxCom from "../../../../components/checkboxCom";
 import checkboxComDynic from "../../../../components/checkboxComDynic";
 import lctCom from "../../../../components/lct";
-// import exportView from "./exportView/index.vue";
+import { querywj } from "@/api/assistantWork/classEvent";
+import { delFile, downloadFile, queryFile } from "@/api/common/file";
+import { queryLc } from "@/api/common/liucheng";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { getZY, getBJ, importRegStuExcel } from "@/api/student/index";
+import { getZY, getBJ } from "@/api/student/index";
 import { getCollege, getGrade } from "@/api/class/maintenanceClass";
+import { backFlow } from "@/api/dailyBehavior/stuTravelTea";
+import { getManageRegStuInfoSearchSpread } from "@/api/student/index";
 import {
-  getManageRegStuInfoSearchSpread,
-  getManageRegStuInfoPageList,
-  gradStu,
-  stuCard,
-  stuReg,
-  fileDown,
-} from "@/api/student/index";
-
-import { queryYcl } from "@/api/dailyBehavior/xjyd";
+  queryYcl,
+  getDetail,
+  tyFlow,
+  htFlow,
+  jjFlow,
+  xhQuery,
+  yclExp,
+} from "@/api/dailyBehavior/xjyd";
 import { getToken } from "@/utils/auth";
 export default {
-  name: "absentee",
-  //   components: { CheckboxCom, exportView, checkboxComDynic },
   components: { CheckboxCom, checkboxComDynic, lctCom },
   data() {
     return {
+      shRecordModal: false,
+      shRecordTable: [],
+      uploadUrl: process.env.VUE_APP_BASE_API + "/fileCommon/uploadFileCommon",
+      SHfileList: [],
+      conformModal: false,
+      conformType: "",
+      conformText: "",
+      detailModal: false,
       lctModal: false,
-      uploadUrl: process.env.VUE_APP_BASE_API + "/regStuInfo/importRegStuExcel",
       daochuModal: false,
-      leng: 0,
-      op: "0",
-      manageRegStuInfoParam: {},
-      title: "导出提示",
-      expand: true,
       searchVal: "",
       select: "",
       isMore: false,
-      showExportA: false,
-      showExportC: false,
       pycc: "",
       tjdate: "",
+
+      tempRadio: false,
       moreIform: {
         manageReg: [], // 学院
         stuInfo: [], // 专业
         pread: [], // 班级
         mk: [],
-        ztStatus: [],
+      },
+      tableInner: [],
+      rules: {
+        shjg: [
+          { required: true, message: "审核结果不能为空", trigger: "change" },
+        ],
+        // shyj: [
+        //   { required: true, message: "审核意见不能为空", trigger: "change" },
+        // ],
       },
       ztStatus: [],
+      fxBj: "",
+      fxNj: "",
+      editDetails: {
+        shyj: "",
+        shjg: "",
+      },
+      xxList: [
+        { dm: "身体疾病", mc: "身体疾病" },
+        { dm: "心理疾病", mc: "心理疾病" },
+        { dm: "精神疾病", mc: "精神疾病" },
+        { dm: "自主创业", mc: "自主创业" },
+        { dm: "工作实践", mc: "工作实践" },
+        { dm: "自费境外留学", mc: "自费境外留学" },
+      ],
+      fxList: [
+        { dm: "身体疾病", mc: "身体疾病" },
+        { dm: "心理疾病", mc: "心理疾病" },
+        { dm: "精神疾病", mc: "精神疾病" },
+        { dm: "自主创业", mc: "自主创业" },
+        { dm: "工作实践", mc: "工作实践" },
+        { dm: "自费境外留学", mc: "自费境外留学" },
+        { dm: "征兵入伍", mc: "征兵入伍" },
+        { dm: "境内交换生项目", mc: "境内交换生项目" },
+        { dm: "境外交换生项目", mc: "境外交换生项目" },
+      ],
       ydlbList: [
         { dm: "fx", mc: "复学" },
         { dm: "blxj", mc: "保留学籍" },
         { dm: "xx", mc: "休学" },
         { dm: "tx", mc: "退学" },
-        // { dm: "复学", mc: "复学" },
-        // { dm: "保留学籍", mc: "保留学籍" },
-        // { dm: "休学", mc: "休学" },
-        // { dm: "退学", mc: "退学" },
-        // { dm: "征兵入伍", mc: "征兵入伍" },
-        // { dm: "境内交换生项目", mc: "境内交换生项目" },
-        // { dm: "境外交换生项目", mc: "境外交换生项目" },
-        // { dm: "身体疾病", mc: "身体疾病" },
-        // { dm: "心理疾病", mc: "心理疾病" },
-        // { dm: "精神疾病", mc: "精神疾病" },
-        // { dm: "自主创业", mc: "自主创业" },
-        // { dm: "工作实践", mc: "工作实践" },
-        // { dm: "自费境外留学", mc: "自费境外留学" },
-        // { dm: " 自动退学", mc: " 自动退学" },
-        // { dm: " 自动采用休学", mc: " 自动采用休学" },
-        // { dm: " 保留学籍类型", mc: " 保留学籍类型" },
       ],
       allDwh: [], // 学院下拉框
       zyOps: [], // 专业下拉
@@ -413,99 +869,16 @@ export default {
         checkAll: false,
         choose: [],
         checkBox: [
-          {
-            dm: "xm",
-            mc: "姓名",
-          },
-          {
-            dm: "xbmmc",
-            mc: "性别",
-          },
-          {
-            dm: "csrq",
-            mc: "出生日期",
-          },
-          {
-            dm: "sfzjh",
-            mc: "身份证",
-          },
-          {
-            dm: "xh",
-            mc: "学号",
-          },
-          {
-            dm: "dwmc",
-            mc: "单位",
-          },
-          {
-            dm: "zydmc",
-            mc: "专业",
-          },
-          {
-            dm: "bjm",
-            mc: "班级",
-          },
-          {
-            dm: "xz",
-            mc: "学制",
-          },
-          {
-            dm: "zzmmc",
-            mc: "政治面貌",
-          },
-          {
-            dm: "mzmc",
-            mc: "民族",
-          },
-          {
-            dm: "xjztmc",
-            mc: "学籍状态",
-          },
-          {
-            dm: "jgmc",
-            mc: "籍贯",
-          },
-          {
-            dm: "jgmc",
-            mc: "国籍",
-          },
-          {
-            dm: "csdm",
-            mc: "出生地",
-          },
-          {
-            dm: "jtdh",
-            mc: "家庭电话",
-          },
-          {
-            dm: "yzbm",
-            mc: "家庭邮编",
-          },
-          {
-            dm: "jtzz",
-            mc: "家庭住址",
-          },
-
-          {
-            dm: "nj",
-            mc: "年级",
-          },
-          {
-            dm: "yddh",
-            mc: "移动电话",
-          },
-          {
-            dm: "dzyx",
-            mc: "电子邮箱",
-          },
-          {
-            dm: "qqhm",
-            mc: "QQ号码",
-          },
+          { dm: "dwhmc", mc: "培养单位" },
+          { dm: "pyccmmc", mc: "培养层次" },
+          { dm: "zydmmc", mc: "专业" },
+          { dm: "bjmmc", mc: "班级" },
+          { dm: "mkmc", mc: "异动类别" },
+          { dm: "tjdate", mc: "申请时间" },
         ],
         isIndeterminate: true,
       },
-
+      allNj: [],
       tableData: [],
       multipleSelection: [],
       showExport: false,
@@ -514,26 +887,25 @@ export default {
         pageSize: 10,
         total: 0,
       },
-      form: {
-        xh: "",
-        xm: "",
-        dwh: "",
-        pyccm: "",
-        xbm: "",
-        nj: "",
-        sfzjh: "",
-      },
+      formDetails: {},
+      formDetails1: {},
+      shjgOps: [
+        { dm: "01", mc: "通过" },
+        { dm: "02", mc: "拒绝" },
+        { dm: "03", mc: "退回" },
+      ],
+      tableDetail: {},
+      thTableModal: false,
+      flag: "01",
+      multipleSelection1: "",
       AUTHFLAG: false,
     };
   },
-  watch: {},
-
   mounted() {
     this.getSpread();
     this.getAllCollege();
     this.getAllGrade(); //年级
     this.getCode("dmpyccm"); // 培养层次
-    this.getCode("dmsplcm"); //状态
     this.handleSearch();
     this.authConfirm(this.$route.path.split("/")[2]);
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
@@ -542,6 +914,15 @@ export default {
     this.handleSearch();
   },
   computed: {
+    fileData: {
+      get() {
+        return {
+          pageType: "xjyd",
+          roleType: "rcsw",
+          businesId: this.tableDetail.processId,
+        };
+      },
+    },
     fileHeader: {
       get() {
         return {
@@ -553,13 +934,183 @@ export default {
     },
   },
   methods: {
-    dynamicsCheck(value) {
-      let checkedCount = value.length;
-      this.dynamicsCheckboxs.checkAll =
-        checkedCount === this.dynamicsCheckboxs.checkBox.length;
-      this.dynamicsCheckboxs.isIndeterminate =
-        checkedCount > 0 &&
-        checkedCount < this.dynamicsCheckboxs.checkBox.length;
+    shRecord() {
+      this.shRecordModal = true;
+      queryLc({ processInstanceId: this.tableDetail.processId }).then((res) => {
+        this.shRecordTable = res.data;
+      });
+      //
+    },
+    shRecordcancel() {
+      this.shRecordModal = false;
+      this.shRecordTable = [];
+    },
+    async hadleDetail(row) {
+      this.tableDetail = row;
+      var processId = { businesId: row.businesId };
+      var pa = [];
+      pa.push(row.dwh);
+      this.getBJ(pa);
+      await getDetail(processId).then((res) => {
+        this.formDetails1 = res.data;
+        this.formDetails1.SFTS = this.formDetails1.sfts == "0" ? "否" : "是";
+        this.formDetails1.SFRZ =
+          this.formDetails1.fxSfsqrz == "0" ? "否" : "是";
+        this.formDetails1.sqyd =
+          this.formDetails1.sqlx == "blxj"
+            ? "保留学籍"
+            : this.formDetails1.sqlx == "tx"
+            ? "退学"
+            : this.formDetails1.sqlx == "fx"
+            ? "复学"
+            : this.formDetails1.sqlx == "xx"
+            ? "休学"
+            : "";
+        this.formDetails1.sqlx == "blxj"
+          ? (this.flag = "01")
+          : this.formDetails1.sqlx == "tx"
+          ? (this.flag = "02")
+          : this.formDetails1.sqlx == "fx"
+          ? (this.flag = "03")
+          : this.formDetails1.sqlx == "xx"
+          ? (this.flag = "04")
+          : "";
+        this.fxBj = this.formDetails1.fxBj;
+        this.fxNj = this.formDetails1.fxNj;
+      });
+      await xhQuery({ xh: row.xh }).then((res) => {
+        this.formDetails = res.data;
+      });
+      //用于文件查询
+      await querywj(processId).then((res) => {
+        this.formDetails1.fileList = res.data;
+        this.formDetails1.fileList = this.formDetails1.fileList.map((ele) => {
+          return {
+            name: ele.fileName,
+            ...ele,
+          };
+        });
+      });
+      if (this.flag == "02") {
+        this.queryFile();
+      }
+      this.detailModal = true;
+    },
+    handlePreview(file) {
+      downloadFile({ id: file.id }).then((res) => {
+        this.downloadFn(res, file.fileName, file.fileSuffix);
+      });
+    },
+    beforeRemove(file, fileList) {
+      delFile({ id: file.id }).then(() => {
+        this.queryFile();
+      });
+    },
+    async queryFile() {
+      await queryFile({ businesId: this.tableDetail.processId }).then((res) => {
+        this.SHfileList = res.data;
+        this.SHfileList = this.SHfileList.map((ele) => {
+          return {
+            name: ele.fileName,
+            ...ele,
+          };
+        });
+      });
+    },
+    // emptyDetails() {
+    //   this.$refs.editDetails.resetFields();
+    // },
+    checkFormAdd() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.editDetails.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
+    detailCancel() {
+      this.detailModal = false;
+    },
+    detailClick() {
+      if (!this.checkFormAdd()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        this.conformModal = true;
+      }
+    },
+    getRow(index, row) {
+      this.multipleSelection1 = row;
+    },
+    thTableCancel() {
+      this.thTableModal = false;
+    },
+    thTableConfirm() {
+      if (!!this.tempRadio || this.tempRadio === 0) {
+        this.thTableModal = false;
+        this.tableInner = [];
+      } else {
+        this.$message.error("请先勾选退回的节点");
+      }
+    },
+    changeJG(val) {
+      if (val && val == "03") {
+        var processId = { processId: this.tableDetail.taskId };
+        this.conformType = "退回";
+        this.conformText = "退回确认";
+        backFlow(processId).then((res) => {
+          this.tableInner = res.data;
+        });
+        this.thTableModal = true;
+      } else if (val && val == "02") {
+        this.conformType = "拒绝";
+        this.conformText = "拒绝确认";
+      } else {
+        this.conformType = "同意";
+        this.conformText = "同意确认";
+      }
+    },
+    finalCancel() {
+      this.conformModal = false;
+    },
+    finalConfirm() {
+      var data = {
+        id: this.tableDetail.businesId,
+        oplx: this.formDetails1.oplx,
+        processId: this.tableDetail.processId,
+        taskId: this.tableDetail.taskId,
+        xh: this.tableDetail.xh,
+        opMsg: this.editDetails.shyj ? this.editDetails.shyj : "",
+        fxBj: this.flag == "03" ? this.fxBj : "",
+        fxNj: this.flag == "03" ? this.fxNj : "",
+        actId: "",
+        actName: "",
+      };
+      if (this.conformType == "退回") {
+        data.actId = this.multipleSelection1.actId;
+        data.actName = this.multipleSelection1.actName;
+        htFlow(data).then((res) => {
+          this.conformModal = false;
+          this.handleSearch();
+          this.$message.success("已退回");
+        });
+      } else if (this.conformType == "拒绝") {
+        jjFlow(data).then((res) => {
+          this.conformModal = false;
+          this.handleSearch();
+          this.$message.success("已拒绝");
+        });
+      } else {
+        tyFlow(data).then((res) => {
+          this.conformModal = false;
+          this.handleSearch();
+          this.$message.success("已成功通过");
+        });
+      }
+      this.detailModal = false;
     },
     handleCloseLct() {
       this.lctModal = false;
@@ -571,6 +1122,14 @@ export default {
       } else {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");
       }
+    },
+    dynamicsCheck(value) {
+      let checkedCount = value.length;
+      this.dynamicsCheckboxs.checkAll =
+        checkedCount === this.dynamicsCheckboxs.checkBox.length;
+      this.dynamicsCheckboxs.isIndeterminate =
+        checkedCount > 0 &&
+        checkedCount < this.dynamicsCheckboxs.checkBox.length;
     },
     dynamicsAll(val) {
       let allCheck = [];
@@ -590,12 +1149,6 @@ export default {
     },
     dynamicTable() {
       this.dynamicModal = true;
-    },
-    //模板下载
-    mbDown() {
-      fileDown().then((res) =>
-        this.downloadFn(res, "在籍学生信息模板下载", "xlsx")
-      );
     },
     ///上传
     upLoadSuccess(res, file, fileList) {
@@ -619,47 +1172,7 @@ export default {
         message: "上传失败",
       });
     },
-    modal(ind) {
-      if (this.multipleSelection.length <= 0) {
-        this.$message("请先选择学生");
-        return;
-      } else {
-        this.showExportA = true;
-        this.len = this.multipleSelection.length;
-        this.ind = ind;
-      }
-    },
-    handleCancelA() {
-      this.showExportA = false;
-    },
-    handleCancelC() {
-      this.showExportC = false;
-    },
-    expTalk() {
-      let xhs = [];
-      this.multipleSelection.forEach((item) => {
-        xhs.push(item.xh);
-      });
-      let data = { xhs: xhs, etype: "docx" };
-      if (this.ind == 1) {
-        gradStu(data).then((res) =>
-          this.downloadFn(res, "毕业生登记表", "zip")
-        );
-      } else if (this.ind == 2) {
-        stuReg(data).then((res) => this.downloadFn(res, "学生登记表", "zip"));
-      } else if (this.ind == 3) {
-        stuCard(data).then((res) => this.downloadFn(res, "学生卡片", "zip"));
-      }
-    },
-    openIt() {
-      this.expand = false;
-    },
-    closeIt() {
-      this.expand = true;
-    },
-    openAdd() {
-      this.showExportC = true;
-    },
+
     // 查询学院
     getAllCollege() {
       getCollege()
@@ -674,7 +1187,7 @@ export default {
         this.moreIform.pread = []; // 班级
       }
       this.getZY(val);
-      this.getBJ(val);
+      //   this.getBJ(val);
     },
     // 学院找专业
     getZY(val) {
@@ -688,17 +1201,7 @@ export default {
           .catch((err) => {});
       }
     },
-    getBJ(val) {
-      this.bjOps = [];
-      let data = { DWH: val };
-      if (Object.keys(val).length !== 0) {
-        getBJ(data)
-          .then((res) => {
-            this.bjOps = res.data;
-          })
-          .catch((err) => {});
-      }
-    },
+
     getCode(data) {
       this.getCodeInfoByEnglish(data);
     },
@@ -707,9 +1210,6 @@ export default {
       getCodeInfoByEnglish(data)
         .then((res) => {
           switch (paramsData) {
-            case "dmsplcm": //审批结果
-              this.ztStatus = res.data;
-              break;
             case "dmpyccm":
               this.$set(this.training, "checkBox", res.data);
               this.pyccOps = res.data;
@@ -725,6 +1225,17 @@ export default {
           this.manageRegOps = res.data.dwhbj;
         })
         .catch((err) => {});
+    },
+    getBJ(val) {
+      this.bjOps = [];
+      let data = { DWH: val };
+      if (Object.keys(val).length !== 0) {
+        getBJ(data)
+          .then((res) => {
+            this.bjOps = res.data;
+          })
+          .catch((err) => {});
+      }
     },
     //获取年级
     getAllGrade() {
@@ -782,97 +1293,50 @@ export default {
       this.training.checkAll = checkedCount === this.training.checkBox.length;
       this.training.isIndeterminate =
         checkedCount > 0 && checkedCount < this.training.checkBox.length;
-      // console.log(this.training.choose, "单选");
     },
 
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      // console.log(this.multipleSelection)
     },
     // 打开导出弹窗
     async handleExport() {
-      let csrqs,
-        csrqe = "";
-
+      this.daochuModal = true;
+    },
+    daochu() {
+      var ids = this.multipleSelection.map((item) => item.businesId);
       let data = {
         xh: this.select == "xh" ? this.searchVal : null,
         xm: this.select == "xm" ? this.searchVal : null,
-        sfzjh: this.select == "sfzjh" ? this.searchVal : null,
-        yddh: this.select == "yddh" ? this.searchVal : null,
-        jg: this.select == "jg" ? this.searchVal : "",
-        csdm: this.select == "csdm" ? this.searchVal : "",
-        gjdqm: this.select == "gjdqm" ? this.searchVal : "",
-        xbm: this.dmxbmOPs.choose,
-        csrqs: csrqs,
-        csrqe: csrqe,
-        pyccm: this.training.choose,
-        xz: this.learnHe.choose,
-        xjzt: this.studentStatus.choose,
-        zzmmm: this.politica.choose,
-        sfzx: this.inSchool.choose,
-        xxxs: this.isQuan.choose,
-        mzm: this.ethnic.choose,
-        bjm: this.moreIform.pread,
         dwh: this.moreIform.manageReg,
         zydm: this.moreIform.stuInfo,
-        nj: this.moreIform.grade,
+        pyccm: this.training.choose,
+        bjm: this.moreIform.pread,
+        mk: this.moreIform.mk,
+        tjdate: this.tjdate,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         limitSql: "",
+        ids: ids,
+        status: this.moreIform.ztStatus,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
-      }; //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
-      this.manageRegStuInfoParam = data;
-      if (this.multipleSelection.length > 0) {
-        this.leng = this.multipleSelection.length;
-      } else {
-        await getManageRegStuInfoPageList(data)
-          .then((res) => {
-            this.leng = res.data.total;
-          })
-          .catch((err) => {});
-      }
-      if (this.leng > 0) {
-        this.daochuModal = true;
-      } else {
-        this.$message.warning("当前无数据导出");
-      }
-    },
-    daochu() {
+      };
+      yclExp(data).then((res) => {
+        this.downloadFn(res, "学籍异动已处理列表下载", "xlsx");
+        if (this.$store.getters.excelcount > 0) {
+          this.$message.success(
+            `已成功导出${this.$store.getters.excelcount}条数据`
+          );
+        }
+      });
       this.daochuModal = false;
-      this.showExport = true;
     },
     handleCancelB() {
       this.daochuModal = false;
     }, // 导出取消
     handleCancel() {
       this.showExport = false;
-    },
-    // 导出确认
-    handleConfirm() {
-      this.showExport = false;
-    },
-    hadleDetail(row, flag) {
-      // if (flag == '2' && row.flag == 'false' || !row.flag) {
-      //   return
-      // }
-
-      let schooling = ""; // 3 4 5 是本科
-      if (row.pyccm == 1 || row.pyccm == 2) {
-        // 1 2 是研究生
-        schooling = 2;
-      } else {
-        schooling = 1;
-      }
-      this.$router.push({
-        path: "/student/studetails",
-        query: {
-          xh: row.xh,
-          show: flag, // 1是详情，2是编辑
-          schooling: schooling,
-        },
-      });
     },
 
     //排序
@@ -881,49 +1345,18 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
     },
-    //新增
-    handleAdd() {
-      if (!this.pycc) {
-        this.$message.error("请选择培养层次");
-      } else {
-        let schooling = "";
-        if (this.pycc == 1 || this.pycc == 2) {
-          // 1 2 是研究生
-          schooling = 2;
-        } else {
-          schooling = 1;
-        }
-
-        this.$router.push({
-          path: "/student/addstuDetails",
-          query: {
-            pycc: this.pycc,
-            schooling: schooling,
-          },
-        });
-        this.showExportC = false;
-        this.pycc = "";
-      }
-    },
-    // //导入
-    // handleImport() {
-    //   importRegStuExcel().then((res) => {});
-    // },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.expandOpen {
-  width: 80%;
-  height: 100px;
-  overflow: hidden;
-  padding: 10px;
-  margin-left: -10px;
+::v-deep .el-dialog__header {
+  border-bottom: 1px solid #eee;
 }
-.expandClose {
-  width: 80%;
-  height: 310px;
+
+// dialog标题黑色
+::v-deep .el-dialog__title {
+  font-weight: bold;
 }
 .manStudentStyle {
   .mt15 {
@@ -972,6 +1405,99 @@ export default {
       background: #fafafa;
     }
   }
+  .backDetail {
+    display: flex;
+    margin-bottom: 20px;
+    flex-direction: row;
+
+    .formRight {
+      width: 100%;
+      margin-top: 15px;
+      .rowStyle {
+        padding: 0 !important;
+        margin: 0;
+        border-bottom: 1px solid #cccccc;
+      }
+      .wrap {
+        display: flex;
+        align-items: center;
+        .title {
+          flex: 0 0 160px;
+          line-height: 48px;
+          background: #e0e0e0;
+          text-align: right;
+          padding-right: 5px;
+          margin: 0 !important;
+        }
+        .content {
+          font-weight: 400;
+          font-size: 14px;
+          color: #1f1f1f;
+          line-height: 22px;
+          margin-left: 16px;
+        }
+      }
+
+      .GreenButton {
+        //border: 1px solid grey;
+        height: 49px;
+        border-radius: 2px;
+        background: #005657;
+      }
+      .title1 {
+        font-size: 16px;
+        text-align: center;
+        line-height: 48px;
+        color: #fff;
+        // vertical-align: middle;
+      }
+    }
+  }
+  .baseInfo {
+    // padding: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
+    // overflow-x: auto;
+    .formLeft {
+      background: #fff;
+      align-items: center;
+      .title {
+        font-weight: 600;
+        font-size: 16px;
+        color: #1f1f1f;
+        line-height: 20px;
+      }
+    }
+  }
+  .formRight {
+    width: 100%;
+    margin-top: 15px;
+    .rowStyle {
+      padding: 0 !important;
+      margin: 0;
+      border-bottom: 1px solid #cccccc;
+    }
+    .wrap {
+      display: flex;
+      align-items: center;
+      .title {
+        flex: 0 0 160px;
+        line-height: 48px;
+        background: #e0e0e0;
+        text-align: right;
+        padding-right: 5px;
+        margin: 0 !important;
+      }
+      .content {
+        font-weight: 400;
+        font-size: 14px;
+        color: #1f1f1f;
+        line-height: 22px;
+        margin-left: 16px;
+      }
+    }
+  }
+
   .tableWrap {
     background: #fff;
     padding: 20px;

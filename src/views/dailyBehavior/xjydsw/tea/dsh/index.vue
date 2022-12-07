@@ -914,7 +914,6 @@ import {
   dshExp,
 } from "@/api/dailyBehavior/xjyd";
 import { getToken } from "@/utils/auth";
-import { throws } from "assert";
 export default {
   //   components: { CheckboxCom, exportView, checkboxComDynic },
   components: { CheckboxCom, checkboxComDynic, lctCom },

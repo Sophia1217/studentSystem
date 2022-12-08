@@ -261,10 +261,20 @@
       <span slot="footer" class="dialog-footer">
         <el-table :data="shRecordTable" ref="multipleTable" style="width: 100%">
           <el-table-column label="审核人" prop="userId"></el-table-column>
-          <el-table-column
-            fixed="left"
-            label="申请审核结果"
-            prop="opType"
+          <el-table-column fixed="left" label="申请审核结果" prop="opType">
+            <template slot-scope="scope">
+              <el-select
+                v-model="scope.row.opType"
+                placeholder="请选择"
+                :disabled="true"
+              >
+                <el-option
+                  v-for="(item, index) in czlx"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select> </template
           ></el-table-column>
           <el-table-column
             fixed="left"
@@ -1039,6 +1049,7 @@ export default {
       tableDetail: {},
       thTableModal: false,
       flag: "01",
+      czlx: [],
       multipleSelection1: "",
       form: {
         xh: "",
@@ -1057,6 +1068,7 @@ export default {
     this.getAllCollege();
     this.getAllGrade(); //年级
     this.getCode("dmpyccm"); // 培养层次
+    this.getCode("dmshrzlx");
     this.handleSearch();
     this.authConfirm(this.$route.path.split("/")[2]);
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
@@ -1368,6 +1380,9 @@ export default {
       getCodeInfoByEnglish(data)
         .then((res) => {
           switch (paramsData) {
+            case "dmshrzlx":
+              this.czlx = res.data;
+              break;
             case "dmpyccm":
               this.$set(this.training, "checkBox", res.data);
               this.pyccOps = res.data;

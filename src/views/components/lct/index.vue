@@ -69,7 +69,7 @@ export default {
   },
 
   mounted() {
-    this.getCode("dmshrzlx"); //性别
+    this.getCode("dmshrzlx");
   },
 
   methods: {

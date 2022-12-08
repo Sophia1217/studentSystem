@@ -211,7 +211,7 @@
                   type="textarea"
                   :autosize="{ minRows: 6, maxRows: 6 }"
                   placeholder="请输入内容"
-                  maxlength="1500"
+                  maxlength="500"
                 ></el-input>
               </el-form-item>
             </el-col>
@@ -384,7 +384,7 @@
                   type="textarea"
                   :autosize="{ minRows: 6, maxRows: 6 }"
                   placeholder="请输入内容"
-                  maxlength="1500"
+                  maxlength="500"
                 ></el-input>
               </el-form-item>
             </el-col>

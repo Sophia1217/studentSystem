@@ -125,7 +125,7 @@ export default {
       resOptions: [],
       queryParamsInner: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 9999,
         name: null,
         category: null,
         key: null,

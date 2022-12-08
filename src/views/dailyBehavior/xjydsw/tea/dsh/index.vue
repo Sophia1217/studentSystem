@@ -520,7 +520,7 @@
                       <el-select
                         v-model="fxNj"
                         collapse-tags
-                        placeholder="请选择班级"
+                        placeholder="请选择年级"
                         size="small"
                       >
                         <el-option

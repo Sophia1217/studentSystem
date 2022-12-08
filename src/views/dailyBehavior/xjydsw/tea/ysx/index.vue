@@ -1260,7 +1260,7 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryYcl(data)
+      queryYsx(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;

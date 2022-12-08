@@ -316,6 +316,7 @@
         :visible.sync="detailModal"
         :before-close="detailCancel"
         width="60%"
+        @close="emptyEdit()"
       >
         <template>
           <div class="baseInfo">
@@ -763,6 +764,11 @@ export default {
     },
     getRow(index, row) {
       this.multipleSelection1 = row;
+    },
+    emptyEdit() {
+      this.$nextTick(() => {
+        this.$refs.formDetails.resetFields();
+      });
     },
     //通过
     pass() {

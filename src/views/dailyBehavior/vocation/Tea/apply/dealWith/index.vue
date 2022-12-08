@@ -348,6 +348,22 @@
                   </el-form-item>
                 </el-col>
               </el-row>
+              <!-- <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="附件:">
+                    <div v-for="item in formDetails.fileList">
+                      <div
+                        style="display: flex; justify-content: space-between"
+                      >
+                        <a>
+                          {{ item.fileName }}
+                        </a>
+                       
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row> -->
               <div v-for="(item, index) in XjDetails">
                 <el-row :gutter="20">
                   <el-col :span="12">

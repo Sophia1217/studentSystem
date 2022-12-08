@@ -1294,7 +1294,7 @@
         </div>
           <div id="tag_32" class="headline">
           <div>专技职称</div>
-          <!-- <div v-if="isEdit == 2&&detailInfoData.zgZyjszws.sftb==0" class="editBtn" @click="addDetailInfoData(3)">
+          <!-- <div v-if="isEdit == 2&&detailInfoData.zgZyjszws.sftb==0" class="editBtn" @click="addDetailInfoData(3)">zjzcdm
             <i class="addIcon" /> 添加
           </div> -->
         </div>
@@ -2533,7 +2533,7 @@ export default {
     this.getCode("dmxbm");
     this.getCode("dmsfbzm");
     this.getCode("dmzzmmm");
-    this.getCode("dmkyzcm");
+    this.getCode("dmrszyjszwm");
     this.getCode("dmrsxlm");
     this.getCode("dmrsxklbm");
     this.getCode("dmxwm");
@@ -2582,7 +2582,7 @@ export default {
             case "dmzzmmm":
               this.zzmmmOps = res.data;
               break;
-            case "dmkyzcm":
+            case "dmrszyjszwm":
               this.zjzcdmOps = res.data;
               break;
             case "dmrsxlm":

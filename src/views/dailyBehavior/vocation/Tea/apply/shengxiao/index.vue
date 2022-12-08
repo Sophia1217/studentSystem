@@ -31,7 +31,7 @@
       </div>
       <!-- 更多选择 -->
       <div v-if="isMore" class="moreSelect">
-        <el-row :gutter="20" class="mt15">
+        <!-- <el-row :gutter="20" class="mt15">
           <el-col :span="12">
             <span>学<span v-html="'\u3000\u3000'"></span>年：</span>
             <el-select
@@ -64,7 +64,7 @@
               ></el-option>
             </el-select>
           </el-col>
-        </el-row>
+        </el-row> -->
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">请假类型：</el-col>
           <el-col :span="20">
@@ -141,6 +141,14 @@
       <div class="headerTop">
         <div class="headerLeft">
           <span class="title">已生效列表</span> <i class="Updataicon"></i>
+          <div class="dqXnxqArea">
+            <el-cascader
+              v-model="dqXnxq"
+              :options="options"
+              @change="handleChangeXnxq"
+              :props="XnxqProps"
+            ></el-cascader>
+          </div>
         </div>
         <div class="headerRight">
           <div class="btns borderOrange" @click="expor">
@@ -427,7 +435,7 @@
       />
     </div>
     <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
-      <span>确认导出{{ leng }}条数据？</span>
+      <span>确认导出数据？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="handleConfirm"
@@ -446,6 +454,8 @@ import {
   getYsxList,
   getXsJbxx,
   queryFlowableComment,
+  excelLsYsxList,
+  queryXnXq,
 } from "@/api/dailyBehavior/vocationTea";
 import { queryYshList, excelExportCzdaFlowed } from "@/api/growFiles/infoAppr";
 import { selectDetail } from "@/api/dailyBehavior/vocationStu";
@@ -546,23 +556,66 @@ export default {
       formDetails: {},
       XjDetails: [],
       shDetails: {},
+      XnxqProps: {
+        value: "dm", //匹配响应数据中的id
+        label: "mc", //匹配响应数据中的name
+        checkStrictly: true,
+        children: "dataCodeCascadingList", //匹配响应数据中的children }
+      },
+      options: [],
+      dqXnxq: [],
     };
   },
 
   mounted() {
-    this.getList();
+    //this.getList();
     this.getCode("dmsplcm"); //状态
 
     this.getCode("dmxjlcm"); //销假状态
     this.getCode("dmqjlxm"); //请假类型
     this.getCode("dmxqm");
+    this.getXnxq();
   },
 
   methods: {
+    //获取学年学期
+    getXnxq() {
+      queryXnXq().then((res) => {
+        this.options = res.data;
+        for (let item of res.data[0].dataCodeCascadingList) {
+          if (item.dataCodeCascadingList !== null) {
+            this.dqXnxq = [res.data[0].dm, item.dm];
+          }
+        }
+        this.queryParams.xm = this.select == "xm" ? this.searchVal : "";
+        this.queryParams.xh = this.select == "xh" ? this.searchVal : "";
+        this.queryParams.qjts = this.select == "qjts" ? this.searchVal : -1;
+        this.queryParams.xnList.push(this.dqXnxq[0]);
+
+        this.queryParams.xqmList.push(this.dqXnxq[1]);
+        getYsxList(this.queryParams)
+          .then((response) => {
+            this.basicInfoList = response.data; // 根据状态码接收数据
+            this.total = response.totalCount; //总条数
+          })
+          .catch((err) => {});
+      });
+    },
+    handleChangeXnxq() {
+      this.queryParams.xnList = [];
+      this.queryParams.xqmList = [];
+      if (this.dqXnxq[0]) {
+        this.queryParams.xnList.push(this.dqXnxq[0]);
+      }
+      if (this.dqXnxq[1]) {
+        this.queryParams.xqmList.push(this.dqXnxq[1]);
+      }
+      this.handleSearch();
+    },
     getList() {
       (this.queryParams.xm = this.select == "xm" ? this.searchVal : ""),
         (this.queryParams.xh = this.select == "xh" ? this.searchVal : ""),
-        (this.queryParams.qjts = this.select == "qjts" ? this.searchVal : ""),
+        (this.queryParams.qjts = this.select == "qjts" ? this.searchVal : -1),
         getYsxList(this.queryParams)
           .then((response) => {
             this.basicInfoList = response.data; // 根据状态码接收数据
@@ -582,12 +635,39 @@ export default {
       for (let item_row of this.multipleSelection) {
         ids.push(item_row.businesId);
       }
+      let Query = [
+          "xh",
+          "xm",
+          "xn",
+          "xq",
+          "qjlx",
+          "qjts",
+          "kssj",
+          "jssj",
+          "qjstatuschinese",
+          "xjstatuschinese",
+        ],
+        QueryChinese = [
+          "学号",
+          "姓名",
+          "学年",
+          "学期",
+          "请假类型",
+          "请假天数",
+          "开始时间",
+          "结束时间",
+          "审核状态",
+          "销假状态",
+        ];
+
       this.exportParams.pageNum = 0;
       this.$set(this.exportParams, "ids", ids);
-      //this.$set(this.exportParams, "status", "1");
-      excelExportCzdaFlowed(this.exportParams)
+      this.$set(this.exportParams, "sqlQuery", Query.toString());
+      this.$set(this.exportParams, "sqlQueryChinese", QueryChinese.toString());
+
+      excelLsYsxList(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "成长档案已处理列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "请假列表已生效列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -600,35 +680,25 @@ export default {
     },
     async expor() {
       let data = {
-        xm: this.select == "xm" ? this.searchVal : null,
-        xh: this.select == "xh" ? this.searchVal : null,
+        qjts: this.select == "qjts" ? this.searchVal : -1,
+        xh: this.select == "xh" ? this.searchVal : "",
+        xm: this.select == "xm" ? this.searchVal : "",
 
-        dwh: this.moreIform.dwh || [],
-        zydm: this.moreIform.zydm || [],
-        bjm: this.moreIform.bjm || [],
-        mk: this.moreIform.mk || [],
-        status: this.moreIform.status || [],
-        pyccm: this.training.choose || [],
+        kssjStart: this.queryParams.kssjStart,
+        kssjEnd: this.queryParams.kssjEnd,
+        jssjStart: this.queryParams.jssjStart,
+        jssjEnd: this.queryParams.jssjEnd,
+        xnList: this.queryParams.xnList,
+        qjlxmList: this.queryParams.qjlxmList,
+        xqmList: this.queryParams.xqmList,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       }; //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
       this.exportParams = data;
-      if (this.multipleSelection.length > 0) {
-        this.leng = this.multipleSelection.length;
-      } else {
-        await queryYshList(data)
-          .then((res) => {
-            this.leng = res.totalCount;
-          })
-          .catch((err) => {});
-      }
-      if (this.leng > 0) {
-        this.showExport = true;
-      } else {
-        this.$message.warning("当前无数据导出");
-      }
+
+      this.showExport = true;
     },
     handleCloseLct() {
       this.lctModal = false;
@@ -738,9 +808,9 @@ export default {
       this.queryParams.jssjEnd = rqe2;
       this.queryParams.qjstatusList = this.shzt.choose;
       this.queryParams.xjstatusList = this.xjzt.choose;
-      this.queryParams.xnList = this.xnList;
+      //this.queryParams.xnList = this.xnList;
       this.queryParams.qjlxmList = this.qjlx.choose;
-      this.queryParams.xqmList = this.xqmList;
+      //this.queryParams.xqmList = this.xqmList;
       this.getList(this.queryParams);
     },
     // 点击更多
@@ -887,6 +957,8 @@ export default {
       justify-content: space-between;
       align-items: center;
       .headerLeft {
+        display: flex;
+
         .title {
           font-weight: 600;
           font-size: 20px;
@@ -900,6 +972,9 @@ export default {
           width: 20px;
           height: 20px;
           background: url("~@/assets/images/updata.png") no-repeat;
+        }
+        .dqXnxqArea {
+          margin-left: 20px;
         }
       }
       .headerRight {

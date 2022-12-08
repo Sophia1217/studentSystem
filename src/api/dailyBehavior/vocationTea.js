@@ -97,7 +97,61 @@ export function queryFlowableComment(query) {
 export function excelLsDshList(query) {
   return request({
     url: '/rcswrcqxj/excelLsDshList',
-    method: 'get',
-    params: query
+    method: 'post',
+    responseType:'blob',
+    data: query
+  })
+}
+
+//老师请假已处理导出
+export function excelLsYclList(query) {
+  return request({
+    url: '/rcswrcqxj/excelLsYclList',
+    method: 'post',
+    responseType:'blob',
+    data: query
+  })
+}
+//老师请假已生效导出
+export function excelLsYsxList(query) {
+  return request({
+    url: '/rcswrcqxj/excelLsYsxList',
+    method: 'post',
+    responseType:'blob',
+    data: query
+  })
+}
+//老师销假待处理导出
+export function excelLsDclList(query) {
+  return request({
+    url: '/rcswrcqxj/excelLsDclList',
+    method: 'post',
+    responseType:'blob',
+    data: query
+  })
+}
+//老师销假已处理列表导出
+export function excelLsXjYclList(query) {
+  return request({
+    url: '/rcswrcqxj/excelLsXjYclList',
+    method: 'post',
+    responseType:'blob',
+    data: query
+  })
+}
+//当前学年学期查询
+export function getYearTerm(query) {
+  return request({
+    url: '/commonMethod/getYearTerm',
+    method: 'post',
+    data: query
+  })
+}
+//学年学期
+export function queryXnXq(query) {
+  return request({
+    url: '/commonMethod/queryXnXq',
+    method: 'post',
+    data: query
   })
 }

@@ -822,7 +822,7 @@ export default {
       submitModal: false,
       delModal: false,
       queryParams: {
-        qjts: 0, //请假天数
+        qjts: -1, //请假天数
         kssjEnd: "",
         kssjStart: "",
         jssjEnd: "",
@@ -858,24 +858,73 @@ export default {
       formEdit: { qwdzm: [] },
       formXj: {},
       rules: {
-        zjlx: [
+        qjsy: [
           {
             required: true,
-            message: "补办证件类型不能为空",
-            trigger: "change",
+            message: "请假事由不能为空",
+            trigger: "blur",
           },
         ],
-        sqsj: [
+        qjts: [
           {
             required: true,
-            message: "申请补办时间不能为空",
-            trigger: "change",
+            message: "请假天数不能为空",
+            trigger: "blur",
           },
         ],
-        sqbbly: [
+        xjts: [
           {
             required: true,
-            message: "申请补办理由不能为空",
+            message: "续假天数不能为空",
+            trigger: "blur",
+          },
+        ],
+        jjlxr: [
+          {
+            required: true,
+            message: "紧急联系人不能为空",
+            trigger: "blur",
+          },
+        ],
+        lxdh: [
+          {
+            required: true,
+            message: "联系电话不能为空",
+            trigger: "blur",
+          },
+        ],
+        xxdz: [
+          {
+            required: true,
+            message: "详细地址不能为空",
+            trigger: "blur",
+          },
+        ],
+        qjsj: [
+          {
+            required: true,
+            message: "请假时间不能为空",
+            trigger: "blur",
+          },
+        ],
+        qjlxm: [
+          {
+            required: true,
+            message: "请假类型不能为空",
+            trigger: "blur",
+          },
+        ],
+        sflhm: [
+          {
+            required: true,
+            message: "是否离汉不能为空",
+            trigger: "blur",
+          },
+        ],
+        qwdzm: [
+          {
+            required: true,
+            message: "前往地址不能为空",
             trigger: "blur",
           },
         ],
@@ -989,7 +1038,7 @@ export default {
     },
     //获取数据列表
     getList() {
-      this.queryParams.qjts = this.select == 1 ? this.searchVal : 0;
+      this.queryParams.qjts = this.select == "1" ? this.searchVal : -1;
 
       getQJList(this.queryParams)
         .then((response) => {
@@ -1126,6 +1175,7 @@ export default {
     //新增
     handleNew() {
       this.formAdd = {};
+      this.formAdd.files = [];
       this.fileList = [];
       this.addModal = true;
     },
@@ -1315,11 +1365,11 @@ export default {
     },
     xujia(row) {
       this.xjModal = true;
-      selectDetail({ businesId: row.id }).then((res) => {
-        this.formXj = res.data[0];
-        this.jssjOrigin = res.data[0].jssj;
-        this.$set(this.formXj, "qjsj", [res.data[0].kssj, res.data[0].jssj]);
-      });
+      console.log(row);
+      this.formXj = row;
+      this.formXj.xjts = 0;
+      this.jssjOrigin = row.jssj;
+      this.$set(this.formXj, "qjsj", [row.kssj, row.jssj]);
     },
     // 请假类型全选
     handleCheckAllChangeQjlx(val) {

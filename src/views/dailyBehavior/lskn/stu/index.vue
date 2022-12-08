@@ -119,14 +119,14 @@
       <el-dialog
         title="新增申请"
         :visible.sync="addModal"
-        width="45%"
+        width="55%"
         @close="addCance"
         :close-on-click-modal="false"
       >
         <div style="padding: 0 50px">
           <el-form>
             <el-table :data="formAdd.table" style="width: 100%">
-              <el-table-column label="学年">
+              <el-table-column label="学年" width="160">
                 <template slot-scope="scope">
                   <el-select
                     v-model="scope.row.xn"
@@ -143,7 +143,7 @@
                   </el-select>
                 </template>
               </el-table-column>
-              <el-table-column prop="xq" label="学期">
+              <el-table-column prop="xq" label="学期" width="160">
                 <template slot-scope="scope">
                   <el-select v-model="scope.row.xq" placeholder="请选择">
                     <el-option
@@ -156,13 +156,13 @@
                   </el-select>
                 </template>
               </el-table-column>
-              <el-table-column prop="sqje" label="申请金额（元）">
+              <el-table-column prop="sqje" label="申请金额（元）" width="160">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.sqje" />
                 </template>
               </el-table-column>
-              <el-table-column prop="sqyylb" label="申请原因类别">
-                <template slot-scope="scope">
+              <el-table-column prop="sqyylb" label="申请原因类别" width="160">
+                <template slot-scope="scope" align="center">
                   <el-select v-model="scope.row.sqyylb" placeholder="请选择">
                     <el-option
                       v-for="item in dmlsknsqlb"
@@ -226,18 +226,20 @@
         title="详情"
         :visible.sync="editModal"
         @close="editCance"
-        width="45%"
+        width="55%"
         :close-on-click-modal="false"
       >
         <div style="padding: 0 50px">
           <el-form>
             <el-table :data="formEdit.table" style="width: 100%">
-              <el-table-column label="学年">
+              <el-table-column label="学年" width="160">
                 <template slot-scope="scope">
+                  <div v-if="editFlag == '2'">{{ scope.row.xnmc }}</div>
                   <el-select
                     v-model="scope.row.xn"
                     collapse-tags
                     placeholder="请选择学年"
+                    v-if="editFlag == '3'"
                     size="small"
                   >
                     <el-option
@@ -249,9 +251,14 @@
                   </el-select>
                 </template>
               </el-table-column>
-              <el-table-column prop="xq" label="学期">
+              <el-table-column prop="xq" label="学期" width="160">
                 <template slot-scope="scope">
-                  <el-select v-model="scope.row.xq" placeholder="请选择">
+                  <div v-if="editFlag == '2'">{{ scope.row.xqmc }}</div>
+                  <el-select
+                    v-model="scope.row.xq"
+                    placeholder="请选择"
+                    v-if="editFlag == '3'"
+                  >
                     <el-option
                       v-for="item in dmxqm"
                       :key="item.value"
@@ -262,14 +269,20 @@
                   </el-select>
                 </template>
               </el-table-column>
-              <el-table-column prop="sqje" label="申请金额（元）">
+              <el-table-column prop="sqje" label="申请金额（元）" width="160">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.sqje" />
+                  <div v-if="editFlag == '2'">{{ scope.row.sqje }}</div>
+                  <el-input v-if="editFlag == '3'" v-model="scope.row.sqje" />
                 </template>
               </el-table-column>
-              <el-table-column prop="sqyylb" label="申请原因类别">
+              <el-table-column prop="sqyylb" label="申请原因类别" width="160">
                 <template slot-scope="scope">
-                  <el-select v-model="scope.row.sqyylb" placeholder="请选择">
+                  <div v-if="editFlag == '2'">{{ scope.row.sqlbmc }}</div>
+                  <el-select
+                    v-if="editFlag == '3'"
+                    v-model="scope.row.sqyylb"
+                    placeholder="请选择"
+                  >
                     <el-option
                       v-for="item in dmlsknsqlb"
                       :key="item.value"
@@ -283,7 +296,18 @@
               <el-table-column label="材料证明">
                 <template slot-scope="scope">
                   <el-upload
+                    v-if="editFlag == 2"
                     action="#"
+                    multiple
+                    :file-list="formEdit.fileList"
+                    :auto-upload="false"
+                    class="el-upload"
+                    :disabled="editFlag == 2 ? true : false"
+                  >
+                  </el-upload>
+                  <el-upload
+                    action="#"
+                    v-if="editFlag == '3'"
                     multiple
                     class="el-upload"
                     accept=".pdf,.jpg"
@@ -291,7 +315,7 @@
                     ref="upload"
                     :file-list="formEdit.fileList"
                     :on-change="fileChange"
-                    :before-remove="beforeRemove"
+                    :before-remove="beforeRemoveEdit"
                   >
                     <el-button size="small" type="primary">点击上传</el-button>
                   </el-upload>
@@ -301,8 +325,10 @@
           </el-form>
           <el-row>
             <div style="margin: 15px 0; font-weight: 700">申请理由</div>
+            <div v-if="editFlag == '2'">{{ formEdit.sqly }}</div>
             <el-input
               type="textarea"
+              v-if="editFlag == '3'"
               placeholder="请输入内容"
               v-model="formEdit.sqly"
               :autosize="{ minRows: 5 }"
@@ -311,7 +337,9 @@
           </el-row>
           <el-row>
             <div style="margin: 15px 0; font-weight: 700">申请时间</div>
+            <div v-if="editFlag == '2'">{{ formEdit.sqsj }}</div>
             <el-date-picker
+              v-if="editFlag == '3'"
               v-model="formEdit.sqsj"
               type="date"
               format="yyyy 年 MM 月 dd 日"
@@ -432,12 +460,6 @@ export default {
       dmxqm: [],
       dmsfbzm: [],
       chehuiModal: false,
-      sqlxList: [
-        { dm: "征兵入伍", mc: "征兵入伍" },
-        { dm: "境内交换生项目", mc: "境内交换生项目" },
-        { dm: "境外交换生项目", mc: "境外交换生项目" },
-      ],
-      rulesBlcak: {},
       rules: {
         sf: [
           {
@@ -728,8 +750,8 @@ export default {
     },
     beforeRemoveEdit(file, fileList) {
       let uid = file.uid;
-      let idx = fileList.findIndex((item) => item.uid === uid);
-      fileList.splice(idx, 0);
+      let idx1 = this.fileListAdd.findIndex((item) => item.uid === uid);
+      this.fileListAdd.splice(idx1, 1);
       this.fileList = fileList;
       if (file.id) {
         //如果是后端返回的文件就走删除接口，不然前端自我删除
@@ -776,6 +798,7 @@ export default {
       //   this.$message.error("请完善表单相关信息！");
       //   return;
       // } else {
+      console.log("this.fileListAdd", this.fileListAdd);
       var data = this.formEdit;
       console.log("data", data);
       let formData = new FormData();
@@ -792,15 +815,15 @@ export default {
           formData.append("files", file.raw);
         });
       }
-      edit(formData).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("编辑成功");
-          this.query();
-        } else {
-          this.$message.error("编辑失败");
-        }
-      });
-      this.editModal = false;
+      // edit(formData).then((res) => {
+      //   if (res.errcode == "00") {
+      //     this.$message.success("编辑成功");
+      //     this.query();
+      //   } else {
+      //     this.$message.error("编辑失败");
+      //   }
+      // });
+      // this.editModal = false;
       // }
     },
     addClick() {
@@ -870,6 +893,9 @@ export default {
         xq: row.xqm,
         sqje: row.sqje,
         sqyylb: row.sqlbm,
+        sqlbmc: row.sqlbmc,
+        xnmc: row.xnmc,
+        xqmc: row.xqmc,
       };
       this.formEdit.sqly = row.sqly;
       this.formEdit.sqsj = row.sqsj;

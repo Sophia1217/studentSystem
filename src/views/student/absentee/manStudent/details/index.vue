@@ -3673,6 +3673,7 @@ import {
   getZY,
   getBJ,
   getLocationjl,
+  updateRegStuInfoStu,
 } from "@/api/student/index";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import TopTitle from "@/components/TopTitle/index.vue";
@@ -4245,19 +4246,31 @@ export default {
       //   this.$message.error("网络地址不能为空");
       // }
       else {
-        updateRegStuInfo(data)
-          .then((res) => {
-            this.$message({
-              message: res.errmsg,
-              type: "success",
-            });
-            this.$router.push({
-              path: this.routerFrom,
-            });
-          })
-          .catch((err) => {
-            this.$message.error(err.errmsg);
-          });
+        if (this.$store.getters.roleId == "09") {
+          updateRegStuInfoStu(data)
+            .then((res) => {
+              this.$message({
+                message: res.errmsg,
+                type: "success",
+              });
+              this.$router.push({
+                path: this.routerFrom,
+              });
+            })
+            .catch((err) => {});
+        } else {
+          updateRegStuInfo(data)
+            .then((res) => {
+              this.$message({
+                message: res.errmsg,
+                type: "success",
+              });
+              this.$router.push({
+                path: this.routerFrom,
+              });
+            })
+            .catch((err) => {});
+        }
       }
     },
     modal(ind) {

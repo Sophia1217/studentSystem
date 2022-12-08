@@ -83,7 +83,15 @@ export function updateRegStuInfo(data) {
     data: data
   })
 }
-
+//学生端修改详情
+export function updateRegStuInfoStu(data) {
+  return request({
+     //url: '/regStuInfo/updateRegStuInfo',
+     url: '/regStuInfo/updateRegStuInfo',
+    method: 'post',
+    data: data
+  })
+}
 export function updateRegStuInfo1(data) {
   return request({
     url: '/StuInfoFlow/updateStuInfo',

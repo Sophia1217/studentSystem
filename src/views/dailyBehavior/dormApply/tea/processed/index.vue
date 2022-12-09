@@ -408,7 +408,7 @@
                       <!-- <div>{{formDetails.yzsxxdz}}</div> -->
                     </div>
                     <div v-show="jzflag ==2">
-                      <div>{{formDetails.ld + "  "+ formDetails.fj}}</div> 
+                      <div>{{formDetails.sqld + "  "+ formDetails.sqfj}}</div> 
                       <!-- <el-select
                         v-model="formDetails.sqldid"  
                         placeholder="非集中原寝室楼栋"
@@ -446,7 +446,7 @@
                     label="是否退宿"
                     prop="sfts"
                   >
-                    <div>{{formDetails.sfts}}</div>
+                    <div>{{formDetails.sftsmc}}</div>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -456,9 +456,8 @@
                     label="申请住宿地点"
                     prop="xzsdzm"
                   >
-                    <!-- <div v-show="isEdit == 0">{{formDetails.ld}}</div>
-                    <div v-show="isEdit == 0">{{formDetails.fj}}</div> -->
-                    <div>
+                    <div v-if="this.updateLdFlag == 1">{{formDetails.sqld + "  "+ formDetails.sqfj}}</div>
+                    <div v-else>
                       <el-select
                         v-model="formDetails.sqldid"  
                         placeholder="集中寝室楼栋"
@@ -473,7 +472,7 @@
                         ></el-option>
                       </el-select>
                       <el-select
-                        v-model="formDetails.sqfjid"  
+                        v-model="formDetails.sqfjid"
                         placeholder="集中寝室房间"
                         collapse-tags
                       >
@@ -494,8 +493,8 @@
                     label="非集中住宿地址"
                     prop="xzsdzm"
                   >
-                    <div>{{formDetails.xzsdz}}</div>
-                    <div>{{formDetails.xzsxxdz}}</div>
+                    <div>{{formDetails.xzsdz + "  "+ formDetails.xzsxxdz}}</div>
+                    <!-- <div>{{formDetails.xzsxxdz}}</div> -->
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -641,6 +640,7 @@ import {
 import { getCollege,getGrade } from "@/api/class/maintenanceClass";
 import { getZY, getBJ} from "@/api/student/index";
 import lctCom from "../../../../components/lct";
+import { lctTable } from "@/api/stuDangan/detailList/xiaoneiwai";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { param } from '../../../../../utils';
 export default {
@@ -719,6 +719,7 @@ export default {
       },
       fjOps:[],
       ldOps:[],
+      updateLdFlag: 1,//1楼栋不可修改，2楼栋可修改
       rules: {
         // shjg: [
         //   { required: true, message: "审核结果不能为空", trigger: "change" },
@@ -965,6 +966,15 @@ export default {
         this.formDetails = res.data;
         this.jzflag = res.data.zslxm;
       });
+      var processInstanceId = row.processId
+      lctTable({ processInstanceId}).then((res) => {
+        this.formDetails.nodeName = res.data[0].nodeName;
+        console.log("this.formDetails.nodeName",this.formDetails.nodeName);
+        //到最后一个流程节点
+        if(this.formDetails.nodeName == "学院副书记审核"){
+          this.updateLdFlag = 2;
+        }
+      });
       
     },
     editClick(){
@@ -972,21 +982,20 @@ export default {
         this.$message.error("审核结果不能为空");
       } else{
       if(this.editDetails.shjg == "01"){
-        
         var params ={//修改楼栋
             id: this.editparams.businesId,
             xh: this.editparams.xh,
             status: this.editparams.status,
             sqldid: this.formDetails.sqldid,
             sqfjid: this.formDetails.sqfjid,
+            nodeName: this.formDetails.nodeName || "",
           };
-        var updateLdFlag =2;
-        //申请住宿地点修改,目前所有角色都能修改楼栋
-        if (this.jzflag == 1){
+
+        //申请住宿地点修改,到最后一个流程节点可修改楼栋
+        if (this.jzflag == 1 && this.updateLdFlag == 2){
           updateZssqFlow(params).then((res) => {
             if (res.errcode == "00") {
               // this.$message.success("申请住宿地点修改成功");
-              // updateLdFlag =1;
               var data ={//通过
                 businesId: this.editparams.businesId,
                 processId: this.editparams.processId,
@@ -998,17 +1007,24 @@ export default {
                //通过
               tyFlow(data).then((res) => {
                 if (res.errcode == "00") {
-                  this.$message.success("审核已通过");
+                  this.$message.success("申请住宿地点修改成功，审核已通过");
                   this.detailModal = false;
                   this.handleSearch();
                 }
               });
             } else {
               this.$message.err("申请住宿地点修改失败");
-              updateLdFlag =2;
             };
           });
         } else{
+          var data ={//通过
+            businesId: this.editparams.businesId,
+            processId: this.editparams.processId,
+            status: this.editparams.status,
+            taskId: this.editparams.taskId,
+            xh: this.editparams.xh,
+            opMsg: this.editDetails.shyj ? this.editDetails.shyj : "审核通过",
+          };
           //通过
           tyFlow(data).then((res) => {
             if (res.errcode == "00") {
@@ -1048,10 +1064,10 @@ export default {
 
         };
         //退回
-        var targ = {
-          czdaFlowNodeRes: this.multipleSelection1,
-          czdaFlowOpReqList: data,
-        };
+        // var targ = {
+        //   czdaFlowNodeRes: this.multipleSelection1,
+        //   czdaFlowOpReqList: data,
+        // };
         thFinal(data).then((res) => {
           if (res.errcode == "00") {
             this.detailModal = false;

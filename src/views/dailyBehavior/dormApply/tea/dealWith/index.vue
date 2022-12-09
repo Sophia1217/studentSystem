@@ -380,7 +380,7 @@
                     label="是否退宿"
                     prop="sfts"
                   >
-                    <div>{{formDetails.sfts}}</div>
+                    <div>{{formDetails.sftsmc}}</div>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -427,8 +427,8 @@
                     label="非集中住宿地址"
                     prop="xzsdzm"
                   >
-                    <div>{{formDetails.xzsdz}}</div>
-                    <div>{{formDetails.xzsxxdz}}</div>
+                    <div>{{formDetails.xzsdz + "  "+ formDetails.xzsxxdz}}</div>
+                    <!-- <div>{{formDetails.xzsxxdz}}</div> -->
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -483,7 +483,7 @@
               </el-row>
             </div>
           </el-form>
-          <div class="formLeft"><span class="title">审核信息</span></div>
+          <!-- <div class="formLeft"><span class="title">审核信息</span></div>
           <el-form>
             <el-row :gutter="20">
                 <el-col :span="20">
@@ -503,7 +503,8 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-          </el-form>
+          </el-form> -->
+
           <!-- <el-form :data="editDetails" ref="editDetails" :rules="rules">
             <el-row :gutter="20">
                 <el-col :span="20">

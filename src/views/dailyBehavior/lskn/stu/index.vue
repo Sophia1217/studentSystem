@@ -215,28 +215,28 @@
 
             <el-row>
               <div style="margin: 15px 0; font-weight: 700">申请理由</div>
-              <!-- <el-form-item :prop="sqly" :rules="rules.sqly"> -->
-              <el-input
-                type="textarea"
-                placeholder="请输入内容"
-                v-model="formAdd.sqly"
-                :autosize="{ minRows: 5 }"
-              >
-              </el-input>
-              <!-- </el-form-item> -->
+              <el-form-item prop="sqly" :rules="rules.sqly">
+                <el-input
+                  type="textarea"
+                  placeholder="请输入内容"
+                  v-model="formAdd.sqly"
+                  :autosize="{ minRows: 5 }"
+                >
+                </el-input>
+              </el-form-item>
             </el-row>
             <el-row>
               <div style="margin: 15px 0; font-weight: 700">申请时间</div>
-              <!-- <el-form-item :prop="sqsj" :rules="rules.sqsj"> -->
-              <el-date-picker
-                v-model="formAdd.sqsj"
-                type="date"
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyy-MM-dd"
-                placeholder="选择日期"
-              >
-              </el-date-picker>
-              <!-- </el-form-item> -->
+              <el-form-item prop="sqsj" :rules="rules.sqsj">
+                <el-date-picker
+                  v-model="formAdd.sqsj"
+                  type="date"
+                  format="yyyy 年 MM 月 dd 日"
+                  value-format="yyyy-MM-dd"
+                  placeholder="选择日期"
+                >
+                </el-date-picker>
+              </el-form-item>
             </el-row>
           </el-form>
         </div>
@@ -371,32 +371,32 @@
 
             <el-row>
               <div style="margin: 15px 0; font-weight: 700">申请理由</div>
-              <!-- <el-form-item :prop="sqly" :rules="rules.sqly"> -->
-              <div v-if="editFlag == '2'">{{ formEdit.sqly }}</div>
-              <el-input
-                type="textarea"
-                v-if="editFlag == '3'"
-                placeholder="请输入内容"
-                v-model="formEdit.sqly"
-                :autosize="{ minRows: 5 }"
-              >
-              </el-input>
-              <!-- </el-form-item> -->
+              <el-form-item prop="sqly" :rules="rules.sqly">
+                <div v-if="editFlag == '2'">{{ formEdit.sqly }}</div>
+                <el-input
+                  type="textarea"
+                  v-if="editFlag == '3'"
+                  placeholder="请输入内容"
+                  v-model="formEdit.sqly"
+                  :autosize="{ minRows: 5 }"
+                >
+                </el-input>
+              </el-form-item>
             </el-row>
             <el-row>
               <div style="margin: 15px 0; font-weight: 700">申请时间</div>
-              <!-- <el-form-item :prop="sqsj" :rules="rules.sqsj"> -->
-              <div v-if="editFlag == '2'">{{ formEdit.sqsj }}</div>
-              <el-date-picker
-                v-if="editFlag == '3'"
-                v-model="formEdit.sqsj"
-                type="date"
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyy-MM-dd"
-                placeholder="选择日期"
-              >
-              </el-date-picker>
-              <!-- </el-form-item> -->
+              <el-form-item prop="sqsj" :rules="rules.sqsj">
+                <div v-if="editFlag == '2'">{{ formEdit.sqsj }}</div>
+                <el-date-picker
+                  v-if="editFlag == '3'"
+                  v-model="formEdit.sqsj"
+                  type="date"
+                  format="yyyy 年 MM 月 dd 日"
+                  value-format="yyyy-MM-dd"
+                  placeholder="选择日期"
+                >
+                </el-date-picker>
+              </el-form-item>
             </el-row>
           </el-form>
         </div>

@@ -797,8 +797,8 @@ export default {
       this.queryParams.kssjEnd = rqe;
       this.queryParams.jssjStart = rqs2;
       this.queryParams.jssjEnd = rqe2;
-      this.queryParams.qjstatusList = this.shzt.choose;
-      this.queryParams.xjstatusList = this.xjzt.choose;
+      // this.queryParams.qjstatusList = this.shzt.choose;
+      // this.queryParams.xjstatusList = this.xjzt.choose;
       // this.queryParams.xnList = this.xnList;
       this.queryParams.qjlxmList = this.qjlx.choose;
       // this.queryParams.xqmList = this.xqmList;

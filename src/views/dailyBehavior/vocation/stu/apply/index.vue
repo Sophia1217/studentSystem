@@ -1211,7 +1211,7 @@ export default {
         formData.append("xh", this.$store.getters.userId);
         if (this.fileList.length > 0) {
           this.fileList.map((file) => {
-            formData.append("files", file.raw);
+            formData.append("fileList", file.raw);
           });
         }
         importRcqxj(formData).then((res) => {
@@ -1252,7 +1252,7 @@ export default {
         formData.append("xh", this.$store.getters.userId);
         if (this.fileListAdd.length > 0) {
           this.fileListAdd.map((file) => {
-            formData.append("files", file.raw);
+            formData.append("fileList", file.raw);
           });
         }
         importRcqxj(formData).then((res) => {

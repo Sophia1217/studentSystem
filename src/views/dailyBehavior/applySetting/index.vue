@@ -261,7 +261,13 @@ export default {
     pyccConfirm() {
       let data = {
         qt: this.pycc.toString(),
-        businessName: this.rowDetail.businessName,
+        businessName:
+          this.rowDetail.businessName == "学籍异动_保留学籍" ||
+          this.rowDetail.businessName == "学籍异动_复学" ||
+          this.rowDetail.businessName == "学籍异动_退学" ||
+          this.rowDetail.businessName == "学籍异动_休学"
+            ? "学籍异动"
+            : this.rowDetail.businessName,
         // id: this.rowDetail.id,
         // kgzt: this.rowDetail.kgzt,
         // sqkfqje: this.rowDetail.sqkfsj[1] ? this.rowDetail.sqkfsj[1] : "",

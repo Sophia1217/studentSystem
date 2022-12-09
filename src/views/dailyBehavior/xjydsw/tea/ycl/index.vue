@@ -1199,7 +1199,7 @@ export default {
         this.moreIform.pread = []; // 班级
       }
       this.getZY(val);
-      //   this.getBJ(val);
+      this.getBJ(val);
     },
     // 学院找专业
     getZY(val) {

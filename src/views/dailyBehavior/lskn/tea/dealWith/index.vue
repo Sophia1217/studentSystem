@@ -34,8 +34,20 @@
       </div>
       <!-- 更多选择 -->
       <div class="moreSelect" v-if="isMore">
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="3">培养层次：</el-col>
+          <el-col :span="20">
+            <div class="checkbox">
+              <checkboxCom
+                :objProp="training"
+                @training="handleCheckAllChangeTraining"
+                @checkedTraining="handleCheckedCitiesChangeTraining"
+              ></checkboxCom>
+            </div>
+          </el-col>
+        </el-row>
         <el-row :gutter="20">
-          <el-col :span="6">
+          <el-col :span="5">
             <span>培养单位：</span>
             <el-select
               v-model="moreIform.manageReg"
@@ -53,7 +65,7 @@
               ></el-option>
             </el-select>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="5">
             <span>专<span v-html="'\u3000\u3000'"></span>业：</span>
             <el-select
               v-model="moreIform.stuInfo"
@@ -70,7 +82,7 @@
               ></el-option>
             </el-select>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="5">
             <span>班<span v-html="'\u3000\u3000'"></span>级：</span>
             <el-select
               v-model="moreIform.pread"
@@ -87,26 +99,40 @@
               ></el-option>
             </el-select>
           </el-col>
+          <el-col :span="5">
+            <span>学<span v-html="'\u3000\u3000'"></span>年：</span>
+            <el-select
+              v-model="moreIform.nj"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="(item, index) in allNj"
+                :key="index"
+                :label="item"
+                :value="item"
+              ></el-option>
+            </el-select>
+          </el-col>
         </el-row>
 
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">培养层次：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :objProp="training"
-                @training="handleCheckAllChangeTraining"
-                @checkedTraining="handleCheckedCitiesChangeTraining"
-              ></checkboxCom>
-            </div>
+          <el-col :span="1.5">申请金额范围：</el-col>
+          <el-col :span="3">
+            <el-input-number v-model="minSqje"></el-input-number>
+          </el-col>
+          <el-col :span="1" style="margin-top: 7px"> —— </el-col>
+          <el-col :span="3">
+            <el-input-number v-model="maxSqje"></el-input-number>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
           <el-col :span="6">
             <span>申请类别：</span>
             <el-select
-              v-model="moreIform.mk"
-              multiple
+              v-model="moreIform.sqlb"
               collapse-tags
               placeholder="请选择"
               size="small"
@@ -119,18 +145,37 @@
               ></el-option>
             </el-select>
           </el-col>
-        </el-row>
-
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="3">申请金额范围：</el-col>
-          <el-col :span="3">
-            <el-input></el-input>
+          <el-col :span="6">
+            <span>学<span v-html="'\u3000\u3000'"></span>年：</span>
+            <el-select
+              v-model="moreIform.xn"
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="(item, index) in allNj"
+                :key="index"
+                :label="item"
+                :value="item"
+              ></el-option>
+            </el-select>
           </el-col>
-          <el-col :span="1">
-            <div class="rangeline"><span>——</span></div>
-          </el-col>
-          <el-col :span="3">
-            <el-input></el-input>
+          <el-col :span="6">
+            <span>学<span v-html="'\u3000\u3000'"></span>期：</span>
+            <el-select
+              v-model="moreIform.xq"
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="(item, index) in xqlist"
+                :key="index"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
           </el-col>
         </el-row>
       </div>
@@ -636,82 +681,82 @@
               </div>
             </div>
             <!-- <div>
-              <el-row :gutter="20">
-                <el-col :span="6">
-                  <el-form-item label="申请异动">
-                    <div>{{ formDetails1.sqyd }}</div>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                  <el-form-item label="申请类型">
-                    <div>{{ formDetails1.oplx }}</div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="其他" prop="qt">
-                    <div>{{ formDetails1.qt }}</div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="是否退宿" prop="SFTS">
-                    <div>{{ formDetails1.SFTS }}</div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="参加项目" prop="blxjCjxm">
-                    <div>{{ formDetails1.blxjCjxm }}</div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="负责部门" prop="blxjFzbm">
-                    <div>{{ formDetails1.blxjFzbm }}</div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="保留时间">
-                    <div>
-                      {{ formDetails1.blxjBlstart }}
-                      <span v-html="'\u3000'"></span> 至
-                      <span v-html="'\u3000'"></span
-                      >{{ formDetails1.blxjBlend }}
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="申请理由" prop="sqmsg">
-                    <div>{{ formDetails1.sqmsg }}</div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="申请材料">
-                    <el-upload
-                      action="#"
-                      multiple
-                      :file-list="formDetails1.fileList"
-                      :auto-upload="false"
-                      class="el-upload"
-                      :disabled="true"
-                    >
-                    </el-upload>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div> -->
+                <el-row :gutter="20">
+                  <el-col :span="6">
+                    <el-form-item label="申请异动">
+                      <div>{{ formDetails1.sqyd }}</div>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="6">
+                    <el-form-item label="申请类型">
+                      <div>{{ formDetails1.oplx }}</div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="20">
+                    <el-form-item label="其他" prop="qt">
+                      <div>{{ formDetails1.qt }}</div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="20">
+                    <el-form-item label="是否退宿" prop="SFTS">
+                      <div>{{ formDetails1.SFTS }}</div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+  
+                <el-row :gutter="20">
+                  <el-col :span="20">
+                    <el-form-item label="参加项目" prop="blxjCjxm">
+                      <div>{{ formDetails1.blxjCjxm }}</div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="20">
+                    <el-form-item label="负责部门" prop="blxjFzbm">
+                      <div>{{ formDetails1.blxjFzbm }}</div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="20">
+                    <el-form-item label="保留时间">
+                      <div>
+                        {{ formDetails1.blxjBlstart }}
+                        <span v-html="'\u3000'"></span> 至
+                        <span v-html="'\u3000'"></span
+                        >{{ formDetails1.blxjBlend }}
+                      </div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="20">
+                    <el-form-item label="申请理由" prop="sqmsg">
+                      <div>{{ formDetails1.sqmsg }}</div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="20">
+                    <el-form-item label="申请材料">
+                      <el-upload
+                        action="#"
+                        multiple
+                        :file-list="formDetails1.fileList"
+                        :auto-upload="false"
+                        class="el-upload"
+                        :disabled="true"
+                      >
+                      </el-upload>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div> -->
           </el-form>
           <div class="formLeft"><span class="title">审核信息</span></div>
           <el-form :data="editDetails" :model="editDetails" ref="editDetails">
@@ -918,13 +963,14 @@ import {
   jjFlow,
   xhQuery,
   dshExp,
-} from "@/api/dailyBehavior/xjyd";
+} from "@/api/dailyBehavior/lskn";
 import { getToken } from "@/utils/auth";
 export default {
   //   components: { CheckboxCom, exportView, checkboxComDynic },
   components: { CheckboxCom, checkboxComDynic, lctCom },
   data() {
     return {
+      xqlist: [],
       shRecordModal: false,
       shRecordTable: [],
       uploadUrl: process.env.VUE_APP_BASE_API + "/fileCommon/uploadFileCommon",
@@ -947,6 +993,10 @@ export default {
         stuInfo: [], // 专业
         pread: [], // 班级
         mk: [],
+        sqlb: "",
+        xn: "",
+        xq: "",
+        nj: [],
       },
       tableInner: [],
       rules: {
@@ -1027,6 +1077,8 @@ export default {
         isIndeterminate: true,
       },
       allNj: [],
+      maxSqje: "",
+      minSqje: "",
       tableData: [],
       multipleSelection: [],
       showExport: false,
@@ -1034,6 +1086,8 @@ export default {
         pageNum: 1,
         pageSize: 10,
         total: 0,
+        orderZd: "",
+        orderPx: "",
       },
       formDetails: {},
       formDetails1: {},
@@ -1047,15 +1101,6 @@ export default {
       flag: "01",
       czlx: [],
       multipleSelection1: "",
-      form: {
-        xh: "",
-        xm: "",
-        dwh: "",
-        pyccm: "",
-        xbm: "",
-        nj: "",
-        sfzjh: "",
-      },
       AUTHFLAG: false,
       sqlbOps: [],
     };
@@ -1067,6 +1112,7 @@ export default {
     this.getCode("dmpyccm"); // 培养层次
     this.getCode("dmshrzlx");
     this.getCode("dmlsknsqlb"); //申请原因类别
+    this.getCode("dmxqm"); //学期
     this.handleSearch();
     this.authConfirm(this.$route.path.split("/")[2]);
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
@@ -1333,7 +1379,7 @@ export default {
         this.moreIform.pread = []; // 班级
       }
       this.getZY(val);
-      //   this.getBJ(val);
+      this.getBJ(val);
     },
     // 学院找专业
     getZY(val) {
@@ -1356,6 +1402,9 @@ export default {
       getCodeInfoByEnglish(data)
         .then((res) => {
           switch (paramsData) {
+            case "dmxqm":
+              this.xqlist = res.data;
+              break;
             case "dmshrzlx":
               this.czlx = res.data;
               break;
@@ -1405,12 +1454,16 @@ export default {
       let data = {
         xh: this.select == "xh" ? this.searchVal : null,
         xm: this.select == "xm" ? this.searchVal : null,
-        dwh: this.moreIform.manageReg,
-        zydm: this.moreIform.stuInfo,
         pyccm: this.training.choose,
-        bjm: this.moreIform.pread,
-        mk: this.moreIform.mk,
-        tjdate: this.tjdate,
+        sqlbm: this.moreIform.sqlb,
+        xnm: this.moreIform.xn,
+        xqm: this.moreIform.xq,
+        bjdm: this.moreIform.pread,
+        nj: this.moreIform.nj,
+        dwh: this.moreIform.manageReg, //单位
+        zydm: this.moreIform.stuInfo, //专业
+        maxSqje: this.maxSqje,
+        minSqje: this.minSqje,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         limitSql: "",
@@ -1522,11 +1575,6 @@ export default {
 .manStudentStyle {
   .mt15 {
     margin-top: 15px;
-  }
-  .rangeline {
-    display: flex;
-    justify-content: center; /*主轴上居中*/
-    align-items: center; /*侧轴上居中*/
   }
   .searchWrap {
     background: #fff;

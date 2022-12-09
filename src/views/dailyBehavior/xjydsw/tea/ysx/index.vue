@@ -1178,7 +1178,7 @@ export default {
         this.moreIform.pread = []; // 班级
       }
       this.getZY(val);
-      //   this.getBJ(val);
+      this.getBJ(val);
     },
     // 学院找专业
     getZY(val) {
@@ -1317,7 +1317,7 @@ export default {
         orderPx: this.queryParams.orderPx,
       };
       yclExp(data).then((res) => {
-        this.downloadFn(res, "学籍异动已处理列表下载", "xlsx");
+        this.downloadFn(res, "学籍异动已生效列表下载", "xlsx");
         if (this.$store.getters.excelcount > 0) {
           this.$message.success(
             `已成功导出${this.$store.getters.excelcount}条数据`

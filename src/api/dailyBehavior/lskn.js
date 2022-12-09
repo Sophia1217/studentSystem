@@ -59,30 +59,82 @@ export function add(query) {
 // 教师端-待审核列表查询
   export function queryDsh(query) {
     return request({
-      url: '/rcswXjyd/queryRcswXjydFlowList',
+      url: '/rcswLskn/pendingList',
       method: 'post',
       data: query
     })
   }
 
-
-  // 教师端-通过业务主键查询申请信息详情
-
-export function dshExp(query) {
+// 教师端-待审核已处理列表查询
+export function queryYcl(query) {
   return request({
-      url: '/rcswXjyd/excelExportRcswXjyd',
-      method: 'post',
-      data: query,
-      responseType:'blob'
+    url: '/rcswLskn/doneList',
+    method: 'post',
+    data: query
   })
 }
-export function yclExp(query) {
-  return request({  
-      url: '/rcswXjyd/excelExportRcswXjydFlowed',
+
+// 教师端-通过业务主键查询申请信息详情
+export function getDetail(query) {
+  return request({
+      url: '/rcswLskn/queryDetail',
       method: 'post',
-      data: query,
-      responseType:'blob'
+    data: query
   })
+}
+
+//待审核导出
+export function dshExp(query) {
+return request({
+    url: '/rcswXjyd/excelExportRcswXjyd',
+    method: 'post',
+    data: query,
+    responseType:'blob'
+})
+}
+//已处理导出
+export function yclExp(query) {
+return request({  
+    url: '/rcswXjyd/excelExportRcswXjydFlowed',
+    method: 'post',
+    data: query,
+    responseType:'blob'
+})
+}
+
+export function xhQuery(query) {
+return request({
+  url: "/commonMethod/queryXsByXh",
+  method: 'get',
+  params: query
+})
+}
+
+// 教师端-退回
+export function htFlow(query) {
+return request({
+    url: '/rcswLskn/rebackLskn',
+    method: 'post',
+    data: query
+})
+}
+
+//拒绝
+export function jjFlow(query) {
+return request({
+    url: '/rcswLskn/rejectLskn',
+    method: 'post',
+    data: query
+})
+}
+
+// 教师端-同意操作
+export function tyFlow(query) {
+return request({
+    url: '/rcswLskn/agreeLskn',
+    method: 'post',
+    data: query
+})
 }
 
 

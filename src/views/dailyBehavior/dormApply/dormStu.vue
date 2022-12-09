@@ -137,8 +137,8 @@
                   placeholder="请输入详细地址"/>
               </div>
               <div v-if="jzflag ==2">
-                <div>{{formEdit.sqld + "  "+ formEdit.sqfj}}</div> 
-                <!-- <div>{{formEdit.sqfj}}</div> -->
+                <div>{{formAdd.sqld + "  "+ formAdd.sqfj}}</div> 
+                <!-- <div>{{formAdd.sqfj}}</div> -->
                 <!-- <el-select
                   v-model="formAdd.sqldid"  
                   placeholder="非集中原寝室楼栋"
@@ -895,7 +895,6 @@ export default {
         this.formAdd.sqld= res.data !==null ? res.data.ld : null;
         this.formAdd.sqfj= res.data !==null ? res.data.fj : null;
       });
-      console.log("this.formAdd.sqld",this.formAdd.sqld);
       
     },
     addCance() {

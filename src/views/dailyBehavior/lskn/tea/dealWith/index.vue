@@ -233,11 +233,13 @@
             label="学号"
             prop="xh"
             width="100"
+            sortable="custom"
           ></el-table-column>
           <el-table-column
             fixed="left"
             label="姓名"
             prop="xm"
+            sortable="custom"
             width="80"
           ></el-table-column>
           <div v-for="(item, index) in tableHeader" :key="index">
@@ -1090,7 +1092,7 @@ export default {
         nj: this.moreIform.nj,
         dwh: this.moreIform.manageReg, //单位
         zydm: this.moreIform.stuInfo, //专业
-        maxSqje: this.maxSqje,
+        maxSqje: this.maxSqje == "" ? 2000000 : this.maxSqje,
         minSqje: this.minSqje,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
@@ -1150,7 +1152,7 @@ export default {
         nj: this.moreIform.nj,
         dwh: this.moreIform.manageReg, //单位
         zydm: this.moreIform.stuInfo, //专业
-        maxSqje: this.maxSqje,
+        maxSqje: this.maxSqje == "" ? 2000000 : this.maxSqje,
         minSqje: this.minSqje,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,

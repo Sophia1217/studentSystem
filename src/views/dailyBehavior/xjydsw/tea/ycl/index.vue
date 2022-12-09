@@ -197,11 +197,13 @@
             label="学号"
             prop="xh"
             width="100"
+            sortable="custom"
           ></el-table-column>
           <el-table-column
             fixed="left"
             label="姓名"
             prop="xm"
+            sortable="custom"
             width="80"
           ></el-table-column>
           <div v-for="(item, index) in tableHeader" :key="index">

@@ -217,10 +217,12 @@
             label="学号"
             prop="xh"
             width="100"
+            sortable="custom"
           ></el-table-column>
           <el-table-column
             fixed="left"
             label="姓名"
+            sortable="custom"
             prop="xm"
             width="80"
           ></el-table-column>
@@ -484,6 +486,7 @@
                   <el-input
                     v-model="formDetails1.spje"
                     placeholder="请选择"
+                    @input="inputChange"
                     size="small"
                   >
                   </el-input>
@@ -710,6 +713,7 @@ export default {
       multipleSelection1: "",
       AUTHFLAG: false,
       sqlbOps: [],
+      inputValue: "",
     };
   },
   mounted() {
@@ -728,6 +732,13 @@ export default {
     this.handleSearch();
   },
   methods: {
+    inputChange(e) {
+      this.inputValue = e;
+      if (Number(this.inputValue) > Number(this.formDetails1.sqje)) {
+        this.$message.error("批准金额不得大于申请金额");
+        this.formDetails1.spje = "";
+      }
+    },
     shRecord() {
       this.shRecordModal = true;
       queryLc({ processInstanceId: this.tableDetail.processid }).then((res) => {
@@ -814,6 +825,7 @@ export default {
     },
     detailCancel() {
       this.detailModal = false;
+      this.jeFlag = "01";
     },
     detailClick() {
       if (!this.checkFormAdd()) {
@@ -884,7 +896,9 @@ export default {
           this.$message.success("已拒绝");
         });
       } else {
-        data.spje = this.formDetails1.spje ? this.formDetails1.spje : "";
+        data.spje = this.formDetails1.spje
+          ? this.formDetails1.spje
+          : this.formDetails1.sqje;
         tyFlow(data).then((res) => {
           this.conformModal = false;
           this.handleSearch();
@@ -1036,7 +1050,7 @@ export default {
         nj: this.moreIform.nj,
         dwh: this.moreIform.manageReg, //单位
         zydm: this.moreIform.stuInfo, //专业
-        maxSqje: this.maxSqje,
+        maxSqje: this.maxSqje == "" ? 2000000 : this.maxSqje,
         minSqje: this.minSqje,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
@@ -1096,7 +1110,7 @@ export default {
         nj: this.moreIform.nj,
         dwh: this.moreIform.manageReg, //单位
         zydm: this.moreIform.stuInfo, //专业
-        maxSqje: this.maxSqje,
+        maxSqje: this.maxSqje == "" ? 2000000 : this.maxSqje,
         minSqje: this.minSqje,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,

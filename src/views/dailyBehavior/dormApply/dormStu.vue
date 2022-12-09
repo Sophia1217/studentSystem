@@ -119,36 +119,27 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="22">
+          <el-col :span="20">
             <el-form-item
               label="原住宿地址"
               prop="yzsdzm"
+              :rules="jzflag ==1 ? rules.yzsdzm :[{ required: false}]"
             >
-              <div v-show="jzflag ==1">
+              <div v-if="jzflag ==1">
                 <el-cascader
                   v-model="formAdd.yzsdzm"
                   :options="options"
                   @change="handleChangeJgY"
                   :props="locationProps"
                 ></el-cascader>
-                <!-- <el-select
-                  v-model="formAdd.yzsdzm"  
-                  placeholder="集中原省市区"
-                  collapse-tags
-                >
-                  <el-option
-                    v-for="(item, index) in zdOps"
-                    :key="index"
-                    :label="item.mc"
-                    :value="item.dm"
-                  ></el-option>
-                </el-select> -->
                 <el-input v-model="formAdd.yzsxxdz" 
                   maxlength="255"
                   placeholder="请输入详细地址"/>
               </div>
-              <div v-show="jzflag ==2">
-                <el-select
+              <div v-if="jzflag ==2">
+                <div>{{formEdit.sqld + "  "+ formEdit.sqfj}}</div> 
+                <!-- <div>{{formEdit.sqfj}}</div> -->
+                <!-- <el-select
                   v-model="formAdd.sqldid"  
                   placeholder="非集中原寝室楼栋"
                   @change="changeLD(formAdd.sqldid)"
@@ -161,8 +152,8 @@
                     :label="item.mc"
                     :value="item.dm"
                   ></el-option>
-                </el-select>
-                <el-select
+                </el-select> -->
+                <!-- <el-select
                   v-model="formAdd.sqfjid"  
                   placeholder="非集中原寝室房间"
                   disabled
@@ -174,16 +165,16 @@
                     :label="item.mc"
                     :value="item.dm"
                   ></el-option>
-                </el-select>
+                </el-select> -->
               </div>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20" v-show="jzflag ==2">
+        <el-row :gutter="20" v-if="jzflag ==2">
           <el-col :span="12">
             <el-form-item
               label="是否退宿"
-              :rules="jzflag ==2 ? rules.sfts :[]"
+              :rules="jzflag ==2 ? rules.sfts :[{ required: false}]"
               prop="sfts"
 
             >
@@ -202,16 +193,17 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20" v-show="jzflag ==1">
-          <el-col :span="19">
+        <el-row :gutter="20" v-if="jzflag ==1">
+          <el-col :span="20">
             <el-form-item
-              label="申请住宿选择"
+              label="申请住宿地点"
               prop="sqldid"
             >
                 <el-select
                   v-model="formAdd.sqldid"  
                   placeholder="集中寝室楼栋"
                   @change="changeLD(formAdd.sqldid)"
+                  clearable
                   collapse-tags
                 >
                   <el-option
@@ -225,6 +217,7 @@
                   v-model="formAdd.sqfjid"  
                   placeholder="集中寝室房间"
                   collapse-tags
+                  clearable
                 >
                   <el-option
                     v-for="(item, index) in fjOps"
@@ -236,11 +229,11 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20" v-show="jzflag ==2">
+        <el-row :gutter="20" v-if="jzflag ==2">
           <el-col :span="19">
             <el-form-item
               label="非集中住宿地址"
-              :rules="jzflag ==2 ? rules.xzsdzm :[]"
+              :rules="jzflag ==2 ? rules.xzsdzm :[{ required: false}]"
               prop="xzsdzm"
             >
                 <el-cascader
@@ -254,7 +247,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="20">
+          <el-col :span="15">
             <el-form-item label="住宿时间" prop="datePickerAdd"  :rules="rules.datePickerAdd">
               <el-date-picker
                 type="daterange"
@@ -283,22 +276,20 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="20">
-            <el-form-item label="申请材料">
-              <!-- <template slot-scope="scope">
-                <el-upload
-                  action="#"
-                  multiple
-                  class="el-upload"
-                  :auto-upload="false"
-                  ref="upload"
-                  :file-list="scope.row.files"
-                  :on-change="fileChange"
-                  accept=".pdf,.jpg"
-                  :before-remove="beforeRemove"
-                >
-                  <el-button size="small" type="primary">点击上传</el-button>
-                </el-upload>
-              </template> -->
+            <el-form-item label="申请材料" width="360px">
+              <el-upload
+                action="#"
+                multiple
+                class="el-upload"
+                :auto-upload="false"
+                ref="upload"
+                :file-list="formAdd.files"
+                :on-change="fileChange"
+                accept=".pdf,.jpg"
+                :before-remove="beforeRemove"
+              >
+                <el-button size="small" type="primary">点击上传</el-button>
+              </el-upload>
             </el-form-item>
           </el-col>
         </el-row>
@@ -333,6 +324,7 @@
                 placeholder="请选择住宿类型"
                 @change="changeZslx(formEdit.zslxm)"
                 collapse-tags
+                disabled
               >
                 <el-option
                   v-for="(item, index) in zslxOps"
@@ -345,15 +337,15 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="20">
             <el-form-item
               label="原住宿地址"
               prop="yzsdzm"
-              :rules="jzflag ==1 ? rules.yzsdzm :[]"
+              :rules="jzflag ==1 ? rules.yzsdzm :[{ required: false}]"
             >
               <div v-show="jzflag ==1">
-                <div v-show="isEdit == 0">{{formEdit.yzsdz}}</div>
-                <div v-show="isEdit == 0">{{formEdit.yzsxxdz}}</div>
+                <div v-show="isEdit == 0">{{formEdit.yzsdz + "  "+ formEdit.yzsxxdz}}</div>
+                <!-- <div v-show="isEdit == 0">{{formEdit.yzsxxdz}}</div> -->
                 <el-cascader
                   v-model="formEdit.yzsdzm"
                   v-show="isEdit == 1"
@@ -367,10 +359,10 @@
                   maxlength="255" 
                   placeholder="请输入详细地址"/>
               </div>
-              <div v-show="jzflag ==2">
-                <div v-show="isEdit == 0">{{formEdit.ld}}</div> 
-                <div v-show="isEdit == 0">{{formEdit.fj}}</div>
-                <el-select
+              <div v-if="jzflag ==2">
+                <div>{{formEdit.sqld + "  "+ formEdit.sqfj}}</div> 
+                <!-- <div>{{formEdit.sqfj}}</div> -->
+                <!-- <el-select
                   v-model="formEdit.sqldid"  
                   v-show="isEdit == 1"
                   placeholder="非集中原寝室楼栋"
@@ -384,8 +376,8 @@
                     :label="item.mc"
                     :value="item.dm"
                   ></el-option>
-                </el-select>
-                <el-select
+                </el-select> -->
+                <!-- <el-select
                   v-model="formEdit.sqfjid"  
                   v-show="isEdit == 1"
                   placeholder="非集中原寝室房间"
@@ -398,22 +390,23 @@
                     :label="item.mc"
                     :value="item.dm"
                   ></el-option>
-                </el-select>
+                </el-select> -->
               </div>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20" v-show="jzflag ==2">
+        <el-row :gutter="20" v-if="jzflag ==2">
           <el-col :span="12">
             <el-form-item
               label="是否退宿"
               prop="sfts"
-              :rules="jzflag ==2 ? rules.sfts :[]"
+              :rules="jzflag ==2 ? rules.sfts :[{ required: false}]"
             >
-              <div v-show="isEdit == 0">{{formEdit.sfts}}</div>
+            
+              <!-- <div v-show="isEdit == 0">{{formEdit.sfts}}</div> -->
               <el-select
                 v-model="formEdit.sfts"
-                v-show="isEdit == 1"
+                :disabled="isEdit == 0"
                 placeholder="非集中是否退宿"
                 collapse-tags
               >
@@ -430,16 +423,16 @@
         <el-row :gutter="20" v-show="jzflag ==1">
           <el-col :span="19">
             <el-form-item
-              label="申请住宿选择"
-              prop="xzsdzm"
+              label="申请住宿地点"
             >
-              <div v-show="isEdit == 0">{{formEdit.ld}}</div>
-              <div v-show="isEdit == 0">{{formEdit.fj}}</div>
+              <div v-show="isEdit == 0">{{formEdit.sqld + "  "+ formEdit.sqfj}}</div>
+              <!-- <div v-show="isEdit == 0">{{formEdit.sqfj}}</div> -->
               <div v-show="isEdit == 1">
                 <el-select
                   v-model="formEdit.sqldid"  
                   placeholder="集中寝室楼栋"
                   @change="changeLD(formEdit.sqldid)"
+                  clearable
                   collapse-tags
                 >
                   <el-option
@@ -453,6 +446,7 @@
                   v-model="formEdit.sqfjid"  
                   placeholder="集中寝室房间"
                   collapse-tags
+                  clearable
                 >
                   <el-option
                     v-for="(item, index) in fjOps"
@@ -469,14 +463,15 @@
           <el-col :span="19">
             <el-form-item
               label="非集中住宿地址"
-              :rules="jzflag ==2 ? rules.xzsdzm :[]"
+              :rules="jzflag ==2 ? rules.xzsdzm : [{ required: false}]"
               prop="xzsdzm"
             >
-              <div v-show="isEdit == 0">{{formEdit.xzsdz}}</div>
-              <div v-show="isEdit == 0">{{formEdit.xzsxxdz}}</div>
+            
+              <div v-show="isEdit == 0">{{formEdit.xzsdz + "  "+ formEdit.xzsxxdz}}</div>
+              <!-- <div v-show="isEdit == 0">{{formEdit.xzsxxdz}}</div> -->
               <div v-show="isEdit == 1">
                 <el-cascader
-                  v-model="formAdd.xzsdzm"
+                  v-model="formEdit.xzsdzm"
                   :options="options"
                   @change="handleChangeJgX"
                   :props="locationProps"
@@ -488,13 +483,13 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="20">
-            <el-form-item label="住宿时间" prop="datePickerEdit" :rules="rules.datePickerEdit">
+            <el-form-item label="住宿时间" prop="datePickerEdit">
               <div v-show="isEdit == 0">{{formEdit.zsksrq + " 至 "+ formEdit.zsjsrq}}</div>
               <div v-show="isEdit == 1">
               <el-date-picker
                 type="daterange"
                 placeholder="选择日期"
-                v-model="datePickerEdit"
+                v-model="formEdit.datePickerEdit"
                 format="yyyy-MM-dd"
                 value-format="yyyy-MM-dd"
                 range-separator="至"
@@ -519,25 +514,33 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="20">
-            <el-form-item label="申请材料">
-              <!-- <template slot-scope="scope">
-                <el-upload
-                  action="#"
-                  multiple
-                  class="el-upload"
-                  :auto-upload="false"
-                  ref="upload"
-                  :file-list="scope.row.fileList"
-                  :on-change="fileChange"
-                  accept=".pdf,.jpg"
-                  :before-remove="beforeRemove"
-                >
-                  <el-button size="small" type="primary">点击上传</el-button>
-                </el-upload>
-              </template> -->
-            </el-form-item>
-          </el-col>
+          <el-form-item label="申请材料:" width="360px">
+            <div v-if="isEdit == 0">
+              <div v-for="item in formEdit.fileList">
+                <div style="display: flex; justify-content: space-between">
+                  <a>
+                    {{ item.fileName }}
+                  </a>
+                  <!-- <el-button>预览</el-button> -->
+                </div>
+              </div>
+            </div>
+            <div v-else>
+              <el-upload
+                action="#"
+                multiple
+                class="el-upload"
+                :auto-upload="false"
+                ref="upload"
+                :file-list="formEdit.fileList"
+                :on-change="fileChange"
+                accept=".pdf,.jpg"
+                :before-remove="beforeRemove"
+              >
+                <el-button size="small" type="primary">点击上传</el-button>
+              </el-upload>
+            </div>
+          </el-form-item>
         </el-row>
       </el-form>
       <span
@@ -639,16 +642,16 @@ export default {
       formAdd: {
         yzsdzm: "",
         xzsdzm: "",
+        datePickerAdd: [],
       },
       formEdit: {
         yzsdzm: "",
         xzsdzm: "",
-        ld:"",
-        fj:"",
+        sqld:"",
+        sqfj:"",
+        datePickerEdit: [],
       },
       isEdit: 0, //0详情1编辑
-      datePickerEdit: [],
-      // datePickerAdd: [],
       jzflag: 1,//1集中2非集中
       zslxOps: [
         {dm: "1", mc: "校内集中住宿"},
@@ -682,10 +685,10 @@ export default {
           { required: true, message: "新住宿地址不能为空", trigger: "change" },
         ],
         datePickerEdit:[
-          { required: true, message: "住宿时间不能为空", trigger: "blur" },
+          { required: true, message: "住宿时间不能为空", trigger: "change" },
         ],
         datePickerAdd:[
-          { required: true, message: "住宿时间不能为空", trigger: "blur" },
+          { required: true, message: "住宿时间不能为空", trigger: "change" },
         ],
       },
     };
@@ -802,28 +805,28 @@ export default {
       this.subArr = val.map((item) => item.id);
       this.delArr = val.map((item) => item.id);
     },
-    // beforeRemove(file, fileList) {
-    //   let uid = file.uid;
-    //   let idx = fileList.findIndex((item) => item.uid === uid);
-    //   fileList.splice(idx, 0);
-    //   this.fileList = fileList;
-    //   if (file.id) {
-    //     //如果是后端返回的文件就走删除接口，不然前端自我删除
-    //     delwj({ id: file.id.toString() }).then();
-    //   }
-    // },
-    // fileChange(file, fileList) {
-    //   if (Number(file.size / 1024 / 1024) > 2) {
-    //     let uid = file.uid;
-    //     let idx = fileList.findIndex((item) => item.uid === uid);
-    //     fileList.splice(idx, 1);
-    //     this.$message.error("单个文件大小不得超过2M");
-    //   } else if (file.status == "ready") {
-    //     this.fileListAdd = [];
-    //     this.fileListAdd.push(file); //修改编辑的文件参数
-    //   }
-    //   this.fileList = fileList;
-    // },
+    beforeRemove(file, fileList) {
+      let uid = file.uid;
+      let idx = fileList.findIndex((item) => item.uid === uid);
+      fileList.splice(idx, 0);
+      this.fileList = fileList;
+      if (file.id) {
+        //如果是后端返回的文件就走删除接口，不然前端自我删除
+        delwj({ id: file.id.toString() }).then();
+      }
+    },
+    fileChange(file, fileList) {
+      if (Number(file.size / 1024 / 1024) > 2) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
+        this.$message.error("单个文件大小不得超过2M");
+      } else if (file.status == "ready") {
+        this.fileListAdd = [];
+        this.fileListAdd.push(file); //修改编辑的文件参数
+      }
+      this.fileList = fileList;
+    },
     //提交
     handleSubmit() {
       var falg = 1;
@@ -881,11 +884,16 @@ export default {
     //新增
     handleNew() {
       this.formAdd={};
-      // fils=[] ?要不要
+      this.formAdd.files = [];
+      this.fileList = [];
       this.addModal = true;
       this.getAllld();
+      // 楼栋房间自动回显
+      queryLdAndFj({xh: this.$store.getters.userId}).then((res) =>{
+        this.formAdd.sqld= res.data !==null ? res.data.ld : null;
+        this.formAdd.sqfj= res.data !==null ? res.data.fj : null;
+      });
       // this.formAdd = { sqsj: this.formatDate(new Date()) };
-      // this.$set(this.formAdd,"chqjsid","2814");
     },
     addCance() {
       this.addModal = false;
@@ -901,22 +909,25 @@ export default {
           rqs = this.formAdd.datePickerAdd[0];
           rqe = this.formAdd.datePickerAdd[1];
         }
-        var params = {
-          zslxm: this.formAdd.zslxm,
-          sfts: this.formAdd.sfts || "",
-          sqfjid: this.formAdd.sqfjid || "",
-          sqldid: this.formAdd.sqldid || "",
-          sqly: this.formAdd.sqly,
-          xzsdzm: this.formAdd.xzsdzm || "",
-          xzsxxdz: this.formAdd.xzsxxdz || "",
-          yzsdzm: this.formAdd.yzsdzm || "",
-          yzsxxdz: this.formAdd.yzsxxdz || "",
-          zsjsrq: rqe,
-          zsksrq: rqs,
-
-          xh: this.$store.getters.userId,
-        };
-        edit(params).then((res) => {
+        let formData = new FormData();
+        formData.append("zslxm", this.formAdd.zslxm);
+        formData.append("zsjsrq", rqe);
+        formData.append("zsksrq", rqs);
+        formData.append("sfts", this.formAdd.sfts ||"");
+        formData.append("sqfjid", this.formAdd.sqfjid ||"");
+        formData.append("sqldid", this.formAdd.sqldid ||"");
+        formData.append("sqly", this.formAdd.sqly);
+        formData.append("xzsdzm", this.formAdd.xzsdzm ||"");
+        formData.append("xzsxxdz", this.formAdd.xzsxxdz ||"");
+        formData.append("yzsdzm", this.formAdd.yzsdzm ||"");
+        formData.append("yzsxxdz", this.formAdd.yzsxxdz);
+        formData.append("xh", this.$store.getters.userId);
+        if (this.fileList.length > 0) {
+          this.fileList.map((file) => {
+            formData.append("files", file.raw);
+          });
+        }
+        edit(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("新增成功");
             this.addModal = false;
@@ -930,26 +941,13 @@ export default {
     },
     //点击详情
     hadleDetail(row) {
-      // this.formEdit = {};
-      // row.fileList = row.fileList.map((ele) => {
-      //   return {
-      //     name: ele.fileName,
-      //     ...ele,
-      //   };
-      // });
-      // this.formEdit.editData.push(row);
-      // this.fileListAdd = [];
       this.editModal = true;
       console.log("row",row);
+      this.fileListAdd = [];
       queryDetail({ businesId: row.id }).then((res) => {
         this.formEdit = res.data;
         this.jzflag = res.data.zslxm;
-        // this.datePickerEdit[0]= res.data.zsksrq;
-        // this.datePickerEdit[1]= res.data.zsjsrq;
-      });
-      queryLdAndFj({xh: this.$store.getters.userId}).then((res) =>{
-        this.formEdit.ld= res.data.ld;
-        this.formEdit.fj= res.data.fj;
+        this.$set(this.formEdit, "datePickerEdit",[res.data.zsksrq, res.data.zsjsrq]);
       });
     },
     EditStatus() {
@@ -966,16 +964,40 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        var data = this.formEdit;
-        edit(data).then((res) => {
+        let rqs,
+          rqe = "";
+        if (this.formEdit.datePickerEdit && this.formEdit.datePickerEdit.length > 0) {
+          rqs = this.formEdit.datePickerEdit[0];
+          rqe = this.formEdit.datePickerEdit[1];
+        }
+        var formData = new FormData();
+        formData.append("zslxm", this.formEdit.zslxm);
+        formData.append("zsjsrq", rqe);
+        formData.append("zsksrq", rqs);
+        formData.append("sfts", this.formEdit.sfts ||"");
+        formData.append("sqfjid", this.formEdit.sqfjid ||"");
+        formData.append("sqldid", this.formEdit.sqldid ||"");
+        formData.append("sqly", this.formEdit.sqly);
+        formData.append("xzsdzm", this.formEdit.xzsdzm ||"");
+        formData.append("xzsxxdz", this.formEdit.xzsxxdz ||"");
+        formData.append("yzsdzm", this.formEdit.yzsdzm ||"");
+        formData.append("yzsxxdz", this.formEdit.yzsxxdz);
+        formData.append("xh", this.formEdit.xh);
+        formData.append("id", this.formEdit.id);
+        if (this.fileListAdd.length > 0) {
+          this.fileListAdd.map((file) => {
+            formData.append("files", file.raw);
+          });
+        }
+        edit(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("编辑成功");
+            this.editModal = false;
             this.getList();
           } else {
             this.$message.error("编辑失败");
           }
         });
-        this.editModal = false;
         this.isEdit = "0";
       }
     },

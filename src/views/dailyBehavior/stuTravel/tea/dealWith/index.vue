@@ -71,7 +71,7 @@
           <el-col :span="20">
             <span>审核状态：</span>
             <el-select
-              v-model="status"
+              v-model="moreIform.status"
               multiple
               placeholder="请选择"
               collapse-tags

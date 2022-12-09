@@ -17,8 +17,6 @@
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
-            <el-option label="乘车站点" value="cczd"></el-option>
-            <el-option label="家庭地址" value="jtdz"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
             >查询</el-button
@@ -33,12 +31,13 @@
       <!-- 更多选择 -->
       <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20" class="mt15">
-          <el-col :span="20">
+          <el-col :span="6">
             <span>培养单位：</span>
             <el-select
-              v-model="moreIform.dwh"
+              v-model="moreIform.dwhList"
               multiple
               collapse-tags
+              @change="changeXY"
               placeholder="请选择"
               size="small"
             >
@@ -50,8 +49,77 @@
               ></el-option>
             </el-select>
           </el-col>
+          <el-col :span="6">
+            <span>专<span v-html="'\u3000\u3000'"></span>业：</span>
+            <el-select
+              v-model="moreIform.zydmList"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in zyOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="6">
+            <span>班<span v-html="'\u3000\u3000'"></span>级：</span>
+            <el-select
+              v-model="moreIform.bjList"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in bjOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="6">
+            <span>年<span v-html="'\u3000\u3000'"></span>级：</span>
+            <el-select
+              v-model="moreIform.njList"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in allNj"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
+          </el-col>
         </el-row>
-        <el-row :gutter="20" class="mt15">
+           <el-row :gutter="20" class="mt15">
+          <el-col :span="20">
+            <span>住宿类型：</span>
+            <el-select
+              v-model="moreIform.zslxmList"
+              multiple
+              placeholder="请选择"
+              collapse-tags
+            >
+              <el-option
+                v-for="(item, index) in zslxOps"
+                :key="index"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
+          </el-col>
+        </el-row>
+        <!-- <el-row :gutter="20" class="mt15">
           <el-col :span="20">
             <span>修改时间：</span>
             <el-date-picker
@@ -66,7 +134,7 @@
               style="width= 60px;"
             ></el-date-picker>
           </el-col>
-        </el-row>
+        </el-row> -->
         <!-- <el-row :gutter="20" class="mt15">
           <el-col :span="20">
             <span>审核状态：</span>
@@ -85,6 +153,18 @@
             </el-select>
           </el-col>
         </el-row> -->
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="3">性<span v-html="'\u3000\u3000'"></span>别：</el-col>
+          <el-col :span="20">
+            <div class="checkbox">
+              <checkboxCom
+                :objProp="dmxbmOPs"
+                @training="dmxbmAll"
+                @checkedTraining="dmxbmCheck"
+              ></checkboxCom>
+            </div>
+          </el-col>
+        </el-row>
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">培养层次：</el-col>
           <el-col :span="20">
@@ -109,7 +189,7 @@
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns borderRed" @click="back">
+          <!-- <div class="btns borderRed" @click="back">
             <i class="icon backIcon"></i><span class="title">退回</span>
           </div>
           <div class="btns borderRed" @click="refuse">
@@ -117,7 +197,7 @@
           </div>
           <div class="btns fullGreen" @click="pass">
             <i class="icon passIcon"></i><span class="title1">通过</span>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="mt15">
@@ -137,11 +217,12 @@
           ></el-table-column>
           <el-table-column prop="xh" label="学号" width="100" sortable> </el-table-column>
           <el-table-column prop="xm" label="姓名" width="85" sortable> </el-table-column>
-          <el-table-column prop="pyccmmc" label="培养层次" width="80" sortable> </el-table-column>
-          <el-table-column prop="dwhmc" label="培养单位" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="jtdz" label="家庭地址" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="chqj" label="乘车区间" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="sqsj" label="修改时间" min-width="100" sortable>
+          <el-table-column prop="xb" label="性别" width="85" sortable> </el-table-column>
+          <el-table-column prop="pycc" label="培养层次" min="100" sortable> </el-table-column>
+          <el-table-column prop="dwmc" label="培养单位" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="zslx" label="住宿类型" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="zsksrq" label="住宿开始时间" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="zsjsrq" label="住宿结束时间" min-width="100" sortable>
           </el-table-column>
           <el-table-column prop="createDwhMc" label="审核进度">
             <template slot-scope="scope">
@@ -157,7 +238,7 @@
               <el-button
                 type="text"
                 size="small"
-                @click="hadleDetail(scope.row, scope.$index)"
+                @click="hadleDetail(scope.row)"
               >
                 <i class="scopeIncon handledie"></i>
                 <span class="handleName">申报详情</span>
@@ -238,10 +319,15 @@
         title="申报详情"
         :visible.sync="detailModal"
         :before-close="detailCancel"
+        @close="emptyDetails()"
         width="60%"
       >
         <template>
-          <el-form :model="formDetails">
+          <div class="baseInfo">
+          <el-form :data="formDetails" label-width="110px">
+            <div class="formLeft"><span class="title">基本信息</span></div>
+            <div class="backDetail">
+            
             <div class="formRight">
               <el-row>
                 <el-col :span="12" class="rowStyle">
@@ -260,30 +346,250 @@
               <el-row>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
-                    <div class="title">培养层次</div>
-                    <div class="content">{{ formDetails.xh }}</div>
+                    <div class="title">性别</div>
+                    <div class="content">{{ formDetails.xb }}</div>
                   </div>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
                   <div class="wrap">
+                    <div class="title">培养层次</div>
+                    <div class="content">{{ formDetails.pycc }}</div>
+                  </div>
+                </el-col>
+                
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
                     <div class="title">培养单位</div>
-                    <div class="content">{{ formDetails.xh }}</div>
+                    <div class="content">{{ formDetails.dwmc }}</div>
+                  </div>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">专业</div>
+                    <div class="content">{{ formDetails.zy }}</div>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">年级</div>
+                    <div class="content">{{ formDetails.nj }}</div>
+                  </div>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">班级</div>
+                    <div class="content">{{ formDetails.bjmmc }}</div>
                   </div>
                 </el-col>
               </el-row>
             </div>
+            </div>
+            <div class="formLeft"><span class="title">申请信息</span></div>
+            <div>
+              <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="申请住宿类型" prop="zslxm" :rules="rules.zslxm">
+                    <div>{{formDetails.zslx}}</div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="12">
+                  <el-form-item
+                    label="原住宿地址"
+                    prop="yzsdzm"
+                  >
+                    <div v-show="jzflag ==1">
+                      <div>{{formDetails.yzsdz + "  "+ formDetails.yzsxxdz}}</div>
+                      <!-- <div>{{formDetails.yzsxxdz}}</div> -->
+                    </div>
+                    <div v-show="jzflag ==2">
+                      <div>{{formDetails.ld + "  "+ formDetails.fj}}</div> 
+                      <!-- <el-select
+                        v-model="formDetails.sqldid"  
+                        placeholder="非集中原寝室楼栋"
+                        @change="changeLD(formDetails.sqldid)"
+                        disabled
+                        collapse-tags
+                      >
+                        <el-option
+                          v-for="(item, index) in ldOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        ></el-option>
+                      </el-select> -->
+                      <!-- <el-select
+                        v-model="formDetails.sqfjid"  
+                        placeholder="非集中原寝室房间"
+                        disabled
+                        collapse-tags
+                      >
+                        <el-option
+                          v-for="(item, index) in fjOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        ></el-option>
+                      </el-select> -->
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20" v-show="jzflag ==2">
+                <el-col :span="12">
+                  <el-form-item
+                    label="是否退宿"
+                    prop="sfts"
+                  >
+                    <div>{{formDetails.sfts}}</div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20" v-show="jzflag ==1">
+                <el-col :span="19">
+                  <el-form-item
+                    label="申请住宿地点"
+                    prop="xzsdzm"
+                  >
+                    <!-- <div v-show="isEdit == 0">{{formDetails.ld}}</div>
+                    <div v-show="isEdit == 0">{{formDetails.fj}}</div> -->
+                    <div>
+                      <el-select
+                        v-model="formDetails.sqldid"  
+                        placeholder="集中寝室楼栋"
+                        @change="changeLD(formDetails.sqldid)"
+                        collapse-tags
+                      >
+                        <el-option
+                          v-for="(item, index) in ldOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        ></el-option>
+                      </el-select>
+                      <el-select
+                        v-model="formDetails.sqfjid"  
+                        placeholder="集中寝室房间"
+                        collapse-tags
+                      >
+                        <el-option
+                          v-for="(item, index) in fjOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        ></el-option>
+                      </el-select>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20" v-show="jzflag ==2">
+                <el-col :span="19">
+                  <el-form-item
+                    label="非集中住宿地址"
+                    prop="xzsdzm"
+                  >
+                    <div>{{formDetails.xzsdz}}</div>
+                    <div>{{formDetails.xzsxxdz}}</div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="住宿时间" prop="datePickerEdit">
+                    <div>{{formDetails.zsksrq + " 至 "+ formDetails.zsjsrq}}</div>
+                    <!-- <div v-show="isEdit == 1">
+                    <el-date-picker
+                      type="daterange"
+                      placeholder="选择日期"
+                      v-model="datePickerEdit"
+                      format="yyyy-MM-dd"
+                      value-format="yyyy-MM-dd"
+                      range-separator="至"
+                      start-placeholder="开始日期"
+                      end-placeholder="结束日期"
+                    ></el-date-picker>
+                    </div> -->
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="申请理由" prop="sqly">
+                    <div>{{formDetails.sqly}}</div>
+                    <!-- <el-input
+                      v-model="formDetails.sqly"
+                      type="textarea"
+                      maxlength="2000"
+                      :disabled="isEdit == 0"
+                      placeholder="请输入"
+                    ></el-input> -->
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="申请材料">
+                    <div>
+                      <div v-for="item in formDetails.fileList">
+                        <div style="display: flex; justify-content: space-between ">
+                          <a>
+                            <span style="color: #005657">{{ item.fileName }}</span>
+                          </a>
+                          <!-- <el-button>预览</el-button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
           </el-form>
-          <el-table :data="tableDetails">
-            <el-table-column
-              fixed="left"
-              type="index"
-              label="序号"
-              width="50"
-            ></el-table-column>
-            <el-table-column prop="chqj" label="乘车区间"/>
-            <el-table-column prop="chqj" label="修改时间"/>
-            <el-table-column prop="chqj" label="审批结果"/>
-          </el-table>
+          <div class="formLeft"><span class="title">审核信息</span></div>
+          <el-form :data="editDetails" ref="editDetails" label-width="110px" :rules="rules">
+            <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="申请审核结果"
+                    label-width="120px" 
+                    prop="shjg"
+                  >
+                    <el-select
+                      v-model="editDetails.shjg"
+                      collapse-tags
+                      @change="changeJG(editDetails.shjg)"
+                      placeholder="请选择"
+                      size="small"
+                    >
+                      <el-option
+                        v-for="item in shjgOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="申请审核意见" label-width="120px" prop="shyj">
+                    <el-input 
+                      v-model="editDetails.shyj"
+                      :autosize="{ minRows: 2 }"
+                      type="textarea"
+                      maxlength="500"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+          </el-form>
+              
+          </div>
         </template>
         <span slot="footer" class="dialog-footer">
         <el-button @click="detailCancel">取 消</el-button>
@@ -319,18 +625,24 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import {
-  queryDshList,
   tyFlow,
   jjFlow,
   backFlow,
   thFinal,
-  exportZjbbFlow,
+  queryDshList,
   queryDshDetail,
-  queryDshDetailList,
-} from "@/api/dailyBehavior/stuTravelTea"
-import { getCollege } from "@/api/class/maintenanceClass";
+  updateZssqFlow,
+  exportZjbbFlow,
+} from "@/api/dailyBehavior/dormTea"
+import {
+  queryFj,
+  queryLd,
+} from "@/api/dailyBehavior/dormStu";
+import { getCollege,getGrade } from "@/api/class/maintenanceClass";
+import { getZY, getBJ} from "@/api/student/index";
 import lctCom from "../../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
+import { param } from '../../../../../utils';
 export default {
   name: "manStudent",
   components: { CheckboxCom, lctCom },
@@ -346,12 +658,19 @@ export default {
       select: "",
       isMore: false,
       moreIform: {
-        dwh: [], // 学院下拉框
+        dwhList: [], // 学院下拉框
+        zydmList: [],
+        bjList: [],
+        njList:[],
+        zslxmList:[],
       },
       exportParams: {},
       leng: 0,
       tableData: [],
       allDwh: [],
+      zyOps: [], // 专业下拉
+      bjOps: [], // 班级下拉
+      allNj: [], //年级下拉
       commonParams: [],
       queryParams: {
         pageNum: 1,
@@ -375,17 +694,48 @@ export default {
       thly: "",
       tempRadio: false,
       detailModal: false,
-      whatType: "",
-      tableDetails: [],
-      formDetails: [],
+      formDetails: {
+        sqldid:"",
+        sqfjid:"",
+      },
+      editDetails:[],
+      editparams:{},
+      shjgOps:[
+        {dm:'01',mc: '通过'},
+        {dm:'02',mc: '拒绝'},
+        {dm:'03',mc: '退回'},
+      ],
+      jzflag: 1,//1集中2非集中
+      zslxOps: [
+        {dm: "1", mc: "校内集中住宿"},
+        {dm: "2", mc: "非集中住宿"},
+      ],
+      dmxbmOPs: {
+        // 性别：
+        checkAll: false,
+        choose: [],
+        checkBox: [],
+        isIndeterminate: true,
+      },
+      fjOps:[],
+      ldOps:[],
+      rules: {
+        // shjg: [
+        //   { required: true, message: "审核结果不能为空", trigger: "change" },
+        // ],
+        // shyj: [
+        //   { required: true, message: "审核意见不能为空", trigger: "change" },
+        // ],
+      },
     };
   },
 
   mounted() {
     this.handleSearch();
     this.getAllCollege();
-    this.getCode("dmpyccm"); // 培养层次
-    this.getCode1("dmsplcm"); // 培养层次
+    this.getCode("dmpyccm"); // 培养层次dmxbm
+    this.getCode("dmxbm"); // 性别
+    this.getCode1("dmsplcm"); 
   },
 
   methods: {
@@ -395,16 +745,17 @@ export default {
     },
     // 导出确认
     handleConfirm() {
-      let ids = [];
+      let idList = [];
       for (let item_row of this.multipleSelection) {
-        ids.push(item_row.businesId);
+        idList.push(item_row.businesId);
       }
       this.exportParams.pageNum = 0;
-      this.$set(this.exportParams, "ids", ids);
+      this.exportParams.pageSize = 0;
+      this.$set(this.exportParams, "idList", idList);
       //this.$set(this.exportParams, "status", "1");
       exportZjbbFlow(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "乘车优惠待审核列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "住宿申请待审核列表导出.xlsx", "xlsx");
           if(this.$store.getters.excelcount > 0){
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -419,8 +770,14 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        dwh: this.moreIform.dwh,
-        pyccm: this.training.choose || [],
+        dwhList: this.moreIform.dwhList,
+        zydmList: this.moreIform.zydmList,
+        bjmList: this.moreIform.bjList,
+        njList: this.moreIform.njList,
+        zslxmList: this.moreIform.zslxmList,
+        pyccmList: this.training.choose || [],
+        xbmList: this.dmxbmOPs.choose || [],
+        loginId: this.$store.getters.userId,
 
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
@@ -456,6 +813,7 @@ export default {
     },
     getRow(index, row) {
       this.multipleSelection1 = row;
+      console.log(row);
     },
     //通过
     pass() {
@@ -518,7 +876,10 @@ export default {
     thTableConfirm() {
       if (!!this.tempRadio || this.tempRadio === 0) {
         this.thTableModal = false;
-        this.thModal = true;
+        if(this.detailModal == false){
+          this.thModal = true;
+        }
+        
       } else {
         this.$message.error("请先勾选退回的节点");
       }
@@ -551,33 +912,160 @@ export default {
         })
         .catch((err) => {});
     },
-
+    changeXY(val) {
+      if (val && val.length == 0) {
+        this.moreIform.stuInfo = []; // 专业
+        this.moreIform.pread = []; // 班级
+      }
+      this.getZY(val);
+      this.getBJ(val);
+    },
+    // 学院找专业
+    getZY(val) {
+      this.zyOps = [];
+      let data = { DWH: val };
+      if (Object.keys(val).length !== 0) {
+        getZY(data)
+          .then((res) => {
+            this.zyOps = res.data;
+          })
+          .catch((err) => {});
+      }
+    },
+    getBJ(val) {
+      this.bjOps = [];
+      let data = { DWH: val };
+      if (Object.keys(val).length !== 0) {
+        getBJ(data)
+          .then((res) => {
+            this.bjOps = res.data;
+          })
+          .catch((err) => {});
+      }
+    },
+    //获取年级
+    getAllGrade() {
+      getGrade()
+        .then((res) => {
+          this.allNj = res.data.rows;
+        })
+        .catch((err) => {});
+    },
     async hadleDetail(row) {
       console.log("row", row);
-      this.formDetails = row;
+      this.getAllld();
       this.detailModal = true;
+      this.editparams = row;
       var data = {
         xh: row.xh,
-        pageNum: 1,
-        pageSize: 10,
-        
+        roleId: this.$store.getters.roleId,
         businesId: row.businesId,
-      };//orderZd: "",
-        //orderPx: "",
-      //queryDshDetail
-      await queryDshDetailList(data).then((res) => {
-        this.tableDetails = res.data;
-        // this.commonParams = res.data.map((v) => ({
-        //   businesId: row.businesId,
-        //   processId: row.processId,
-        //   status: row.status,
-        //   taskId: row.taskId,
-        //   xh: row.xh,
-        // }));
+      };
+      await queryDshDetail(data).then((res) => {
+        this.formDetails = res.data;
+        this.jzflag = res.data.zslxm;
       });
+      
     },
     editClick(){
+      if (!this.editDetails.shjg) {
+        this.$message.error("审核结果不能为空");
+      } else{
+      if(this.editDetails.shjg == "01"){
+        
+        var params ={//修改楼栋
+            id: this.editparams.businesId,
+            xh: this.editparams.xh,
+            status: this.editparams.status,
+            sqldid: this.formDetails.sqldid,
+            sqfjid: this.formDetails.sqfjid,
+          };
+        var updateLdFlag =2;
+        //申请住宿地点修改,目前所有角色都能修改楼栋
+        if (this.jzflag == 1){
+          updateZssqFlow(params).then((res) => {
+            if (res.errcode == "00") {
+              // this.$message.success("申请住宿地点修改成功");
+              // updateLdFlag =1;
+              var data ={//通过
+                businesId: this.editparams.businesId,
+                processId: this.editparams.processId,
+                status: this.editparams.status,
+                taskId: this.editparams.taskId,
+                xh: this.editparams.xh,
+                opMsg: this.editDetails.shyj ? this.editDetails.shyj : "审核通过",
+              };
+               //通过
+              tyFlow(data).then((res) => {
+                if (res.errcode == "00") {
+                  this.$message.success("审核已通过");
+                  this.detailModal = false;
+                  this.handleSearch();
+                }
+              });
+            } else {
+              this.$message.err("申请住宿地点修改失败");
+              updateLdFlag =2;
+            };
+          });
+        } else{
+          //通过
+          tyFlow(data).then((res) => {
+            if (res.errcode == "00") {
+              this.$message.success("审核已通过");
+              this.detailModal = false;
+              this.handleSearch();
+            }
+          });
+        };
+      } else if(this.editDetails.shjg == "02"){
+        var data ={
+          businesId: this.editparams.businesId,
+          processId: this.editparams.processId,
+          status: this.editparams.status,
+          taskId: this.editparams.taskId,
+          xh: this.editparams.xh,
+          opMsg: this.editDetails.shyj ? this.editDetails.shyj : "已拒绝",
+        };
+        //拒绝
+        jjFlow(data).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("已拒绝");
+          this.detailModal = false;
+          this.handleSearch();
+        }
+      });
+      } else{
+        var data ={
+          businesId: this.editparams.businesId,
+          processId: this.editparams.processId,
+          status: this.editparams.status,
+          taskId: this.editparams.taskId,
+          xh: this.editparams.xh,
+          opMsg: this.editDetails.shyj ? this.editDetails.shyj : "已退回",
+          actId: this.multipleSelection1.actId,
+          actName: this.multipleSelection1.actName,
 
+        };
+        //退回
+        var targ = {
+          czdaFlowNodeRes: this.multipleSelection1,
+          czdaFlowOpReqList: data,
+        };
+        thFinal(data).then((res) => {
+          if (res.errcode == "00") {
+            this.detailModal = false;
+            this.$message.success("退回成功");
+            this.handleSearch();
+          }
+        });
+      }
+      }
+    },
+    emptyDetails() {
+      this.$nextTick(() => {
+        this.$refs.editDetails.resetFields();
+      });
     },
     detailCancel() {
       this.detailModal = false;
@@ -588,20 +1076,24 @@ export default {
     },
     // 查询
     handleSearch() {
-      let rqs,rqe = "";
-      if (this.datePicker && this.datePicker.length > 0) {
-        rqs = this.datePicker[0];
-        rqe = this.datePicker[1];
-      }
+      // let rqs,rqe = "";
+      // if (this.datePicker && this.datePicker.length > 0) {
+      //   rqs = this.datePicker[0];
+      //   rqe = this.datePicker[1];
+      // }
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        cczd: this.select == "cczd" ? this.searchVal : null,
-        jtdz: this.select == "jtdz" ? this.searchVal : null,
-        dwh: this.moreIform.dwh,
-        pyccm: this.training.choose || [],
-        sqsjs: rqs || "",
-        sqsje: rqe || "",
+        dwhList: this.moreIform.dwhList,
+        zydmList: this.moreIform.zydmList,
+        bjList: this.moreIform.bjList,
+        njList: this.moreIform.njList,
+        zslxmList: this.moreIform.zslxmList,
+        pyccmList: this.training.choose || [],
+        xbmList: this.dmxbmOPs.choose || [],
+        loginId: this.$store.getters.userId,
+        // sqsjs: rqs || "",
+        // sqsje: rqe || "",
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
@@ -642,6 +1134,9 @@ export default {
             case "dmpyccm":
               this.$set(this.training, "checkBox", res.data);
               break;
+            case "dmxbm":
+              this.$set(this.dmxbmOPs, "checkBox", res.data);
+              this.xbOps = res.data;
           }
         })
         .catch((err) => {});
@@ -662,6 +1157,24 @@ export default {
       this.training.isIndeterminate =
         checkedCount > 0 && checkedCount < this.training.checkBox.length;
     },
+    // 性别：全选
+    dmxbmAll(val) {
+      let allCheck = [];
+      for (let i in this.dmxbmOPs.checkBox) {
+        allCheck.push(this.dmxbmOPs.checkBox[i].dm);
+      }
+      this.dmxbmOPs.choose = val ? allCheck : [];
+
+      this.dmxbmOPs.isIndeterminate = false;
+    },
+    // 性别：单选
+    dmxbmCheck(value) {
+      let checkedCount = value.length;
+      this.dmxbmOPs.checkAll = checkedCount === this.dmxbmOPs.checkBox.length;
+      this.dmxbmOPs.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.dmxbmOPs.checkBox.length;
+      // console.log(this.dmxbmOPs.choose, "单选");
+    },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -678,6 +1191,39 @@ export default {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
+    },
+    changeJG(val){
+      if(val && val == "03"){
+        console.log("this.editDetails.shjg",this.editDetails.shjg);
+        var processId = { processId: this.editparams.taskId };
+        backFlow(processId).then((res) => {
+          this.tableInner = res.data;
+        });
+        this.thTableModal = true;
+      } 
+      // else if(val && val == "02"){
+      //   console.log(22);
+      // } else {
+      //   console.log(33);
+      // } 
+    },
+    getAllld(){
+      queryLd()
+        .then((res)=>{
+          if (res.errcode == "00") {
+            this.ldOps = res.data;
+          }
+        })
+        .catch((err) => {});
+    },
+    changeLD(flag){
+      queryFj({ dm: flag }).then((res) => {
+        if (res.errcode == "00") {
+          this.fjOps = res.data;
+        } else {
+          this.$message.error("获取房间号失败");
+        }
+      });
     },
   },
 };
@@ -843,28 +1389,31 @@ export default {
       }
     }
   }
-  .backDetail {
-    margin-top: 15px;
-    display: flex;
-    flex-direction: row;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #cccccc;
+  .baseInfo{
+    // padding: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
+    // overflow-x: auto;
     .formLeft {
-      width: 15%;
       background: #fff;
       display: flex;
       align-items: center;
       .title {
-        width: 100%;
-        text-align: center;
+        font-weight: 600;
+        font-size: 16px;
+        color: #1f1f1f;
+        line-height: 20px;
       }
     }
+  }
+  .backDetail {
+    display: flex;
+    margin-bottom: 20px;
+    flex-direction: row;
+
     .formRight {
       width: 100%;
-      // margin-top: 15px;
-      // display: flex;
-      // flex-direction: row;
+      margin-top: 15px;
       .rowStyle {
         padding: 0 !important;
         margin: 0;

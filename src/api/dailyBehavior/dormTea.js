@@ -56,31 +56,29 @@ export function queryDshDetail(query) {
     data: query
   })
 }
-
-
-
-//乘车优惠待审核列表导出
+//住宿申请待审核列表导出
 export function exportZjbbFlow(query) {
   return request({
-    url: '/ChyhFlow/excelExportZjbbFlow',
+    url: '/rcswZssq/excelExportRcswZssqFlow',
     method: 'post',
     responseType:"blob",
     data: query
   })
 }
-//乘车优惠已处理列表导出
+//住宿申请已处理列表导出
 export function exportZjbbFlowed(query) {
   return request({
-    url: '/ChyhFlow/excelExportZjbbFlowed',
+    url: '/rcswZssq/excelExportRcswZssqFlowed',
     method: 'post',
     responseType:"blob",
     data: query
   })
 }
-//乘车优惠待审核详情历史列表
-export function queryDetailList(query) {
+
+//教师端-住宿申请-后勤负责人-新增修改楼栋房间信息
+export function updateZssqFlow(query) {
   return request({
-    url: '/ChyhFlow/RcswChyhFlowInfoList',
+    url: '/rcswZssq/updateZssqFlow',
     method: 'post',
     data: query
   })

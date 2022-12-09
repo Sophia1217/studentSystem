@@ -340,7 +340,7 @@
     >
       <template>
         <div class="baseInfo">
-          <el-form :data="formDetails" style="margin-bottom: 0">
+          <el-form :data="basicDetails" style="margin-bottom: 0">
             <div class="formLeft"><span class="title">基本信息</span></div>
             <div class="backDetail">
               <div class="formRight">
@@ -348,13 +348,13 @@
                   <el-col :span="12" class="rowStyle">
                     <div class="wrap">
                       <div class="title">学号</div>
-                      <div class="content">{{ formDetails.xh }}</div>
+                      <div class="content">{{ basicDetails.xh }}</div>
                     </div>
                   </el-col>
                   <el-col :span="12" class="rowStyle">
                     <div class="wrap">
                       <div class="title">姓名</div>
-                      <div class="content">{{ formDetails.xm }}</div>
+                      <div class="content">{{ basicDetails.xm }}</div>
                     </div>
                   </el-col>
                 </el-row>
@@ -362,13 +362,13 @@
                   <el-col :span="12" class="rowStyle">
                     <div class="wrap">
                       <div class="title">培养层次</div>
-                      <div class="content">{{ formDetails.xbmmc }}</div>
+                      <div class="content">{{ basicDetails.pyccmmc }}</div>
                     </div>
                   </el-col>
                   <el-col :span="12" class="rowStyle">
                     <div class="wrap">
                       <div class="title">培养单位</div>
-                      <div class="content">{{ formDetails.dwhmc }}</div>
+                      <div class="content">{{ basicDetails.dwhmc }}</div>
                     </div>
                   </el-col>
                 </el-row>
@@ -376,13 +376,13 @@
                   <el-col :span="12" class="rowStyle">
                     <div class="wrap">
                       <div class="title">专业</div>
-                      <div class="content">{{ formDetails.zydmmc }}</div>
+                      <div class="content">{{ basicDetails.zydmmc }}</div>
                     </div>
                   </el-col>
                   <el-col :span="12" class="rowStyle">
                     <div class="wrap">
                       <div class="title">年级</div>
-                      <div class="content">{{ formDetails.yddh }}</div>
+                      <div class="content">{{ basicDetails.nj }}</div>
                     </div>
                   </el-col>
                 </el-row>
@@ -390,99 +390,70 @@
                   <el-col :span="24" class="rowStyle">
                     <div class="wrap">
                       <div class="title">班级</div>
-                      <div class="content">{{ formDetails.zsxx }}</div>
+                      <div class="content">{{ basicDetails.bjmmc }}</div>
                     </div>
                   </el-col>
                 </el-row>
               </div>
             </div>
             <div class="formLeft"><span class="title">申请信息</span></div>
-            <div class="backDetail" v-if="flag == '01'">
-              <div class="formRight">
-                <el-row>
-                  <el-col :span="12" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">申请异动</div>
-                      <div class="content">{{ formDetails1.sqyd }}</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="12" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">申请类型</div>
-                      <div class="content">{{ formDetails1.oplx }}</div>
-                    </div>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="12" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">其他</div>
-                      <div class="content">{{ formDetails1.qt }}</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="12" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">是否退宿</div>
-                      <div class="content">{{ formDetails1.SFTS }}</div>
-                    </div>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="12" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">参加项目</div>
-                      <div class="content">{{ formDetails1.blxjCjxm }}</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="12" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">负责部门</div>
-                      <div class="content">{{ formDetails1.blxjFzbm }}</div>
-                    </div>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="24" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">保留时间</div>
-                      <div class="content">
-                        {{ formDetails1.blxjBlstart }}
-                        <span v-html="'\u3000'"></span> 至
-                        <span v-html="'\u3000'"></span
-                        >{{ formDetails1.blxjBlend }}
-                      </div>
-                    </div>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="24" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">申请理由</div>
-                      <div class="content">{{ formDetails1.sqmsg }}</div>
-                    </div>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="24" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">申请材料</div>
-                      <div class="content">
-                        <el-upload
-                          action="#"
-                          multiple
-                          :file-list="formDetails1.fileList"
-                          :auto-upload="false"
-                          class="el-upload"
-                          :disabled="true"
-                        >
-                        </el-upload>
-                      </div>
-                    </div>
-                  </el-col>
-                </el-row>
+            <el-table :data="formDetails1.tableSH">
+              <el-table-column label="学年" prop="xn"></el-table-column>
+              <el-table-column label="学期" prop="xq"></el-table-column>
+              <el-table-column
+                label="申请金额(元)"
+                prop="sqje"
+              ></el-table-column>
+              <el-table-column
+                label="申请原因类别"
+                prop="sqyylb"
+              ></el-table-column>
+              <el-table-column label="申请材料" width="450">
+                <template slot-scope="scope">
+                  <el-upload
+                    action="#"
+                    class="el-upload"
+                    :auto-upload="false"
+                    :disabled="true"
+                    :file-list="scope.row.fileList"
+                  >
+                  </el-upload>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div class="formLeft"><span class="title">申请理由</span></div>
+            <el-form-item>
+              <div>
+                {{ formDetails1.sqly }}
               </div>
-            </div>
+            </el-form-item>
+            <div class="formLeft"><span class="title">历史申请记录</span></div>
+            <el-table :data="formDetails1.oldList">
+              <el-table-column label="学年" prop="xnmc"></el-table-column>
+              <el-table-column label="学期" prop="xqmc"></el-table-column>
+              <el-table-column
+                label="申请金额(元)"
+                prop="sqje"
+              ></el-table-column>
+              <el-table-column
+                label="申请原因类别"
+                prop="sqlbmc"
+              ></el-table-column>
+              <el-table-column label="申请材料" width="450">
+                <template slot-scope="scope">
+                  <el-upload
+                    action="#"
+                    class="el-upload"
+                    :disabled="true"
+                    ref="upload"
+                    :file-list="scope.row.fileList"
+                  >
+                  </el-upload>
+                </template>
+              </el-table-column>
+            </el-table>
           </el-form>
+
           <div class="formLeft"><span class="title">审核信息</span></div>
           <el-form :data="editDetails" :model="editDetails" ref="editDetails">
             <el-row :gutter="20">
@@ -508,6 +479,16 @@
                   </el-select>
                 </el-form-item>
               </el-col>
+              <el-col :span="6" v-if="jeFlag == '02'">
+                <el-form-item label="批准金额" label-width="120px" prop="pzje">
+                  <el-input
+                    v-model="formDetails1.spje"
+                    placeholder="请选择"
+                    size="small"
+                  >
+                  </el-input>
+                </el-form-item>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :span="20">
@@ -529,7 +510,7 @@
         </div>
       </template>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="shRecord">审核记录</el-button>
+        <!-- <el-button @click="shRecord">审核记录</el-button> -->
         <el-button @click="detailCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="detailClick"
           >确 定</el-button
@@ -602,7 +583,6 @@
 import CheckboxCom from "../../../../components/checkboxCom";
 import checkboxComDynic from "../../../../components/checkboxComDynic";
 import lctCom from "../../../../components/lct";
-import { querywj } from "@/api/assistantWork/classEvent";
 import { delFile, downloadFile, queryFile } from "@/api/common/file";
 import { queryLc } from "@/api/common/liucheng";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
@@ -619,12 +599,12 @@ import {
   xhQuery,
   dshExp,
 } from "@/api/dailyBehavior/lskn";
-import { getToken } from "@/utils/auth";
 export default {
   components: { CheckboxCom, checkboxComDynic, lctCom },
   data() {
     return {
       xqlist: [],
+      basicDetails: {},
       shRecordModal: false,
       shRecordTable: [],
       SHfileList: [],
@@ -663,6 +643,7 @@ export default {
       editDetails: {
         shyj: "",
         shjg: "",
+        pzje: "",
       },
       allDwh: [], // 学院下拉框
       zyOps: [], // 专业下拉
@@ -677,13 +658,12 @@ export default {
         checkBox: [],
         isIndeterminate: true,
       },
-      ind: 1,
-      len: 0,
       dynamicModal: false,
       tableHeader: [
         { dm: "dwhmc", mc: "培养单位" },
         { dm: "pyccmmc", mc: "培养层次" },
         { dm: "sqje", mc: "申请金额" },
+        { dm: "sqlbmc", mc: "申请类别" },
         { dm: "bjmmc", mc: "班级" },
         { dm: "xnmc", mc: "学年" },
         { dm: "xqmc", mc: "学期" },
@@ -696,6 +676,7 @@ export default {
           { dm: "dwhmc", mc: "培养单位" },
           { dm: "pyccmmc", mc: "培养层次" },
           { dm: "sqje", mc: "申请金额" },
+          { dm: "sqlbmc", mc: "申请类别" },
           { dm: "bjmmc", mc: "班级" },
           { dm: "xnmc", mc: "学年" },
           { dm: "xqmc", mc: "学期" },
@@ -715,7 +696,7 @@ export default {
         orderZd: "",
         orderPx: "",
       },
-      formDetails: {},
+      jeFlag: "01",
       formDetails1: {},
       shjgOps: [
         { dm: "01", mc: "通过" },
@@ -746,26 +727,6 @@ export default {
   activated() {
     this.handleSearch();
   },
-  computed: {
-    fileData: {
-      get() {
-        return {
-          pageType: "xjyd",
-          roleType: "rcsw",
-          id: this.tableDetail.processid,
-        };
-      },
-    },
-    fileHeader: {
-      get() {
-        return {
-          accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
-          uuid: new Date().getTime(),
-          clientId: "111",
-        };
-      },
-    },
-  },
   methods: {
     shRecord() {
       this.shRecordModal = true;
@@ -782,25 +743,38 @@ export default {
       this.tableDetail = row;
       var processid = row.id;
       await getDetail(processid).then((res) => {
-        console.log("resxiangqing ", res);
+        res.data.oldList =
+          res.data.oldList.length > 0
+            ? res.data.oldList.map((ele) => {
+                return {
+                  name: ele.fileName,
+                  ...ele,
+                };
+              })
+            : [];
+        res.data.fileList =
+          res.data.fileList.length > 0
+            ? res.data.fileList.map((ele) => {
+                return {
+                  name: ele.fileName,
+                  ...ele,
+                };
+              })
+            : [];
         this.formDetails1 = res.data;
+        var data = {
+          xn: res.data.xnmc,
+          xq: res.data.xqmc,
+          sqje: res.data.sqje,
+          sqyylb: res.data.sqlbmc,
+          fileList: res.data.fileList,
+        };
+        this.formDetails1.tableSH = [];
+        this.formDetails1.tableSH.push(data);
       });
       await xhQuery({ xh: row.xh }).then((res) => {
-        this.formDetails = res.data;
+        this.basicDetails = res.data;
       });
-      //用于文件查询
-      await querywj(processid).then((res) => {
-        this.formDetails1.fileList = res.data;
-        this.formDetails1.fileList = this.formDetails1.fileList.map((ele) => {
-          return {
-            name: ele.fileName,
-            ...ele,
-          };
-        });
-      });
-      if (this.flag == "02") {
-        this.queryFile();
-      }
       this.detailModal = true;
     },
     handlePreview(file) {
@@ -865,7 +839,7 @@ export default {
     },
     changeJG(val) {
       if (val && val == "03") {
-        var processid = { processid: this.tableDetail.taskId };
+        var processid = { processId: this.tableDetail.taskId };
         this.conformType = "退回";
         this.conformText = "退回确认";
         backFlow(processid).then((res) => {
@@ -878,6 +852,7 @@ export default {
       } else {
         this.conformType = "同意";
         this.conformText = "同意确认";
+        this.jeFlag = "02";
       }
     },
     finalCancel() {
@@ -885,16 +860,14 @@ export default {
     },
     finalConfirm() {
       var data = {
-        id: this.tableDetail.id,
-        oplx: this.formDetails1.oplx,
-        processid: this.tableDetail.processid,
+        businesId: this.tableDetail.id,
+        processId: this.tableDetail.processid,
         taskId: this.tableDetail.taskId,
-        xh: this.tableDetail.xh,
+        // xh: this.tableDetail.xh,
         opMsg: this.editDetails.shyj ? this.editDetails.shyj : "",
-        fxBj: this.flag == "03" ? this.fxBj : "",
-        fxNj: this.flag == "03" ? this.fxNj : "",
-        actId: "",
-        actName: "",
+        // spje: this.formDetails1.spje ? this.formDetails1.spje : "",
+        // actId: "",
+        // actName: "",
       };
       if (this.conformType == "退回") {
         data.actId = this.multipleSelection1.actId;
@@ -911,6 +884,7 @@ export default {
           this.$message.success("已拒绝");
         });
       } else {
+        data.spje = this.formDetails1.spje ? this.formDetails1.spje : "";
         tyFlow(data).then((res) => {
           this.conformModal = false;
           this.handleSearch();
@@ -1110,23 +1084,28 @@ export default {
     daochu() {
       var ids = this.multipleSelection.map((item) => item.id);
       let data = {
+        idList: ids,
+        doneState: "1",
         xh: this.select == "xh" ? this.searchVal : null,
         xm: this.select == "xm" ? this.searchVal : null,
-        dwh: this.moreIform.manageReg,
-        zydm: this.moreIform.stuInfo,
         pyccm: this.training.choose,
-        bjm: this.moreIform.pread,
-        mk: this.moreIform.mk,
-        tjdate: this.tjdate,
+        sqlbm: this.moreIform.sqlb,
+        xnm: this.moreIform.xn,
+        xqm: this.moreIform.xq,
+        bjdm: this.moreIform.pread,
+        nj: this.moreIform.nj,
+        dwh: this.moreIform.manageReg, //单位
+        zydm: this.moreIform.stuInfo, //专业
+        maxSqje: this.maxSqje,
+        minSqje: this.minSqje,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         limitSql: "",
-        ids: ids,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
       dshExp(data).then((res) => {
-        this.downloadFn(res, "学籍异动待审核列表下载", "xlsx");
+        this.downloadFn(res, "临时困难待审核列表下载", "xlsx");
         if (this.$store.getters.excelcount > 0) {
           this.$message.success(
             `已成功导出${this.$store.getters.excelcount}条数据`

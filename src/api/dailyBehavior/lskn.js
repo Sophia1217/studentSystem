@@ -86,21 +86,21 @@ export function getDetail(query) {
 //待审核导出
 export function dshExp(query) {
 return request({
-    url: '/rcswXjyd/excelExportRcswXjyd',
+    url: '/rcswLskn/excelExport',
     method: 'post',
     data: query,
     responseType:'blob'
 })
 }
-//已处理导出
-export function yclExp(query) {
-return request({  
-    url: '/rcswXjyd/excelExportRcswXjydFlowed',
-    method: 'post',
-    data: query,
-    responseType:'blob'
-})
-}
+
+export function mbDown(query) {
+  return request({
+      url: '/rcswLskn/downLoad',
+      method: 'post',
+      data: query,
+      responseType:'blob'
+  })
+  }
 
 export function xhQuery(query) {
 return request({

@@ -164,7 +164,7 @@
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
-                <span>流程图</span>
+                <span>流转记录</span>
               </el-button>
             </template>
           </el-table-column>
@@ -706,10 +706,10 @@ export default {
           let data = {
             businesId: this.defaultRes.id,
             processId: this.defaultRes.qjprocessid,
-            qjstatus: this.defaultRes.qjstatus,
+            status: this.defaultRes.qjstatus,
             taskId: this.defaultRes.taskId,
             opMsg: this.formDetails.shyj ? this.formDetails.shyj : "审核通过",
-            xh: this.formDetails.xh,
+            // xh: this.formDetails.xh,
           };
           tyqjFlow([data]).then((res) => {
             if (res.errcode == "00") {
@@ -723,10 +723,10 @@ export default {
           let data = {
             businesId: this.defaultRes.id,
             processId: this.defaultRes.qjprocessid,
-            qjstatus: this.defaultRes.qjstatus,
+            status: this.defaultRes.qjstatus,
             taskId: this.defaultRes.taskId,
             opMsg: this.formDetails.shyj ? this.formDetails.shyj : "已拒绝",
-            xh: this.formDetails.xh,
+            //xh: this.formDetails.xh,
           };
           jjqjFlow([data]).then((res) => {
             if (res.errcode == "00") {
@@ -741,14 +741,14 @@ export default {
             let data = {
               businesId: this.defaultRes.id,
               processId: this.defaultRes.qjprocessid,
-              qjstatus: this.defaultRes.qjstatus,
+              status: this.defaultRes.qjstatus,
               taskId: this.defaultRes.taskId,
               opMsg: this.formDetails.shyj ? this.formDetails.shyj : "已退回",
-              xh: this.formDetails.xh,
+              //xh: this.formDetails.xh,
             };
             let targ = {
-              czdaFlowNodeRes: this.multipleSelection1,
-              rcswRcqxjFlowOpReqList: [data],
+              flowNodeRes: this.multipleSelection1,
+              flowOpReqList: [data],
             };
             htqjFlow(targ).then((res) => {
               if (res.errcode == "00") {
@@ -937,8 +937,8 @@ export default {
         opMsg: this.thly,
       }));
       var targ = {
-        czdaFlowNodeRes: this.multipleSelection1,
-        rcswRcqxjFlowOpReqList: data,
+        flowNodeRes: this.multipleSelection1,
+        flowOpReqList: data,
       };
       htqjFlow(targ).then((res) => {
         if (res.errcode == "00") {
@@ -1027,11 +1027,11 @@ export default {
       this.multipleSelection = val;
       this.commonParams = this.multipleSelection.map((v) => ({
         businesId: v.id,
-        qjprocessid: v.qjprocessid,
+        processId: v.qjprocessid,
         qjts: v.qjts,
-        qjstatus: v.qjstatus,
+        status: v.qjstatus,
         taskId: v.taskId,
-        xh: v.xh,
+        //xh: v.xh,
       }));
     },
     //排序

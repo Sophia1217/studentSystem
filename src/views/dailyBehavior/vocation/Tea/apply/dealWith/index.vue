@@ -194,7 +194,7 @@
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
-                <span>流程图</span>
+                <span>流转记录</span>
               </el-button>
             </template>
           </el-table-column>

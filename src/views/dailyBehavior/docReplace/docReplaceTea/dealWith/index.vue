@@ -244,7 +244,7 @@
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
-                <span>流程图</span>
+                <span>流转记录</span>
               </el-button>
             </template>
           </el-table-column>
@@ -599,11 +599,8 @@ export default {
         orderPx: this.queryParams.orderPx,
       }; //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
       this.exportParams = data;
-      if (this.multipleSelection.length > 0) {
-        this.showExport = true;
-      } else {
-        this.$message.warning("当前无数据导出");
-      }
+
+      this.showExport = true;
     },
     handleCloseLct() {
       this.lctModal = false;

@@ -761,6 +761,7 @@ import {
   xjtjById,
 } from "@/api/dailyBehavior/vocationStu";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+import { delwj } from "@/api/assistantWork/classEvent";
 import lctCom from "../../../../components/lct";
 import CheckboxCom from "../../../../components/checkboxCom";
 export default {

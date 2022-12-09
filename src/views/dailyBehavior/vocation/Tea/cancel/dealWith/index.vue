@@ -178,7 +178,7 @@
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
-                <span>流程图</span>
+                <span>流转记录</span>
               </el-button>
             </template>
           </el-table-column>
@@ -633,8 +633,8 @@ export default {
       this.lctModal = false;
     },
     lctClick(row) {
-      if (!!row.qjprocessid) {
-        this.$refs.child.inner(row.qjprocessid);
+      if (!!row.xjprocessid) {
+        this.$refs.child.inner(row.xjprocessid);
         this.lctModal = true;
       } else {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");

@@ -745,15 +745,18 @@ export default {
               taskId: this.defaultRes.taskId,
               opMsg: this.formDetails.shyj ? this.formDetails.shyj : "已退回",
               //xh: this.formDetails.xh,
+
+              actId: this.multipleSelection1.actId,
+              actName: this.multipleSelection1.actName,
             };
-            let targ = {
-              flowNodeRes: this.multipleSelection1,
-              flowOpReqList: [data],
-            };
-            htqjFlow(targ).then((res) => {
+            // let targ = {
+            //   flowNodeRes: this.multipleSelection1,
+            //   flowOpReqList: [data],
+            // };
+            htqjFlow([data]).then((res) => {
               if (res.errcode == "00") {
-                this.thTableModal2 = false;
                 this.$message.success("退回成功");
+                this.detailModal = false;
                 this.handleSearch();
               }
             });
@@ -935,12 +938,14 @@ export default {
       var data = this.commonParams.map((item) => ({
         ...item,
         opMsg: this.thly,
+        actId: this.multipleSelection1.actId,
+        actName: this.multipleSelection1.actName,
       }));
-      var targ = {
-        flowNodeRes: this.multipleSelection1,
-        flowOpReqList: data,
-      };
-      htqjFlow(targ).then((res) => {
+      // var targ = {
+      //   flowNodeRes: this.multipleSelection1,
+      //   flowOpReqList: data,
+      // };
+      htqjFlow(data).then((res) => {
         if (res.errcode == "00") {
           this.detailModal = false;
           this.$message.success("退回成功");
@@ -1028,7 +1033,7 @@ export default {
       this.commonParams = this.multipleSelection.map((v) => ({
         businesId: v.id,
         processId: v.qjprocessid,
-        qjts: v.qjts,
+        // qjts: v.qjts,
         status: v.qjstatus,
         taskId: v.taskId,
         //xh: v.xh,

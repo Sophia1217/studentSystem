@@ -114,7 +114,7 @@
         <div>
           <el-form>
             <el-form-item label="培养层次">
-              <el-select v-model="pycc" placeholder="未选择" clearable>
+              <el-select v-model="pycc" placeholder="未选择" clearable multiple>
                 <el-option
                   v-for="(item, index) in pyccOps"
                   :key="index"
@@ -235,7 +235,8 @@ export default {
     pyccClick(row) {
       this.pyccModal = true;
       this.rowDetail = row;
-      this.pycc = this.rowDetail.qt;
+
+      this.pycc = this.rowDetail.qt.split(",");
     },
     jeCancel() {
       this.jeModal = false;
@@ -259,7 +260,7 @@ export default {
     },
     pyccConfirm() {
       let data = {
-        qt: this.pycc,
+        qt: this.pycc.toString(),
         businessName: this.rowDetail.businessName,
         // id: this.rowDetail.id,
         // kgzt: this.rowDetail.kgzt,

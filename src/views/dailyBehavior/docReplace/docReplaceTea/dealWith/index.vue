@@ -207,18 +207,44 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" width="100">
+          <el-table-column prop="xh" label="学号" width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xm" label="姓名" width="85"> </el-table-column>
-          <el-table-column prop="dwhmc" label="培养单位" min-width="100">
+          <el-table-column prop="xm" label="姓名" width="85" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zjlx" label="证件类型" width="100">
+          <el-table-column
+            prop="dwhmc"
+            label="培养单位"
+            min-width="100"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="sqsj" label="申请时间" min-width="100">
+          <el-table-column
+            prop="zjlx"
+            label="证件类型"
+            width="100"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="shsj" label="审核时间" min-width="100">
+          <el-table-column
+            prop="sqsj"
+            label="申请时间"
+            min-width="100"
+            sortable="custom"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="shsj"
+            label="审核时间"
+            min-width="100"
+            sortable="custom"
+          >
           </el-table-column
-          ><el-table-column prop="status" label="审核状态" width="110">
+          ><el-table-column
+            prop="status"
+            label="审核状态"
+            width="110"
+            sortable="custom"
+          >
             <template slot-scope="scope">
               <el-select
                 v-model="scope.row.status"
@@ -234,11 +260,26 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column prop="sfjf" label="缴费" min-width="80">
+          <el-table-column
+            prop="sfjf"
+            label="缴费"
+            min-width="80"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="sfqj" label="制证" min-width="80">
+          <el-table-column
+            prop="sfqj"
+            label="制证"
+            min-width="80"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="sfqj" label="取件" min-width="100">
+          <el-table-column
+            prop="sfqj"
+            label="取件"
+            min-width="100"
+            sortable="custom"
+          >
           </el-table-column>
           <el-table-column prop="mk" label="审核进度">
             <template slot-scope="scope">

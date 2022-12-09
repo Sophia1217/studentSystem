@@ -182,20 +182,51 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" width="100">
+          <el-table-column prop="xh" label="学号" width="100" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xm" label="姓名" width="85"> </el-table-column>
-          <el-table-column prop="dwhmc" label="培养单位" min-width="100">
+          <el-table-column prop="xm" label="姓名" width="85" sortable="custom">
           </el-table-column>
-          <el-table-column prop="pyccmmc" label="培养层次" width="80">
+          <el-table-column
+            prop="dwhmc"
+            label="培养单位"
+            min-width="100"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="zjlx" label="证件类型" min-width="100">
+          <el-table-column
+            prop="pyccmmc"
+            label="培养层次"
+            width="100"
+            sortable="custom"
+          >
           </el-table-column>
-          <el-table-column prop="sqsj" label="申请时间" min-width="100">
+          <el-table-column
+            prop="zjlx"
+            label="证件类型"
+            min-width="100"
+            sortable="custom"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="sqsj"
+            label="申请时间"
+            min-width="100"
+            sortable="custom"
+          >
           </el-table-column
-          ><el-table-column prop="sfjf" label="是否缴费" width="90">
+          ><el-table-column
+            prop="sfjf"
+            label="是否缴费"
+            width="100"
+            sortable="custom"
+          >
           </el-table-column
-          ><el-table-column prop="sfqj" label="是否取件" width="90">
+          ><el-table-column
+            prop="sfqj"
+            label="是否取件"
+            width="100"
+            sortable="custom"
+          >
           </el-table-column>
           <el-table-column prop="createDwhMc" label="审核进度">
             <template slot-scope="scope">
@@ -265,40 +296,7 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="退回选择" :visible.sync="thTableModal2" width="20%">
-        <template>
-          <el-table
-            :data="tableInner"
-            ref="multipleTable1"
-            style="width: 100%"
-            :default-sort="{ prop: 'date', order: 'descending' }"
-          >
-            <el-table-column width="55">
-              <template slot-scope="scope">
-                <el-radio
-                  :label="scope.$index"
-                  v-model="tempRadio"
-                  @change.native="getRow(scope.$index, scope.row)"
-                  >{{ "" }}</el-radio
-                >
-              </template>
-            </el-table-column>
-            <el-table-column
-              type="index"
-              label="序号"
-              width="50"
-            ></el-table-column>
-            <el-table-column prop="actName" label="节点名称" sortable="custom">
-            </el-table-column>
-          </el-table>
-        </template>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="thTableCancel2">取 消</el-button>
-          <el-button type="primary" class="confirm" @click="thTableConfirm2"
-            >确 定</el-button
-          >
-        </span>
-      </el-dialog>
+
       <el-dialog title="退回理由" :visible.sync="thModal" width="30%">
         <template>
           <el-input placeholder="请输入退回理由" v-model="thly"></el-input>
@@ -582,7 +580,6 @@ export default {
       jjly: "",
       tableInner: [],
       thTableModal: false,
-      thTableModal2: false,
       thModal: false,
       thly: "",
       tempRadio: false,
@@ -686,15 +683,18 @@ export default {
               taskId: this.tableDetails.taskId,
               opMsg: this.formDetails.shyj ? this.formDetails.shyj : "已退回",
               xh: this.formDetails.xh,
+              actId: this.multipleSelection1.actId,
+              actName: this.multipleSelection1.actName,
             };
-            let targ = {
-              czdaFlowNodeRes: this.multipleSelection1,
-              czdaFlowOpReqList: [data],
-            };
-            htFlow(targ).then((res) => {
+            // let targ = {
+            //   czdaFlowNodeRes: this.multipleSelection1,
+            //   czdaFlowOpReqList: [data],
+            // };
+            htFlow([data]).then((res) => {
               if (res.errcode == "00") {
-                this.thTableModal2 = false;
+                this.thTableModal = false;
                 this.$message.success("退回成功");
+                this.detailModal = false;
                 this.handleSearch();
               }
             });
@@ -835,34 +835,7 @@ export default {
         this.$message.error("请先勾选退回的节点");
       }
     },
-    thTableCancel2() {
-      this.thTableModal2 = false;
-    },
-    thTableConfirm2() {
-      if (!!this.tempRadio || this.tempRadio === 0) {
-        let data = {
-          businesId: this.tableDetails.businesId,
-          processId: this.tableDetails.processId,
-          status: this.tableDetails.status,
-          taskId: this.tableDetails.taskId,
-          opMsg: this.formDetails.shyj ? this.formDetails.shyj : "已退回",
-          xh: this.formDetails.xh,
-        };
-        let targ = {
-          czdaFlowNodeRes: this.multipleSelection1,
-          czdaFlowOpReqList: data,
-        };
-        htFlow(targ).then((res) => {
-          if (res.errcode == "00") {
-            this.thTableModal2 = false;
-            this.$message.success("退回成功");
-            this.handleSearch();
-          }
-        });
-      } else {
-        this.$message.error("请先勾选退回的节点");
-      }
-    },
+
     thCancel() {
       this.thModal = false;
     },
@@ -871,12 +844,14 @@ export default {
       var data = this.commonParams.map((item) => ({
         ...item,
         opMsg: this.thly ? this.thly : "已退回",
+        actId: this.multipleSelection1.actId,
+        actName: this.multipleSelection1.actName,
       }));
-      var targ = {
-        czdaFlowNodeRes: this.multipleSelection1,
-        czdaFlowOpReqList: data,
-      };
-      htFlow(targ).then((res) => {
+      // var targ = {
+      //   czdaFlowNodeRes: this.multipleSelection1,
+      //   czdaFlowOpReqList: data,
+      // };
+      htFlow(data).then((res) => {
         if (res.errcode == "00") {
           this.detailModal = false;
           this.$message.success("退回成功");

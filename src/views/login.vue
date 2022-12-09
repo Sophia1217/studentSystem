@@ -83,9 +83,7 @@ export default {
     return {
       codeUrl: "",
       loginForm: {
-        username: "2005690011",
-        //2006983699 2005690040 200450095 2005690035 冯 2019210601
-        //学生 20031677 辅导员 2005690011 //学生 2021211054  超管 2005690040 后勤 2005690031
+        username: "",
         //password: "admin123",
         //rememberMe: false,
         code: "",

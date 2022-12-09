@@ -812,15 +812,15 @@ export default {
             formData.append("files", file.raw);
           });
         }
-        // edit(formData).then((res) => {
-        //   if (res.errcode == "00") {
-        //     this.$message.success("编辑成功");
-        //     this.query();
-        //   } else {
-        //     this.$message.error("编辑失败");
-        //   }
-        // });
-        // this.editModal = false;
+        edit(formData).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("编辑成功");
+            this.query();
+          } else {
+            this.$message.error("编辑失败");
+          }
+        });
+        this.editModal = false;
       }
     },
     addClick() {

@@ -9,5 +9,14 @@ export function queryLc(query) {
     })
   }
 
+  // 根据流程实例号查询流程日志
+export function queryXjydAuth(query) {
+  return request({
+    url: "/flowBusiness/queryRcswXjydTabByXh",
+    method: 'get',
+    params: query
+  })
+}
+
 
 

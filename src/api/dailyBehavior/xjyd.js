@@ -131,6 +131,16 @@ export function htFlow(query) {
   })
 }
 
+export function updateYdwh(query) {
+  return request({
+      url: '/rcswXjyd/updateYdwh',
+      method: 'post',
+      data: query
+  })
+}
+
+
+
 //拒绝
 export function jjFlow(query) {
   return request({

@@ -271,6 +271,7 @@
 
 <script>
 import TopTitle from "@/components/TopTitle/index.vue";
+import { queryXjydAuth } from "@/api/common/liucheng";
 export default {
   name: "studentHomePage", // 学生视角首页内容
   components: {
@@ -287,8 +288,14 @@ export default {
       });
     },
     xjyd() {
-      this.$router.push({
-        path: "/xjydswStu",
+      queryXjydAuth({ xh: this.$store.getters.userId }).then((res) => {
+        if (res.data.length == 4) {
+          this.$router.push({
+            path: "/xjydswStu",
+          });
+        } else {
+          this.$message.warning("此学生暂无相关功能");
+        }
       });
     },
     //首页基本信息跳转

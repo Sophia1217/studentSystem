@@ -138,6 +138,14 @@
             </div>
           </el-col>
         </el-row>
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="3">异动文号：</el-col>
+          <el-col :span="5">
+            <div class="checkbox">
+              <el-input v-model="ydwh" placeholder="请输入异动文号"> </el-input>
+            </div>
+          </el-col>
+        </el-row>
       </div>
     </div>
     <!-- table -->
@@ -192,6 +200,24 @@
               sortable="custom"
             ></el-table-column>
           </div>
+          <el-table-column
+            label="异动文号"
+            align="center"
+            prop="ydwh"
+            min-width="180"
+            sortable="custom"
+          >
+            <template slot-scope="{ row }">
+              <el-input
+                v-model="row.ydwh"
+                clearable
+                maxlength="50"
+                width="200px"
+                @blur="alterYdwh($event, row)"
+                @keyup.enter.native="alterYdwh($event, row)"
+              />
+            </template>
+          </el-table-column>
           <el-table-column fixed="right" label="审核进度" width="140">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="lctClick(scope.row)">
@@ -730,6 +756,19 @@
         <el-button @click="detailCancel">关 闭</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="修改异动文号确认提示"
+      :visible.sync="sureModal"
+      width="30%"
+    >
+      <span>是否修改异动文号为{{ YDWHROW.ydwh }}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="sureCancel">取消</el-button>
+        <el-button type="primary" @click="sureConfirm" class="confirm"
+          >确定</el-button
+        >
+      </span>
+    </el-dialog>
     <pagination
       v-show="queryParams.total > 0"
       :total="queryParams.total"
@@ -760,6 +799,7 @@ import {
   jjFlow,
   xhQuery,
   ysxExp,
+  updateYdwh,
 } from "@/api/dailyBehavior/xjyd";
 import { getToken } from "@/utils/auth";
 export default {
@@ -781,7 +821,7 @@ export default {
       isMore: false,
       pycc: "",
       tjdate: "",
-
+      ydwh: "",
       tempRadio: false,
       moreIform: {
         manageReg: [], // 学院
@@ -853,7 +893,7 @@ export default {
         { dm: "zydmmc", mc: "专业" },
         { dm: "bjmmc", mc: "班级" },
         { dm: "mkmc", mc: "异动类别" },
-        { dm: "tjdate", mc: "申请时间" },
+        { dm: "yddate", mc: "异动时间" },
       ],
       dynamicsCheckboxs: {
         //动态表头
@@ -865,7 +905,7 @@ export default {
           { dm: "zydmmc", mc: "专业" },
           { dm: "bjmmc", mc: "班级" },
           { dm: "mkmc", mc: "异动类别" },
-          { dm: "tjdate", mc: "申请时间" },
+          { dm: "yddate", mc: "异动时间" },
         ],
         isIndeterminate: true,
       },
@@ -885,11 +925,13 @@ export default {
         { dm: "02", mc: "拒绝" },
         { dm: "03", mc: "退回" },
       ],
+      sureModal: false,
       tableDetail: {},
       thTableModal: false,
       flag: "01",
       multipleSelection1: "",
       AUTHFLAG: false,
+      YDWHROW: {},
     };
   },
   mounted() {
@@ -925,6 +967,40 @@ export default {
     },
   },
   methods: {
+    sureCancel() {
+      this.sureModal = false;
+      this.handleSearch();
+    },
+    sureConfirm() {
+      if (this.YDWHROW.ydwh == "") {
+        this.$message.error("异动文号不能为空");
+      } else {
+        updateYdwh(this.YDWHROW)
+          .then((response) => {
+            if (response.errcode == "00") {
+              this.$message({
+                showClose: true,
+                message: "修改成功",
+                type: "success",
+              });
+            } else {
+              this.$message({
+                showClose: true,
+                message: "修改失败",
+                type: "error",
+              });
+            }
+          })
+          .catch((err) => {});
+        this.sureModal = false;
+      }
+      this.handleQuery();
+      this.sureModal = false;
+    },
+    alterYdwh(e, row) {
+      this.sureModal = true;
+      this.YDWHROW = row;
+    },
     shRecord() {
       this.shRecordModal = true;
       queryLc({ processInstanceId: this.tableDetail.processId }).then((res) => {
@@ -1253,6 +1329,7 @@ export default {
         bjm: this.moreIform.pread,
         mk: this.moreIform.mk,
         tjdate: this.tjdate,
+        ydwh: this.ydwh,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         status: this.moreIform.ztStatus,
@@ -1316,7 +1393,7 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      yclExp(data).then((res) => {
+      ysxExp(data).then((res) => {
         this.downloadFn(res, "学籍异动已生效列表下载", "xlsx");
         if (this.$store.getters.excelcount > 0) {
           this.$message.success(

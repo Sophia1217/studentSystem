@@ -209,7 +209,7 @@
             <span class="stuinfoTitle">火车乘车优惠</span>
           </div>
           <div class="title2">
-            <span class="baseInfo">模块建设中</span>
+            <span class="baseInfo">火车乘车区间填写</span>
           </div>
         </div>
       </div>

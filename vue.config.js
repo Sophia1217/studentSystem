@@ -11,6 +11,7 @@ const name = process.env.VUE_APP_TITLE || "华中师范大学学生事务服务�
 
 const port = process.env.port || process.env.npm_config_port || 8081; // 端口
 
+
 // vue.config.js 配置说明
 //官方vue.config.js 参考文档 https://cli.vuejs.org/zh/config/#css-loaderoptions
 // 这里只列一部分，具体配置参考文档
@@ -37,11 +38,12 @@ module.exports = {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
         // target: `http://10.222.7.139:8081`, //华师测试服务器
-        target: `http://172.30.66.59:8081`, //基地测试服务器
+        // target: `http://172.30.66.59:8081`, //基地测试服务器
         // target: `http://10.255.1.38:8081`, //招哥服务器
         // target: `http://10.255.1.30:8081`, //卢晨测试服务器
         // target: `http://10.255.1.10:8081`, //胡燕测试服务器
         // target: `http://10.255.1.178:8081`, //文俊测试服务器
+        target: `http://10.255.1.62:8081`, //服务器
         changeOrigin: true,
         pathRewrite: {
           // ["^" + process.env.VUE_APP_BASE_API]: "",
@@ -49,11 +51,12 @@ module.exports = {
       },
       ['/sfile']: {
         // target: `http://10.222.7.139:8081`, //华师测试服务器
-        target: `http://172.30.129.27`, //基地测试服务器
+        // target: `http://172.30.129.27`, //基地测试服务器
         // target: `http://10.255.1.38:8081`, //招哥服务器
         // target: `http://10.255.1.30:8081`, //卢晨测试服务器
         // target: `http://10.255.1.10:8081`, //胡燕测试服务器
         // target: `http://10.255.1.178:8081`, //文俊测试服务器
+        target: `http://10.255.1.62:8081`, //服务器
         changeOrigin: true,
         pathRewrite: {
           // ["^" + process.env.VUE_APP_BASE_API]: "",

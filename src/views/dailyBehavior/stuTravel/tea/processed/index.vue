@@ -139,7 +139,7 @@
           </el-table-column>
           <el-table-column prop="xm" label="姓名" width="85" sortable>
           </el-table-column>
-          <el-table-column prop="pyccmmc" label="培养层次" width="80" sortable>
+          <el-table-column prop="pyccmmc" label="培养层次" width="100" sortable>
           </el-table-column>
           <el-table-column
             prop="dwhmc"
@@ -673,12 +673,14 @@ export default {
       var data = this.commonParams.map((item) => ({
         ...item,
         opMsg: this.thly,
+        actId: this.multipleSelection1.actId,
+        actName: this.multipleSelection1.actName,
       }));
-      var targ = {
-        czdaFlowNodeRes: this.multipleSelection1,
-        czdaFlowOpReqList: data,
-      };
-      thFinal(targ).then((res) => {
+      // var targ = {
+      //   czdaFlowNodeRes: this.multipleSelection1,
+      //   czdaFlowOpReqList: data,
+      // };
+      thFinal(data).then((res) => {
         if (res.errcode == "00") {
           this.detailModal = false;
           this.$message.success("退回成功");
@@ -755,13 +757,15 @@ export default {
         var data = brr.map((item) => ({
           ...item,
           opMsg: this.editDetails.shyj ? this.editDetails.shyj : "已退回",
+          actId: this.multipleSelection1.actId,
+          actName: this.multipleSelection1.actName,
         }));
         //退回
-        var targ = {
-          czdaFlowNodeRes: this.multipleSelection1,
-          czdaFlowOpReqList: data,
-        };
-        thFinal(targ).then((res) => {
+        // var targ = {
+        //   czdaFlowNodeRes: this.multipleSelection1,
+        //   czdaFlowOpReqList: data,
+        // };
+        thFinal(data).then((res) => {
           if (res.errcode == "00") {
             this.detailModal = false;
             this.$message.success("退回成功");

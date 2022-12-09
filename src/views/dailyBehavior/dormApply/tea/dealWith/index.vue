@@ -139,7 +139,7 @@
           <el-col :span="20">
             <span>审核状态：</span>
             <el-select
-              v-model="status"
+              v-model="moreIform.statusList"
               multiple
               placeholder="请选择"
               collapse-tags
@@ -608,6 +608,7 @@ export default {
         bjList: [],
         njList:[],
         zslxmList:[],
+        statusList:[],
       },
       exportParams: {},
       leng: 0,
@@ -842,6 +843,7 @@ export default {
         pyccmList: this.training.choose || [],
         xbmList: this.dmxbmOPs.choose || [],
         loginId: this.$store.getters.userId,
+        statusList: this.moreIform.statusList,
         // sqsjs: rqs || "",
         // sqsje: rqe || "",
         pageNum: this.queryParams.pageNum,

@@ -640,6 +640,8 @@ export default {
       addModal: false,
       editModal: false,
       formAdd: {
+        sqld:"",
+        sqfj:"",
         yzsdzm: "",
         xzsdzm: "",
         datePickerAdd: [],
@@ -889,11 +891,12 @@ export default {
       this.addModal = true;
       this.getAllld();
       // 楼栋房间自动回显
-      queryLdAndFj({xh: this.$store.getters.userId}).then((res) =>{
+      queryLdAndFj( this.$store.getters.userId ).then((res) =>{
         this.formAdd.sqld= res.data !==null ? res.data.ld : null;
         this.formAdd.sqfj= res.data !==null ? res.data.fj : null;
       });
-      // this.formAdd = { sqsj: this.formatDate(new Date()) };
+      console.log("this.formAdd.sqld",this.formAdd.sqld);
+      
     },
     addCance() {
       this.addModal = false;

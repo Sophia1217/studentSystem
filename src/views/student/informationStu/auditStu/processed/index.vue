@@ -694,7 +694,9 @@ export default {
       let data = {
         id: this.multipleSelection[0].userId,
         approver: this.multipleSelection[0].approver,
-        rollbackReason: this.form.rollbackReason,
+        rollbackReason: this.form.rollbackReason
+          ? this.form.rollbackReason
+          : "",
       };
       backFlow(data)
         .then(() => {

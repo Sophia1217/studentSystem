@@ -86,16 +86,16 @@
       </div>
     </div>
     <div class="row">
-      <div class="item3">
+      <div class="item3 stuInfoClick" @click="fdycpClick">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
         </div>
         <div class="content1">
           <div class="title1">
-            <span class="stuinfoTitle">场地使用审批</span>
+            <span class="stuinfoTitle">辅导员测评</span>
           </div>
           <div class="title2">
-            <span class="baseInfo">模块建设中</span>
+            <span class="baseInfo">对辅导员进行评价</span>
           </div>
         </div>
       </div>
@@ -155,7 +155,7 @@
       <span class="tohead">日常行为管理</span>
     </div>
     <div class="row">
-      <div class="item stuInfoClick" @click="qingjiaClick">
+      <div class="item3 stuInfoClick" @click="qingjiaClick">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
         </div>
@@ -329,6 +329,11 @@ export default {
         path: "/dormStudent",
       });
     },
+    fdycpClick() {
+      this.$router.push({
+        path: "/fdyTest",
+      });
+    },
   },
 };
 </script>
@@ -352,6 +357,7 @@ export default {
 .row {
   display: flex;
 }
+
 .headline {
   flex: 1;
   width: 132px;

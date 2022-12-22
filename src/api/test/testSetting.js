@@ -25,6 +25,16 @@ export function getDetail(query) {
     })
 }
 
+export function add(query) {
+    return request({
+        url: '/fdycpTm/insertFdycpTm',
+        method: 'post',
+        data: query
+    })
+}
+
+
+
 
 
 

@@ -17,6 +17,7 @@
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
+            <!-- <el-option label="操作人" value="czrxm"></el-option> -->
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
             >查询</el-button
@@ -69,7 +70,7 @@
           <el-col :span="6">
             <span>班<span v-html="'\u3000\u3000'"></span>级：</span>
             <el-select
-              v-model="moreIform.bjList"
+              v-model="moreIform.bjmList"
               multiple
               collapse-tags
               placeholder="请选择"
@@ -103,7 +104,7 @@
         </el-row>
         <!-- <el-row :gutter="20" class="mt15">
           <el-col :span="20">
-            <span>修改时间：</span>
+            <span>注册时间：</span>
             <el-date-picker
               type="daterange"
               placeholder="选择日期"
@@ -121,13 +122,13 @@
           <el-col :span="6">
             <span>注册状态：</span>
             <el-select
-              v-model="status"
+              v-model="moreIform.zcztmList"
               multiple
               placeholder="请选择"
               collapse-tags
             >
               <el-option
-                v-for="(item, index) in ztStatus"
+                v-for="(item, index) in zcztOps"
                 :key="index"
                 :label="item.mc"
                 :value="item.dm"
@@ -137,13 +138,13 @@
           <el-col :span="6">
             <span>欠费状态：</span>
             <el-select
-              v-model="status"
+              v-model="moreIform.qfztmList"
               multiple
               placeholder="请选择"
               collapse-tags
             >
               <el-option
-                v-for="(item, index) in ztStatus"
+                v-for="(item, index) in qfztOps"
                 :key="index"
                 :label="item.mc"
                 :value="item.dm"
@@ -169,7 +170,15 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">待审核列表</span> <i class="Updataicon"></i>
+          <span class="title">未注册列表</span> <i class="Updataicon"></i>
+          <div class="dqXnxqArea">
+            <el-cascader
+              v-model="dqXnxq"
+              :options="options"
+              @change="handleChangeXnxq"
+              :props="XnxqProps"
+            ></el-cascader>
+          </div>
         </div>
         <div class="headerRight">
           <div class="btns borderOrange" @click="expor">
@@ -181,7 +190,7 @@
           <div class="btns borderRed" @click="refuse">
             <i class="icon refuseIcon"></i><span class="title">拒绝</span>
           </div> -->
-          <div class="btns fullGreen" @click="refuse">
+          <div class="btns fullGreen" @click="handleZc">
             <i class="icon passIcon"></i><span class="title1">注册</span>
           </div>
         </div>
@@ -205,10 +214,12 @@
           <el-table-column prop="xm" label="姓名" width="85" sortable> </el-table-column>
           <el-table-column prop="pycc" label="培养层次" width="100" sortable> </el-table-column>
           <el-table-column prop="dwmc" label="培养单位" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="zslx" label="注册状态" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="zsksrq" label="欠费状态" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="zsjsrq" label="住宿结束时间" min-width="100" sortable>
-          </el-table-column>
+          <el-table-column prop="zcztmc" label="注册状态" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="qfztmc" label="欠费状态" min-width="100" sortable> </el-table-column>
+          <!-- <el-table-column prop="zcsj" label="注册时间" min-width="100" sortable>
+          </el-table-column> -->
+          <!-- <el-table-column prop="czrxm" label="操作人" min-width="100" sortable>
+          </el-table-column> -->
 
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
@@ -224,13 +235,80 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog title="拒绝理由" :visible.sync="jjModal" width="30%">
+      <el-dialog title="注册" :visible.sync="zcModal" width="50%">
         <template>
-          <el-input placeholder="请输入拒绝理由" v-model="jjly"></el-input>
+          <!-- <el-input placeholder="请输入拒绝理由" v-model="jjly"></el-input> -->
+          <el-form :model="editDetails2" ref="editDetails2" :rules="rules">
+            <el-row :gutter="20">
+                <el-col :span="8">
+                  <el-form-item label="注册学期"
+                    label-width="80px" 
+                    prop="zcxqm"
+                  >
+                    <el-select
+                      v-model="editDetails2.zcxqm"
+                      collapse-tags
+                      placeholder="请选择"
+                      size="small"
+                    >
+                      <el-option
+                        v-for="item in xqOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="注册状态"
+                    label-width="80px" 
+                    prop="zcztm"
+                  >
+                    <el-select
+                      v-model="editDetails2.zcztm"
+                      collapse-tags
+                      placeholder="请选择"
+                      size="small"
+                    >
+                      <el-option
+                        v-for="item in zcztOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="备注" label-width="100px">
+                    <el-input 
+                      v-model="editDetails2.zcbz"
+                      maxlength="500"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="注册时间" prop="zcsj">
+                    <el-date-picker
+                      v-model="editDetails2.zcsj"
+                      type="datetime"
+                      value-format="yyyy-MM-dd HH:mm:ss"
+                      placeholder="请选择时间"
+                      :append-to-body="false"
+                      disabled
+                    >
+                    </el-date-picker>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+          </el-form>
         </template>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="jjCancel">取 消</el-button>
-          <el-button type="primary" class="confirm" @click="jjConfirm"
+          <el-button @click="zcCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="zcConfirm"
             >确 定</el-button
           >
         </span>
@@ -306,7 +384,7 @@
               <el-row :gutter="20">
                 <el-col :span="20">
                   <el-form-item label="学年" prop="zslxm">
-                    <div>{{formDetails.zslx}}</div>
+                    <div>{{formDetails.xnmc}}</div>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -322,10 +400,10 @@
                 label="序号"
                 width="50"
               ></el-table-column>
-              <el-table-column prop="chqj" label="费用信息" />
-              <el-table-column prop="sqsj" label="应缴金额（元）" />
-              <el-table-column prop="sqsj" label="实缴金额（元）" />
-              <el-table-column prop="statusChinese" label="欠费金额（元）" />
+              <el-table-column prop="sfxmmc" label="费用信息" />
+              <el-table-column prop="yjje" label="应缴金额（元）" />
+              <el-table-column prop="sjje" label="实缴金额（元）" />
+              <el-table-column prop="qfje" label="欠费金额（元）" />
             </el-table>
           <div class="formLeft"><span class="title">注册信息</span></div>
           <el-form :model="editDetails" ref="editDetails" :rules="rules">
@@ -333,16 +411,16 @@
                 <el-col :span="8">
                   <el-form-item label="注册学期"
                     label-width="80px" 
-                    prop="shjg"
+                    prop="zcxqm"
                   >
                     <el-select
-                      v-model="editDetails.shjg"
+                      v-model="editDetails.zcxqm"
                       collapse-tags
                       placeholder="请选择"
                       size="small"
                     >
                       <el-option
-                        v-for="item in shjgOps"
+                        v-for="item in xqOps"
                         :key="item.dm"
                         :label="item.mc"
                         :value="item.dm"
@@ -353,16 +431,16 @@
                 <el-col :span="8">
                   <el-form-item label="注册状态"
                     label-width="80px" 
-                    prop="shjg"
+                    prop="zcztm"
                   >
                     <el-select
-                      v-model="editDetails.shjg"
+                      v-model="editDetails.zcztm"
                       collapse-tags
                       placeholder="请选择"
                       size="small"
                     >
                       <el-option
-                        v-for="item in shjgOps"
+                        v-for="item in zcztOps"
                         :key="item.dm"
                         :label="item.mc"
                         :value="item.dm"
@@ -373,7 +451,7 @@
                 <el-col :span="8">
                   <el-form-item label="备注" label-width="100px">
                     <el-input 
-                      v-model="editDetails.shyj"
+                      v-model="editDetails.zcbz"
                       maxlength="500"
                     />
                   </el-form-item>
@@ -381,13 +459,13 @@
               </el-row>
               <el-row :gutter="20">
                 <el-col :span="20">
-                  <el-form-item label="注册时间" prop="sqsj">
+                  <el-form-item label="注册时间" prop="zcsj">
                     <el-date-picker
-                      v-model="editDetails.sqsj"
-                      type="date"
-                      format="yyyy 年 MM 月 dd 日"
-                      value-format="yyyy-MM-dd"
-                      placeholder="选择日期"
+                      v-model="editDetails.zcsj"
+                      type="datetime"
+                      value-format="yyyy-MM-dd HH:mm:ss"
+                      placeholder="请选择时间"
+                      :append-to-body="false"
                       disabled
                     >
                     </el-date-picker>
@@ -427,15 +505,15 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import {
-  jjFlow,
-  queryDshList,
-  queryDshDetail,
-  exportZjbbFlow,
-} from "@/api/dailyBehavior/dormTea"
+  zcFlow,
+  queryXqzcList,
+  queryXqzcDetail,
+  exportXqzcUnReg,
+} from "@/api/dailyBehavior/termRegTea"
 import { getCollege,getGrade } from "@/api/class/maintenanceClass";
 import { getZY, getBJ} from "@/api/student/index";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { param } from '../../../../../utils';
+import { queryXnXq } from "@/api/dailyBehavior/vocationTea";
 export default {
   name: "manStudent",
   components: { CheckboxCom },
@@ -452,9 +530,10 @@ export default {
       moreIform: {
         dwhList: [], // 学院下拉框
         zydmList: [],
-        bjList: [],
+        bjmList: [],
         njList:[],
-        zslxmList:[],
+        zcztmList:[],
+        qfztmList:[],
       },
       exportParams: {},
       leng: 0,
@@ -468,6 +547,9 @@ export default {
         pageNum: 1,
         pageSize: 10,
         total: 0,
+        xnm: [],
+        xqmList: [],
+
       },
       training: {
         // 培养层次
@@ -478,49 +560,120 @@ export default {
       },
       multipleSelection: [],
       multipleSelection1: "",
-      jjModal: false,
-      jjly: "",
+      zcModal: false,
       tableInner: [],
       thTableModal: false,
       thModal: false,
       thly: "",
       tempRadio: false,
       detailModal: false,
-      formDetails: {
-        sqldid:"",
-        sqfjid:"",
-      },
+      formDetails: {},
       editDetails:{},
+      editDetails2:{},
       tableDetails: [],
       editparams:{},
-      shjgOps:[
-        {dm:'01',mc: '通过'},
-        {dm:'02',mc: '拒绝'},
-        {dm:'03',mc: '退回'},
+      zcztOps:[
+        {dm:'0', mc: '未注册'},
+        {dm:'1', mc: '已注册'},
       ],
-      zslxOps: [
-        {dm: "1", mc: "校内集中住宿"},
-        {dm: "2", mc: "非集中住宿"},
+      qfztOps:[
+        {dm:'0', mc: '未完费'},
+        {dm:'1', mc: '已完费'},
       ],
+      xqOps:[],
+      //学年学期
+      XnxqProps: {
+        value: "dm", //匹配响应数据中的id
+        label: "mc", //匹配响应数据中的name
+        checkStrictly: true,
+        children: "dataCodeCascadingList", //匹配响应数据中的children }
+      },
+      options: [],
+      dqXnxq: [],
+
       rules: {
-        // shjg: [
-        //   { required: true, message: "审核结果不能为空", trigger: "change" },
-        // ],
-        // shyj: [
-        //   { required: true, message: "审核意见不能为空", trigger: "change" },
-        // ],
+        zcxqm: [
+          { required: true, message: "注册学期不能为空", trigger: "change" },
+        ],
+        zcztm: [
+          { required: true, message: "注册状态不能为空", trigger: "change" },
+        ],
       },
     };
   },
 
   mounted() {
-    this.handleSearch();
+    // this.handleSearch();
     this.getAllCollege();
     this.getCode("dmpyccm"); // 培养层次
     this.getCode1("dmsplcm"); 
+    this.getXnxq();
   },
 
   methods: {
+    checkFormEdit() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.editDetails.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
+    checkFormEdit2() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.editDetails2.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
+    //获取学年学期
+    getXnxq() {
+      queryXnXq().then((res) => {
+        this.options = res.data;
+        this.xqOps = res.data[0].dataCodeCascadingList;
+        for (let item of res.data[0].dataCodeCascadingList) {
+          if (item.dataCodeCascadingList !== null) {
+            this.dqXnxq = [res.data[0].dm, item.dm];
+          }
+        }
+        this.queryParams.xnm = this.dqXnxq[0];
+        // this.queryParams.xqmList.push(this.dqXnxq[1]);
+        this.handleSearch();
+
+        // let data = {
+        //   xm: this.select == "xm" ? this.searchVal : null,
+        //   xh: this.select == "xh" ? this.searchVal : null,
+        //   xnm: this.queryParams.xnm.push(this.dqXnxq[0]),
+        //   xqmList: this.queryParams.xqmList.push(this.dqXnxq[1]),
+        // }
+        // queryXqzcList(data)
+        //   .then((res) => {
+        //     this.tableData = res.data;
+        //     this.queryParams.total = res.totalCount;
+        //   })
+        //   .catch((err) => {});
+        
+      });
+    },
+
+    handleChangeXnxq() {
+      this.queryParams.xnm = [];
+      this.queryParams.xqmList = [];
+      if (this.dqXnxq[0]) {
+        this.queryParams.xnm.push(this.dqXnxq[0]);
+      }
+      if (this.dqXnxq[1]) {
+        this.queryParams.xqmList.push(this.dqXnxq[1]);
+      }
+      this.handleSearch();
+    },
     // 导出取消
     handleCancel() {
       this.showExport = false;
@@ -529,15 +682,14 @@ export default {
     handleConfirm() {
       let idList = [];
       for (let item_row of this.multipleSelection) {
-        idList.push(item_row.businesId);
+        idList.push(item_row.id);
       }
       this.exportParams.pageNum = 0;
       this.exportParams.pageSize = 0;
       this.$set(this.exportParams, "idList", idList);
-      //this.$set(this.exportParams, "status", "1");
-      exportZjbbFlow(this.exportParams)
+      exportXqzcUnReg(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "住宿申请待审核列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "未注册列表导出.xlsx", "xlsx");
           if(this.$store.getters.excelcount > 0){
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -549,16 +701,28 @@ export default {
       this.showExport = false;
     },
     async expor() {
+      let rqs,
+          rqe = "";
+        if (this.datePicker && this.datePicker.length > 0) {
+          rqs = this.datePicker[0];
+          rqe = this.datePicker[1];
+        }
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
+        czrxm: this.select == "czrxm" ? this.searchVal : null,
         dwhList: this.moreIform.dwhList,
         zydmList: this.moreIform.zydmList,
-        bjmList: this.moreIform.bjList,
+        bjmList: this.moreIform.bjmList,
         njList: this.moreIform.njList,
-        zslxmList: this.moreIform.zslxmList,
+        zcztmList: this.moreIform.zcztmList,
+        qfztmList: this.moreIform.qfztmList,
         pyccmList: this.training.choose || [],
-        loginId: this.$store.getters.userId,
+        zcsjStart: rqs || "",
+        zcsjStart: rqe || "",
+        xnm: this.queryParams.xnm,
+        //xqmList: this.queryParams.xqmList,
+        zcztm: "0",
 
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
@@ -569,7 +733,7 @@ export default {
       if (this.multipleSelection.length > 0) {
         this.leng = this.multipleSelection.length;
       } else {
-        await queryDshList(data)
+        await queryXqzcList(data)
           .then((res) => {
             this.leng = res.totalCount;
           })
@@ -592,31 +756,49 @@ export default {
         }
       });
     },
-    //拒绝
-    refuse() {
-      if (this.commonParams.length > 0) {
-        this.jjModal = true;
-        this.jjly = "";
+    //注册
+    handleZc() {
+      var falg = 1;
+      for (var i = 0; i < this.multipleSelection.length; i++) {
+        if (this.multipleSelection[i].qfje !== "0") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.commonParams && this.commonParams.length > 0) {
+          this.zcModal = true;
+          this.editDetails2 = { zcsj: this.formatDate(new Date()) };
+        } else {
+          this.$message.error("请先勾选数据");
+        }
       } else {
-        this.$message.error("请先选择一条数据");
+        this.$message.error("当前勾选学生中包含欠费学生");
       }
     },
-    jjCancel() {
-      this.jjModal = false;
+    zcCancel() {
+      this.zcModal = false;
     },
-    jjConfirm() {
-      var data = this.commonParams.map((item) => ({
-        ...item,
-        opMsg: this.jjly,
-      }));
-      jjFlow(data).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("已拒绝");
-          this.detailModal = false;
-          this.handleSearch();
-        }
-      });
-      this.jjModal = false;
+    zcConfirm() {
+      if (!this.checkFormEdit2()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else{
+        var data = this.commonParams.map((item) => ({
+          ...item,
+          czrgh: this.$store.getters.userId,
+          zcbz: this.editDetails2.zcbz || "",
+          zcsj: this.editDetails2.zcsj,
+          zcxqm: this.editDetails2.zcxqm,//注册学期码
+          zcztm: this.editDetails2.zcztm,//注册状态码
+        }));
+        zcFlow(data).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("注册成功");
+            this.detailModal = false;
+            this.handleSearch();
+          }
+        });
+        this.zcModal = false;
+      }
+      
     },
     getAllCollege() {
       getCollege()
@@ -666,36 +848,39 @@ export default {
     },
     async hadleDetail(row) {
       console.log("row", row);
-      this.editDetails = { sqsj: this.formatDate(new Date()) };
+      this.editDetails = { zcsj: this.formatDate(new Date()) };
       this.detailModal = true;
       this.editparams = row;
       var data = {
         xh: row.xh,
-        roleId: this.$store.getters.roleId,
-        businesId: row.businesId,
+        sfqjdm: row.sfqjdm,
       };
-      await queryDshDetail(data).then((res) => {
+      await queryXqzcDetail(data).then((res) => {
         this.formDetails = res.data;
+        this.tableDetails = res.data.jfList;
       });
       
     },
     editClick(){
-      if (!this.editDetails.shjg) {
-        this.$message.error("审核结果不能为空");
+      if (!this.checkFormEdit()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
       } else{
         var data ={
-          businesId: this.editparams.businesId,
-          processId: this.editparams.processId,
-          status: this.editparams.status,
-          taskId: this.editparams.taskId,
+          id: this.editparams.id,
+          sfqjdm: this.editparams.sfqjdm,//待定，收费区间代码
           xh: this.editparams.xh,
-          opMsg: this.editDetails.shyj ? this.editDetails.shyj : "已拒绝",
+          czrgh: this.$store.getters.userId,
+          zcbz: this.editDetails.zcbz || "",
+          zcsj: this.editDetails.zcsj,
+          zcxqm: this.editDetails.zcxqm,//注册学期码
+          zcztm: this.editDetails.zcztm,//注册状态码
         };
 
-        jjFlow(data).then((res) => {
+        zcFlow([data]).then((res) => {
           if (res.errcode == "00") {
             this.detailModal = false;
-            this.$message.success("拒绝成功");
+            this.$message.success("注册成功");
             this.handleSearch();
           }
         });
@@ -715,25 +900,35 @@ export default {
     },
     // 查询
     handleSearch() {
-
+      let rqs,
+          rqe = "";
+        if (this.datePicker && this.datePicker.length > 0) {
+          rqs = this.datePicker[0];
+          rqe = this.datePicker[1];
+        }
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
+        czrxm: this.select == "czrxm" ? this.searchVal : null,
         dwhList: this.moreIform.dwhList,
         zydmList: this.moreIform.zydmList,
-        bjList: this.moreIform.bjList,
+        bjmList: this.moreIform.bjmList,
         njList: this.moreIform.njList,
-        zslxmList: this.moreIform.zslxmList,
+        zcztmList: this.moreIform.zcztmList,
+        qfztmList: this.moreIform.qfztmList,
+        zcsjStart: rqs || "",
+        zcsjStart: rqe || "",
         pyccmList: this.training.choose || [],
-        loginId: this.$store.getters.userId,
-        // sqsjs: rqs || "",
-        // sqsje: rqe || "",
+        xnm: this.queryParams.xnm,
+        //xqmList: this.queryParams.xqmList,
+        zcztm: "0",
+
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryDshList(data)
+      queryXqzcList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
@@ -779,12 +974,11 @@ export default {
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
+      console.log("val",val);
       this.commonParams = this.multipleSelection.map((v) => ({
-        businesId: v.businesId,
-        processId: v.processId,
-        status: v.status,
-        taskId: v.taskId,
+        id: v.id,
         xh: v.xh,
+        sfqjdm: v.sfqjdm,
       }));
     },
     //排序
@@ -869,6 +1063,7 @@ export default {
       justify-content: space-between;
       align-items: center;
       .headerLeft {
+        display: flex;
         .title {
           font-weight: 600;
           font-size: 20px;
@@ -882,6 +1077,9 @@ export default {
           width: 20px;
           height: 20px;
           background: url("~@/assets/images/updata.png") no-repeat;
+        }
+        .dqXnxqArea {
+          margin-left: 20px;
         }
       }
       .headerRight {

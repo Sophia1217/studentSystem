@@ -17,16 +17,20 @@
           ></el-button>
         </el-input>
       </div>
-      <div class="search1">
-        <span>模块筛选<span v-html="'\u3000\u3000'"></span> </span>
-        <div style="margin-top: 15px">
-          <checkboxCom
-            :objProp="training"
-            @training="handleCheckAllChangeTraining"
-            @checkedTraining="handleCheckedCitiesChangeTraining"
-          ></checkboxCom>
-        </div>
-      </div>
+      <el-row>
+        <el-col :span="2" style="margin-top: 25px">
+          <span>模块筛选<span v-html="'\u3000\u3000'"></span> </span
+        ></el-col>
+        <el-col :span="15">
+          <div style="margin-top: 25px">
+            <checkboxCom
+              :objProp="training"
+              @training="handleCheckAllChangeTraining"
+              @checkedTraining="handleCheckedCitiesChangeTraining"
+            ></checkboxCom>
+          </div>
+        </el-col>
+      </el-row>
     </div>
     <!-- table -->
     <div class="tableWrap mt15">
@@ -63,6 +67,24 @@
             label="序号"
             width="50"
           ></el-table-column>
+          <el-table-column fixed="left" prop="tmMk" label="模块" width="150">
+            <template slot-scope="scope">
+              <el-select
+                v-model="scope.row.tmMk"
+                placeholder="请选择"
+                :disabled="true"
+              >
+                <el-option
+                  v-for="item in options"
+                  :key="item.dm"
+                  :label="item.mc"
+                  :value="item.dm"
+                >
+                  ></el-option
+                >
+              </el-select>
+            </template></el-table-column
+          >
           <div v-for="(item, index) in tableHeader" :key="index">
             <el-table-column
               :prop="item.dm"
@@ -83,11 +105,7 @@
                 <i class="scopeIncon handledie"></i>
                 <span class="handleName">详情</span>
               </el-button>
-              <el-button
-                type="text"
-                size="small"
-                @click="hadleDetail(scope.row)"
-              >
+              <el-button type="text" size="small" @click="hadleEdit(scope.row)">
                 <i class="scopeIncon handledie"></i>
                 <span class="handleName">编辑</span>
               </el-button>
@@ -109,6 +127,173 @@
         >
       </span>
     </el-dialog>
+    <el-dialog
+      title="题目详情"
+      :visible.sync="detailModal"
+      width="30%"
+      :close-on-click-modal="false"
+    >
+      <div>
+        <h3 style="margin-left: 25px; font-weight: 700">
+          {{ detailALL.tmName }}? ({{ detailALL.tmFz }}分)
+        </h3>
+        <div v-if="detailALL.tmType == '选择题'">
+          <span
+            v-for="(item, index) in detailALL.tmxxList"
+            style="margin-right: 30px"
+            >{{ item.xxPx }}.{{ item.xxWz }} <span v-html="'\u3000'"></span>({{
+              item.xxFz
+            }}分)</span
+          >
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="detailCancel">关 闭</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="题目编辑"
+      :visible.sync="EditModal"
+      width="60%"
+      :close-on-click-modal="false"
+    >
+      <el-form ref="detailALL" :model="detailALL" :rules="rules">
+        <el-row :gutter="20">
+          <el-col :span="7">
+            <el-form-item label="模块：" prop="tmMk" :rules="rules.tmMk">
+              <el-select
+                v-model="detailALL.tmMk"
+                filterable
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in options"
+                  :key="item.dm"
+                  :label="item.mc"
+                  :value="item.dm"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="15">
+            <el-form-item label="题目：" prop="tmName" :rules="rules.tmName">
+              <el-input
+                v-model="detailALL.tmName"
+                style="width: 80%"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="3">
+            <div style="font-size: 16px; margin-top: 5px">
+              类型：{{ detailALL.tmType }}
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="7">
+            <el-form-item label="分值：" prop="tmFz" :rules="rules.tmFz">
+              <el-input-number
+                v-model="detailALL.tmFz"
+                controls-position="right"
+              ></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item
+              label="面向培养层次："
+              prop="tmPyccname"
+              :rules="rules.tmPyccname"
+            >
+              <el-select
+                v-model="detailALL.tmPyccList"
+                multiple
+                ref="selectLabel"
+                @change="
+                  (item) => {
+                    changePycc(item);
+                  }
+                "
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in options1"
+                  :key="item.dm"
+                  :label="item.mc"
+                  :value="item.dm"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item
+              label="适用年度："
+              prop="tmYear"
+              :rules="rules.tmYear"
+            >
+              <el-select v-model="detailALL.tmYear" placeholder="请选择">
+                <el-option
+                  v-for="(ele, index) in options2"
+                  :key="index"
+                  :label="ele"
+                  :value="ele"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-table
+          ref="multipleTable"
+          :data="detailALL.tmxxList"
+          v-if="detailALL.tmType == '选择题'"
+        >
+          <el-table-column label="选项文字" width="750" align="center">
+            <template slot-scope="scope">
+              <el-form-item
+                style="margin-bottom: 15px"
+                :prop="`tmxxList.${scope.$index}.xxWz`"
+                :rules="rules.xxWz"
+              >
+                <el-input
+                  v-model="scope.row.xxWz"
+                  placeholder="请输入"
+                ></el-input>
+              </el-form-item>
+            </template>
+          </el-table-column>
+          <el-table-column label="选项分值" align="center">
+            <template slot-scope="scope">
+              <el-form-item
+                style="margin-bottom: 15px"
+                :prop="`tmxxList.${scope.$index}.xxFz`"
+                :rules="rules.xxFz"
+              >
+                <el-input
+                  v-model="scope.row.xxFz"
+                  placeholder="请输入"
+                ></el-input>
+              </el-form-item>
+            </template>
+          </el-table-column>
+          <el-table-column label="添加选项" align="center">
+            <template slot-scope="scope">
+              <div style="margin-bottom: 20px">
+                <i class="icon jia" @click="jia(scope.row, scope.$index)"></i>
+                <i class="icon jian" @click="jian(scope.row, scope.$index)"></i>
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="save">保 存</el-button>
+        <el-button @click="editCancel">取消</el-button>
+      </span>
+    </el-dialog>
     <pagination
       v-show="queryParams.total > 0"
       :total="queryParams.total"
@@ -122,16 +307,72 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { queryList, delTest, getDetail } from "@/api/test/testSetting";
+import { queryList, delTest, getDetail, add } from "@/api/test/testSetting";
+import { getGrade } from "@/api/class/maintenanceClass";
 export default {
   components: { CheckboxCom },
   data() {
     return {
+      options: [],
+      options1: [],
+      options2: [],
+      detailModal: false,
+      detailALL: {},
+      EditModal: false,
       delArr: [],
       delConfirm: false,
       tmName: "",
-      datePicker: "",
-      manageRegOps: [], //
+      rules: {
+        xxWz: [
+          {
+            required: true,
+            message: "选项文字不能为空",
+            trigger: "blur",
+          },
+        ],
+        xxFz: [
+          {
+            required: true,
+            message: "选项分值不能为空",
+            trigger: "blur",
+          },
+        ],
+        tmName: [
+          {
+            required: true,
+            message: "题目不能为空",
+            trigger: "blur",
+          },
+        ],
+        tmFz: [
+          {
+            required: true,
+            message: "分值不能为空",
+            trigger: "blur",
+          },
+        ],
+        tmPyccname: [
+          {
+            required: true,
+            message: "培养层次不能为空",
+            trigger: "blur",
+          },
+        ],
+        tmMk: [
+          {
+            required: true,
+            message: "模块不能为空",
+            trigger: "blur",
+          },
+        ],
+        tmYear: [
+          {
+            required: true,
+            message: "适应年度不能为空",
+            trigger: "blur",
+          },
+        ],
+      },
       training: {
         // 培养层次
         checkAll: false,
@@ -141,7 +382,6 @@ export default {
       },
       dynamicModal: false,
       tableHeader: [
-        { dm: "tmMk", mc: "模块" },
         { dm: "tmName", mc: "题目", width: "520" },
         { dm: "tmPyccname", mc: "培养层次" },
         { dm: "tmYear", mc: "适用年度" },
@@ -161,6 +401,8 @@ export default {
   },
   mounted() {
     this.getCode("dmtmszmk");
+    this.getAllGrade(); //年级
+    this.getCode("dmpyccm");
     this.handleSearch();
     this.authConfirm(this.$route.path.split("/")[2]);
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
@@ -169,6 +411,68 @@ export default {
     this.handleSearch();
   },
   methods: {
+    checkFormAdd() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.detailALL.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
+    changePycc(item) {
+      var newArray = []; //新数组
+      var j = 0;
+      //查找符合条件值并存入新数组
+      for (let i in this.options1) {
+        for (var x = 0; x < item.length; x++) {
+          if (this.options1[i].dm == item[x]) {
+            newArray[j++] = this.options1[i].mc;
+          }
+        }
+      }
+      this.detailALL.tmPyccname = newArray;
+    },
+    editCancel() {
+      this.EditModal = false;
+    },
+    async save() {
+      if (!this.checkFormAdd()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        var arr = [];
+        var arr1 = [];
+        this.detailALL.tmPycc = this.detailALL.tmPyccList;
+        arr.push(this.detailALL.id);
+        arr1.push(this.detailALL);
+        await delTest({ ids: arr }).then((res) => {});
+        await add(arr1).then((res) => {
+          this.$message.success("编辑成功");
+          this.EditModal = false;
+          this.handleSearch();
+        });
+      }
+    },
+    getAllGrade() {
+      getGrade()
+        .then((res) => {
+          this.options2 = res.data.rows;
+        })
+        .catch((err) => {});
+    },
+    jia(row, index) {
+      var obj = { xxFz: "", xxWz: "" };
+      this.detailALL.tmxxList.push(obj);
+    },
+    jian(row, index) {
+      this.detailALL.tmxxList.splice(index, 1);
+    },
+    detailCancel() {
+      this.detailModal = false;
+    },
     hadleDetail(row) {
       let data = {
         id: row.id,
@@ -181,7 +485,24 @@ export default {
         orderPx: this.queryParams.orderPx,
       };
       getDetail(data).then((res) => {
-        console.log("res", res);
+        this.detailModal = true;
+        this.detailALL = res.data;
+      });
+    },
+    hadleEdit(row) {
+      let data = {
+        id: row.id,
+        tmMk: this.training.choose,
+        tmName: this.tmName,
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        limitSql: "",
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+      };
+      getDetail(data).then((res) => {
+        this.EditModal = true;
+        this.detailALL = res.data;
       });
     },
     getCode(data) {
@@ -194,6 +515,10 @@ export default {
           switch (paramsData) {
             case "dmtmszmk":
               this.$set(this.training, "checkBox", res.data);
+              this.options = res.data;
+              break;
+            case "dmpyccm":
+              this.options1 = res.data;
               break;
           }
         })
@@ -205,6 +530,8 @@ export default {
         tmMk: this.training.choose,
         tmName: this.tmName,
         pageNum: this.queryParams.pageNum,
+        tmPycc: "",
+        tmYear: "",
         pageSize: this.queryParams.pageSize,
         limitSql: "",
         orderZd: this.queryParams.orderZd,
@@ -272,6 +599,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: top;
+  margin-right: 5px;
+}
+.jia {
+  margin-top: 9px;
+  background: url("~@/assets/images/jia.png") no-repeat;
+}
+
+.jian {
+  margin-top: 9px;
+  background: url("~@/assets/images/jian.png") no-repeat;
+}
 ::v-deep .el-dialog__header {
   border-bottom: 1px solid #eee;
 }
@@ -291,6 +634,7 @@ export default {
   width: 80%;
   height: 310px;
 }
+
 .manStudentStyle {
   .mt15 {
     margin-top: 15px;
@@ -307,7 +651,6 @@ export default {
         width: 30%;
       }
     }
-
     .search1 {
       display: flex;
       flex-direction: row;

@@ -156,7 +156,7 @@
             <el-table
               ref="multipleTable"
               :data="item.tmxxList"
-              v-if="item.tmxxList"
+              v-if="item.tmType == '选择题'"
             >
               <el-table-column label="选项文字" width="950" align="center">
                 <template slot-scope="scope">
@@ -383,9 +383,11 @@ export default {
           this.formAdd.allList[y].tmMk = this.form.mkValue;
         }
         add(this.formAdd.allList).then((res) => {
-          console.log("res", res);
+          this.$message.success("新增成功");
+          this.$router.push({
+            path: "/assistantTest/stuTest/testSetting",
+          });
         });
-        console.log("this.formAdd.alList", this.formAdd.allList);
       }
     },
     zgtAdd() {
@@ -397,6 +399,7 @@ export default {
         tmType: "文字题",
         tmLy: 0,
         tmMk: this.form.mkValue,
+        tmxxList: [],
       };
       this.formAdd.allList.push(data);
     },

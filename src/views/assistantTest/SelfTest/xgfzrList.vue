@@ -44,7 +44,6 @@
               multiple
               placeholder="请选择"
               collapse-tags
-              @change="workPlaceChange"
             >
               <el-option
                 v-for="(item, index) in gzdwOptions"
@@ -56,18 +55,12 @@
           </el-col>
           <el-col :span="12">
             <span>年<span v-html="'\u3000\u3000'"></span>级：</span>
-            <el-select
-              v-model="workPlace"
-              multiple
-              placeholder="请选择"
-              collapse-tags
-              @change="workPlaceChange"
-            >
+            <el-select v-model="nj" multiple placeholder="请选择" collapse-tags>
               <el-option
-                v-for="(item, index) in gzdwOptions"
+                v-for="(item, index) in njOptions"
                 :key="index"
-                :label="item.mc"
-                :value="item.dm"
+                :label="item"
+                :value="item"
               ></el-option>
             </el-select>
           </el-col>
@@ -107,6 +100,21 @@
         <div class="headerLeft">
           <span class="title">辅导员自评列表</span> <i class="Updataicon" />
         </div>
+        <div class="yearOption">
+          <el-select
+            v-model="ndval"
+            @change="ndChange"
+            style="width: 80px"
+            placeholder=""
+          >
+            <el-option
+              v-for="(item, index) in njOptions"
+              :key="index"
+              :label="item"
+              :value="item"
+            ></el-option> </el-select
+          ><span>年度</span>
+        </div>
       </div>
       <div class="mt15">
         <el-table
@@ -121,17 +129,17 @@
           <el-table-column type="index" label="序号" width="50" />
           <el-table-column prop="gh" label="工号" sortable />
           <el-table-column prop="xm" label="姓名" sortable="custom" />
-          <el-table-column prop="lb" label="类型" sortable="custom" />
+          <el-table-column prop="lx" label="类型" sortable="custom" />
 
           <el-table-column
-            prop="gzdw"
+            prop="dwh"
             label="工作单位"
             min-width="100"
             sortable="custom"
           />
-          <el-table-column prop="xb" label="年级" sortable="custom" />
+          <el-table-column prop="nj" label="年级" sortable="custom" />
           <el-table-column
-            prop="dbzt"
+            prop="pycc"
             label="所辖培养层次"
             min-width="100"
             sortable="custom"
@@ -161,7 +169,7 @@
     </div>
 
     <!-- 导出确认对话框 -->
-    <el-dialog :title="title" :visible.sync="showExport" width="30%">
+    <!-- <el-dialog :title="title" :visible.sync="showExport" width="30%">
       <span>确认导出{{ len }}条数据？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
@@ -169,24 +177,16 @@
           >确 定</el-button
         >
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 <script>
-import { addUser, updateUser } from "@/api/system/user";
-import { getToken } from "@/utils/auth";
 import CheckboxCom from "../../components/checkboxCom";
-import {
-  fdyList,
-  removeMoreAssistant,
-  addOneAssistant,
-  lookDetail,
-  outAssistant,
-  getGzdw,
-  getXm,
-} from "@/api/politicalWork/assistantappoint";
+import { lookDetail, getGzdw } from "@/api/politicalWork/assistantappoint";
+import { queryList } from "@/api/test/fdySelfTest";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getCollege } from "@/api/class/maintenanceClass";
+import { getGrade } from "@/api/assistantWork/listen";
 export default {
   name: "BasicInfo",
   components: { CheckboxCom },
@@ -210,26 +210,26 @@ export default {
       select: "",
       isMore: false,
       gzdwOptions: [],
-      nameOptions: [],
-      ssxyOptions: [],
+      njOptions: [],
       category: {
         // 类别
         checkAll: false,
         choose: [],
         checkBox: [
-          { mc: "兼职", dm: 1 },
-          { mc: "专职", dm: 0 },
+          { mc: "兼职", dm: "1" },
+          { mc: "专职", dm: "0" },
         ],
         isIndeterminate: true,
       },
       pyccOps: {
-        // 性别
         checkAll: false,
         choose: [],
         checkBox: [],
         isIndeterminate: true,
       },
       workPlace: [],
+      nj: [],
+      ndval: "2022",
       status: {
         // 状态
         checkAll: false,
@@ -250,14 +250,15 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        dwmcList: [],
-        genderList: [],
-        lbList: [],
-        sfdbList: [],
         orderZd: "",
         orderPx: "",
         xm: "",
         gh: "",
+        nd: "",
+        dwhs: [],
+        lxs: [],
+        njs: [],
+        pyccms: [],
       },
       list: [],
       len: 0,
@@ -267,10 +268,10 @@ export default {
   watch: {},
   created() {},
   mounted() {
-    this.getList(this.queryParams);
+    this.getOption();
+
     this.getCode("dmxbm");
     this.getCode("dmpyccm");
-    this.getOption();
   },
   created() {
     this.authConfirm(this.$route.path.split("/")[2]);
@@ -278,10 +279,8 @@ export default {
   },
 
   methods: {
-    //工作地点勾选
-    workPlaceChange() {
-      this.queryParams.dwmcList = this.workPlace;
-      // this.getList(this.queryParams);
+    ndChange() {
+      this.getList();
     },
     selectChange(val) {
       this.searchVal = "";
@@ -302,7 +301,7 @@ export default {
         })
         .catch((err) => {});
     },
-    getOption() {
+    async getOption() {
       this.gzdwOptions = [];
       this.ssxyOptions = [];
       getGzdw()
@@ -314,24 +313,33 @@ export default {
         .catch((err) => {
           //this.$message.error(err.errmsg);
         });
-      getCollege().then((response) => {
-        // 获取培养单位列表数据
+      await getGrade().then((response) => {
+        // 获取年级列表数据
         if (response.errcode == "00") {
-          this.ssxyOptions = response.data.rows;
+          this.njOptions = response.data.rows;
+          this.ndval = this.njOptions[0];
         }
       });
+      this.getList();
+      // getCollege().then((response) => {
+      //   // 获取培养单位列表数据
+      //   if (response.errcode == "00") {
+      //     this.ssxyOptions = response.data.rows;
+      //   }
+      // });
     },
     //获取数据列表
     getList() {
       // console.log(this.select, "select");
       this.queryParams.gh = this.select == 1 ? this.searchVal : "";
       this.queryParams.xm = this.select == 2 ? this.searchVal : "";
-      fdyList(this.queryParams)
+      this.queryParams.nd = this.ndval;
+      queryList(this.queryParams)
         .then((response) => {
           //console.log(response);
           if (response.errcode == "00") {
-            this.basicInfoList = response.resList; // 根据状态码接收数据
-            this.total = response.count; //总条数
+            this.basicInfoList = response.data; // 根据状态码接收数据
+            this.total = response.totalCount; //总条数
           }
         })
         .catch((err) => {
@@ -350,11 +358,6 @@ export default {
         allCheck.push(this.category.checkBox[i].dm);
       }
       this.category.choose = val ? allCheck : [];
-
-      this.category.isIndeterminate = false;
-      this.queryParams.dwmcList = this.workPlace;
-      this.queryParams.genderList = this.pyccOps.choose;
-      this.queryParams.sfdbList = this.status.choose;
       this.queryParams.lbList = this.category.choose;
     },
     // 类别单选
@@ -363,10 +366,7 @@ export default {
       this.category.checkAll = checkedCount === this.category.checkBox.length;
       this.category.isIndeterminate =
         checkedCount > 0 && checkedCount < this.category.checkBox.length;
-      this.queryParams.dwmcList = this.workPlace;
-      this.queryParams.genderList = this.pyccOps.choose;
-      this.queryParams.sfdbList = this.status.choose;
-      this.queryParams.lbList = this.category.choose;
+      this.queryParams.lxs = this.category.choose;
     },
     // 性别全选
     handleCheckAllpyccChange(val) {
@@ -377,10 +377,8 @@ export default {
       this.pyccOps.choose = val ? allCheck : [];
 
       this.pyccOps.isIndeterminate = false;
-      this.queryParams.dwmcList = this.workPlace;
-      this.queryParams.genderList = this.pyccOps.choose;
-      this.queryParams.sfdbList = this.status.choose;
-      this.queryParams.lbList = this.category.choose;
+
+      this.queryParams.pyccms = this.pyccOps.choose;
     },
     // 性别单选
     handleCheckedpyccChange(value) {
@@ -388,10 +386,8 @@ export default {
       this.pyccOps.checkAll = checkedCount === this.pyccOps.checkBox.length;
       this.pyccOps.isIndeterminate =
         checkedCount > 0 && checkedCount < this.pyccOps.checkBox.length;
-      this.queryParams.dwmcList = this.workPlace;
-      this.queryParams.genderList = this.pyccOps.choose;
-      this.queryParams.sfdbList = this.status.choose;
-      this.queryParams.lbList = this.category.choose;
+
+      this.queryParams.pyccms = this.pyccOps.choose;
     },
 
     // 多选
@@ -409,10 +405,8 @@ export default {
       this.status.choose = val ? allCheck : [];
 
       this.status.isIndeterminate = false;
-      this.queryParams.dwmcList = this.workPlace;
-      this.queryParams.genderList = this.pyccOps.choose;
+
       this.queryParams.sfdbList = this.status.choose;
-      this.queryParams.lbList = this.category.choose;
     },
     // 状态单选
     handleCheckedStatusChange(value) {
@@ -420,38 +414,28 @@ export default {
       this.status.checkAll = checkedCount === this.status.checkBox.length;
       this.status.isIndeterminate =
         checkedCount > 0 && checkedCount < this.status.checkBox.length;
-      this.queryParams.dwmcList = this.workPlace;
-      this.queryParams.genderList = this.pyccOps.choose;
+
       this.queryParams.sfdbList = this.status.choose;
-      this.queryParams.lbList = this.category.choose;
     },
 
     //点击详情
-    hadleDetail(row, flag) {
-      this.open = true;
-      this.title = "详情";
-      this.detailGh = row.gh;
-      let ghdata = {
-        gh: row.gh,
-      };
-      lookDetail(ghdata)
-        .then((res) => {
-          if (res.errcode == "00") {
-            //console.log(res);
-            this.tableData = res.assistantDetailRes;
-          }
-        })
-        .catch((err) => {
-          // this.$message.error(err.errmsg);
-        });
+    hadleDetail(row) {
+      this.$router.push({
+        path: "/assistantTest/fdyselfTest",
+        query: {
+          gh: row.gh,
+          nd: this.ndval,
+          isEdit: 0,
+        },
+      });
     },
 
     // 搜索查询按钮
     searchClick() {
       this.queryParams.pageNum = 1;
-      this.queryParams.dwmcList = this.workPlace;
-      this.queryParams.lbList = this.category.choose;
-      this.queryParams.genderList = this.pyccOps.choose;
+      this.queryParams.dwhs = this.workPlace;
+      this.queryParams.lxs = this.category.choose;
+      this.queryParams.pyccms = this.pyccOps.choose;
       this.queryParams.sfdbList = this.status.choose;
 
       this.getList(this.queryParams);
@@ -461,52 +445,52 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
       this.searchClick();
     },
-    // 打开导出弹窗
-    async handleExport() {
-      if (this.multipleSelection.length > 0) {
-        this.len = this.multipleSelection.length;
-      } else {
-        let data = {
-          gh: this.select == 1 ? this.searchVal : "",
-          xm: this.select == 2 ? this.searchVal : "",
-          dwmcList: this.workPlace,
-          genderList: this.pyccOps.choose,
-          sfdbList: this.status.choose,
-          lbList: this.category.choose,
-        };
-        this.exportParams = data;
-        await fdyList(data)
-          .then((res) => {
-            this.len = res.count;
-          })
-          .catch((err) => {});
-      }
-      if (this.len > 0) {
-        this.showExport = true;
-      } else {
-        this.$message.warning("当前无数据导出");
-      }
+    // // 打开导出弹窗
+    // async handleExport() {
+    //   if (this.multipleSelection.length > 0) {
+    //     this.len = this.multipleSelection.length;
+    //   } else {
+    //     let data = {
+    //       gh: this.select == 1 ? this.searchVal : "",
+    //       xm: this.select == 2 ? this.searchVal : "",
+    //       dwmcList: this.workPlace,
+    //       genderList: this.pyccOps.choose,
+    //       sfdbList: this.status.choose,
+    //       lbList: this.category.choose,
+    //     };
+    //     this.exportParams = data;
+    //     await fdyList(data)
+    //       .then((res) => {
+    //         this.len = res.count;
+    //       })
+    //       .catch((err) => {});
+    //   }
+    //   if (this.len > 0) {
+    //     this.showExport = true;
+    //   } else {
+    //     this.$message.warning("当前无数据导出");
+    //   }
 
-      this.title = "导出";
-    },
-    // 导出取消
-    handleCancel() {
-      this.showExport = false;
-    },
-    // 导出确认
-    handleConfirm() {
-      var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
+    //   this.title = "导出";
+    // },
+    // // 导出取消
+    // handleCancel() {
+    //   this.showExport = false;
+    // },
+    // // 导出确认
+    // handleConfirm() {
+    //   var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
 
-      var exportParams = this.queryParams;
-      exportParams.pageSize = 0;
-      this.$set(exportParams, "ghList", arr);
+    //   var exportParams = this.queryParams;
+    //   exportParams.pageSize = 0;
+    //   this.$set(exportParams, "ghList", arr);
 
-      outAssistant(exportParams)
-        .then((res) => this.downloadFn(res, "辅导员任命导出", "xlsx"))
-        .catch((err) => {});
+    //   outAssistant(exportParams)
+    //     .then((res) => this.downloadFn(res, "辅导员任命导出", "xlsx"))
+    //     .catch((err) => {});
 
-      this.showExport = false;
-    },
+    //   this.showExport = false;
+    // },
   },
 };
 </script>

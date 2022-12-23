@@ -2454,7 +2454,9 @@ export default {
   name: "DetailInfo",
   data() {
     return {
-      activeName: "1",
+      activeName: this.$route.query.activeName
+        ? this.$route.query.activeName
+        : "1",
       isEdit: 1,
       value: "测试",
       //选项

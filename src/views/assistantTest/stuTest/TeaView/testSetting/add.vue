@@ -208,8 +208,16 @@
       <el-row :gutter="20">
         <el-col :span="6" :offset="21">
           <div>
-            <button class="span2" style="margin-right: 20px">取消</button>
-            <button class="span1" @click="save">确定</button>
+            <button class="span2" style="margin-right: 20px" @click="cancel">
+              取消
+            </button>
+            <button
+              class="span1"
+              @click="save"
+              v-if="formAdd.allList.length > 0"
+            >
+              保 存
+            </button>
           </div></el-col
         >
       </el-row>
@@ -373,6 +381,11 @@ export default {
         return false;
       }
       return true;
+    },
+    cancel() {
+      this.$router.push({
+        path: "/assistantTest/stuTest/testSetting",
+      });
     },
     save() {
       if (!this.checkFormAdd()) {

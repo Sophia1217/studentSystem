@@ -130,7 +130,7 @@
     <el-dialog
       title="题目详情"
       :visible.sync="detailModal"
-      width="30%"
+      width="50%"
       :close-on-click-modal="false"
     >
       <div>
@@ -446,6 +446,7 @@ export default {
         var arr = [];
         var arr1 = [];
         this.detailALL.tmPycc = this.detailALL.tmPyccList;
+        this.detailALL.tmPyccname = this.detailALL.tmPyccnameList;
         arr.push(this.detailALL.id);
         arr1.push(this.detailALL);
         await delTest({ ids: arr }).then((res) => {});

@@ -12,7 +12,7 @@
       <div class="title">
         <div class="titleRight">问卷名称</div>
         <div class="titleLeft">
-          <div class="btns borderWhite">
+          <div class="btns borderWhite" @click="downTest">
             <span class="title2">分析&amp;下载</span>
           </div>
           <div class="btns borderWhite">
@@ -94,6 +94,14 @@ export default {
       //     path: "/fdyTestDetail",
       //     // query: {}
       //   });
+    },
+    downTest(){//应该有row
+      this.$router.push({
+        path: "/assistantTest/stuTest/stuDownTest",
+        // query: {
+        //   id: row.id,
+        // },
+      });
     },
     kgChange() {},
     timeChange() {},

@@ -119,23 +119,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="6">
-            <span>注册状态：</span>
-            <el-select
-              v-model="moreIform.zcztmList"
-              multiple
-              placeholder="请选择"
-              collapse-tags
-            >
-              <el-option
-                v-for="(item, index) in zcztOps"
-                :key="index"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="6">
+          <el-col :span="10">
             <span>欠费状态：</span>
             <el-select
               v-model="moreIform.qfztmList"
@@ -210,9 +194,9 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" width="100" sortable> </el-table-column>
-          <el-table-column prop="xm" label="姓名" width="85" sortable> </el-table-column>
-          <el-table-column prop="pycc" label="培养层次" width="100" sortable> </el-table-column>
+          <el-table-column prop="xh" label="学号" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="xm" label="姓名" min-width="85" sortable> </el-table-column>
+          <el-table-column prop="pycc" label="培养层次" min-width="100" sortable> </el-table-column>
           <el-table-column prop="dwmc" label="培养单位" min-width="100" sortable> </el-table-column>
           <el-table-column prop="zcztmc" label="注册状态" min-width="100" sortable> </el-table-column>
           <el-table-column prop="qfztmc" label="欠费状态" min-width="100" sortable> </el-table-column>
@@ -464,7 +448,6 @@ export default {
         zydmList: [],
         bjmList: [],
         njList:[],
-        zcztmList:[],
         qfztmList:[],
       },
       exportParams: {},
@@ -646,7 +629,6 @@ export default {
         zydmList: this.moreIform.zydmList,
         bjmList: this.moreIform.bjmList,
         njList: this.moreIform.njList,
-        zcztmList: this.moreIform.zcztmList,
         qfztmList: this.moreIform.qfztmList,
         pyccmList: this.training.choose || [],
         zcsjStart: rqs || "",
@@ -812,7 +794,6 @@ export default {
         zydmList: this.moreIform.zydmList,
         bjmList: this.moreIform.bjmList,
         njList: this.moreIform.njList,
-        zcztmList: this.moreIform.zcztmList,
         qfztmList: this.moreIform.qfztmList,
         zcsjStart: rqs || "",
         zcsjStart: rqe || "",

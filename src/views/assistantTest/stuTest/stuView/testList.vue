@@ -1,35 +1,37 @@
 <template>
   <div class="testList">
-    <div class="item">
+    <div class="item" v-for="(item, index) in detailData">
       <div class="title">
-        <div class="titleRight">研究生2022测评问卷</div>
+        <div class="titleRight">{{ item.wjName }}</div>
         <div class="titleLeft">
           <div
             class="btns borderGreen"
             @click="doTest"
-            v-show="isFinish == '1'"
+            v-show="item.sfwc == '0'"
           >
             <span class="title1">填写问卷</span>
           </div>
-          <div class="btns borderWhite" v-show="isFinish == '2'">
+          <div class="btns borderWhite" v-show="item.sfwc == '1'">
             <span class="title2">已填写</span>
           </div>
         </div>
       </div>
       <div class="content">
         <div class="contentRight">
-          适用年度：{{ data }} 适用培养层次：{{ data }} 面向年级：{{
-            data
+          适用年度：{{ item.wjYear }} 适用培养层次：{{
+            item.wjPycc
           }}
-          评测辅导员：{{ data }}
+          面向年级：{{ item.wjNj }} 评测辅导员：{{ item.pcFdyXm }}
         </div>
-        <div class="contentLeft">问卷起始时间：{{ data }}至{{ data }}</div>
+        <div class="contentLeft">
+          问卷起始时间：{{ item.wjStartDate }}至{{ item.wjEndDate }}
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { addUser, updateUser } from "@/api/system/user";
+import { queryList } from "@/api/test/stuTest";
 import { getToken } from "@/utils/auth";
 export default {
   name: "testList",
@@ -39,17 +41,20 @@ export default {
     return {
       data: "1111",
       isFinish: "1",
+      detailData: [],
     };
   },
   computed: {},
   watch: {},
   created() {},
-  mounted() {},
+
   created() {
     this.authConfirm(this.$route.path.split("/")[2]);
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
-
+  mounted() {
+    this.getList();
+  },
   methods: {
     doTest() {
       this.$router.push({
@@ -58,6 +63,15 @@ export default {
         //   id: row.id,
         //   xzdmOld: row.xzdm,
         // },
+      });
+    },
+    getList() {
+      let data = {
+        xh: this.$store.getters.userId,
+      };
+      queryList(data).then((res) => {
+        //console.log(res);
+        this.detailData = res.data;
       });
     },
   },
@@ -72,6 +86,7 @@ export default {
     background: #ffffff;
     height: 150px;
     padding: 20px;
+    margin-top: 10px;
     .title {
       display: flex;
       justify-content: space-between;

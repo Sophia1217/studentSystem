@@ -93,10 +93,10 @@
               size="small"
             >
               <el-option
-                v-for="item in allNj"
-                :key="item.dm"
-                :label="item.mc"
-                :value="item.dm"
+                v-for="(item, index) in allNj"
+                :key="index"
+                :label="item"
+                :value="item"
               ></el-option>
             </el-select>
           </el-col>
@@ -734,6 +734,7 @@ export default {
   mounted() {
     this.handleSearch();
     this.getAllCollege();
+    this.getAllGrade();
     this.getCode("dmpyccm"); // 培养层次dmxbm
     this.getCode("dmxbm"); // 性别
     this.getCode1("dmsplcm"); 

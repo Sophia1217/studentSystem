@@ -33,6 +33,25 @@ export function add(query) {
     })
 }
 
+export function scWj(query) {
+    return request({
+        url: '/fdycpWj/insertWj',
+        method: 'post',
+        data: query
+    })
+}
+
+
+
+export function mkQuery(query) {
+    return request({
+        url: '/fdycpTm/queryMk',
+        method: 'get',
+        params: query
+    })
+}
+
+
 
 
 

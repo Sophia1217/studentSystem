@@ -11,19 +11,11 @@
                 prop="mkValue"
                 :rules="rules.mkValue"
               >
-                <el-select
+                <el-autocomplete
                   v-model="form.mkValue"
-                  filterable
-                  placeholder="请选择"
-                >
-                  <el-option
-                    v-for="item in options"
-                    :key="item.dm"
-                    :label="item.mc"
-                    :value="item.dm"
-                  >
-                  </el-option>
-                </el-select>
+                  :fetch-suggestions="querySearchAsync"
+                  placeholder="请输入内容"
+                ></el-autocomplete>
               </el-form-item> </el-form
           ></el-col>
           <el-col :span="8">
@@ -228,7 +220,7 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { add } from "@/api/test/testSetting";
+import { add, mkQuery } from "@/api/test/testSetting";
 import { getGrade } from "@/api/class/maintenanceClass";
 
 export default {
@@ -334,6 +326,37 @@ export default {
     },
     delList(item, ind) {
       this.formAdd.allList.splice(ind, 1);
+    },
+    querySearchAsync(queryString, cb) {
+      if (queryString != "") {
+        let callBackArr = [];
+        var tmMk = { tmMk: queryString };
+        var result = [];
+        var resultNew = [];
+        mkQuery({ tmMk: queryString }).then((res) => {
+          console.log("res", res);
+          result = res.data;
+          console.log("result", result);
+          resultNew = result.map((ele) => {
+            return {
+              value: ele.mc,
+              label: ele.mc,
+            };
+          });
+          resultNew.forEach((item) => {
+            if (item.value.indexOf(queryString) > -1) {
+              callBackArr.push(item);
+            }
+          });
+          cb(callBackArr);
+
+          // if (callBackArr.length == 0) {
+          //   this.$message.error("暂无相关数据");
+          // } else {
+          //   cb(callBackArr);
+          // }
+        });
+      }
     },
     changePycc(item, ind) {
       var newArray = []; //新数组

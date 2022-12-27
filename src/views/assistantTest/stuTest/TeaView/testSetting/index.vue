@@ -68,23 +68,7 @@
             width="50"
           ></el-table-column>
           <el-table-column fixed="left" prop="tmMk" label="模块" width="150">
-            <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.tmMk"
-                placeholder="请选择"
-                :disabled="true"
-              >
-                <el-option
-                  v-for="item in options"
-                  :key="item.dm"
-                  :label="item.mc"
-                  :value="item.dm"
-                >
-                  ></el-option
-                >
-              </el-select>
-            </template></el-table-column
-          >
+          </el-table-column>
           <div v-for="(item, index) in tableHeader" :key="index">
             <el-table-column
               :prop="item.dm"
@@ -307,7 +291,13 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { queryList, delTest, getDetail, add } from "@/api/test/testSetting";
+import {
+  queryList,
+  delTest,
+  getDetail,
+  add,
+  mkQuery,
+} from "@/api/test/testSetting";
 import { getGrade } from "@/api/class/maintenanceClass";
 export default {
   components: { CheckboxCom },
@@ -400,7 +390,7 @@ export default {
     };
   },
   mounted() {
-    this.getCode("dmtmszmk");
+    this.mkQuery1();
     this.getAllGrade(); //年级
     this.getCode("dmpyccm");
     this.handleSearch();
@@ -456,6 +446,12 @@ export default {
           this.handleSearch();
         });
       }
+    },
+    mkQuery1() {
+      mkQuery({ tmMk: " " }).then((res) => {
+        this.$set(this.training, "checkBox", res.data);
+        this.options = res.data;
+      });
     },
     getAllGrade() {
       getGrade()
@@ -514,10 +510,6 @@ export default {
       getCodeInfoByEnglish(data)
         .then((res) => {
           switch (paramsData) {
-            case "dmtmszmk":
-              this.$set(this.training, "checkBox", res.data);
-              this.options = res.data;
-              break;
             case "dmpyccm":
               this.options1 = res.data;
               break;

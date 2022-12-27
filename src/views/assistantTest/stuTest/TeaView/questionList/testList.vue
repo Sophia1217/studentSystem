@@ -156,10 +156,9 @@ export default {
       });
     },
     createTest() {
-      //   this.$router.push({
-      //     path: "/fdyTestDetail",
-      //     // query: {}
-      //   });
+      this.$router.push({
+        path: "/assistantTest/stuTest/testSettingEdit",
+      });
     },
     downTest() {
       //应该有row

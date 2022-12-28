@@ -24,7 +24,7 @@
           <div class="btns borderWhite" @click="deleteItem(item)">
             <span class="title2">删除</span>
           </div>
-          <div class="btns borderGreen">
+          <div class="btns borderGreen" @click="editItem(item)">
             <span class="title1">编辑</span>
           </div>
         </div>
@@ -157,7 +157,12 @@ export default {
     },
     createTest() {
       this.$router.push({
-        path: "/assistantTest/stuTest/testSettingEdit",
+        path: "/assistantTest/stuTest/questionListAdd",
+      });
+    },
+    editItem() {
+      this.$router.push({
+        path: "/assistantTest/stuTest/questionListEdit",
       });
     },
     downTest() {

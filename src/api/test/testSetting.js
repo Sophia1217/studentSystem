@@ -51,6 +51,35 @@ export function mkQuery(query) {
     })
 }
 
+// 问卷题目移除
+export function yichu(query) {
+    return request({
+        url: '/fdycpWj/deleteWjTmGx',
+        method: 'post',
+        data: query
+    })
+}
+// 问卷题目加入
+export function jiaru(query) {
+    return request({
+        url: '/fdycpWj/insertWjTmGx',
+        method: 'post',
+        data: query
+    })
+}
+// 问卷列表详情点击
+export function listDetail(query) {
+    return request({
+        url: '/fdycpWj/queryXscpWjDetail',
+        method: 'post',
+        data: query
+    })
+}
+
+
+
+
+
 
 
 

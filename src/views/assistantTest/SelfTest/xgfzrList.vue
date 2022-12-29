@@ -98,22 +98,36 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">辅导员自评列表</span> <i class="Updataicon" />
+          <span class="title">参与自评列表</span>
+          <!-- <i class="Updataicon" /> -->
+          <div class="yearOption">
+            <el-select
+              v-model="ndval"
+              @change="ndChange"
+              style="width: 80px"
+              placeholder=""
+            >
+              <el-option
+                v-for="(item, index) in njOptions"
+                :key="index"
+                :label="item"
+                :value="item"
+              ></el-option> </el-select
+            ><span>年度</span>
+          </div>
         </div>
-        <div class="yearOption">
-          <el-select
-            v-model="ndval"
-            @change="ndChange"
-            style="width: 80px"
-            placeholder=""
-          >
-            <el-option
-              v-for="(item, index) in njOptions"
-              :key="index"
-              :label="item"
-              :value="item"
-            ></el-option> </el-select
-          ><span>年度</span>
+
+        <div class="headerRight">
+          <div class="btns borderOrange" @click="Setting">
+            <i class="icon setIcon"></i><span class="title">设置</span>
+          </div>
+
+          <div class="btns borderLight" @click="Delete">
+            <i class="icon lightIcon"></i><span class="title">删除</span>
+          </div>
+          <div class="btns borderGreen" @click="Join">
+            <i class="icon addIcon"></i><span class="title1">加入</span>
+          </div>
         </div>
       </div>
       <div class="mt15">
@@ -168,22 +182,118 @@
       </div>
     </div>
 
-    <!-- 导出确认对话框 -->
-    <!-- <el-dialog :title="title" :visible.sync="showExport" width="30%">
-      <span>确认导出{{ len }}条数据？</span>
+    <!-- 设置对话框 -->
+    <el-dialog title="设置" :visible.sync="showSet" width="30%">
+      <div class="form">
+        <el-form label-width="100px">
+          <el-form-item label="开放时间">
+            <el-date-picker
+              v-model="sqkfsj"
+              type="datetimerange"
+              range-separator="至"
+              start-placeholder="起始年月日"
+              end-placeholder="结束年月日"
+              format="yyyy年MM月dd日"
+              value-format="yyyy-MM-dd"
+              :disabled="sfyx == '0' ? false : true"
+              :clearable="false"
+            >
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="开关">
+            <el-switch
+              v-model="sfyx"
+              active-color="#23AD6F"
+              inactive-color="#E0E0E0"
+              active-value="0"
+              inactive-value="1"
+            ></el-switch>
+          </el-form-item>
+        </el-form>
+      </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="handleConfirm"
+        <el-button @click="setCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="setConfirm"
           >确 定</el-button
         >
       </span>
-    </el-dialog> -->
+    </el-dialog>
+    <!-- 加入对话框 -->
+    <el-dialog title="加入" :visible.sync="showJoin" width="60%">
+      <div class="searchName">
+        <el-form>
+          <el-form-item label="姓名">
+            <el-input
+              v-model="queryParams2.xm"
+              placeholder="请输入..."
+              class="inputSelect"
+            >
+              <el-button
+                slot="append"
+                class="searchButton"
+                icon="el-icon-search"
+                @click="getNotList"
+                >查询</el-button
+              >
+            </el-input>
+          </el-form-item></el-form
+        >
+      </div>
+      <div class="mt15">
+        <el-table
+          ref="multipleTable"
+          :data="basicInfoList2"
+          style="width: 100%"
+          :default-sort="{ prop: 'gh', order: 'ascending' }"
+          @selection-change="handleSelectionChange2"
+          @sort-change="changeTableSort2"
+        >
+          <el-table-column type="selection" width="55" />
+          <el-table-column type="index" label="序号" width="50" />
+          <el-table-column prop="gh" label="工号" sortable />
+          <el-table-column prop="xm" label="姓名" sortable="custom" />
+          <el-table-column prop="lx" label="类型" sortable="custom" />
+
+          <el-table-column
+            prop="dwh"
+            label="工作单位"
+            min-width="100"
+            sortable="custom"
+          />
+          <el-table-column prop="nj" label="年级" sortable="custom" />
+          <el-table-column
+            prop="pycc"
+            label="所辖培养层次"
+            min-width="100"
+            sortable="custom"
+          />
+        </el-table>
+        <pagination
+          v-show="total2 > 0"
+          class="pagination2"
+          :total="total2"
+          :page.sync="queryParams2.pageNum"
+          :limit.sync="queryParams2.pageSize"
+          @pagination="getNotList"
+        />
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="joinCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="joinConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
 import CheckboxCom from "../../components/checkboxCom";
 import { lookDetail, getGzdw } from "@/api/politicalWork/assistantappoint";
-import { queryList } from "@/api/test/fdySelfTest";
+import {
+  queryList,
+  queryFdySelfEvaListNew,
+  checkFdyList,
+} from "@/api/test/fdySelfTest";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getGrade } from "@/api/assistantWork/listen";
@@ -196,16 +306,12 @@ export default {
       title: "",
       // // 总条数
       total: 0,
-      // 批量免去确定框弹出
-      showRemove: false,
-      // 详情框显示
-      open: false,
-      //导入框显示
-      openInput: false,
-      //导入确定框显示
-      openInputSure: false,
-      // // 查询参数
-
+      total2: 0,
+      showSet: false,
+      showDelete: false,
+      showJoin: false,
+      sqkfsj: [],
+      sfyx: "0",
       searchVal: "",
       select: "",
       isMore: false,
@@ -244,9 +350,10 @@ export default {
       Sxpycc: [],
       detailGh: "",
       basicInfoList: [],
+      basicInfoList2: [],
       tableData: [],
       multipleSelection: [],
-
+      multipleSelection2: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -260,7 +367,22 @@ export default {
         njs: [],
         pyccms: [],
       },
+      queryParams2: {
+        pageNum: 1,
+        pageSize: 10,
+        orderZd: "",
+        orderPx: "",
+        xm: "",
+        gh: "",
+        nd: "",
+        dwhs: [],
+        lxs: [],
+        njs: [],
+        pyccms: [],
+      },
+
       list: [],
+      list2: [],
       len: 0,
     };
   },
@@ -279,6 +401,56 @@ export default {
   },
 
   methods: {
+    Setting() {
+      this.showSet = true;
+    },
+    setCancel() {
+      this.showSet = false;
+    },
+    setConfirm() {
+      this.showSet = false;
+    },
+    Delete() {},
+    getNotList() {
+      this.queryParams2.nd = this.ndval;
+      queryList(this.queryParams2)
+        .then((response) => {
+          //console.log(response);
+          if (response.errcode == "00") {
+            this.basicInfoList2 = response.data; // 根据状态码接收数据
+            this.total2 = response.totalCount; //总条数
+          }
+        })
+        .catch((err) => {
+          // this.$message.error(err.errmsg);
+        });
+    },
+    Join() {
+      this.showJoin = true;
+      this.getNotList();
+    },
+    joinCancel() {
+      this.showJoin = false;
+      this.queryParams2.xm = "";
+    },
+    joinConfirm() {
+      let ghList = [];
+      this.multipleSelection2.forEach((item) => {
+        ghList.push(item.gh);
+      });
+      console.log("this.multipleSelection2", this.multipleSelection2);
+      console.log("this.ghList", ghList);
+      let data = {
+        gh: this.$store.getters.userId,
+        ghList: ghList,
+        nd: this.ndval,
+      };
+      checkFdyList(data).then((res) => {
+        this.getList();
+      });
+      this.showJoin = false;
+      this.queryParams2.xm = "";
+    },
     ndChange() {
       this.getList();
     },
@@ -334,7 +506,7 @@ export default {
       this.queryParams.gh = this.select == 1 ? this.searchVal : "";
       this.queryParams.xm = this.select == 2 ? this.searchVal : "";
       this.queryParams.nd = this.ndval;
-      queryList(this.queryParams)
+      queryFdySelfEvaListNew(this.queryParams)
         .then((response) => {
           //console.log(response);
           if (response.errcode == "00") {
@@ -396,6 +568,10 @@ export default {
       this.multipleSelection = val;
       this.list = [...val]; // 存储已被勾选的数据
     },
+    handleSelectionChange2(val) {
+      this.multipleSelection2 = val;
+      this.list2 = [...val]; // 存储已被勾选的数据
+    },
     //状态全选
     handleCheckAllStatusChange(val) {
       const allCheck = [];
@@ -444,6 +620,11 @@ export default {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
       this.searchClick();
+    },
+    changeTableSort2(column) {
+      this.queryParams2.orderZd = column.prop;
+      this.queryParams2.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
+      this.getNotList();
     },
     // // 打开导出弹窗
     // async handleExport() {
@@ -550,19 +731,24 @@ export default {
       justify-content: space-between;
       align-items: center;
       .headerLeft {
+        display: flex;
+        flex-direction: row;
         .title {
           font-weight: 600;
           font-size: 20px;
           color: #1f1f1f;
           line-height: 28px;
         }
-        .Updataicon {
-          display: inline-block;
-          vertical-align: middle;
+        // .Updataicon {
+        //   display: inline-block;
+        //   vertical-align: middle;
+        //   margin-left: 10px;
+        //   width: 20px;
+        //   height: 20px;
+        //   background: url("~@/assets/images/updata.png") no-repeat;
+        // }
+        .yearOption {
           margin-left: 10px;
-          width: 20px;
-          height: 20px;
-          background: url("~@/assets/images/updata.png") no-repeat;
         }
       }
       .headerRight {
@@ -610,29 +796,18 @@ export default {
             vertical-align: top;
             margin-right: 5px;
           }
-          .blueIcon {
-            margin-top: 10px;
-            background: url("~@/assets/assistantPng/in.png") no-repeat;
-          }
-          .orangeIcon {
-            margin-top: 10px;
-            background: url("~@/assets/assistantPng/out.png") no-repeat;
-          }
+
           .lightIcon {
             margin-top: 9px;
             background: url("~@/assets/assistantPng/delete.png") no-repeat;
           }
-          .greenIcon {
+          .addIcon {
             margin-top: 10px;
             background: url("~@/assets/assistantPng/add.png") no-repeat;
           }
-          .downIcon {
+          .setIcon {
             margin-top: 10px;
-            background: url("~@/assets/images/down.png") no-repeat;
-          }
-          .removeButton {
-            margin-top: 10px;
-            background: url("~@/assets/images/icon_remove.png") no-repeat;
+            background: url("~@/assets/images/set.png") no-repeat;
           }
         }
       }
@@ -671,14 +846,14 @@ export default {
   transform: translateX(-50%);
   text-align: center;
 }
-.greenDot {
-  width: 8px;
-  height: 8px;
-  color: #23ad6f;
+.pagination2 {
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
 }
-.redDot {
-  width: 8px;
-  height: 8px;
-  color: #ed5234;
+.searchName {
+  .inputSelect {
+    width: 50%;
+  }
 }
 </style>

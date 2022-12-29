@@ -26,3 +26,22 @@ export function updateFdyZpDetail(query) {
       data: query
   })
 }
+
+
+//辅导员自评new
+export function queryFdySelfEvaListNew(query) {
+  return request({
+      url: '/fdyzp/queryFdySelfEvaListNew',
+      method: 'post',
+      data: query
+  })
+}
+
+//辅导员自评确认
+export function checkFdyList(query) {
+  return request({
+      url: '/fdyzp/checkFdyList',
+      method: 'post',
+      data: query
+  })
+}

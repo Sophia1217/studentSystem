@@ -12,7 +12,7 @@
       <div class="title">
         <div class="titleRight">{{ item.wjName }}</div>
         <div class="titleLeft">
-          <div class="btns borderWhite" @click="downTest">
+          <div class="btns borderWhite" @click="downTest(item)">
             <span class="title2">分析&amp;下载</span>
           </div>
           <div class="btns borderWhite">
@@ -168,13 +168,12 @@ export default {
         },
       });
     },
-    downTest() {
-      //应该有row
+    downTest(item) {
       this.$router.push({
         path: "/assistantTest/stuTest/stuDownTest",
-        // query: {
-        //   id: row.id,
-        // },
+        query: {
+          id: item.id,
+        },
       });
     },
     kgChange() {},

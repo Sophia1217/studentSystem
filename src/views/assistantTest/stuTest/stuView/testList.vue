@@ -6,12 +6,16 @@
         <div class="titleLeft">
           <div
             class="btns borderGreen"
-            @click="doTest"
+            @click="doTest(item)"
             v-show="item.sfwc == '0'"
           >
             <span class="title1">填写问卷</span>
           </div>
-          <div class="btns borderWhite" v-show="item.sfwc == '1'">
+          <div
+            class="btns borderWhite"
+            v-show="item.sfwc == '1'"
+            @click="doTest(item)"
+          >
             <span class="title2">已填写</span>
           </div>
         </div>
@@ -56,13 +60,14 @@ export default {
     this.getList();
   },
   methods: {
-    doTest() {
+    doTest(item) {
       this.$router.push({
         path: "/fdyTestDetail",
-        // query: {
-        //   id: row.id,
-        //   xzdmOld: row.xzdm,
-        // },
+        query: {
+          id: item.id,
+          xghBpcr: item.pcFdyGh,
+          sfwc: item.sfwc,
+        },
       });
     },
     getList() {

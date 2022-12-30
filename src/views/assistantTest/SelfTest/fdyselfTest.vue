@@ -590,7 +590,11 @@
   </div>
 </template>
 <script>
-import { getFdyZpDetail, updateFdyZpDetail } from "@/api/test/fdySelfTest";
+import {
+  getFdyZpDetail,
+  updateFdyZpDetail,
+  getFdyNdByGh,
+} from "@/api/test/fdySelfTest";
 import { getGrade } from "@/api/assistantWork/listen";
 export default {
   data() {
@@ -611,13 +615,12 @@ export default {
   },
   methods: {
     async getOption() {
-      await getGrade().then((response) => {
+      await getFdyNdByGh({ gh: this.gh }).then((response) => {
         // 获取年级列表数据
         if (response.errcode == "00") {
-          this.njOptions = response.data.rows;
-          this.nd = this.$route.query.nd
-            ? this.$route.query.nd
-            : this.njOptions[0];
+          this.njOptions = response.data;
+          console.log(response);
+          this.nd = this.njOptions[0];
         }
       });
       this.getDetail();

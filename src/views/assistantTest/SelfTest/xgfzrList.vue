@@ -146,12 +146,12 @@
           <el-table-column prop="lx" label="类型" sortable="custom" />
 
           <el-table-column
-            prop="dwh"
+            prop="dwmc"
             label="工作单位"
             min-width="100"
             sortable="custom"
           />
-          <el-table-column prop="nj" label="年级" sortable="custom" />
+          <el-table-column prop="ssnj" label="年级" sortable="custom" />
           <el-table-column
             prop="pycc"
             label="所辖培养层次"
@@ -255,12 +255,12 @@
           <el-table-column prop="lx" label="类型" sortable="custom" />
 
           <el-table-column
-            prop="dwh"
+            prop="dwmc"
             label="工作单位"
             min-width="100"
             sortable="custom"
           />
-          <el-table-column prop="nj" label="年级" sortable="custom" />
+          <el-table-column prop="ssnj" label="年级" sortable="custom" />
           <el-table-column
             prop="pycc"
             label="所辖培养层次"
@@ -284,6 +284,16 @@
         >
       </span>
     </el-dialog>
+    <!-- 删除确认对话框 -->
+    <el-dialog title="删除" :visible.sync="showDelete" width="30%">
+      <span>确认删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="deleteCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="deleteConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -293,6 +303,10 @@ import {
   queryList,
   queryFdySelfEvaListNew,
   checkFdyList,
+  deleteFdyList,
+  updateKgsz,
+  getKgsz,
+  insertKgsz,
 } from "@/api/test/fdySelfTest";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getCollege } from "@/api/class/maintenanceClass";
@@ -383,6 +397,8 @@ export default {
 
       list: [],
       list2: [],
+      sqkfsj: [],
+      sfyx: "",
       len: 0,
     };
   },
@@ -403,14 +419,58 @@ export default {
   methods: {
     Setting() {
       this.showSet = true;
+      getKgsz({ nd: this.ndval }).then((res) => {
+        this.sfyx = res.data.kgzt;
+        this.sqkfsj = [res.data.kfqjks, res.data.kfsjjs];
+      });
     },
     setCancel() {
       this.showSet = false;
+      this.sqkfsj = [];
+      this.sfyx = "1";
     },
     setConfirm() {
-      this.showSet = false;
+      let data = {
+        kfqjks: this.sqkfsj[0] ? this.sqkfsj[0] : "",
+        kfsjjs: this.sqkfsj[1] ? this.sqkfsj[1] : "",
+        kgzt: this.sfyx,
+
+        nd: this.ndval,
+      };
+      if (data.kfqjks == "") {
+        this.$message.error("请选择时间!");
+      } else {
+        updateKgsz(data).then((res) => {
+          this.showSet = false;
+          this.sqkfsj = [];
+          this.sfyx = "1";
+        });
+      }
     },
-    Delete() {},
+    Delete() {
+      this.showDelete = true;
+    },
+    deleteCancel() {
+      this.showDelete = false;
+    },
+    deleteConfirm() {
+      this.showDelete = false;
+      let ghlist = [];
+      if (this.multipleSelection.length > 0) {
+        for (let i = 0; i < this.multipleSelection.length; i++) {
+          ghlist.push(this.multipleSelection[i].gh);
+        }
+        let data = {
+          ghList: ghlist,
+          nd: this.ndval,
+        };
+        deleteFdyList(data).then((res) => {
+          this.getList();
+        });
+      } else {
+        this.$message.error("请至少选择一条记录");
+      }
+    },
     getNotList() {
       this.queryParams2.nd = this.ndval;
       queryList(this.queryParams2)
@@ -434,22 +494,24 @@ export default {
       this.queryParams2.xm = "";
     },
     joinConfirm() {
-      let ghList = [];
-      this.multipleSelection2.forEach((item) => {
-        ghList.push(item.gh);
-      });
-      console.log("this.multipleSelection2", this.multipleSelection2);
-      console.log("this.ghList", ghList);
-      let data = {
-        gh: this.$store.getters.userId,
-        ghList: ghList,
-        nd: this.ndval,
-      };
-      checkFdyList(data).then((res) => {
-        this.getList();
-      });
-      this.showJoin = false;
-      this.queryParams2.xm = "";
+      let ghlist = [];
+      if (this.multipleSelection2.length > 0) {
+        for (let i = 0; i < this.multipleSelection2.length; i++) {
+          ghlist.push(this.multipleSelection2[i].gh);
+        }
+        let data = {
+          ghList: ghlist,
+          nd: this.ndval,
+        };
+        checkFdyList(data).then((res) => {
+          this.getList();
+          this.showJoin = false;
+          this.queryParams2.xm = "";
+          this.multipleSelection2 = [];
+        });
+      } else {
+        this.$message.error("请至少选择一条记录");
+      }
     },
     ndChange() {
       this.getList();
@@ -490,9 +552,12 @@ export default {
         if (response.errcode == "00") {
           this.njOptions = response.data.rows;
           this.ndval = this.njOptions[0];
+          insertKgsz({ nd: this.ndval }).then((res) => {});
         }
       });
+
       this.getList();
+
       // getCollege().then((response) => {
       //   // 获取培养单位列表数据
       //   if (response.errcode == "00") {

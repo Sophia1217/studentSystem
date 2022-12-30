@@ -45,3 +45,50 @@ export function checkFdyList(query) {
       data: query
   })
 }
+
+//辅导员自评删除
+export function deleteFdyList(query) {
+  return request({
+      url: '/fdyzp/deleteFdyList',
+      method: 'post',
+      data: query
+  })
+}
+
+
+//辅导员自评年度
+
+export function getFdyNdByGh(query) {
+  return request({
+      url: '/fdyzp/getFdyNdByGh',
+      method: 'post',
+      data: query
+  })
+}
+//
+
+//辅导员自评时间查询
+export function getKgsz(query) {
+  return request({
+      url: '/fdyzp/getKgsz',
+      method: 'post',
+      data: query
+  })
+}
+//辅导员自评时间设置
+export function updateKgsz(query) {
+  return request({
+      url: '/fdyzp/updateKgsz',
+      method: 'post',
+      data: query
+  })
+}
+
+//辅导员自评开关时间新增
+export function insertKgsz(query) {
+  return request({
+      url: '/fdyzp/insertKgsz',
+      method: 'post',
+      data: query
+  })
+}

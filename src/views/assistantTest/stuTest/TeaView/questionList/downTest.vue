@@ -66,19 +66,25 @@
       :before-close="detailConfirm"
       width="80%"
     >
-      <el-table :data="tableDetails">
-        <el-table-column
-          fixed="left"
-          type="index"
-          label="序号"
-          width="50"
-        ></el-table-column>
-        <el-table-column prop="chqj" label="模块" />
-        <el-table-column prop="sqsj" label="题目" />
-        <el-table-column prop="sqsj" label="参与测评人数" />
-        <el-table-column prop="statusChinese" label="分值" />
-        <el-table-column prop="statusChinese" label="单题原始平均分" />
-      </el-table>
+      <div class="headerDilog">
+        <div><span class="title">问卷名称问卷名称</span></div>
+        <div class="tableTop"><span class="title">姓名姓名</span></div>
+        <!-- <div class="tableTop">{{detailXm}} </div> -->
+        <el-table :data="tableDetails">
+          <el-table-column
+            fixed="left"
+            type="index"
+            label="序号"
+            width="50"
+          ></el-table-column>
+          <el-table-column prop="chqj" label="模块" />
+          <el-table-column prop="sqsj" label="题目" />
+          <el-table-column prop="sqsj" label="参与测评人数" />
+          <el-table-column prop="statusChinese" label="分值" />
+          <el-table-column prop="statusChinese" label="单题原始平均分" />
+        </el-table>
+        <div class="zhu"><span class="title2">注：有效测评分是按照去掉头部和尾部相应百分比的人次计算所得平均分</span></div>
+      </div>
       <pagination
           v-show="total > 0"
           class="pagination2"
@@ -121,6 +127,7 @@ export default {
       title: "",
       // // 总条数
       total: 0,
+      totalMx:0,
       // 批量删除确定框弹出
       showDelete: false,
       // 详情框显示
@@ -153,6 +160,7 @@ export default {
       exportParams: {},
       tableDetails:[],
       detailModal: false,
+      detailXm:"",
     };
   },
   computed: {},
@@ -239,6 +247,7 @@ export default {
     //点击详情
     hadleDetail(row) {
       this.detailModal = true;
+      this.detailXm = row.xm;
       // this.$router.push({
       //   path: "/assistantWork/detailClassEvent",
       //   query: {
@@ -280,11 +289,35 @@ export default {
   .mt15 {
     margin-top: 15px;
   }
+  .headerDilog{
+    background: #fff;
+    padding-left: 20px;
+    padding-right: 20px;
+    .tableTop{
+      margin-bottom:15px;
+    }
+    .title{
+      font-weight: 600;
+      font-size: 18px;
+      color: #1f1f1f;
+      line-height: 28px;
+    }
+    .zhu{
+      margin-top: 15px;
+    }
+    .title2{
+      font-weight: 500;
+      font-size: 14px;
+      color: #1f1f1f;
+      line-height: 20px;
+    }
+  }
   .searchWrap {
     background: #fff;
-    margin-top: 30px;
+    // margin-top: 30px;
     .headerTop1 {
       display: flex;
+      padding-top: 30px;
       flex-direction: row;
       justify-content:center;
       align-items: center;
@@ -390,10 +423,6 @@ export default {
     color: white;
   }
 }
-.closeButton {
-  background: #005657;
-  color: white;
-}
 
 .pagination {
   left: 20%;
@@ -404,15 +433,5 @@ export default {
   left: 20%;
   transform: translateX(-25%);
   text-align: center;
-}
-.greenDot {
-  width: 8px;
-  height: 8px;
-  color: #23ad6f;
-}
-.redDot {
-  width: 8px;
-  height: 8px;
-  color: #ed5234;
 }
 </style>

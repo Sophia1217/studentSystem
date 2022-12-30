@@ -314,7 +314,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="preCancel">取 消</el-button>
-        <el-button @click="scWj" class="greenbtn">生成问卷</el-button>
+        <el-button @click="openModal" class="greenbtn">生成问卷</el-button>
       </span>
     </el-dialog>
     <el-dialog
@@ -341,7 +341,22 @@
         <el-button @click="detailCancel">关 闭</el-button>
       </span>
     </el-dialog>
-
+    <el-dialog
+      title="生成问卷提示"
+      :visible.sync="scModal"
+      width="30%"
+      :close-on-click-modal="false"
+    >
+      <div>
+        <h3 style="margin-left: 25px; font-weight: 700">
+          确认生成名称为{{ form.wjName }}的问卷，分数为 {{ totalFZ }}分？
+        </h3>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="scModalCancel">关 闭</el-button>
+        <el-button @click="scWj">确 认</el-button>
+      </span>
+    </el-dialog>
     <div
       style="
         background: white;
@@ -351,7 +366,7 @@
       "
     >
       <div @click="yulan" class="whitebtn" style="margin-right: 10px">预览</div>
-      <div @click="scWj" class="greenbtn">生成问卷</div>
+      <div @click="openModal" class="greenbtn">生成问卷</div>
     </div>
   </div>
 </template>
@@ -365,6 +380,7 @@ export default {
   components: { CheckboxCom },
   data() {
     return {
+      scModal: false,
       rules: {
         wjName: [
           {
@@ -469,9 +485,27 @@ export default {
     this.handleSearch();
   },
   methods: {
+    openModal() {
+      if (!this.checkForm()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        if (this.tableData1.length > 0) {
+          this.scModal = true;
+        } else {
+          this.$message.warning("暂未选择题目加入问卷");
+        }
+      }
+    },
+    scModalCancel() {
+      this.scModal = false;
+    },
     remove() {
       if (this.multipleSelection.length > 0) {
         this.tableData1 = this.resArr(this.tableData1, this.multipleSelection);
+        this.totalFZ = this.tableData1.reduce((prev, next) => {
+          return prev + Number(next.tmFz);
+        }, 0);
         // let getId = this.multipleSelection.map((item) => item.id);
         // let newArr = this.tableData1.filter((item) => !getId.includes(item.id));
         // console.log(newArr);
@@ -593,63 +627,54 @@ export default {
       return overWan ? getWan(overWan) + "万" + getWan(noWan) : getWan(num);
     },
     scWj() {
-      if (!this.checkForm()) {
-        this.$message.error("请完善表单相关信息！");
-        return;
-      } else {
-        var arr = [];
-        arr = this.tableData1.map((item) => item.id);
-        var data = {
-          tmIdList: arr, //题目Id数组
-          wjCount: this.tableData1.length,
-          wjFz: this.totalFZ,
-          wjDy: this.form.wjDy,
-          wjName: this.form.wjName,
-          wjLy: "0",
-          wjNj: this.form.wjNj,
-          wjPycc: this.form.tmPycc,
-          wjYear: this.form.tmYear,
-          wjTnjps: "0",
-        };
-        scWj(data).then((res) => {
-          this.$message.success("问卷已生成");
-          this.preModal = false;
-        });
-      }
+      var arr = [];
+      arr = this.tableData1.map((item) => item.id);
+      var data = {
+        tmIdList: arr, //题目Id数组
+        wjCount: this.tableData1.length,
+        wjFz: this.totalFZ,
+        wjDy: this.form.wjDy,
+        wjName: this.form.wjName,
+        wjLy: "0",
+        wjNj: this.form.wjNj,
+        wjPycc: this.form.tmPycc,
+        wjYear: this.form.tmYear,
+        wjTnjps: "0",
+      };
+      scWj(data).then((res) => {
+        this.$message.success("问卷已生成");
+        this.preModal = false;
+        this.scModal = false;
+      });
     },
     jiaru() {
       if (this.multipleSelection.length < 1) {
         this.$message.warning("请先选择数据再加入");
       } else {
-        // var flag = false;
-        // for (let i of this.multipleSelection) {
-        //   console.log("i", i);
-        //   if (this.tableData1.length > 0) {
-        //     for (let j of this.tableData1) {
-        //       console.log("j", j);
-        //       console.log("111");
-        //       debugger;
-        //       if (i.id == j.id) {
-        //         console.log("222");
-        //         flag = false;
-        //       }
-        //     }
-        //   } else {
-        //     flag = true;
-        //   }
-        // }
-        // if (flag == false) {
-        //   this.$message.error("当前勾选项存在重复数据");
-        // } else {
-        for (var l = 0; l < this.multipleSelection.length; l++) {
-          this.tableData1.push(this.multipleSelection[l]);
+        var flag = false;
+        for (let i of this.multipleSelection) {
+          if (this.tableData1.length > 0) {
+            let _index = this.tableData1.findIndex((c) => c.id === i.id);
+
+            if (_index === -1) {
+              flag = true;
+            }
+          } else {
+            flag = true;
+          }
         }
-        this.tableData1 = [...new Set(this.tableData1)];
-        this.queryParams1.total = this.tableData1.length;
-        this.totalFZ = this.tableData1.reduce((prev, next) => {
-          return prev + Number(next.tmFz);
-        }, 0);
-        // }
+        if (flag == false) {
+          this.$message.error("当前勾选项存在重复数据");
+        } else {
+          for (var l = 0; l < this.multipleSelection.length; l++) {
+            this.tableData1.push(this.multipleSelection[l]);
+          }
+          this.tableData1 = [...new Set(this.tableData1)];
+          this.queryParams1.total = this.tableData1.length;
+          this.totalFZ = this.tableData1.reduce((prev, next) => {
+            return prev + Number(next.tmFz);
+          }, 0);
+        }
       }
     },
     handleClick(tab, event) {

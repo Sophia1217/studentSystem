@@ -5,7 +5,12 @@
       <div>
         <el-row :gutter="20">
           <el-col :span="16">
-            <el-form ref="form" :model="form" label-width="120px">
+            <el-form
+              ref="form"
+              :model="form"
+              label-width="120px"
+              @submit.native.prevent
+            >
               <el-form-item
                 label="模块："
                 prop="mkValue"

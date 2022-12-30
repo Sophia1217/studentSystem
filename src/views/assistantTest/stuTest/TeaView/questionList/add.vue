@@ -38,7 +38,7 @@
         </el-row>
 
         <el-row :gutter="20">
-          <el-col :span="5">
+          <el-col :span="6">
             <el-form-item
               label="适用年度："
               prop="tmYear"
@@ -77,7 +77,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="5">
+          <el-col :span="6">
             <el-form-item label="面向年级：" prop="wjNj" :rules="rules.wjNj">
               <el-select v-model="form.wjNj" placeholder="请选择" clearable>
                 <el-option
@@ -137,7 +137,7 @@
           </el-tabs>
         </div>
 
-        <div class="headerRight">
+        <div class="headerRight" v-if="activeName == 'first'">
           <div>
             <h4 style="font-weight: 700">
               已选题数：{{ tableData1.length }}
@@ -148,6 +148,19 @@
           </div>
           <div @click="jiaru">
             <span class="greenbtn" style="line-height: 60px">加入</span>
+          </div>
+        </div>
+        <div class="headerRight" v-if="activeName == 'second'">
+          <div>
+            <h4 style="font-weight: 700">
+              已选题数：{{ tableData1.length }}
+              <span v-html="'\u3000'"></span> 合计： {{ totalFZ }}分<span
+                v-html="'\u3000\u3000'"
+              ></span>
+            </h4>
+          </div>
+          <div @click="remove">
+            <span class="greenbtn" style="line-height: 60px">移出</span>
           </div>
         </div>
       </div>
@@ -218,7 +231,6 @@
               min-width="100"
               :width="item.width"
               :show-overflow-tooltip="true"
-              sortable="custom"
             ></el-table-column>
           </div>
           <el-table-column fixed="right" label="操作" width="140">
@@ -243,11 +255,19 @@
         :limit.sync="queryParams.pageSize"
         @pagination="handleSearch"
       />
+      <pagination
+        v-if="activeName == 'second'"
+        v-show="queryParams1.total > 0"
+        :total="queryParams1.total"
+        :page.sync="queryParams1.pageNum"
+        :limit.sync="queryParams1.pageSize"
+        @pagination="handleCurrentChange"
+      />
     </div>
     <el-dialog
       title="预览"
       :visible.sync="preModal"
-      width="30%"
+      width="55%"
       :close-on-click-modal="false"
     >
       <div class="timuStyle" style="">问卷题目： {{ form.wjName }}</div>
@@ -274,7 +294,8 @@
               label="序号"
               width="50"
             ></el-table-column>
-            <el-table-column prop="tmName" label="题目"> </el-table-column>
+            <el-table-column prop="tmName" label="题目" width="680">
+            </el-table-column>
             <el-table-column prop="tmFz" label="分值"> </el-table-column>
             <el-table-column fixed="right" label="操作" width="140">
               <template slot-scope="scope">
@@ -299,7 +320,7 @@
     <el-dialog
       title="题目详情"
       :visible.sync="detailModal"
-      width="30%"
+      width="40%"
       :close-on-click-modal="false"
     >
       <div>
@@ -425,6 +446,13 @@ export default {
         orderZd: "",
         orderPx: "",
       },
+      queryParams1: {
+        pageNum: 1,
+        pageSize: 10,
+        total: 0,
+        orderZd: "",
+        orderPx: "",
+      },
       AUTHFLAG: false,
     };
   },
@@ -441,6 +469,19 @@ export default {
     this.handleSearch();
   },
   methods: {
+    remove() {
+      if (this.multipleSelection.length > 0) {
+        this.tableData1 = this.resArr(this.tableData1, this.multipleSelection);
+        // let getId = this.multipleSelection.map((item) => item.id);
+        // let newArr = this.tableData1.filter((item) => !getId.includes(item.id));
+        // console.log(newArr);
+      } else {
+        this.$message.warning("请先选择数据");
+      }
+    },
+    resArr(arr1, arr2) {
+      return arr1.filter((v) => arr2.every((val) => val.id != v.id));
+    },
     preCancel() {
       this.preModal = false;
     },
@@ -471,6 +512,10 @@ export default {
           this.$message.warning("当前无可预览数据");
         }
       }
+    },
+    handleCurrentChange(val) {
+      console.log("val", val);
+      this.queryParams1.pageNum = val.page;
     },
     test(arr) {
       for (var y = 0; y < arr.length; y++) {
@@ -576,13 +621,35 @@ export default {
       if (this.multipleSelection.length < 1) {
         this.$message.warning("请先选择数据再加入");
       } else {
+        // var flag = false;
+        // for (let i of this.multipleSelection) {
+        //   console.log("i", i);
+        //   if (this.tableData1.length > 0) {
+        //     for (let j of this.tableData1) {
+        //       console.log("j", j);
+        //       console.log("111");
+        //       debugger;
+        //       if (i.id == j.id) {
+        //         console.log("222");
+        //         flag = false;
+        //       }
+        //     }
+        //   } else {
+        //     flag = true;
+        //   }
+        // }
+        // if (flag == false) {
+        //   this.$message.error("当前勾选项存在重复数据");
+        // } else {
         for (var l = 0; l < this.multipleSelection.length; l++) {
           this.tableData1.push(this.multipleSelection[l]);
         }
         this.tableData1 = [...new Set(this.tableData1)];
+        this.queryParams1.total = this.tableData1.length;
         this.totalFZ = this.tableData1.reduce((prev, next) => {
           return prev + Number(next.tmFz);
         }, 0);
+        // }
       }
     },
     handleClick(tab, event) {
@@ -609,8 +676,8 @@ export default {
         id: row.id,
         tmMk: this.training.choose,
         tmName: this.tmName,
-        tmPycc: this.form.tmPycc,
-        tmYear: this.form.tmYear,
+        tmPycc: "",
+        tmYear: "",
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         limitSql: "",

@@ -160,9 +160,12 @@ export default {
         path: "/assistantTest/stuTest/questionListAdd",
       });
     },
-    editItem() {
+    editItem(item) {
       this.$router.push({
         path: "/assistantTest/stuTest/questionListEdit",
+        query: {
+          id: item.id,
+        },
       });
     },
     downTest() {

@@ -52,7 +52,7 @@ export function mkQuery(query) {
 }
 
 // 问卷题目移除
-export function yichu(query) {
+export function YICHU(query) {
     return request({
         url: '/fdycpWj/deleteWjTmGx',
         method: 'post',
@@ -60,7 +60,7 @@ export function yichu(query) {
     })
 }
 // 问卷题目加入
-export function jiaru(query) {
+export function JIARU(query) {
     return request({
         url: '/fdycpWj/insertWjTmGx',
         method: 'post',

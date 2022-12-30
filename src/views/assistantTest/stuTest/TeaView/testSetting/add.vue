@@ -95,6 +95,7 @@
                   :rules="rules.tmFz"
                 >
                   <el-input-number
+                    :min="0"
                     v-model="item.tmFz"
                     controls-position="right"
                   ></el-input-number>
@@ -171,10 +172,12 @@
                     :prop="`allList.${ind}.tmxxList.${scope.$index}.xxFz`"
                     :rules="rules.xxFz"
                   >
-                    <el-input
+                    <el-input-number
+                      :max="100"
+                      :min="0"
                       v-model="scope.row.xxFz"
                       placeholder="请输入"
-                    ></el-input>
+                    ></el-input-number>
                   </el-form-item>
                 </template>
               </el-table-column>

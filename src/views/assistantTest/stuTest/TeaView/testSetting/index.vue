@@ -180,6 +180,8 @@
           <el-col :span="7">
             <el-form-item label="分值：" prop="tmFz" :rules="rules.tmFz">
               <el-input-number
+                :max="100"
+                :min="0"
                 v-model="detailALL.tmFz"
                 controls-position="right"
               ></el-input-number>

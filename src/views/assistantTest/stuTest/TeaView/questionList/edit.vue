@@ -137,7 +137,7 @@
           </el-tabs>
         </div>
 
-        <div class="headerRight">
+        <div class="headerRight" v-if="activeName == 'first'">
           <div>
             <h4 style="font-weight: 700">
               已选题数：{{ tableData1.length }}
@@ -150,6 +150,19 @@
             <span class="greenbtn" style="line-height: 60px">加入</span>
           </div>
         </div>
+        <div class="headerRight" v-if="activeName == 'second'">
+          <div>
+            <h4 style="font-weight: 700">
+              已选题数：{{ tableData1.length }}
+              <span v-html="'\u3000'"></span> 合计： {{ totalFZ }}分<span
+                v-html="'\u3000\u3000'"
+              ></span>
+            </h4>
+          </div>
+          <div @click="remove">
+            <span class="greenbtn" style="line-height: 60px">移出</span>
+          </div>
+        </div>
       </div>
       <div class="mt15" v-if="activeName == 'first'">
         <el-table
@@ -157,7 +170,6 @@
           ref="multipleTable"
           @selection-change="handleSelectionChange"
           style="width: 100%"
-          :default-sort="{ prop: 'xh', order: 'ascending' }"
           @sort-change="changeTableSort"
         >
           <el-table-column type="selection" width="55"></el-table-column>
@@ -199,8 +211,7 @@
           ref="multipleTable"
           @selection-change="handleSelectionChange"
           style="width: 100%"
-          :default-sort="{ prop: 'xh', order: 'ascending' }"
-          @sort-change="changeTableSort"
+          @sort-change="changeTableSort1"
         >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
@@ -243,11 +254,19 @@
         :limit.sync="queryParams.pageSize"
         @pagination="handleSearch"
       />
+      <pagination
+        v-if="activeName == 'second'"
+        v-show="queryParams1.total > 0"
+        :total="queryParams1.total"
+        :page.sync="queryParams1.pageNum"
+        :limit.sync="queryParams1.pageSize"
+        @pagination="yjr"
+      />
     </div>
     <el-dialog
       title="预览"
       :visible.sync="preModal"
-      width="30%"
+      width="55%"
       :close-on-click-modal="false"
     >
       <div class="timuStyle" style="">问卷题目： {{ form.wjName }}</div>
@@ -274,7 +293,8 @@
               label="序号"
               width="50"
             ></el-table-column>
-            <el-table-column prop="tmName" label="题目"> </el-table-column>
+            <el-table-column prop="tmName" label="题目" width="680">
+            </el-table-column>
             <el-table-column prop="tmFz" label="分值"> </el-table-column>
             <el-table-column fixed="right" label="操作" width="140">
               <template slot-scope="scope">
@@ -299,7 +319,7 @@
     <el-dialog
       title="题目详情"
       :visible.sync="detailModal"
-      width="30%"
+      width="40%"
       :close-on-click-modal="false"
     >
       <div>
@@ -338,7 +358,15 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { queryList, scWj, getDetail, mkQuery } from "@/api/test/testSetting";
+import {
+  queryList,
+  scWj,
+  getDetail,
+  mkQuery,
+  listDetail,
+  YICHU,
+  JIARU,
+} from "@/api/test/testSetting";
 import { getGrade } from "@/api/class/maintenanceClass";
 export default {
   components: { CheckboxCom },
@@ -418,7 +446,15 @@ export default {
       tableData1: [],
       totalFZ: 0,
       multipleSelection: [],
+      routeId: "",
       queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        total: 0,
+        orderZd: "",
+        orderPx: "",
+      },
+      queryParams1: {
         pageNum: 1,
         pageSize: 10,
         total: 0,
@@ -431,16 +467,35 @@ export default {
   mounted() {
     this.mkQuery1();
     this.getCode("dmtmszmk");
+    this.routeId = this.$route.query.id;
     this.getAllGrade(); //年级
     this.getCode("dmpyccm");
-    this.handleSearch();
+    this.yjr();
+    // this.handleSearch();
     this.authConfirm(this.$route.path.split("/")[2]);
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
-  activated() {
-    this.handleSearch();
-  },
   methods: {
+    remove() {
+      if (this.multipleSelection.length > 0) {
+        let data = [];
+        for (var y = 0; y < this.multipleSelection.length; y++) {
+          data[y] = {};
+          data[y].id = "";
+          data[y].tmId = this.multipleSelection[y].id;
+          data[y].wjId = this.routeId;
+        }
+        YICHU(data).then((res) => {
+          this.yjr();
+        });
+      } else {
+        this.$message.warning("请先选择数据");
+      }
+    },
+    resArr(arr1, arr2) {
+      arr2.every((val) => console.log("val", val));
+      return arr1.filter((v) => arr2.every((val) => val.id != v.id));
+    },
     preCancel() {
       this.preModal = false;
     },
@@ -576,13 +631,16 @@ export default {
       if (this.multipleSelection.length < 1) {
         this.$message.warning("请先选择数据再加入");
       } else {
-        for (var l = 0; l < this.multipleSelection.length; l++) {
-          this.tableData1.push(this.multipleSelection[l]);
+        let data = [];
+        for (var y = 0; y < this.multipleSelection.length; y++) {
+          data[y] = {};
+          data[y].id = "";
+          data[y].tmId = this.multipleSelection[y].id;
+          data[y].wjId = this.routeId;
         }
-        this.tableData1 = [...new Set(this.tableData1)];
-        this.totalFZ = this.tableData1.reduce((prev, next) => {
-          return prev + Number(next.tmFz);
-        }, 0);
+        JIARU(data).then((res) => {
+          this.yjr();
+        });
       }
     },
     handleClick(tab, event) {
@@ -609,8 +667,8 @@ export default {
         id: row.id,
         tmMk: this.training.choose,
         tmName: this.tmName,
-        tmPycc: this.form.tmPycc,
-        tmYear: this.form.tmYear,
+        tmPycc: "",
+        tmYear: "",
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         limitSql: "",
@@ -634,6 +692,23 @@ export default {
               this.options1 = res.data;
               break;
           }
+        })
+        .catch((err) => {});
+    },
+    async yjr() {
+      await listDetail(this.routeId)
+        .then((res) => {
+          this.form.wjName = res.data.wjName;
+          this.form.wjDy = res.data.wjDy;
+          this.form.wjNj = res.data.wjNj;
+          this.form.tmYear = res.data.wjYear;
+          this.form.tmPycc = res.data.wjPycc;
+          this.tableData1 = res.data.tmList;
+          this.queryParams1.total = res.data.tmList.length;
+          this.totalFZ = this.tableData1.reduce((prev, next) => {
+            return prev + Number(next.tmFz);
+          }, 0);
+          this.handleSearch();
         })
         .catch((err) => {});
     },
@@ -692,6 +767,11 @@ export default {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
+    },
+    changeTableSort1(column) {
+      this.queryParams1.orderZd = column.prop;
+      this.queryParams1.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
+      this.listDetail();
     },
   },
 };

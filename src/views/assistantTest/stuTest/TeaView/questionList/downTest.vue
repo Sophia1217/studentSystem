@@ -2,7 +2,7 @@
   <div class="basicInfo">
     <div class="searchWrap">
       <div class="headerTop1">
-        <span class="title">问卷名称问卷名称</span>
+        <span class="title">{{wjName}}</span>
       </div>
     </div>
 
@@ -29,14 +29,14 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
-          <el-table-column prop="hdzt" label="工号" min-width="100" sortable />
-          <el-table-column prop="hddz" label="姓名" min-width="100" sortable="custom" />
-          <el-table-column prop="hdksrq" label="类型" width="80" sortable="custom" />
-          <el-table-column prop="zzdw" label="工作单位" min-width="100" sortable="custom" />
-          <el-table-column prop="createXm" label="已测评人数" width="110" sortable="custom" />
-          <el-table-column prop="createXh" label="应测评人数" width="110" sortable="custom" />
-          <el-table-column prop="createXh" label="测评率" width="85" sortable="custom" />
-          <el-table-column prop="createXh" label="平均分" width="85" sortable="custom" />
+          <el-table-column prop="xghBpcr" label="工号" min-width="100" sortable />
+          <el-table-column prop="xmBpcr" label="姓名" min-width="100" sortable="custom" />
+          <el-table-column prop="lx" label="类型" width="80" sortable="custom" />
+          <el-table-column prop="dwmc" label="工作单位" min-width="100" sortable="custom" />
+          <el-table-column prop="realCount" label="已测评人数" width="110" sortable="custom" />
+          <el-table-column prop="planCount" label="应测评人数" width="110" sortable="custom" />
+          <el-table-column prop="ratio" label="测评率" width="85" sortable="custom" />
+          <el-table-column prop="avgScore" label="平均分" width="85" sortable="custom" />
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
               <el-button
@@ -67,9 +67,10 @@
       width="80%"
     >
       <div class="headerDilog">
-        <div><span class="title">问卷名称问卷名称</span></div>
-        <div class="tableTop"><span class="title">姓名姓名</span></div>
-        <!-- <div class="tableTop">{{detailXm}} </div> -->
+        <div><span class="title">{{wjName}}</span></div>
+        <div class="tableTop"></div>
+        <div class="tableLeft"><span class="title">{{form.xmBpcr}}</span></div>
+        <div class="tableRight"><span class="title">{{form.xmBpcr}}</span></div>
         <el-table :data="tableDetails">
           <el-table-column
             fixed="left"
@@ -77,18 +78,18 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="chqj" label="模块" />
-          <el-table-column prop="sqsj" label="题目" />
-          <el-table-column prop="sqsj" label="参与测评人数" />
-          <el-table-column prop="statusChinese" label="分值" />
-          <el-table-column prop="statusChinese" label="单题原始平均分" />
+          <el-table-column prop="tmMk" label="模块" />
+          <el-table-column prop="tmName" label="题目" />
+          <el-table-column prop="cpRs" label="参与测评人数" />
+          <el-table-column prop="avgFz" label="分值" />
+          <el-table-column prop="tmFz" label="单题原始平均分" />
         </el-table>
         <div class="zhu"><span class="title2">注：有效测评分是按照去掉头部和尾部相应百分比的人次计算所得平均分</span></div>
       </div>
       <pagination
           v-show="total > 0"
           class="pagination2"
-          :total="total"
+          :total="totalMx"
           :page.sync="queryParams.pageNum"
           :limit.sync="queryParams.pageSize"
           @pagination="getList"
@@ -114,9 +115,13 @@
 </template>
 <script>
 import {
-  queryFdyBthdList,
   excelFdyBthd,
 } from "@/api/assistantWork/classEvent";
+import {
+  queryCpfxList,
+  queryPjmxList,
+  queryTjmxList,
+} from "@/api/test/stuTest";
 export default {
   name: "BasicInfo",
   // components: { CheckboxCom },
@@ -144,23 +149,19 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        createDwh: [], //工作单位
-        createSfjzfdy: [], //类别
-        createXh: "",
-        createXm: "",
-        hddz: "",
-        hdksrqEnd: "",
-        hdksrqStrat: "",
-        hdzt: "",
-        zzdw: "", //组织单位
+        wjId: this.$route.query.id,
         orderZd: "",
         orderPx: "",
       },
+      wjName: this.$route.query.wjName,
       list: [],
       exportParams: {},
       tableDetails:[],
       detailModal: false,
       detailXm:"",
+      form: {
+        xmBpcr:"",
+      },
     };
   },
   computed: {},
@@ -175,9 +176,7 @@ export default {
   methods: {
     //获取数据列表
     getList() {
-      // console.log(this.select, "select");
-      this.queryParams.createXm = this.select == 1 ? this.searchVal : "";
-      queryFdyBthdList(this.queryParams)
+      queryCpfxList(this.queryParams)
         .then((response) => {
           this.basicInfoList = response.data; // 根据状态码接收数据
           this.total = response.totalCount; //总条数
@@ -197,6 +196,7 @@ export default {
     handleSelectionChange(val) {
       // console.log("val", val);
       this.multipleSelection = val;
+      console.log("row",val);
       this.list = [...val]; // 存储已被勾选的数据
     },
     // 打开导出弹窗
@@ -247,13 +247,25 @@ export default {
     //点击详情
     hadleDetail(row) {
       this.detailModal = true;
-      this.detailXm = row.xm;
-      // this.$router.push({
-      //   path: "/assistantWork/detailClassEvent",
-      //   query: {
-      //     id: row.id,
-      //   },
-      // });
+      this.form.xmBpcr = row.xmBpcr;
+      let data = {
+        xghBpcr: row.xghBpcr,
+        // xghDtr: 1,
+
+        wjId: this.$route.query.id,
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+      };
+      queryPjmxList(data)
+        .then((res) => {
+          this.tableDetails = res.data; // 根据状态码接收数据
+          this.totalMx = res.totalCount; //总条数
+        })
+        .catch((err) => {
+          // this.$message.error(err.errmsg);
+        });
     },
     detailExport() {
       this.detailModal = false;
@@ -291,17 +303,27 @@ export default {
   }
   .headerDilog{
     background: #fff;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 0 20px 0;
     .tableTop{
-      margin-bottom:15px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      .tableLeft{
+        margin-bottom:15px;
+      }
+      .tableRight{
+        // display: flex;
+        align-items: center;
+      }
+      .title{
+        font-weight: 600;
+        font-size: 18px;
+        color: #1f1f1f;
+        line-height: 28px;
+      }
     }
-    .title{
-      font-weight: 600;
-      font-size: 18px;
-      color: #1f1f1f;
-      line-height: 28px;
-    }
+    
     .zhu{
       margin-top: 15px;
     }

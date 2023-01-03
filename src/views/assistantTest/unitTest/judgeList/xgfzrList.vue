@@ -100,6 +100,7 @@
           <el-select
               v-model="moreIform.nd"
               collapse-tags
+              @change="changNd"
               placeholder="请选择"
               size="small"
               style="width: 90px; margin:0 15px 0"
@@ -271,11 +272,14 @@ export default {
   mounted() {
     this.getAllCollege();
     this.getAllGrade();
-    this.handleSearch();
+    // this.handleSearch();
     this.getCode("dmpyccm"); // 培养层次
   },
 
   methods: {
+    changNd(){
+      this.handleSearch();
+    },
     // 导出取消
     handleCancel() {
       this.showExport = false;

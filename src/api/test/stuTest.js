@@ -40,3 +40,29 @@ export function switchXscpLs(query) {
         data: query
     })
   }
+  //辅导员测评结果名单列表
+  export function queryCpfxList(query) {
+    return request({
+        url: '/fdyAnalyze/queryfdyCpResList',
+        method: 'post',
+        data: query
+    })
+  }
+  //学生测评评价明细列表
+  export function queryPjmxList(query) {
+    return request({
+        url: '/fdyAnalyze/queryXsCpWjDetailList',
+        method: 'post',
+        data: query
+    })
+  }
+  //学生测评提交明细列表
+  export function queryTjmxList(query) {
+    return request({
+        url: '/fdyAnalyze/queryXsCpWjList',
+        method: 'post',
+        data: query
+    })
+  }
+  
+  

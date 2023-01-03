@@ -27,7 +27,7 @@ export function queryWjDetail(query) {
 //问卷作答
 export function answerWj(query) {
   return request({
-      url: '/fdycpWj/answerWj',
+      url: '/fdyDwjd/answerWj',
       method: 'post',
       data: query
   })

@@ -173,6 +173,7 @@ export default {
         path: "/assistantTest/stuTest/stuDownTest",
         query: {
           id: item.id,
+          wjName:item.wjName,
         },
       });
     },

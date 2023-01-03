@@ -812,6 +812,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.scopeIncon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+.handleName {
+  font-weight: 400;
+  font-size: 14px;
+  color: #005657;
+  line-height: 28px;
+}
+.handledie {
+  background: url("~@/assets/images/details.png");
+}
 .father_box {
   height: 50px;
   align-items: center;

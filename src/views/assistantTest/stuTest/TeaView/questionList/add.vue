@@ -166,7 +166,7 @@
           </div>
         </div>
       </div>
-      <div class="mt15" v-if="activeName == 'first'">
+      <div class="tableWrap mt15" v-if="activeName == 'first'">
         <el-table
           :data="tableData"
           ref="multipleTable"
@@ -305,24 +305,8 @@
                   size="small"
                   @click="hadleDetail(scope.row)"
                 >
-                  <i
-                    class="handledie"
-                    style="
-                      display: inline-block;
-                      width: 20px;
-                      height: 20px;
-                      vertical-align: middle;
-                    "
-                  ></i>
-                  <span
-                    style="
-                      font-weight: 400;
-                      font-size: 14px;
-                      color: #005657;
-                      line-height: 28px;
-                    "
-                    >详情</span
-                  >
+                  <i class="scopeIncon handledie"></i>
+                  <span class="handleName">详情</span>
                 </el-button>
               </template>
             </el-table-column>
@@ -921,7 +905,21 @@ export default {
 ::v-deep .el-dialog__header {
   border-bottom: 1px solid #eee;
 }
-
+.scopeIncon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+.handleName {
+  font-weight: 400;
+  font-size: 14px;
+  color: #005657;
+  line-height: 28px;
+}
+.handledie {
+  background: url("~@/assets/images/details.png");
+}
 // dialog标题黑色
 ::v-deep .el-dialog__title {
   font-weight: bold;

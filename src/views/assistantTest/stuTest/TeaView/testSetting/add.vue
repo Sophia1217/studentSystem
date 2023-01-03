@@ -159,6 +159,7 @@
               <el-table-column label="选项文字" width="950" align="center">
                 <template slot-scope="scope">
                   <el-form-item
+                    label-width="0"
                     style="margin-bottom: 15px"
                     :prop="`allList.${ind}.tmxxList.${scope.$index}.xxWz`"
                     :rules="rules.xxWz"
@@ -173,6 +174,7 @@
               <el-table-column label="选项分值" align="center">
                 <template slot-scope="scope">
                   <el-form-item
+                    label-width="0"
                     style="margin-bottom: 15px"
                     :prop="`allList.${ind}.tmxxList.${scope.$index}.xxFz`"
                     :rules="rules.xxFz"
@@ -184,6 +186,22 @@
                       placeholder="请输入"
                     ></el-input-number>
                   </el-form-item>
+                </template>
+              </el-table-column>
+              <el-table-column label="上移下移" align="center">
+                <template slot-scope="scope">
+                  <div style="margin-bottom: 20px">
+                    <i
+                      v-if="scope.$index !== 0"
+                      class="icon shangyi"
+                      @click="shangyi(scope.$index, scope.row, ind)"
+                    ></i>
+                    <i
+                      v-if="scope.$index !== item.tmxxList.length - 1"
+                      class="icon xiayi"
+                      @click="xiayi(scope.$index, scope.row, ind)"
+                    ></i>
+                  </div>
                 </template>
               </el-table-column>
               <el-table-column label="添加选项" align="center">
@@ -322,12 +340,35 @@ export default {
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   methods: {
+    shangyi(index, row, ind) {
+      //   if (index > 0) {
+      const upDate = this.formAdd.allList[ind].tmxxList[index - 1];
+      this.formAdd.allList[ind].tmxxList.splice(index - 1, 1);
+      this.formAdd.allList[ind].tmxxList.splice(index, 0, upDate);
+      //   } else {
+      //     alert("已经是第一条，不可上移");
+      //   }
+    },
+    // 下移
+    xiayi(index, row, ind) {
+      //   if (index + 1 === this.formAdd.dwXxWjTmList[ind].tmxxList.length) {
+      //     alert("已经是最后一条，不可下移");
+      //   } else {
+      const downDate = this.formAdd.allList[ind].tmxxList[index + 1];
+      this.formAdd.allList[ind].tmxxList.splice(index + 1, 1);
+      this.formAdd.allList[ind].tmxxList.splice(index, 0, downDate);
+      //   }
+    },
     jia(row, index, ind) {
       var obj = { xxFz: "", xxWz: "" };
       this.formAdd.allList[ind].tmxxList.push(obj);
     },
     jian(row, index, ind) {
-      this.formAdd.allList[ind].tmxxList.splice(index, 1);
+      if (this.formAdd.allList[ind].tmxxList.length > 1) {
+        this.formAdd.allList[ind].tmxxList.splice(index, 1);
+      } else {
+        this.$message.error("至少保留一个题目");
+      }
     },
     copy(item, ind) {
       this.formAdd.allList.push(this.formAdd.allList[ind]);
@@ -482,6 +523,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.xiayi {
+  margin-top: 9px;
+  background: url("~@/assets/images/xiayi.png") no-repeat;
+}
+
+.shangyi {
+  margin-top: 9px;
+  background: url("~@/assets/images/shangyi.png") no-repeat;
+}
 .span1 {
   cursor: pointer;
   color: #fff;

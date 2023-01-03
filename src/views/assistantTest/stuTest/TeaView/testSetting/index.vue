@@ -240,6 +240,7 @@
           <el-table-column label="选项文字" width="750" align="center">
             <template slot-scope="scope">
               <el-form-item
+                label-width="0"
                 style="margin-bottom: 15px"
                 :prop="`tmxxList.${scope.$index}.xxWz`"
                 :rules="rules.xxWz"
@@ -254,6 +255,7 @@
           <el-table-column label="选项分值" align="center">
             <template slot-scope="scope">
               <el-form-item
+                label-width="0"
                 style="margin-bottom: 15px"
                 :prop="`tmxxList.${scope.$index}.xxFz`"
                 :rules="rules.xxFz"
@@ -263,6 +265,22 @@
                   placeholder="请输入"
                 ></el-input>
               </el-form-item>
+            </template>
+          </el-table-column>
+          <el-table-column label="上移下移" align="center">
+            <template slot-scope="scope">
+              <div style="margin-bottom: 20px">
+                <i
+                  v-if="scope.$index !== 0"
+                  class="icon shangyi"
+                  @click="shangyi(scope.$index, scope.row)"
+                ></i>
+                <i
+                  v-if="scope.$index !== detailALL.tmxxList.length - 1"
+                  class="icon xiayi"
+                  @click="xiayi(scope.$index, scope.row)"
+                ></i>
+              </div>
             </template>
           </el-table-column>
           <el-table-column label="添加选项" align="center">
@@ -403,6 +421,16 @@ export default {
     this.handleSearch();
   },
   methods: {
+    shangyi(index, row) {
+      const upDate = this.detailALL.tmxxList[index - 1];
+      this.detailALL.tmxxList.splice(index - 1, 1);
+      this.detailALL.tmxxList.splice(index, 0, upDate);
+    },
+    xiayi(index, row) {
+      const downDate = this.detailALL.tmxxList[index + 1];
+      this.detailALL.tmxxList.splice(index + 1, 1);
+      this.detailALL.tmxxList.splice(index, 0, downDate);
+    },
     checkFormAdd() {
       // 1.校验必填项
       let validForm = false;
@@ -600,6 +628,15 @@ export default {
   height: 20px;
   vertical-align: top;
   margin-right: 5px;
+}
+.xiayi {
+  margin-top: 9px;
+  background: url("~@/assets/images/xiayi.png") no-repeat;
+}
+
+.shangyi {
+  margin-top: 9px;
+  background: url("~@/assets/images/shangyi.png") no-repeat;
 }
 .jia {
   margin-top: 9px;

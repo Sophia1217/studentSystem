@@ -70,8 +70,7 @@
               <div>第{{ ind + 1 }}个模块</div>
               <div class="right_box">
                 <span
-                  class="title whitebtn"
-                  style="margin-right: 15px"
+                  class="title"
                   @click="
                     (item) => {
                       delList(item, ind);
@@ -80,7 +79,7 @@
                   >删除</span
                 >
                 <span
-                  class="title greenbtn"
+                  class="title"
                   @click="
                     (item) => {
                       xinzeng(item, ind);
@@ -109,7 +108,7 @@
                 ></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="2" style="line-height: 40px; font-weight: 700">
+            <el-col :span="2">
               <span>合计：{{ item.total }}分</span>
             </el-col>
             <el-table :data="item.tmxxList">
@@ -468,7 +467,6 @@ export default {
         wjName: this.form.wjName,
         wjYear: this.form.tmYear,
       };
-      //双循环打散整个结构，取出每条列表数据
       for (var x = 0; x < this.formAdd.dwXxWjTmList.length; x++) {
         for (var y = 0; y < this.formAdd.dwXxWjTmList[x].tmxxList.length; y++) {
           data.dwXxWjTmList.push(this.formAdd.dwXxWjTmList[x].tmxxList[y]);

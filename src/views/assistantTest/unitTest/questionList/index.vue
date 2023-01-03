@@ -149,15 +149,14 @@ export default {
     },
     createTest() {
       this.$router.push({
-        path: "/assistantTest/stuTest/questionListAdd",
+        path: "/assistantTest/unitTest/createTest",
       });
     },
     editItem() {
       this.$router.push({
-        path: "/assistantTest/stuTest/questionListEdit",
+        path: "/assistantTest/unitTest/editTest",
       });
     },
-
     kgChange(item) {
       //console.log(item);
       if (item.sfyx == "1") {

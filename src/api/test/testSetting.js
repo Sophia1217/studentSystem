@@ -77,6 +77,19 @@ export function listDetail(query) {
 }
 
 
+//单位鉴定生成问卷
+export function scWj1(query) {
+    return request({
+        url: '/fdycpWj/insertDwXxWj',
+        method: 'post',
+        data: query
+    })
+}
+
+
+
+
+
 
 
 

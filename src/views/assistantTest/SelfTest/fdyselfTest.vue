@@ -65,7 +65,10 @@
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">入职年限</div>
-                  <div class="content">
+                  <div class="content" v-if="isEdit == 1">
+                    <el-input v-model="detailInfoData.fdyZpJbqkRes.rznx" />
+                  </div>
+                  <div class="content" v-else>
                     {{ detailInfoData.fdyZpJbqkRes.rznx }}
                   </div>
                 </div>

@@ -1,32 +1,74 @@
 <template>
   <div class="testDetail">
     <div class="testTop">
-      <div class="bigtitle">问卷题目{{ data }}</div>
-      <div class="midtitle">问卷导语{{ data }}</div>
-      <div class="smalltitle">总题数：{{ data }} 合计：{{ data }}</div>
-    </div>
-    <div class="item">
-      <div class="title">
-        <div class="titleRight">模块</div>
-        <div class="titleLeft">题数：{{ data }} 合计：{{ data }}</div>
+      <div class="bigtitle">{{ Wjjbxx.wjName }}</div>
+      <div class="midtitle">{{ Wjjbxx.wjDy }}</div>
+      <div class="smalltitle">
+        总题数：{{ Wjjbxx.wjCount }} 合计：{{ Wjjbxx.wjFz }}
       </div>
-      <div class="content">
-        <div class="question">题目：{{ data }}</div>
-        <div class="answer">
-          <el-radio-group v-model="radio">
-            <el-radio label="1">Option 1</el-radio>
-            <el-radio label="2">Option 2</el-radio>
-          </el-radio-group>
+    </div>
+    <el-form ref="form" :model="form" :rules="rules">
+      <div class="item" v-for="(mk, index) in form.fdycpMkTmResList">
+        <div class="title">
+          <div class="titleRight">模块{{ mk.mk }}</div>
+          <div class="titleLeft">题数：{{ mk.yxts }} 合计：{{ mk.hj }}</div>
+        </div>
+        <div class="content" v-for="(tm, num) in mk.fdycpTmJgResList">
+          <div class="question">
+            题目：{{ tm.fdycpTm.tmName }}({{ tm.fdycpTm.tmFz }}分)
+          </div>
+          <div class="answer" v-if="tm.fdycpTm.tmType == '选择题'">
+            <el-form-item
+              :prop="
+                'fdycpMkTmResList[' +
+                index +
+                '].fdycpTmJgResList[' +
+                num +
+                '].fdycpTmxxjg.xxPx'
+              "
+              :rules="rules.xxPx"
+            >
+              <el-radio-group v-model="tm.fdycpTmxxjg.xxPx">
+                <el-radio
+                  v-for="xx in tm.fdycpTmxxList"
+                  :key="xx.xxPx"
+                  :label="xx.xxPx"
+                  :disabled="isFinish == '1'"
+                  >{{ xx.xxWz }}</el-radio
+                >
+              </el-radio-group>
+            </el-form-item>
+          </div>
+          <div class="answer" v-if="tm.fdycpTm.tmType == '文字题'">
+            <el-form-item
+              :prop="
+                'fdycpMkTmResList[' +
+                index +
+                '].fdycpTmJgResList[' +
+                num +
+                '].fdycpTmxxjg.xxFz'
+              "
+              :rules="rules.xxFz"
+            >
+              <el-input
+                type="textarea"
+                :rows="5"
+                maxlength="500"
+                v-model="tm.fdycpTmxxjg.xxFz"
+                :readonly="isFinish == '1'"
+              />
+            </el-form-item>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="editBottom">
+    </el-form>
+    <div class="editBottom" v-show="isFinish !== '1'">
       <div class="btn confirm" @click="handleUpdata">提交</div>
     </div>
   </div>
 </template>
 <script>
-import { addUser, updateUser } from "@/api/system/user";
+import { getWjXq, answerWj } from "@/api/test/testDetail";
 import { getToken } from "@/utils/auth";
 export default {
   name: "testList",
@@ -35,21 +77,84 @@ export default {
   data() {
     return {
       data: "1111",
-      isFinish: "1",
+      isFinish: this.$route.query.sfwc,
       radio: [],
+      Wjjbxx: {},
+      form: { fdycpMkTmResList: [] },
+      rules: {
+        xxFz: [
+          {
+            required: true,
+            message: "作答不能为空",
+            trigger: "blur",
+          },
+        ],
+        xxPx: [
+          {
+            required: true,
+            message: "作答不能为空",
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   computed: {},
   watch: {},
-  created() {},
-  mounted() {},
+
+  mounted() {
+    this.getXq();
+  },
   created() {
     this.authConfirm(this.$route.path.split("/")[2]);
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
 
   methods: {
-    handleUpdata() {},
+    // 表单校验
+    checkForm() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.form.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
+    getXq() {
+      let data = {
+        id: this.$route.query.id,
+        xghBpcr: this.$route.query.xghBpcr,
+        xghDtr: this.$store.getters.userId,
+      };
+      getWjXq(data).then((res) => {
+        this.Wjjbxx = res.data.fdycpWj;
+        this.form.fdycpMkTmResList = res.data.fdycpMkTmResList;
+        //console.log(this.fdycpMkTmResList);
+      });
+    },
+    handleUpdata() {
+      if (!this.checkForm()) {
+        this.$message.error("请作答完试卷！");
+        return;
+      } else {
+        let data = {
+          wjCount: this.Wjjbxx.wjCount,
+          wjFz: this.Wjjbxx.wjFz,
+          wjId: this.$route.query.id,
+          wjLy: this.Wjjbxx.wjLy,
+          xghBpcr: this.$route.query.xghBpcr,
+          xghDtr: this.$store.getters.userId,
+        };
+        this.$set(this.form, "fdycpWjjg", data);
+        console.log(this.form);
+        answerWj(this.form).then((res) => {
+          this.$router.go(-1);
+        });
+      }
+    },
   },
 };
 </script>
@@ -83,7 +188,6 @@ export default {
   //background: #f5f5f5;
   .item {
     background: #ffffff;
-    height: 150px;
     padding: 20px;
     .title {
       display: flex;

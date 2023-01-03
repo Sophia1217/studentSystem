@@ -15,6 +15,7 @@
                 placeholder="请输入问卷名称"
                 class="inputSelect"
                 clearable
+                maxlength="50"
                 style="width: 80%"
               >
               </el-input>
@@ -29,6 +30,7 @@
                 style="width: 80%"
                 v-model="form.wjDy"
                 placeholder="请输入问卷导语"
+                maxlength="50"
                 class="inputSelect"
                 clearable
               >
@@ -208,12 +210,11 @@
       </div>
       <div class="mt15" v-if="activeName == 'second'">
         <el-table
+          row-key="id"
           :data="tableData1"
           ref="multipleTable"
           @selection-change="handleSelectionChange"
           style="width: 100%"
-          :default-sort="{ prop: 'xh', order: 'ascending' }"
-          @sort-change="changeTableSort"
         >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
@@ -270,7 +271,7 @@
       width="55%"
       :close-on-click-modal="false"
     >
-      <div class="timuStyle" style="">问卷题目： {{ form.wjName }}</div>
+      <div class="timuStyle" style="">{{ form.wjName }}</div>
       <div class="dyStyle">问卷导语：{{ form.wjDy }}</div>
       <div class="dyStyle">
         总题数：{{ tableData1.length
@@ -304,8 +305,24 @@
                   size="small"
                   @click="hadleDetail(scope.row)"
                 >
-                  <i class="scopeIncon handledie"></i>
-                  <span class="handleName">详情</span>
+                  <i
+                    class="handledie"
+                    style="
+                      display: inline-block;
+                      width: 20px;
+                      height: 20px;
+                      vertical-align: middle;
+                    "
+                  ></i>
+                  <span
+                    style="
+                      font-weight: 400;
+                      font-size: 14px;
+                      color: #005657;
+                      line-height: 28px;
+                    "
+                    >详情</span
+                  >
                 </el-button>
               </template>
             </el-table-column>
@@ -376,6 +393,7 @@ import CheckboxCom from "../../../../components/checkboxCom";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { queryList, scWj, getDetail, mkQuery } from "@/api/test/testSetting";
 import { getGrade } from "@/api/class/maintenanceClass";
+import Sortable from "sortablejs";
 export default {
   components: { CheckboxCom },
   data() {
@@ -473,6 +491,7 @@ export default {
     };
   },
   mounted() {
+    this.rowDrop();
     this.mkQuery1();
     this.getCode("dmtmszmk");
     this.getAllGrade(); //年级
@@ -485,6 +504,35 @@ export default {
     this.handleSearch();
   },
   methods: {
+    rowDrop() {
+      // // 要侦听拖拽响应的DOM对象
+      let bodyNode = document.querySelector(".el-table__body-wrapper tbody");
+      new Sortable(bodyNode, {
+        sort: true, // 是否允许列内部排序，如果为false当有多个排序组时,多个组之间可以拖拽，本身不能拖拽
+        delay: 0, // 按下鼠标后多久可以拖拽 1000表示1秒
+        animation: 250, // 动画效果
+        onEnd: (evt) => {
+          const targetRow = this.tableData1.splice(evt.oldIndex, 1)[0];
+          this.tableData1.splice(evt.newIndex, 0, targetRow);
+          // const targetRow1 = this.previewArr.splice(evt.oldIndex, 1)[0];
+          // this.previewArr.splice(evt.newIndex, 0, targetRow1);
+          // 自己的业务逻辑部分
+          for (let index in this.tableData1) {
+            // console.log(" this.tableData1[index]", this.tableData1[index]);
+            // this.tableData1[index].sort = parseInt(index) + 1;
+            // this.tableData1[index].queue = parseInt(index) + 1;
+          }
+        },
+        // onEnd: function ({ newIndex, oldIndex }) {
+        //   console.log("拖动了行，当前序号：" + newIndex);
+        //   console.log("替换了行，当前序号：" + oldIndex);
+        //   [_this.tableData1[oldIndex], _this.tableData1[newIndex]] = [
+        //     _this.tableData1[newIndex],
+        //     _this.tableData1[oldIndex],
+        //   ];
+        // },
+      });
+    },
     openModal() {
       if (!this.checkForm()) {
         this.$message.error("请完善表单相关信息！");
@@ -645,6 +693,9 @@ export default {
         this.$message.success("问卷已生成");
         this.preModal = false;
         this.scModal = false;
+        this.$router.push({
+          path: "/assistantTest/stuTest/questionList",
+        });
       });
     },
     jiaru() {

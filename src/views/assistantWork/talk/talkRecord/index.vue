@@ -112,7 +112,7 @@
       <div class="mt15">
         <el-table
           :data="tableData"
-          ref="multipleTable"
+          ref="dragTable"
           style="width: 100%"
           @selection-change="handleSelectionChange"
           :default-sort="{ prop: 'date', order: 'descending' }"
@@ -271,6 +271,7 @@ export default {
       title: "",
       dateArray: [],
       tableData: [],
+      AUTHFLAG: false,
       queryParams: {
         pageNum: 1,
         pageSize: 10,

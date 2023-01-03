@@ -14,6 +14,7 @@
                 v-model="form.wjName"
                 placeholder="请输入问卷名称"
                 class="inputSelect"
+                maxlength="50"
                 clearable
                 style="width: 80%"
               >
@@ -28,6 +29,7 @@
               <el-input
                 style="width: 80%"
                 v-model="form.wjDy"
+                maxlength="50"
                 placeholder="请输入问卷导语"
                 class="inputSelect"
                 clearable
@@ -38,7 +40,7 @@
         </el-row>
 
         <el-row :gutter="20">
-          <el-col :span="5">
+          <el-col :span="6">
             <el-form-item
               label="适用年度："
               prop="tmYear"
@@ -77,7 +79,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="5">
+          <el-col :span="6">
             <el-form-item label="面向年级：" prop="wjNj" :rules="rules.wjNj">
               <el-select v-model="form.wjNj" placeholder="请选择" clearable>
                 <el-option
@@ -211,7 +213,6 @@
           ref="multipleTable"
           @selection-change="handleSelectionChange"
           style="width: 100%"
-          @sort-change="changeTableSort1"
         >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
@@ -229,7 +230,6 @@
               min-width="100"
               :width="item.width"
               :show-overflow-tooltip="true"
-              sortable="custom"
             ></el-table-column>
           </div>
           <el-table-column fixed="right" label="操作" width="140">
@@ -285,7 +285,7 @@
       width="55%"
       :close-on-click-modal="false"
     >
-      <div class="timuStyle" style="">问卷题目： {{ form.wjName }}</div>
+      <div class="timuStyle" style="">{{ form.wjName }}</div>
       <div class="dyStyle">问卷导语：{{ form.wjDy }}</div>
       <div class="dyStyle">
         总题数：{{ tableData1.length
@@ -388,6 +388,7 @@ export default {
   components: { CheckboxCom },
   data() {
     return {
+      scModal: false,
       rules: {
         wjName: [
           {
@@ -655,6 +656,9 @@ export default {
         this.$message.success("问卷已生成");
         this.preModal = false;
         this.scModal = false;
+        this.$router.push({
+          path: "/assistantTest/stuTest/questionList",
+        });
       });
     },
     jiaru() {
@@ -801,7 +805,7 @@ export default {
     changeTableSort1(column) {
       this.queryParams1.orderZd = column.prop;
       this.queryParams1.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
-      this.listDetail();
+      this.yjr();
     },
   },
 };

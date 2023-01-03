@@ -157,12 +157,15 @@ export default {
     },
     createTest() {
       this.$router.push({
-        path: "/assistantTest/stuTest/questionListAdd",
+        path: "/assistantTest/ColleagueTest/createTest",
       });
     },
-    editItem() {
+    editItem(item) {
       this.$router.push({
-        path: "/assistantTest/stuTest/questionListEdit",
+        path: "/assistantTest/ColleagueTest/editTest",
+        query: {
+          id: item.id,
+        },
       });
     },
     downTest() {

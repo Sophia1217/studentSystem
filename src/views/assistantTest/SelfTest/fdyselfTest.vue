@@ -66,7 +66,10 @@
                 <div class="wrap">
                   <div class="title">入职年限</div>
                   <div class="content" v-if="isEdit == 1">
-                    <el-input v-model="detailInfoData.fdyZpJbqkRes.rznx" />
+                    <el-input
+                      v-model="detailInfoData.fdyZpJbqkRes.rznx"
+                      maxlength="500"
+                    />
                   </div>
                   <div class="content" v-else>
                     {{ detailInfoData.fdyZpJbqkRes.rznx }}
@@ -131,7 +134,10 @@
                 <div class="wrap">
                   <div class="title">学工兼职</div>
                   <div class="content" v-if="isEdit == 1">
-                    <el-input v-model="detailInfoData.fdyZpJbqkRes.xgjz" />
+                    <el-input
+                      v-model="detailInfoData.fdyZpJbqkRes.xgjz"
+                      maxlength="500"
+                    />
                   </div>
                   <div class="content" v-else>
                     {{ detailInfoData.fdyZpJbqkRes.xgjz }}
@@ -144,7 +150,10 @@
                 <div class="wrap">
                   <div class="title">其他兼职</div>
                   <div class="content" v-if="isEdit == 1">
-                    <el-input v-model="detailInfoData.fdyZpJbqkRes.qtjz" />
+                    <el-input
+                      v-model="detailInfoData.fdyZpJbqkRes.qtjz"
+                      maxlength="500"
+                    />
                   </div>
                   <div class="content" v-else>
                     {{ detailInfoData.fdyZpJbqkRes.qtjz }}
@@ -196,6 +205,8 @@
                 <el-input
                   style="width: 100px"
                   v-model="detailInfoData.fdyZpJbqkRes.cqcs"
+                  oninput="this.value=this.value.replace(/[^\d]/g,'')"
+                  placeholder="请输入数字"
                 /><span>次</span>
               </div>
               <div class="cishu" v-else>
@@ -215,6 +226,8 @@
                 <el-input
                   style="width: 100px"
                   v-model="detailInfoData.fdyZpJbqkRes.bthdcs"
+                  placeholder="请输入数字"
+                  oninput="this.value=this.value.replace(/[^\d]/g,'')"
                 /><span>次</span>
               </div>
               <div class="cishu" v-else>
@@ -748,7 +761,9 @@ export default {
       this.$set(this.detailInfoData, "nd", this.nd);
       let data = this.detailInfoData;
       updateFdyZpDetail(data)
-        .then((res) => {})
+        .then((res) => {
+          this.$message.success("保存成功");
+        })
         .catch((err) => {});
     },
   },

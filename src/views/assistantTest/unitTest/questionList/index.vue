@@ -12,9 +12,6 @@
       <div class="title">
         <div class="titleRight">{{ item.wjName }}</div>
         <div class="titleLeft">
-          <div class="btns borderWhite" @click="downTest">
-            <span class="title2">分析&amp;下载</span>
-          </div>
           <div class="btns borderWhite">
             <span class="title2">预览</span>
           </div>
@@ -30,12 +27,7 @@
         </div>
       </div>
       <div class="contentAll">
-        <div class="contentRight">
-          适用年度：{{ item.wjYear }} 适用培养层次：{{
-            item.wjPycc
-          }}
-          面向年级：{{ item.wjNj }}
-        </div>
+        <div class="contentRight">适用年度：{{ item.wjYear }}</div>
         <div class="contentLeft">
           <span>问卷起始时间:</span>
 
@@ -165,17 +157,7 @@ export default {
         path: "/assistantTest/stuTest/questionListEdit",
       });
     },
-    downTest() {
-      //应该有row
-      this.$router.push({
-        path: "/assistantTest/stuTest/stuDownTest",
-        // query: {
-        //   id: row.id,
-        // },
-      });
-    },
-    kgChange() {},
-    timeChange() {},
+
     kgChange(item) {
       //console.log(item);
       if (item.sfyx == "1") {

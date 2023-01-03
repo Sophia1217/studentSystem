@@ -678,7 +678,7 @@ export default {
       this.queryParams.lxs = this.category.choose;
       this.queryParams.pyccms = this.pyccOps.choose;
       this.queryParams.sfdbList = this.status.choose;
-
+      this.queryParams.njs = this.nj;
       this.getList(this.queryParams);
     },
     changeTableSort(column) {

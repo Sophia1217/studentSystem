@@ -114,6 +114,16 @@
         >
       </span>
     </el-dialog>
+    <!-- 评价明细导出确认对话框 -->
+    <el-dialog title="导出提示" :visible.sync="showMxExport" width="30%">
+      <span>确认导出？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleMxCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="handleMxConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -123,6 +133,8 @@ import {
 import {
   queryCpfxList,
   queryPjmxList,
+  exportCpResList,
+  exportPjmxlList,
 } from "@/api/test/stuTest";
 export default {
   name: "BasicInfo",
@@ -148,6 +160,7 @@ export default {
       basicInfoList: [],
       multipleSelection: [],
       showExport: false,
+      showMxExport: false,
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -158,8 +171,7 @@ export default {
       wjName: this.$route.query.wjName,
       // wjFz: this.$route.query.wjFz,
       // wjCount: this.$route.queyt.wjCount,
-      list: [],
-      exportParams: {},
+      expArr: [],
       tableDetails:[],
       detailModal: false,
       detailXm:"",
@@ -184,7 +196,6 @@ export default {
         .then((response) => {
           this.basicInfoList = response.data; // 根据状态码接收数据
           this.total = response.totalCount; //总条数
-          // this.exportParams = this.queryParams;
         })
         .catch((err) => {
           // this.$message.error(err.errmsg);
@@ -201,7 +212,7 @@ export default {
       // console.log("val", val);
       this.multipleSelection = val;
       console.log("row",val);
-      this.list = [...val]; // 存储已被勾选的数据
+      this.expArr = this.multipleSelection.map((item) => item.xghBpcr);
     },
     // 打开导出弹窗
     handleExport() {
@@ -215,19 +226,18 @@ export default {
     // 导出确认
     handleConfirm() {
       this.showExport = false;
-      var arr = this.list.length > 0 ? this.list.map((item) => item.id) : [];
       let data = {
         wjId: this.$route.query.id,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
-        ids: arr,
+        idList: this.expArr,
       };
 
-      excelFdyBthd(data)
+      exportCpResList(data)
         .then((res) => {
-          this.downloadFn(res, "活动记录导出", "xlsx");
+          this.downloadFn(res, "学生测评分析&下载列表导出", "xlsx");
           if(this.$store.getters.excelcount > 0){
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -260,13 +270,41 @@ export default {
           // this.$message.error(err.errmsg);
         });
     },
-    detailExport() {
-      this.detailModal = false;
-      //评价明细导出
-    },
     detailConfirm(){
       this.detailModal = false;
-      this.multipleSelection = [];
+    },
+    //评价明细导出
+    detailExport() {
+      this.showMxExport = true;
+      
+    },
+    // 导出取消
+    handleMxCancel() {
+      this.showMxExport = false;
+    },
+    // 导出确认
+    handleMxConfirm() {
+      this.showMxExport = false;
+      let data = {
+        wjId: this.$route.query.id,
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+        // idList: this.expArr,
+      };
+
+      exportPjmxlList(data)
+        .then((res) => {
+          this.downloadFn(res, "学生测评评价明细列表导出", "xlsx");
+          if(this.$store.getters.excelcount > 0){
+            this.$message.success(
+              `已成功导出${this.$store.getters.excelcount}条数据`
+            );
+          }
+          
+        })
+        .catch((err) => {});
     },
     //提交明细
     handleTjmx() {

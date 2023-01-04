@@ -64,5 +64,34 @@ export function switchXscpLs(query) {
         data: query
     })
   }
+  //辅导员测评结果名单列表导出
+  export function exportCpResList(query) {
+    return request({
+      url: '/fdyAnalyze/queryfdyCpResListExport',
+      method: 'post',
+      responseType:'blob',
+      data: query
+    })
+  }
+  //学生测评评价明细列表导出
+  export function exportPjmxlList(query) {
+    return request({
+      url: '/fdyAnalyze/queryXsCpWjDetailListExport',
+      method: 'post',
+      responseType:'blob',
+      data: query
+    })
+  }
+  //学生测评提交明细列表导出
+  export function exportTjmxList(query) {
+    return request({
+      url: '/fdyAnalyze/queryXsCpWjListExport',
+      method: 'post',
+      responseType:'blob',
+      data: query
+    })
+  }
   
   
+
+

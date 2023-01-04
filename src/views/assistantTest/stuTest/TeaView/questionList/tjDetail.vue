@@ -64,6 +64,7 @@ import {
 } from "@/api/assistantWork/classEvent";
 import {
   queryTjmxList,
+  exportTjmxList,
 } from "@/api/test/stuTest";
 export default {
   name: "BasicInfo",
@@ -94,8 +95,7 @@ export default {
         orderZd: "",
         orderPx: "",
       },
-      list: [],
-      exportParams: {},
+      expArr: [],
       wjName: this.$route.query.wjName,
     };
   },
@@ -114,7 +114,6 @@ export default {
         .then((response) => {
           this.basicInfoList = response.data; // 根据状态码接收数据
           this.total = response.totalCount; //总条数
-          // this.exportParams = this.queryParams;
         })
         .catch((err) => {
           // this.$message.error(err.errmsg);
@@ -130,12 +129,12 @@ export default {
     handleSelectionChange(val) {
       // console.log("val", val);
       this.multipleSelection = val;
-      this.list = [...val]; // 存储已被勾选的数据
+      this.expArr = this.multipleSelection.map((item) => item.id);
     },
     // 打开导出弹窗
     handleExport() {
       this.showExport = true;
-      this.title = "导出";
+      this.title = "导出提示";
     },
     // 导出取消
     handleCancel() {
@@ -144,27 +143,18 @@ export default {
     // 导出确认
     handleConfirm() {
       this.showExport = false;
-      var arr = this.list.length > 0 ? this.list.map((item) => item.id) : [];
       let data = {
-        hdksrqStrat: this.queryParams.hdksrqStrat,
-        hdksrqEnd: this.queryParams.hdksrqEnd,
-        createXm: this.queryParams.createXm,
-        createXh: this.queryParams.createXh,
-        hddz: this.queryParams.hddz,
-        hdzt: this.queryParams.hdzt,
-        zzdw: this.queryParams.zzdw,
+        wjId: this.$route.query.id,
         pageNum: this.queryParams.pageNum,
-        createDwh: this.queryParams.createDwh,
-        createSfjzfdy: this.queryParams.createSfjzfdy,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
-        ids: arr,
+        idList: this.expArr,
       };
 
-      excelFdyBthd(data)
+        exportTjmxList(data)
         .then((res) => {
-          this.downloadFn(res, "活动记录导出", "xlsx");
+          this.downloadFn(res, "学生测评提交明细列表导出", "xlsx");
           if(this.$store.getters.excelcount > 0){
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`

@@ -169,15 +169,19 @@ export default {
       });
     },
     downTest(item) {
-      this.$router.push({
-        path: "/assistantTest/stuTest/stuDownTest",
-        query: {
-          id: item.id,
-          wjName: item.wjName,
-          wjFz: item.wjFz,
-          wjCount: item.wjCount,
-        },
-      });
+      if(item.sfyx == 1){
+        this.$router.push({
+          path: "/assistantTest/stuTest/stuDownTest",
+          query: {
+            id: item.id,
+            wjName:item.wjName,
+            wjFz:item.wjFz,
+            wjCount:item.wjCount,
+          },
+        });
+      } else{
+        this.$message.warning("请在问卷结束后查看分析结果!")
+      };
     },
     yulan(item) {
       this.$router.push({

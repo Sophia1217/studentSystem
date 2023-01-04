@@ -12,7 +12,7 @@
       <div class="title">
         <div class="titleRight">{{ item.wjName }}</div>
         <div class="titleLeft">
-          <div class="btns borderWhite" @click="downTest">
+          <div class="btns borderWhite" @click="downTest(item)">
             <span class="title2">分析&amp;下载</span>
           </div>
           <div class="btns borderWhite" @click="yulan(item)">
@@ -168,14 +168,20 @@ export default {
         },
       });
     },
-    downTest() {
-      //应该有row
-      this.$router.push({
-        path: "/assistantTest/stuTest/stuDownTest",
-        // query: {
-        //   id: row.id,
-        // },
-      });
+    downTest(item) {
+      if(item.sfyx == 1){//开关为关
+        this.$router.push({
+          path: "/assistantTest/ColleagueTest/mutualDownTest",
+          query: {
+            id: item.id,
+            wjName:item.wjName,
+            wjFz:item.wjFz,
+            wjCount:item.wjCount,
+          },
+        });
+      } else{
+        this.$message.warning("请在问卷结束后查看分析结果!")
+      };
     },
     yulan(item) {
       this.$router.push({

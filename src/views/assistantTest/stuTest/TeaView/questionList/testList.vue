@@ -15,7 +15,7 @@
           <div class="btns borderWhite" @click="downTest(item)">
             <span class="title2">分析&amp;下载</span>
           </div>
-          <div class="btns borderWhite">
+          <div class="btns borderWhite" @click="yulan(item)">
             <span class="title2">预览</span>
           </div>
           <div class="btns borderWhite" @click="copyItem(item)">
@@ -173,14 +173,22 @@ export default {
         path: "/assistantTest/stuTest/stuDownTest",
         query: {
           id: item.id,
-          wjName:item.wjName,
-          wjFz:item.wjFz,
-          wjCount:item.wjCount,
+          wjName: item.wjName,
+          wjFz: item.wjFz,
+          wjCount: item.wjCount,
         },
       });
     },
-    kgChange() {},
-    timeChange() {},
+    yulan(item) {
+      this.$router.push({
+        path: "/assistantTest/ColleagueTest/mutualDetail",
+        query: {
+          id: item.id,
+          sfwc: "1",
+          xghBpcr: "",
+        },
+      });
+    },
     kgChange(item) {
       //console.log(item);
       if (item.sfyx == "1") {

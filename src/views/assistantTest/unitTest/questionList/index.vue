@@ -12,7 +12,7 @@
       <div class="title">
         <div class="titleRight">{{ item.wjName }}</div>
         <div class="titleLeft">
-          <div class="btns borderWhite">
+          <div class="btns borderWhite" @click="yulan(item)">
             <span class="title2">预览</span>
           </div>
           <div class="btns borderWhite" @click="copyItem(item)">
@@ -155,6 +155,16 @@ export default {
     editItem() {
       this.$router.push({
         path: "/assistantTest/unitTest/editTest",
+      });
+    },
+    yulan(item) {
+      this.$router.push({
+        path: "/assistantTest/ColleagueTest/mutualDetail",
+        query: {
+          id: item.id,
+          sfwc: "1",
+          xghBpcr: "",
+        },
       });
     },
     kgChange(item) {

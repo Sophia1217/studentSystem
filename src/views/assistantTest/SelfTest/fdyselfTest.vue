@@ -636,7 +636,7 @@ export default {
         if (response.errcode == "00") {
           this.njOptions = response.data;
           console.log(response);
-          this.nd = this.njOptions[0];
+          this.nd = this.njOptions[1];
         }
       });
       this.getDetail();

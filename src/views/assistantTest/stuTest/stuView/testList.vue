@@ -73,6 +73,8 @@ export default {
     getList() {
       let data = {
         xh: this.$store.getters.userId,
+        orderPx: "",
+        orderZd: "",
       };
       queryList(data).then((res) => {
         //console.log(res);

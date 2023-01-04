@@ -551,7 +551,7 @@ export default {
         // 获取年级列表数据
         if (response.errcode == "00") {
           this.njOptions = response.data.rows;
-          this.ndval = this.njOptions[0];
+          this.ndval = this.njOptions[1];
           insertKgsz({ nd: this.ndval }).then((res) => {});
         }
       });

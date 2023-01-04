@@ -48,21 +48,9 @@
         </div>
       </div>
     </div>
-    <el-dialog title="确认提交提示" :visible.sync="showSubmit" width="30%">
-      <span>确认提交？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="handleConfirm"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
   </div>
 </template>
 <script>
-import {
-  excelFdyBthd,
-} from "@/api/assistantWork/classEvent";
 import { queryWjDetail } from "@/api/test/unitTest";
 export default {
   name: "BasicInfo",
@@ -70,7 +58,6 @@ export default {
   data() {
     return {
       AUTHFLAG: false,
-      showSubmit:false,
       rules: {
         // ghContent: [
         //   { required: true, message: "工号不能为空", trigger: "blur" },
@@ -119,26 +106,6 @@ export default {
         .catch((err) => {
           // this.$message.error(err.errmsg);
         });
-    },
-    // 打开提交弹窗
-    handleSubmit() {
-      this.showSubmit = true;
-    },
-    // 提交取消
-    handleCancel() {
-      this.showSubmit = false;
-    },
-    // 提交确认
-    handleConfirm() {
-      this.showSubmit = false;
-      let data = {
-        ids: "2",
-      };
-      excelFdyBthd(data)
-        .then((res) => {
-          this.$message.success("提交成功") 
-        })
-        .catch((err) => {});
     },
   },
 };

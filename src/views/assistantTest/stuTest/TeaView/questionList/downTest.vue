@@ -13,7 +13,7 @@
           <div class="btns borderGreen" @click="handleExport">
             <i class="icon orangeIcon" /><span class="title">导出</span>
           </div>
-          <div class="btns fullGreen" @click="handleNew" v-show="AUTHFLAG">
+          <div class="btns fullGreen" @click="handleTjmx" v-show="AUTHFLAG">
             <span class="title1">提交明细</span>
           </div>
         </div>
@@ -68,9 +68,11 @@
     >
       <div class="headerDilog">
         <div><span class="title">{{wjName}}</span></div>
-        <div class="tableTop"></div>
-        <div class="tableLeft"><span class="title">{{form.xmBpcr}}</span></div>
-        <div class="tableRight"><span class="title">{{form.xmBpcr}}</span></div>
+        <div class="tableTop">
+          <!-- <div class="tableLeft"><span class="title">{{form.xmBpcr}}</span></div>
+          <div class="tableRight"><span class="title">题数：{{wjCount}}
+            <span v-html="'\u3000'"></span> 总分：{{wjFz}}分</span></div> -->
+        </div>
         <el-table :data="tableDetails">
           <el-table-column
             fixed="left"
@@ -84,7 +86,8 @@
           <el-table-column prop="avgFz" label="分值" />
           <el-table-column prop="tmFz" label="单题原始平均分" />
         </el-table>
-        <div class="zhu"><span class="title2">注：有效测评分是按照去掉头部和尾部相应百分比的人次计算所得平均分</span></div>
+        <div class="zhu"><span class="title2">
+          注：有效测评分是按照去掉头部和尾部相应百分比的人次计算所得平均分</span></div>
       </div>
       <pagination
           v-show="total > 0"
@@ -92,7 +95,7 @@
           :total="totalMx"
           :page.sync="queryParams.pageNum"
           :limit.sync="queryParams.pageSize"
-          @pagination="getList"
+          @pagination="hadleDetail"
         />
       <span slot="footer" class="dialog-footer">
           <el-button @click="detailExport">导 出</el-button>
@@ -120,7 +123,6 @@ import {
 import {
   queryCpfxList,
   queryPjmxList,
-  queryTjmxList,
 } from "@/api/test/stuTest";
 export default {
   name: "BasicInfo",
@@ -154,6 +156,8 @@ export default {
         orderPx: "",
       },
       wjName: this.$route.query.wjName,
+      // wjFz: this.$route.query.wjFz,
+      // wjCount: this.$route.queyt.wjCount,
       list: [],
       exportParams: {},
       tableDetails:[],
@@ -213,24 +217,13 @@ export default {
       this.showExport = false;
       var arr = this.list.length > 0 ? this.list.map((item) => item.id) : [];
       let data = {
-        hdksrqStrat: this.queryParams.hdksrqStrat,
-        hdksrqEnd: this.queryParams.hdksrqEnd,
-        createXm: this.queryParams.createXm,
-        createXh: this.queryParams.createXh,
-        hddz: this.queryParams.hddz,
-        hdzt: this.queryParams.hdzt,
-        zzdw: this.queryParams.zzdw,
+        wjId: this.$route.query.id,
         pageNum: this.queryParams.pageNum,
-        createDwh: this.queryParams.createDwh,
-        createSfjzfdy: this.queryParams.createSfjzfdy,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
         ids: arr,
       };
-      // var exportParams = this.queryParams;
-      // console.log(this.queryParams);
-      // this.$set(this.exportParams,"ids",arr)
 
       excelFdyBthd(data)
         .then((res) => {
@@ -276,10 +269,13 @@ export default {
       this.multipleSelection = [];
     },
     //提交明细
-    handleNew() {
+    handleTjmx() {
       this.$router.push({
         path: "/assistantTest/stuTest/stuTjDetail",
-        // path: "/assistantWork/addClassEvent",
+        query: {
+          id: this.$route.query.id,
+          wjName: this.$route.query.wjName,
+        },
       });
     },
     searchClick(){
@@ -304,23 +300,23 @@ export default {
   .headerDilog{
     background: #fff;
     padding: 0 20px 0;
+    .title{
+        font-weight: 600;
+        font-size: 18px;
+        color: #1f1f1f;
+        line-height: 28px;
+    }
     .tableTop{
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
       .tableLeft{
+        display: flex;
         margin-bottom:15px;
       }
       .tableRight{
-        // display: flex;
-        align-items: center;
-      }
-      .title{
-        font-weight: 600;
-        font-size: 18px;
-        color: #1f1f1f;
-        line-height: 28px;
+        display: flex;
       }
     }
     

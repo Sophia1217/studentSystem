@@ -174,6 +174,8 @@ export default {
         query: {
           id: item.id,
           wjName:item.wjName,
+          wjFz:item.wjFz,
+          wjCount:item.wjCount,
         },
       });
     },

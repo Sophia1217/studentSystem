@@ -415,6 +415,15 @@
         >
       </span>
     </el-dialog>
+    <el-dialog title="提示" :visible.sync="showEwm" width="30%">
+      <span>此模块暂未开放...</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="zcCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="zcConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -505,6 +514,7 @@ export default {
       options: [],
       dqXnxq: [],
       isEdit: 1,
+      showEwm: false,
       rules: {
         zcxqm: [
           { required: true, message: "注册学期不能为空", trigger: "change" },
@@ -672,7 +682,13 @@ export default {
     },
     //注册
     handleZc() {
-      
+      this.showEwm = true;
+    },
+    zcCancel(){
+      this.showEwm = false;
+    },
+    zcConfirm(){
+      this.showEwm = false;
     },
     getAllCollege() {
       getCollege()

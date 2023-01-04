@@ -2,7 +2,7 @@
   <div class="basicInfo">
     <div class="searchWrap">
       <div class="headerTop1">
-        <span class="title">问卷名称问卷名称</span>
+        <span class="title">{{wjName}}</span>
       </div>
     </div>
 
@@ -26,15 +26,15 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
-          <el-table-column prop="hdzt" label="学号" min-width="100" sortable />
-          <el-table-column prop="hddz" label="姓名" min-width="100" sortable="custom" />
-          <el-table-column prop="hdksrq" label="培养层次" min-width="100" sortable="custom" />
-          <el-table-column prop="zzdw" label="年级" min-width="85" sortable="custom" />
-          <el-table-column prop="createXm" label="提交时间" min-width="110" sortable="custom" />
-          <el-table-column prop="createXm" label="辅导员姓名" min-width="110" sortable="custom" />
-          <el-table-column prop="createXh" label="工号" min-width="100" sortable="custom" />
-          <el-table-column prop="createXh" label="测评分数" min-width="100" sortable="custom" />
-          <el-table-column prop="createXh" label="是否纳入计算" min-width="125" sortable="custom" />
+          <el-table-column prop="xghDtr" label="学号" min-width="100" sortable />
+          <el-table-column prop="xmDtr" label="姓名" min-width="100" sortable="custom" />
+          <el-table-column prop="pyccmc" label="培养层次" min-width="100" sortable="custom" />
+          <el-table-column prop="nj" label="年级" min-width="85" sortable="custom" />
+          <el-table-column prop="createTime" label="提交时间" min-width="110" sortable="custom" />
+          <el-table-column prop="xmBpcr" label="辅导员姓名" min-width="110" sortable="custom" />
+          <el-table-column prop="xghBpcr" label="工号" min-width="100" sortable="custom" />
+          <el-table-column prop="wjFz" label="测评分数" min-width="100" sortable="custom" />
+          <el-table-column prop="isUse" label="是否纳入计算" min-width="125" sortable="custom" />
         </el-table>
         <pagination
           v-show="total > 0"
@@ -60,9 +60,11 @@
 </template>
 <script>
 import {
-  queryFdyBthdList,
   excelFdyBthd,
 } from "@/api/assistantWork/classEvent";
+import {
+  queryTjmxList,
+} from "@/api/test/stuTest";
 export default {
   name: "BasicInfo",
   // components: { CheckboxCom },
@@ -88,20 +90,13 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        createDwh: [], //工作单位
-        createSfjzfdy: [], //类别
-        createXh: "",
-        createXm: "",
-        hddz: "",
-        hdksrqEnd: "",
-        hdksrqStrat: "",
-        hdzt: "",
-        zzdw: "", //组织单位
+        wjId: this.$route.query.id,
         orderZd: "",
         orderPx: "",
       },
       list: [],
       exportParams: {},
+      wjName: this.$route.query.wjName,
     };
   },
   computed: {},
@@ -114,9 +109,8 @@ export default {
   methods: {
     //获取数据列表
     getList() {
-      // console.log(this.select, "select");
-      this.queryParams.createXm = this.select == 1 ? this.searchVal : "";
-      queryFdyBthdList(this.queryParams)
+      // this.queryParams.createXm = this.select == 1 ? this.searchVal : "";
+      queryTjmxList(this.queryParams)
         .then((response) => {
           this.basicInfoList = response.data; // 根据状态码接收数据
           this.total = response.totalCount; //总条数
@@ -167,9 +161,6 @@ export default {
         orderPx: this.queryParams.orderPx,
         ids: arr,
       };
-      // var exportParams = this.queryParams;
-      // console.log(this.queryParams);
-      // this.$set(this.exportParams,"ids",arr)
 
       excelFdyBthd(data)
         .then((res) => {

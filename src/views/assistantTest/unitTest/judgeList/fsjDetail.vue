@@ -48,13 +48,12 @@
                   v-model="scope.row.fdycpTmxxjg.xxFz"
                   controls-position="right"
                   width="100px"
+                  :min="0"
                 ></el-input-number>
               <!-- @blur="alterClassName($event, row)"
                 @keyup.enter.native="alterClassName($event, row)" -->
               </template>
           </el-table-column>
-            <!-- <el-table-column prop="fdycpTmxxjg.xxFz" label="分数" min-width="100">
-            </el-table-column> -->
           </el-table>
         </div>
       </div>

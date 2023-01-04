@@ -344,7 +344,7 @@ export default {
       getGrade()
         .then((res) => {
           this.allNj = res.data.rows;
-          this.moreIform.nd = res.data.rows[0];
+          this.moreIform.nd = res.data.rows[1];
           this.handleSearch();
         })
         .catch((err) => {});

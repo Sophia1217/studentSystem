@@ -39,9 +39,9 @@ module.exports = {
       [process.env.VUE_APP_BASE_API]: {
         // target: `http://10.222.7.139:8081`, //华师测试服务器
         //target: `http://172.30.66.41:8081`, //基地测试服务器
-        //target: `http://172.30.66.59:8081`,
+        target: `http://172.30.66.59:8081`,
 
-        target: `http://10.255.1.22:8081`,//许文君
+        //target: `http://10.255.1.22:8081`,//许文君
 
         changeOrigin: true,
         pathRewrite: {

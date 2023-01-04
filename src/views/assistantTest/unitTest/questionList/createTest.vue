@@ -109,7 +109,7 @@
                 ></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="2" style="line-height: 40px; font-weight: 700">
+            <el-col :span="3" style="line-height: 40px; font-weight: 700">
               <span>合计：{{ item.total }}分</span>
             </el-col>
             <el-table :data="item.tmxxList">
@@ -138,6 +138,7 @@
                   <el-form-item
                     label-width="0"
                     style="margin-bottom: 15px"
+                    :rules="rules.tmFz"
                     :prop="`dwXxWjTmList.${ind}.tmxxList.${scope.$index}.tmFz`"
                   >
                     <el-input-number

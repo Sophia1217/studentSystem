@@ -146,8 +146,8 @@
                     :rules="rules.tmFz"
                   >
                     <el-input-number
-                      :max="100"
-                      :min="0"
+                      :max="item.tmMk == '加分项' ? 100 : 0"
+                      :min="item.tmMk == '减分项' ? -100 : 0"
                       style="width: 170px"
                       v-model="scope.row.tmFz"
                       placeholder="请输入"
@@ -455,10 +455,6 @@ export default {
         }
       }
       updown(data).then((res) => {});
-      // let res = data.map((obj, index) => {
-      //   return Object.assign({}, { id: "", tmId: obj.id, wjId: this.routeId });
-      // });
-      // console.log("res", res);
     },
     // 下移
     xiayi(index, row, ind) {
@@ -643,7 +639,7 @@ export default {
         this.$message.success("问卷已生成");
         this.scModal = false;
         this.$router.push({
-          path: "/assistantTest/unitTest/questionList",
+          path: "/assistantTest/schoolTest/questionList",
         });
       });
     },

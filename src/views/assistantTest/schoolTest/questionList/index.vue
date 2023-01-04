@@ -149,12 +149,12 @@ export default {
     },
     createTest() {
       this.$router.push({
-        path: "/assistantTest/ColleagueTest/createTest",
+        path: "/assistantTest/schoolTest/createTest",
       });
     },
     editItem(item) {
       this.$router.push({
-        path: "/assistantTest/ColleagueTest/editTest",
+        path: "/assistantTest/schoolTest/editTest",
         query: {
           id: item.id,
         },

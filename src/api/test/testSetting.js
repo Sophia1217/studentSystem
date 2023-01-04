@@ -112,6 +112,16 @@ export function editJiaru(query) {
 }
 
 
+//移上移下
+export function updown(query) {
+    return request({
+        url: '/fdycpWj/changetWjTmGx',
+        method: 'post',
+        data: query
+    })
+}
+
+
 
 
 

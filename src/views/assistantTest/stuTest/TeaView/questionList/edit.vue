@@ -377,6 +377,7 @@ import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import {
   queryList,
   scWj,
+  updataScWj,
   getDetail,
   mkQuery,
   listDetail,
@@ -638,21 +639,18 @@ export default {
       return overWan ? getWan(overWan) + "万" + getWan(noWan) : getWan(num);
     },
     scWj() {
-      var arr = [];
-      arr = this.tableData1.map((item) => item.id);
       var data = {
-        tmIdList: arr, //题目Id数组
+        id: this.routeId,
         wjCount: this.tableData1.length,
         wjFz: this.totalFZ,
         wjDy: this.form.wjDy,
         wjName: this.form.wjName,
-        wjLy: "0",
         wjNj: this.form.wjNj,
         wjPycc: this.form.tmPycc,
         wjYear: this.form.tmYear,
         wjTnjps: "0",
       };
-      scWj(data).then((res) => {
+      updataScWj(data).then((res) => {
         this.$message.success("问卷已生成");
         this.preModal = false;
         this.scModal = false;

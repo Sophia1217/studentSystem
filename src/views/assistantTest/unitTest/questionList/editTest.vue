@@ -64,13 +64,13 @@
         :rules="rules"
         label-width="120px"
       >
-        <div v-for="(item, ind) in formAdd.dwXxWjTmList">
+        <div v-for="(item, ind) in formEdit.listArr">
           <div style="margin-top: 10px">
             <div class="father_box" style="font-size: bolder">
-              <div>第{{ ind + 1 }}个模块</div>
+              <div>{{ item.mk }}</div>
               <div class="right_box">
                 <span
-                  class="title"
+                  class="title whitebtn"
                   @click="
                     (item) => {
                       delList(item, ind);
@@ -79,7 +79,7 @@
                   >删除</span
                 >
                 <span
-                  class="title"
+                  class="title greenbtn"
                   @click="
                     (item) => {
                       xinzeng(item, ind);
@@ -92,11 +92,7 @@
           </div>
           <el-row :gutter="20">
             <el-col :span="20">
-              <el-form-item
-                label="评分类别："
-                :prop="`dwXxWjTmList.${ind}.tmMk`"
-                :rules="rules.tmMk"
-              >
+              <el-form-item label="评分类别：">
                 <el-input
                   v-model="item.tmMk"
                   @blur="
@@ -108,10 +104,10 @@
                 ></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="2">
-              <span>合计：{{ item.total }}分</span>
+            <el-col :span="3" style="line-height: 40px; font-weight: 700">
+              <span>合计：{{ item.childs.total }}分</span>
             </el-col>
-            <el-table :data="item.tmxxList">
+            <el-table :data="item.childs">
               <el-table-column
                 type="index"
                 label="序号"
@@ -119,13 +115,13 @@
               ></el-table-column>
               <el-table-column label="选项文字" width="750" align="center">
                 <template slot-scope="scope">
-                  <el-form-item
-                    style="margin-bottom: 15px"
-                    :prop="`dwXxWjTmList.${ind}.tmxxList.${scope.$index}.tmName`"
-                    :rules="rules.tmName"
-                    label-width="0"
-                  >
+                  <el-form-item style="margin-bottom: 15px" label-width="0">
                     <el-input
+                      @blur="
+                        (a) => {
+                          wZchange(a, scope.row);
+                        }
+                      "
                       v-model="scope.row.tmName"
                       placeholder="请输入"
                     ></el-input>
@@ -134,11 +130,7 @@
               </el-table-column>
               <el-table-column label="选项分值" width="200" align="center">
                 <template slot-scope="scope">
-                  <el-form-item
-                    label-width="0"
-                    style="margin-bottom: 15px"
-                    :prop="`dwXxWjTmList.${ind}.tmxxList.${scope.$index}.tmFz`"
-                  >
+                  <el-form-item label-width="0" style="margin-bottom: 15px">
                     <el-input-number
                       :max="100"
                       :min="0"
@@ -147,7 +139,7 @@
                       placeholder="请输入"
                       @change="
                         (a) => {
-                          changeData(a, ind);
+                          wZchange(a, scope.row);
                         }
                       "
                     ></el-input-number>
@@ -163,7 +155,6 @@
                       @click="shangyi(scope.$index, scope.row, ind)"
                     ></i>
                     <i
-                      v-if="scope.$index !== item.tmxxList.length - 1"
                       class="icon xiayi"
                       @click="xiayi(scope.$index, scope.row, ind)"
                     ></i>
@@ -219,7 +210,14 @@
 
 <script>
 import CheckboxCom from "../../../components/checkboxCom";
-import { queryList, scWj1, getDetail, mkQuery } from "@/api/test/testSetting";
+import {
+  scWj1,
+  mkQuery,
+  listDetail,
+  editSolo,
+  editJiaru,
+  YICHU,
+} from "@/api/test/testSetting";
 import { getGrade } from "@/api/class/maintenanceClass";
 export default {
   components: { CheckboxCom },
@@ -287,6 +285,9 @@ export default {
         checkBox: [],
         isIndeterminate: true,
       },
+      routeId: "",
+
+      formEdit: { listArr: [] },
       formAdd: {
         dwXxWjTmList: [
           {
@@ -309,12 +310,127 @@ export default {
   },
   mounted() {
     this.mkQuery1();
+    this.routeId = this.$route.query.id;
+    this.listDetail1();
     this.getAllGrade(); //年级
     this.authConfirm(this.$route.path.split("/")[2]);
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
 
   methods: {
+    wZchange(wz, row) {
+      var data = {
+        id: row.id,
+        tmFz: row.tmFz,
+        tmMk: row.tmMk,
+        tmName: row.tmName,
+      };
+      editSolo(data).then((res) => {
+        this.listDetail1();
+      });
+    },
+    listDetail1() {
+      listDetail(this.routeId)
+        .then((res) => {
+          this.form.wjName = res.data.wjName;
+          this.form.wjDy = res.data.wjDy;
+          this.form.tmYear = res.data.wjYear;
+          let newArr = [];
+          res.data.tmList.forEach((item) => {
+            const parent = newArr.find((c) => c.tmMk === item.tmMk);
+            if (parent) {
+              parent.childs.push(item);
+            } else {
+              const obj = {
+                tmMk: item.tmMk,
+                tmFz: item.tmFz,
+                id: item.id,
+                childs: [item],
+              };
+              newArr.push(obj);
+            }
+          });
+          if (newArr.length > 0) {
+            this.test(newArr);
+          }
+        })
+        .catch((err) => {});
+    },
+    test(arr) {
+      for (var y = 0; y < arr.length; y++) {
+        var chi = this.toChinesNum(y + 1);
+        arr[y].mk = `第${chi}部分`;
+        var total = 0;
+        if (arr[y].childs.length > 0) {
+          total += arr[y].childs.reduce((pre, cur) => {
+            return pre + Number(cur.tmFz);
+          }, 0);
+        }
+        arr[y].childs.total = total;
+      }
+      console.log("arr", arr);
+      this.formEdit.listArr = arr;
+    },
+    changeData(a, ind) {
+      //分数改变统计当前模块合计
+      this.formEdit.listArr[ind].childs.total = this.formEdit.listArr[
+        ind
+      ].childs.reduce((prev, next) => {
+        return prev + Number(next.tmFz);
+      }, 0);
+      //数据层级嵌套过深，需要强制更新
+      this.$forceUpdate();
+    },
+    toChinesNum(num) {
+      let changeNum = [
+        "零",
+        "一",
+        "二",
+        "三",
+        "四",
+        "五",
+        "六",
+        "七",
+        "八",
+        "九",
+      ];
+      let unit = ["", "十", "百", "千", "万"];
+      num = parseInt(num);
+      let getWan = (temp) => {
+        let strArr = temp.toString().split("").reverse();
+        let newNum = "";
+        let newArr = [];
+        strArr.forEach((item, index) => {
+          newArr.unshift(
+            item === "0" ? changeNum[item] : changeNum[item] + unit[index]
+          );
+        });
+        let numArr = [];
+        newArr.forEach((m, n) => {
+          if (m !== "零") numArr.push(n);
+        });
+        if (newArr.length > 1) {
+          newArr.forEach((m, n) => {
+            if (newArr[newArr.length - 1] === "零") {
+              if (n <= numArr[numArr.length - 1]) {
+                newNum += m;
+              }
+            } else {
+              newNum += m;
+            }
+          });
+        } else {
+          newNum = newArr[0];
+        }
+        return newNum;
+      };
+      let overWan = Math.floor(num / 10000);
+      let noWan = num % 10000;
+      if (noWan.toString().length < 4) {
+        noWan = "0" + noWan;
+      }
+      return overWan ? getWan(overWan) + "万" + getWan(noWan) : getWan(num);
+    },
     shangyi(index, row, ind) {
       //   if (index > 0) {
       const upDate = this.formAdd.dwXxWjTmList[ind].tmxxList[index - 1];
@@ -335,15 +451,23 @@ export default {
       //   }
     },
     jia(row, index, ind) {
-      var obj = { tmFz: "", tmName: "" };
-      this.formAdd.dwXxWjTmList[ind].tmxxList.push(obj);
+      var data = {
+        tmLy: "2",
+        tmMk: row.tmMk,
+        tmFz: "",
+        tmName: "",
+        tmType: "文字题",
+        wjId: this.routeId,
+      };
+      editJiaru(data).then((res) => {
+        this.listDetail1();
+      });
     },
     jian(row, index, ind) {
-      if (this.formAdd.dwXxWjTmList[ind].tmxxList.length > 1) {
-        this.formAdd.dwXxWjTmList[ind].tmxxList.splice(index, 1);
-      } else {
-        this.$message.warning("请至少保留一个题目");
-      }
+      var data = [{ id: "", tmId: row.id, wjId: this.routeId }];
+      YICHU(data).then((res) => {
+        this.listDetail1();
+      });
     },
     delList(item, ind) {
       if (this.formAdd.dwXxWjTmList.length > 1) {
@@ -352,14 +476,7 @@ export default {
         this.$message.warning("请至少保留一个模块");
       }
     },
-    changeData(a, ind) {
-      //分数改变统计当前模块合计
-      this.formAdd.dwXxWjTmList[ind].total = this.formAdd.dwXxWjTmList[
-        ind
-      ].tmxxList.reduce((prev, next) => {
-        return prev + Number(next.tmFz);
-      }, 0);
-    },
+
     bindData(item, ind) {
       //以为后台数据问题，每次失去焦点，就自动为当前模块每一条列表数据绑定上一个模块字段
       for (var x = 0; x < this.formAdd.dwXxWjTmList[ind].tmxxList.length; x++) {

@@ -152,9 +152,12 @@ export default {
         path: "/assistantTest/unitTest/createTest",
       });
     },
-    editItem() {
+    editItem(item) {
       this.$router.push({
         path: "/assistantTest/unitTest/editTest",
+        query: {
+          id: item.id,
+        },
       });
     },
     yulan(item) {

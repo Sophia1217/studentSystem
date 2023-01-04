@@ -40,8 +40,13 @@ export function scWj(query) {
         data: query
     })
 }
-
-
+export function updataScWj(query) {
+    return request({
+        url: '/fdycpWj/updateWj',
+        method: 'post',
+        data: query
+    })
+}
 
 export function mkQuery(query) {
     return request({
@@ -59,6 +64,8 @@ export function YICHU(query) {
         data: query
     })
 }
+
+
 // 问卷题目加入
 export function JIARU(query) {
     return request({
@@ -86,6 +93,23 @@ export function scWj1(query) {
     })
 }
 
+//单位鉴定学校评价单条数据编辑接口
+export function editSolo(query) {
+    return request({
+        url: '/fdycpWj/updateDwXxWjTm',
+        method: 'post',
+        data: query
+    })
+}
+
+//单位鉴定学校评价数据加入
+export function editJiaru(query) {
+    return request({
+        url: '/fdycpWj/insertDwXxWjTmGx',
+        method: 'post',
+        data: query
+    })
+}
 
 
 

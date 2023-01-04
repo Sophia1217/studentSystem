@@ -395,6 +395,7 @@ import {
   queryList,
   scWj,
   getDetail,
+  updataScWj,
   mkQuery,
   listDetail,
   YICHU,
@@ -665,21 +666,18 @@ export default {
       return overWan ? getWan(overWan) + "万" + getWan(noWan) : getWan(num);
     },
     scWj() {
-      var arr = [];
-      arr = this.tableData1.map((item) => item.id);
       var data = {
-        tmIdList: arr, //题目Id数组
+        id: this.routeId,
         wjCount: this.tableData1.length,
         wjFz: this.totalFZ,
         wjDy: this.form.wjDy,
         wjName: this.form.wjName,
-        wjLy: "1",
         wjNj: this.form.wjNj,
         wjPycc: this.form.tmPycc,
         wjYear: this.form.tmYear,
-        wjTnjps: this.form.wjTnjps,
+        wjTnjps: "0",
       };
-      scWj(data).then((res) => {
+      updataScWj(data).then((res) => {
         this.$message.success("问卷已生成");
         this.preModal = false;
         this.scModal = false;

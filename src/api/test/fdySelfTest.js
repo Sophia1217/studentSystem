@@ -92,3 +92,12 @@ export function insertKgsz(query) {
       data: query
   })
 }
+
+//请求年度
+export function getYears(query) {
+  return request({
+      url: '/fdyzp/getYears',
+      method: 'post',
+      data: query
+  })
+}

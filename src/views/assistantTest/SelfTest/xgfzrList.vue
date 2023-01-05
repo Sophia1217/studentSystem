@@ -108,7 +108,7 @@
               placeholder=""
             >
               <el-option
-                v-for="(item, index) in njOptions"
+                v-for="(item, index) in ndOptions"
                 :key="index"
                 :label="item"
                 :value="item"
@@ -307,9 +307,9 @@ import {
   updateKgsz,
   getKgsz,
   insertKgsz,
+  getYears,
 } from "@/api/test/fdySelfTest";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { getCollege } from "@/api/class/maintenanceClass";
 import { getGrade } from "@/api/assistantWork/listen";
 export default {
   name: "BasicInfo",
@@ -331,6 +331,7 @@ export default {
       isMore: false,
       gzdwOptions: [],
       njOptions: [],
+      ndOptions: [],
       category: {
         // 类别
         checkAll: false,
@@ -547,23 +548,24 @@ export default {
         .catch((err) => {
           //this.$message.error(err.errmsg);
         });
-      await getGrade().then((response) => {
+      await getYears().then((response) => {
         // 获取年级列表数据
         if (response.errcode == "00") {
-          this.njOptions = response.data.rows;
-          this.ndval = this.njOptions[1];
+          this.ndOptions = response.data.rows;
+          this.ndval = this.ndOptions[0];
           insertKgsz({ nd: this.ndval }).then((res) => {});
+          //console.log(response);
         }
       });
 
       this.getList();
 
-      // getCollege().then((response) => {
-      //   // 获取培养单位列表数据
-      //   if (response.errcode == "00") {
-      //     this.ssxyOptions = response.data.rows;
-      //   }
-      // });
+      getGrade().then((response) => {
+        // 获取培养单位列表数据
+        if (response.errcode == "00") {
+          this.njOptions = response.data.rows;
+        }
+      });
     },
     //获取数据列表
     getList() {

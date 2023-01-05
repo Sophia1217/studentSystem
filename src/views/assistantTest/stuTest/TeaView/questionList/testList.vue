@@ -169,19 +169,19 @@ export default {
       });
     },
     downTest(item) {
-      if(item.sfyx == 1){
+      if (item.sfyx == 1) {
         this.$router.push({
           path: "/assistantTest/stuTest/stuDownTest",
           query: {
             id: item.id,
-            wjName:item.wjName,
-            wjFz:item.wjFz,
-            wjCount:item.wjCount,
+            wjName: item.wjName,
+            wjFz: item.wjFz,
+            wjCount: item.wjCount,
           },
         });
-      } else{
-        this.$message.warning("请在问卷结束后查看分析结果!")
-      };
+      } else {
+        this.$message.warning("请在问卷结束后查看分析结果!");
+      }
     },
     yulan(item) {
       this.$router.push({
@@ -206,7 +206,13 @@ export default {
           this.getList();
         });
       } else {
-        this.$message.warning("请选择时间！");
+        if (item.sqkfsj) {
+          switchXscpLs(data).then((res) => {
+            this.getList();
+          });
+        } else {
+          this.$message.warning("请选择时间！");
+        }
       }
     },
     timeChange(item) {

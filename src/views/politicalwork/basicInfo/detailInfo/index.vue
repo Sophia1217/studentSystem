@@ -1057,7 +1057,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.bysj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.bysj" placeholder="请输入" :disabled="zgXlxwsAuth.BYSJ==2||scope.row.sftb=='0'"/>
+                  <!-- <el-input v-model="scope.row.bysj" placeholder="请输入" :disabled="zgXlxwsAuth.BYSJ==2||scope.row.sftb=='0'"/> -->
+                  <el-date-picker
+                        v-model="scope.row.bysj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgXlxwsAuth.BYSJ==2||scope.row.sftb=='0'"
+                      />
                   </div>
               </template>
             </el-table-column> 
@@ -1127,8 +1134,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.xwsysj }}</div>
                 <div v-else>
-                  
-                  <el-input v-model="scope.row.xwsysj" placeholder="请输入" :disabled="zgXlxwsAuth.XWSYSJ==2||scope.row.sftb=='0'"/>
+                  <el-date-picker
+                        v-model="scope.row.xwsysj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgXlxwsAuth.XWSYSJ==2||scope.row.sftb=='0'"
+                      />
+                  <!-- <el-input v-model="scope.row.xwsysj" placeholder="请输入" :disabled="zgXlxwsAuth.XWSYSJ==2||scope.row.sftb=='0'"/> -->
                   </div>
                  
               </template>
@@ -1195,7 +1208,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.jdhtmrzrq }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.jdhtmrzrq" placeholder="请输入" :disabled="zgDzzwsAuth.JDHTMRZRQ==2||scope.row.sftb=='0'"/>
+                  <!-- <el-input v-model="scope.row.jdhtmrzrq" placeholder="请输入" :disabled="zgDzzwsAuth.JDHTMRZRQ==2||scope.row.sftb=='0'"/> -->
+                  <el-date-picker
+                        v-model="scope.row.jdhtmrzrq"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgDzzwsAuth.JDHTMRZRQ==2||scope.row.sftb=='0'"
+                      />
                   </div>
                 
               </template>
@@ -1204,7 +1224,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.jdhtmmzdrq }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.jdhtmmzdrq" placeholder="请输入" :disabled="zgDzzwsAuth.JDHTMMZDRQ==2||scope.row.sftb=='0'"/>
+                  <!-- <el-input v-model="scope.row.jdhtmmzdrq" placeholder="请输入" :disabled="zgDzzwsAuth.JDHTMMZDRQ==2||scope.row.sftb=='0'"/> -->
+                  <el-date-picker
+                        v-model="scope.row.jdhtmmzdrq"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgDzzwsAuth.JDHTMMZDRQ==2||scope.row.sftb=='0'"
+                      />
                   </div>
                   </template>
             </el-table-column> 
@@ -1267,7 +1294,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.zjpzrq }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.zjpzrq" placeholder="请输入" :disabled="zgDzzjsAuth.ZJPZRQ==2||scope.row.sftb=='0'"/>
+                  <!-- <el-input v-model="scope.row.zjpzrq" placeholder="请输入" :disabled="zgDzzjsAuth.ZJPZRQ==2||scope.row.sftb=='0'"/> -->
+                  <el-date-picker
+                        v-model="scope.row.zjpzrq"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgDzzjsAuth.ZJPZRQ==2||scope.row.sftb=='0'"
+                      />
                   </div>
                 
               </template>
@@ -1276,7 +1310,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.zjzzrq }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.zjzzrq" placeholder="请输入" :disabled="zgDzzjsAuth.ZJZZRQ==2||scope.row.sftb=='0'"/>
+                  <!-- <el-input v-model="scope.row.zjzzrq" placeholder="请输入" :disabled="zgDzzjsAuth.ZJZZRQ==2||scope.row.sftb=='0'"/> -->
+                  <el-date-picker
+                        v-model="scope.row.zjzzrq"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgDzzjsAuth.ZJZZRQ==2||scope.row.sftb=='0'"
+                      />
                   </div>
                   </template>
             </el-table-column> 
@@ -1339,6 +1380,7 @@
                 <div v-if="isEdit == 1">{{ scope.row.prrq }}</div>
                 <div v-else>
                   <el-input v-model="scope.row.prrq" placeholder="请输入" disabled/>
+                  
                   </div>
                   
               </template>
@@ -1397,7 +1439,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.gzqsrq }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.gzqsrq" placeholder="请输入" :disabled="zgGzjlsAuth.GZQSRQ==2"/>
+                  <!-- <el-input v-model="scope.row.gzqsrq" placeholder="请输入" :disabled="zgGzjlsAuth.GZQSRQ==2"/> -->
+                  <el-date-picker
+                        v-model="scope.row.gzqsrq"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgGzjlsAuth.GZQSRQ==2"
+                      />
                   </div>
                
               </template>
@@ -1406,7 +1455,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.gzzzrq }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.gzzzrq" placeholder="请输入" :disabled="zgGzjlsAuth.GZZZRQ==2"/>
+                  <!-- <el-input v-model="scope.row.gzzzrq" placeholder="请输入" :disabled="zgGzjlsAuth.GZZZRQ==2"/> -->
+                  <el-date-picker
+                        v-model="scope.row.gzzzrq"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgGzjlsAuth.GZZZRQ==2"
+                      />
                   </div>
                   
               </template>
@@ -1478,7 +1534,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.prsj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.prsj" placeholder="请输入" :disabled="zgPrxxesAuth.PRSJ==2||scope.row.sftb=='0'"/>
+                  <!-- <el-input v-model="scope.row.prsj" placeholder="请输入" :disabled="zgPrxxesAuth.PRSJ==2||scope.row.sftb=='0'"/> -->
+                   <el-date-picker
+                        v-model="scope.row.prsj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgPrxxesAuth.PRSJ==2||scope.row.sftb=='0'"
+                      />
                   </div>
                   
               </template>
@@ -1657,7 +1720,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.qssj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="zgXxpxesAuth.QSSJ==2"/>
+                  <!-- <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="zgXxpxesAuth.QSSJ==2"/> -->
+                  <el-date-picker
+                        v-model="scope.row.qssj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgXxpxesAuth.QSSJ==2"
+                      />
                   </div>
                
               </template>
@@ -1666,7 +1736,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.jssj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="zgXxpxesAuth.JSSJ==2"/>
+                  <!-- <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="zgXxpxesAuth.JSSJ==2"/> -->
+                  <el-date-picker
+                        v-model="scope.row.jssj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgXxpxesAuth.JSSJ==2"
+                      />
                   </div>
                   
               </template>
@@ -1742,7 +1819,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.qssj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="zgXmxxesAuth.QSSJ==2"/>
+                  <!-- <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="zgXmxxesAuth.QSSJ==2"/> -->
+                  <el-date-picker
+                        v-model="scope.row.qssj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgXmxxesAuth.QSSJ==2"
+                      />
                   </div>
                  
               </template>
@@ -1751,7 +1835,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.jssj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="zgXmxxesAuth.JSSJ==2"/>
+                  <!-- <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="zgXmxxesAuth.JSSJ==2"/> -->
+                  <el-date-picker
+                        v-model="scope.row.jssj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgXmxxesAuth.JSSJ==2"
+                      />
                   </div>
                   
               </template>
@@ -1812,7 +1903,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.hqsj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.hqsj" placeholder="请输入" :disabled="zgZyzgsAuth.HQSJ==2"/>
+                  <!-- <el-input v-model="scope.row.hqsj" placeholder="请输入" :disabled="zgZyzgsAuth.HQSJ==2"/> -->
+                  <el-date-picker
+                        v-model="scope.row.hqsj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgZyzgsAuth.HQSJ==2"
+                      />
                   </div>
                   
               </template>
@@ -1882,7 +1980,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.qssj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="zgGwdlsAuth.QSSJ==2"/>
+                  <!-- <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="zgGwdlsAuth.QSSJ==2"/> -->
+                   <el-date-picker
+                        v-model="scope.row.qssj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgGwdlsAuth.QSSJ==2"
+                      />
                   </div>
                   
               </template>
@@ -1891,7 +1996,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.jssj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="zgGwdlsAuth.JSSJ==2"/>
+                  <!-- <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="zgGwdlsAuth.JSSJ==2"/> -->
+                  <el-date-picker
+                        v-model="scope.row.jssj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgGwdlsAuth.JSSJ==2"
+                      />
                   </div>
                  
               </template>
@@ -1970,7 +2082,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.qssj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="zgJxkyqksAuth.QSSJ==2"/>
+                  <!-- <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="zgJxkyqksAuth.QSSJ==2"/> -->
+                   <el-date-picker
+                        v-model="scope.row.qssj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgJxkyqksAuth.QSSJ==2"
+                      />
                   </div>
                  
               </template>
@@ -1979,7 +2098,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.jssj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="zgJxkyqksAuth.JSSJ==2"/>
+                  <!-- <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="zgJxkyqksAuth.JSSJ==2"/> -->
+                  <el-date-picker
+                        v-model="scope.row.jssj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgJxkyqksAuth.JSSJ==2"
+                      />
                   </div>
                  
               </template>
@@ -2014,7 +2140,40 @@
                  
               </template>
             </el-table-column>   
-        
+        <el-table-column prop="lwjbm" label="论文级别">
+              <template slot-scope="scope">
+                <div v-if="isEdit == 1"><el-select
+                        v-model="scope.row.lwjbm"
+                        placeholder="请选择"
+                        size="small"
+                        disabled
+                      >
+                        <el-option
+                          v-for="(item,index) in lwjbmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                        />
+                      </el-select></div>
+                <div v-else>
+                 <el-select
+                        v-model="scope.row.lwjbm"
+                        placeholder="请选择"
+                        size="small"
+                        :disabled="zgLwkyqksAuth.LWJB==2"
+                      >
+                        <el-option
+                          v-for="(item,index) in lwjbmOps"
+                          :key="index"
+                          :label="item.mc"
+                          :value="item.dm"
+                          
+                        />
+                      </el-select>
+                  </div>
+                 
+              </template>
+            </el-table-column>  
            <el-table-column prop="qkmc" label="期刊名称">
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.qkmc }}</div>
@@ -2047,7 +2206,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.fbsj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.fbsj" placeholder="请输入" :disabled="zgLwkyqksAuth.FBSJ==2"/>
+                  <!-- <el-input v-model="scope.row.fbsj" placeholder="请输入" :disabled="zgLwkyqksAuth.FBSJ==2"/> -->
+                  <el-date-picker
+                        v-model="scope.row.fbsj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgLwkyqksAuth.FBSJ==2"
+                      />
                   </div>
                  
               </template>
@@ -2114,7 +2280,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.qssj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="zgXmkyqksAuth.QSSJ==2"/>
+                  <!-- <el-input v-model="scope.row.qssj" placeholder="请输入" :disabled="zgXmkyqksAuth.QSSJ==2"/> -->
+                   <el-date-picker
+                        v-model="scope.row.qssj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgXmkyqksAuth.QSSJ==2"
+                      />
                   </div>
                  
               </template>
@@ -2123,7 +2296,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.jssj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="zgXmkyqksAuth.JSSJ==2"/>
+                  <!-- <el-input v-model="scope.row.jssj" placeholder="请输入" :disabled="zgXmkyqksAuth.JSSJ==2"/> -->
+                  <el-date-picker
+                        v-model="scope.row.jssj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgXmkyqksAuth.JSSJ==2"
+                      />
                   </div>
                  
               </template>
@@ -2208,7 +2388,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.cbsj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.cbsj" placeholder="请输入" :disabled="zgZzkyqksAuth.CBSJ==2"/>
+                  <!-- <el-input v-model="scope.row.cbsj" placeholder="请输入" :disabled="zgZzkyqksAuth.CBSJ==2"/> -->
+                   <el-date-picker
+                        v-model="scope.row.cbsj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgZzkyqksAuth.CBSJ==2"
+                      />
                   </div>
                  
               </template>
@@ -2266,7 +2453,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.fbsj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.fbsj" placeholder="请输入" :disabled="zgQtkyqksAuth.FBSJ==2"/>
+                  <!-- <el-input v-model="scope.row.fbsj" placeholder="请输入" :disabled="zgQtkyqksAuth.FBSJ==2"/> -->
+                  <el-date-picker
+                        v-model="scope.row.fbsj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgQtkyqksAuth.FBSJ==2"
+                      />
                   </div>
                  
               </template>
@@ -2394,7 +2588,14 @@
               <template slot-scope="scope">
                 <div v-if="isEdit == 1">{{ scope.row.hjsj }}</div>
                 <div v-else>
-                  <el-input v-model="scope.row.hjsj" placeholder="请输入" :disabled="zgJlbzsAuth.HJSJ==2"/>
+                  <!-- <el-input v-model="scope.row.hjsj" placeholder="请输入" :disabled="zgJlbzsAuth.HJSJ==2"/> -->
+                  <el-date-picker
+                        v-model="scope.row.hjsj"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"
+                        type="date"
+                         :disabled="zgJlbzsAuth.HJSJ==2"
+                      />
                   </div>
                  
               </template>
@@ -2481,6 +2682,7 @@ export default {
       przwdjOps: [], //聘任职务等级
       jslbOps: [], //晋升类别
       byxxlbOps: [], //毕业学校类别
+      lwjbmOps: [],
       zgZgjbxxesAuth: {},
       zgFdyrmsAuth: {},
       zgXlxwsAuth: {},
@@ -2541,7 +2743,7 @@ export default {
     this.getCode("dmxwm");
     this.getCode("dmhyzkm");
     this.getCode("dmxz");
-
+    this.getCode("dmlwkwjbm");
     this.getCode("dmrskhjgm");
     this.getCode("dmzzbzwmcm");
     this.getCode("dmzzbzwjbm");
@@ -2619,6 +2821,10 @@ export default {
               break;
             case "dmbyxxlxm":
               this.byxxlbOps = res.data;
+              break;
+
+            case "dmlwkwjbm":
+              this.lwjbmOps = res.data;
               break;
           }
         })

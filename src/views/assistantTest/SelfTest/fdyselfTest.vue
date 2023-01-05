@@ -29,7 +29,9 @@
             ><span>年度</span>
           </div>
           <span class="updataTime"
-            >更新时间：{{ detailInfoData.fdyZpJbqkRes.updateTime }}</span
+            >更新时间：{{
+              formatDate(detailInfoData.fdyZpJbqkRes.updateTime)
+            }}</span
           >
         </div>
         <div class="headline">01基本情况</div>
@@ -172,7 +174,9 @@
         <div class="timeWrap">
           <!-- <div class="yearOption"><el-select></el-select><span>年度</span></div> -->
           <span class="updataTime"
-            >更新时间：{{ detailInfoData.fdyZpJbqkRes.updateTime }}</span
+            >更新时间：{{
+              formatDate(detailInfoData.fdyZpJbqkRes.updateTime)
+            }}</span
           >
         </div>
         <div class="headline">02履职情况</div>
@@ -443,7 +447,9 @@
         <div class="timeWrap">
           <!-- <div class="yearOption"><el-select></el-select><span>年度</span></div> -->
           <span class="updataTime"
-            >更新时间：{{ detailInfoData.fdyZpJbqkRes.updateTime }}</span
+            >更新时间：{{
+              formatDate(detailInfoData.fdyZpJbqkRes.updateTime)
+            }}</span
           >
         </div>
         <div class="headline">03个人发展</div>
@@ -487,7 +493,25 @@
               <el-table-column prop="lwmc" label="题目" />
               <el-table-column prop="qkmc" label="期刊" />
 
-              <el-table-column prop="lwmc" label="级别" />
+              <el-table-column prop="lwjbm" label="级别">
+                <template slot-scope="scope">
+                  <div>
+                    <el-select
+                      v-model="scope.row.lwjbm"
+                      placeholder="请选择"
+                      size="small"
+                      disabled
+                    >
+                      <el-option
+                        v-for="(item, index) in lwjbmOps"
+                        :key="index"
+                        :label="item.mc"
+                        :value="item.dm"
+                      />
+                    </el-select>
+                  </div>
+                </template>
+              </el-table-column>
               <el-table-column prop="brwc" label="作者排名" />
               <el-table-column prop="bz" label="备注">
                 <template slot-scope="scope">
@@ -585,7 +609,9 @@
         <div class="timeWrap">
           <!-- <div class="yearOption"><el-select></el-select><span>年度</span></div> -->
           <span class="updataTime"
-            >更新时间：{{ detailInfoData.fdyZpJbqkRes.updateTime }}</span
+            >更新时间：{{
+              formatDate(detailInfoData.fdyZpJbqkRes.updateTime)
+            }}</span
           >
         </div>
         <div class="headline">04年度个人总结</div>
@@ -612,6 +638,7 @@ import {
   getFdyNdByGh,
 } from "@/api/test/fdySelfTest";
 import { getGrade } from "@/api/assistantWork/listen";
+import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
   data() {
     return {
@@ -623,13 +650,28 @@ export default {
       activeName: "0",
       detailInfoData: {},
       njOptions: [],
+      lwjbmOps: [],
     };
   },
   created() {},
   mounted() {
+    this.getCode("dmlwkwjbm");
     this.getOption();
   },
   methods: {
+    getCode(data) {
+      this.getCodeInfoByEnglish(data);
+    },
+    getCodeInfoByEnglish(paramsData) {
+      const data = { codeTableEnglish: paramsData };
+      getCodeInfoByEnglish(data).then((res) => {
+        switch (paramsData) {
+          case "dmlwkwjbm":
+            this.lwjbmOps = res.data;
+            break;
+        }
+      });
+    },
     async getOption() {
       await getFdyNdByGh({ gh: this.gh }).then((response) => {
         // 获取年级列表数据

@@ -46,15 +46,15 @@
                 index +
                 '].fdycpTmJgResList[' +
                 num +
-                '].fdycpTmxxjg.xxFz'
+                '].fdycpTmxxjg.xxWz'
               "
-              :rules="rules.xxFz"
+              :rules="rules.xxWz"
             >
               <el-input
                 type="textarea"
                 :rows="5"
                 maxlength="500"
-                v-model="tm.fdycpTmxxjg.xxFz"
+                v-model="tm.fdycpTmxxjg.xxWz"
                 :readonly="isFinish == '1'"
               />
             </el-form-item>
@@ -82,7 +82,7 @@ export default {
       Wjjbxx: {},
       form: { fdycpMkTmResList: [] },
       rules: {
-        xxFz: [
+        xxWz: [
           {
             required: true,
             message: "作答不能为空",

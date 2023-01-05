@@ -197,7 +197,7 @@
             </el-row>
             <el-row>
               <el-table :data="mkList" style="width: 100%">
-                <el-table-column type="index" label="模块名称" />
+                <el-table-column prop="name" label="模块名称" />
                 <el-table-column prop="gh" label="权重比例（百分比）">
                   <template slot-scope="scope">
                     <el-input maxlength="500" />
@@ -210,9 +210,22 @@
                 label="有效测评分是按照去掉头部和尾部相应百分比的人次计算所得平均分"
             /></el-row>
             <el-row :gutter="20">
-              <el-col :span="24">
-                <el-form-item label="有效测评分百分比设置">
-                  <el-input style="width: 100px" placeholder="10%"></el-input>
+              <el-col :span="12">
+                <el-form-item label="有效测评分百分比设置(学生测评)">
+                  <el-input
+                    style="width: 100px"
+                    placeholder="10%"
+                    v-model="xscpbfb"
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="有效测评分百分比设置(同行互评)">
+                  <el-input
+                    style="width: 100px"
+                    placeholder="10%"
+                    v-model="thhpbfb"
+                  ></el-input>
                 </el-form-item> </el-col
             ></el-row>
           </div>
@@ -318,6 +331,12 @@ import {
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getGrade } from "@/api/assistantWork/listen";
+import {
+  getFdycpZhcpSz,
+  queryZhcpList,
+  updateFdycpZhcpSz,
+} from "@/api/test/allTest";
+
 export default {
   name: "BasicInfo",
   components: { CheckboxCom },
@@ -356,7 +375,7 @@ export default {
       },
       workPlace: [],
       nj: [],
-      ndval: "2022",
+      ndval: "",
       status: {
         // 状态
         checkAll: false,
@@ -407,7 +426,15 @@ export default {
       sqkfsj: [],
       sfyx: "",
       len: 0,
-      mkList: [],
+      mkList: [
+        { name: "学生测评", value: "" },
+        { name: "同行互评", value: "" },
+        { name: "单位鉴定", value: "" },
+        { name: "学校评价", value: "" },
+      ],
+      synd: "",
+      thhpbfb: "",
+      xscpbfb: "",
     };
   },
   computed: {},
@@ -428,9 +455,14 @@ export default {
     Updata() {},
     Setting() {
       this.showSet = true;
-      getKgsz({ nd: this.ndval }).then((res) => {
-        this.sfyx = res.data.kgzt;
-        this.sqkfsj = [res.data.kfqjks, res.data.kfsjjs];
+      getFdycpZhcpSz({ nd: this.ndval }).then((res) => {
+        this.mkList[0].value = res.data.xscpbl;
+        this.mkList[1].value = res.data.thhpbl;
+        this.mkList[2].value = res.data.dwjdbl;
+        this.mkList[3].value = res.data.xxpjbl;
+        this.synd = res.data.nd;
+        this.xscpbfb = res.data.xscpbfb;
+        this.thhpbfb = res.data.thhpbfb;
       });
     },
     setCancel() {

@@ -7,8 +7,8 @@
           <span class="title">参与自评列表</span>
         </div>
         <div class="headerRight">
-          <span class="smtitle">已完成互评：{{}}人</span>
-          <span class="smtitle">还需互评：{{}}人</span>
+          <span class="smtitle">已完成互评：{{ info.ywcRs }}人</span>
+          <span class="smtitle">还需互评：{{ info.wwcRs }}人</span>
         </div>
       </div>
       <div class="mt15">
@@ -60,9 +60,8 @@
           />
           <el-table-column fixed="right" label="操作" width="140" prop="wjFz">
             <template slot-scope="scope">
-              <span v-if="scope.row.wjFz !== null">
-                <div class="status-icon icon1"></div>
-                启动
+              <span v-if="scope.row.wjFz !== null"
+                >{{ scope.row.wjFz }}分
               </span>
               <el-button
                 type="text"
@@ -125,6 +124,7 @@ export default {
       list: [],
       exportParams: {},
       tableDetails: [],
+      info: {},
       detailModal: false,
     };
   },
@@ -150,7 +150,9 @@ export default {
     },
     getRs() {
       countThhpRs()
-        .then((response) => {})
+        .then((res) => {
+          this.info = res.data;
+        })
         .catch((err) => {});
     },
     // 列表多选

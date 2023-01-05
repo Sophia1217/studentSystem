@@ -590,7 +590,11 @@ export default {
       this.delConfirm = false;
     },
     delModal() {
-      this.delConfirm = true;
+      if (this.delArr.length > 0) {
+        this.delConfirm = true;
+      } else {
+        this.$message.error("暂未选择数据");
+      }
     },
     delTest() {
       delTest({ ids: this.delArr }).then((res) => {

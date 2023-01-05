@@ -46,7 +46,12 @@
               prop="tmYear"
               :rules="rules.tmYear"
             >
-              <el-select v-model="form.tmYear" placeholder="请选择" clearable>
+              <el-select
+                v-model="form.tmYear"
+                placeholder="请选择"
+                clearable
+                @change="handleSearch"
+              >
                 <el-option
                   v-for="(ele, index) in options2"
                   :key="index"
@@ -68,6 +73,7 @@
                 ref="selectLabel"
                 placeholder="请选择"
                 clearable
+                @change="handleSearch"
               >
                 <el-option
                   v-for="item in options1"

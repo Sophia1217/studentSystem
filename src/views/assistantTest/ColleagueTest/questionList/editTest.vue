@@ -46,7 +46,12 @@
               prop="tmYear"
               :rules="rules.tmYear"
             >
-              <el-select v-model="form.tmYear" placeholder="请选择" clearable>
+              <el-select
+                v-model="form.tmYear"
+                placeholder="请选择"
+                clearable
+                @change="handleSearch"
+              >
                 <el-option
                   v-for="(ele, index) in options2"
                   :key="index"
@@ -64,6 +69,7 @@
               :rules="rules.tmPycc"
             >
               <el-select
+                @change="handleSearch"
                 v-model="form.tmPycc"
                 ref="selectLabel"
                 placeholder="请选择"

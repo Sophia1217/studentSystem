@@ -98,6 +98,7 @@
                 :rules="rules.tmMk"
               >
                 <el-input
+                  maxlength="10"
                   v-model="item.tmMk"
                   @blur="
                     (a) => {
@@ -126,6 +127,7 @@
                     :rules="rules.tmName"
                   >
                     <el-input
+                      maxlength="100"
                       @blur="
                         (a) => {
                           wZchange(a, scope.row);

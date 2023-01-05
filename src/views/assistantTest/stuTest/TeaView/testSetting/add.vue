@@ -165,6 +165,7 @@
                     :rules="rules.xxWz"
                   >
                     <el-input
+                      maxlength="100"
                       v-model="scope.row.xxWz"
                       placeholder="请输入"
                     ></el-input>

@@ -99,6 +99,7 @@
                 :rules="rules.tmMk"
               >
                 <el-input
+                  maxlength="10"
                   v-model="item.tmMk"
                   @blur="
                     (a) => {
@@ -127,6 +128,7 @@
                     label-width="0"
                   >
                     <el-input
+                      maxlength="100"
                       v-model="scope.row.tmName"
                       placeholder="请输入"
                     ></el-input>

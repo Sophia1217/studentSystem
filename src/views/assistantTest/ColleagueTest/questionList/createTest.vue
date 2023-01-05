@@ -274,14 +274,14 @@
         :limit.sync="queryParams.pageSize"
         @pagination="handleSearch"
       />
-      <pagination
+      <!-- <pagination
         v-if="activeName == 'second'"
         v-show="queryParams1.total > 0"
         :total="queryParams1.total"
         :page.sync="queryParams1.pageNum"
         :limit.sync="queryParams1.pageSize"
         @pagination="handleCurrentChange"
-      />
+      /> -->
     </div>
     <el-dialog
       title="预览"

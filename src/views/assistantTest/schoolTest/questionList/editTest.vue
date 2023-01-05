@@ -92,20 +92,8 @@
           </div>
           <el-row :gutter="20">
             <el-col :span="20">
-              <el-form-item
-                label="评分类别："
-                :prop="`listArr.${ind}.tmMk`"
-                :rules="rules.tmMk"
-              >
-                <el-input
-                  v-model="item.tmMk"
-                  @blur="
-                    (a) => {
-                      bindData(a, ind);
-                    }
-                  "
-                  style="width: 20%"
-                ></el-input>
+              <el-form-item label="评分类别：">
+                <span>{{ item.tmMk }}</span>
               </el-form-item>
             </el-col>
             <el-col :span="3" style="line-height: 40px; font-weight: 700">
@@ -126,6 +114,7 @@
                     :rules="rules.tmName"
                   >
                     <el-input
+                      maxlength="100"
                       @blur="
                         (a) => {
                           wZchange(a, scope.row);

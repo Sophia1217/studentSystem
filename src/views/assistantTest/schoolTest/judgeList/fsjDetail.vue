@@ -42,12 +42,14 @@
                 <span> {{ row.fdycpTm.tmName }}（{{ row.fdycpTm.tmFz }}分）</span>
               </template>
             </el-table-column>
-            <el-table-column prop="tmFz" label="分数" min-width="100">
-              <template slot-scope="scope">
+            <el-table-column prop="xxFz" label="分数" min-width="100">
+              <template slot-scope="{row}">
                 <el-input-number
-                  v-model="scope.row.fdycpTmxxjg.xxFz"
+                  v-model="row.fdycpTmxxjg.xxFz"
                   controls-position="right"
                   width="100px"
+                  :max="row.fdycpTm.maxFz"
+                  @keydown.native="channelInputLimit"
                 ></el-input-number>
               <!-- @blur="alterClassName($event, row)"
                 @keyup.enter.native="alterClassName($event, row)" -->
@@ -126,12 +128,21 @@ export default {
             this.mkList[x].mk1 = this.mkList[x].mk.slice(0,1);
             this.mkList[x].mk2 = this.mkList[x].mk.slice(3);
           }
-          console.log("this.mklist",this.mkList);
+          for(var x=0;x<this.mkList.length;x++){
+            for( var y=0;y<this.mkList[x].fdycpTmJgResList.length;y++){
+              this.mkList[x].fdycpTmJgResList[y].fdycpTm.maxFz = Number(this.mkList[x].fdycpTmJgResList[y].fdycpTm.tmFz);
+              console.log("maxFz",this.mkList[0].fdycpTmJgResList[0].fdycpTm.maxFz);
+            }
+          }
         })
         .catch((err) => {
           // this.$message.error(err.errmsg);
         });
     },
+    //设置计数器禁输入
+    channelInputLimit(e) {
+		  e.returnValue = ''
+		},
     // 打开提交弹窗
     handleSubmit() {
       this.showSubmit = true;

@@ -115,9 +115,9 @@
             <span>年度</span>
         </div>
         <div class="headerRight">
-          <div class="btns borderOrange" @click="jdbExport">
+          <!-- <div class="btns borderOrange" @click="jdbExport">
             <i class="icon orangeIcon"></i><span class="title">鉴定表导出</span>
-          </div>
+          </div> -->
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>

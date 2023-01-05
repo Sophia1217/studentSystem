@@ -203,11 +203,19 @@ export default {
           wjEndDate: item && item.sqkfsj ? item.sqkfsj[1] : "",
         };
         switchXscpLs(data).then((res) => {
+          this.$message.success("设置成功");
           this.getList();
         });
       } else {
-        if (item.sqkfsj) {
+        if (item && item.sqkfsj) {
+          let data = {
+            sfyx: item.sfyx,
+            id: item.id,
+            wjStartDate: item.sqkfsj[0],
+            wjEndDate: item.sqkfsj[1],
+          };
           switchXscpLs(data).then((res) => {
+            this.$message.success("设置成功");
             this.getList();
           });
         } else {
@@ -223,6 +231,7 @@ export default {
         wjEndDate: item.sqkfsj[1],
       };
       switchXscpLs(data).then((res) => {
+        this.$message.success("设置成功");
         this.getList();
       });
     },

@@ -126,6 +126,8 @@ export default {
       tableDetails: [],
       info: {},
       detailModal: false,
+
+      info: {},
     };
   },
   computed: {},
@@ -213,6 +215,7 @@ export default {
         line-height: 28px;
       }
       .smtitle {
+        margin-left: 10px;
         font-weight: 600;
         font-size: 16px;
         color: #1f1f1f;

@@ -69,9 +69,9 @@
       <div class="headerDilog">
         <div><span class="title">{{wjName}}</span></div>
         <div class="tableTop">
-          <!-- <div class="tableLeft"><span class="title">{{form.xmBpcr}}</span></div>
+          <div class="tableLeft"><span class="title">{{form.xmBpcr}}</span></div>
           <div class="tableRight"><span class="title">题数：{{wjCount}}
-            <span v-html="'\u3000'"></span> 总分：{{wjFz}}分</span></div> -->
+            <span v-html="'\u3000'"></span> 总分：{{wjFz}}分</span></div>
         </div>
         <el-table :data="tableDetails">
           <el-table-column
@@ -169,8 +169,8 @@ export default {
         orderPx: "",
       },
       wjName: this.$route.query.wjName,
-      // wjFz: this.$route.query.wjFz,
-      // wjCount: this.$route.queyt.wjCount,
+      wjFz: this.$route.query.wjFz,
+      wjCount: this.$route.query.wjCount,
       expArr: [],
       tableDetails:[],
       detailModal: false,

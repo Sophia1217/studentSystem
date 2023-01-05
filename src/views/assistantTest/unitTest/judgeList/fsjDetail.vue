@@ -154,6 +154,7 @@ export default {
       answerWj(data)
         .then((res) => {
           this.$message.success("提交成功") 
+          this.$router.go(-1);
         })
         .catch((err) => {});
     },

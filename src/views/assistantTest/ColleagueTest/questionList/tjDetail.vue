@@ -28,8 +28,8 @@
           <el-table-column type="index" label="序号" width="50" />
           <el-table-column prop="xghDtr" label="工号" min-width="100" sortable />
           <el-table-column prop="xmDtr" label="测评人" min-width="100" sortable="custom" />
-          <el-table-column prop="nj" label="类型" min-width="85" sortable="custom" />
-          <el-table-column prop="pyccmc" label="工作单位" min-width="100" sortable="custom" />
+          <el-table-column prop="lx" label="类型" min-width="85" sortable="custom" />
+          <el-table-column prop="dwmc" label="工作单位" min-width="100" sortable="custom" />
           <el-table-column prop="createTime" label="提交时间" min-width="110" sortable="custom" />
           <el-table-column prop="xmBpcr" label="被测评人" min-width="110" sortable="custom" />
           <el-table-column prop="xghBpcr" label="工号" min-width="100" sortable="custom" />
@@ -62,7 +62,7 @@
 import {
   queryTjmxList,
   exportTjmxList,
-} from "@/api/test/stuTest";
+} from "@/api/test/mutualTest";
 export default {
   name: "BasicInfo",
   // components: { CheckboxCom },

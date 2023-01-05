@@ -22,7 +22,7 @@
             slot="append"
             class="searchButton"
             icon="el-icon-search"
-            @click="searchClick"
+            @click="getList"
             >查询</el-button
           >
         </el-input>
@@ -118,7 +118,7 @@
         </div>
 
         <div class="headerRight">
-          <div>{{}}更新</div>
+          <div style="margin-right: 15px">{{ this.time }}更新</div>
           <div class="btns borderOrange" @click="Updata">
             <i class="icon setIcon"></i><span class="title">更新</span>
           </div>
@@ -156,13 +156,14 @@
             prop="pycc"
             label="所辖培养层次"
             min-width="100"
+            :show-overflow-tooltip="true"
             sortable="custom"
           />
-          <el-table-column prop="xm" label="学生测评" sortable="custom" />
-          <el-table-column prop="xm" label="同行互评" sortable="custom" />
-          <el-table-column prop="xm" label="单位鉴定" sortable="custom" />
-          <el-table-column prop="xm" label="学校评价" sortable="custom" />
-          <el-table-column prop="xm" label="综合评价分数" sortable="custom" />
+          <el-table-column prop="xscp" label="学生测评" sortable="custom" />
+          <el-table-column prop="thhp" label="同行互评" sortable="custom" />
+          <el-table-column prop="dwjd" label="单位鉴定" sortable="custom" />
+          <el-table-column prop="xxpj" label="学校评价" sortable="custom" />
+          <el-table-column prop="zhpj" label="综合评价分数" sortable="custom" />
         </el-table>
         <pagination
           v-show="total > 0"
@@ -184,23 +185,21 @@
               <el-col :span="12"><el-form-item label="结果运用设置" /></el-col>
               <el-col :span="12">
                 <el-form-item label="适用年度">
-                  <el-select style="width: 100px">
-                    <el-option
-                      v-for="(item, index) in njOptions"
-                      :key="index"
-                      :label="item"
-                      :value="item"
-                    ></el-option>
-                  </el-select>
+                  <span> {{ formEdit.synd }}</span>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
-              <el-table :data="mkList" style="width: 100%">
+              <el-table :data="formEdit.mkList" style="width: 100%">
                 <el-table-column prop="name" label="模块名称" />
-                <el-table-column prop="gh" label="权重比例（百分比）">
+                <el-table-column label="权重比例（百分比）">
                   <template slot-scope="scope">
-                    <el-input maxlength="500" />
+                    <el-input-number
+                      :controls="false"
+                      v-model="scope.row.bl"
+                      :min="0"
+                      :max="100"
+                    />
                   </template>
                 </el-table-column>
               </el-table>
@@ -212,20 +211,26 @@
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="有效测评分百分比设置(学生测评)">
-                  <el-input
+                  <el-input-number
+                    :controls="false"
                     style="width: 100px"
                     placeholder="10%"
-                    v-model="xscpbfb"
-                  ></el-input>
+                    v-model="formEdit.xscpbfb"
+                    :min="0"
+                    :max="100"
+                  ></el-input-number>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="有效测评分百分比设置(同行互评)">
-                  <el-input
+                  <el-input-number
+                    :controls="false"
                     style="width: 100px"
                     placeholder="10%"
-                    v-model="thhpbfb"
-                  ></el-input>
+                    :min="0"
+                    :max="100"
+                    v-model="formEdit.thhpbfb"
+                  ></el-input-number>
                 </el-form-item> </el-col
             ></el-row>
           </div>
@@ -238,72 +243,6 @@
         >
       </span>
     </el-dialog>
-    <!-- 加入对话框 -->
-    <!-- <el-dialog title="加入" :visible.sync="showJoin" width="60%">
-      <div class="searchName">
-        <el-form>
-          <el-form-item label="姓名">
-            <el-input
-              v-model="queryParams2.xm"
-              placeholder="请输入..."
-              class="inputSelect"
-            >
-              <el-button
-                slot="append"
-                class="searchButton"
-                icon="el-icon-search"
-                @click="getNotList"
-                >查询</el-button
-              >
-            </el-input>
-          </el-form-item></el-form
-        >
-      </div>
-      <div class="mt15">
-        <el-table
-          ref="multipleTable"
-          :data="basicInfoList2"
-          style="width: 100%"
-          :default-sort="{ prop: 'gh', order: 'ascending' }"
-          @selection-change="handleSelectionChange2"
-          @sort-change="changeTableSort2"
-        >
-          <el-table-column type="selection" width="55" />
-          <el-table-column type="index" label="序号" width="50" />
-          <el-table-column prop="gh" label="工号" sortable />
-          <el-table-column prop="xm" label="姓名" sortable="custom" />
-          <el-table-column prop="lx" label="类型" sortable="custom" />
-
-          <el-table-column
-            prop="dwmc"
-            label="工作单位"
-            min-width="100"
-            sortable="custom"
-          />
-          <el-table-column prop="ssnj" label="年级" sortable="custom" />
-          <el-table-column
-            prop="pycc"
-            label="所辖培养层次"
-            min-width="100"
-            sortable="custom"
-          />
-        </el-table>
-        <pagination
-          v-show="total2 > 0"
-          class="pagination2"
-          :total="total2"
-          :page.sync="queryParams2.pageNum"
-          :limit.sync="queryParams2.pageSize"
-          @pagination="getNotList"
-        />
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="joinCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="joinConfirm"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog> -->
     <!-- 导出确认对话框 -->
     <el-dialog title="导出" :visible.sync="showExport" width="30%">
       <span>确认导出？</span>
@@ -335,6 +274,9 @@ import {
   getFdycpZhcpSz,
   queryZhcpList,
   updateFdycpZhcpSz,
+  updateList,
+  updateTime,
+  exp,
 } from "@/api/test/allTest";
 
 export default {
@@ -343,15 +285,11 @@ export default {
   props: [],
   data() {
     return {
-      title: "",
       // // 总条数
       total: 0,
       total2: 0,
       showSet: false,
       showExport: false,
-      showJoin: false,
-      sqkfsj: [],
-      sfyx: "0",
       searchVal: "",
       select: "",
       isMore: false,
@@ -386,12 +324,9 @@ export default {
         ],
         isIndeterminate: true,
       },
-
       Sxpycc: [],
       detailGh: "",
       basicInfoList: [],
-      basicInfoList2: [],
-      tableData: [],
       multipleSelection: [],
       multipleSelection2: [],
       queryParams: {
@@ -407,6 +342,7 @@ export default {
         njs: [],
         pyccms: [],
       },
+      time: "",
       queryParams2: {
         pageNum: 1,
         pageSize: 10,
@@ -423,18 +359,20 @@ export default {
 
       list: [],
       list2: [],
-      sqkfsj: [],
       sfyx: "",
+      settingId: "",
       len: 0,
-      mkList: [
-        { name: "学生测评", value: "" },
-        { name: "同行互评", value: "" },
-        { name: "单位鉴定", value: "" },
-        { name: "学校评价", value: "" },
-      ],
-      synd: "",
-      thhpbfb: "",
-      xscpbfb: "",
+      formEdit: {
+        mkList: [
+          { name: "学生测评", bl: "10" },
+          { name: "同行互评", bl: "10" },
+          { name: "单位鉴定", bl: "10" },
+          { name: "学校评价", bl: "10" },
+        ],
+        synd: "",
+        thhpbfb: "",
+        xscpbfb: "",
+      },
     };
   },
   computed: {},
@@ -442,8 +380,6 @@ export default {
   created() {},
   mounted() {
     this.getOption();
-
-    this.getCode("dmxbm");
     this.getCode("dmpyccm");
   },
   created() {
@@ -452,40 +388,54 @@ export default {
   },
 
   methods: {
-    Updata() {},
+    upTime() {
+      updateTime({ nd: this.ndval }).then((res) => {
+        this.time = res.errmsg;
+      });
+    },
+    Updata() {
+      updateList({ nd: this.ndval }).then((res) => {
+        this.$message.success(res.errmsg);
+        this.upTime();
+      });
+    },
     Setting() {
-      this.showSet = true;
       getFdycpZhcpSz({ nd: this.ndval }).then((res) => {
-        this.mkList[0].value = res.data.xscpbl;
-        this.mkList[1].value = res.data.thhpbl;
-        this.mkList[2].value = res.data.dwjdbl;
-        this.mkList[3].value = res.data.xxpjbl;
-        this.synd = res.data.nd;
-        this.xscpbfb = res.data.xscpbfb;
-        this.thhpbfb = res.data.thhpbfb;
+        this.settingId = res.data?.id;
+        this.formEdit.mkList[0].bl = res.data?.xscpbl;
+        this.formEdit.mkList[1].bl = res.data?.thhpbl;
+        this.formEdit.mkList[2].bl = res.data?.dwjdbl;
+        this.formEdit.mkList[3].bl = res.data?.xxpjbl;
+        this.$forceUpdate();
+        this.formEdit.synd = this.ndval;
+        this.formEdit.xscpbfb = res.data?.xscpbfb;
+        this.formEdit.thhpbfb = res.data?.thhpbfb;
+        this.showSet = true;
       });
     },
     setCancel() {
       this.showSet = false;
-      this.sqkfsj = [];
-      this.sfyx = "1";
     },
     setConfirm() {
-      let data = {
-        kfqjks: this.sqkfsj[0] ? this.sqkfsj[0] : "",
-        kfsjjs: this.sqkfsj[1] ? this.sqkfsj[1] : "",
-        kgzt: this.sfyx,
-
-        nd: this.ndval,
-      };
-      if (data.kfqjks == "") {
-        this.$message.error("请选择时间!");
-      } else {
-        updateKgsz(data).then((res) => {
+      var total = this.formEdit.mkList.reduce((prev, next) => {
+        return prev + Number(next.bl);
+      }, 0);
+      if (total == 100) {
+        let data = {
+          dwjdbl: this.formEdit.mkList[3].bl,
+          id: !!this.settingId ? this.settingId : "",
+          nd: this.ndval,
+          thhpbfb: this.formEdit.thhpbfb,
+          thhpbl: this.formEdit.mkList[2].bl,
+          xscpbfb: this.formEdit.xscpbfb,
+          xscpbl: this.formEdit.mkList[0].bl,
+          xxpjbl: this.formEdit.mkList[1].bl,
+        };
+        updateFdycpZhcpSz(data).then((res) => {
           this.showSet = false;
-          this.sqkfsj = [];
-          this.sfyx = "1";
         });
+      } else {
+        this.$message.error(`所有模块权重比例和应该为100%，当前为${total}%`);
       }
     },
     Export() {
@@ -507,48 +457,6 @@ export default {
         };
         deleteFdyList(data).then((res) => {
           this.getList();
-        });
-      } else {
-        this.$message.error("请至少选择一条记录");
-      }
-    },
-    getNotList() {
-      this.queryParams2.nd = this.ndval;
-      queryList(this.queryParams2)
-        .then((response) => {
-          //console.log(response);
-          if (response.errcode == "00") {
-            this.basicInfoList2 = response.data; // 根据状态码接收数据
-            this.total2 = response.totalCount; //总条数
-          }
-        })
-        .catch((err) => {
-          // this.$message.error(err.errmsg);
-        });
-    },
-    Join() {
-      this.showJoin = true;
-      this.getNotList();
-    },
-    joinCancel() {
-      this.showJoin = false;
-      this.queryParams2.xm = "";
-    },
-    joinConfirm() {
-      let ghlist = [];
-      if (this.multipleSelection2.length > 0) {
-        for (let i = 0; i < this.multipleSelection2.length; i++) {
-          ghlist.push(this.multipleSelection2[i].gh);
-        }
-        let data = {
-          ghList: ghlist,
-          nd: this.ndval,
-        };
-        checkFdyList(data).then((res) => {
-          this.getList();
-          this.showJoin = false;
-          this.queryParams2.xm = "";
-          this.multipleSelection2 = [];
         });
       } else {
         this.$message.error("请至少选择一条记录");
@@ -578,7 +486,6 @@ export default {
     },
     async getOption() {
       this.gzdwOptions = [];
-      this.ssxyOptions = [];
       getGzdw()
         .then((res) => {
           if (res.errcode == "00") {
@@ -590,35 +497,32 @@ export default {
         });
       await getGrade().then((response) => {
         // 获取年级列表数据
-        if (response.errcode == "00") {
-          this.njOptions = response.data.rows;
-          this.ndval = this.njOptions[1];
-          insertKgsz({ nd: this.ndval }).then((res) => {});
-        }
+        this.njOptions = response.data.rows;
+        this.ndval = this.njOptions[1];
       });
-
       this.getList();
-
-      // getCollege().then((response) => {
-      //   // 获取培养单位列表数据
-      //   if (response.errcode == "00") {
-      //     this.ssxyOptions = response.data.rows;
-      //   }
-      // });
+      this.upTime();
     },
     //获取数据列表
     getList() {
-      // console.log(this.select, "select");
-      this.queryParams.gh = this.select == 1 ? this.searchVal : "";
-      this.queryParams.xm = this.select == 2 ? this.searchVal : "";
-      this.queryParams.nd = this.ndval;
-      queryFdySelfEvaListNew(this.queryParams)
-        .then((response) => {
-          //console.log(response);
-          if (response.errcode == "00") {
-            this.basicInfoList = response.data; // 根据状态码接收数据
-            this.total = response.totalCount; //总条数
-          }
+      var data = {
+        xm: this.select == 2 ? this.searchVal : "",
+        gh: this.select == 1 ? this.searchVal : "",
+        pyccms: this.pyccOps.choose,
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        orderPx: this.queryParams.orderPx,
+        orderZd: this.queryParams.orderZd,
+        njs: this.nj,
+        nd: this.ndval,
+        lxs: this.category.choose,
+        dwhs: this.workPlace,
+      };
+      queryZhcpList(data)
+        .then((res) => {
+          this.basicInfoList = res.data;
+          // this.basicInfoList = response.data; // 根据状态码接收数据
+          // this.total = response.totalCount; //总条数
         })
         .catch((err) => {
           // this.$message.error(err.errmsg);
@@ -670,7 +574,6 @@ export default {
 
     // 多选
     handleSelectionChange(val) {
-      console.log("val", val);
       this.multipleSelection = val;
       this.list = [...val]; // 存储已被勾选的数据
     },
@@ -712,25 +615,10 @@ export default {
       });
     },
 
-    // 搜索查询按钮
-    searchClick() {
-      this.queryParams.pageNum = 1;
-      this.queryParams.dwhs = this.workPlace;
-      this.queryParams.lxs = this.category.choose;
-      this.queryParams.pyccms = this.pyccOps.choose;
-      this.queryParams.sfdbList = this.status.choose;
-      this.queryParams.njs = this.nj;
-      this.getList(this.queryParams);
-    },
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
-      this.searchClick();
-    },
-    changeTableSort2(column) {
-      this.queryParams2.orderZd = column.prop;
-      this.queryParams2.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
-      this.getNotList();
+      this.getList();
     },
     // // 打开导出弹窗
     // async handleExport() {

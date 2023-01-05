@@ -9,6 +9,39 @@ import request from "@/utils/request.js"
         params: query
     })
   }
+
+
+  //更新时间
+  export function updateTime(query) {
+    return request({
+        url: '/fdycpZhcp/getGxsj',
+        method: 'get',
+        params: query
+    })
+  }
+
+
+   //更新时间
+   export function updateTime(query) {
+    return request({
+        url: '/fdycpZhcp/getGxsj',
+        method: 'get',
+        params: query
+    })
+  }
+  /fdycpZhcp/printByEasyExcelDwjdList
+  
+
+  //更新列表
+  export function updateList(query) {
+    return request({
+        url: '/fdycpZhcp/updateZhcpList',
+        method: 'get',
+        params: query
+    })
+  }
+
+
   
 //综合测评list
   export function queryZhcpList(query) {
@@ -29,3 +62,13 @@ import request from "@/utils/request.js"
   }
  
  
+    
+//导出
+export function exp(query) {
+  return request({
+      url: '/fdycpZhcp/printByEasyExcelDwjdList',
+      method: 'post',
+      data: query,
+      responseType:'blob'
+  })
+}

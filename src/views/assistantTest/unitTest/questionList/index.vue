@@ -195,6 +195,9 @@ export default {
       };
       switchXscpLs(data).then((res) => {
         this.getList();
+      })
+      .catch((err) => {
+        this.getList();
       });
     },
     copyItem(item) {

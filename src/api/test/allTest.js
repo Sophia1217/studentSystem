@@ -19,17 +19,6 @@ import request from "@/utils/request.js"
         params: query
     })
   }
-
-
-   //更新时间
-   export function updateTime(query) {
-    return request({
-        url: '/fdycpZhcp/getGxsj',
-        method: 'get',
-        params: query
-    })
-  }
-  /fdycpZhcp/printByEasyExcelDwjdList
   
 
   //更新列表

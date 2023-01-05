@@ -357,7 +357,7 @@ export default {
         pyccms: [],
       },
 
-      list: [],
+      expArr: [],
       list2: [],
       sfyx: "",
       settingId: "",
@@ -446,21 +446,30 @@ export default {
     },
     exportConfirm() {
       this.showExport = false;
-      let ghlist = [];
-      if (this.multipleSelection.length > 0) {
-        for (let i = 0; i < this.multipleSelection.length; i++) {
-          ghlist.push(this.multipleSelection[i].gh);
-        }
-        let data = {
-          ghList: ghlist,
-          nd: this.ndval,
-        };
-        deleteFdyList(data).then((res) => {
-          this.getList();
-        });
-      } else {
-        this.$message.error("请至少选择一条记录");
-      }
+      var data = {
+        xm: this.select == 2 ? this.searchVal : "",
+        gh: this.select == 1 ? this.searchVal : "",
+        pyccms: this.pyccOps.choose,
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        orderPx: this.queryParams.orderPx,
+        orderZd: this.queryParams.orderZd,
+        njs: this.nj,
+        nd: this.ndval,
+        lxs: this.category.choose,
+        dwhs: this.workPlace,
+        ghList: this.expArr,
+      };
+      exp(data)
+        .then((res) => {
+          this.downloadFn(res, "综合评价列表导出.xlsx", "xlsx");
+          if (this.$store.getters.excelcount > 0) {
+            this.$message.success(
+              `已成功导出${this.$store.getters.excelcount}条数据`
+            );
+          }
+        })
+        .catch((err) => {});
     },
     ndChange() {
       this.getList();
@@ -575,7 +584,7 @@ export default {
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      this.list = [...val]; // 存储已被勾选的数据
+      this.expArr = this.multipleSelection.map((item) => item.gh);
     },
     handleSelectionChange2(val) {
       this.multipleSelection2 = val;
@@ -620,52 +629,6 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
       this.getList();
     },
-    // // 打开导出弹窗
-    // async handleExport() {
-    //   if (this.multipleSelection.length > 0) {
-    //     this.len = this.multipleSelection.length;
-    //   } else {
-    //     let data = {
-    //       gh: this.select == 1 ? this.searchVal : "",
-    //       xm: this.select == 2 ? this.searchVal : "",
-    //       dwmcList: this.workPlace,
-    //       genderList: this.pyccOps.choose,
-    //       sfdbList: this.status.choose,
-    //       lbList: this.category.choose,
-    //     };
-    //     this.exportParams = data;
-    //     await fdyList(data)
-    //       .then((res) => {
-    //         this.len = res.count;
-    //       })
-    //       .catch((err) => {});
-    //   }
-    //   if (this.len > 0) {
-    //     this.showExport = true;
-    //   } else {
-    //     this.$message.warning("当前无数据导出");
-    //   }
-
-    //   this.title = "导出";
-    // },
-    // // 导出取消
-    // handleCancel() {
-    //   this.showExport = false;
-    // },
-    // // 导出确认
-    // handleConfirm() {
-    //   var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
-
-    //   var exportParams = this.queryParams;
-    //   exportParams.pageSize = 0;
-    //   this.$set(exportParams, "ghList", arr);
-
-    //   outAssistant(exportParams)
-    //     .then((res) => this.downloadFn(res, "辅导员任命导出", "xlsx"))
-    //     .catch((err) => {});
-
-    //   this.showExport = false;
-    // },
   },
 };
 </script>

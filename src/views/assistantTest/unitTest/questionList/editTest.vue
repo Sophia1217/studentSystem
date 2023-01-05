@@ -456,7 +456,9 @@ export default {
           });
         }
       }
-      updown(data).then((res) => {});
+      updown(data).then((res) => {
+        this.$message.success("顺序已更新");
+      });
       // let res = data.map((obj, index) => {
       //   return Object.assign({}, { id: "", tmId: obj.id, wjId: this.routeId });
       // });
@@ -477,7 +479,9 @@ export default {
           });
         }
       }
-      updown(data).then((res) => {});
+      updown(data).then((res) => {
+        this.$message.success("顺序已更新");
+      });
     },
     jia(row, index, ind) {
       var data = {

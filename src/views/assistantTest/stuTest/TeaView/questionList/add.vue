@@ -301,9 +301,25 @@
               label="序号"
               width="50"
             ></el-table-column>
-            <el-table-column prop="tmName" label="题目" width="680">
+            <el-table-column prop="tmName" label="题目" width="630">
             </el-table-column>
             <el-table-column prop="tmFz" label="分值"> </el-table-column>
+            <el-table-column label="上移下移" align="center">
+              <template slot-scope="scope">
+                <div style="margin-bottom: 20px">
+                  <i
+                    v-if="scope.$index !== 0"
+                    class="icon shangyi"
+                    @click="shangyi(scope.$index, scope.row, i)"
+                  ></i>
+                  <i
+                    v-if="scope.$index !== item.childs.length - 1"
+                    class="icon xiayi"
+                    @click="xiayi(scope.$index, scope.row, i)"
+                  ></i>
+                </div>
+              </template>
+            </el-table-column>
             <el-table-column fixed="right" label="操作" width="140">
               <template slot-scope="scope">
                 <el-button
@@ -321,7 +337,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="preCancel">取 消</el-button>
-        <el-button @click="openModal" class="greenbtn">生成问卷</el-button>
+        <el-button @click="openModal(2)" class="greenbtn">生成问卷</el-button>
       </span>
     </el-dialog>
     <el-dialog
@@ -373,7 +389,7 @@
       "
     >
       <div @click="yulan" class="whitebtn" style="margin-right: 10px">预览</div>
-      <div @click="openModal" class="greenbtn">生成问卷</div>
+      <div @click="openModal(1)" class="greenbtn">生成问卷</div>
     </div>
   </div>
 </template>
@@ -388,6 +404,7 @@ export default {
   components: { CheckboxCom },
   data() {
     return {
+      scType: 1,
       scModal: false,
       rules: {
         wjName: [
@@ -494,6 +511,38 @@ export default {
     this.handleSearch();
   },
   methods: {
+    shangyi(index, row, ind) {
+      const upDate = this.previewArr[ind].childs[index - 1];
+      this.previewArr[ind].childs.splice(index - 1, 1);
+      this.previewArr[ind].childs.splice(index, 0, upDate);
+      var data = [];
+      for (var x = 0; x < this.previewArr.length; x++) {
+        for (var y = 0; y < this.previewArr[x].childs.length; y++) {
+          data.push({
+            // id: "",
+            // wjId: this.routeId,
+            tmId: this.previewArr[x].childs[y].id,
+          });
+        }
+      }
+      // updown(data).then((res) => {});
+    },
+    xiayi(index, row, ind) {
+      const downDate = this.previewArr[ind].childs[index + 1];
+      this.previewArr[ind].childs.splice(index + 1, 1);
+      this.previewArr[ind].childs.splice(index, 0, downDate);
+      var data = [];
+      for (var x = 0; x < this.previewArr.length; x++) {
+        for (var y = 0; y < this.previewArr[x].childs.length; y++) {
+          data.push({
+            // id: "",
+            tmId: this.previewArr[x].childs[y].id,
+            // wjId: this.routeId,
+          });
+        }
+      }
+      // updown(data).then((res) => {});
+    },
     rowDrop() {
       // // 要侦听拖拽响应的DOM对象
       let bodyNode = document.querySelector(".el-table__body-wrapper tbody");
@@ -523,12 +572,14 @@ export default {
         // },
       });
     },
-    openModal() {
+    openModal(item) {
       if (!this.checkForm()) {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
         if (this.tableData1.length > 0) {
+          //判断是外面的列表还是预览里面的  外层是1  预览是2
+          this.scType = item;
           this.scModal = true;
         } else {
           this.$message.warning("暂未选择题目加入问卷");
@@ -666,7 +717,17 @@ export default {
     },
     scWj() {
       var arr = [];
-      arr = this.tableData1.map((item) => item.id);
+      if (this.scType == 1) {
+        arr = this.tableData1.map((item) => item.id);
+      } else {
+        for (var x = 0; x < this.previewArr.length; x++) {
+          for (var y = 0; y < this.previewArr[x].childs.length; y++) {
+            arr.push({
+              tmId: this.previewArr[x].childs[y].id,
+            });
+          }
+        }
+      }
       var data = {
         tmIdList: arr, //题目Id数组
         wjCount: this.tableData1.length,
@@ -831,6 +892,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.xiayi {
+  margin-top: 9px;
+  background: url("~@/assets/images/xiayi.png") no-repeat;
+}
+
+.shangyi {
+  margin-top: 9px;
+  background: url("~@/assets/images/shangyi.png") no-repeat;
+}
 .father_box {
   height: 50px;
   align-items: center;

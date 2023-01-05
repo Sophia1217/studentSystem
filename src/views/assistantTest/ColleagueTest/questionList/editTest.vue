@@ -332,9 +332,26 @@
               label="序号"
               width="50"
             ></el-table-column>
-            <el-table-column prop="tmName" label="题目" width="680">
+            <el-table-column prop="tmName" label="题目" width="630">
             </el-table-column>
             <el-table-column prop="tmFz" label="分值"> </el-table-column>
+            <el-table-column prop="tmFz" label="分值"> </el-table-column>
+            <el-table-column label="上移下移" align="center">
+              <template slot-scope="scope">
+                <div style="margin-bottom: 20px">
+                  <i
+                    v-if="scope.$index !== 0"
+                    class="icon shangyi"
+                    @click="shangyi(scope.$index, scope.row, i)"
+                  ></i>
+                  <i
+                    v-if="scope.$index !== item.childs.length - 1"
+                    class="icon xiayi"
+                    @click="xiayi(scope.$index, scope.row, i)"
+                  ></i>
+                </div>
+              </template>
+            </el-table-column>
             <el-table-column fixed="right" label="操作" width="140">
               <template slot-scope="scope">
                 <el-button
@@ -406,6 +423,7 @@ import {
   listDetail,
   YICHU,
   JIARU,
+  updown,
 } from "@/api/test/testSetting";
 import { getGrade } from "@/api/class/maintenanceClass";
 export default {
@@ -527,6 +545,44 @@ export default {
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   methods: {
+    shangyi(index, row, ind) {
+      const upDate = this.previewArr[ind].childs[index - 1];
+      this.previewArr[ind].childs.splice(index - 1, 1);
+      this.previewArr[ind].childs.splice(index, 0, upDate);
+      var data = [];
+      for (var x = 0; x < this.previewArr.length; x++) {
+        for (var y = 0; y < this.previewArr[x].childs.length; y++) {
+          data.push({
+            id: "",
+            wjId: this.routeId,
+            tmId: this.previewArr[x].childs[y].id,
+          });
+        }
+      }
+      updown(data).then((res) => {
+        this.yjr();
+        this.$message.success("顺序已更新");
+      });
+    },
+    xiayi(index, row, ind) {
+      const downDate = this.previewArr[ind].childs[index + 1];
+      this.previewArr[ind].childs.splice(index + 1, 1);
+      this.previewArr[ind].childs.splice(index, 0, downDate);
+      var data = [];
+      for (var x = 0; x < this.previewArr.length; x++) {
+        for (var y = 0; y < this.previewArr[x].childs.length; y++) {
+          data.push({
+            id: "",
+            tmId: this.previewArr[x].childs[y].id,
+            wjId: this.routeId,
+          });
+        }
+      }
+      updown(data).then((res) => {
+        this.yjr();
+        this.$message.success("顺序已更新");
+      });
+    },
     openModal() {
       if (!this.checkForm()) {
         this.$message.error("请完善表单相关信息！");
@@ -846,6 +902,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.xiayi {
+  margin-top: 9px;
+  background: url("~@/assets/images/xiayi.png") no-repeat;
+}
+
+.shangyi {
+  margin-top: 9px;
+  background: url("~@/assets/images/shangyi.png") no-repeat;
+}
 .scopeIncon {
   display: inline-block;
   width: 20px;

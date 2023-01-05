@@ -443,7 +443,9 @@ export default {
           });
         }
       }
-      updown(data).then((res) => {});
+      updown(data).then((res) => {
+        this.$message.success("顺序已更新");
+      });
     },
     // 下移
     xiayi(index, row, ind) {
@@ -460,7 +462,9 @@ export default {
           });
         }
       }
-      updown(data).then((res) => {});
+      updown(data).then((res) => {
+        this.$message.success("顺序已更新");
+      });
     },
     jia(row, index, ind) {
       var data = {

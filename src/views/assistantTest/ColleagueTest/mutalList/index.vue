@@ -16,7 +16,6 @@
           ref="multipleTable"
           :data="basicInfoList"
           style="width: 100%"
-          :default-sort="{ prop: 'gh', order: 'ascending' }"
           @selection-change="handleSelectionChange"
           @sort-change="changeTableSort"
         >
@@ -181,6 +180,10 @@ export default {
     },
     //排序
     changeTableSort(column) {
+      console.log("column", column);
+      if (column.prop == "pyccmc") {
+        column.prop = "sxpycc";
+      }
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
       this.getList();

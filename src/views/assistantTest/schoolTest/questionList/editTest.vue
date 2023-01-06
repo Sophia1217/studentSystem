@@ -68,26 +68,6 @@
           <div style="margin-top: 10px">
             <div class="father_box" style="font-size: bolder">
               <div>{{ item.mk }}</div>
-              <div class="right_box">
-                <span
-                  class="title whitebtn"
-                  @click="
-                    (item) => {
-                      delList(item, ind);
-                    }
-                  "
-                  >删除</span
-                >
-                <span
-                  class="title greenbtn"
-                  @click="
-                    (item) => {
-                      xinzeng(item, ind);
-                    }
-                  "
-                  >新增</span
-                >
-              </div>
             </div>
           </div>
           <el-row :gutter="20">

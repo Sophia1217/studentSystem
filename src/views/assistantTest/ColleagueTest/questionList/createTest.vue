@@ -589,6 +589,7 @@ export default {
         return;
       } else {
         if (this.tableData1.length > 0) {
+          this.scType = item;
           this.scModal = true;
         } else {
           this.$message.warning("暂未选择题目加入问卷");
@@ -731,9 +732,7 @@ export default {
       } else {
         for (var x = 0; x < this.previewArr.length; x++) {
           for (var y = 0; y < this.previewArr[x].childs.length; y++) {
-            arr.push({
-              tmId: this.previewArr[x].childs[y].id,
-            });
+            arr.push(this.previewArr[x].childs[y].id);
           }
         }
       }

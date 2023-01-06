@@ -44,15 +44,26 @@
             </el-table-column>
             <el-table-column prop="xxFz" label="分数" min-width="100">
               <template slot-scope="{row}">
-                <el-input-number
-                  v-model="row.fdycpTmxxjg.xxFz"
-                  controls-position="right"
-                  width="100px"
-                  :max="row.fdycpTm.maxFz"
-                  @keydown.native="channelInputLimit"
-                ></el-input-number>
-              <!-- @blur="alterClassName($event, row)"
-                @keyup.enter.native="alterClassName($event, row)" -->
+                <div v-if="row.fdycpTm.maxFz < 0">
+                  <el-input-number
+                    v-model="row.fdycpTmxxjg.xxFz"
+                    controls-position="right"
+                    width="100px"
+                    :min="row.fdycpTm.maxFz"
+                    :max="0"
+                    @keydown.native="channelInputLimit"
+                  ></el-input-number>
+                </div>
+                <div v-else>
+                  <el-input-number
+                    v-model="row.fdycpTmxxjg.xxFz"
+                    controls-position="right"
+                    width="100px"
+                    :max="row.fdycpTm.maxFz"
+                    :min="0"
+                    @keydown.native="channelInputLimit"
+                  ></el-input-number>
+                </div>
               </template>
           </el-table-column>
           </el-table>
@@ -131,7 +142,7 @@ export default {
           for(var x=0;x<this.mkList.length;x++){
             for( var y=0;y<this.mkList[x].fdycpTmJgResList.length;y++){
               this.mkList[x].fdycpTmJgResList[y].fdycpTm.maxFz = Number(this.mkList[x].fdycpTmJgResList[y].fdycpTm.tmFz);
-              console.log("maxFz",this.mkList[0].fdycpTmJgResList[0].fdycpTm.maxFz);
+              console.log("maxFz",this.mkList[1].fdycpTmJgResList[0].fdycpTm.maxFz);
             }
           }
         })

@@ -82,6 +82,14 @@
         >
       </span>
     </el-dialog>
+    <el-dialog title="提示" :visible.sync="showClose" width="30%"  :close-on-click-modal="false">
+      <span>当前问卷已关闭！</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" class="confirm" @click="handleClose"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -93,6 +101,7 @@ export default {
     return {
       AUTHFLAG: false,
       showSubmit:false,
+      showClose:false,
       rules: {
         ghContent: [
           { required: true, message: "工号不能为空", trigger: "blur" },
@@ -115,7 +124,8 @@ export default {
         wjDy:"",
         wjYear:"",
         xghBpcr: this.$route.query.gh,//被测评人,
-        xghDtr: this.$store.getters.userId
+        xghDtr: this.$store.getters.userId,
+        sfyx:"",
       },
     };
   },
@@ -144,6 +154,9 @@ export default {
               this.mkList[x].fdycpTmJgResList[y].fdycpTm.maxFz = Number(this.mkList[x].fdycpTmJgResList[y].fdycpTm.tmFz);
               console.log("maxFz",this.mkList[1].fdycpTmJgResList[0].fdycpTm.maxFz);
             }
+          }
+          if(this.form.sfyx == '1'){
+            this.showClose = true;
           }
         })
         .catch((err) => {
@@ -178,6 +191,11 @@ export default {
           this.$router.go(-1);
         })
         .catch((err) => {});
+    },
+    //关闭提示
+    handleClose(){
+      // this.showClose = false;
+      this.$router.go(-1);
     },
   },
 };

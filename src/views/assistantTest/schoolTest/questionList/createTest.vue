@@ -169,7 +169,8 @@
     >
       <div>
         <h3 style="margin-left: 25px; font-weight: 700">
-          确认生成名称为{{ form.wjName }}的问卷，分数为 {{ totalFZ }}分？
+          确认生成名称为{{ form.wjName }}的问卷? 加分项有{{ jialen }}题，加分为
+          {{ jiafen }}分; 减分项有{{ jianlen }}题，减分为 {{ jianfen }}分;
         </h3>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -341,6 +342,10 @@ export default {
         ],
       },
       totalFZ: 0,
+      jiafen: 0,
+      jialen: 0,
+      jianfen: 0,
+      jianlen: 0,
       AUTHFLAG: false,
     };
   },
@@ -387,9 +392,13 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        this.totalFZ = this.formAdd.dwXxWjTmList.reduce((prev, next) => {
-          return prev + Number(next.total);
-        }, 0);
+        this.jiafen = this.formAdd.dwXxWjTmList[0].total;
+        this.jialen = this.formAdd.dwXxWjTmList[0].tmxxList.length;
+        this.jianfen = 0 - this.formAdd.dwXxWjTmList[1].total;
+        this.jianlen = this.formAdd.dwXxWjTmList[1].tmxxList.length;
+        // this.totalFZ = this.formAdd.dwXxWjTmList.reduce((prev, next) => {
+        //   return prev + Number(next.total);
+        // }, 0);
         this.scModal = true;
       }
     },

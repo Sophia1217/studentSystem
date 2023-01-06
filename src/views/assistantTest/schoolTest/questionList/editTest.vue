@@ -191,7 +191,8 @@
     >
       <div>
         <h3 style="margin-left: 25px; font-weight: 700">
-          确认生成名称为{{ form.wjName }}的问卷，分数为 {{ totalFZ }}分？
+          确认生成名称为{{ form.wjName }}的问卷，加分项有{{ jialen }}题，加分为
+          {{ jiafen }}分; 减分项有{{ jianlen }}题，减分为 {{ jianfen }}分;
         </h3>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -300,6 +301,10 @@ export default {
       len: 0,
       AUTHFLAG: false,
       list: [],
+      jiafen: 0,
+      jialen: 0,
+      jianfen: 0,
+      jianlen: 0,
     };
   },
   mounted() {
@@ -535,16 +540,20 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        var arr = [];
-        for (var x = 0; x < this.formEdit.listArr.length; x++) {
-          for (var y = 0; y < this.formEdit.listArr[x].childs.length; y++) {
-            arr.push(this.formEdit.listArr[x].childs[y]);
-          }
-        }
-        this.len = arr.length;
-        this.totalFZ = arr.reduce((prev, next) => {
-          return prev + Number(next.tmFz);
-        }, 0);
+        this.jiafen = this.formEdit.listArr[0].childs.total;
+        this.jialen = this.formEdit.listArr[0].childs.length;
+        this.jianfen = 0 - this.formEdit.listArr[1].childs.total;
+        this.jianlen = this.formEdit.listArr[1].childs.length;
+        // var arr = [];
+        // for (var x = 0; x < this.formEdit.listArr.length; x++) {
+        //   for (var y = 0; y < this.formEdit.listArr[x].childs.length; y++) {
+        //     arr.push(this.formEdit.listArr[x].childs[y]);
+        //   }
+        // }
+        // this.len = arr.length;
+        // this.totalFZ = arr.reduce((prev, next) => {
+        //   return prev + Number(next.tmFz);
+        // }, 0);
         this.scModal = true;
       }
     },

@@ -177,9 +177,14 @@
     </div>
 
     <!-- 设置对话框 -->
-    <el-dialog title="设置" :visible.sync="showSet" width="30%">
+    <el-dialog
+      title="设置"
+      :visible.sync="showSet"
+      width="40%"
+      :close-on-click-modal="false"
+    >
       <div class="form" style="margin: 20px">
-        <el-form>
+        <el-form :model="formEdit" ref="formEdit" :rules="rules">
           <div class="formtop">
             <el-row :gutter="20">
               <el-col :span="12"><el-form-item label="结果运用设置" /></el-col>
@@ -194,12 +199,17 @@
                 <el-table-column prop="name" label="模块名称" />
                 <el-table-column label="权重比例（百分比）">
                   <template slot-scope="scope">
-                    <el-input-number
-                      :controls="false"
-                      v-model="scope.row.bl"
-                      :min="0"
-                      :max="100"
-                    />
+                    <el-form-item
+                      :prop="`mkList.${scope.$index}.bl`"
+                      :rules="rules.qzbl"
+                    >
+                      <el-input-number
+                        :controls="false"
+                        v-model="scope.row.bl"
+                        :min="0"
+                        :max="100"
+                      />
+                    </el-form-item>
                   </template>
                 </el-table-column>
               </el-table>
@@ -258,15 +268,6 @@
 <script>
 import CheckboxCom from "../../components/checkboxCom";
 import { lookDetail, getGzdw } from "@/api/politicalWork/assistantappoint";
-import {
-  queryList,
-  queryFdySelfEvaListNew,
-  checkFdyList,
-  deleteFdyList,
-  updateKgsz,
-  getKgsz,
-  insertKgsz,
-} from "@/api/test/fdySelfTest";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getGrade } from "@/api/assistantWork/listen";
@@ -285,6 +286,43 @@ export default {
   props: [],
   data() {
     return {
+      rules: {
+        qzbl: [
+          {
+            required: true,
+            message: "权重比例不能为空",
+            trigger: "blur",
+          },
+        ],
+        xscp: [
+          {
+            required: true,
+            message: "学生测评权重比例不能为空",
+            trigger: "blur",
+          },
+        ],
+        thcp: [
+          {
+            required: true,
+            message: "同行互评权重比例不能为空",
+            trigger: "blur",
+          },
+        ],
+        dwjd: [
+          {
+            required: true,
+            message: "单位鉴定权重比例不能为空",
+            trigger: "blur",
+          },
+        ],
+        xxpj: [
+          {
+            required: true,
+            message: "学校评价权重比例不能为空",
+            trigger: "blur",
+          },
+        ],
+      },
       // // 总条数
       total: 0,
       total2: 0,
@@ -414,28 +452,34 @@ export default {
       });
     },
     setCancel() {
+      this.$refs.formEdit.clearValidate();
       this.showSet = false;
     },
     setConfirm() {
-      var total = this.formEdit.mkList.reduce((prev, next) => {
-        return prev + Number(next.bl);
-      }, 0);
-      if (total == 100) {
-        let data = {
-          dwjdbl: this.formEdit.mkList[3].bl,
-          id: !!this.settingId ? this.settingId : "",
-          nd: this.ndval,
-          thhpbfb: this.formEdit.thhpbfb,
-          thhpbl: this.formEdit.mkList[2].bl,
-          xscpbfb: this.formEdit.xscpbfb,
-          xscpbl: this.formEdit.mkList[0].bl,
-          xxpjbl: this.formEdit.mkList[1].bl,
-        };
-        updateFdycpZhcpSz(data).then((res) => {
-          this.showSet = false;
-        });
+      if (!this.checkForm()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
       } else {
-        this.$message.error(`所有模块权重比例和应该为100%，当前为${total}%`);
+        var total = this.formEdit.mkList.reduce((prev, next) => {
+          return prev + Number(next.bl);
+        }, 0);
+        if (total == 100) {
+          let data = {
+            dwjdbl: this.formEdit.mkList[3].bl ? this.formEdit.mkList[3].bl : 0,
+            id: !!this.settingId ? this.settingId : "",
+            nd: this.ndval,
+            thhpbfb: this.formEdit.thhpbfb ? this.formEdit.thhpbfb : 0,
+            thhpbl: this.formEdit.mkList[2].bl ? this.formEdit.mkList[2].bl : 0,
+            xscpbfb: this.formEdit.xscpbfb ? this.formEdit.xscpbfb : 0,
+            xscpbl: this.formEdit.mkList[0].bl ? this.formEdit.mkList[0].bl : 0,
+            xxpjbl: this.formEdit.mkList[1].bl ? this.formEdit.mkList[1].bl : 0,
+          };
+          updateFdycpZhcpSz(data).then((res) => {
+            this.showSet = false;
+          });
+        } else {
+          this.$message.error(`所有模块权重比例和应该为100%，当前为${total}%`);
+        }
       }
     },
     Export() {
@@ -589,6 +633,17 @@ export default {
     handleSelectionChange2(val) {
       this.multipleSelection2 = val;
       this.list2 = [...val]; // 存储已被勾选的数据
+    },
+    checkForm() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formEdit.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
     },
     //状态全选
     handleCheckAllStatusChange(val) {

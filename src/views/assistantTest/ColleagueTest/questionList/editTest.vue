@@ -827,6 +827,7 @@ export default {
           this.form.wjNj = res.data.wjNj;
           this.form.tmYear = res.data.wjYear;
           this.form.tmPycc = res.data.wjPycc;
+          this.form.wjTnjps = res.data.wjTnjps;
           this.tableData1 = res.data.tmList;
           this.queryParams1.total = res.data.tmList.length;
           this.totalFZ = this.tableData1.reduce((prev, next) => {

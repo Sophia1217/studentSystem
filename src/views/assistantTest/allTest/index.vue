@@ -476,6 +476,7 @@ export default {
           };
           updateFdycpZhcpSz(data).then((res) => {
             this.showSet = false;
+            this.getList();
           });
         } else {
           this.$message.error(`所有模块权重比例和应该为100%，当前为${total}%`);

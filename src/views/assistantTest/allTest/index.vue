@@ -469,10 +469,10 @@ export default {
             id: !!this.settingId ? this.settingId : "",
             nd: this.ndval,
             thhpbfb: this.formEdit.thhpbfb ? this.formEdit.thhpbfb : 0,
-            thhpbl: this.formEdit.mkList[2].bl ? this.formEdit.mkList[2].bl : 0,
+            thhpbl: this.formEdit.mkList[1].bl ? this.formEdit.mkList[1].bl : 0,
             xscpbfb: this.formEdit.xscpbfb ? this.formEdit.xscpbfb : 0,
             xscpbl: this.formEdit.mkList[0].bl ? this.formEdit.mkList[0].bl : 0,
-            xxpjbl: this.formEdit.mkList[1].bl ? this.formEdit.mkList[1].bl : 0,
+            xxpjbl: this.formEdit.mkList[2].bl ? this.formEdit.mkList[2].bl : 0,
           };
           updateFdycpZhcpSz(data).then((res) => {
             this.showSet = false;

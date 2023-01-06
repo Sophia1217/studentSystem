@@ -39,7 +39,7 @@
               </el-radio-group>
             </el-form-item>
           </div>
-          <div class="answer" v-if="tm.fdycpTm.tmType == '文字题'">
+          <div class="answer" v-if="tm.fdycpTm.tmType == '文字题' && Wjjbxx.wjLy !== '2' && Wjjbxx.wjLy !== '3'">
             <el-form-item
               :prop="
                 'fdycpMkTmResList[' +

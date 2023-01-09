@@ -583,7 +583,7 @@ export default {
         },
       });
     },
-    openModal() {
+    openModal(item) {
       if (!this.checkForm()) {
         this.$message.error("请完善表单相关信息！");
         return;

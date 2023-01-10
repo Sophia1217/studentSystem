@@ -41,7 +41,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" class="confirm" @click="handleCloseDia"
-          >取 消</el-button
+          >关 闭</el-button
         >
       </span>
     </el-dialog>

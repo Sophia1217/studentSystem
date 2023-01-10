@@ -123,10 +123,8 @@ export default {
       list: [],
       exportParams: {},
       tableDetails: [],
-      info: {},
+      info: { ywcRs: "0", wwcRs: "0" },
       detailModal: false,
-
-      info: {},
     };
   },
   computed: {},
@@ -135,7 +133,7 @@ export default {
   mounted() {
     this.authConfirm(this.$route.path.split("/")[2]);
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
-    this.getRs();
+    // this.getRs();
     this.getList(this.queryParams);
   },
 
@@ -146,6 +144,7 @@ export default {
         .then((response) => {
           this.basicInfoList = response.data; // 根据状态码接收数据
           this.total = response.totalCount; //总条数
+          this.getRs();
         })
         .catch((err) => {});
     },
@@ -170,7 +169,7 @@ export default {
     //点击详情
     hadleDetail(row) {
       this.$router.push({
-        path: "/assistantTest/ColleagueTest/mutualDetail",
+        path: "/assistantTest/schoolTest/viewTest",
         query: {
           id: row.wjId,
           sfwc: "0",

@@ -185,7 +185,7 @@ export default {
     },
     yulan(item) {
       this.$router.push({
-        path: "/assistantTest/schoolTest/viewTest",
+        path: "/assistantTest/viewTest",
         query: {
           id: item.id,
           sfwc: "1",

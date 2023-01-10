@@ -169,7 +169,7 @@ export default {
     //点击详情
     hadleDetail(row) {
       this.$router.push({
-        path: "/assistantTest/schoolTest/viewTest",
+        path: "/assistantTest/viewTest",
         query: {
           id: row.wjId,
           sfwc: "0",

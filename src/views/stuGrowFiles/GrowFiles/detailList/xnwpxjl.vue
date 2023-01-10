@@ -210,7 +210,11 @@
       >
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
-            <el-table-column label="培训项目名称" align="center">
+            <el-table-column
+              label="培训项目名称"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.pxxmmc'"
@@ -607,9 +611,7 @@ export default {
             trigger: "blur",
           },
         ],
-        dwh: [
-          { required: true, message: "组织单位不能为空", trigger: "change" },
-        ],
+        dwh: [{ required: true, message: "组织单位不能为空", trigger: "blur" }],
         zxs: [{ required: true, message: "总学时不能为空", trigger: "blur" }],
         xz: [{ required: true, message: "性质不能为空", trigger: "blur" }],
 
@@ -642,6 +644,12 @@ export default {
   },
 
   methods: {
+    // addRedStar(h, { column }) {
+    //   return [
+    //     h("span", { style: "color: red" }, "*"),
+    //     h("span", " " + column.label),
+    //   ];
+    // },
     // 判断 开始时间 结束时间
     // 时间开始选择器
     startTimeStatus(row) {

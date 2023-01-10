@@ -2,6 +2,16 @@ import { parseTime } from './ruoyi'
 import { blobValidate } from "@/utils/ruoyi";
 import errorCode from '@/utils/errorCode'
 
+/**
+ * 表格时间格式化
+ */
+export function  addRedStar(h, { column }) {
+  return [
+    h("span", { style: "color: red" }, "*"),
+    h("span", " " + column.label),
+  ];
+}
+
 
 /**
  * 表格时间格式化

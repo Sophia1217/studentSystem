@@ -169,23 +169,24 @@ export default {
       });
     },
     downTest(item) {
-      if(item.sfyx == 1){//开关为关
+      if (item.sfyx == 1) {
+        //开关为关
         this.$router.push({
           path: "/assistantTest/ColleagueTest/mutualDownTest",
           query: {
             id: item.id,
-            wjName:item.wjName,
-            wjFz:item.wjFz,
-            wjCount:item.wjCount,
+            wjName: item.wjName,
+            wjFz: item.wjFz,
+            wjCount: item.wjCount,
           },
         });
-      } else{
-        this.$message.warning("请在问卷结束后查看分析结果!")
-      };
+      } else {
+        this.$message.warning("请在问卷结束后查看分析结果!");
+      }
     },
     yulan(item) {
       this.$router.push({
-        path: "/assistantTest/ColleagueTest/mutualDetail",
+        path: "/assistantTest/schoolTest/viewTest",
         query: {
           id: item.id,
           sfwc: "1",

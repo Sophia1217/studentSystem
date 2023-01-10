@@ -162,7 +162,7 @@ export default {
     },
     yulan(item) {
       this.$router.push({
-        path: "/assistantTest/ColleagueTest/mutualDetail",
+        path: "/assistantTest/schoolTest/viewTest",
         query: {
           id: item.id,
           sfwc: "1",

@@ -162,7 +162,7 @@ export default {
     },
     yulan(item) {
       this.$router.push({
-        path: "/assistantTest/ColleagueTest/mutualDetail",
+        path: "/assistantTest/schoolTest/viewTest",
         query: {
           id: item.id,
           sfwc: "1",
@@ -207,13 +207,14 @@ export default {
         wjStartDate: item.sqkfsj[0],
         wjEndDate: item.sqkfsj[1],
       };
-      switchXscpLs(data).then((res) => {
-        this.$message.success("设置成功");
-        this.getList();
-      })
-      .catch((err) => {
-        this.getList();
-      });
+      switchXscpLs(data)
+        .then((res) => {
+          this.$message.success("设置成功");
+          this.getList();
+        })
+        .catch((err) => {
+          this.getList();
+        });
     },
     copyItem(item) {
       copyXscpWjLs(item.id).then((res) => {

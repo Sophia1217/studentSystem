@@ -893,6 +893,12 @@ export default {
             message: "联系电话不能为空",
             trigger: "blur",
           },
+          { min: 11, max: 11, message: "请输入11位手机号码", trigger: "blur" },
+          {
+            pattern: /^((1[3456789]\d{9}))$/,
+
+            message: "请输入正确的手机号码",
+          },
         ],
         xxdz: [
           {

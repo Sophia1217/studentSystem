@@ -156,13 +156,22 @@
       >
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
-            <el-table-column label="证书类型" align="center" width="180px">
+            <el-table-column
+              label="证书类型"
+              align="center"
+              width="180px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.zslx'"
                   :rules="rules.zslx"
                 >
-                  <el-select v-model="scope.row.zslx" placeholder="请选择">
+                  <el-select
+                    v-model="scope.row.zslx"
+                    placeholder="请选择"
+                    filterable
+                  >
                     <el-option
                       v-for="(item, index) in zslxOps"
                       :key="index"
@@ -183,7 +192,12 @@
                 </el-form-item>
               </template>
             </el-table-column> -->
-            <el-table-column label="等级" align="center" width="150px">
+            <el-table-column
+              label="等级"
+              align="center"
+              width="150px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.djm'"
@@ -200,7 +214,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="类别" align="center" width="150px">
+            <el-table-column
+              label="类别"
+              align="center"
+              width="150px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.fxlb'"
@@ -218,7 +237,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="证书编号" width="240px" align="center">
+            <el-table-column
+              label="证书编号"
+              width="240px"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.zsbh'"
@@ -228,7 +252,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="发证单位" align="center" width="180px">
+            <el-table-column
+              label="发证单位"
+              align="center"
+              width="180px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.fzdw'"
@@ -238,7 +267,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="发证时间" align="center" width="240px">
+            <el-table-column
+              label="发证时间"
+              align="center"
+              width="240px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.fzsj'"
@@ -290,13 +324,22 @@
       >
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
-            <el-table-column label="证书类型" align="center" width="180px">
+            <el-table-column
+              label="证书类型"
+              align="center"
+              width="180px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.zslx'"
                   :rules="rules.zslx"
                 >
-                  <el-select v-model="scope.row.zslx" placeholder="请选择">
+                  <el-select
+                    v-model="scope.row.zslx"
+                    placeholder="请选择"
+                    filterable
+                  >
                     <el-option
                       v-for="(item, index) in zslxOps"
                       :key="index"
@@ -317,7 +360,12 @@
                 </el-form-item>
               </template>
             </el-table-column> -->
-            <el-table-column label="等级" align="center" width="150px">
+            <el-table-column
+              label="等级"
+              align="center"
+              width="150px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.djm'"
@@ -334,7 +382,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="类别" align="center" width="150px">
+            <el-table-column
+              label="类别"
+              align="center"
+              width="150px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.fxlb'"
@@ -352,7 +405,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="证书编号" width="240px" align="center">
+            <el-table-column
+              label="证书编号"
+              width="240px"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.zsbh'"
@@ -362,7 +420,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="发证单位" align="center" width="180px">
+            <el-table-column
+              label="发证单位"
+              align="center"
+              width="180px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.fzdw'"
@@ -372,7 +435,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="发证时间" align="center" width="240px">
+            <el-table-column
+              label="发证时间"
+              align="center"
+              width="240px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.fzsj'"

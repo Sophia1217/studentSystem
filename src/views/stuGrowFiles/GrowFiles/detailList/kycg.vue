@@ -30,7 +30,7 @@
           <el-row>
             <el-col :span="24" class="rowStyle">
               <div class="wrap">
-                <div class="title">英文名</div>
+                <div class="title">论文英文名</div>
                 <div class="content">{{ ele.lwywmc }}</div>
               </div>
             </el-col>
@@ -38,13 +38,13 @@
           <el-row>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
-                <div class="title">发表刊物</div>
+                <div class="title">刊物名称</div>
                 <div class="content">{{ ele.fbkw }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
-                <div class="title">出版物类型</div>
+                <div class="title">刊物类型</div>
                 <div class="content">{{ ele.cbwlx }}</div>
               </div>
             </el-col>
@@ -52,7 +52,7 @@
           <el-row>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
-                <div class="title">署名</div>
+                <div class="title">署名顺序</div>
                 <div class="content">{{ ele.sm }}</div>
               </div>
             </el-col>
@@ -223,7 +223,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="lwzwmc">
                     <div class="wrap">
-                      <div class="title">论文名称</div>
+                      <div class="title">
+                        <span style="color: red">*</span>论文名称
+                      </div>
 
                       <div class="content">
                         <el-input
@@ -240,7 +242,7 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="lwywmc">
                     <div class="wrap">
-                      <div class="title">英文名</div>
+                      <div class="title">论文英文名</div>
                       <div class="content">
                         <el-input
                           v-model="formAddLw.lwywmc"
@@ -256,7 +258,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="fbkw">
                     <div class="wrap">
-                      <div class="title">发表刊物</div>
+                      <div class="title">
+                        <span style="color: red">*</span>刊物名称
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formAddLw.fbkw"
@@ -269,7 +273,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="cbwlx">
                     <div class="wrap">
-                      <div class="title">出版物类型</div>
+                      <div class="title">
+                        <span style="color: red">*</span>刊物类型
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formAddLw.cbwlx"
@@ -284,7 +290,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="sm">
                     <div class="wrap">
-                      <div class="title">署名</div>
+                      <div class="title">
+                        <span style="color: red">*</span>署名顺序
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formAddLw.sm"
@@ -297,7 +305,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="sllb">
                     <div class="wrap">
-                      <div class="title">收录类别</div>
+                      <div class="title">
+                        <span style="color: red">*</span>收录类别
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formAddLw.sllb"
@@ -340,7 +350,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="jq">
                     <div class="wrap">
-                      <div class="title">卷期</div>
+                      <div class="title">
+                        <span style="color: red">*</span>卷期
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formAddLw.jq"
@@ -353,7 +365,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="qzy">
                     <div class="wrap">
-                      <div class="title">起止页</div>
+                      <div class="title">
+                        <span style="color: red">*</span>起止页
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formAddLw.qzy"
@@ -368,7 +382,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="cgssdw">
                     <div class="wrap">
-                      <div class="title">成果所属单位</div>
+                      <div class="title">
+                        <span style="color: red">*</span>成果所属单位
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formAddLw.cgssdw"
@@ -381,7 +397,7 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="fbrq">
                     <div class="wrap">
-                      <div class="title">发表时间</div>
+                      <div class="title"><span style="color: red">*</span></div>
                       <div class="content">
                         <el-date-picker
                           v-model="formAddLw.fbrq"
@@ -444,7 +460,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="lwzwmc">
                     <div class="wrap">
-                      <div class="title">论文名称</div>
+                      <div class="title">
+                        <span style="color: red">*</span>论文名称
+                      </div>
 
                       <div class="content">
                         <el-input
@@ -461,7 +479,7 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="lwywmc">
                     <div class="wrap">
-                      <div class="title">英文名</div>
+                      <div class="title">论文英文名</div>
                       <div class="content">
                         <el-input
                           v-model="formEditLw.lwywmc"
@@ -477,7 +495,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="fbkw">
                     <div class="wrap">
-                      <div class="title">发表刊物</div>
+                      <div class="title">
+                        <span style="color: red">*</span>刊物名称
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formEditLw.fbkw"
@@ -490,7 +510,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="cbwlx">
                     <div class="wrap">
-                      <div class="title">出版物类型</div>
+                      <div class="title">
+                        <span style="color: red">*</span>刊物类型
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formEditLw.cbwlx"
@@ -505,7 +527,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="sm">
                     <div class="wrap">
-                      <div class="title">署名</div>
+                      <div class="title">
+                        <span style="color: red">*</span>署名顺序
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formEditLw.sm"
@@ -518,7 +542,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="sllb">
                     <div class="wrap">
-                      <div class="title">收录类别</div>
+                      <div class="title">
+                        <span style="color: red">*</span>收录类别
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formEditLw.sllb"
@@ -561,7 +587,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="jq">
                     <div class="wrap">
-                      <div class="title">卷期</div>
+                      <div class="title">
+                        <span style="color: red">*</span>卷期
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formEditLw.jq"
@@ -574,7 +602,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="qzy">
                     <div class="wrap">
-                      <div class="title">起止页</div>
+                      <div class="title">
+                        <span style="color: red">*</span>起止页
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formEditLw.qzy"
@@ -589,7 +619,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="cgssdw">
                     <div class="wrap">
-                      <div class="title">成果所属单位</div>
+                      <div class="title">
+                        <span style="color: red">*</span>成果所属单位
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formEditLw.cgssdw"
@@ -602,7 +634,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="fbrq">
                     <div class="wrap">
-                      <div class="title">发表时间</div>
+                      <div class="title">
+                        <span style="color: red">*</span>发表时间
+                      </div>
                       <div class="content">
                         <el-date-picker
                           v-model="formEditLw.fbrq"
@@ -713,20 +747,20 @@ export default {
           { required: true, message: "论文名称不能为空", trigger: "blur" },
         ],
         lwywmc: [
-          { required: true, message: "英文名不能为空", trigger: "blur" },
+          // { required: true, message: "论文英文名不能为空", trigger: "blur" },
         ],
-        sm: [{ required: true, message: "署名不能为空", trigger: "blur" }],
+        sm: [{ required: true, message: "署名顺序不能为空", trigger: "blur" }],
         jq: [{ required: true, message: "卷期不能为空", trigger: "blur" }],
         qzy: [{ required: true, message: "起止页不能为空", trigger: "blur" }],
         bm: [
-          {
-            required: true,
-            message: "版面不能为空",
-            trigger: "blur",
-          },
+          // {
+          //   required: true,
+          //   message: "版面不能为空",
+          //   trigger: "blur",
+          // },
         ],
         cbwlx: [
-          { required: true, message: "出版物类型不能为空", trigger: "blur" },
+          { required: true, message: "刊物类型不能为空", trigger: "blur" },
         ],
         cbwlxdm: [
           { required: true, message: "收录类别不能为空", trigger: "blur" },
@@ -735,7 +769,7 @@ export default {
           { required: true, message: "所属单位不能为空", trigger: "blur" },
         ],
         fbkw: [
-          { required: true, message: "发表刊物不能为空", trigger: "blur" },
+          { required: true, message: "刊物名称不能为空", trigger: "blur" },
         ],
         fbrq: [
           { required: true, message: "发表日期不能为空", trigger: "blur" },
@@ -744,11 +778,11 @@ export default {
           { required: true, message: "收录类别不能为空", trigger: "blur" },
         ],
         flh: [
-          {
-            required: true,
-            message: "分类号不能为空",
-            trigger: "blur",
-          },
+          // {
+          //   required: true,
+          //   message: "分类号不能为空",
+          //   trigger: "blur",
+          // },
         ],
       },
     };

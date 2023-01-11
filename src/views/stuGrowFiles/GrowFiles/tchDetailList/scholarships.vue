@@ -42,7 +42,7 @@
           </el-table-column>
           <el-table-column
             prop="je"
-            label="金额"
+            label="奖励金额度（元）"
             :show-overflow-tooltip="true"
             sortable="custom"
           >
@@ -51,7 +51,7 @@
           </el-table-column>
           <el-table-column
             prop="sldw"
-            label="设立单位"
+            label="设立单位或个人"
             :show-overflow-tooltip="true"
             sortable="custom"
           >
@@ -102,7 +102,11 @@
       >
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
-            <el-table-column label="奖学金名称" align="center">
+            <el-table-column
+              label="奖学金名称"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.jxjmc'"
@@ -112,7 +116,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="级别" align="center">
+            <el-table-column
+              label="级别"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.jbm'"
@@ -133,7 +141,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="等级" width="240px" align="center">
+            <el-table-column
+              label="等级"
+              width="240px"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.djm'"
@@ -154,7 +167,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="金额" align="center">
+            <el-table-column
+              label="奖励金额度（元）"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.je'"
@@ -165,7 +182,11 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="奖学金类型" align="center">
+            <el-table-column
+              label="奖学金类型"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.jxjlxm'"
@@ -186,7 +207,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="设立单位" align="center">
+            <el-table-column label="设立单位或个人" align="center">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.sldw'"
@@ -196,7 +217,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="获奖时间" width="240px" align="center">
+            <el-table-column
+              label="获奖时间"
+              width="240px"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.hjsj'"
@@ -230,7 +256,11 @@
       >
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
-            <el-table-column label="奖学金名称" align="center">
+            <el-table-column
+              label="奖学金名称"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.jxjmc'"
@@ -261,7 +291,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="等级" width="240px" align="center">
+            <el-table-column
+              label="等级"
+              width="240px"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.djm'"
@@ -282,7 +317,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="金额" align="center">
+            <el-table-column
+              label="奖励金额度（元）"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.je'"
@@ -293,7 +332,11 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="奖学金类型" align="center">
+            <el-table-column
+              label="奖学金类型"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.jxjlxm'"
@@ -314,7 +357,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="设立单位" align="center">
+            <el-table-column label="设立单位或个人" align="center">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.sldw'"
@@ -324,7 +367,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="获奖时间" width="240px" align="center">
+            <el-table-column
+              label="获奖时间"
+              width="240px"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.hjsj'"
@@ -419,12 +467,22 @@ export default {
         ],
         jbm: [{ required: true, message: "级别不能为空", trigger: "change" }],
         djm: [{ required: true, message: "等级不能为空", trigger: "change" }],
-        je: [{ required: true, message: "金额不能为空", trigger: "blur" }],
+        je: [
+          {
+            required: true,
+            message: "奖励金额度（元）不能为空",
+            trigger: "blur",
+          },
+        ],
         jxjlxm: [
           { required: true, message: "奖学金类型不能为空", trigger: "change" },
         ],
-        sldw: [
-          { required: true, message: "设立单位不能为空", trigger: "blur" },
+        jlxnd: [
+          {
+            required: true,
+            message: "奖励（学）年度不能为空",
+            trigger: "blur",
+          },
         ],
         hjsj: [
           {

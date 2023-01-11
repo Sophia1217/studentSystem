@@ -45,7 +45,7 @@
           </el-table-column>
           <el-table-column
             prop="je"
-            label="金额"
+            label="奖励金额度（元）"
             :show-overflow-tooltip="true"
             sortable="custom"
           >
@@ -54,7 +54,7 @@
           </el-table-column>
           <el-table-column
             prop="sldw"
-            label="设立单位"
+            label="设立单位或个人"
             :show-overflow-tooltip="true"
             sortable="custom"
           >
@@ -140,7 +140,11 @@
       >
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
-            <el-table-column label="奖学金名称" align="center">
+            <el-table-column
+              label="奖学金名称"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.jxjmc'"
@@ -150,7 +154,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="级别" align="center">
+            <el-table-column
+              label="级别"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.jbm'"
@@ -171,7 +179,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="等级" width="240px" align="center">
+            <el-table-column
+              label="等级"
+              width="240px"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.djm'"
@@ -192,7 +205,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="金额" align="center">
+            <el-table-column
+              label="奖励金额度（元）"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.je'"
@@ -203,7 +220,11 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="奖学金类型" align="center">
+            <el-table-column
+              label="奖学金类型"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.jxjlxm'"
@@ -224,7 +245,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="设立单位" align="center">
+            <el-table-column label="设立单位或个人" align="center">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.sldw'"
@@ -234,7 +255,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="获奖时间" width="240px" align="center">
+            <el-table-column
+              label="获奖时间"
+              width="240px"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.hjsj'"
@@ -249,6 +275,23 @@
                   >
                   </el-date-picker>
                 </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="附件" width="360px">
+              <template slot-scope="scope">
+                <el-upload
+                  action="#"
+                  multiple
+                  class="el-upload"
+                  :auto-upload="false"
+                  ref="upload"
+                  :file-list="scope.row.files"
+                  :on-change="fileChange"
+                  accept=".pdf,.jpg"
+                  :before-remove="beforeRemove"
+                >
+                  <el-button size="small" type="primary">点击上传</el-button>
+                </el-upload>
               </template>
             </el-table-column>
           </el-table>
@@ -268,7 +311,11 @@
       >
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
-            <el-table-column label="奖学金名称" align="center">
+            <el-table-column
+              label="奖学金名称"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.jxjmc'"
@@ -299,7 +346,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="等级" width="240px" align="center">
+            <el-table-column
+              label="等级"
+              width="240px"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.djm'"
@@ -320,7 +372,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="金额" align="center">
+            <el-table-column
+              label="奖励金额度（元）"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.je'"
@@ -331,7 +387,11 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="奖学金类型" align="center">
+            <el-table-column
+              label="奖学金类型"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.jxjlxm'"
@@ -352,7 +412,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="设立单位" align="center">
+            <el-table-column label="设立单位或个人" align="center">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.sldw'"
@@ -362,7 +422,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="获奖时间" width="240px" align="center">
+            <el-table-column
+              label="获奖时间"
+              width="240px"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.hjsj'"
@@ -377,6 +442,23 @@
                   >
                   </el-date-picker>
                 </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="附件" width="450">
+              <template slot-scope="scope">
+                <el-upload
+                  action="#"
+                  multiple
+                  class="el-upload"
+                  accept=".pdf,.jpg"
+                  :auto-upload="false"
+                  ref="upload"
+                  :file-list="scope.row.fileList"
+                  :on-change="fileChange"
+                  :before-remove="beforeRemove"
+                >
+                  <el-button size="small" type="primary">点击上传</el-button>
+                </el-upload>
               </template>
             </el-table-column>
           </el-table>
@@ -463,6 +545,8 @@ export default {
       jbmOps: [],
       djmOps: [],
       jxjlxmOps: [],
+      fileList: [],
+      fileListAdd: [],
       val: [],
       url: "",
       rules: {
@@ -475,12 +559,22 @@ export default {
         ],
         jbm: [{ required: true, message: "级别不能为空", trigger: "change" }],
         djm: [{ required: true, message: "等级不能为空", trigger: "change" }],
-        je: [{ required: true, message: "金额不能为空", trigger: "blur" }],
+        je: [
+          {
+            required: true,
+            message: "奖励金额度（元）不能为空",
+            trigger: "blur",
+          },
+        ],
         jxjlxm: [
           { required: true, message: "奖学金类型不能为空", trigger: "change" },
         ],
-        sldw: [
-          { required: true, message: "设立单位不能为空", trigger: "blur" },
+        jlxnd: [
+          {
+            required: true,
+            message: "奖励（学）年度不能为空",
+            trigger: "blur",
+          },
         ],
         hjsj: [
           {
@@ -625,9 +719,39 @@ export default {
       this.val = val;
       this.delArr = val.map((item) => item.id);
     },
+    beforeRemove(file, fileList) {
+      console.log("file", file);
+      console.log("fileList", fileList);
+      let uid = file.uid;
+      let idx = fileList.findIndex((item) => item.uid === uid);
+      fileList.splice(idx, 0);
+      this.fileList = fileList;
+      if (file.id) {
+        //如果是后端返回的文件就走删除接口，不然前端自我删除
+        delwj({ id: file.id.toString() }).then();
+      }
+    },
+    fileChange(file, fileList) {
+      if (Number(file.size / 1024 / 1024) > 1) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
+        this.$message.error("单个文件大小不得超过2M");
+      } else if (file.status == "ready") {
+        this.fileListAdd = [];
+        this.fileListAdd.push(file); //修改编辑的文件参数
+      }
+      this.fileList = fileList;
+    },
     bianji(row) {
       this.formEdit.editData = [];
-
+      // row.fileList = row.fileList.map((ele) => {
+      //         return {
+      //           name: ele.fileName,
+      //           ...ele,
+      //         };
+      //       });
+      //        this.fileListAdd = [];
       this.formEdit.editData.push(row);
       this.editModal = true;
     },
@@ -637,6 +761,24 @@ export default {
         return;
       } else {
         let data = this.formEdit.editData[0];
+        //  var data = this.formEdit.editData[0];
+        // let formData = new FormData();
+        //         formData.append("jxjmc", data.jxjmc);
+        //         formData.append("hjsj", data.hjsj);
+        //         formData.append("djm", data.djm);
+        //         formData.append("jbm", data.jbm);
+        //         formData.append("jxjlxm", data.jxjlxm);
+        //         formData.append("je", data.je);
+        //         formData.append("sldw", data.sldw);
+
+        // formData.append("id", data.id);
+        // formData.append("xh", this.$store.getters.userId);
+        // if (this.fileListAdd.length > 0) {
+        //   this.fileListAdd.map((file) => {
+        //     formData.append("files", file.raw);
+        //   });
+        // }
+
         updateJxj(data).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("编辑成功");
@@ -661,7 +803,9 @@ export default {
         jxjlxm: "",
         je: "",
         sldw: "",
+        files: [],
       };
+      this.fileList = [];
       this.formAdd.addData.push(newLine);
       this.addModal = true;
     },
@@ -680,7 +824,22 @@ export default {
           sldw: this.formAdd.addData[0].sldw,
           xh: this.$store.getters.userId,
         };
+        //var data = this.formAdd.addData[0];
 
+        // let formData = new FormData();
+        //         formData.append("jxjmc", data.jxjmc);
+        //         formData.append("hjsj", data.hjsj);
+        //         formData.append("djm", data.djm);
+        //         formData.append("jbm", data.jbm);
+        //         formData.append("jxjlxm", data.jxjlxm);
+        //         formData.append("je", data.je);
+        //         formData.append("sldw", data.sldw);
+        //         formData.append("xh", this.$store.getters.userId);
+        //         if (this.fileList.length > 0) {
+        //           this.fileList.map((file) => {
+        //             formData.append("files", file.raw);
+        //           });
+        //         }
         insertJxj(data).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("新增成功");

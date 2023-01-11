@@ -284,7 +284,10 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="cnrq">
+                  <el-form-item
+                    prop="cnrq"
+                    :rules="formAddLw.sfcn == '是' ? rules.cnrq : []"
+                  >
                     <div class="wrap">
                       <div class="title">采纳时间</div>
                       <div class="content">
@@ -459,7 +462,10 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="cnrq">
+                  <el-form-item
+                    prop="cnrq"
+                    :rules="formEditLw.sfcn == '是' ? rules.cnrq : []"
+                  >
                     <div class="wrap">
                       <div class="title">采纳时间</div>
                       <div class="content">
@@ -605,9 +611,9 @@ export default {
         bgmc: [
           { required: true, message: "报告名称不能为空", trigger: "blur" },
         ],
-        bh: [{ required: true, message: "编号不能为空", trigger: "blur" }],
+        bh: [],
         cnrq: [
-          { required: true, message: "采纳时间不能为空", trigger: "blur" },
+          { required: true, message: "采纳时间不能为空", trigger: "change" },
         ],
         dwjb: [
           { required: true, message: "单位级别不能为空", trigger: "blur" },

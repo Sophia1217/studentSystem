@@ -171,7 +171,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="bgmc">
                     <div class="wrap">
-                      <div class="title">报告名称</div>
+                      <div class="title">
+                        <span style="color: red">*</span>报告名称
+                      </div>
 
                       <div class="content">
                         <el-input
@@ -198,7 +200,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zs">
                     <div class="wrap">
-                      <div class="title">字数</div>
+                      <div class="title">
+                        <span style="color: red">*</span>字数
+                      </div>
                       <div class="content">
                         <el-input v-model="formAddLw.zs"></el-input>
                       </div>
@@ -210,7 +214,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="tjdw">
                     <div class="wrap">
-                      <div class="title">提交单位</div>
+                      <div class="title">
+                        <span style="color: red">*</span>提交单位
+                      </div>
                       <div class="content">
                         <el-input v-model="formAddLw.tjdw"></el-input>
                       </div>
@@ -220,7 +226,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="dwjb">
                     <div class="wrap">
-                      <div class="title">单位级别</div>
+                      <div class="title">
+                        <span style="color: red">*</span>单位级别
+                      </div>
                       <div class="content">
                         <el-input v-model="formAddLw.dwjb"></el-input>
                       </div>
@@ -232,7 +240,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="sfcn">
                     <div class="wrap">
-                      <div class="title">是否采纳</div>
+                      <div class="title">
+                        <span style="color: red">*</span>是否采纳
+                      </div>
                       <div class="content">
                         <!-- <el-input v-model="formAddLw.sfcn"></el-input> -->
                         <el-select
@@ -251,7 +261,10 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="cnrq">
+                  <el-form-item
+                    prop="cnrq"
+                    :rules="formAddLw.sfcn == '是' ? rules.cnrq : []"
+                  >
                     <div class="wrap">
                       <div class="title">采纳时间</div>
                       <div class="content">
@@ -270,7 +283,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="zzxm">
                     <div class="wrap">
-                      <div class="title">作者</div>
+                      <div class="title">
+                        <span style="color: red">*</span>作者
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formAddLw.zzxm"
@@ -285,7 +300,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="cgssdw">
                     <div class="wrap">
-                      <div class="title">成果所属单位</div>
+                      <div class="title">
+                        <span style="color: red">*</span>成果所属单位
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formAddLw.cgssdw"
@@ -346,7 +363,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="bgmc">
                     <div class="wrap">
-                      <div class="title">报告名称</div>
+                      <div class="title">
+                        <span style="color: red">*</span>报告名称
+                      </div>
 
                       <div class="content">
                         <el-input
@@ -373,7 +392,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zs">
                     <div class="wrap">
-                      <div class="title">字数</div>
+                      <div class="title">
+                        <span style="color: red">*</span>字数
+                      </div>
                       <div class="content">
                         <el-input v-model="formEditLw.zs"></el-input>
                       </div>
@@ -385,7 +406,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="tjdw">
                     <div class="wrap">
-                      <div class="title">提交单位</div>
+                      <div class="title">
+                        <span style="color: red">*</span>提交单位
+                      </div>
                       <div class="content">
                         <el-input v-model="formEditLw.tjdw"></el-input>
                       </div>
@@ -395,7 +418,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="dwjb">
                     <div class="wrap">
-                      <div class="title">单位级别</div>
+                      <div class="title">
+                        <span style="color: red">*</span>单位级别
+                      </div>
                       <div class="content">
                         <el-input v-model="formEditLw.dwjb"></el-input>
                       </div>
@@ -407,7 +432,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="sfcn">
                     <div class="wrap">
-                      <div class="title">是否采纳</div>
+                      <div class="title">
+                        <span style="color: red">*</span>是否采纳
+                      </div>
                       <div class="content">
                         <!-- <el-input v-model="formEditLw.sfcn"></el-input> -->
                         <el-select
@@ -426,7 +453,10 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="cnrq">
+                  <el-form-item
+                    prop="cnrq"
+                    :rules="formEditLw.sfcn == '是' ? rules.cnrq : []"
+                  >
                     <div class="wrap">
                       <div class="title">采纳时间</div>
                       <div class="content">
@@ -445,7 +475,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="zzxm">
                     <div class="wrap">
-                      <div class="title">作者</div>
+                      <div class="title">
+                        <span style="color: red">*</span>作者
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formEditLw.zzxm"
@@ -460,7 +492,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="cgssdw">
                     <div class="wrap">
-                      <div class="title">成果所属单位</div>
+                      <div class="title">
+                        <span style="color: red">*</span>成果所属单位
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formEditLw.cgssdw"
@@ -572,7 +606,7 @@ export default {
         bgmc: [
           { required: true, message: "报告名称不能为空", trigger: "blur" },
         ],
-        bh: [{ required: true, message: "编号不能为空", trigger: "blur" }],
+        bh: [],
         cnrq: [
           { required: true, message: "采纳时间不能为空", trigger: "blur" },
         ],

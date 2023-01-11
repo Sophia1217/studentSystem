@@ -22,7 +22,7 @@
           <el-row>
             <el-col :span="24" class="rowStyle">
               <div class="wrap">
-                <div class="title">专利名称</div>
+                <div class="title">专利（发明）名称</div>
                 <div class="content">{{ ele.zlmc }}</div>
               </div>
             </el-col>
@@ -50,13 +50,13 @@
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
-                <div class="title">申请人</div>
+                <div class="title">申请（发明）人</div>
                 <div class="content">{{ ele.sqr }}</div>
               </div>
             </el-col>
           </el-row>
 
-          <el-row>
+          <!-- <el-row>
             <el-col :span="24" class="rowStyle">
               <div class="wrap">
                 <div class="title">成果所属单位</div>
@@ -64,7 +64,7 @@
               </div>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row> -->
             <el-col :span="24" class="rowStyle">
               <div class="wrap">
                 <div class="title">附件</div>
@@ -182,7 +182,7 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="zlmc">
                     <div class="wrap">
-                      <div class="title">专利名称</div>
+                      <div class="title"><span style="color: red">*</span>专利（发明）名称</div>
 
                       <div class="content">
                         <el-input
@@ -198,7 +198,7 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zlh">
                     <div class="wrap">
-                      <div class="title">专利号</div>
+                      <div class="title"><span style="color: red">*</span>专利号</div>
                       <div class="content">
                         <el-input v-model="formAddLw.zlh"></el-input>
                       </div>
@@ -208,7 +208,7 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zllx">
                     <div class="wrap">
-                      <div class="title">专利类型</div>
+                      <div class="title"><span style="color: red">*</span>专利类型</div>
                       <div class="content">
                         <el-input v-model="formAddLw.zllx"></el-input>
                       </div>
@@ -220,7 +220,7 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="sqrq">
                     <div class="wrap">
-                      <div class="title">申请日</div>
+                      <div class="title"><span style="color: red">*</span>申请日</div>
                       <div class="content">
                         <el-date-picker
                           v-model="formAddLw.sqrq"
@@ -235,7 +235,7 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="sqr">
                     <div class="wrap">
-                      <div class="title">申请人</div>
+                      <div class="title"><span style="color: red">*</span>申请（发明）人</div>
                       <div class="content">
                         <el-input v-model="formAddLw.sqr"></el-input>
                       </div>
@@ -247,7 +247,7 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zlr">
                     <div class="wrap">
-                      <div class="title">专利人</div>
+                      <div class="title"><span style="color: red">*</span>专利人</div>
                       <div class="content">
                         <el-input v-model="formAddLw.zlr"></el-input>
                       </div>
@@ -257,7 +257,7 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zlzt">
                     <div class="wrap">
-                      <div class="title">专利状态</div>
+                      <div class="title"><span style="color: red">*</span>专利状态</div>
                       <div class="content">
                         <el-input v-model="formAddLw.zlzt"></el-input>
                       </div>
@@ -266,7 +266,7 @@
                 </el-col>
               </el-row>
 
-              <el-row>
+              <!-- <el-row>
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="cgssdw">
                     <div class="wrap">
@@ -280,7 +280,7 @@
                     </div>
                   </el-form-item>
                 </el-col>
-              </el-row>
+              </el-row> -->
               <el-row>
                 <el-col :span="24" class="rowStyle">
                   <div class="wrap">
@@ -331,7 +331,7 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="zlmc">
                     <div class="wrap">
-                      <div class="title">专利名称</div>
+                      <div class="title"><span style="color: red">*</span>专利（发明）名称</div>
 
                       <div class="content">
                         <el-input
@@ -347,7 +347,7 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zlh">
                     <div class="wrap">
-                      <div class="title">专利号</div>
+                      <div class="title"><span style="color: red">*</span>专利号</div>
                       <div class="content">
                         <el-input v-model="formEditLw.zlh"></el-input>
                       </div>
@@ -357,7 +357,7 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zllx">
                     <div class="wrap">
-                      <div class="title">专利类型</div>
+                      <div class="title"><span style="color: red">*</span>专利类型</div>
                       <div class="content">
                         <el-input v-model="formEditLw.zllx"></el-input>
                       </div>
@@ -369,7 +369,7 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="sqrq">
                     <div class="wrap">
-                      <div class="title">申请日</div>
+                      <div class="title"><span style="color: red">*</span>申请日</div>
                       <div class="content">
                         <el-date-picker
                           v-model="formEditLw.sqrq"
@@ -384,7 +384,7 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="sqr">
                     <div class="wrap">
-                      <div class="title">申请人</div>
+                      <div class="title"><span style="color: red">*</span>申请（发明）人</div>
                       <div class="content">
                         <el-input v-model="formEditLw.sqr"></el-input>
                       </div>
@@ -396,7 +396,7 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zlr">
                     <div class="wrap">
-                      <div class="title">专利人</div>
+                      <div class="title"><span style="color: red">*</span>专利人</div>
                       <div class="content">
                         <el-input v-model="formEditLw.zlr"></el-input>
                       </div>
@@ -406,7 +406,7 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zlzt">
                     <div class="wrap">
-                      <div class="title">专利状态</div>
+                      <div class="title"><span style="color: red">*</span>专利状态</div>
                       <div class="content">
                         <el-input v-model="formEditLw.zlzt"></el-input>
                       </div>
@@ -415,7 +415,7 @@
                 </el-col>
               </el-row>
 
-              <el-row>
+              <!-- <el-row>
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="cgssdw">
                     <div class="wrap">
@@ -429,7 +429,7 @@
                     </div>
                   </el-form-item>
                 </el-col>
-              </el-row>
+              </el-row> -->
               <el-row>
                 <el-col :span="24" class="rowStyle">
                   <div class="wrap">
@@ -524,13 +524,25 @@ export default {
       ztStatus: [],
       url: "",
       rules: {
-        zlmc: [{ required: true, message: "专利不能为空", trigger: "blur" }],
+        zlmc: [
+          {
+            required: true,
+            message: "专利（发明）名称不能为空",
+            trigger: "blur",
+          },
+        ],
         zlh: [{ required: true, message: "专利号不能为空", trigger: "blur" }],
         sqrq: [{ required: true, message: "申请日不能为空", trigger: "blur" }],
         zllx: [
           { required: true, message: "专利类型不能为空", trigger: "blur" },
         ],
-        sqr: [{ required: true, message: "申请人不能为空", trigger: "blur" }],
+        sqr: [
+          {
+            required: true,
+            message: "申请（发明）人不能为空",
+            trigger: "blur",
+          },
+        ],
 
         cgssdw: [
           { required: true, message: "所属单位不能为空", trigger: "blur" },

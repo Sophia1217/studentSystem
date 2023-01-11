@@ -22,7 +22,7 @@
           <el-row>
             <el-col :span="24" class="rowStyle">
               <div class="wrap">
-                <div class="title">软著名称</div>
+                <div class="title">软件名称</div>
                 <div class="content">{{ ele.rjzzmc }}</div>
               </div>
             </el-col>
@@ -191,7 +191,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="rjzzmc">
                     <div class="wrap">
-                      <div class="title">软著名称</div>
+                      <div class="title">
+                        <span style="color: red">*</span>软件名称
+                      </div>
 
                       <div class="content">
                         <el-input
@@ -208,7 +210,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="rjzzqlx">
                     <div class="wrap">
-                      <div class="title">软件著作权类型</div>
+                      <div class="title">
+                        <span style="color: red">*</span>软件著作权类型
+                      </div>
                       <div class="content">
                         <el-input v-model="formAddLw.rjzzqlx"></el-input>
                       </div>
@@ -218,7 +222,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="yxzplx">
                     <div class="wrap">
-                      <div class="title">音像制品类型</div>
+                      <div class="title">
+                        <span style="color: red">*</span>音像制品类型
+                      </div>
                       <div class="content">
                         <el-input v-model="formAddLw.yxzplx"></el-input>
                       </div>
@@ -230,7 +236,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zsh">
                     <div class="wrap">
-                      <div class="title">证书号</div>
+                      <div class="title">
+                        <span style="color: red">*</span>证书号
+                      </div>
                       <div class="content">
                         <el-input v-model="formAddLw.zsh"></el-input>
                       </div>
@@ -240,7 +248,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="djh">
                     <div class="wrap">
-                      <div class="title">登记号</div>
+                      <div class="title">
+                        <span style="color: red">*</span>登记号
+                      </div>
                       <div class="content">
                         <el-input v-model="formAddLw.djh"></el-input>
                       </div>
@@ -252,7 +262,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="zzqr">
                     <div class="wrap">
-                      <div class="title">著作权人</div>
+                      <div class="title">
+                        <span style="color: red">*</span>著作权人
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formAddLw.zzqr"
@@ -267,7 +279,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="xxsmsx">
                     <div class="wrap">
-                      <div class="title">学校署名顺序</div>
+                      <div class="title">
+                        <span style="color: red">*</span>学校署名顺序
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formAddLw.xxsmsx"
@@ -329,7 +343,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="rjzzmc">
                     <div class="wrap">
-                      <div class="title">软著名称</div>
+                      <div class="title">
+                        <span style="color: red">*</span>软件名称
+                      </div>
 
                       <div class="content">
                         <el-input
@@ -346,7 +362,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="rjzzqlx">
                     <div class="wrap">
-                      <div class="title">软件著作权类型</div>
+                      <div class="title">
+                        <span style="color: red">*</span>软件著作权类型
+                      </div>
                       <div class="content">
                         <el-input v-model="formEditLw.rjzzqlx"></el-input>
                       </div>
@@ -356,7 +374,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="yxzplx">
                     <div class="wrap">
-                      <div class="title">音像制品类型</div>
+                      <div class="title">
+                        <span style="color: red">*</span>音像制品类型
+                      </div>
                       <div class="content">
                         <el-input v-model="formEditLw.yxzplx"></el-input>
                       </div>
@@ -368,7 +388,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zsh">
                     <div class="wrap">
-                      <div class="title">证书号</div>
+                      <div class="title">
+                        <span style="color: red">*</span>证书号
+                      </div>
                       <div class="content">
                         <el-input v-model="formEditLw.zsh"></el-input>
                       </div>
@@ -378,7 +400,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="djh">
                     <div class="wrap">
-                      <div class="title">登记号</div>
+                      <div class="title">
+                        <span style="color: red">*</span>登记号
+                      </div>
                       <div class="content">
                         <el-input v-model="formEditLw.djh"></el-input>
                       </div>
@@ -390,7 +414,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="zzqr">
                     <div class="wrap">
-                      <div class="title">著作权人</div>
+                      <div class="title">
+                        <span style="color: red">*</span>著作权人
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formEditLw.zzqr"
@@ -405,7 +431,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="xxsmsx">
                     <div class="wrap">
-                      <div class="title">学校署名顺序</div>
+                      <div class="title">
+                        <span style="color: red">*</span>学校署名顺序
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formEditLw.xxsmsx"

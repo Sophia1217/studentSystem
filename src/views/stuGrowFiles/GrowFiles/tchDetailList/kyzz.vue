@@ -51,7 +51,7 @@
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
-                <div class="title">出版社级别</div>
+                <div class="title">ISBN号</div>
                 <div class="content">{{ ele.cbsjb }}</div>
               </div>
             </el-col>
@@ -60,7 +60,7 @@
           <el-row>
             <el-col :span="24" class="rowStyle">
               <div class="wrap">
-                <div class="title">作者</div>
+                <div class="title">署名顺序</div>
                 <div class="content">{{ ele.gtzz }}</div>
               </div>
             </el-col>
@@ -158,7 +158,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="zzmc">
                     <div class="wrap">
-                      <div class="title">著作名称</div>
+                      <div class="title">
+                        <span style="color: red">*</span>著作名称
+                      </div>
 
                       <div class="content">
                         <el-input
@@ -175,7 +177,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zzlb">
                     <div class="wrap">
-                      <div class="title">类别</div>
+                      <div class="title">
+                        <span style="color: red">*</span>类别
+                      </div>
                       <div class="content">
                         <el-input v-model="formAddLw.zzlb"></el-input>
                       </div>
@@ -185,7 +189,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="cbrq">
                     <div class="wrap">
-                      <div class="title">出版时间</div>
+                      <div class="title">
+                        <span style="color: red">*</span>出版时间
+                      </div>
                       <div class="content">
                         <el-date-picker
                           v-model="formAddLw.cbrq"
@@ -202,7 +208,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="cbs">
                     <div class="wrap">
-                      <div class="title">出版社</div>
+                      <div class="title">
+                        <span style="color: red">*</span>出版社
+                      </div>
                       <div class="content">
                         <el-input v-model="formAddLw.cbs"></el-input>
                       </div>
@@ -212,7 +220,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="cbsjb">
                     <div class="wrap">
-                      <div class="title">出版社级别</div>
+                      <div class="title">
+                        <span style="color: red">*</span>ISBN号
+                      </div>
                       <div class="content">
                         <el-input v-model="formAddLw.cbsjb"></el-input>
                       </div>
@@ -224,12 +234,21 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="gtzz">
                     <div class="wrap">
-                      <div class="title">作者</div>
+                      <div class="title">
+                        <span style="color: red">*</span>署名顺序
+                      </div>
                       <div class="content">
-                        <el-input
+                        <!-- <el-input
                           v-model="formAddLw.gtzz"
                           style="width: 300%"
-                        ></el-input>
+                        ></el-input> -->
+                        <el-input-number
+                          v-model="formAddLw.gtzz"
+                          controls-position="right"
+                          width="100px"
+                          :min="1"
+                          @keydown.native="channelInputLimit"
+                        ></el-input-number>
                       </div>
                     </div>
                   </el-form-item>
@@ -240,7 +259,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="cgssdw">
                     <div class="wrap">
-                      <div class="title">成果所属单位</div>
+                      <div class="title">
+                        <span style="color: red">*</span>成果所属单位
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formAddLw.cgssdw"
@@ -301,7 +322,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="zzmc">
                     <div class="wrap">
-                      <div class="title">著作名称</div>
+                      <div class="title">
+                        <span style="color: red">*</span>著作名称
+                      </div>
 
                       <div class="content">
                         <el-input
@@ -318,7 +341,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zzlb">
                     <div class="wrap">
-                      <div class="title">类别</div>
+                      <div class="title">
+                        <span style="color: red">*</span>类别
+                      </div>
                       <div class="content">
                         <el-input v-model="formEditLw.zzlb"></el-input>
                       </div>
@@ -328,7 +353,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="cbrq">
                     <div class="wrap">
-                      <div class="title">出版时间</div>
+                      <div class="title">
+                        <span style="color: red">*</span>出版时间
+                      </div>
                       <div class="content">
                         <el-date-picker
                           v-model="formEditLw.cbrq"
@@ -345,7 +372,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="cbs">
                     <div class="wrap">
-                      <div class="title">出版社</div>
+                      <div class="title">
+                        <span style="color: red">*</span>出版社
+                      </div>
                       <div class="content">
                         <el-input v-model="formEditLw.cbs"></el-input>
                       </div>
@@ -355,7 +384,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="cbsjb">
                     <div class="wrap">
-                      <div class="title">出版社级别</div>
+                      <div class="title">
+                        <span style="color: red">*</span>ISBN号
+                      </div>
                       <div class="content">
                         <el-input v-model="formEditLw.cbsjb"></el-input>
                       </div>
@@ -367,12 +398,17 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="gtzz">
                     <div class="wrap">
-                      <div class="title">作者</div>
+                      <div class="title">
+                        <span style="color: red">*</span>署名顺序
+                      </div>
                       <div class="content">
-                        <el-input
+                        <el-input-number
                           v-model="formEditLw.gtzz"
-                          style="width: 300%"
-                        ></el-input>
+                          controls-position="right"
+                          width="100px"
+                          :min="1"
+                          @keydown.native="channelInputLimit"
+                        ></el-input-number>
                       </div>
                     </div>
                   </el-form-item>
@@ -383,7 +419,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="cgssdw">
                     <div class="wrap">
-                      <div class="title">成果所属单位</div>
+                      <div class="title">
+                        <span style="color: red">*</span>成果所属单位
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formEditLw.cgssdw"
@@ -488,7 +526,9 @@ export default {
       ztStatus: [],
       url: "",
       rules: {
-        gtzz: [{ required: true, message: "作者不能为空", trigger: "blur" }],
+        gtzz: [
+          { required: true, message: "署名顺序不能为空", trigger: "change" },
+        ],
         zzlb: [{ required: true, message: "类别不能为空", trigger: "blur" }],
         zzmc: [
           { required: true, message: "著作名称不能为空", trigger: "blur" },
@@ -500,7 +540,7 @@ export default {
         cbsjb: [
           {
             required: true,
-            message: "出版社级别不能为空",
+            message: "ISBN号不能为空",
             trigger: "blur",
           },
         ],
@@ -516,6 +556,10 @@ export default {
     this.getCode("dmsplcm");
   },
   methods: {
+    //设置计数器禁输入
+    channelInputLimit(e) {
+      e.returnValue = "";
+    },
     // 表单校验
     checkFormAdd() {
       // 1.校验必填项

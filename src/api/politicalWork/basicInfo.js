@@ -117,3 +117,13 @@ export function exportQuery(data) {
     params: data
   })
 }
+
+//辅导员专业级联查询
+
+export function getFdyZy(data) {
+  return request({
+    url: '/commonMethod/getFdyZy',
+    method: 'post',
+    data: data
+  })
+}

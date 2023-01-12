@@ -123,7 +123,11 @@
           <el-row :gutter="20">
             <el-col :span="10">
               <el-form-item label="是否退宿" prop="sf" :rules="rules.sf">
-                <el-select v-model="formAdd.sf" placeholder="请选择">
+                <el-select
+                  v-model="formAdd.sf"
+                  placeholder="请选择"
+                  @change="changeValue"
+                >
                   <el-option
                     v-for="(item, index) in dmsfbzm"
                     :key="index"
@@ -138,7 +142,11 @@
                 prop="sfRz"
                 :rules="rules.sfRz"
               >
-                <el-select v-model="formAdd.sfRz" placeholder="请选择">
+                <el-select
+                  v-model="formAdd.sfRz"
+                  placeholder="请选择"
+                  :disabled="formAdd.sf == '1' ? false : true"
+                >
                   <el-option
                     v-for="(item, index) in dmsfbzm"
                     :key="index"
@@ -209,6 +217,7 @@
                 <div v-if="editFlag == 2">{{ formEdit.SFTS }}</div>
                 <el-select
                   v-else="editFlag == 3"
+                  @change="changeValue"
                   v-model="formEdit.sfts"
                   placeholder="请选择"
                 >
@@ -231,6 +240,7 @@
                   v-model="formEdit.fxSfsqrz"
                   placeholder="请选择"
                   v-else="editFlag == 3"
+                  :disabled="formEdit.sfts == '1' ? false : true"
                 >
                   <el-option
                     v-for="(item, index) in dmsfbzm"
@@ -448,6 +458,12 @@ export default {
   },
 
   methods: {
+    changeValue(e) {
+      if (e == "0") {
+        this.formAdd.sfRz = "0";
+        this.formEdit.fxSfsqrz = "0";
+      }
+    },
     tjModal() {
       var falg = 1;
       for (var i = 0; i < this.val.length; i++) {

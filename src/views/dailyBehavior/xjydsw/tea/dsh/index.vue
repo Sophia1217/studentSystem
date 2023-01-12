@@ -257,11 +257,44 @@
     <el-dialog
       title="审核记录"
       :visible.sync="shRecordModal"
-      width="30%"
+      width="40%"
       :close-on-click-modal="false"
     >
-      <span slot="footer" class="dialog-footer">
-        <el-table :data="shRecordTable" ref="multipleTable" style="width: 100%">
+    <div v-for="(item, i) in shRecordTable" style="margin-top: 15px">
+          <el-row>
+            <el-col :span="12" class="yiny">
+              <div style="display: flex; height: 50px">
+                <div class="hs">审核人</div>
+                <div class="bs">{{ item.userName }}</div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="yiny">
+              <div style="display: flex; height: 50px">
+                <div class="hs">申请时间</div>
+                <div class="bs">{{ item.opTime }}</div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24" class="yiny">
+              <div style="display: flex; height: 50px">
+                <div class="hs">审核结果</div>
+                <div class="bs">{{ item.opTypeName }}</div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24" class="yiny">
+              <div style="display: flex; height: 50px">
+                <div class="hs">审核意见</div>
+                <div class="bs">{{ item.msg }}</div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      <span slot="footer" class="dialog-footer" >
+      
+        <!-- <el-table :data="shRecordTable" ref="multipleTable" style="width: 100%">
           <el-table-column label="审核人" prop="userId"></el-table-column>
           <el-table-column fixed="left" label="申请审核结果" prop="opType">
             <template slot-scope="scope">
@@ -288,7 +321,7 @@
             label="申请审核意见"
             prop="msg"
           ></el-table-column>
-        </el-table>
+        </el-table> -->
         <el-button @click="shRecordcancel">关 闭</el-button>
       </span>
     </el-dialog>
@@ -524,6 +557,7 @@
                         collapse-tags
                         placeholder="请选择年级"
                         size="small"
+                        @change="focus1"
                       >
                         <el-option
                           v-for="(item, index) in allNj"
@@ -542,9 +576,10 @@
                         collapse-tags
                         placeholder="请选择班级"
                         size="small"
+                        @focus="focus"
                       >
                         <el-option
-                          v-for="(item, index) in bjOps"
+                          v-for="(item, index) in bjOps1"
                           :key="index"
                           :label="item.mc"
                           :value="item.dm"
@@ -610,6 +645,22 @@
                     <div class="wrap">
                       <div class="title">是否退宿</div>
                       <div class="content">{{ formDetails1.SFTS }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">拟休学开始时间</div>
+                      <div class="content">
+                        {{ formDetails1.xxStartDate }}
+                      </div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">拟休学结束时间</div>
+                      <div class="content">{{ formDetails1.xxEndDate }}</div>
                     </div>
                   </el-col>
                 </el-row>
@@ -913,7 +964,7 @@ import { delFile, downloadFile, queryFile } from "@/api/common/file";
 import { queryLc } from "@/api/common/liucheng";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getZY, getBJ } from "@/api/student/index";
-import { getCollege, getGrade } from "@/api/class/maintenanceClass";
+import { getCollege, getGrade, getBanji } from "@/api/class/maintenanceClass";
 import { backFlow } from "@/api/dailyBehavior/stuTravelTea";
 import { getManageRegStuInfoSearchSpread } from "@/api/student/index";
 import {
@@ -969,6 +1020,7 @@ export default {
         shyj: "",
         shjg: "",
       },
+      pycc: "",
       xxList: [
         { dm: "身体疾病", mc: "身体疾病" },
         { dm: "心理疾病", mc: "心理疾病" },
@@ -997,6 +1049,7 @@ export default {
       allDwh: [], // 学院下拉框
       zyOps: [], // 专业下拉
       bjOps: [], // 班级下拉
+      bjOps1: [], // 编入班级下拉
       pyccOps: [], //培养层次
       datePicker: "",
       manageRegOps: [], //
@@ -1106,6 +1159,18 @@ export default {
       });
       //
     },
+    focus() {
+      if (this.bjOps1.length > 0) {
+        var pa = { nj: this.fxNj, pycc: this.pycc };
+        this.getBJ1(pa);
+      } else {
+        this.$message.warning("请先选择编入年级数据");
+      }
+    },
+    focus1(e) {
+      var pa = { nj: e, pycc: this.pycc };
+      this.getBJ1(pa);
+    },
     shRecordcancel() {
       this.shRecordModal = false;
       this.shRecordTable = [];
@@ -1113,9 +1178,7 @@ export default {
     async hadleDetail(row) {
       this.tableDetail = row;
       var processId = { businesId: row.businesId };
-      var pa = [];
-      pa.push(row.dwh);
-      this.getBJ(pa);
+
       await getDetail(processId).then((res) => {
         this.formDetails1 = res.data;
         this.formDetails1.SFTS = this.formDetails1.sfts == "0" ? "否" : "是";
@@ -1142,6 +1205,11 @@ export default {
           : "";
         this.fxBj = this.formDetails1.fxBj;
         this.fxNj = this.formDetails1.fxNj;
+        this.pycc = row.pyccm;
+        if (this.formDetails1.fxNj) {
+          var pa = { nj: this.fxNj, pycc: this.pycc };
+          this.getBJ1(pa);
+        }
       });
       await xhQuery({ xh: row.xh }).then((res) => {
         this.formDetails = res.data;
@@ -1412,6 +1480,15 @@ export default {
           .catch((err) => {});
       }
     },
+    getBJ1(val) {
+      this.bjOps = [];
+      let data = { pycc: val.pycc, nj: val.nj ? "2022" : "2022" };
+      getBanji(data)
+        .then((res) => {
+          this.bjOps1 = res.data;
+        })
+        .catch((err) => {});
+    },
     //获取年级
     getAllGrade() {
       getGrade()
@@ -1537,6 +1614,23 @@ export default {
   overflow: hidden;
   padding: 10px;
   margin-left: -10px;
+}
+
+.yiny {
+  border: 1px solid grey;
+  height: 50px;
+  border-collapse: collapse;
+}
+.hs {
+  flex: 0 0 100px;
+  border-right: 1px solid grey;
+  text-align: center;
+  line-height: 50px;
+  border-collapse: collapse;
+}
+.bs {
+  padding-left: 40px;
+  line-height: 50px;
 }
 .expandClose {
   width: 80%;

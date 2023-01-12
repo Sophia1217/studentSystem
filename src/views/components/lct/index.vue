@@ -43,7 +43,7 @@
             <el-col :span="12" class="yiny">
               <div style="display: flex; height: 50px">
                 <div class="hs">审核人</div>
-                <div class="bs">{{ item.userId }}</div>
+                <div class="bs">{{ item.userName }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="yiny">
@@ -57,7 +57,7 @@
             <el-col :span="24" class="yiny">
               <div style="display: flex; height: 50px">
                 <div class="hs">审核结果</div>
-                <div class="bs">{{ item.opType }}</div>
+                <div class="bs">{{ item.opTypeName }}</div>
               </div>
             </el-col>
           </el-row>

@@ -17,6 +17,16 @@ export function getLevel() {
     })
 }
 
+// 根据培养层次,年级查询班级信息
+export function getBanji(query) {
+    return request({
+        url: '/commonMethod/queryBjByPyccNj',
+        method: 'post',
+        data: query
+    })
+}
+
+
 // 年级列表
 // localhost:8081/sws/class/getYears
 export function getGrade() {

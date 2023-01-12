@@ -133,6 +133,33 @@
               ></el-form-item>
             </el-col>
           </el-row>
+          <el-row>
+            <el-form-item label="拟休学起止时间" required>
+              <el-col :span="9">
+                <el-form-item prop="xxStartDate">
+                  <el-date-picker
+                    type="month"
+                    placeholder="选择日期"
+                    v-model="formAdd.xxStartDate"
+                    value-format="yyyy-MM"
+                    style="width: 100%"
+                  ></el-date-picker>
+                </el-form-item>
+              </el-col>
+              <el-col :span="1" style="margin-left: 13px">-</el-col>
+              <el-col :span="9">
+                <el-form-item prop="xxEndDate">
+                  <el-date-picker
+                    type="month"
+                    placeholder="选择时间"
+                    v-model="formAdd.xxEndDate"
+                    value-format="yyyy-MM"
+                    style="width: 100%"
+                  ></el-date-picker>
+                </el-form-item>
+              </el-col>
+            </el-form-item>
+          </el-row>
           <el-row :gutter="20">
             <el-col :span="20">
               <el-form-item label="申请理由" prop="sqly" :rules="rules.sqly">
@@ -205,6 +232,38 @@
                   ></el-option> </el-select
               ></el-form-item>
             </el-col>
+          </el-row>
+          <el-row>
+            <el-form-item label="拟休学起止时间" required v-if="editFlag == 2">
+              <div>{{ formEdit.xxStartDate }} - {{ formEdit.xxEndDate }}</div>
+            </el-form-item>
+          </el-row>
+          <el-row>
+            <el-form-item label="拟休学起止时间" required v-if="editFlag == 3">
+              <el-col :span="9">
+                <el-form-item prop="xxStartDate">
+                  <el-date-picker
+                    type="month"
+                    placeholder="选择日期"
+                    v-model="formEdit.xxStartDate"
+                    value-format="yyyy-MM"
+                    style="width: 100%"
+                  ></el-date-picker>
+                </el-form-item>
+              </el-col>
+              <el-col :span="1" style="margin-left: 13px">-</el-col>
+              <el-col :span="9">
+                <el-form-item prop="xxEndDate">
+                  <el-date-picker
+                    type="month"
+                    placeholder="选择时间"
+                    v-model="formEdit.xxEndDate"
+                    value-format="yyyy-MM"
+                    style="width: 100%"
+                  ></el-date-picker>
+                </el-form-item>
+              </el-col>
+            </el-form-item>
           </el-row>
           <el-row :gutter="20">
             <el-col :span="20">
@@ -361,6 +420,20 @@ export default {
       chehuiModal: false,
       rulesBlcak: {},
       rules: {
+        xxStartDate: [
+          {
+            required: true,
+            message: "拟休学开始时间不能为空",
+            trigger: "blur",
+          },
+        ],
+        xxEndDate: [
+          {
+            required: true,
+            message: "拟休学结束时间不能为空",
+            trigger: "blur",
+          },
+        ],
         sf: [
           {
             required: true,
@@ -620,6 +693,8 @@ export default {
         let formData = new FormData();
         formData.append("sfts", data.sfts);
         formData.append("sqmsg", data.sqmsg); //申请理由
+        formData.append("xxStartDate", data.xxStartDate); //
+        formData.append("xxEndDate", data.xxEndDate); //
         formData.append("sqlx", this.queryParams.sqlx); //具体类型  保留学籍 退学
         formData.append("id", data.id);
         formData.append("xh", this.$store.getters.userId);
@@ -649,6 +724,8 @@ export default {
         // 测试休学
         formData.append("sfts", data.sf);
         formData.append("sqmsg", data.sqly); //申请理由
+        formData.append("xxStartDate", data.xxStartDate); //
+        formData.append("xxEndDate", data.xxEndDate); //
         formData.append("sqlx", this.queryParams.sqlx); //具体类型  保留学籍 退学
         formData.append("xh", this.$store.getters.userId);
         if (this.fileList.length > 0) {
@@ -688,6 +765,8 @@ export default {
       this.formAdd = {
         sf: "", //是否退宿
         sqly: "", //申请理由
+        xxStartDate: "",
+        xxEndDate: "",
         files: [], //申请材料
       }; // 每次打开弹框先将弹框的table数组置空
       this.fileList = [];

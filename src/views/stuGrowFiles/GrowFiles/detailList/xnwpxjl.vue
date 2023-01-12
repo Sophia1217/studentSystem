@@ -224,7 +224,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="组织单位" align="center">
+            <el-table-column
+              label="组织单位"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.dwh'"
@@ -234,7 +238,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="培训开始时间" width="240px">
+            <el-table-column
+              label="培训开始时间"
+              width="240px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.pxkssj'"
@@ -252,7 +260,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="培训结束时间" width="240px">
+            <el-table-column
+              label="培训结束时间"
+              width="240px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.pxjssj'"
@@ -270,7 +282,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="总学时" align="center">
+            <el-table-column
+              label="总学时"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.zxs'"
@@ -280,7 +296,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="性质" align="center" width="130px">
+            <el-table-column
+              label="性质"
+              align="center"
+              width="130px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.xz'"
@@ -297,7 +318,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="培训单位类别" align="center" width="130px">
+            <el-table-column
+              label="培训单位类别"
+              align="center"
+              width="130px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.pxdwlb'"
@@ -314,7 +340,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="结果" align="center">
+            <el-table-column
+              label="结果"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.jg'"
@@ -365,7 +395,11 @@
       >
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
-            <el-table-column label="培训项目名称" align="center">
+            <el-table-column
+              label="培训项目名称"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.pxxmmc'"
@@ -375,7 +409,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="组织单位" align="center">
+            <el-table-column
+              label="组织单位"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.dwh'"
@@ -385,7 +423,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="培训开始时间" width="240px">
+            <el-table-column
+              label="培训开始时间"
+              width="240px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.pxkssj'"
@@ -403,7 +445,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="培训结束时间" width="240px">
+            <el-table-column
+              label="培训结束时间"
+              width="240px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.pxjssj'"
@@ -421,7 +467,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="总学时" align="center">
+            <el-table-column
+              label="总学时"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.zxs'"
@@ -431,7 +481,12 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="性质" align="center" width="130px">
+            <el-table-column
+              label="性质"
+              align="center"
+              width="130px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.xz'"
@@ -448,7 +503,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="培训单位类别" align="center">
+            <el-table-column
+              label="培训单位类别"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.pxdwlb'"
@@ -465,7 +524,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="结果" align="center">
+            <el-table-column
+              label="结果"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.jg'"

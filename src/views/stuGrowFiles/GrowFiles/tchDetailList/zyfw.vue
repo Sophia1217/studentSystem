@@ -29,19 +29,44 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xmmc" label="项目名称" sortable="custom" :show-overflow-tooltip="true">
+          <el-table-column
+            prop="xmmc"
+            label="项目（活动名称）"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
           </el-table-column>
-          <el-table-column prop="zzdw" label="组织单位" sortable="custom" :show-overflow-tooltip="true">
+          <el-table-column
+            prop="zzdw"
+            label="组织单位"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
           </el-table-column>
-          <el-table-column prop="fwdd" label="服务地点" sortable="custom" :show-overflow-tooltip="true">
+          <el-table-column
+            prop="fwdd"
+            label="服务（单位地点）"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
           </el-table-column>
-          <el-table-column prop="fwdx" label="服务对象" sortable="custom" :show-overflow-tooltip="true">
+          <el-table-column
+            prop="fwdx"
+            label="服务对象"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
           </el-table-column>
           <el-table-column prop="kssj" label="开始时间" sortable="custom">
           </el-table-column>
           <el-table-column prop="jssj" label="结束时间" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zdlsxm" label="指导老师" sortable="custom" :show-overflow-tooltip="true">
+          <el-table-column
+            prop="zdlsxm"
+            label="指导老师"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
           </el-table-column>
           <el-table-column prop="status" label="审核状态" sortable="custom">
             <template slot-scope="scope">
@@ -66,11 +91,7 @@
             width="240"
           >
             <template slot-scope="scope">
-              <el-button
-                type="text"
-                size="small"
-                @click="bianji(scope.row)"
-              >
+              <el-button type="text" size="small" @click="bianji(scope.row)">
                 <i class="scopeIncon Edit"></i>
                 <span>编辑</span>
               </el-button>
@@ -83,10 +104,19 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog title="新增" :visible.sync="addModal" width="80%" :close-on-click-modal="false">
+      <el-dialog
+        title="新增"
+        :visible.sync="addModal"
+        width="80%"
+        :close-on-click-modal="false"
+      >
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
-            <el-table-column label="项目名称" align="center">
+            <el-table-column
+              label="项目（活动名称）"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.xmmc'"
@@ -96,7 +126,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="组织单位" align="center">
+            <el-table-column
+              label="组织单位"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.zzdw'"
@@ -106,7 +140,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="服务地点" width="240px">
+            <el-table-column
+              label="服务（单位地点）"
+              width="240px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.fwdd'"
@@ -116,7 +154,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="服务对象" width="240px">
+            <el-table-column
+              label="服务对象"
+              width="240px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.fwdx'"
@@ -126,7 +168,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="开始时间" align="center">
+            <el-table-column
+              label="开始时间"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.kssj'"
@@ -144,7 +190,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="结束时间" align="center">
+            <el-table-column
+              label="结束时间"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.jssj'"
@@ -162,7 +212,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="指导老师" align="center">
+            <el-table-column
+              label="指导老师"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.zdlsxm'"
@@ -181,10 +235,19 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="编辑" :visible.sync="editModal" width="80%" :close-on-click-modal="false">
+      <el-dialog
+        title="编辑"
+        :visible.sync="editModal"
+        width="80%"
+        :close-on-click-modal="false"
+      >
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
-            <el-table-column label="项目名称" align="center">
+            <el-table-column
+              label="项目（活动名称）"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.xmmc'"
@@ -194,7 +257,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="组织单位" align="center">
+            <el-table-column
+              label="组织单位"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.zzdw'"
@@ -204,7 +271,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="服务地点" width="240px">
+            <el-table-column
+              label="服务（单位地点）"
+              width="240px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.fwdd'"
@@ -214,7 +285,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="服务对象" width="240px">
+            <el-table-column
+              label="服务对象"
+              width="240px"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.fwdx'"
@@ -224,7 +299,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="开始时间" align="center">
+            <el-table-column
+              label="开始时间"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.kssj'"
@@ -242,7 +321,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="结束时间" align="center">
+            <el-table-column
+              label="结束时间"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.jssj'"
@@ -260,7 +343,11 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="指导老师" align="center">
+            <el-table-column
+              label="指导老师"
+              align="center"
+              :render-header="addRedStar"
+            >
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.zdlsxm'"
@@ -333,7 +420,7 @@ export default {
         xmmc: [
           {
             required: true,
-            message: "项目名称不能为空",
+            message: "项目（活动名称）不能为空",
             trigger: "blur",
           },
         ],
@@ -341,7 +428,11 @@ export default {
           { required: true, message: "组织单位不能为空", trigger: "blur" },
         ],
         fwdd: [
-          { required: true, message: "服务地点不能为空", trigger: "blur" },
+          {
+            required: true,
+            message: "服务（单位地点）不能为空",
+            trigger: "blur",
+          },
         ],
         fwdx: [
           { required: true, message: "服务对象不能为空", trigger: "blur" },
@@ -407,7 +498,7 @@ export default {
         this.$refs.child.inner(row.processid);
         this.lctModal = true;
       } else {
-         this.$message.warning("此项经历为管理员新增，暂无流程数据");
+        this.$message.warning("此项经历为管理员新增，暂无流程数据");
       }
     },
     getCode(val) {
@@ -422,14 +513,13 @@ export default {
         this.query();
         this.delModal = false;
       });
-
     },
     showDel() {
       if (this.delArr && this.delArr.length > 0) {
         this.delModal = true;
-        } else {
-          this.$message.error("请先勾选数据");
-        }
+      } else {
+        this.$message.error("请先勾选数据");
+      }
     },
     delCancel() {
       this.delModal = false;
@@ -530,21 +620,23 @@ export default {
     changeDate(flag) {
       let addParams = this.formAdd.addData[0];
       let editParams = this.formEdit.editData[0];
-      if (flag==1) {//新增开始时间
+      if (flag == 1) {
+        //新增开始时间
         if (addParams.jssj) {
           if (addParams.kssj > addParams.jssj) {
             addParams.kssj = null;
             this.$message.error("开始时间不能大于结束时间！");
           }
         }
-      } else if (flag==2) {//新增结束时间
+      } else if (flag == 2) {
+        //新增结束时间
         if (addParams.kssj) {
           if (addParams.kssj > addParams.jssj) {
             addParams.jssj = null;
             this.$message.error("结束时间不能小于开始时间！");
           }
         }
-      } else if (flag==3) {
+      } else if (flag == 3) {
         if (editParams.jssj) {
           if (editParams.kssj > editParams.jssj) {
             editParams.kssj = null;
@@ -559,7 +651,7 @@ export default {
           }
         }
       }
-    }
+    },
   },
 };
 </script>

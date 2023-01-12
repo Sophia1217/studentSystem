@@ -278,38 +278,42 @@
     <el-dialog
       title="审核记录"
       :visible.sync="shRecordModal"
-      width="30%"
+      width="40%"
       :close-on-click-modal="false"
     >
-      <span slot="footer" class="dialog-footer">
-        <el-table :data="shRecordTable" ref="multipleTable" style="width: 100%">
-          <el-table-column label="审核人" prop="userId"></el-table-column>
-          <el-table-column fixed="left" label="申请审核结果" prop="opType">
-            <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.opType"
-                placeholder="请选择"
-                :disabled="true"
-              >
-                <el-option
-                  v-for="(item, index) in czlx"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select> </template
-          ></el-table-column>
-          <el-table-column
-            fixed="left"
-            label="审核时间"
-            prop="opTime"
-          ></el-table-column>
-          <el-table-column
-            fixed="left"
-            label="申请审核意见"
-            prop="msg"
-          ></el-table-column>
-        </el-table>
+    <div v-for="(item, i) in shRecordTable" style="margin-top: 15px">
+          <el-row>
+            <el-col :span="12" class="yiny">
+              <div style="display: flex; height: 50px">
+                <div class="hs">审核人</div>
+                <div class="bs">{{ item.userName }}</div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="yiny">
+              <div style="display: flex; height: 50px">
+                <div class="hs">申请时间</div>
+                <div class="bs">{{ item.opTime }}</div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24" class="yiny">
+              <div style="display: flex; height: 50px">
+                <div class="hs">审核结果</div>
+                <div class="bs">{{ item.opTypeName }}</div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24" class="yiny">
+              <div style="display: flex; height: 50px">
+                <div class="hs">审核意见</div>
+                <div class="bs">{{ item.msg }}</div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      <span slot="footer" class="dialog-footer" >
         <el-button @click="shRecordcancel">关 闭</el-button>
       </span>
     </el-dialog>
@@ -602,6 +606,22 @@
                     <div class="wrap">
                       <div class="title">是否退宿</div>
                       <div class="content">{{ formDetails1.SFTS }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">拟休学开始时间</div>
+                      <div class="content">
+                        {{ formDetails1.xxStartDate }}
+                      </div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">拟休学结束时间</div>
+                      <div class="content">{{ formDetails1.xxEndDate }}</div>
                     </div>
                   </el-col>
                 </el-row>
@@ -1367,6 +1387,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.yiny {
+  border: 1px solid grey;
+  height: 50px;
+  border-collapse: collapse;
+}
+.hs {
+  flex: 0 0 100px;
+  border-right: 1px solid grey;
+  text-align: center;
+  line-height: 50px;
+  border-collapse: collapse;
+}
+.bs {
+  padding-left: 40px;
+  line-height: 50px;
+}
 ::v-deep .el-dialog__header {
   border-bottom: 1px solid #eee;
 }

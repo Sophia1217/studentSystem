@@ -110,6 +110,18 @@ return request({
 })
 }
 
+
+export function zhiHui(query) {
+  return request({
+      url: '/rcswSqkg/queryMkIsEnable',
+      method: 'post',
+      data: query,
+  })
+  }
+
+
+
+
 // 教师端-退回
 export function htFlow(query) {
 return request({

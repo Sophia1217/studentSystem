@@ -56,8 +56,15 @@
             :show-overflow-tooltip="true"
           >
           </el-table-column>
-          <el-table-column prop="sqlbmc" label="申请类别"> </el-table-column>
           <el-table-column
+            prop="spje"
+            label="审批金额"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
+          </el-table-column>
+          <el-table-column prop="sqlbmc" label="申请类别"> </el-table-column>
+          <!-- <el-table-column
             prop="xnmc"
             label="学年"
             sortable="custom"
@@ -70,7 +77,7 @@
             sortable="custom"
             :show-overflow-tooltip="true"
           >
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column prop="status" label="审批状态" sortable="custom">
             <template slot-scope="scope">
               <el-select
@@ -469,7 +476,15 @@
   </div>
 </template>
 <script>
-import { del, query, back, tj, add, edit } from "@/api/dailyBehavior/lskn";
+import {
+  del,
+  query,
+  back,
+  tj,
+  add,
+  edit,
+  zhiHui,
+} from "@/api/dailyBehavior/lskn";
 import { querywj, delwj } from "@/api/assistantWork/classEvent";
 import { queryXnXQ } from "@/api/common/common";
 import lctCom from "../../../components/lct";
@@ -510,6 +525,7 @@ export default {
       fileList: [],
       dmxqm: [],
       dmsfbzm: [],
+      zh: false,
       chehuiModal: false,
       rules: {
         sqly: [
@@ -560,6 +576,7 @@ export default {
   },
   mounted() {
     this.query();
+    this.zh();
     this.getAllGrade();
     this.getCode("dmsplcm"); //状态
     this.getCode("dmsfbzm"); //
@@ -568,6 +585,12 @@ export default {
   },
 
   methods: {
+    zh() {
+      zhiHui({ mkName: "" }).then((res) => {
+        console.log("res", res);
+        this.zh = res.data;
+      });
+    },
     //获取年级
     getAllGrade() {
       getGrade()
@@ -824,34 +847,38 @@ export default {
       }
     },
     addClick() {
-      if (!this.checkFormAdd()) {
-        this.$message.error("请完善表单相关信息！");
-        return;
-      } else {
-        var data = this.formAdd;
-        console.log("data", data);
-        let formData = new FormData();
-        formData.append("sqje", data.table[0].sqje);
-        formData.append("sqly", data.sqly);
-        formData.append("sqsj", data.sqsj);
-        formData.append("xqm", data.table[0].xq);
-        formData.append("xnm", data.table[0].xn);
-        formData.append("sqlbm", data.table[0].sqyylb);
-        formData.append("xh", this.$store.getters.userId);
-        if (this.fileList.length > 0) {
-          this.fileList.map((file) => {
-            formData.append("files", file.raw);
-          });
-        }
-        add(formData).then((res) => {
-          if (res.errcode == "00") {
-            this.$message.success("新增成功");
-            this.query();
-          } else {
-            this.$message.error("新增失败");
+      if (this.zh) {
+        if (!this.checkFormAdd()) {
+          this.$message.error("请完善表单相关信息！");
+          return;
+        } else {
+          var data = this.formAdd;
+          console.log("data", data);
+          let formData = new FormData();
+          formData.append("sqje", data.table[0].sqje);
+          formData.append("sqly", data.sqly);
+          formData.append("sqsj", data.sqsj);
+          formData.append("xqm", data.table[0].xq);
+          formData.append("xnm", data.table[0].xn);
+          formData.append("sqlbm", data.table[0].sqyylb);
+          formData.append("xh", this.$store.getters.userId);
+          if (this.fileList.length > 0) {
+            this.fileList.map((file) => {
+              formData.append("files", file.raw);
+            });
           }
-        });
-        this.addModal = false;
+          add(formData).then((res) => {
+            if (res.errcode == "00") {
+              this.$message.success("新增成功");
+              this.query();
+            } else {
+              this.$message.error("新增失败");
+            }
+          });
+          this.addModal = false;
+        }
+      } else {
+        this.$message.error("不在申请时间段");
       }
     },
     query() {
@@ -882,6 +909,7 @@ export default {
       this.fileList = [];
       this.formAdd.table.push(newLine);
       this.addModal = true;
+      this.formAdd.sqsj = this.formatDate(new Date()).slice(0, 10);
     },
     showDetail(row) {
       this.formEdit.table = [];

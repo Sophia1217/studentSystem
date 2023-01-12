@@ -192,13 +192,19 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" width="100"> </el-table-column>
+          <el-table-column prop="xh" label="学号" width="100">
+          </el-table-column>
           <el-table-column prop="xm" label="姓名" width="85"> </el-table-column>
-          <el-table-column prop="dwhmc" label="培养单位" min-width="100"> </el-table-column>
-          <el-table-column prop="pyccmmc" label="培养层次" width="80"> </el-table-column>
-          <el-table-column prop="zydmmc" label="专业" min-width="100"> </el-table-column>
-          <el-table-column prop="bjmmc" label="班级" min-width="100"> </el-table-column
-          ><el-table-column prop="mk" label="所属模块" width="90"> </el-table-column
+          <el-table-column prop="dwhmc" label="培养单位" min-width="100">
+          </el-table-column>
+          <el-table-column prop="pyccmmc" label="培养层次" width="80">
+          </el-table-column>
+          <el-table-column prop="zydmmc" label="专业" min-width="100">
+          </el-table-column>
+          <el-table-column prop="bjmmc" label="班级" min-width="100">
+          </el-table-column
+          ><el-table-column prop="mk" label="所属模块" width="90">
+          </el-table-column
           ><el-table-column prop="status" label="审核结果" width="110">
             <template slot-scope="scope">
               <el-select
@@ -429,6 +435,7 @@
               </template>
             </el-table-column>
           </el-table>
+          <h3 v-if="whatType == '4'">服务内容 ：{{ tableDetails[0].fwnr }}</h3>
           <el-table :data="tableDetails" v-if="whatType == '6'">
             <el-table-column
               fixed="left"
@@ -654,140 +661,153 @@
             </el-table-column>
           </el-table>
           <div v-if="whatType == '12'">
-          <div class="backDetail" v-for="(ele, index) in tableDetails" :key="index">
-            <div class="formLeft">
-              <div class="title">论文期刊</div>
-            </div>
-            <div class="formRight">
-              <el-row>
-                <el-col :span="24" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">论文名称</div>
-                    <div class="content">{{ ele.lwzwmc }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="24" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">英文名</div>
-                    <div class="content">{{ ele.lwywmc }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">发表刊物</div>
-                    <div class="content">{{ ele.fbkw }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">出版物类型</div>
-                    <div class="content">{{ ele.cbwlx }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">署名</div>
-                    <div class="content">{{ ele.sm }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">收录类别</div>
-                    <div class="content">{{ ele.sllb }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">分类号</div>
-                    <div class="content">{{ ele.flh }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">版面</div>
-                    <div class="content">{{ ele.bm }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">卷期</div>
-                    <div class="content">{{ ele.jq }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">起止页</div>
-                    <div class="content">{{ ele.qzy }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">成果所属单位</div>
-                    <div class="content">{{ ele.cgssdw }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">发表时间</div>
-                    <div class="content">{{ ele.fbrq }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="24" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">附件</div>
-                    <div class="content">
-                      <div v-for="item in ele.fileList">
-                        <div style="display: flex; justify-content: space-between">
-                          <a>
-                            {{ item.fileName }}
-                          </a>
-                          <!-- <el-button>预览</el-button> -->
+            <div
+              class="backDetail"
+              v-for="(ele, index) in tableDetails"
+              :key="index"
+            >
+              <div class="formLeft">
+                <div class="title">论文期刊</div>
+              </div>
+              <div class="formRight">
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">论文名称</div>
+                      <div class="content">{{ ele.lwzwmc }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">英文名</div>
+                      <div class="content">{{ ele.lwywmc }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">发表刊物</div>
+                      <div class="content">{{ ele.fbkw }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">出版物类型</div>
+                      <div class="content">{{ ele.cbwlx }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">署名</div>
+                      <div class="content">{{ ele.sm }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">收录类别</div>
+                      <div class="content">{{ ele.sllb }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">分类号</div>
+                      <div class="content">{{ ele.flh }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">版面</div>
+                      <div class="content">{{ ele.bm }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">卷期</div>
+                      <div class="content">{{ ele.jq }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">起止页</div>
+                      <div class="content">{{ ele.qzy }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">成果所属单位</div>
+                      <div class="content">{{ ele.cgssdw }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">发表时间</div>
+                      <div class="content">{{ ele.fbrq }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">附件</div>
+                      <div class="content">
+                        <div v-for="item in ele.fileList">
+                          <div
+                            style="
+                              display: flex;
+                              justify-content: space-between;
+                            "
+                          >
+                            <a>
+                              {{ item.fileName }}
+                            </a>
+                            <!-- <el-button>预览</el-button> -->
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="24" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">审核状态</div>
-                    <div class="content">
-                      <el-select
-                        v-model="ele.status"
-                        placeholder="请选择"
-                        :disabled="true"
-                      >
-                        <el-option
-                          v-for="(item, index) in spjgOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        ></el-option>
-                      </el-select>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">审核状态</div>
+                      <div class="content">
+                        <el-select
+                          v-model="ele.status"
+                          placeholder="请选择"
+                          :disabled="true"
+                        >
+                          <el-option
+                            v-for="(item, index) in spjgOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          ></el-option>
+                        </el-select>
+                      </div>
                     </div>
-                  </div>
-                </el-col>
-              </el-row>
+                  </el-col>
+                </el-row>
+              </div>
             </div>
           </div>
-          </div>
           <div v-if="whatType == '13'">
-            <div class="backDetail" v-for="(ele, index) in tableDetails" :key="index">
+            <div
+              class="backDetail"
+              v-for="(ele, index) in tableDetails"
+              :key="index"
+            >
               <div class="formLeft">
                 <div class="title">专利</div>
               </div>
@@ -843,7 +863,12 @@
                       <div class="title">附件</div>
                       <div class="content">
                         <div v-for="item in ele.fileList">
-                          <div style="display: flex; justify-content: space-between">
+                          <div
+                            style="
+                              display: flex;
+                              justify-content: space-between;
+                            "
+                          >
                             <a>
                               {{ item.fileName }}
                             </a>
@@ -875,12 +900,15 @@
                     </div>
                   </el-col>
                 </el-row>
-
               </div>
             </div>
           </div>
           <div v-if="whatType == '14'">
-            <div class="backDetail" v-for="(ele, index) in tableDetails" :key="index">
+            <div
+              class="backDetail"
+              v-for="(ele, index) in tableDetails"
+              :key="index"
+            >
               <div class="formLeft">
                 <div class="title">著作</div>
               </div>
@@ -945,7 +973,12 @@
                       <div class="title">附件</div>
                       <div class="content">
                         <div v-for="item in ele.fileList">
-                          <div style="display: flex; justify-content: space-between">
+                          <div
+                            style="
+                              display: flex;
+                              justify-content: space-between;
+                            "
+                          >
                             <a>
                               {{ item.fileName }}
                             </a>
@@ -977,12 +1010,15 @@
                     </div>
                   </el-col>
                 </el-row>
-
               </div>
             </div>
           </div>
           <div v-if="whatType == '15'">
-            <div class="backDetail" v-for="(ele, index) in tableDetails" :key="index">
+            <div
+              class="backDetail"
+              v-for="(ele, index) in tableDetails"
+              :key="index"
+            >
               <div class="formLeft">
                 <div class="title">软件著作</div>
               </div>
@@ -1047,7 +1083,12 @@
                       <div class="title">附件</div>
                       <div class="content">
                         <div v-for="item in ele.fileList">
-                          <div style="display: flex; justify-content: space-between">
+                          <div
+                            style="
+                              display: flex;
+                              justify-content: space-between;
+                            "
+                          >
                             <a>
                               {{ item.fileName }}
                             </a>
@@ -1079,12 +1120,15 @@
                     </div>
                   </el-col>
                 </el-row>
-
               </div>
             </div>
           </div>
           <div v-if="whatType == '16'">
-            <div class="backDetail" v-for="(ele, index) in tableDetails" :key="index">
+            <div
+              class="backDetail"
+              v-for="(ele, index) in tableDetails"
+              :key="index"
+            >
               <div class="formLeft">
                 <div class="title">研究报告</div>
               </div>
@@ -1162,7 +1206,12 @@
                       <div class="title">附件</div>
                       <div class="content">
                         <div v-for="item in ele.fileList">
-                          <div style="display: flex; justify-content: space-between">
+                          <div
+                            style="
+                              display: flex;
+                              justify-content: space-between;
+                            "
+                          >
                             <a>
                               {{ item.fileName }}
                             </a>
@@ -1254,7 +1303,11 @@ import {
   queryRych,
   queryHdxx,
   queryCyjl,
-  queryLwqk, queryKyzl, queryKyzz, queryRjzz, queryYjbg,
+  queryLwqk,
+  queryKyzl,
+  queryKyzz,
+  queryRjzz,
+  queryYjbg,
 } from "@/api/stuDangan/detailList/many";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
@@ -1357,6 +1410,7 @@ export default {
       tableHeader4: [
         { dm: "xmmc", mc: "项目名称" },
         { dm: "zzdw", mc: "组织单位" },
+        { dm: "fwsc", mc: "服务时长(小时)" },
         { dm: "fwdd", mc: "服务地点" },
         { dm: "fwdx", mc: "服务对象" },
         { dm: "kssj", mc: "开始时间" },
@@ -1923,7 +1977,7 @@ export default {
       excelExportCzdaFlowed(this.exportParams)
         .then((res) => {
           this.downloadFn(res, "成长档案已处理列表导出.xlsx", "xlsx");
-          if(this.$store.getters.excelcount > 0){
+          if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
             );

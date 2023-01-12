@@ -3,7 +3,7 @@ import { blobValidate } from "@/utils/ruoyi";
 import errorCode from '@/utils/errorCode'
 
 /**
- * 表格时间格式化
+ * 
  */
 export function  addRedStar(h, { column }) {
   return [

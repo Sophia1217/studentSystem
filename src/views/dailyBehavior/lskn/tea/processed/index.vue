@@ -119,13 +119,23 @@
         </el-row>
 
         <el-row :gutter="20" class="mt15">
-          <el-col :span="1.5">申请金额范围：</el-col>
-          <el-col :span="3">
-            <el-input-number v-model="minSqje"></el-input-number>
+          <el-col :span="1.5">批准金额范围：</el-col>
+          <el-col :span="1.5">
+            <el-input-number
+              v-model="minSqje"
+              :controls="false"
+              style="width: 70%"
+            ></el-input-number>
           </el-col>
-          <el-col :span="1" style="margin-top: 7px"> —— </el-col>
-          <el-col :span="3">
-            <el-input-number v-model="maxSqje"></el-input-number>
+          <el-col :span="0.5" style="margin-top: 7px; margin-left: -52px">
+            ——
+          </el-col>
+          <el-col :span="1.5">
+            <el-input-number
+              v-model="maxSqje"
+              :controls="false"
+              style="width: 70%"
+            ></el-input-number>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
@@ -146,7 +156,7 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <span>学<span v-html="'\u3000\u3000'"></span>年：</span>
+            <span>年<span v-html="'\u3000\u3000'"></span>级：</span>
             <el-select
               v-model="moreIform.xn"
               collapse-tags
@@ -178,6 +188,20 @@
             </el-select>
           </el-col>
         </el-row>
+        <!-- <el-row :gutter="20" class="mt15">
+          <el-col :span="9">
+            <span>申请时间：</span>
+            <el-date-picker
+              v-model="dateValue"
+              type="daterange"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            >
+            </el-date-picker>
+          </el-col>
+        </el-row> -->
       </div>
     </div>
     <!-- table -->
@@ -398,43 +422,12 @@
                 </el-row>
               </div>
             </div>
-            <div class="formLeft"><span class="title">申请信息</span></div>
-            <el-table :data="formDetails1.tableSH">
-              <el-table-column label="学年" prop="xn"></el-table-column>
-              <el-table-column label="学期" prop="xq"></el-table-column>
-              <el-table-column
-                label="申请金额(元)"
-                prop="sqje"
-              ></el-table-column>
-              <el-table-column
-                label="申请原因类别"
-                prop="sqyylb"
-              ></el-table-column>
-              <el-table-column label="申请材料" width="450">
-                <template slot-scope="scope">
-                  <el-upload
-                    action="#"
-                    class="el-upload"
-                    :auto-upload="false"
-                    :disabled="true"
-                    :file-list="scope.row.fileList"
-                  >
-                  </el-upload>
-                </template>
-              </el-table-column>
-            </el-table>
-            <div class="formLeft"><span class="title">申请理由</span></div>
-            <el-form-item>
-              <div>
-                {{ formDetails1.sqly }}
-              </div>
-            </el-form-item>
             <div class="formLeft"><span class="title">历史申请记录</span></div>
             <el-table :data="formDetails1.oldList">
               <el-table-column label="学年" prop="xnmc"></el-table-column>
               <el-table-column label="学期" prop="xqmc"></el-table-column>
               <el-table-column
-                label="申请金额(元)"
+                label="批准金额(元)"
                 prop="sqje"
               ></el-table-column>
               <el-table-column
@@ -454,6 +447,41 @@
                 </template>
               </el-table-column>
             </el-table>
+            <div class="formLeft" style="margin-top: 15px">
+              <span class="title">申请信息</span>
+            </div>
+            <el-table :data="formDetails1.tableSH">
+              <el-table-column label="学年" prop="xn"></el-table-column>
+              <el-table-column label="学期" prop="xq"></el-table-column>
+              <el-table-column
+                label="批准金额(元)"
+                prop="sqje"
+              ></el-table-column>
+              <el-table-column
+                label="申请原因类别"
+                prop="sqyylb"
+              ></el-table-column>
+              <el-table-column label="申请材料" width="450">
+                <template slot-scope="scope">
+                  <el-upload
+                    action="#"
+                    class="el-upload"
+                    :auto-upload="false"
+                    :disabled="true"
+                    :file-list="scope.row.fileList"
+                  >
+                  </el-upload>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div class="formLeft" style="margin-top: 15px">
+              <span class="title">申请理由</span>
+            </div>
+            <el-form-item>
+              <div>
+                {{ formDetails1.sqly }}
+              </div>
+            </el-form-item>
           </el-form>
 
           <div class="formLeft"><span class="title">审核信息</span></div>
@@ -665,11 +693,11 @@ export default {
       tableHeader: [
         { dm: "dwhmc", mc: "培养单位" },
         { dm: "pyccmmc", mc: "培养层次" },
-        { dm: "sqje", mc: "申请金额" },
+        { dm: "sqje", mc: "批准金额" },
         { dm: "sqlbmc", mc: "申请类别" },
         { dm: "bjmmc", mc: "班级" },
-        { dm: "xnmc", mc: "学年" },
-        { dm: "xqmc", mc: "学期" },
+        // { dm: "xnmc", mc: "学年" },
+        // { dm: "xqmc", mc: "学期" },
       ],
       dynamicsCheckboxs: {
         //动态表头
@@ -678,7 +706,7 @@ export default {
         checkBox: [
           { dm: "dwhmc", mc: "培养单位" },
           { dm: "pyccmmc", mc: "培养层次" },
-          { dm: "sqje", mc: "申请金额" },
+          { dm: "sqje", mc: "批准金额" },
           { dm: "sqlbmc", mc: "申请类别" },
           { dm: "bjmmc", mc: "班级" },
           { dm: "xnmc", mc: "学年" },
@@ -701,6 +729,7 @@ export default {
       },
       jeFlag: "01",
       formDetails1: {},
+      dateValue: [],
       shjgOps: [
         { dm: "01", mc: "通过" },
         { dm: "02", mc: "拒绝" },
@@ -832,6 +861,7 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
+        this.jeFlag = "01";
         this.conformModal = true;
       }
     },
@@ -851,6 +881,7 @@ export default {
     },
     changeJG(val) {
       if (val && val == "03") {
+        this.jeFlag = "01";
         var processid = { processId: this.tableDetail.taskId };
         this.conformType = "退回";
         this.conformText = "退回确认";
@@ -859,6 +890,7 @@ export default {
         });
         this.thTableModal = true;
       } else if (val && val == "02") {
+        this.jeFlag = "01";
         this.conformType = "拒绝";
         this.conformText = "拒绝确认";
       } else {
@@ -896,9 +928,10 @@ export default {
           this.$message.success("已拒绝");
         });
       } else {
-        data.spje = this.formDetails1.spje
-          ? this.formDetails1.spje
-          : this.formDetails1.sqje;
+        data.spje = this.formDetails1.spje ? this.formDetails1.spje : "";
+        data.opMsg = this.editDetails.shyj
+          ? `审批金额为${this.formDetails1.spje},审批意见：${this.editDetails.shyj}`
+          : "";
         tyFlow(data).then((res) => {
           this.conformModal = false;
           this.handleSearch();
@@ -1050,6 +1083,9 @@ export default {
         nj: this.moreIform.nj,
         dwh: this.moreIform.manageReg, //单位
         zydm: this.moreIform.stuInfo, //专业
+        //
+        // 时间字段
+        //
         maxSqje: this.maxSqje == "" ? 2000000 : this.maxSqje,
         minSqje: this.minSqje,
         pageNum: this.queryParams.pageNum,
@@ -1108,6 +1144,9 @@ export default {
         xqm: this.moreIform.xq,
         bjdm: this.moreIform.pread,
         nj: this.moreIform.nj,
+        //
+        // 时间字段
+        //
         dwh: this.moreIform.manageReg, //单位
         zydm: this.moreIform.stuInfo, //专业
         maxSqje: this.maxSqje == "" ? 2000000 : this.maxSqje,
@@ -1230,7 +1269,7 @@ export default {
         align-items: center;
         .title {
           flex: 0 0 160px;
-          line-height: 48px;
+          line-height: 36px;
           background: #e0e0e0;
           text-align: right;
           padding-right: 5px;
@@ -1254,7 +1293,7 @@ export default {
       .title1 {
         font-size: 16px;
         text-align: center;
-        line-height: 48px;
+        line-height: 36px;
         color: #fff;
         // vertical-align: middle;
       }
@@ -1289,7 +1328,7 @@ export default {
       align-items: center;
       .title {
         flex: 0 0 160px;
-        line-height: 48px;
+        line-height: 36px;
         background: #e0e0e0;
         text-align: right;
         padding-right: 5px;

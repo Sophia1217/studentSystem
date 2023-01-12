@@ -141,6 +141,20 @@
               </template>
             </el-table-column>
             <el-table-column
+              label="服务时长(小时)"
+              align="center"
+              :render-header="addRedStar"
+            >
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.fwsc'"
+                  :rules="rules.fwsc"
+                >
+                  <el-input v-model="scope.row.fwsc" type="number" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column
               label="服务（单位地点）"
               width="240px"
               :render-header="addRedStar"
@@ -227,6 +241,14 @@
               </template>
             </el-table-column>
           </el-table>
+          <el-form-item prop="fwnr" :rules="rules.fwnr" label="服务内容 ：">
+            <el-input
+              v-model="formAdd.fwnr"
+              type="textarea"
+              maxlength="500"
+              show-word-limit
+            />
+          </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="addCance">取 消</el-button>
@@ -268,6 +290,20 @@
                   :rules="rules.zzdw"
                 >
                   <el-input v-model="scope.row.zzdw" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="服务时长(小时)"
+              align="center"
+              :render-header="addRedStar"
+            >
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.fwsc'"
+                  :rules="rules.fwsc"
+                >
+                  <el-input v-model="scope.row.fwsc" type="number" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -358,6 +394,14 @@
               </template>
             </el-table-column>
           </el-table>
+          <el-form-item prop="fwnr" :rules="rules.fwnr" label="服务内容 ：">
+            <el-input
+              v-model="formEdit.fwnr"
+              type="textarea"
+              maxlength="500"
+              show-word-limit
+            />
+          </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="editCance">取 消</el-button>
@@ -404,8 +448,8 @@ export default {
       ztStatus: [],
       addModal: false,
       editModal: false,
-      formAdd: { addData: [] },
-      formEdit: { editData: [] },
+      formAdd: { addData: [], fwnr: "" },
+      formEdit: { editData: [], fwnr: "" },
       tableDate: [],
       queryParams: {
         pageNum: 1,
@@ -417,6 +461,20 @@ export default {
       subArr: [],
       val: [],
       rules: {
+        fwnr: [
+          {
+            required: true,
+            message: "服务内容不能为空",
+            trigger: "blur",
+          },
+        ],
+        fwsc: [
+          {
+            required: true,
+            message: "服务时长（小时）不能为空",
+            trigger: "blur",
+          },
+        ],
         xmmc: [
           {
             required: true,
@@ -537,6 +595,7 @@ export default {
     bianji(row) {
       this.formEdit.editData = [];
       this.formEdit.editData.push(row);
+      this.formEdit.fwnr = row.fwnr;
       this.editModal = true;
     },
     editCance() {
@@ -572,6 +631,8 @@ export default {
           fwdx: data.fwdx,
           kssj: data.kssj,
           jssj: data.jssj,
+          fwsc: data.fwsc,
+          fwnr: this.formAdd.fwnr,
           zdlsxm: data.zdlsxm,
           xh: this.$route.query.xh,
         };
@@ -609,6 +670,7 @@ export default {
         kssj: "",
         jssj: "",
         zdlsxm: "",
+        fwsc: "",
       };
       this.formAdd.addData.push(newLine);
       this.addModal = true;

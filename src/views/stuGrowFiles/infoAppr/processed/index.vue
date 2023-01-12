@@ -150,13 +150,19 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" width="100"> </el-table-column>
+          <el-table-column prop="xh" label="学号" width="100">
+          </el-table-column>
           <el-table-column prop="xm" label="姓名" width="85"> </el-table-column>
-          <el-table-column prop="dwhmc" label="培养单位" min-width="100"> </el-table-column>
-          <el-table-column prop="pyccmmc" label="培养层次" width="80"> </el-table-column>
-          <el-table-column prop="zydmmc" label="专业" min-width="100"> </el-table-column>
-          <el-table-column prop="bjmmc" label="班级" min-width="100"> </el-table-column
-          ><el-table-column prop="mk" label="所属模块" width="90" > </el-table-column
+          <el-table-column prop="dwhmc" label="培养单位" min-width="100">
+          </el-table-column>
+          <el-table-column prop="pyccmmc" label="培养层次" width="80">
+          </el-table-column>
+          <el-table-column prop="zydmmc" label="专业" min-width="100">
+          </el-table-column>
+          <el-table-column prop="bjmmc" label="班级" min-width="100">
+          </el-table-column
+          ><el-table-column prop="mk" label="所属模块" width="90">
+          </el-table-column
           ><el-table-column prop="createTime" label="申报日期" min-width="100">
           </el-table-column>
 
@@ -523,6 +529,7 @@
               </template>
             </el-table-column>
           </el-table>
+          <h3 v-if="whatType == '4'">服务内容 ：{{ tableDetails[0].fwnr }}</h3>
           <el-table :data="tableDetails" v-if="whatType == '6'">
             <el-table-column
               fixed="left"
@@ -1017,18 +1024,18 @@
                     <div class="wrap">
                       <div class="title">操作</div>
                       <div class="content">
-                          <el-button type="text" size="small" @click="back">
-                            <i class="scopeIncon handledie"></i>
-                            <span class="handleName">退回</span>
-                          </el-button>
-                          <el-button type="text" size="small" @click="refuse">
-                            <i class="scopeIncon handleEdit"></i>
-                            <span class="handleName">拒绝</span>
-                          </el-button>
-                          <el-button type="text" size="small" @click="pass">
-                            <i class="scopeIncon handleEdit"></i>
-                            <span class="handleName">通过</span>
-                          </el-button>
+                        <el-button type="text" size="small" @click="back">
+                          <i class="scopeIncon handledie"></i>
+                          <span class="handleName">退回</span>
+                        </el-button>
+                        <el-button type="text" size="small" @click="refuse">
+                          <i class="scopeIncon handleEdit"></i>
+                          <span class="handleName">拒绝</span>
+                        </el-button>
+                        <el-button type="text" size="small" @click="pass">
+                          <i class="scopeIncon handleEdit"></i>
+                          <span class="handleName">通过</span>
+                        </el-button>
                       </div>
                     </div>
                   </el-col>
@@ -1704,6 +1711,7 @@ export default {
       tableHeader4: [
         { dm: "xmmc", mc: "项目名称" },
         { dm: "zzdw", mc: "组织单位" },
+        { dm: "fwsc", mc: "服务时长(小时)" },
         { dm: "fwdd", mc: "服务地点" },
         { dm: "fwdx", mc: "服务对象" },
         { dm: "kssj", mc: "开始时间" },
@@ -2301,7 +2309,7 @@ export default {
       texcelExportCzdaFlow(this.exportParams)
         .then((res) => {
           this.downloadFn(res, "成长档案待审核列表导出.xlsx", "xlsx");
-          if(this.$store.getters.excelcount > 0){
+          if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
             );

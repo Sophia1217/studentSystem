@@ -161,7 +161,7 @@
                     placeholder="请选择"
                   >
                     <el-option
-                      v-for="(item, index) in jbOps"
+                      v-for="(item, index) in allXn"
                       :key="index"
                       :label="item.mc"
                       :value="item.dm"
@@ -427,6 +427,7 @@
 import { edit, del, query, tj, back } from "@/api/stuDangan/detailList/rych";
 import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+import { queryXn } from "@/api/dailyBehavior/yearSum";
 
 export default {
   components: { lctCom },
@@ -452,6 +453,7 @@ export default {
       subArr: [],
       val: [],
       jbOps: [],
+      allXn: [], //学年下拉
       djOps: [],
       jldxOps:[
         {dm:'0', mc: '个人'},
@@ -493,6 +495,7 @@ export default {
     this.getCode("dmsplcm"); //状态
     this.getCode("dmjldjm"); //等级
     this.getCode("dmxgjljbm"); //级别
+    this.getSchoolYears();
   },
   created() {
     this.authConfirm(this.$route.path.split("/")[2]);
@@ -500,6 +503,15 @@ export default {
   },
 
   methods: {
+    //获取学年
+    getSchoolYears() {
+      queryXn()
+        .then((res) => {
+          this.allXn = res.data;
+          this.handleSearch();
+        })
+        .catch((err) => {});
+    },
     // 表单校验
     checkFormAdd() {
       // 1.校验必填项

@@ -40,6 +40,12 @@
           </el-table-column>
           <el-table-column prop="bzdw" label="表彰单位" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
+          <el-table-column prop="psxnd" label="评审学年度（年）" sortable="custom" :show-overflow-tooltip="true">
+          </el-table-column>
+          <el-table-column prop="jldx" label="奖励对象" sortable="custom" :show-overflow-tooltip="true">
+          </el-table-column>
+          <el-table-column prop="grwc" label="个人位次" sortable="custom" :show-overflow-tooltip="true">
+          </el-table-column>
           <el-table-column prop="hjsj" label="发证时间" sortable="custom">
           </el-table-column>
           <el-table-column prop="zsbh" label="证书编号" sortable="custom" :show-overflow-tooltip="true">
@@ -188,7 +194,7 @@
                     placeholder="请选择"
                   >
                     <el-option
-                      v-for="(item, index) in jbOps"
+                      v-for="(item, index) in allXn"
                       :key="index"
                       :label="item.mc"
                       :value="item.dm"
@@ -386,6 +392,7 @@
                     style="width:100px"
                     :min="1"
                     @keydown.native="channelInputLimit"
+                    :disabled="showGrwc == 2 ? false : true"
                   ></el-input-number>
                 </el-form-item>
               </template>
@@ -467,6 +474,7 @@
 import { edit, del, query, tj, back } from "@/api/stuDangan/detailList/rych";
 import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+import { queryXn } from "@/api/dailyBehavior/yearSum";
 
 export default {
   components: { lctCom },
@@ -491,13 +499,15 @@ export default {
       subArr: [],
       val: [],
       jbOps: [],
+      allXn: [], //学年下拉
+      xnOps:[],
       djOps: [],
       jldxOps:[
         {dm:'0', mc: '个人'},
         {dm:'1', mc: '团队'},
         {dm:'2', mc: '组织'},
       ],
-      showGrwc:2, //1个人位次不展示，2展示个人位次
+      showGrwc:2, //1个人位次不可写，2可写个人位次
       rules: {
         bzdw: [
           {
@@ -532,9 +542,19 @@ export default {
     this.getCode("dmsplcm"); //状态
     this.getCode("dmjldjm"); //等级
     this.getCode("dmxgjljbm"); //级别
+    this.getSchoolYears();
   },
 
   methods: {
+    //获取学年
+    getSchoolYears() {
+      queryXn()
+        .then((res) => {
+          this.allXn = res.data;
+          this.handleSearch();
+        })
+        .catch((err) => {});
+    },
     // 表单校验
     checkFormAdd() {
       // 1.校验必填项

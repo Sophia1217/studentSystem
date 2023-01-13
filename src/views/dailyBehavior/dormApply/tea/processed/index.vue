@@ -218,7 +218,7 @@
           <el-table-column prop="xh" label="学号" width="100" sortable> </el-table-column>
           <el-table-column prop="xm" label="姓名" width="85" sortable> </el-table-column>
           <el-table-column prop="xb" label="性别" width="85" sortable> </el-table-column>
-          <el-table-column prop="pycc" label="培养层次" min="100" sortable> </el-table-column>
+          <el-table-column prop="pycc" label="培养层次" min-width="100" sortable> </el-table-column>
           <el-table-column prop="dwmc" label="培养单位" min-width="100" sortable> </el-table-column>
           <el-table-column prop="zslx" label="住宿类型" min-width="100" sortable> </el-table-column>
           <el-table-column prop="zsksrq" label="住宿开始时间" min-width="100" sortable> </el-table-column>

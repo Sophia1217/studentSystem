@@ -7,7 +7,7 @@
           <span class="title">临时困难经费执行进度</span>
           <div class="yearOption">
             <el-select
-              v-model="ndval"
+              v-model="nd"
               @change="ndChange"
               style="width: 80px"
               placeholder=""
@@ -22,7 +22,7 @@
           </div>
         </div>
         <div class="headerRight">
-          <div class="btns borderBlue" v-show="AUTHFLAG">
+          <!-- <div class="btns borderBlue" v-show="AUTHFLAG">
             <el-upload
               accept=".xlsx,.xls"
               :auto-upload="true"
@@ -34,7 +34,7 @@
             >
               <i class="icon blueIcon"></i><span class="title">导入</span>
             </el-upload>
-          </div>
+          </div> -->
           <div class="btns borderOrange" @click="handleExport">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
@@ -55,7 +55,7 @@
             width="50"
           ></el-table-column>
           <el-table-column
-            prop="gh"
+            prop="dwmc"
             label="培养单位"
             width="100"
             sortable="custom"
@@ -63,13 +63,14 @@
           </el-table-column>
           <el-table-column label="本科生">
             <el-table-column
-              prop="xm"
+              prop="bksjhed"
               label="计划额度（元）"
               min-width="100"
               sortable="custom"
             >
               <template slot-scope="scope">
                 <el-input
+                  v-model="scope.row.bksjhed"
                   maxlength="100"
                   oninput="this.value=this.value.replace(/[^\d]/g,'')"
                   placeholder="请输入数字"
@@ -78,14 +79,14 @@
               </template>
             </el-table-column>
             <el-table-column
-              prop="gzdw"
+              prop="bkssyed"
               label="使用额度"
               min-width="100"
               sortable="custom"
             >
             </el-table-column>
             <el-table-column
-              prop="gwmc"
+              prop="bksRatio"
               label="执行进度"
               min-width="70"
               sortable="custom"
@@ -94,12 +95,13 @@
           </el-table-column>
           <el-table-column label="研究生">
             <el-table-column
-              prop="xm"
+              prop="yjsjhed"
               label="计划额度（元）"
               min-width="100"
               sortable="custom"
               ><template slot-scope="scope">
                 <el-input
+                  v-model="scope.row.yjsjhed"
                   maxlength="100"
                   oninput="this.value=this.value.replace(/[^\d]/g,'')"
                   placeholder="请输入数字"
@@ -108,14 +110,14 @@
               </template>
             </el-table-column>
             <el-table-column
-              prop="gzdw"
+              prop="yjssyed"
               label="使用额度"
               min-width="100"
               sortable="custom"
             >
             </el-table-column>
             <el-table-column
-              prop="gwmc"
+              prop="yjsRatio"
               label="执行进度"
               min-width="70"
               sortable="custom"
@@ -154,9 +156,16 @@ import {
   del,
   queryList,
 } from "@/api/assistantWork/sizheng";
+import {
+  downLoadMb,
+  zxjdExp,
+  zxjdImport,
+  queryZxjdList,
+  updateLsknEd,
+} from "@/api/dailyBehavior/lskn";
 import { getToken } from "@/utils/auth";
-
 import { getXmXgh } from "@/api/assistantWork/sizheng";
+import { getGrade } from "@/api/class/maintenanceClass";//待定
 export default {
   name: "jindu",
   components: {},
@@ -186,12 +195,14 @@ export default {
 
       uploadUrl: process.env.VUE_APP_BASE_API + "/fdySzkcs/import",
       dialogFormVisible: false,
-      ndOption: [],
-      ndval: "",
+      ndOptions: [],
+      nd: "",
       tableData: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        orderZd:"",
+        orderPx:"",
         total: 0,
       },
       multipleSelection: [],
@@ -200,7 +211,8 @@ export default {
   },
 
   mounted() {
-    this.handleSearch();
+    // this.handleSearch();
+    this.getAllGrade();
   },
   created() {
     this.authConfirm(this.$route.path.split("/")[2]);
@@ -208,6 +220,16 @@ export default {
   },
 
   methods: {
+    //获取年级
+    getAllGrade() {
+      getGrade()
+        .then((res) => {
+          this.ndOptions = res.data.rows;
+          this.nd = res.data.rows[0];
+          this.handleSearch();
+        })
+        .catch((err) => {});
+    },
     ndChange() {
       this.handleSearch();
     },
@@ -284,12 +306,13 @@ export default {
     // 查询
     handleSearch() {
       let data = {
+        nd: this.nd,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryList(data)
+      queryZxjdList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;

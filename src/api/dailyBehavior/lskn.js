@@ -148,5 +148,58 @@ return request({
     data: query
 })
 }
+//临时困难经费执行进度模板下载
+export function downLoadMb(query) {
+  return request({
+      url: '/rcswLsknEd/downLoad',
+      method: 'post',
+      data: query,
+    responseType:'blob'
+  })
+}
+//临时困难经费执行进度导出
+export function zxjdExp(query) {
+  return request({
+      url: '/rcswLsknEd/excelExport',
+      method: 'post',
+      data: query,
+      responseType:'blob'
+  })
+}
+// 临时困难经费执行进度数据导入
+export function zxjdImport(query) {
+  return request({
+      url: '/rcswLsknEd/import',
+      method: 'post',
+      data: query
+  })
+}
+// 临时困难经费执行进度列表查询
+export function queryZxjdList(query) {
+  return request({
+      url: '/rcswLsknEd/queryList',
+      method: 'post',
+      data: query
+  })
+}
+// 临时困难经费执行进度更新
+export function updateLsknEd(query) {
+  return request({
+      url: '/rcswLsknEd/updateLsknEd',
+      method: 'post',
+      data: query
+  })
+}
+
+
+
+
+
+
+
+
+
+
+
 
 

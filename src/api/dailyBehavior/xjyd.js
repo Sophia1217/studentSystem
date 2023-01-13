@@ -112,6 +112,19 @@ export function ysxExp(query) {
   })
 }
 
+// 批量导出学籍异动信息
+export function xjydExp(query) {
+  return request({
+      url: '/export/rcswXjyd',
+      method: 'post',
+      data: query,
+      responseType:'blob'
+  })
+}
+
+
+
+
 
 export function xhQuery(query) {
   return request({

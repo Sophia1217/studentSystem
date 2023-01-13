@@ -266,6 +266,21 @@
         </div>
       </div>
     </div>
+    <el-row>
+      <div class="row">
+        <div class="item" @click="xnxj">
+          <div class="medalImage">
+            <img src="~@/assets/images/medal.png" alt="" />
+          </div>
+          <div class="content">
+            <div class="title1"><span class="stuinfoTitle">学年小结</span></div>
+            <div class="title2">
+              <span class="baseInfo">学年自我小结</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-row>
   </div>
 </template>
 
@@ -282,6 +297,11 @@ export default {
   },
 
   methods: {
+    xnxj() {
+      this.$router.push({
+        path: "/yearSumStuList",
+      });
+    },
     lskn() {
       this.$router.push({
         path: "/lsknStu",

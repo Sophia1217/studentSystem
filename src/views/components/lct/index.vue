@@ -38,30 +38,49 @@
           <el-table-column prop="msg" label="审核意见" sortable="custom">
           </el-table-column>
         </el-table> -->
-        <div v-for="(item, i) in tableLct" style="margin-top: 15px">
+        <div v-for="(item, i) in tableLct" style="margin-top: 25px">
           <el-row>
             <el-col :span="12" class="yiny">
               <div style="display: flex; height: 50px">
-                <div class="hs">审核人</div>
+                <div
+                  class="hs"
+                  v-if="item.opTypeName == '提交' || item.opTypeName == '撤回'"
+                >
+                  申请人
+                </div>
+                <div class="hs" v-else>审核人</div>
                 <div class="bs">{{ item.userName }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="yiny">
               <div style="display: flex; height: 50px">
-                <div class="hs">申请时间</div>
+                <div
+                  class="hs"
+                  v-if="item.opTypeName == '提交' || item.opTypeName == '撤回'"
+                >
+                  申请时间
+                </div>
+                <div class="hs" v-else>审批时间</div>
                 <div class="bs">{{ item.opTime }}</div>
               </div>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row
+            v-if="item.opTypeName !== '提交' && item.opTypeName !== '撤回'"
+          >
             <el-col :span="24" class="yiny">
-              <div style="display: flex; height: 50px">
+              <div
+                style="display: flex; height: 50px"
+                v-if="item.opType != 'TY' || item.opType != 'CH'"
+              >
                 <div class="hs">审核结果</div>
                 <div class="bs">{{ item.opTypeName }}</div>
               </div>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row
+            v-if="item.opTypeName !== '提交' && item.opTypeName !== '撤回'"
+          >
             <el-col :span="24" class="yiny">
               <div style="display: flex; height: 50px">
                 <div class="hs">审核意见</div>

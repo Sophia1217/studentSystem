@@ -3,7 +3,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">申请列表</span> <i class="Updataicon"></i>
+          <span class="title">学年小结</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
           <div class="btns borderLight" @click="showDel">
@@ -36,48 +36,20 @@
             width="50"
           ></el-table-column>
           <el-table-column
-            prop="xh"
-            label="学号"
-            sortable="custom"
-            :show-overflow-tooltip="true"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="xm"
-            label="姓名"
-            sortable="custom"
-            :show-overflow-tooltip="true"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="sqje"
-            label="申请金额"
-            sortable="custom"
-            :show-overflow-tooltip="true"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="spje"
-            label="审批金额"
-            sortable="custom"
-            :show-overflow-tooltip="true"
-          >
-          </el-table-column>
-          <el-table-column prop="sqlbmc" label="申请类别"> </el-table-column>
-          <!-- <el-table-column
-            prop="xnmc"
+            prop="xn"
             label="学年"
             sortable="custom"
             :show-overflow-tooltip="true"
           >
           </el-table-column>
           <el-table-column
-            prop="xqmc"
+            prop="xqm"
             label="学期"
             sortable="custom"
             :show-overflow-tooltip="true"
           >
-          </el-table-column> -->
+          </el-table-column>
+          <el-table-column prop="ydlb" label="异动类别"> </el-table-column>
           <el-table-column prop="status" label="审批状态" sortable="custom">
             <template slot-scope="scope">
               <el-select
@@ -94,9 +66,21 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column prop="sqsj" label="申请时间" sortable="custom">
+          <el-table-column prop="ydwh" label="异动文号" sortable="custom">
           </el-table-column>
-          <el-table-column label="审核进度" sortable="custom">
+          <el-table-column
+            prop="yddate"
+            label="异动时间"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="jg"
+            label="审核进度"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
@@ -124,130 +108,136 @@
         </el-table>
       </div>
       <el-dialog
-        title="新增申请"
+        title="新增"
         :visible.sync="addModal"
-        width="55%"
+        width="35%"
         @close="addCance"
         :close-on-click-modal="false"
       >
-        <div style="padding: 0 50px">
-          <el-form ref="formAdd" :model="formAdd">
-            <el-table :data="formAdd.table" style="width: 100%">
-              <el-table-column label="学年" width="160">
-                <template slot-scope="scope">
-                  <el-form-item
-                    :prop="'table.' + scope.$index + '.xn'"
-                    :rules="rules.xn"
-                  >
-                    <el-select
-                      v-model="scope.row.xn"
-                      collapse-tags
-                      placeholder="请选择学年"
-                      size="small"
-                    >
-                      <el-option
-                        v-for="(item, index) in allNj"
-                        :key="index"
-                        :label="item"
-                        :value="item"
-                      ></el-option>
-                    </el-select>
-                  </el-form-item>
-                </template>
-              </el-table-column>
-              <el-table-column prop="xq" label="学期" width="160">
-                <template slot-scope="scope">
-                  <el-form-item
-                    :prop="'table.' + scope.$index + '.xq'"
-                    :rules="rules.xq"
-                  >
-                    <el-select v-model="scope.row.xq" placeholder="请选择">
-                      <el-option
-                        v-for="item in dmxqm"
-                        :key="item.value"
-                        :label="item.mc"
-                        :value="item.dm"
-                      >
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                </template>
-              </el-table-column>
-              <el-table-column prop="sqje" label="申请金额（元）" width="160">
-                <template slot-scope="scope">
-                  <el-form-item
-                    :prop="'table.' + scope.$index + '.sqje'"
-                    :rules="rules.sqje"
-                  >
-                    <el-input v-model="scope.row.sqje" />
-                  </el-form-item>
-                </template>
-              </el-table-column>
-              <el-table-column prop="sqyylb" label="申请原因类别" width="160">
-                <template slot-scope="scope" align="center">
-                  <el-form-item
-                    :prop="'table.' + scope.$index + '.sqyylb'"
-                    :rules="rules.sqyylb"
-                  >
-                    <el-select v-model="scope.row.sqyylb" placeholder="请选择">
-                      <el-option
-                        v-for="item in dmlsknsqlb"
-                        :key="item.value"
-                        :label="item.mc"
-                        :value="item.dm"
-                      >
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                </template>
-              </el-table-column>
-              <el-table-column label="材料证明">
+        <el-form
+          ref="formAdd"
+          :model="formAdd"
+          :rules="rules"
+          label-width="150px"
+        >
+          <el-row :gutter="20">
+            <el-col :span="20">
+              <el-form-item label="是否退宿" prop="sf" :rules="rules.sf">
+                <el-select v-model="formAdd.sf" placeholder="请选择">
+                  <el-option
+                    v-for="(item, index) in dmsfbzm"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option> </el-select
+              ></el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="20">
+              <el-form-item label="申请类型" prop="oplx" :rules="rules.sqlx">
+                <el-select v-model="formAdd.oplx" placeholder="请选择">
+                  <el-option
+                    v-for="(item, index) in sqlxList"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option> </el-select
+              ></el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="20">
+              <el-form-item label="其他" prop="qt">
+                <el-input v-model="formAdd.qt" placeholder="请输入"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="20">
+              <el-form-item
+                label="参加项目"
+                prop="jionPro"
+                :rules="rules.jionPro"
+              >
+                <el-input
+                  v-model="formAdd.jionPro"
+                  placeholder="请输入"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="20">
+              <el-form-item label="负责部门" prop="fzbm" :rules="rules.fzbm">
+                <el-input
+                  v-model="formAdd.fzbm"
+                  placeholder="请输入"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="20">
+              <el-form-item
+                label="保留时间"
+                prop="startTime"
+                :rules="rules.startTime"
+              >
+                <el-date-picker
+                  type="date"
+                  placeholder="选择日期"
+                  value-format="yyyy-MM-dd "
+                  @change="changeDate(1)"
+                  v-model="formAdd.startTime"
+                  style="width: 160px"
+                ></el-date-picker>
+                <span style="margin: 0 10px">至</span>
+                <el-date-picker
+                  placeholder="选择日期"
+                  value-format="yyyy-MM-dd "
+                  style="width: 170px"
+                  @change="changeDate(2)"
+                  v-model="formAdd.endTime"
+                ></el-date-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="20">
+              <el-form-item label="申请理由" prop="sqly" :rules="rules.sqly">
+                <el-input
+                  v-model="formAdd.sqly"
+                  type="textarea"
+                  :autosize="{ minRows: 6, maxRows: 6 }"
+                  placeholder="请输入内容"
+                  maxlength="500"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="20">
+              <el-form-item label="申请材料">
                 <template slot-scope="scope">
                   <el-upload
                     action="#"
                     multiple
                     class="el-upload"
-                    accept=".pdf,.jpg"
                     :auto-upload="false"
                     ref="upload"
-                    :file-list="scope.row.files"
+                    :file-list="formAdd.files"
                     :on-change="fileChange"
+                    accept=".pdf,.jpg"
                     :before-remove="beforeRemove"
                   >
                     <el-button size="small" type="primary">点击上传</el-button>
                   </el-upload>
                 </template>
-              </el-table-column>
-            </el-table>
-
-            <el-row>
-              <div style="margin: 15px 0; font-weight: 700">申请理由</div>
-              <el-form-item prop="sqly" :rules="rules.sqly">
-                <el-input
-                  type="textarea"
-                  placeholder="请输入内容"
-                  v-model="formAdd.sqly"
-                  :autosize="{ minRows: 5 }"
-                >
-                </el-input>
               </el-form-item>
-            </el-row>
-            <el-row>
-              <div style="margin: 15px 0; font-weight: 700">申请时间</div>
-              <el-form-item prop="sqsj" :rules="rules.sqsj">
-                <el-date-picker
-                  v-model="formAdd.sqsj"
-                  type="date"
-                  format="yyyy 年 MM 月 dd 日"
-                  value-format="yyyy-MM-dd"
-                  placeholder="选择日期"
-                >
-                </el-date-picker>
-              </el-form-item>
-            </el-row>
-          </el-form>
-        </div>
-
+            </el-col>
+          </el-row>
+        </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="addCance">取 消</el-button>
           <el-button type="primary" class="confirm" @click="addClick"
@@ -259,174 +249,171 @@
         title="详情"
         :visible.sync="editModal"
         @close="editCance"
-        width="55%"
+        width="35%"
         :close-on-click-modal="false"
       >
-        <div style="padding: 0 50px">
-          <el-form ref="formEdit" :model="formEdit">
-            <el-table :data="formEdit.table" style="width: 100%">
-              <el-table-column label="学年" width="160">
-                <template slot-scope="scope">
-                  <el-form-item
-                    :prop="'table.' + scope.$index + '.xn'"
-                    :rules="rules.xn"
-                  >
-                    <div v-if="editFlag == '2'">{{ scope.row.xnmc }}</div>
-                    <el-select
-                      v-model="scope.row.xn"
-                      collapse-tags
-                      placeholder="请选择学年"
-                      v-if="editFlag == '3'"
-                      size="small"
-                    >
-                      <el-option
-                        v-for="(item, index) in allNj"
-                        :key="index"
-                        :label="item"
-                        :value="item"
-                      ></el-option>
-                    </el-select>
-                  </el-form-item>
-                </template>
-              </el-table-column>
-              <el-table-column prop="xq" label="学期" width="160">
-                <template slot-scope="scope">
-                  <el-form-item
-                    :prop="'table.' + scope.$index + '.xq'"
-                    :rules="rules.xn"
-                  >
-                    <div v-if="editFlag == '2'">{{ scope.row.xqmc }}</div>
-                    <el-select
-                      v-model="scope.row.xq"
-                      placeholder="请选择"
-                      v-if="editFlag == '3'"
-                    >
-                      <el-option
-                        v-for="item in dmxqm"
-                        :key="item.value"
-                        :label="item.mc"
-                        :value="item.dm"
-                      >
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                </template>
-              </el-table-column>
-              <el-table-column prop="sqje" label="申请金额（元）" width="160">
-                <template slot-scope="scope">
-                  <el-form-item
-                    :prop="'table.' + scope.$index + '.sqje'"
-                    :rules="rules.xn"
-                  >
-                    <div v-if="editFlag == '2'">{{ scope.row.sqje }}</div>
-                    <el-input v-if="editFlag == '3'" v-model="scope.row.sqje" />
-                  </el-form-item>
-                </template>
-              </el-table-column>
-              <el-table-column prop="sqyylb" label="申请原因类别" width="160">
-                <template slot-scope="scope">
-                  <el-form-item
-                    :prop="'table.' + scope.$index + '.sqyylb'"
-                    :rules="rules.xn"
-                  >
-                    <div v-if="editFlag == '2'">{{ scope.row.sqlbmc }}</div>
-                    <el-select
-                      v-if="editFlag == '3'"
-                      v-model="scope.row.sqyylb"
-                      placeholder="请选择"
-                    >
-                      <el-option
-                        v-for="item in dmlsknsqlb"
-                        :key="item.value"
-                        :label="item.mc"
-                        :value="item.dm"
-                      >
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                </template>
-              </el-table-column>
-              <el-table-column label="材料证明">
-                <template slot-scope="scope">
-                  <el-upload
-                    v-if="editFlag == 2"
-                    action="#"
-                    multiple
-                    :file-list="formEdit.fileList"
-                    :auto-upload="false"
-                    class="el-upload"
-                    :disabled="editFlag == 2 ? true : false"
-                  >
-                  </el-upload>
-                  <el-upload
-                    action="#"
-                    v-if="editFlag == '3'"
-                    multiple
-                    class="el-upload"
-                    accept=".pdf,.jpg"
-                    :auto-upload="false"
-                    ref="upload"
-                    :file-list="formEdit.fileList"
-                    :on-change="fileChange"
-                    :before-remove="beforeRemoveEdit"
-                  >
-                    <el-button size="small" type="primary">点击上传</el-button>
-                  </el-upload>
-                </template>
-              </el-table-column>
-            </el-table>
-
-            <el-row>
-              <div style="margin: 15px 0; font-weight: 700">申请理由</div>
-              <el-form-item prop="sqly" :rules="rules.sqly">
-                <div v-if="editFlag == '2'">{{ formEdit.sqly }}</div>
+        <el-form
+          ref="formEdit"
+          :model="formEdit"
+          :rules="rules"
+          label-width="150px"
+        >
+          <el-row :gutter="20">
+            <el-col :span="20">
+              <el-form-item label="是否退宿" prop="SFTS" :rules="rules.SFTS">
+                <div v-if="editFlag == 2">{{ formEdit.SFTS }}</div>
+                <el-select
+                  v-else="editFlag == 3"
+                  v-model="formEdit.sfts"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="(item, index) in dmsfbzm"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option> </el-select
+              ></el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="20">
+              <el-form-item label="申请类型" prop="oplx" :rules="rules.oplx">
+                <div v-if="editFlag == 2">{{ formEdit.oplx }}</div>
+                <el-select
+                  v-else="editFlag == 3"
+                  v-model="formEdit.oplx"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="(item, index) in sqlxList"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option> </el-select
+              ></el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="20">
+              <el-form-item label="其他" prop="qt">
+                <div v-if="editFlag == 2">{{ formEdit.qt }}</div>
                 <el-input
-                  type="textarea"
-                  v-if="editFlag == '3'"
-                  placeholder="请输入内容"
-                  v-model="formEdit.sqly"
-                  :autosize="{ minRows: 5 }"
-                >
-                </el-input>
+                  v-model="formEdit.qt"
+                  v-else="editFlag == 3"
+                  placeholder="请输入"
+                ></el-input>
               </el-form-item>
-            </el-row>
-            <el-row>
-              <div style="margin: 15px 0; font-weight: 700">申请时间</div>
-              <el-form-item prop="sqsj" :rules="rules.sqsj">
-                <div v-if="editFlag == '2'">{{ formEdit.sqsj }}</div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="20">
+              <el-form-item
+                label="参加项目"
+                prop="blxjCjxm"
+                :rules="rules.blxjCjxm"
+              >
+                <div v-if="editFlag == 2">{{ formEdit.blxjCjxm }}</div>
+                <el-input
+                  v-else="editFlag == 3"
+                  v-model="formEdit.blxjCjxm"
+                  placeholder="请输入"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="20">
+              <el-form-item
+                label="负责部门"
+                prop="blxjFzbm"
+                :rules="rules.blxjFzbm"
+              >
+                <div v-if="editFlag == 2">{{ formEdit.blxjFzbm }}</div>
+                <el-input
+                  v-else="editFlag == 3"
+                  v-model="formEdit.blxjFzbm"
+                  placeholder="请输入"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" v-if="editFlag == 2">
+            <el-col :span="20">
+              <el-form-item label="保留时间">
+                <div v-if="editFlag == 2">
+                  {{ formEdit.blxjBlstart }}
+                  至{{ formEdit.blxjBlend }}
+                </div>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" v-if="editFlag == 3">
+            <el-form-item
+              label="保留时间"
+              prop="blxjBlstart"
+              :rules="rules.blxjBlstart"
+            >
+              <el-col :span="20">
                 <el-date-picker
-                  v-if="editFlag == '3'"
-                  v-model="formEdit.sqsj"
                   type="date"
-                  format="yyyy 年 MM 月 dd 日"
-                  value-format="yyyy-MM-dd"
                   placeholder="选择日期"
-                >
-                </el-date-picker>
+                  value-format="yyyy-MM-dd "
+                  @change="changeDate(1)"
+                  v-model="formEdit.blxjBlstart"
+                  style="width: 160px"
+                ></el-date-picker>
+                <span style="margin: 0 10px">至</span>
+                <el-date-picker
+                  placeholder="选择日期"
+                  value-format="yyyy-MM-dd "
+                  style="width: 170px"
+                  @change="changeDate(2)"
+                  v-model="formEdit.blxjBlend"
+                ></el-date-picker>
+              </el-col>
+            </el-form-item>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="20">
+              <el-form-item label="申请理由" prop="sqmsg" :rules="rules.sqmsg">
+                <div v-if="editFlag == 2">{{ formEdit.sqmsg }}</div>
+                <el-input
+                  v-else="editFlag == 3"
+                  v-model="formEdit.sqmsg"
+                  type="textarea"
+                  :autosize="{ minRows: 6, maxRows: 6 }"
+                  placeholder="请输入内容"
+                  maxlength="500"
+                ></el-input>
               </el-form-item>
-            </el-row>
-          </el-form>
-        </div>
+            </el-col>
+          </el-row>
+        </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button v-if="editFlag == 2" @click="editCance">关 闭</el-button>
           <el-button
             type="primary"
-            class="confirm"
-            @click="bianji"
             v-if="
               editFlag == 2 &&
               (formEdit.status == '08' || formEdit.status == '01')
             "
+            class="confirm"
+            @click="bianji"
             >编 辑</el-button
           >
-          <el-button class="confirm" @click="bianji1" v-if="editFlag == 3"
+          <el-button
+            v-if="editFlag == 3"
+            type="primary"
+            class="confirm"
+            @click="bianji1"
             >取 消</el-button
           >
           <el-button
+            v-if="editFlag == 3"
             type="primary"
             class="confirm"
             @click="editClick"
-            v-if="editFlag == 3"
             >保 存</el-button
           >
         </span>
@@ -476,37 +463,23 @@
   </div>
 </template>
 <script>
-import {
-  del,
-  query,
-  back,
-  tj,
-  add,
-  edit,
-  zhiHui,
-} from "@/api/dailyBehavior/lskn";
+import { edit, del, query, back, tj } from "@/api/dailyBehavior/xjyd";
 import { querywj, delwj } from "@/api/assistantWork/classEvent";
-import { queryXnXQ } from "@/api/common/common";
 import lctCom from "../../../components/lct";
-import { getGrade } from "@/api/class/maintenanceClass";
-
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
 export default {
   components: { lctCom },
   data() {
     return {
-      allNj: [],
-      XnXQ: {},
-      dmlsknsqlb: [],
       //草稿状态和退回状态有编辑功能  01 || 08
       submitModal: false,
       lctModal: false,
       addModal: false,
       editModal: false,
       delModal: false,
-      formAdd: { table: [], sqsj: "", sqly: "" },
-      formEdit: { table: [], sqsj: "", sqly: "" },
+      formAdd: {},
+      formEdit: {},
       tableDate: [],
       queryParams: {
         pageNum: 1,
@@ -522,52 +495,113 @@ export default {
       fileListAdd: [],
       ztStatus: [],
       val: [],
-      fileList: [],
-      dmxqm: [],
+      czlx: [],
+      dmjypxjgm: [],
+      dmpxdwlbm: [],
+      dmpxxzm: [],
       dmsfbzm: [],
-      zh: false,
       chehuiModal: false,
+      sqlxList: [
+        { dm: "征兵入伍", mc: "征兵入伍" },
+        { dm: "境内交换生项目", mc: "境内交换生项目" },
+        { dm: "境外交换生项目", mc: "境外交换生项目" },
+      ],
+      rulesBlcak: {},
       rules: {
-        sqly: [
+        sf: [
+          {
+            required: true,
+            message: "是否住宿不能为空",
+            trigger: "blur",
+          },
+        ],
+        SFTS: [
+          {
+            required: true,
+            message: "是否住宿不能为空",
+            trigger: "blur",
+          },
+        ],
+        oplx: [
+          {
+            required: true,
+            message: "申请类型不能为空",
+            trigger: "blur",
+          },
+        ],
+        sqlx: [
+          {
+            required: true,
+            message: "申请类型不能为空",
+            trigger: "blur",
+          },
+        ],
+        // qt: [
+        //   {
+        //     required: true,
+        //     message: "其他不能为空",
+        //     trigger: "blur",
+        //   },
+        jionPro: [
+          {
+            required: true,
+            message: "参加项目不能为空",
+            trigger: "blur",
+          },
+        ],
+        blxjCjxm: [
+          {
+            required: true,
+            message: "参加项目不能为空",
+            trigger: "blur",
+          },
+        ],
+        blxjFzbm: [
+          {
+            required: true,
+            message: "负责部门不能为空",
+            trigger: "blur",
+          },
+        ],
+        fzbm: [
+          {
+            required: true,
+            message: "负责部门不能为空",
+            trigger: "blur",
+          },
+        ],
+        blxjBlstart: [
+          {
+            required: true,
+            message: "开始时间不能为空",
+            trigger: "blur",
+          },
+        ],
+        startTime: [
+          {
+            required: true,
+            message: "开始时间不能为空",
+            trigger: "blur",
+          },
+        ],
+        endTime: [
+          {
+            required: true,
+            message: "结束时间不能为空",
+            trigger: "blur",
+          },
+        ],
+        sqmsg: [
           {
             required: true,
             message: "申请理由不能为空",
             trigger: "blur",
           },
         ],
-        sqsj: [
+        sqly: [
           {
             required: true,
-            message: "申请时间不能为空",
-            trigger: "blur",
-          },
-        ],
-        sqje: [
-          {
-            required: true,
-            message: "申请金额不能为空",
-            trigger: "blur",
-          },
-        ],
-        sqyylb: [
-          {
-            required: true,
-            message: "申请原因类别不能为空",
-            trigger: "blur",
-          },
-        ],
-
-        xn: [
-          {
-            required: true,
-            message: "学年不能为空",
-            trigger: "blur",
-          },
-        ],
-        xq: [
-          {
-            required: true,
-            message: "学期不能为空",
+            message: "申请理由不能为空",
             trigger: "blur",
           },
         ],
@@ -576,28 +610,14 @@ export default {
   },
   mounted() {
     this.query();
-    this.zh1();
-    this.getAllGrade();
     this.getCode("dmsplcm"); //状态
-    this.getCode("dmsfbzm"); //
-    this.getCode("dmxqm"); //学期
-    this.getCode("dmlsknsqlb"); //申请原因类别
+    this.getCode("dmjypxjgm"); //教育培训结果码_公用
+    this.getCode("dmpxdwlbm"); //培训单位类别码_公用
+    this.getCode("dmpxxzm"); //培训性质码_公用
+    this.getCode("dmsfbzm"); //培训性质码_公用
   },
 
   methods: {
-    zh1() {
-      zhiHui({ mkName: "" }).then((res) => {
-        this.zh = res.data;
-      });
-    },
-    //获取年级
-    getAllGrade() {
-      getGrade()
-        .then((res) => {
-          this.allNj = res.data.rows;
-        })
-        .catch((err) => {});
-    },
     tjModal() {
       var falg = 1;
       for (var i = 0; i < this.val.length; i++) {
@@ -670,11 +690,14 @@ export default {
           case "dmsplcm": //审批结果
             this.ztStatus = res.data;
             break;
-          case "dmxqm":
-            this.dmxqm = res.data; //
+          case "dmjypxjgm":
+            this.dmjypxjgm = res.data; //教育培训结果码_公用
             break;
-          case "dmlsknsqlb":
-            this.dmlsknsqlb = res.data; //
+          case "dmpxdwlbm":
+            this.dmpxdwlbm = res.data; //培训单位类别码_公用
+            break;
+          case "dmpxxzm":
+            this.dmpxxzm = res.data; //培训性质码_公用
             break;
           case "dmsfbzm":
             this.dmsfbzm = res.data; //是否
@@ -682,7 +705,11 @@ export default {
         }
       });
     },
-
+    showDetail(row) {
+      this.formEdit = row;
+      this.formEdit.SFTS = row.sfts == 0 ? "否" : "是";
+      this.querywj(row.id);
+    },
     querywj(data) {
       //用于文件查询
       querywj({ businesId: data }).then((res) => {
@@ -738,7 +765,7 @@ export default {
       }
     },
     del() {
-      del(this.delArr).then((res) => {
+      del({ ids: this.delArr }).then((res) => {
         this.query();
         this.delModal = false;
         this.$message.success("删除成功");
@@ -769,8 +796,8 @@ export default {
     },
     beforeRemoveEdit(file, fileList) {
       let uid = file.uid;
-      let idx1 = this.fileListAdd.findIndex((item) => item.uid === uid);
-      this.fileListAdd.splice(idx1, 1);
+      let idx = fileList.findIndex((item) => item.uid === uid);
+      fileList.splice(idx, 0);
       this.fileList = fileList;
       if (file.id) {
         //如果是后端返回的文件就走删除接口，不然前端自我删除
@@ -817,18 +844,18 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        console.log("this.fileListAdd", this.fileListAdd);
         var data = this.formEdit;
-        console.log("data", data);
         let formData = new FormData();
-        formData.append("sqje", data.table[0].sqje);
-        formData.append("sqly", data.sqly);
-        formData.append("sqsj", data.sqsj);
-        formData.append("xqm", data.table[0].xq);
-        formData.append("xnm", data.table[0].xn);
-        formData.append("sqlbm", data.table[0].sqyylb);
-        formData.append("xh", this.$store.getters.userId);
+        formData.append("blxjBlend", data.blxjBlend);
+        formData.append("blxjBlstart", data.blxjBlstart);
+        formData.append("blxjCjxm", data.blxjCjxm);
+        formData.append("blxjFzbm", data.blxjFzbm);
+        formData.append("oplx", data.oplx);
+        formData.append("sfts", data.sfts);
+        formData.append("sqmsg", data.sqmsg); //申请理由
+        formData.append("sqlx", this.queryParams.sqlx); //具体类型  学年小结 退学
         formData.append("id", data.id);
+        formData.append("xh", this.$store.getters.userId);
         if (this.fileListAdd.length > 0) {
           this.fileListAdd.map((file) => {
             formData.append("files", file.raw);
@@ -846,87 +873,86 @@ export default {
       }
     },
     addClick() {
-      if (this.zh) {
-        if (!this.checkFormAdd()) {
-          this.$message.error("请完善表单相关信息！");
-          return;
-        } else {
-          var data = this.formAdd;
-          console.log("data", data);
-          let formData = new FormData();
-          formData.append("sqje", data.table[0].sqje);
-          formData.append("sqly", data.sqly);
-          formData.append("sqsj", data.sqsj);
-          formData.append("xqm", data.table[0].xq);
-          formData.append("xnm", data.table[0].xn);
-          formData.append("sqlbm", data.table[0].sqyylb);
-          formData.append("xh", this.$store.getters.userId);
-          if (this.fileList.length > 0) {
-            this.fileList.map((file) => {
-              formData.append("files", file.raw);
-            });
-          }
-          add(formData).then((res) => {
-            if (res.errcode == "00") {
-              this.$message.success("新增成功");
-              this.query();
-            } else {
-              this.$message.error("新增失败");
-            }
-          });
-          this.addModal = false;
-        }
+      if (!this.checkFormAdd()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
       } else {
-        this.$message.error("不在申请时间段");
+        var data = this.formAdd;
+        let formData = new FormData();
+        formData.append("blxjBlend", data.endTime);
+        formData.append("blxjBlstart", data.startTime);
+        formData.append("blxjCjxm", data.jionPro);
+        formData.append("blxjFzbm", data.fzbm);
+        formData.append("oplx", data.oplx);
+        formData.append("sfts", data.sf);
+        formData.append("sqmsg", data.sqly); //申请理由
+        formData.append("sqlx", this.queryParams.sqlx); //具体类型  学年小结 退学
+        formData.append("xh", this.$store.getters.userId);
+        // 测试休学
+        // formData.append("sfts", "1");
+        // formData.append("sqmsg", "测试"); //申请理由
+        // formData.append("sqlx", "xx"); //具体类型  学年小结 退学
+        // formData.append("xh", this.$store.getters.userId);
+        // 测试退学
+        // formData.append("sqmsg", "测试"); //申请理由
+        // formData.append("sqlx", "tx"); //具体类型  学年小结 退学
+        // formData.append("xh", this.$store.getters.userId);
+        // 测试复学
+        // formData.append("sfts", "1");
+        // formData.append("fxBj", "123");
+        // formData.append("fxNj", "456");
+        // formData.append("fxSfsqrz", "2");
+        // formData.append("sqmsg", "测试"); //申请理由
+        // formData.append("sqlx", "fx"); //具体类型  学年小结 退学
+        // formData.append("xh", this.$store.getters.userId);
+        if (this.fileList.length > 0) {
+          this.fileList.map((file) => {
+            formData.append("files", file.raw);
+          });
+        }
+        edit(formData).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("新增成功");
+            this.query();
+          } else {
+            this.$message.error("新增失败");
+          }
+        });
+        this.addModal = false;
       }
     },
     query() {
       var data = {
         xh: this.$store.getters.userId,
+        sqlx: this.queryParams.sqlx,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",
         orderPx: this.queryParams.orderPx ? this.queryParams.orderPx : "",
       };
-      queryXnXQ().then((res) => {
-        this.XnXQ = res.data ? res.data[0] : {};
-      });
       query(data).then((res) => {
         this.tableDate = res.data;
+        this.tableDate.forEach((element) => {
+          element.ydlb = "学年小结";
+        });
         this.queryParams.totalCount = res.totalCount;
       });
     },
     xinzeng() {
-      this.formAdd.table = []; // 每次打开弹框先将弹框的table数组置空
-      var newLine = {
-        xn: this.XnXQ.year, //自动回显
-        xq: this.XnXQ.term,
-        sqje: "",
-        sqyylb: "",
-        files: [],
-      };
+      this.formAdd = {
+        sf: "", //是否退宿
+        sqlx: "", //申请类型
+        qt: "", //其他
+        jionPro: "", //参加项目
+        fzbm: "", //负责部门
+        startTime: "", //开始时间
+        endTime: "", //结束时间
+        sqly: "", //申请理由
+        files: [], //申请材料
+        oplx: "",
+      }; // 每次打开弹框先将弹框的table数组置空
       this.fileList = [];
-      this.formAdd.table.push(newLine);
       this.addModal = true;
-      this.formAdd.sqsj = this.formatDate(new Date()).slice(0, 10);
-    },
-    showDetail(row) {
-      this.formEdit.table = [];
-      var newLine = {
-        xn: row.xnm, //自动回显
-        xq: row.xqm,
-        sqje: row.sqje,
-        sqyylb: row.sqlbm,
-        sqlbmc: row.sqlbmc,
-        xnmc: row.xnmc,
-        xqmc: row.xqmc,
-      };
-      this.formEdit.sqly = row.sqly;
-      this.formEdit.sqsj = row.sqsj;
-      this.formEdit.id = row.id;
-      this.formEdit.status = row.status;
-      this.formEdit.table.push(newLine);
-      this.querywj(row.id);
     },
     addCance() {
       this.addModal = false;

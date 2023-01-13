@@ -1981,9 +1981,23 @@
             <el-table-column type="index" label="序号" width="50" />
             <el-table-column prop="zsmc" label="证书名称">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.zsmc }}</div>
+                <div v-if="isEdit == 1"> <el-cascader
+                      v-model="scope.row.zsmc"
+                      :options="zsmcOps"
+                      disabled
+                      :props="OpsProps"
+                    
+                    ></el-cascader></div>
                 <div v-else>
-                  <el-input v-model="scope.row.zsmc" placeholder="请输入" :disabled="zgZyzgsAuth.ZSMC==2"/>
+                  <!-- <el-input v-model="scope.row.zsmc" placeholder="请输入" :disabled="zgZyzgsAuth.ZSMC==2"/> -->
+                   <el-cascader
+                      v-model="scope.row.zsmc"
+                      :options="zsmcOps"
+                      @change="handleChangeZsmc(value,scope.row)"
+                    :disabled="zgZyzgsAuth.ZSMC==2"
+                      :props="OpsProps"
+                      filterable
+                    ></el-cascader>
                   </div>
                 
               </template>
@@ -2050,9 +2064,24 @@
         
            <el-table-column prop="jsdw" label="接收单位">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.jsdw }}</div>
+                <div v-if="isEdit == 1"><el-cascader
+                      v-model="scope.row.jsdw"
+                      :options="jsdwlxOps"
+                     
+                      disabled
+                      :props="OpsProps"
+                     
+                    ></el-cascader></div>
                 <div v-else>
-                  <el-input v-model="scope.row.jsdw" placeholder="请输入" :disabled="zgGwdlsAuth.JSDW==2"/>
+                  <!-- <el-input v-model="scope.row.jsdw" placeholder="请输入" :disabled="zgGwdlsAuth.JSDW==2"/> -->
+                  <el-cascader
+                      v-model="scope.row.jsdw"
+                      :options="jsdwlxOps"
+                      @change="handleChangeJsdwlx(value.scope.row)"
+                      :disabled="zgGwdlsAuth.JSDW==2"
+                      :props="OpsProps"
+                      filterable
+                    ></el-cascader>
                   </div>
                  
               </template>
@@ -2369,9 +2398,23 @@
             </el-table-column> 
            <el-table-column prop="qklx" label="期刊类型">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.qklx }}</div>
+                <div v-if="isEdit == 1"><el-cascader
+                      v-model="scope.row.qklx"
+                      :options="qklxOps"
+                    disabled
+                      :props="OpsProps"
+                      
+                    ></el-cascader></div>
                 <div v-else>
-                  <el-input v-model="scope.row.qklx" placeholder="请输入" :disabled="zgLwkyqksAuth.QKLX==2"/>
+                  <!-- <el-input v-model="scope.row.qklx" placeholder="请输入" :disabled="zgLwkyqksAuth.QKLX==2"/> -->
+                  <el-cascader
+                      v-model="scope.row.qklx"
+                      :options="qklxOps"
+                      @change="handleChangeQklx(value,scope.row)"
+                    :disabled="zgLwkyqksAuth.QKLX==2"
+                      :props="OpsProps"
+                      filterable
+                    ></el-cascader>
                   </div>
                  
               </template>
@@ -2666,9 +2709,23 @@
         
            <el-table-column prop="cglx" label="成果类型">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.cglx }}</div>
+                <div v-if="isEdit == 1"> <el-cascader
+                      v-model="scope.row.cglx"
+                      :options="cglxOps"
+                      disabled
+                      :props="OpsProps"
+                      filterable
+                    ></el-cascader></div>
                 <div v-else>
-                  <el-input v-model="scope.row.cglx" placeholder="请输入" :disabled="zgQtkyqksAuth.CGLX==2"/>
+                  <!-- <el-input v-model="scope.row.cglx" placeholder="请输入" :disabled="zgQtkyqksAuth.CGLX==2"/> -->
+                  <el-cascader
+                      v-model="scope.row.cglx"
+                      :options="cglxOps"
+                      @change="handleChangeCglx(value,scope.row)"
+              :disabled="zgQtkyqksAuth.CGLX==2"
+                      :props="OpsProps"
+                      filterable
+                    ></el-cascader>
                   </div>
                  
               </template>
@@ -2801,9 +2858,23 @@
         
            <el-table-column prop="jxjb" label="奖项级别">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.jxjb }}</div>
+                <div v-if="isEdit == 1"><el-cascader
+                      v-model="scope.row.jxjb"
+                      :options="jxjbOps"
+                     disabled
+                      :props="OpsProps"
+                     
+                    ></el-cascader></div>
                 <div v-else>
-                  <el-input v-model="scope.row.jxjb" placeholder="请输入" :disabled="zgJlbzsAuth.JXJB==2"/>
+                  <!-- <el-input v-model="scope.row.jxjb" placeholder="请输入" :disabled="zgJlbzsAuth.JXJB==2"/> -->
+                  <el-cascader
+                      v-model="scope.row.jxjb"
+                      :options="jxjbOps"
+                      @change="handleChangeJxjb(value,scope.row)"
+                      :disabled="zgJlbzsAuth.JXJB==2"
+                      :props="OpsProps"
+                      filterable
+                    ></el-cascader>
                   </div>
                 
               </template>
@@ -2875,6 +2946,11 @@ import {
   queryAllDwh,
   getMajors,
   getFdyZy,
+  getZgCglx,
+  getZgJsdwlx,
+  getZgJxjb,
+  getZgQklx,
+  getZgZsmc,
 } from "@/api/politicalWork/basicInfo";
 export default {
   name: "DetailInfo",
@@ -2917,6 +2993,11 @@ export default {
       kcxzmOps: [], //课程性质码
       xmjbmOps: [], //项目级别码
       zzlxmOps: [], //,著作类型码
+      cglxOps: [],
+      jsdwlxOps: [],
+      jxjbOps: [],
+      qklxOps: [],
+      zsmcOps: [],
       zgZgjbxxesAuth: {},
       zgFdyrmsAuth: {},
       zgXlxwsAuth: {},
@@ -3108,6 +3189,21 @@ export default {
       getFdyZy().then((res) => {
         this.sxzymOps = res.data;
       });
+      getZgCglx().then((res) => {
+        this.cglxOps = res.data;
+      });
+      getZgJsdwlx().then((res) => {
+        this.jsdwlxOps = res.data;
+      });
+      getZgJxjb().then((res) => {
+        this.jxjbOps = res.data;
+      });
+      getZgQklx().then((res) => {
+        this.qklxOps = res.data;
+      });
+      getZgZsmc().then((res) => {
+        this.zsmcOps = res.data;
+      });
     },
     handleChangeZy(value) {
       if (value.length == 1) {
@@ -3116,6 +3212,51 @@ export default {
         this.detailInfoData.zgZgjbxxes.sxzym = value[1];
       } else {
         this.detailInfoData.zgZgjbxxes.sxzym = value[2];
+      }
+    },
+    handleChangeCglx(value, row) {
+      if (value.length == 1) {
+        row.cglx = value[0];
+      } else if (value.length == 2) {
+        row.cglx = value[1];
+      } else {
+        row.cglx = value[2];
+      }
+    },
+    handleChangeJsdwlx(value, row) {
+      if (value.length == 1) {
+        row.jsdw = value[0];
+      } else if (value.length == 2) {
+        row.jsdw = value[1];
+      } else {
+        row.jsdw = value[2];
+      }
+    },
+    handleChangeJxjb(value, row) {
+      if (value.length == 1) {
+        row.jxjb = value[0];
+      } else if (value.length == 2) {
+        row.jxjb = value[1];
+      } else {
+        row.jxjb = value[2];
+      }
+    },
+    handleChangeQklx(value, row) {
+      if (value.length == 1) {
+        row.qklx = value[0];
+      } else if (value.length == 2) {
+        row.qklx = value[1];
+      } else {
+        row.qklx = value[2];
+      }
+    },
+    handleChangeZsmc(value, row) {
+      if (value.length == 1) {
+        row.zsmc = value[0];
+      } else if (value.length == 2) {
+        row.zsmc = value[1];
+      } else {
+        row.zsmc = value[2];
       }
     },
     getDetail() {

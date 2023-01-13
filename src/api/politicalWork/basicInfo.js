@@ -127,3 +127,45 @@ export function getFdyZy(data) {
     data: data
   })
 }
+///zg/getZgCglx科研情况成果类型
+export function getZgCglx(data) {
+  return request({
+    url: '/zg/getZgCglx',
+    method: 'post',
+    data: data
+  })
+}
+
+//岗位锻炼接收单位类型
+export function getZgJsdwlx(data) {
+  return request({
+    url: '/zg/getZgJsdwlx',
+    method: 'post',
+    data: data
+  })
+}
+//奖励表彰奖项级别
+export function getZgJxjb(data) {
+  return request({
+    url: '/zg/getZgJxjb',
+    method: 'post',
+    data: data
+  })
+}
+//科研论文期刊类型
+export function getZgQklx(data) {
+  return request({
+    url: '/zg/getZgQklx',
+    method: 'post',
+    data: data
+  })
+}
+
+//职业资格证书名称
+export function getZgZsmc(data) {
+  return request({
+    url: '/zg/getZgZsmc',
+    method: 'post',
+    data: data
+  })
+}

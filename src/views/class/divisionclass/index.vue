@@ -261,6 +261,7 @@ export default {
       // 筛选框数据
       collegeOptions: [],
       levelOptions: [],
+      ops:{dm:"12", mc:"硕博"},
       gradeOptions: [],
       // 弹出层标题
       title: "",
@@ -371,6 +372,8 @@ export default {
       });
       getLevel().then((response) => {
         // 获取培养层次列表数据
+        var aa =  response.data.rows.length;
+        response.data.rows[aa]= this.ops;
         this.levelOptions = response.data.rows;
       });
       getGrade().then((response) => {

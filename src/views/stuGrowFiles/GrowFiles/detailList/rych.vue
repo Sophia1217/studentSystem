@@ -40,7 +40,7 @@
           </el-table-column>
           <el-table-column prop="bzdw" label="表彰单位" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="hjsj" label="获奖时间" sortable="custom">
+          <el-table-column prop="hjsj" label="发证时间" sortable="custom">
           </el-table-column>
           <el-table-column prop="zsbh" label="证书编号" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
@@ -117,7 +117,7 @@
       <el-dialog title="新增" :visible.sync="addModal" width="80%" :close-on-click-modal="false">
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
-            <el-table-column label="荣誉名称" align="center">
+            <el-table-column label="荣誉名称" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.rymc'"
@@ -127,7 +127,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="级别" width="150px" align="center">
+            <el-table-column label="级别" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.jbm'"
@@ -147,7 +147,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="等级" width="150px" align="center">
+            <el-table-column label="等级" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.djm'"
@@ -167,7 +167,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="表彰单位" width="150px" align="center">
+            <el-table-column label="表彰单位" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.bzdw'"
@@ -177,7 +177,64 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="获奖时间" width="150px" align="center">
+            <el-table-column label="评审学年度（年）" width="150px" align="center" :render-header="addRedStar">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.psxnd'"
+                  :rules="rules.psxnd"
+                >
+                  <el-select
+                    v-model="scope.row.psxnd"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in jbOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="奖励对象" width="110px" align="center" :render-header="addRedStar">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.jldx'"
+                  :rules="rules.jldx"
+                >
+                  <el-select
+                    v-model="scope.row.jldx"
+                    @change="changeJldx"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in jldxOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="个人位次" align="center" v-if="showGrwc == 2" :render-header="addRedStar">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.grwc'"
+                  :rules="rules.grwc"
+                >
+                  <el-input-number
+                    v-model="scope.row.grwc"
+                    controls-position="right"
+                    style="width:100px"
+                    :min="1"
+                    @keydown.native="channelInputLimit"
+                  ></el-input-number>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="发证时间" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.hjsj'"
@@ -216,7 +273,7 @@
       <el-dialog title="编辑" :visible.sync="editModal" width="80%" :close-on-click-modal="false">
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
-            <el-table-column label="荣誉名称" align="center">
+            <el-table-column label="荣誉名称" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.rymc'"
@@ -226,7 +283,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="级别" align="center">
+            <el-table-column label="级别" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.jbm'"
@@ -246,7 +303,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="等级" width="150px" align="center">
+            <el-table-column label="等级" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.djm'"
@@ -266,7 +323,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="表彰单位" width="150px" align="center">
+            <el-table-column label="表彰单位" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.bzdw'"
@@ -276,7 +333,64 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="获奖时间" align="center">
+            <el-table-column label="评审学年度（年）" width="150px" align="center" :render-header="addRedStar">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.psxnd'"
+                  :rules="rules.psxnd"
+                >
+                  <el-select
+                    v-model="scope.row.psxnd"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in jbOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="奖励对象" width="110px" align="center" :render-header="addRedStar">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.jldx'"
+                  :rules="rules.jldx"
+                >
+                  <el-select
+                    v-model="scope.row.jldx"
+                    @change="changeJldx"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in jldxOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="个人位次" align="center" v-if="showGrwc == 2" :render-header="addRedStar">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.grwc'"
+                  :rules="rules.grwc"
+                >
+                  <el-input-number
+                    v-model="scope.row.grwc"
+                    controls-position="right"
+                    style="width:100px"
+                    :min="1"
+                    @keydown.native="channelInputLimit"
+                  ></el-input-number>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="发证时间" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.hjsj'"
@@ -378,6 +492,12 @@ export default {
       val: [],
       jbOps: [],
       djOps: [],
+      jldxOps:[
+        {dm:'0', mc: '个人'},
+        {dm:'1', mc: '团队'},
+        {dm:'2', mc: '组织'},
+      ],
+      showGrwc:2, //1个人位次不展示，2展示个人位次
       rules: {
         bzdw: [
           {
@@ -394,12 +514,15 @@ export default {
         hjsj: [
           {
             required: true,
-            message: "获奖时间不能为空",
+            message: "发证时间不能为空",
             trigger: "blur",
           },
         ],
-        zsbh: [
-          { required: true, message: "证书编号不能为空", trigger: "blur" },
+        psxnd: [
+          { required: true, message: "评审学年度不能为空", trigger: "change" },
+        ],
+        jldx: [
+          { required: true, message: "奖励对象不能为空", trigger: "change" },
         ],
       },
     };
@@ -532,7 +655,11 @@ export default {
           jbm: data.jbm,
           rymc: data.rymc,
           zsbh: data.zsbh,
+          psxnd: data.psxnd,
+          jldx: data.jldx,
+          grwc: data.grwc,
           xh: this.$store.getters.userId,
+    
         };
         edit(params).then((res) => {
           if (res.errcode == "00") {
@@ -567,6 +694,9 @@ export default {
         jbm: "",
         rymc: "",
         zsbh: "",
+        psxnd: "",
+        jldx: "",
+        grwc: "",
       };
       this.formAdd.addData.push(newLine);
       this.addModal = true;
@@ -629,6 +759,17 @@ export default {
     },
     delCancel() {
       this.delModal = false;
+    },
+    //设置计数器禁输入
+    channelInputLimit(e) {
+		  e.returnValue = ''
+		},
+    changeJldx(val){
+      if(val && val == 0){
+        this.showGrwc = 1;
+      } else{
+        this.showGrwc = 2;
+      };
     },
   },
 };

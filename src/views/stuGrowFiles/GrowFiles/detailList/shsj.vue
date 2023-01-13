@@ -34,7 +34,7 @@
           ></el-table-column>
           <el-table-column prop="xmmc" label="项目名称" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="zzdw" label="组织单位" sortable="custom" :show-overflow-tooltip="true">
+          <el-table-column prop="zzdw" label="组织单位或个人" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="dj" label="等级" sortable="custom">
           </el-table-column>
@@ -48,7 +48,7 @@
           </el-table-column>
           <el-table-column prop="zmr" label="证明人" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="lxfs" label="联系方式" sortable="custom" :show-overflow-tooltip="true">
+          <el-table-column prop="lxfs" label="证明人联系方式" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="status" label="审核状态" sortable="custom">
             <template slot-scope="scope">
@@ -123,7 +123,7 @@
       <el-dialog title="新增" :visible.sync="addModal" width="80%" :close-on-click-modal="false">
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
-            <el-table-column label="项目名称" align="center">
+            <el-table-column label="项目名称" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.xmmc'"
@@ -133,7 +133,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="组织单位" align="center">
+            <el-table-column label="组织单位或个人" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.zzdw'"
@@ -143,7 +143,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="等级" width="150px" align="center">
+            <el-table-column label="等级" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.djm'"
@@ -163,7 +163,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="类型" width="150px" align="center">
+            <el-table-column label="类型" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.lx'"
@@ -183,7 +183,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="实践地点" width="150px" align="center">
+            <el-table-column label="实践地点" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.sjdd'"
@@ -193,7 +193,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="开始时间" align="center">
+            <el-table-column label="开始时间" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.kssj'"
@@ -211,7 +211,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="结束时间" align="center">
+            <el-table-column label="结束时间" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.jssj'"
@@ -229,7 +229,21 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="证明人" width="120px">
+            <el-table-column label="工作岗位或内容描述" align="center" :render-header="addRedStar">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.gzgw'"
+                  :rules="rules.gzgw"
+                >
+                  <el-input 
+                    v-model="scope.row.gzgw" 
+                    type="text"
+                    maxlength="500"
+                  />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="证明人" align="center" width="120px" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.zmr'"
@@ -239,7 +253,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="联系方式" align="center">
+            <el-table-column label="证明人联系方式" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.lxfs'"
@@ -261,7 +275,7 @@
       <el-dialog title="编辑" :visible.sync="editModal" width="80%" :close-on-click-modal="false">
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
-            <el-table-column label="项目名称" align="center">
+            <el-table-column label="项目名称" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.xmmc'"
@@ -271,7 +285,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="组织单位" align="center">
+            <el-table-column label="组织单位或个人" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.zzdw'"
@@ -281,7 +295,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="等级" width="150px" align="center">
+            <el-table-column label="等级" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.djm'"
@@ -301,7 +315,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="类型" width="150px" align="center">
+            <el-table-column label="类型" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.lx'"
@@ -321,7 +335,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="实践地点" width="150px" align="center">
+            <el-table-column label="实践地点" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.sjdd'"
@@ -331,7 +345,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="开始时间" align="center">
+            <el-table-column label="开始时间" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.kssj'"
@@ -349,7 +363,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="结束时间" align="center">
+            <el-table-column label="结束时间" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.jssj'"
@@ -367,7 +381,21 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="证明人" width="120px">
+            <el-table-column label="工作岗位或内容描述" align="center" :render-header="addRedStar">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.gzgw'"
+                  :rules="rules.gzgw"
+                >
+                  <el-input 
+                    v-model="scope.row.gzgw" 
+                    type="text"
+                    maxlength="500"
+                  />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="证明人" width="120px" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.zmr'"
@@ -377,7 +405,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="联系方式" align="center">
+            <el-table-column label="证明人联系方式" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.lxfs'"
@@ -471,7 +499,7 @@ export default {
           },
         ],
         zzdw: [
-          { required: true, message: "组织单位不能为空", trigger: "change" },
+          { required: true, message: "组织单位或个人不能为空", trigger: "change" },
         ],
         djm: [{ required: true, message: "等级不能为空", trigger: "change" }],
         lx: [{ required: true, message: "类型不能为空", trigger: "blur" }],
@@ -479,6 +507,7 @@ export default {
           { required: true, message: "时间地点不能为空", trigger: "change" },
         ],
         zmr: [{ required: true, message: "证明人不能为空", trigger: "blur" }],
+        gzgw: [{ required: true, message: "工作岗位不能为空", trigger: "blur" }],
         kssj: [
           {
             required: true,
@@ -495,7 +524,7 @@ export default {
           },
         ],
         lxfs: [
-          { required: true, message: "联系方式不能为空", trigger: "blur" },
+          { required: true, message: "证明人联系方式不能为空", trigger: "blur" },
         ],
         shzt: [
           { required: true, message: "审核状态不能为空", trigger: "blur" },
@@ -632,6 +661,7 @@ export default {
           kssj: data.kssj,
           jssj: data.jssj,
           zmr: data.zmr,
+          gzgw:data.gzgw,
           lxfs: data.lxfs,
           xh: this.$store.getters.userId,
         };
@@ -671,6 +701,7 @@ export default {
         jssj: "",
         zmr: "",
         lxfs: "",
+        gzgw:"",
       };
       this.formAdd.addData.push(newLine);
       this.addModal = true;

@@ -626,8 +626,8 @@ export default {
             this.dqXnxq = [res.data[0].dm, item.dm];
           }
         }
-        this.queryParams.xnm = this.dqXnxq[0];
-        // this.queryParams.xqmList.push(this.dqXnxq[1]);
+        this.queryParams.xnm.push(this.dqXnxq[0]);
+        this.queryParams.xqmList.push(this.dqXnxq[1]);
         this.handleSearch();
 
         // let data = {
@@ -702,8 +702,9 @@ export default {
         pyccmList: this.training.choose || [],
         zcsjStart: rqs || "",
         zcsjStart: rqe || "",
-        xnm: this.queryParams.xnm,
-        //xqmList: this.queryParams.xqmList,
+        // xnm: this.queryParams.xnm,
+        xnmc: this.queryParams.xnm,
+        xqmList: this.queryParams.xqmList,
         zcztm: "0",
 
         pageNum: this.queryParams.pageNum,
@@ -742,7 +743,7 @@ export default {
     handleZc() {
       var falg = 1;
       for (var i = 0; i < this.multipleSelection.length; i++) {
-        if (this.multipleSelection[i].qfje !== "0") falg = 2;
+        if (this.multipleSelection[i].qfje !== "0.0") falg = 2;
       }
       if (falg == 1) {
         if (this.commonParams && this.commonParams.length > 0) {
@@ -900,8 +901,9 @@ export default {
         zcsjStart: rqs || "",
         zcsjStart: rqe || "",
         pyccmList: this.training.choose || [],
-        xnm: this.queryParams.xnm,
-        //xqmList: this.queryParams.xqmList,
+        // xnm: this.queryParams.xnm,
+        xnmc: this.queryParams.xnm,
+        xqmList: this.queryParams.xqmList,
         zcztm: "0",
 
         pageNum: this.queryParams.pageNum,

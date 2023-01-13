@@ -103,7 +103,7 @@
       <el-dialog title="新增" :visible.sync="addModal" width="80%" :close-on-click-modal="false">
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
-            <el-table-column label="活动/赛事名称" align="center">
+            <el-table-column label="活动/赛事名称" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.hdssmc'"
@@ -113,7 +113,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="组织单位" align="center">
+            <el-table-column label="组织单位" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.zzdw'"
@@ -123,7 +123,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="级别" width="150px" align="center">
+            <el-table-column label="级别" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.jbm'"
@@ -143,7 +143,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="参赛作品" width="150px" align="center">
+            <el-table-column label="参赛作品" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.cszp'"
@@ -153,7 +153,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="成员" width="150px" align="center">
+            <el-table-column label="成员" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.cy'"
@@ -163,7 +163,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="排名" width="150px" align="center">
+            <el-table-column label="排名" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.pm'"
@@ -173,7 +173,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="活动时间" width="150px" align="center">
+            <el-table-column label="活动时间" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.hdsj'"
@@ -219,7 +219,7 @@
       <el-dialog title="编辑" :visible.sync="editModal" width="80%" :close-on-click-modal="false">
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
-            <el-table-column label="活动/赛事名称" align="center">
+            <el-table-column label="活动/赛事名称" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.hdssmc'"
@@ -229,7 +229,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="组织单位" align="center">
+            <el-table-column label="组织单位" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.zzdw'"
@@ -239,7 +239,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="级别" width="150px" align="center">
+            <el-table-column label="级别" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.jbm'"
@@ -259,7 +259,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="参赛作品" width="150px" align="center">
+            <el-table-column label="参赛作品" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.cszp'"
@@ -269,7 +269,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="成员" width="150px" align="center">
+            <el-table-column label="成员" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.cy'"
@@ -279,7 +279,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="排名" width="150px" align="center">
+            <el-table-column label="排名" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.pm'"
@@ -289,7 +289,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="活动时间" align="center">
+            <el-table-column label="活动时间" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.hdsj'"
@@ -397,6 +397,10 @@
           </el-table-column>
           <el-table-column prop="srzw" label="所任职务" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
+          <el-table-column prop="qssj" label="参与起始时间" sortable="custom" :show-overflow-tooltip="true">
+          </el-table-column>
+          <el-table-column prop="jssj" label="参与结束时间" sortable="custom" :show-overflow-tooltip="true">
+          </el-table-column>
           <el-table-column prop="status" label="审核状态" sortable="custom">
             <template slot-scope="scope">
               <el-select
@@ -440,7 +444,7 @@
       <el-dialog title="新增" :visible.sync="addModalCy" width="80%" :close-on-click-modal="false">
         <el-form ref="formAddCy" :model="formAddCy" :rules="rules">
           <el-table :data="formAddCy.addDataCy">
-            <el-table-column label="公司名称" align="center">
+            <el-table-column label="公司名称" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addDataCy.' + scope.$index + '.gsmc'"
@@ -450,7 +454,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="注册日期" width="150px" align="center">
+            <el-table-column label="注册日期" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addDataCy.' + scope.$index + '.zcrq'"
@@ -467,7 +471,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="注册资金" align="center">
+            <el-table-column label="注册资金" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addDataCy.' + scope.$index + '.zczj'"
@@ -477,7 +481,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="所属行业" width="150px" align="center">
+            <el-table-column label="所属行业" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addDataCy.' + scope.$index + '.sshy'"
@@ -487,7 +491,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="法人代表" width="150px" align="center">
+            <el-table-column label="法人代表" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addDataCy.' + scope.$index + '.frdb'"
@@ -497,7 +501,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="主营业务" width="150px" align="center">
+            <el-table-column label="主营业务" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addDataCy.' + scope.$index + '.zyyw'"
@@ -507,13 +511,49 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="所任职位" width="150px" align="center">
+            <el-table-column label="所任职位" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addDataCy.' + scope.$index + '.srzw'"
                   :rules="rules.srzw"
                 >
                   <el-input v-model="scope.row.srzw" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="参与起始时间" align="center" :render-header="addRedStar">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addDataCy.' + scope.$index + '.qssj'"
+                  :rules="rules.qssj"
+                >
+                  <el-date-picker
+                    v-model="scope.row.qssj"
+                    type="date"
+                    format="yyyy 年 MM 月 dd 日"
+                    value-format="yyyy-MM-dd"
+                    @change="changeDate(1)"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="参与结束时间" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addDataCy.' + scope.$index + '.jssj'"
+                  :rules="rules.jssj"
+                >
+                  <el-date-picker
+                    v-model="scope.row.jssj"
+                    type="date"
+                    format="yyyy 年 MM 月 dd 日"
+                    value-format="yyyy-MM-dd"
+                    @change="changeDate(2)"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -529,7 +569,7 @@
       <el-dialog title="编辑" :visible.sync="editModalCy" width="80%" :close-on-click-modal="false">
         <el-form ref="formEditCy" :model="formEditCy" :rules="rules">
           <el-table :data="formEditCy.editDataCy">
-            <el-table-column label="公司名称" align="center">
+            <el-table-column label="公司名称" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editDataCy.' + scope.$index + '.gsmc'"
@@ -539,7 +579,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="注册日期" align="center">
+            <el-table-column label="注册日期" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editDataCy.' + scope.$index + '.zcrq'"
@@ -556,7 +596,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="注册资金" align="center">
+            <el-table-column label="注册资金" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editDataCy.' + scope.$index + '.zczj'"
@@ -566,7 +606,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="所属行业" width="150px" align="center">
+            <el-table-column label="所属行业" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editDataCy.' + scope.$index + '.sshy'"
@@ -576,7 +616,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="法人代表" width="150px" align="center">
+            <el-table-column label="法人代表" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editDataCy.' + scope.$index + '.frdb'"
@@ -586,7 +626,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="主营业务" width="150px" align="center">
+            <el-table-column label="主营业务" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editDataCy.' + scope.$index + '.zyyw'"
@@ -596,13 +636,49 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="所任职位" width="150px" align="center">
+            <el-table-column label="所任职位" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editDataCy.' + scope.$index + '.srzw'"
                   :rules="rules.srzw"
                 >
                   <el-input v-model="scope.row.srzw" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="参与起始时间" align="center" :render-header="addRedStar">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editDataCy.' + scope.$index + '.qssj'"
+                  :rules="rules.qssj"
+                >
+                  <el-date-picker
+                    v-model="scope.row.qssj"
+                    type="date"
+                    format="yyyy 年 MM 月 dd 日"
+                    value-format="yyyy-MM-dd"
+                    @change="changeDate(3)"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="参与结束时间" align="center">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editDataCy.' + scope.$index + '.jssj'"
+                  :rules="rules.jssj"
+                >
+                  <el-date-picker
+                    v-model="scope.row.jssj"
+                    type="date"
+                    format="yyyy 年 MM 月 dd 日"
+                    value-format="yyyy-MM-dd"
+                    @change="changeDate(4)"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -742,6 +818,13 @@ export default {
         ],
         zyyw: [
           { required: true, message: "主营业务不能为空", trigger: "blur" },
+        ],
+        qssj: [
+          {
+            required: true,
+            message: "起始时间不能为空",
+            trigger: "blur",
+          },
         ],
         
       },
@@ -1067,6 +1150,8 @@ export default {
           zcrq: data.zcrq,
           zczj: data.zczj,
           zyyw: data.zyyw,
+          qssj: data.qssj,
+          jssj: data.jssj,
           xh: this.$route.query.xh,
         };
         editCy(params).then((res) => {
@@ -1103,6 +1188,8 @@ export default {
         zcrq: "",
         zczj: "",
         zyyw: "",
+        qssj: "",
+        jssj: "",
       };
       this.formAddCy.addDataCy.push(newLine);
       this.addModalCy = true;
@@ -1121,6 +1208,40 @@ export default {
     },
     delCancelCy() {
       this.delModalCy = false;
+    },
+    // 判断 起始时间 结束时间
+    changeDate(flag) {
+      let addParams = this.formAdd.addData[0];
+      let editParams = this.formEdit.editData[0];
+      if (flag==1) {//新增起始时间
+        if (addParams.jssj) {
+          if (addParams.qssj > addParams.jssj) {
+            addParams.qssj = null;
+            this.$message.error("起始时间不能大于结束时间！");
+          }
+        }
+      } else if (flag==2) {//新增结束时间
+        if (addParams.qssj) {
+          if (addParams.qssj > addParams.jssj) {
+            addParams.jssj = null;
+            this.$message.error("结束时间不能小于起始时间！");
+          }
+        }
+      } else if (flag==3) {
+        if (editParams.jssj) {
+          if (editParams.qssj > editParams.jssj) {
+            editParams.qssj = null;
+            this.$message.error("起始时间不能大于结束时间！");
+          }
+        }
+      } else {
+        if (editParams.qssj) {
+          if (editParams.qssj > editParams.jssj) {
+            editParams.jssj = null;
+            this.$message.error("结束时间不能小于起始时间！");
+          }
+        }
+      }
     },
   },
 };

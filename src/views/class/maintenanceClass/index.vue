@@ -226,7 +226,7 @@
       >
         <el-row>
           <el-col :span="12">
-            <el-form-item label="所属培养单位" prop="pydw">
+            <el-form-item label="所属培养单位" prop="pydw" label-width="100px">
               <el-select v-model="form.pydw" placeholder="未选择">
                 <el-option
                   v-for="(item, index) in collegeOptions"
@@ -239,7 +239,9 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="培养层次" prop="pycc">
-              <el-select v-model="form.pycc" placeholder="请选择">
+              <el-select v-model="form.pycc" 
+                @change="changePycc"
+                placeholder="请选择">
                 <el-option
                   v-for="(item, index) in levelOptions"
                   :key="index"
@@ -251,8 +253,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="所属年级" prop="ssnj">
-              <el-select v-model="form.ssnj" placeholder="请选择">
+            <el-form-item label="所属年级" prop="ssnj" label-width="100px">
+              <el-select v-model="form.ssnj" 
+                :disabled="isHunhe == '2' ? true : false"
+                placeholder="请选择">
                 <el-option
                   v-for="(item, index) in gradeOptions"
                   :key="index"
@@ -365,6 +369,7 @@ export default {
       // 筛选框数据
       collegeOptions: [],
       levelOptions: [],
+      ops:{dm:"12", mc:"硕博"},
       gradeOptions: [],
       // 弹出层标题
       title: "",
@@ -393,6 +398,7 @@ export default {
         ssnj: "", // 年级
         classNum: 0, // 新建班级数
       },
+      isHunhe: 1, //2硕博混合班级，1非混合班级
       // 表单校验
       rules: {
         collegeContent: [
@@ -480,6 +486,8 @@ export default {
       getLevel().then((response) => {
         // 获取培养层次列表数据
         if (response.errcode == "00") {
+          var aa =  response.data.rows.length;
+          response.data.rows[aa]= this.ops;
           this.levelOptions = response.data.rows;
         }
       });
@@ -640,6 +648,15 @@ export default {
         }
         this.getList(this.queryParams);
       });
+    },
+    changePycc(val){
+      if(val && val == 12){
+        this.form.ssnj = "";
+        this.isHunhe = 2;
+      } else{
+        this.isHunhe = 1;
+      };
+      console.log("val",val);
     },
   },
 };

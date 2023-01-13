@@ -308,6 +308,21 @@
                 @keyup.enter.native="handleQuery"
               />
             </el-form-item>
+            <el-form-item label="年级" prop="ssnjList" class="header-item">
+              <el-select
+                v-model="queryParams1.ssnjList"
+                placeholder="未选择"
+                clearable
+                multiple
+              >
+                <el-option
+                  v-for="(item, index) in gradeOptions"
+                  :key="index"
+                  :label="item"
+                  :value="item"
+                />
+              </el-select>
+            </el-form-item>
             <el-form-item class="header-item">
               <el-button
                 type="primary"
@@ -497,6 +512,7 @@ import {
   mbDown,
   importtable,
 } from "@/api/class/divisionClass";
+import { getGrade } from "@/api/class/maintenanceClass";
 
 export default {
   name: "divisionClass", //分班管理
@@ -525,6 +541,7 @@ export default {
       sydOptions: [],
       majorOptions: [],
       sexOptions: [],
+      gradeOptions:[],
       // 多选框勾选的数据
       list: [],
       // 弹出层标题
@@ -555,6 +572,7 @@ export default {
         sex: "", // 性别代码
         xh: "", // 学号
         bjdm: this.$route.query.bjdm, // 班级编号
+        ssnjList: [],
       },
       // 收集的是转入的班级的编号
       form: {},
@@ -658,6 +676,12 @@ export default {
         // 获取年级列表数据
         this.sexOptions = response.data.rows;
       });
+      getGrade().then((response) => {
+        // 获取年级列表数据
+        if (response.errcode == "00") {
+          this.gradeOptions = response.data.rows;
+        }
+      });
     },
     // tab栏切换
     tabClick(index) {
@@ -672,7 +696,7 @@ export default {
         this.getList(this.queryParams);
       } else {
         this.getList1(this.queryParams1);
-        this.getOptions(); // 获取生源地、专业、性别筛选框数据
+        // this.getOptions(); // 获取生源地、专业、性别筛选框数据
       }
     },
     //排序

@@ -32,15 +32,15 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="rzzz" label="任职组织" sortable="custom" 
+          <el-table-column prop="rzzz" label="任职组织名称" sortable="custom" 
             :show-overflow-tooltip="true"
           >
           </el-table-column>
-          <el-table-column prop="sldw" label="设立单位" sortable="custom" :show-overflow-tooltip="true">
+          <el-table-column prop="sldw" label="设立（挂靠）单位" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
-          <el-table-column prop="jb" label="级别" sortable="custom">
+          <el-table-column prop="jb" label="设置单位级别" sortable="custom">
           </el-table-column>
-          <el-table-column prop="rzzw" label="任职职务" sortable="custom">
+          <el-table-column prop="rzzw" label="任职岗位及职务" sortable="custom">
           </el-table-column>
           <el-table-column prop="kssj" label="开始日期" sortable="custom">
           </el-table-column>
@@ -123,7 +123,7 @@
       <el-dialog title="新增" :visible.sync="addModal" width="80%" :close-on-click-modal="false">
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
-            <el-table-column label="任职组织" align="center">
+            <el-table-column label="任职组织名称" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.rzzz'"
@@ -133,7 +133,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="设立单位" align="center">
+            <el-table-column label="设立（挂靠）单位" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.sldw'"
@@ -143,7 +143,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="级别" width="150px" align="center">
+            <el-table-column label="设置单位级别" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.jbm'"
@@ -154,7 +154,7 @@
                     placeholder="请选择"
                   >
                     <el-option
-                      v-for="(item, index) in jbOps"
+                      v-for="(item, index) in dwOps"
                       :key="index"
                       :label="item.mc"
                       :value="item.dm"
@@ -163,13 +163,14 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="任职职务" width="150px" align="center">
+            <el-table-column label="任职岗位及职务" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.rzzwm'"
                   :rules="rules.rzzwm"
                 >
-                  <el-select
+                  <el-input v-model="scope.row.rzzwm" />
+                  <!-- <el-select
                     v-model="scope.row.rzzwm"
                     placeholder="请选择"
                   >
@@ -179,11 +180,11 @@
                       :label="item.mc"
                       :value="item.dm"
                     ></el-option>
-                  </el-select>
+                  </el-select> -->
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="开始日期" align="center">
+            <el-table-column label="开始日期" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.kssj'"
@@ -201,7 +202,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="结束日期" align="center">
+            <el-table-column label="结束日期" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.jssj'"
@@ -219,7 +220,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="证明人" width="120px">
+            <el-table-column label="证明人" width="120px" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.zmr'"
@@ -229,7 +230,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="联系方式" align="center">
+            <el-table-column label="联系方式" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.lxfs'"
@@ -251,7 +252,7 @@
       <el-dialog title="编辑" :visible.sync="editModal" width="80%" :close-on-click-modal="false">
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
-            <el-table-column label="任职组织" align="center">
+            <el-table-column label="任职组织名称" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.rzzz'"
@@ -261,7 +262,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="设立单位" align="center">
+            <el-table-column label="设立（挂靠）单位" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.sldw'"
@@ -271,7 +272,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="级别" width="150px" align="center">
+            <el-table-column label="设置单位级别" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.jbm'"
@@ -282,7 +283,7 @@
                     placeholder="请选择"
                   >
                     <el-option
-                      v-for="(item, index) in jbOps"
+                      v-for="(item, index) in dwOps"
                       :key="index"
                       :label="item.mc"
                       :value="item.dm"
@@ -291,13 +292,14 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="任职职务" width="150px" align="center">
+            <el-table-column label="任职岗位及职务" width="150px" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.rzzwm'"
                   :rules="rules.rzzwm"
                 >
-                  <el-select
+                  <el-input v-model="scope.row.rzzwm" />
+                  <!-- <el-select
                     v-model="scope.row.rzzwm"
                     placeholder="请选择"
                   >
@@ -307,11 +309,11 @@
                       :label="item.mc"
                       :value="item.dm"
                     ></el-option>
-                  </el-select>
+                  </el-select> -->
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="开始日期" align="center">
+            <el-table-column label="开始日期" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.kssj'"
@@ -329,7 +331,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="结束日期" align="center">
+            <el-table-column label="结束日期" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.jssj'"
@@ -347,7 +349,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="证明人" width="120px">
+            <el-table-column label="证明人" width="120px" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.zmr'"
@@ -357,7 +359,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="联系方式" align="center">
+            <el-table-column label="联系方式" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.lxfs'"
@@ -440,21 +442,22 @@ export default {
       delArr: [],
       subArr: [],
       val: [],
-      jbOps: [],
+      // jbOps: [],
       zwOps: [],
+      dwOps: [],
       rules: {
         rzzz: [
           {
             required: true,
-            message: "任职组织不能为空",
+            message: "任职组织名称不能为空",
             trigger: "blur",
           },
         ],
         sldw: [
           { required: true, message: "设立单位不能为空", trigger: "blur" },
         ],
-        jbm: [{ required: true, message: "级别不能为空", trigger: "change" }],
-        rzzwm: [{ required: true, message: "任职职务不能为空", trigger: "change" }],
+        jbm: [{ required: true, message: "设置单位级别不能为空", trigger: "change" }],
+        rzzwm: [{ required: true, message: "任职岗位不能为空", trigger: "change" }],
         zmr: [{ required: true, message: "证明人不能为空", trigger: "blur" }],
         kssj: [
           {
@@ -481,7 +484,7 @@ export default {
     this.query();
     this.getCode("dmsplcm"); //状态
     this.getCode("dmbgbzwdm"); //职位
-    this.getCode("dmxgjljbm"); //级别
+    this.getCode("dmdwjbm"); //设置单位级别
   },
 
   methods: {
@@ -528,11 +531,14 @@ export default {
           case "dmsplcm":
             this.ztStatus = res.data; //状态
             break;
-          case "dmxgjljbm":
-            this.jbOps = res.data; //级别
-            break;
+          // case "dmxgjljbm":
+          //   this.jbOps = res.data; //级别
+          //   break;
           case "dmbgbzwdm":
             this.zwOps = res.data; //职位
+            break;
+          case "dmdwjbm":
+            this.dwOps = res.data; //设置单位
             break;
         }
       });

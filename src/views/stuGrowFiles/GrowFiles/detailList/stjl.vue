@@ -119,7 +119,7 @@
       <el-dialog title="新增" :visible.sync="addModal" width="80%" :close-on-click-modal="false">
         <el-form ref="formAdd" :model="formAdd" :rules="rules">
           <el-table :data="formAdd.addData">
-            <el-table-column label="社团名称" align="center">
+            <el-table-column label="社团名称" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.stmc'"
@@ -129,7 +129,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="社团类型" align="center">
+            <el-table-column label="社团类型" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.stlx'"
@@ -149,7 +149,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="挂靠单位" width="240px">
+            <el-table-column label="挂靠单位" width="240px" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.gkdwh'"
@@ -169,7 +169,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="任职职务" width="240px">
+            <el-table-column label="任职职务" width="240px" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.rzzw'"
@@ -189,7 +189,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="开始时间" align="center">
+            <el-table-column label="开始时间" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.kssj'"
@@ -207,7 +207,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="结束时间" align="center">
+            <el-table-column label="结束时间" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.jssj'"
@@ -225,7 +225,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="指导老师" align="center">
+            <el-table-column label="指导老师" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.zdlsxm'"
@@ -247,7 +247,7 @@
       <el-dialog title="编辑" :visible.sync="editModal" width="80%" :close-on-click-modal="false">
         <el-form ref="formEdit" :model="formEdit" :rules="rules">
           <el-table :data="formEdit.editData">
-            <el-table-column label="社团名称" align="center">
+            <el-table-column label="社团名称" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.stmc'"
@@ -257,7 +257,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="社团类型" align="center">
+            <el-table-column label="社团类型" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.stlx'"
@@ -277,7 +277,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="挂靠单位" width="240px">
+            <el-table-column label="挂靠单位" width="240px" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.gkdwh'"
@@ -297,7 +297,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="任职职务" width="240px">
+            <el-table-column label="任职职务" width="240px" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.rzzw'"
@@ -317,7 +317,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="开始时间" align="center">
+            <el-table-column label="开始时间" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.kssj'"
@@ -335,7 +335,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="结束时间" align="center">
+            <el-table-column label="结束时间" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.jssj'"
@@ -353,7 +353,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="指导老师" align="center">
+            <el-table-column label="指导老师" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.zdlsxm'"

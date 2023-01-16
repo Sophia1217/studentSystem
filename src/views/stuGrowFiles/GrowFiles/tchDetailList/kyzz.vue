@@ -32,7 +32,7 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">类别</div>
-                <div class="content">{{ ele.zzlb }}</div>
+                <div class="content">{{ ele.zzlbMc }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
@@ -181,7 +181,18 @@
                         <span style="color: red">*</span>类别
                       </div>
                       <div class="content">
-                        <el-input v-model="formAddLw.zzlb"></el-input>
+                        <el-select
+                          v-model="formAddLw.zzlb"
+                          placeholder="请选择"
+                          size="small"
+                        >
+                          <el-option
+                            v-for="(item, index) in zzlbmOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          />
+                        </el-select>
                       </div>
                     </div>
                   </el-form-item>
@@ -345,7 +356,18 @@
                         <span style="color: red">*</span>类别
                       </div>
                       <div class="content">
-                        <el-input v-model="formEditLw.zzlb"></el-input>
+                        <el-select
+                          v-model="formEditLw.zzlb"
+                          placeholder="请选择"
+                          size="small"
+                        >
+                          <el-option
+                            v-for="(item, index) in zzlbmOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          />
+                        </el-select>
                       </div>
                     </div>
                   </el-form-item>
@@ -524,6 +546,7 @@ export default {
       formEditLw: {},
       isEdit: 1,
       ztStatus: [],
+      zzlbmOps: [],
       url: "",
       rules: {
         gtzz: [
@@ -554,6 +577,7 @@ export default {
   mounted() {
     this.getLwList();
     this.getCode("dmsplcm");
+    this.getCode("dmkyzzlbm");
   },
   methods: {
     //设置计数器禁输入
@@ -642,6 +666,9 @@ export default {
         switch (val) {
           case "dmsplcm":
             this.ztStatus = res.data;
+            break;
+          case "dmkyzzlbm":
+            this.zzlbmOps = res.data;
             break;
         }
       });

@@ -65,7 +65,7 @@
                 @click="jeClick(scope.row)"
                 v-show="scope.row.businessName == '临时困难'"
               >
-                <span class="handleName">金额上限设置</span>
+                <span class="handleName">设置</span>
               </el-button>
               <el-button
                 type="text"
@@ -92,12 +92,41 @@
         </div>
       </template>
     </el-dialog>
-    <el-dialog title="金额上限设置" :visible.sync="jeModal" width="30%">
+    <el-dialog
+      title="设置"
+      :visible.sync="jeModal"
+      width="30%"
+      @close="emptyDetails()"
+    >
       <template>
         <div>
-          <el-form inline>
-            <el-form-item label="金额上限(元)">
-              <el-input v-model="je" type="number"></el-input>
+          <el-form inline ref="formje" :model="formje" :rules="rules">
+            <el-form-item label="金额上限(元)" prop="je">
+              <el-input
+                v-model="formje.je"
+                type="number"
+                maxlength="9"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="学院审批是否受额度限制(本科生)" prop="bkssfsx">
+              <el-select v-model="formje.bkssfsx" placeholder="请选择">
+                <el-option
+                  v-for="(item, index) in sfOps"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="学院审批是否受额度限制(研究生)" prop="yjssfsx">
+              <el-select v-model="formje.yjssfsx" placeholder="请选择">
+                <el-option
+                  v-for="(item, index) in sfOps"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                />
+              </el-select>
             </el-form-item>
           </el-form>
         </div>
@@ -181,7 +210,8 @@ export default {
       sjModal: false,
       pyccOps: [],
       pycc: "",
-      je: "",
+      formje: { je: "", bkssfsx: "", yjssfsx: "" },
+
       readImage: {
         open: false,
         src: "",
@@ -189,6 +219,15 @@ export default {
       // xml
       xmlData: "",
       rowDetail: {},
+      sfOps: [
+        { dm: "0", mc: "是" },
+        { dm: "1", mc: "否" },
+      ],
+      rules: {
+        je: [{ required: true, message: "金额上限不能为空", trigger: "blur" }],
+        bkssfsx: [{ required: true, message: "设置不能为空", trigger: "blur" }],
+        yjssfsx: [{ required: true, message: "设置不能为空", trigger: "blur" }],
+      },
     };
   },
 
@@ -200,6 +239,23 @@ export default {
     this.getCode("dmpyccm");
   },
   methods: {
+    emptyDetails() {
+      this.$nextTick(() => {
+        this.$refs.formje.clearValidate();
+      });
+    },
+    // 表单校验
+    checkForm() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formje.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
     getList() {
       querySqkgList().then((res) => {
         this.basicInfoList = res.data;
@@ -230,7 +286,9 @@ export default {
     jeClick(row) {
       this.jeModal = true;
       this.rowDetail = row;
-      this.je = this.rowDetail.qt;
+      this.formje.je = this.rowDetail.qt.split(",")[0];
+      this.formje.bkssfsx = this.rowDetail.qt.split(",")[1];
+      this.formje.yjssfsx = this.rowDetail.qt.split(",")[2];
     },
     pyccClick(row) {
       this.pyccModal = true;
@@ -242,18 +300,29 @@ export default {
       this.jeModal = false;
     },
     jeConfirm() {
-      let data = {
-        qt: this.je,
-        businessName: this.rowDetail.businessName,
-        // id: this.rowDetail.id,
-        // kgzt: this.rowDetail.kgzt,
-        // sqkfqje: this.rowDetail.sqkfsj[1] ? this.rowDetail.sqkfsj[1] : "",
-        // sqkfqjs: this.rowDetail.sqkfsj[0] ? this.rowDetail.sqkfsj[0] : "",
-      };
-      updateQt(data).then((res) => {
-        this.jeModal = false;
-        this.getList();
-      });
+      if (!this.checkForm()) {
+        this.$message.error("请完善表单相关信息！");
+
+        return;
+      } else {
+        let data = {
+          qt:
+            this.formje.je +
+            "," +
+            this.formje.bkssfsx +
+            "," +
+            this.formje.yjssfsx,
+          businessName: this.rowDetail.businessName,
+          // id: this.rowDetail.id,
+          // kgzt: this.rowDetail.kgzt,
+          // sqkfqje: this.rowDetail.sqkfsj[1] ? this.rowDetail.sqkfsj[1] : "",
+          // sqkfqjs: this.rowDetail.sqkfsj[0] ? this.rowDetail.sqkfsj[0] : "",
+        };
+        updateQt(data).then((res) => {
+          this.jeModal = false;
+          this.getList();
+        });
+      }
     },
     pyccCancel() {
       this.pyccModal = false;

@@ -45,7 +45,7 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">刊物类型</div>
-                <div class="content">{{ ele.cbwlx }}</div>
+                <div class="content">{{ ele.cbwlxMc }}</div>
               </div>
             </el-col>
           </el-row>
@@ -53,13 +53,13 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">署名顺序</div>
-                <div class="content">{{ ele.sm }}</div>
+                <div class="content">{{ ele.smMc }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">收录类别</div>
-                <div class="content">{{ ele.sllb }}</div>
+                <div class="content">{{ ele.sllbMc }}</div>
               </div>
             </el-col>
           </el-row>
@@ -248,7 +248,18 @@
                         <span style="color: red">*</span>刊物类型
                       </div>
                       <div class="content">
-                        <el-input v-model="formAddLw.cbwlx"></el-input>
+                        <!-- <el-input v-model="formAddLw.cbwlx"></el-input> -->
+                        <el-cascader
+                          v-model="formAddLw.cbwlx"
+                          :options="qklxOps"
+                          @change="
+                            (value) => {
+                              handleChangeQklx(value, 1);
+                            }
+                          "
+                          :props="OpsProps"
+                          filterable
+                        ></el-cascader>
                       </div>
                     </div>
                   </el-form-item>
@@ -262,7 +273,18 @@
                         <span style="color: red">*</span>署名顺序
                       </div>
                       <div class="content">
-                        <el-input v-model="formAddLw.sm"></el-input>
+                        <el-select
+                          v-model="formAddLw.sm"
+                          placeholder="请选择"
+                          size="small"
+                        >
+                          <el-option
+                            v-for="(item, index) in zzsmsxmOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          />
+                        </el-select>
                       </div>
                     </div>
                   </el-form-item>
@@ -274,7 +296,18 @@
                         <span style="color: red">*</span>收录类别
                       </div>
                       <div class="content">
-                        <el-input v-model="formAddLw.sllb"></el-input>
+                        <el-select
+                          v-model="formAddLw.sllb"
+                          placeholder="请选择"
+                          size="small"
+                        >
+                          <el-option
+                            v-for="(item, index) in lwsllbmOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          />
+                        </el-select>
                       </div>
                     </div>
                   </el-form-item>
@@ -458,7 +491,18 @@
                         <span style="color: red">*</span>刊物类型
                       </div>
                       <div class="content">
-                        <el-input v-model="formEditLw.cbwlx"></el-input>
+                        <!-- <el-input v-model="formEditLw.cbwlx"></el-input> -->
+                        <el-cascader
+                          v-model="formEditLw.cbwlx"
+                          :options="qklxOps"
+                          @change="
+                            (value) => {
+                              handleChangeQklx(value, 2);
+                            }
+                          "
+                          :props="OpsProps"
+                          filterable
+                        ></el-cascader>
                       </div>
                     </div>
                   </el-form-item>
@@ -472,7 +516,18 @@
                         <span style="color: red">*</span>署名顺序
                       </div>
                       <div class="content">
-                        <el-input v-model="formEditLw.sm"></el-input>
+                        <el-select
+                          v-model="formEditLw.sm"
+                          placeholder="请选择"
+                          size="small"
+                        >
+                          <el-option
+                            v-for="(item, index) in zzsmsxmOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          />
+                        </el-select>
                       </div>
                     </div>
                   </el-form-item>
@@ -484,7 +539,18 @@
                         <span style="color: red">*</span>收录类别
                       </div>
                       <div class="content">
-                        <el-input v-model="formEditLw.sllb"></el-input>
+                        <el-select
+                          v-model="formEditLw.sllb"
+                          placeholder="请选择"
+                          size="small"
+                        >
+                          <el-option
+                            v-for="(item, index) in lwsllbmOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          />
+                        </el-select>
                       </div>
                     </div>
                   </el-form-item>
@@ -644,6 +710,7 @@ import {
 import { delwj } from "@/api/assistantWork/classEvent";
 import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+import { getZgQklx } from "@/api/politicalWork/basicInfo";
 export default {
   name: "kycg",
   components: { lctCom },
@@ -661,6 +728,7 @@ export default {
       formEditLw: {},
       isEdit: 1,
       ztStatus: [],
+      qklxOps: [],
       url: "",
       rules: {
         lwzwmc: [
@@ -682,9 +750,7 @@ export default {
         cbwlx: [
           { required: true, message: "刊物类型不能为空", trigger: "blur" },
         ],
-        cbwlxdm: [
-          { required: true, message: "收录类别不能为空", trigger: "blur" },
-        ],
+
         cgssdw: [
           { required: true, message: "所属单位不能为空", trigger: "blur" },
         ],
@@ -705,14 +771,30 @@ export default {
           // },
         ],
       },
+      OpsProps: {
+        value: "dm", //匹配响应数据中的id
+        label: "mc", //匹配响应数据中的name
+        checkStrictly: true,
+        children: "dataCode", //匹配响应数据中的children }
+      },
+      zzsmsxmOps: [],
+      lwsllbmOps: [],
     };
   },
   watch: {},
   mounted() {
+    this.getOps();
     this.getLwList();
     this.getCode("dmsplcm");
+    this.getCode("dmzzsmsxm");
+    this.getCode("dmlwsllbm");
   },
   methods: {
+    getOps() {
+      getZgQklx().then((res) => {
+        this.qklxOps = res.data;
+      });
+    },
     // 表单校验
     checkFormAdd() {
       // 1.校验必填项
@@ -795,6 +877,12 @@ export default {
         switch (val) {
           case "dmsplcm":
             this.ztStatus = res.data;
+            break;
+          case "dmzzsmsxm":
+            this.zzsmsxmOps = res.data;
+            break;
+          case "dmlwsllbm":
+            this.lwsllbmOps = res.data;
             break;
         }
       });
@@ -943,6 +1031,21 @@ export default {
         this.fileListAdd.push(file); //修改编辑的文件参数
       }
       this.fileList = fileList;
+    },
+    handleChangeQklx(value, index) {
+      if (index == 2) {
+        if (value.length == 1) {
+          this.formEditLw.cbwlx = value[0];
+        } else {
+          this.formEditLw.cbwlx = value[1];
+        }
+      } else {
+        if (value.length == 1) {
+          this.formAddLw.cbwlx = value[0];
+        } else {
+          this.formAddLw.cbwlx = value[1];
+        }
+      }
     },
   },
 };

@@ -73,8 +73,8 @@
           <el-row>
             <el-col :span="24" class="rowStyle">
               <div class="wrap">
-                <div class="title">作者</div>
-                <div class="content">{{ ele.zzxm }}</div>
+                <div class="title">本人署名顺序</div>
+                <div class="content">{{ ele.zzxmMc }}</div>
               </div>
             </el-col>
           </el-row>
@@ -193,6 +193,7 @@
         :visible.sync="addModal"
         width="80%"
         :close-on-click-modal="false"
+        @close="emptyDetails()"
       >
         <el-form ref="formAddLw" :model="formAddLw" :rules="rules">
           <div class="backDetail">
@@ -204,7 +205,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="bgmc">
                     <div class="wrap">
-                      <div class="title">报告名称</div>
+                      <div class="title">
+                        <span style="color: red">*</span>报告名称
+                      </div>
 
                       <div class="content">
                         <el-input
@@ -231,7 +234,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zs">
                     <div class="wrap">
-                      <div class="title">字数</div>
+                      <div class="title">
+                        <span style="color: red">*</span>字数
+                      </div>
                       <div class="content">
                         <el-input v-model="formAddLw.zs"></el-input>
                       </div>
@@ -243,7 +248,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="tjdw">
                     <div class="wrap">
-                      <div class="title">提交单位</div>
+                      <div class="title">
+                        <span style="color: red">*</span>提交单位
+                      </div>
                       <div class="content">
                         <el-input v-model="formAddLw.tjdw"></el-input>
                       </div>
@@ -253,7 +260,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="dwjb">
                     <div class="wrap">
-                      <div class="title">单位级别</div>
+                      <div class="title">
+                        <span style="color: red">*</span>单位级别
+                      </div>
                       <div class="content">
                         <el-input v-model="formAddLw.dwjb"></el-input>
                       </div>
@@ -265,7 +274,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="sfcn">
                     <div class="wrap">
-                      <div class="title">是否采纳</div>
+                      <div class="title">
+                        <span style="color: red">*</span>是否采纳
+                      </div>
                       <div class="content">
                         <!-- <el-input v-model="formAddLw.sfcn"></el-input> -->
                         <el-select
@@ -306,12 +317,22 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="zzxm">
                     <div class="wrap">
-                      <div class="title">作者</div>
+                      <div class="title">
+                        <span style="color: red">*</span>本人署名顺序
+                      </div>
                       <div class="content">
-                        <el-input
+                        <el-select
                           v-model="formAddLw.zzxm"
-                          style="width: 300%"
-                        ></el-input>
+                          placeholder="请选择"
+                          size="small"
+                        >
+                          <el-option
+                            v-for="(item, index) in zzsmsxmOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          />
+                        </el-select>
                       </div>
                     </div>
                   </el-form-item>
@@ -321,7 +342,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="cgssdw">
                     <div class="wrap">
-                      <div class="title">成果所属单位</div>
+                      <div class="title">
+                        <span style="color: red">*</span>成果所属单位
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formAddLw.cgssdw"
@@ -371,6 +394,7 @@
         :visible.sync="editModal"
         width="80%"
         :close-on-click-modal="false"
+        @close="emptyDetails2()"
       >
         <el-form ref="formEditLw" :model="formEditLw" :rules="rules">
           <div class="backDetail">
@@ -382,7 +406,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="bgmc">
                     <div class="wrap">
-                      <div class="title">报告名称</div>
+                      <div class="title">
+                        <span style="color: red">*</span>报告名称
+                      </div>
 
                       <div class="content">
                         <el-input
@@ -409,7 +435,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zs">
                     <div class="wrap">
-                      <div class="title">字数</div>
+                      <div class="title">
+                        <span style="color: red">*</span>字数
+                      </div>
                       <div class="content">
                         <el-input v-model="formEditLw.zs"></el-input>
                       </div>
@@ -421,7 +449,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="tjdw">
                     <div class="wrap">
-                      <div class="title">提交单位</div>
+                      <div class="title">
+                        <span style="color: red">*</span>提交单位
+                      </div>
                       <div class="content">
                         <el-input v-model="formEditLw.tjdw"></el-input>
                       </div>
@@ -431,7 +461,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="dwjb">
                     <div class="wrap">
-                      <div class="title">单位级别</div>
+                      <div class="title">
+                        <span style="color: red">*</span>单位级别
+                      </div>
                       <div class="content">
                         <el-input v-model="formEditLw.dwjb"></el-input>
                       </div>
@@ -443,7 +475,9 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="sfcn">
                     <div class="wrap">
-                      <div class="title">是否采纳</div>
+                      <div class="title">
+                        <span style="color: red">*</span>是否采纳
+                      </div>
                       <div class="content">
                         <!-- <el-input v-model="formEditLw.sfcn"></el-input> -->
                         <el-select
@@ -484,12 +518,22 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="zzxm">
                     <div class="wrap">
-                      <div class="title">作者</div>
+                      <div class="title">
+                        <span style="color: red">*</span>本人署名顺序
+                      </div>
                       <div class="content">
-                        <el-input
+                        <el-select
                           v-model="formEditLw.zzxm"
-                          style="width: 300%"
-                        ></el-input>
+                          placeholder="请选择"
+                          size="small"
+                        >
+                          <el-option
+                            v-for="(item, index) in zzsmsxmOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          />
+                        </el-select>
                       </div>
                     </div>
                   </el-form-item>
@@ -499,7 +543,9 @@
                 <el-col :span="24" class="rowStyle">
                   <el-form-item prop="cgssdw">
                     <div class="wrap">
-                      <div class="title">成果所属单位</div>
+                      <div class="title">
+                        <span style="color: red">*</span>成果所属单位
+                      </div>
                       <div class="content">
                         <el-input
                           v-model="formEditLw.cgssdw"
@@ -628,20 +674,34 @@ export default {
             trigger: "blur",
           },
         ],
-        zzxm: [{ required: true, message: "作者不能为空", trigger: "blur" }],
+        zzxm: [
+          { required: true, message: "本人署名顺序不能为空", trigger: "blur" },
+        ],
         zs: [{ required: true, message: "字数不能为空", trigger: "blur" }],
         cgssdw: [
           { required: true, message: "所属单位不能为空", trigger: "blur" },
         ],
       },
+      zzsmsxmOps: [],
     };
   },
   watch: {},
   mounted() {
     this.getLwList();
     this.getCode("dmsplcm");
+    this.getCode("dmzzsmsxm");
   },
   methods: {
+    emptyDetails() {
+      this.$nextTick(() => {
+        this.$refs.formAddLw.clearValidate();
+      });
+    },
+    emptyDetails2() {
+      this.$nextTick(() => {
+        this.$refs.formEditLw.clearValidate();
+      });
+    },
     // 表单校验
     checkFormAdd() {
       // 1.校验必填项
@@ -724,6 +784,9 @@ export default {
         switch (val) {
           case "dmsplcm":
             this.ztStatus = res.data;
+            break;
+          case "dmzzsmsxm":
+            this.zzsmsxmOps = res.data;
             break;
         }
       });

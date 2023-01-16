@@ -37,7 +37,7 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">专利类型</div>
-                <div class="content">{{ ele.zllx }}</div>
+                <div class="content">{{ ele.zllxMc }}</div>
               </div>
             </el-col>
           </el-row>
@@ -56,14 +56,34 @@
             </el-col>
           </el-row>
 
-          <!-- <el-row>
-            <el-col :span="24" class="rowStyle">
+          <el-row>
+            <el-col :span="12" class="rowStyle">
               <div class="wrap">
-                <div class="title">成果所属单位</div>
-                <div class="content">{{ ele.cgssdw }}</div>
+                <div class="title">专利权人</div>
+                <div class="content">{{ ele.zlr }}</div>
               </div>
             </el-col>
-          </el-row> -->
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">署名顺序</div>
+                <div class="content">{{ ele.smsx }}</div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">授权公告号</div>
+                <div class="content">{{ ele.sqggh }}</div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">授权公告日</div>
+                <div class="content">{{ ele.sqggr }}</div>
+              </div>
+            </el-col>
+          </el-row>
           <el-row>
             <el-col :span="24" class="rowStyle">
               <div class="wrap">
@@ -182,7 +202,18 @@
                         <span style="color: red">*</span>专利类型
                       </div>
                       <div class="content">
-                        <el-input v-model="formAddLw.zllx"></el-input>
+                        <el-select
+                          v-model="formAddLw.zllx"
+                          placeholder="请选择"
+                          size="small"
+                        >
+                          <el-option
+                            v-for="(item, index) in zllxmOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          />
+                        </el-select>
                       </div>
                     </div>
                   </el-form-item>
@@ -235,9 +266,7 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zlzt">
                     <div class="wrap">
-                      <div class="title">
-                        <span style="color: red">*</span>专利状态
-                      </div>
+                      <div class="title">专利状态</div>
                       <div class="content">
                         <el-input v-model="formAddLw.zlzt"></el-input>
                       </div>
@@ -246,21 +275,57 @@
                 </el-col>
               </el-row>
 
-              <!-- <el-row>
-                <el-col :span="24" class="rowStyle">
-                  <el-form-item prop="cgssdw">
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="sqggh">
                     <div class="wrap">
-                      <div class="title">成果所属单位</div>
+                      <div class="title">
+                        <span style="color: red">*</span>授权公告号
+                      </div>
                       <div class="content">
-                        <el-input
-                          v-model="formAddLw.cgssdw"
-                          style="width: 300%"
-                        ></el-input>
+                        <el-input v-model="formAddLw.sqggh"></el-input>
                       </div>
                     </div>
                   </el-form-item>
                 </el-col>
-              </el-row> -->
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="sqggr">
+                    <div class="wrap">
+                      <div class="title">
+                        <span style="color: red">*</span>授权公告日
+                      </div>
+                      <div class="content">
+                        <el-date-picker
+                          v-model="formAddLw.sqggr"
+                          format="yyyy-MM-dd"
+                          value-format="yyyy-MM-dd"
+                          placeholder="选择日期"
+                        />
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="smsx">
+                    <div class="wrap">
+                      <div class="title">
+                        <span style="color: red">*</span>署名顺序
+                      </div>
+                      <div class="content">
+                        <el-input-number
+                          v-model="formAddLw.smsx"
+                          controls-position="right"
+                          width="100px"
+                          :min="1"
+                          @keydown.native="channelInputLimit"
+                        ></el-input-number>
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
               <el-row>
                 <el-col :span="24" class="rowStyle">
                   <div class="wrap">
@@ -345,7 +410,18 @@
                         <span style="color: red">*</span>专利类型
                       </div>
                       <div class="content">
-                        <el-input v-model="formEditLw.zllx"></el-input>
+                        <el-select
+                          v-model="formEditLw.zllx"
+                          placeholder="请选择"
+                          size="small"
+                        >
+                          <el-option
+                            v-for="(item, index) in zllxmOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          />
+                        </el-select>
                       </div>
                     </div>
                   </el-form-item>
@@ -398,9 +474,7 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="zlzt">
                     <div class="wrap">
-                      <div class="title">
-                        <span style="color: red">*</span>专利状态
-                      </div>
+                      <div class="title">专利状态</div>
                       <div class="content">
                         <el-input v-model="formEditLw.zlzt"></el-input>
                       </div>
@@ -409,21 +483,57 @@
                 </el-col>
               </el-row>
 
-              <!-- <el-row>
-                <el-col :span="24" class="rowStyle">
-                  <el-form-item prop="cgssdw">
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="sqggh">
                     <div class="wrap">
-                      <div class="title">成果所属单位</div>
+                      <div class="title">
+                        <span style="color: red">*</span>授权公告号
+                      </div>
                       <div class="content">
-                        <el-input
-                          v-model="formEditLw.cgssdw"
-                          style="width: 300%"
-                        ></el-input>
+                        <el-input v-model="formEditLw.sqggh"></el-input>
                       </div>
                     </div>
                   </el-form-item>
                 </el-col>
-              </el-row> -->
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="sqggr">
+                    <div class="wrap">
+                      <div class="title">
+                        <span style="color: red">*</span>授权公告日
+                      </div>
+                      <div class="content">
+                        <el-date-picker
+                          v-model="formEditLw.sqggr"
+                          format="yyyy-MM-dd"
+                          value-format="yyyy-MM-dd"
+                          placeholder="选择日期"
+                        />
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="smsx">
+                    <div class="wrap">
+                      <div class="title">
+                        <span style="color: red">*</span>署名顺序
+                      </div>
+                      <div class="content">
+                        <el-input-number
+                          v-model="formEditLw.smsx"
+                          controls-position="right"
+                          width="100px"
+                          :min="1"
+                          @keydown.native="channelInputLimit"
+                        ></el-input-number>
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
               <el-row>
                 <el-col :span="24" class="rowStyle">
                   <div class="wrap">
@@ -525,6 +635,7 @@ export default {
             trigger: "blur",
           },
         ],
+        zlr: [{ required: true, message: "专利人不能为空", trigger: "blur" }],
         zlh: [{ required: true, message: "专利号不能为空", trigger: "blur" }],
         sqrq: [{ required: true, message: "申请日不能为空", trigger: "blur" }],
         zllx: [
@@ -538,16 +649,24 @@ export default {
           },
         ],
 
-        cgssdw: [
-          { required: true, message: "所属单位不能为空", trigger: "blur" },
+        smsx: [
+          { required: true, message: "署名顺序不能为空", trigger: "blur" },
+        ],
+        sqggr: [
+          { required: true, message: "授权公告日不能为空", trigger: "blur" },
+        ],
+        sqggh: [
+          { required: true, message: "授权公告号不能为空", trigger: "blur" },
         ],
       },
+      zllxmOps: [],
     };
   },
   watch: {},
   mounted() {
     this.getLwList();
     this.getCode("dmsplcm");
+    this.getCode("dmzllxm");
   },
   methods: {
     // 表单校验
@@ -633,6 +752,9 @@ export default {
           case "dmsplcm":
             this.ztStatus = res.data;
             break;
+          case "dmzllxm":
+            this.zllxmOps = res.data;
+            break;
         }
       });
     },
@@ -657,14 +779,16 @@ export default {
         let formData = new FormData();
         formData.append("zlh", data.zlh);
         formData.append("zllx", data.zllx);
-        formData.append("cgssdw", data.cgssdw);
+
         formData.append("zlmc", data.zlmc);
         formData.append("zlr", data.zlr);
         formData.append("id", data.id);
         formData.append("zlzt", data.zlzt);
         formData.append("sqrq", data.sqrq);
         formData.append("sqr", data.sqr);
-
+        formData.append("smsx", data.smsx);
+        formData.append("sqggh", data.sqggh);
+        formData.append("sqggr", data.sqggr);
         formData.append("xh", this.$route.query.xh);
         if (this.fileListAdd.length > 0) {
           this.fileListAdd.map((file) => {
@@ -700,14 +824,16 @@ export default {
         let formData = new FormData();
         formData.append("zlh", data.zlh);
         formData.append("zllx", data.zllx);
-        formData.append("cgssdw", data.cgssdw);
+        //  formData.append("cgssdw", data.cgssdw);
         formData.append("zlmc", data.zlmc);
         formData.append("zlr", data.zlr);
         //formData.append("id", data.id);
         formData.append("zlzt", data.zlzt);
         formData.append("sqrq", data.sqrq);
         formData.append("sqr", data.sqr);
-
+        formData.append("smsx", data.smsx);
+        formData.append("sqggh", data.sqggh);
+        formData.append("sqggr", data.sqggr);
         formData.append("xh", this.$route.query.xh);
         if (this.fileList.length > 0) {
           this.fileList.map((file) => {
@@ -752,6 +878,10 @@ export default {
 
     subCancel() {
       this.submitModal = false;
+    },
+    //设置计数器禁输入
+    channelInputLimit(e) {
+      e.returnValue = "";
     },
     beforeRemove(file, fileList) {
       let uid = file.uid;

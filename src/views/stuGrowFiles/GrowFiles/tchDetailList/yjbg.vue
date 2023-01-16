@@ -73,8 +73,8 @@
           <el-row>
             <el-col :span="24" class="rowStyle">
               <div class="wrap">
-                <div class="title">作者</div>
-                <div class="content">{{ ele.zzxm }}</div>
+                <div class="title">署名顺序</div>
+                <div class="content">{{ ele.zzxmMc }}</div>
               </div>
             </el-col>
           </el-row>
@@ -160,6 +160,7 @@
         :visible.sync="addModal"
         width="80%"
         :close-on-click-modal="false"
+        @close="emptyDetails()"
       >
         <el-form ref="formAddLw" :model="formAddLw" :rules="rules">
           <div class="backDetail">
@@ -284,13 +285,25 @@
                   <el-form-item prop="zzxm">
                     <div class="wrap">
                       <div class="title">
-                        <span style="color: red">*</span>作者
+                        <span style="color: red">*</span>署名顺序
                       </div>
                       <div class="content">
-                        <el-input
+                        <!-- <el-input
                           v-model="formAddLw.zzxm"
                           style="width: 300%"
-                        ></el-input>
+                        ></el-input> -->
+                        <el-select
+                          v-model="formAddLw.zzxm"
+                          placeholder="请选择"
+                          size="small"
+                        >
+                          <el-option
+                            v-for="(item, index) in zzsmsxmOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          />
+                        </el-select>
                       </div>
                     </div>
                   </el-form-item>
@@ -352,6 +365,7 @@
         :visible.sync="editModal"
         width="80%"
         :close-on-click-modal="false"
+        @close="emptyDetails2()"
       >
         <el-form ref="formEditLw" :model="formEditLw" :rules="rules">
           <div class="backDetail">
@@ -476,13 +490,21 @@
                   <el-form-item prop="zzxm">
                     <div class="wrap">
                       <div class="title">
-                        <span style="color: red">*</span>作者
+                        <span style="color: red">*</span>署名顺序
                       </div>
                       <div class="content">
-                        <el-input
+                        <el-select
                           v-model="formEditLw.zzxm"
-                          style="width: 300%"
-                        ></el-input>
+                          placeholder="请选择"
+                          size="small"
+                        >
+                          <el-option
+                            v-for="(item, index) in zzsmsxmOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          />
+                        </el-select>
                       </div>
                     </div>
                   </el-form-item>
@@ -623,20 +645,34 @@ export default {
             trigger: "blur",
           },
         ],
-        zzxm: [{ required: true, message: "作者不能为空", trigger: "blur" }],
+        zzxm: [
+          { required: true, message: "署名顺序不能为空", trigger: "blur" },
+        ],
         zs: [{ required: true, message: "字数不能为空", trigger: "blur" }],
         cgssdw: [
           { required: true, message: "所属单位不能为空", trigger: "blur" },
         ],
       },
+      zzsmsxmOps: [],
     };
   },
   watch: {},
   mounted() {
     this.getLwList();
     this.getCode("dmsplcm");
+    this.getCode("dmzzsmsxm");
   },
   methods: {
+    emptyDetails() {
+      this.$nextTick(() => {
+        this.$refs.formAddLw.clearValidate();
+      });
+    },
+    emptyDetails2() {
+      this.$nextTick(() => {
+        this.$refs.formEditLw.clearValidate();
+      });
+    },
     // 表单校验
     checkFormAdd() {
       // 1.校验必填项
@@ -719,6 +755,9 @@ export default {
         switch (val) {
           case "dmsplcm":
             this.ztStatus = res.data;
+            break;
+          case "dmzzsmsxm":
+            this.zzsmsxmOps = res.data;
             break;
         }
       });

@@ -1238,6 +1238,7 @@
                         value-format="yyyy-MM-dd"
                         placeholder="选择日期"
                         type="date"
+                        @change='changeDate(scope.row,1)'
                          :disabled="zgDzzwsAuth.JDHTMRZRQ==2||scope.row.sftb=='0'"
                       />
                   </div>
@@ -1254,6 +1255,7 @@
                         value-format="yyyy-MM-dd"
                         placeholder="选择日期"
                         type="date"
+                         @change='changeDate(scope.row,2)'
                          :disabled="zgDzzwsAuth.JDHTMMZDRQ==2||scope.row.sftb=='0'"
                       />
                   </div>
@@ -1324,6 +1326,7 @@
                         value-format="yyyy-MM-dd"
                         placeholder="选择日期"
                         type="date"
+                         @change='changeDate(scope.row,3)'
                          :disabled="zgDzzjsAuth.ZJPZRQ==2||scope.row.sftb=='0'"
                       />
                   </div>
@@ -1340,6 +1343,7 @@
                         value-format="yyyy-MM-dd"
                         placeholder="选择日期"
                         type="date"
+                         @change='changeDate(scope.row,4)'
                          :disabled="zgDzzjsAuth.ZJZZRQ==2||scope.row.sftb=='0'"
                       />
                   </div>
@@ -1455,6 +1459,7 @@
                 <div v-if="isEdit == 1">{{ scope.row.zw }}</div>
                 <div v-else>
                   <el-input v-model="scope.row.zw" placeholder="请输入" :disabled="zgGzjlsAuth.ZW==2"/>
+                  
                   </div>
                   
               </template>
@@ -1469,6 +1474,7 @@
                         value-format="yyyy-MM-dd"
                         placeholder="选择日期"
                         type="date"
+                        @change="changeDate(scope.row,5)"
                          :disabled="zgGzjlsAuth.GZQSRQ==2"
                       />
                   </div>
@@ -1485,6 +1491,7 @@
                         value-format="yyyy-MM-dd"
                         placeholder="选择日期"
                         type="date"
+                        @change="changeDate(scope.row,6)"
                          :disabled="zgGzjlsAuth.GZZZRQ==2"
                       />
                   </div>
@@ -1775,6 +1782,7 @@
                         value-format="yyyy-MM-dd"
                         placeholder="选择日期"
                         type="date"
+                        @change="changeDate(scope.row,7)"
                          :disabled="zgXxpxesAuth.QSSJ==2"
                       />
                   </div>
@@ -1791,6 +1799,7 @@
                         value-format="yyyy-MM-dd"
                         placeholder="选择日期"
                         type="date"
+                        @change="changeDate(scope.row,8)"
                          :disabled="zgXxpxesAuth.JSSJ==2"
                       />
                   </div>
@@ -1924,6 +1933,7 @@
                         value-format="yyyy-MM-dd"
                         placeholder="选择日期"
                         type="date"
+                        @change="changeDate(scope.row,7)"
                          :disabled="zgXmxxesAuth.QSSJ==2"
                       />
                   </div>
@@ -1940,6 +1950,7 @@
                         value-format="yyyy-MM-dd"
                         placeholder="选择日期"
                         type="date"
+                        @change="changeDate(scope.row,8)"
                          :disabled="zgXmxxesAuth.JSSJ==2"
                       />
                   </div>
@@ -2139,6 +2150,7 @@
                         value-format="yyyy-MM-dd"
                         placeholder="选择日期"
                         type="date"
+                        @change="changeDate(scope.row,7)"
                          :disabled="zgGwdlsAuth.QSSJ==2"
                       />
                   </div>
@@ -2155,6 +2167,7 @@
                         value-format="yyyy-MM-dd"
                         placeholder="选择日期"
                         type="date"
+                        @change="changeDate(scope.row,8)"
                          :disabled="zgGwdlsAuth.JSSJ==2"
                       />
                   </div>
@@ -2291,6 +2304,7 @@
                         value-format="yyyy-MM-dd"
                         placeholder="选择日期"
                         type="date"
+                        @change="changeDate(scope.row,7)"
                          :disabled="zgJxkyqksAuth.QSSJ==2"
                       />
                   </div>
@@ -2307,6 +2321,7 @@
                         value-format="yyyy-MM-dd"
                         placeholder="选择日期"
                         type="date"
+                        @change="changeDate(scope.row,8)"
                          :disabled="zgJxkyqksAuth.JSSJ==2"
                       />
                   </div>
@@ -2528,6 +2543,7 @@
                         value-format="yyyy-MM-dd"
                         placeholder="选择日期"
                         type="date"
+                        @change="changeDate(scope.row,7)"
                          :disabled="zgXmkyqksAuth.QSSJ==2"
                       />
                   </div>
@@ -2544,6 +2560,7 @@
                         value-format="yyyy-MM-dd"
                         placeholder="选择日期"
                         type="date"
+                         @change="changeDate(scope.row,8)"
                          :disabled="zgXmkyqksAuth.JSSJ==2"
                       />
                   </div>
@@ -3049,7 +3066,7 @@ export default {
         value: "dm", //匹配响应数据中的id
         label: "mc", //匹配响应数据中的name
         checkStrictly: true,
-        children: "dataCodeCascadingList", //匹配响应数据中的children }
+        children: "dataCode", //匹配响应数据中的children }
       },
     };
   },
@@ -3204,6 +3221,76 @@ export default {
       getZgZsmc().then((res) => {
         this.zsmcOps = res.data;
       });
+    },
+    changeDate(row, flag) {
+      console.log("111111");
+      switch (flag) {
+        case 1: //新增开始时间
+          if (row.jdhtmmzdrq) {
+            if (row.jdhtmrzrq > row.jdhtmmzdrq) {
+              row.jdhtmrzrq = null;
+              this.$message.error("开始时间不能大于结束时间！");
+            }
+          }
+          break;
+        case 2: //新增结束时间
+          if (row.jdhtmrzrq) {
+            if (row.jdhtmrzrq > row.jdhtmmzdrq) {
+              row.jdhtmmzdrq = null;
+              this.$message.error("结束时间不能小于开始时间！");
+            }
+          }
+          break;
+        case 3: //新增开始时间
+          if (row.zjzzrq) {
+            if (row.zjpzrq > row.zjzzrq) {
+              row.zjpzrq = null;
+              this.$message.error("开始时间不能大于结束时间！");
+            }
+          }
+          break;
+        case 4: //新增结束时间
+          if (row.zjpzrq) {
+            if (row.zjpzrq > row.zjzzrq) {
+              row.zjzzrq = null;
+              this.$message.error("结束时间不能小于开始时间！");
+            }
+          }
+          break;
+        case 5: //新增开始时间
+          if (row.gzzzrq) {
+            if (row.gzqsrq > row.gzzzrq) {
+              row.gzqsrq = null;
+              this.$message.error("开始时间不能大于结束时间！");
+            }
+          }
+          break;
+        case 6: //新增结束时间
+          if (row.gzqsrq) {
+            if (row.gzqsrq > row.gzzzrq) {
+              row.gzzzrq = null;
+              this.$message.error("结束时间不能小于开始时间！");
+            }
+          }
+          break;
+
+        case 7: //新增开始时间
+          if (row.jssj) {
+            if (row.qssj > row.jssj) {
+              row.qssj = null;
+              this.$message.error("开始时间不能大于结束时间！");
+            }
+          }
+          break;
+        case 8: //新增结束时间
+          if (row.qssj) {
+            if (row.qssj > row.jssj) {
+              row.jssj = null;
+              this.$message.error("结束时间不能小于开始时间！");
+            }
+          }
+          break;
+      }
     },
     handleChangeZy(value) {
       if (value.length == 1) {

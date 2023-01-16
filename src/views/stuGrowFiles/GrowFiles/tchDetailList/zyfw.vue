@@ -150,7 +150,7 @@
                   :prop="'addData.' + scope.$index + '.fwsc'"
                   :rules="rules.fwsc"
                 >
-                  <el-input v-model="scope.row.fwsc" type="number" />
+                  <el-input min="0" v-model="scope.row.fwsc" type="number" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -303,7 +303,7 @@
                   :prop="'editData.' + scope.$index + '.fwsc'"
                   :rules="rules.fwsc"
                 >
-                  <el-input v-model="scope.row.fwsc" type="number" />
+                  <el-input min="0" v-model="scope.row.fwsc" type="number" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -662,6 +662,7 @@ export default {
     },
     xinzeng() {
       this.formAdd.addData = []; // 每次打开弹框先将弹框的table数组置空
+      this.formAdd.fwnr = ""; // 每次打开弹框先将弹框的table数组置空
       var newLine = {
         xmmc: "",
         zzdw: "",

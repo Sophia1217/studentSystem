@@ -156,6 +156,15 @@
         </div>
 
         <div class="headerRight">
+          <div style="margin-right: 15px">
+            <el-dropdown split-button @command="xjydDaochu">
+              <span class="el-dropdown-link"> 学籍异动表导出</span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="1">PDF下载</el-dropdown-item>
+                <el-dropdown-item command="2">Word下载</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           <div class="btns borderOrange" @click="handleExport">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
@@ -243,6 +252,19 @@
         </el-table>
       </div>
     </div>
+    <el-dialog
+      title="学籍异动表导出确认"
+      :visible.sync="xjydModal"
+      width="30%"
+      :close-on-click-modal="false"
+    >
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="xjydModalCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="xjydModaldaochu()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
     <el-dialog
       title="列表显示项"
       :visible.sync="dynamicModal"
@@ -822,12 +844,15 @@ import {
   xhQuery,
   ysxExp,
   updateYdwh,
+  xjydExp,
 } from "@/api/dailyBehavior/xjyd";
 import { getToken } from "@/utils/auth";
 export default {
   components: { CheckboxCom, checkboxComDynic, lctCom },
   data() {
     return {
+      xjydModal: false,
+
       shRecordModal: false,
       shRecordTable: [],
       uploadUrl: process.env.VUE_APP_BASE_API + "/fileCommon/uploadFileCommon",
@@ -989,6 +1014,33 @@ export default {
     },
   },
   methods: {
+    xjydModalCancel() {
+      this.xjydModal = false;
+    },
+    xjydModaldaochu() {
+      var data = [];
+      for (var x = 0; x < this.multipleSelection.length; x++) {
+        data.push({
+          exType: this.Type,
+          id: this.multipleSelection[x].businesId,
+          processId: this.multipleSelection[x].processId,
+          sqlx: this.multipleSelection[x].mk,
+          xh: this.multipleSelection[x].xh,
+        });
+      }
+      xjydExp(data).then((res) => {
+        this.downloadFn(res, "学籍异动表导出下载", "zip");
+        this.xjydModal = false;
+      });
+    },
+    xjydDaochu(ins) {
+      this.Type = ins == "1" ? "pdf" : "docx";
+      if (this.multipleSelection.length > 0) {
+        this.xjydModal = true;
+      } else {
+        this.$message.error("请先选择一条数据");
+      }
+    },
     sureCancel() {
       this.sureModal = false;
       this.handleSearch();

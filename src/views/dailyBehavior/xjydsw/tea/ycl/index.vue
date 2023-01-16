@@ -788,6 +788,19 @@
       :limit.sync="queryParams.pageSize"
       @pagination="handleSearch"
     />
+    <el-dialog
+      title="学籍异动表导出确认"
+      :visible.sync="xjydModal"
+      width="30%"
+      :close-on-click-modal="false"
+    >
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="xjydModalCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="xjydModaldaochu()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 

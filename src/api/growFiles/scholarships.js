@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // /jxj/insertJxj奖学金新增
 export function insertJxj(query) {
   return request({
-    url: '/jxj/insertJxj',
+    url: '/jxj/importInsertJxj',
     method: 'post',
     data: query
   })
@@ -27,7 +27,7 @@ export function deleteJxj(query) {
 //奖学金更新
   export function updateJxj(query) {
     return request({
-      url: '/jxj/updateJxj',
+      url: '/jxj/importUpdateJxj',
       method: 'post',
       data: query
     })

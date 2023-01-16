@@ -22,7 +22,10 @@
           </div>
         </div>
         <div class="headerRight">
-          <!-- <div class="btns borderBlue" v-show="AUTHFLAG">
+          <div class="btns borderBlue" @click="mbDown" v-show="AUTHFLAG">
+            <i class="icon downIcon"></i><span class="title">模板下载</span>
+          </div>
+          <div class="btns borderBlue" v-show="AUTHFLAG">
             <el-upload
               accept=".xlsx,.xls"
               :auto-upload="true"
@@ -34,7 +37,7 @@
             >
               <i class="icon blueIcon"></i><span class="title">导入</span>
             </el-upload>
-          </div> -->
+          </div>
           <div class="btns borderOrange" @click="handleExport">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
@@ -71,10 +74,11 @@
               <template slot-scope="scope">
                 <el-input
                   v-model="scope.row.bksjhed"
-                  maxlength="100"
+                  maxlength="9"
                   oninput="this.value=this.value.replace(/[^\d]/g,'')"
                   placeholder="请输入数字"
                   style="width: 100px"
+                  @keyup.enter.native="handleUpdata(scope.row)"
                 />
               </template>
             </el-table-column>
@@ -165,7 +169,7 @@ import {
 } from "@/api/dailyBehavior/lskn";
 import { getToken } from "@/utils/auth";
 import { getXmXgh } from "@/api/assistantWork/sizheng";
-import { getGrade } from "@/api/class/maintenanceClass";//待定
+import { getGrade } from "@/api/class/maintenanceClass"; //待定
 export default {
   name: "jindu",
   components: {},
@@ -193,7 +197,7 @@ export default {
         xs: "",
       },
 
-      uploadUrl: process.env.VUE_APP_BASE_API + "/fdySzkcs/import",
+      uploadUrl: process.env.VUE_APP_BASE_API + "/rcswLsknEd/import",
       dialogFormVisible: false,
       ndOptions: [],
       nd: "",
@@ -201,8 +205,8 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        orderZd:"",
-        orderPx:"",
+        orderZd: "",
+        orderPx: "",
         total: 0,
       },
       multipleSelection: [],
@@ -220,6 +224,21 @@ export default {
   },
 
   methods: {
+    //更新
+    handleUpdata(row) {
+      let data = {
+        nd: this.nd,
+        bksjhed: row.bksjhed,
+        bkssyed: row.bkssyed,
+        dwh: row.dwh,
+        id: row.id,
+        yjsjhed: row.yjsjhed,
+        yjssyed: row.yjssyed,
+      };
+      updateLsknEd(data).then((res) => {
+        this.$message.success("更新成功");
+      });
+    },
     //获取年级
     getAllGrade() {
       getGrade()
@@ -244,8 +263,8 @@ export default {
         orderPx: this.queryParams.orderPx,
       };
       if (this.multipleSelection.length > 0) {
-        expor({ idList: idList }).then((res) => {
-          this.downloadFn(res, "思政课程授課列表下载", "xlsx");
+        zxjdExp({ idList: idList }).then((res) => {
+          this.downloadFn(res, "临时困难执行进度列表下载", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -253,8 +272,8 @@ export default {
           }
         });
       } else {
-        expor(data).then((res) => {
-          this.downloadFn(res, "思政课程授課列表下载", "xlsx");
+        zxjdExp(data).then((res) => {
+          this.downloadFn(res, "临时困难执行进度列表下载", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -269,7 +288,26 @@ export default {
     handleCancel() {
       this.showExport = false;
     },
-
+    upLoadError(err, file, fileList) {
+      this.$message({
+        type: "error",
+        message: "上传失败",
+      });
+    },
+    upLoadSuccess(res, file, fileList) {
+      if (res.errcode == "00") {
+        this.handleSearch();
+        this.$message({
+          type: "success",
+          message: res.errmsg,
+        });
+      } else {
+        this.$message({
+          type: "error",
+          message: res.errmsg,
+        });
+      }
+    },
     querySearch(queryString, cb) {
       if (queryString != "") {
         let callBackArr = [];
@@ -334,6 +372,11 @@ export default {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
+    },
+    mbDown() {
+      downLoadMb().then((res) => {
+        this.downloadFn(res, "临时困难执行进度模板下载", "xlsx");
+      });
     },
   },
 };

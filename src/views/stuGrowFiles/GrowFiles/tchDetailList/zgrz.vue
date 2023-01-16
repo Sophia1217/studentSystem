@@ -151,7 +151,7 @@
                   :prop="'addData.' + scope.$index + '.cj'"
                   :rules="rules.cj"
                 >
-                  <el-input v-model="scope.row.cj" />
+                  <el-input  maxlength=200 v-model="scope.row.cj" />
                 </el-form-item>
               </template>
             </el-table-column> -->
@@ -210,7 +210,7 @@
                   :prop="'addData.' + scope.$index + '.zsbh'"
                   :rules="rules.zsbh"
                 >
-                  <el-input v-model="scope.row.zsbh" />
+                  <el-input maxlength="200" v-model="scope.row.zsbh" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -225,7 +225,7 @@
                   :prop="'addData.' + scope.$index + '.fzdw'"
                   :rules="rules.fzdw"
                 >
-                  <el-input v-model="scope.row.fzdw" />
+                  <el-input maxlength="200" v-model="scope.row.fzdw" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -318,7 +318,7 @@
                   :prop="'editData.' + scope.$index + '.cj'"
                   :rules="rules.cj"
                 >
-                  <el-input v-model="scope.row.cj" />
+                  <el-input  maxlength=200 v-model="scope.row.cj" />
                 </el-form-item>
               </template>
             </el-table-column> -->
@@ -377,7 +377,7 @@
                   :prop="'editData.' + scope.$index + '.zsbh'"
                   :rules="rules.zsbh"
                 >
-                  <el-input v-model="scope.row.zsbh" />
+                  <el-input maxlength="200" v-model="scope.row.zsbh" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -392,7 +392,7 @@
                   :prop="'editData.' + scope.$index + '.fzdw'"
                   :rules="rules.fzdw"
                 >
-                  <el-input v-model="scope.row.fzdw" />
+                  <el-input maxlength="200" v-model="scope.row.fzdw" />
                 </el-form-item>
               </template>
             </el-table-column>

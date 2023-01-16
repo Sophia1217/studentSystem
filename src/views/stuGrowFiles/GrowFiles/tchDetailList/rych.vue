@@ -96,7 +96,7 @@
                   :prop="'addData.' + scope.$index + '.rymc'"
                   :rules="rules.rymc"
                 >
-                  <el-input v-model="scope.row.rymc" />
+                  <el-input maxlength="200" v-model="scope.row.rymc" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -146,7 +146,7 @@
                   :prop="'addData.' + scope.$index + '.bzdw'"
                   :rules="rules.bzdw"
                 >
-                  <el-input v-model="scope.row.bzdw" />
+                  <el-input maxlength="200" v-model="scope.row.bzdw" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -191,7 +191,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="个人位次" align="center" v-if="showGrwc == 2" :render-header="addRedStar">
+            <el-table-column label="个人位次" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'addData.' + scope.$index + '.grwc'"
@@ -202,6 +202,7 @@
                     controls-position="right"
                     style="width:100px"
                     :min="1"
+                    :disabled="showGrwc == 2 ? false : true"
                     @keydown.native="channelInputLimit"
                   ></el-input-number>
                 </el-form-item>
@@ -230,7 +231,7 @@
                   :prop="'addData.' + scope.$index + '.zsbh'"
                   :rules="rules.zsbh"
                 >
-                  <el-input v-model="scope.row.zsbh" />
+                  <el-input maxlength="200" v-model="scope.row.zsbh" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -252,7 +253,7 @@
                   :prop="'editData.' + scope.$index + '.rymc'"
                   :rules="rules.rymc"
                 >
-                  <el-input v-model="scope.row.rymc" />
+                  <el-input maxlength="200" v-model="scope.row.rymc" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -302,7 +303,7 @@
                   :prop="'editData.' + scope.$index + '.bzdw'"
                   :rules="rules.bzdw"
                 >
-                  <el-input v-model="scope.row.bzdw" />
+                  <el-input maxlength="200" v-model="scope.row.bzdw" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -347,7 +348,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="个人位次" align="center" v-if="showGrwc == 2" :render-header="addRedStar">
+            <el-table-column label="个人位次" align="center" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'editData.' + scope.$index + '.grwc'"
@@ -358,6 +359,7 @@
                     controls-position="right"
                     style="width:100px"
                     :min="1"
+                    :disabled="showGrwc == 2 ? false : true"
                     @keydown.native="channelInputLimit"
                   ></el-input-number>
                 </el-form-item>
@@ -386,7 +388,7 @@
                   :prop="'editData.' + scope.$index + '.zsbh'"
                   :rules="rules.zsbh"
                 >
-                  <el-input v-model="scope.row.zsbh" />
+                  <el-input maxlength="200" v-model="scope.row.zsbh" />
                 </el-form-item>
               </template>
             </el-table-column>

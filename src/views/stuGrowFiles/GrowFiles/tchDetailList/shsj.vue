@@ -97,7 +97,7 @@
                   :prop="'addData.' + scope.$index + '.xmmc'"
                   :rules="rules.xmmc"
                 >
-                  <el-input v-model="scope.row.xmmc" />
+                  <el-input maxlength="200" v-model="scope.row.xmmc" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -107,7 +107,7 @@
                   :prop="'addData.' + scope.$index + '.zzdw'"
                   :rules="rules.zzdw"
                 >
-                  <el-input v-model="scope.row.zzdw" />
+                  <el-input maxlength="200" v-model="scope.row.zzdw" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -157,7 +157,7 @@
                   :prop="'addData.' + scope.$index + '.sjdd'"
                   :rules="rules.sjdd"
                 >
-                  <el-input v-model="scope.row.sjdd" />
+                  <el-input maxlength="200" v-model="scope.row.sjdd" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -217,7 +217,7 @@
                   :prop="'addData.' + scope.$index + '.zmr'"
                   :rules="rules.zmr"
                 >
-                  <el-input v-model="scope.row.zmr" />
+                  <el-input maxlength="200" v-model="scope.row.zmr" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -227,7 +227,7 @@
                   :prop="'addData.' + scope.$index + '.lxfs'"
                   :rules="rules.lxfs"
                 >
-                  <el-input v-model="scope.row.lxfs" />
+                  <el-input maxlength="11" v-model="scope.row.lxfs" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -249,7 +249,7 @@
                   :prop="'editData.' + scope.$index + '.xmmc'"
                   :rules="rules.xmmc"
                 >
-                  <el-input v-model="scope.row.xmmc" />
+                  <el-input maxlength="200" v-model="scope.row.xmmc" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -259,7 +259,7 @@
                   :prop="'editData.' + scope.$index + '.zzdw'"
                   :rules="rules.zzdw"
                 >
-                  <el-input v-model="scope.row.zzdw" />
+                  <el-input maxlength="200" v-model="scope.row.zzdw" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -309,7 +309,7 @@
                   :prop="'editData.' + scope.$index + '.sjdd'"
                   :rules="rules.sjdd"
                 >
-                  <el-input v-model="scope.row.sjdd" />
+                  <el-input maxlength="200" v-model="scope.row.sjdd" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -369,7 +369,7 @@
                   :prop="'editData.' + scope.$index + '.zmr'"
                   :rules="rules.zmr"
                 >
-                  <el-input v-model="scope.row.zmr" />
+                  <el-input maxlength="200" v-model="scope.row.zmr" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -379,7 +379,7 @@
                   :prop="'editData.' + scope.$index + '.lxfs'"
                   :rules="rules.lxfs"
                 >
-                  <el-input v-model="scope.row.lxfs" />
+                  <el-input maxlength="11" v-model="scope.row.lxfs" />
                 </el-form-item>
               </template>
             </el-table-column>

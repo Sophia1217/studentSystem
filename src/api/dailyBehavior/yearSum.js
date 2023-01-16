@@ -35,3 +35,44 @@ export function switchRcswXnxjsz(query) {
     data: query
   })
 }
+
+//教师端-待审核列表导出
+export function exportDsh(query) {
+  return request({
+    url: '/rcswXnxjFlow/excelExportRcswXnxjFlow',
+    method: 'post',
+    responseType:"blob",
+    data: query
+  })
+}
+//教师端-已处理列表导出
+export function exportYsh(query) {
+  return request({
+    url: '/rcswXnxjFlow/excelExportRcswXnxjFlowed',
+    method: 'post',
+    responseType:"blob",
+    data: query
+  })
+}
+//教师端-已审核列表查询
+export function queryYshList(query) {
+  return request({
+    url: '/rcswXnxjFlow/queryXnxjFlowedList',
+    method: 'post',
+    data: query
+  })
+}
+//教师端-待审核列表查询
+export function queryDshList(query) {
+  return request({
+    url: '/rcswXnxjFlow/queryXnxjFlowList',
+    method: 'post',
+    data: query
+  })
+}
+
+
+
+
+
+

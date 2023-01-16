@@ -125,7 +125,7 @@
                   :prop="'addData.' + scope.$index + '.stmc'"
                   :rules="rules.stmc"
                 >
-                  <el-input v-model="scope.row.stmc" />
+                  <el-input maxlength="200" v-model="scope.row.stmc" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -231,7 +231,7 @@
                   :prop="'addData.' + scope.$index + '.zdlsxm'"
                   :rules="rules.zdlsxm"
                 >
-                  <el-input v-model="scope.row.zdlsxm" />
+                  <el-input maxlength="200" v-model="scope.row.zdlsxm" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -253,7 +253,7 @@
                   :prop="'editData.' + scope.$index + '.stmc'"
                   :rules="rules.stmc"
                 >
-                  <el-input v-model="scope.row.stmc" />
+                  <el-input maxlength="200" v-model="scope.row.stmc" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -359,7 +359,7 @@
                   :prop="'editData.' + scope.$index + '.zdlsxm'"
                   :rules="rules.zdlsxm"
                 >
-                  <el-input v-model="scope.row.zdlsxm" />
+                  <el-input maxlength="200" v-model="scope.row.zdlsxm" />
                 </el-form-item>
               </template>
             </el-table-column>

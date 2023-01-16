@@ -148,7 +148,7 @@
                   :prop="'addData.' + scope.$index + '.hdssmc'"
                   :rules="rules.hdssmc"
                 >
-                  <el-input v-model="scope.row.hdssmc" />
+                  <el-input maxlength="200" v-model="scope.row.hdssmc" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -158,7 +158,7 @@
                   :prop="'addData.' + scope.$index + '.zzdw'"
                   :rules="rules.zzdw"
                 >
-                  <el-input v-model="scope.row.zzdw" />
+                  <el-input maxlength="200" v-model="scope.row.zzdw" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -188,7 +188,7 @@
                   :prop="'addData.' + scope.$index + '.cszp'"
                   :rules="rules.cszp"
                 >
-                  <el-input v-model="scope.row.cszp" />
+                  <el-input maxlength="200" v-model="scope.row.cszp" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -198,7 +198,7 @@
                   :prop="'addData.' + scope.$index + '.cy'"
                   :rules="rules.cy"
                 >
-                  <el-input v-model="scope.row.cy" />
+                  <el-input maxlength="200" v-model="scope.row.cy" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -208,7 +208,7 @@
                   :prop="'addData.' + scope.$index + '.pm'"
                   :rules="rules.pm"
                 >
-                  <el-input v-model="scope.row.pm" />
+                  <el-input maxlength="200" v-model="scope.row.pm" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -264,7 +264,7 @@
                   :prop="'editData.' + scope.$index + '.hdssmc'"
                   :rules="rules.hdssmc"
                 >
-                  <el-input v-model="scope.row.hdssmc" />
+                  <el-input maxlength="200" v-model="scope.row.hdssmc" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -274,7 +274,7 @@
                   :prop="'editData.' + scope.$index + '.zzdw'"
                   :rules="rules.zzdw"
                 >
-                  <el-input v-model="scope.row.zzdw" />
+                  <el-input maxlength="200" v-model="scope.row.zzdw" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -304,7 +304,7 @@
                   :prop="'editData.' + scope.$index + '.cszp'"
                   :rules="rules.cszp"
                 >
-                  <el-input v-model="scope.row.cszp" />
+                  <el-input maxlength="200" v-model="scope.row.cszp" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -314,7 +314,7 @@
                   :prop="'editData.' + scope.$index + '.cy'"
                   :rules="rules.cy"
                 >
-                  <el-input v-model="scope.row.cy" />
+                  <el-input maxlength="200" v-model="scope.row.cy" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -324,7 +324,7 @@
                   :prop="'editData.' + scope.$index + '.pm'"
                   :rules="rules.pm"
                 >
-                  <el-input v-model="scope.row.pm" />
+                  <el-input maxlength="200" v-model="scope.row.pm" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -534,7 +534,7 @@
                   :prop="'addDataCy.' + scope.$index + '.gsmc'"
                   :rules="rules.gsmc"
                 >
-                  <el-input v-model="scope.row.gsmc" />
+                  <el-input maxlength="200" v-model="scope.row.gsmc" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -561,7 +561,7 @@
                   :prop="'addDataCy.' + scope.$index + '.zczj'"
                   :rules="rules.zczj"
                 >
-                  <el-input v-model="scope.row.zczj" />
+                  <el-input maxlength="200" v-model="scope.row.zczj" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -571,7 +571,7 @@
                   :prop="'addDataCy.' + scope.$index + '.sshy'"
                   :rules="rules.sshy"
                 >
-                  <el-input v-model="scope.row.sshy" />
+                  <el-input maxlength="200" v-model="scope.row.sshy" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -581,7 +581,7 @@
                   :prop="'addDataCy.' + scope.$index + '.frdb'"
                   :rules="rules.frdb"
                 >
-                  <el-input v-model="scope.row.frdb" />
+                  <el-input maxlength="200" v-model="scope.row.frdb" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -591,7 +591,7 @@
                   :prop="'addDataCy.' + scope.$index + '.zyyw'"
                   :rules="rules.zyyw"
                 >
-                  <el-input v-model="scope.row.zyyw" />
+                  <el-input maxlength="200" v-model="scope.row.zyyw" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -601,7 +601,7 @@
                   :prop="'addDataCy.' + scope.$index + '.srzw'"
                   :rules="rules.srzw"
                 >
-                  <el-input v-model="scope.row.srzw" />
+                  <el-input maxlength="200" v-model="scope.row.srzw" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -659,7 +659,7 @@
                   :prop="'editDataCy.' + scope.$index + '.gsmc'"
                   :rules="rules.gsmc"
                 >
-                  <el-input v-model="scope.row.gsmc" />
+                  <el-input maxlength="200" v-model="scope.row.gsmc" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -686,7 +686,7 @@
                   :prop="'editDataCy.' + scope.$index + '.zczj'"
                   :rules="rules.zczj"
                 >
-                  <el-input v-model="scope.row.zczj" />
+                  <el-input maxlength="200" v-model="scope.row.zczj" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -696,7 +696,7 @@
                   :prop="'editDataCy.' + scope.$index + '.sshy'"
                   :rules="rules.sshy"
                 >
-                  <el-input v-model="scope.row.sshy" />
+                  <el-input maxlength="200" v-model="scope.row.sshy" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -706,7 +706,7 @@
                   :prop="'editDataCy.' + scope.$index + '.frdb'"
                   :rules="rules.frdb"
                 >
-                  <el-input v-model="scope.row.frdb" />
+                  <el-input maxlength="200" v-model="scope.row.frdb" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -716,7 +716,7 @@
                   :prop="'editDataCy.' + scope.$index + '.zyyw'"
                   :rules="rules.zyyw"
                 >
-                  <el-input v-model="scope.row.zyyw" />
+                  <el-input maxlength="200" v-model="scope.row.zyyw" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -726,7 +726,7 @@
                   :prop="'editDataCy.' + scope.$index + '.srzw'"
                   :rules="rules.srzw"
                 >
-                  <el-input v-model="scope.row.srzw" />
+                  <el-input maxlength="200" v-model="scope.row.srzw" />
                 </el-form-item>
               </template>
             </el-table-column>

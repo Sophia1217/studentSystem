@@ -114,7 +114,7 @@
                   :prop="'addData.' + scope.$index + '.rzzz'"
                   :rules="rules.rzzz"
                 >
-                  <el-input v-model="scope.row.rzzz" />
+                  <el-input maxlength="200" v-model="scope.row.rzzz" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -124,7 +124,7 @@
                   :prop="'addData.' + scope.$index + '.sldw'"
                   :rules="rules.sldw"
                 >
-                  <el-input v-model="scope.row.sldw" />
+                  <el-input maxlength="200" v-model="scope.row.sldw" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -151,7 +151,7 @@
                   :prop="'addData.' + scope.$index + '.rzzwm'"
                   :rules="rules.rzzwm"
                 >
-                  <el-input v-model="scope.row.rzzwm" />
+                  <el-input maxlength="200" v-model="scope.row.rzzwm" />
                   <!-- <el-select v-model="scope.row.rzzwm" placeholder="请选择">
                     <el-option
                       v-for="(item, index) in zwOps"
@@ -205,7 +205,7 @@
                   :prop="'addData.' + scope.$index + '.zmr'"
                   :rules="rules.zmr"
                 >
-                  <el-input v-model="scope.row.zmr" />
+                  <el-input maxlength="200" v-model="scope.row.zmr" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -215,7 +215,7 @@
                   :prop="'addData.' + scope.$index + '.lxfs'"
                   :rules="rules.lxfs"
                 >
-                  <el-input v-model="scope.row.lxfs" />
+                  <el-input maxlength="11" v-model="scope.row.lxfs" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -242,7 +242,7 @@
                   :prop="'editData.' + scope.$index + '.rzzz'"
                   :rules="rules.rzzz"
                 >
-                  <el-input v-model="scope.row.rzzz" />
+                  <el-input maxlength="200" v-model="scope.row.rzzz" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -252,7 +252,7 @@
                   :prop="'editData.' + scope.$index + '.sldw'"
                   :rules="rules.sldw"
                 >
-                  <el-input v-model="scope.row.sldw" />
+                  <el-input maxlength="200" v-model="scope.row.sldw" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -279,7 +279,7 @@
                   :prop="'editData.' + scope.$index + '.rzzwm'"
                   :rules="rules.rzzwm"
                 >
-                  <el-input v-model="scope.row.rzzwm" />
+                  <el-input maxlength="200" v-model="scope.row.rzzwm" />
                   <!-- <el-select v-model="scope.row.rzzwm" placeholder="请选择">
                     <el-option
                       v-for="(item, index) in zwOps"
@@ -333,7 +333,7 @@
                   :prop="'editData.' + scope.$index + '.zmr'"
                   :rules="rules.zmr"
                 >
-                  <el-input v-model="scope.row.zmr" />
+                  <el-input maxlength="200" v-model="scope.row.zmr" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -343,7 +343,7 @@
                   :prop="'editData.' + scope.$index + '.lxfs'"
                   :rules="rules.lxfs"
                 >
-                  <el-input v-model="scope.row.lxfs" />
+                  <el-input maxlength="11" v-model="scope.row.lxfs" />
                 </el-form-item>
               </template>
             </el-table-column>

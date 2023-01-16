@@ -204,10 +204,10 @@
           ></el-table-column>
           <el-table-column prop="xh" label="学号" width="100" sortable> </el-table-column>
           <el-table-column prop="xm" label="姓名" width="85" sortable> </el-table-column>
-          <el-table-column prop="pycc" label="培养层次" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="dwmc" label="培养单位" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="zslx" label="专业" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="zsksrq" label="申请时间" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="pyccmc" label="培养层次" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="dwhmc" label="培养单位" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="zydmmc" label="专业" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="sqsj" label="申请时间" min-width="100" sortable> </el-table-column>
           <!-- <el-table-column prop="zsjsrq" label="住宿结束时间" min-width="100" sortable>
           </el-table-column> -->
           <el-table-column prop="createDwhMc" label="审核进度">
@@ -614,11 +614,14 @@ import {
   jjFlow,
   backFlow,
   thFinal,
-  queryDshList,
   queryDshDetail,
   updateZssqFlow,
-  exportZjbbFlow,
-} from "@/api/dailyBehavior/dormTea"
+} from "@/api/dailyBehavior/dormTea";
+import {
+  queryDshList,
+  exportDsh,
+} from "@/api/dailyBehavior/yearSum"
+
 import {
   queryFj,
   queryLd,
@@ -738,7 +741,7 @@ export default {
       this.exportParams.pageSize = 0;
       this.$set(this.exportParams, "idList", idList);
       //this.$set(this.exportParams, "status", "1");
-      exportZjbbFlow(this.exportParams)
+      exportDsh(this.exportParams)
         .then((res) => {
           this.downloadFn(res, "住宿申请待审核列表导出.xlsx", "xlsx");
           if(this.$store.getters.excelcount > 0){

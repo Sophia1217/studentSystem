@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="tableWrap mt15">
+      <topTitle :routeTitle="routeTitle"></topTitle>
       <div class="headerTop">
         <div class="headerLeft">
           <span class="title">学年小结</span> <i class="Updataicon"></i>
@@ -115,7 +116,7 @@
           :rules="rules"
           label-width="150px"
         >
-          <h2>学生基本信息</h2>
+          <span class="jbxx">学生基本信息</span>
           <el-row>
             <el-col :span="8" class="yiny">
               <div style="display: flex; height: 50px">
@@ -171,8 +172,14 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-form-item label="填写学年" style="margin-top: 15px">
-              <el-select v-model="formAdd.xn" placeholder="请选择">
+            <el-form-item
+              label="填写学年"
+              style="margin-top: 15px"
+              label-width="85px"
+              prop="xn"
+              :rules="rules.xn"
+            >
+              <el-select v-model="formAdd.xn" placeholder="请选择" clearable>
                 <el-option
                   v-for="(item, index) in xnxqList"
                   :key="index"
@@ -183,7 +190,7 @@
             </el-form-item>
           </el-row>
           <el-row>
-            <el-form-item label="自我小结">
+            <el-form-item label="自我小结" label-width="85px" prop="zwxj">
               <el-input
                 type="textarea"
                 :rows="15"
@@ -207,7 +214,7 @@
         title="详情"
         :visible.sync="editModal"
         @close="editCance"
-        width="35%"
+        width="50%"
         :close-on-click-modal="false"
       >
         <el-form
@@ -216,118 +223,100 @@
           :rules="rules"
           label-width="150px"
         >
-          <el-row :gutter="20">
-            <el-col :span="20">
-              <el-form-item label="申请类型" prop="oplx" :rules="rules.oplx">
-                <div v-if="editFlag == 2">{{ formEdit.oplx }}</div>
-                <el-select
-                  v-else="editFlag == 3"
-                  v-model="formEdit.oplx"
-                  placeholder="请选择"
-                >
-                  <el-option
-                    v-for="(item, index) in sqlxList"
-                    :key="index"
-                    :label="item.mc"
-                    :value="item.dm"
-                  ></el-option> </el-select
-              ></el-form-item>
+          <span class="jbxx">学生基本信息</span>
+          <el-row>
+            <el-col :span="8" class="yiny">
+              <div style="display: flex; height: 50px">
+                <div class="hs">学号</div>
+                <div class="bs">{{ basicInfo.xh }}</div>
+              </div>
+            </el-col>
+            <el-col :span="8" class="yiny">
+              <div style="display: flex; height: 50px">
+                <div class="hs">姓名</div>
+                <div class="bs">{{ basicInfo.xm }}</div>
+              </div>
+            </el-col>
+            <el-col :span="8" class="yiny">
+              <div style="display: flex; height: 50px">
+                <div class="hs">性别</div>
+                <div class="bs">{{ basicInfo.xbmc }}</div>
+              </div>
             </el-col>
           </el-row>
-          <el-row :gutter="20">
-            <el-col :span="20">
-              <el-form-item label="其他" prop="qt">
-                <div v-if="editFlag == 2">{{ formEdit.qt }}</div>
-                <el-input
-                  v-model="formEdit.qt"
-                  v-else="editFlag == 3"
-                  placeholder="请输入"
-                ></el-input>
-              </el-form-item>
+          <el-row>
+            <el-col :span="8" class="yiny">
+              <div style="display: flex; height: 50px">
+                <div class="hs">培养层次</div>
+                <div class="bs">{{ basicInfo.pyccmc }}</div>
+              </div>
+            </el-col>
+            <el-col :span="8" class="yiny">
+              <div style="display: flex; height: 50px">
+                <div class="hs">培养单位</div>
+                <div class="bs">{{ basicInfo.dwhmc }}</div>
+              </div>
+            </el-col>
+            <el-col :span="8" class="yiny">
+              <div style="display: flex; height: 50px">
+                <div class="hs">年级</div>
+                <div class="bs">{{ basicInfo.ssnj }}</div>
+              </div>
             </el-col>
           </el-row>
-          <el-row :gutter="20">
-            <el-col :span="20">
-              <el-form-item
-                label="参加项目"
-                prop="blxjCjxm"
-                :rules="rules.blxjCjxm"
-              >
-                <div v-if="editFlag == 2">{{ formEdit.blxjCjxm }}</div>
-                <el-input
-                  v-else="editFlag == 3"
-                  v-model="formEdit.blxjCjxm"
-                  placeholder="请输入"
-                ></el-input>
-              </el-form-item>
+          <el-row>
+            <el-col :span="8" class="yiny">
+              <div style="display: flex; height: 50px">
+                <div class="hs">专业</div>
+                <div class="bs">{{ basicInfo.zydmmc }}</div>
+              </div>
+            </el-col>
+            <el-col :span="16" class="yiny">
+              <div style="display: flex; height: 50px">
+                <div class="hs">班级</div>
+                <div class="bs">{{ basicInfo.bjmmc }}</div>
+              </div>
             </el-col>
           </el-row>
-          <el-row :gutter="20">
-            <el-col :span="20">
-              <el-form-item
-                label="负责部门"
-                prop="blxjFzbm"
-                :rules="rules.blxjFzbm"
-              >
-                <div v-if="editFlag == 2">{{ formEdit.blxjFzbm }}</div>
-                <el-input
-                  v-else="editFlag == 3"
-                  v-model="formEdit.blxjFzbm"
-                  placeholder="请输入"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" v-if="editFlag == 2">
-            <el-col :span="20">
-              <el-form-item label="保留时间">
-                <div v-if="editFlag == 2">
-                  {{ formEdit.blxjBlstart }}
-                  至{{ formEdit.blxjBlend }}
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" v-if="editFlag == 3">
+
+          <el-row>
             <el-form-item
-              label="保留时间"
-              prop="blxjBlstart"
-              :rules="rules.blxjBlstart"
+              label="填写学年"
+              style="margin-top: 15px"
+              label-width="85px"
+              prop="xn"
+              :rules="rules.xn"
             >
-              <el-col :span="20">
-                <el-date-picker
-                  type="date"
-                  placeholder="选择日期"
-                  value-format="yyyy-MM-dd "
-                  @change="changeDate(1)"
-                  v-model="formEdit.blxjBlstart"
-                  style="width: 160px"
-                ></el-date-picker>
-                <span style="margin: 0 10px">至</span>
-                <el-date-picker
-                  placeholder="选择日期"
-                  value-format="yyyy-MM-dd "
-                  style="width: 170px"
-                  @change="changeDate(2)"
-                  v-model="formEdit.blxjBlend"
-                ></el-date-picker>
-              </el-col>
+              <div v-if="editFlag == '2'">{{ formEdit.xn }}</div>
+              <el-select
+                clearable
+                v-model="formEdit.xn"
+                placeholder="请选择"
+                v-if="editFlag == '3'"
+              >
+                <el-option
+                  v-for="(item, index) in xnxqList"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
             </el-form-item>
           </el-row>
-          <el-row :gutter="20">
-            <el-col :span="20">
-              <el-form-item label="申请理由" prop="sqmsg" :rules="rules.sqmsg">
-                <div v-if="editFlag == 2">{{ formEdit.sqmsg }}</div>
-                <el-input
-                  v-else="editFlag == 3"
-                  v-model="formEdit.sqmsg"
-                  type="textarea"
-                  :autosize="{ minRows: 6, maxRows: 6 }"
-                  placeholder="请输入内容"
-                  maxlength="500"
-                ></el-input>
-              </el-form-item>
-            </el-col>
+          <el-row>
+            <el-form-item label="自我小结" label-width="85px" prop="zwxj">
+              <div v-if="editFlag == '2'">{{ formEdit.zwxj }}</div>
+              <el-input
+                v-if="editFlag == '3'"
+                type="textarea"
+                :rows="15"
+                v-model="formEdit.zwxj"
+                placeholder="请输入内容"
+                show-word-limit
+                maxlength="1500"
+              >
+              </el-input>
+            </el-form-item>
           </el-row>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -427,10 +416,11 @@ import {
   xnxjExp,
 } from "@/api/dailyBehavior/xnxjStu";
 import lctCom from "../../../components/lct";
+import topTitle from "../../../components/topTitle";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
 export default {
-  components: { lctCom },
+  components: { lctCom, topTitle },
   data() {
     return {
       xnxjModal: false,
@@ -456,105 +446,23 @@ export default {
       fileListAdd: [],
       ztStatus: [],
       val: [],
-      czlx: [],
+      routeTitle: "",
       chehuiModal: false,
-      sqlxList: [
-        { dm: "征兵入伍", mc: "征兵入伍" },
-        { dm: "境内交换生项目", mc: "境内交换生项目" },
-        { dm: "境外交换生项目", mc: "境外交换生项目" },
-      ],
       basicInfo: {},
       xnxqList: [],
       rulesBlcak: {},
       rules: {
-        sf: [
+        xn: [
           {
             required: true,
-            message: "是否住宿不能为空",
+            message: "学年不能为空",
             trigger: "blur",
           },
         ],
-        SFTS: [
+        zwxj: [
           {
             required: true,
-            message: "是否住宿不能为空",
-            trigger: "blur",
-          },
-        ],
-        oplx: [
-          {
-            required: true,
-            message: "申请类型不能为空",
-            trigger: "blur",
-          },
-        ],
-        sqlx: [
-          {
-            required: true,
-            message: "申请类型不能为空",
-            trigger: "blur",
-          },
-        ],
-        jionPro: [
-          {
-            required: true,
-            message: "参加项目不能为空",
-            trigger: "blur",
-          },
-        ],
-        blxjCjxm: [
-          {
-            required: true,
-            message: "参加项目不能为空",
-            trigger: "blur",
-          },
-        ],
-        blxjFzbm: [
-          {
-            required: true,
-            message: "负责部门不能为空",
-            trigger: "blur",
-          },
-        ],
-        fzbm: [
-          {
-            required: true,
-            message: "负责部门不能为空",
-            trigger: "blur",
-          },
-        ],
-        blxjBlstart: [
-          {
-            required: true,
-            message: "开始时间不能为空",
-            trigger: "blur",
-          },
-        ],
-        startTime: [
-          {
-            required: true,
-            message: "开始时间不能为空",
-            trigger: "blur",
-          },
-        ],
-        endTime: [
-          {
-            required: true,
-            message: "结束时间不能为空",
-            trigger: "blur",
-          },
-        ],
-        sqmsg: [
-          {
-            required: true,
-            message: "申请理由不能为空",
-            trigger: "blur",
-          },
-        ],
-        sqly: [
-          {
-            required: true,
-            message: "申请理由不能为空",
+            message: "自我小结不能为空",
             trigger: "blur",
           },
         ],
@@ -565,9 +473,20 @@ export default {
     this.query();
     this.getXnxq1();
     this.getCode("dmsplcm"); //状态
+    this.getBASIC(); //获取基本信息
+    this.routeTitle = this.$route.meta.title;
   },
 
   methods: {
+    BackHomepage() {
+      this.$router.push({
+        path: "/studentHomePage",
+      });
+    },
+    showDetail(row) {
+      this.formEdit = row;
+      this.editModal = true;
+    },
     xnxjModalCancel() {
       this.xnxjModal = false;
     },
@@ -760,14 +679,11 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        var data = this.formEdit;
-        let formData = new FormData();
-        if (this.fileListAdd.length > 0) {
-          this.fileListAdd.map((file) => {
-            formData.append("files", file.raw);
-          });
-        }
-        edit(formData).then((res) => {
+        var data = {
+          xn: this.formEdit.xn,
+          zwxj: this.formEdit.zwxj,
+        };
+        edit(data).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("编辑成功");
             this.query();
@@ -779,25 +695,25 @@ export default {
       }
     },
     addClick() {
-      // if (!this.checkFormAdd()) {
-      //   this.$message.error("请完善表单相关信息！");
-      //   return;
-      // } else {
-      var data = {
-        xn: this.formAdd.xn,
-        zwxj: this.formAdd.zwxj,
-      };
+      if (!this.checkFormAdd()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        var data = {
+          xn: this.formAdd.xn,
+          zwxj: this.formAdd.zwxj,
+        };
 
-      edit(data).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("新增成功");
-          this.query();
-        } else {
-          this.$message.error("新增失败");
-        }
-      });
-      this.addModal = false;
-      // }
+        edit(data).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("新增成功");
+            this.query();
+          } else {
+            this.$message.error("新增失败");
+          }
+        });
+        this.addModal = false;
+      }
     },
     query() {
       var data = {
@@ -812,10 +728,13 @@ export default {
         this.queryParams.totalCount = res.totalCount;
       });
     },
-    async xinzeng() {
-      await getbascic({ xh: this.$store.getters.userId }).then((res) => {
+    getBASIC() {
+      getbascic({ xh: this.$store.getters.userId }).then((res) => {
         this.basicInfo = res.data;
       });
+    },
+    xinzeng() {
+      this.formAdd = {};
       this.addModal = true;
     },
     addCance() {
@@ -864,6 +783,13 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.jbxx {
+  font-family: "PingFang SC";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 28px;
+}
 .yiny {
   border: 1px solid grey;
   background: rgba(0, 0, 0, 0.0001);

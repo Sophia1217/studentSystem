@@ -496,7 +496,7 @@ export default {
         data.push({
           exType: this.Type,
           id: this.multipleSelection[x].id,
-          processId: this.multipleSelection[x].processId,
+          processid: this.multipleSelection[x].processid,
           sqlx: this.multipleSelection[x].pyccm,
           xh: this.multipleSelection[x].xh,
         });

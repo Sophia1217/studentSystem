@@ -237,6 +237,7 @@
               <el-form-item prop="sqsj" :rules="rules.sqsj">
                 <el-date-picker
                   v-model="formAdd.sqsj"
+                  :disabled="true"
                   type="date"
                   format="yyyy 年 MM 月 dd 日"
                   value-format="yyyy-MM-dd"
@@ -395,6 +396,7 @@
               <el-form-item prop="sqsj" :rules="rules.sqsj">
                 <div v-if="editFlag == '2'">{{ formEdit.sqsj }}</div>
                 <el-date-picker
+                  :disabled="true"
                   v-if="editFlag == '3'"
                   v-model="formEdit.sqsj"
                   type="date"

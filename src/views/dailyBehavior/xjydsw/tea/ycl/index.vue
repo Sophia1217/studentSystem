@@ -168,6 +168,15 @@
         </div>
 
         <div class="headerRight">
+          <div style="margin-right: 15px">
+            <el-dropdown split-button @command="xjydDaochu">
+              <span class="el-dropdown-link"> 学籍异动表导出</span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="1">PDF下载</el-dropdown-item>
+                <el-dropdown-item command="2">Word下载</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           <div class="btns borderOrange" @click="handleExport">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
@@ -281,39 +290,39 @@
       width="40%"
       :close-on-click-modal="false"
     >
-    <div v-for="(item, i) in shRecordTable" style="margin-top: 15px">
-          <el-row>
-            <el-col :span="12" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">审核人</div>
-                <div class="bs">{{ item.userName }}</div>
-              </div>
-            </el-col>
-            <el-col :span="12" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">申请时间</div>
-                <div class="bs">{{ item.opTime }}</div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="24" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">审核结果</div>
-                <div class="bs">{{ item.opTypeName }}</div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="24" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">审核意见</div>
-                <div class="bs">{{ item.msg }}</div>
-              </div>
-            </el-col>
-          </el-row>
-        </div>
-      <span slot="footer" class="dialog-footer" >
+      <div v-for="(item, i) in shRecordTable" style="margin-top: 15px">
+        <el-row>
+          <el-col :span="12" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">审核人</div>
+              <div class="bs">{{ item.userName }}</div>
+            </div>
+          </el-col>
+          <el-col :span="12" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">申请时间</div>
+              <div class="bs">{{ item.opTime }}</div>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">审核结果</div>
+              <div class="bs">{{ item.opTypeName }}</div>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24" class="yiny">
+            <div style="display: flex; height: 50px">
+              <div class="hs">审核意见</div>
+              <div class="bs">{{ item.msg }}</div>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <span slot="footer" class="dialog-footer">
         <el-button @click="shRecordcancel">关 闭</el-button>
       </span>
     </el-dialog>
@@ -802,12 +811,14 @@ import {
   jjFlow,
   xhQuery,
   yclExp,
+  xjydExp,
 } from "@/api/dailyBehavior/xjyd";
 import { getToken } from "@/utils/auth";
 export default {
   components: { CheckboxCom, checkboxComDynic, lctCom },
   data() {
     return {
+      xjydModal: false,
       shRecordModal: false,
       shRecordTable: [],
       uploadUrl: process.env.VUE_APP_BASE_API + "/fileCommon/uploadFileCommon",
@@ -968,6 +979,33 @@ export default {
     },
   },
   methods: {
+    xjydModalCancel() {
+      this.xjydModal = false;
+    },
+    xjydModaldaochu() {
+      var data = [];
+      for (var x = 0; x < this.multipleSelection.length; x++) {
+        data.push({
+          exType: this.Type,
+          id: this.multipleSelection[x].businesId,
+          processId: this.multipleSelection[x].processId,
+          sqlx: this.multipleSelection[x].mk,
+          xh: this.multipleSelection[x].xh,
+        });
+      }
+      xjydExp(data).then((res) => {
+        this.downloadFn(res, "学籍异动表导出下载", "zip");
+        this.xjydModal = false;
+      });
+    },
+    xjydDaochu(ins) {
+      this.Type = ins == "1" ? "pdf" : "docx";
+      if (this.multipleSelection.length > 0) {
+        this.xjydModal = true;
+      } else {
+        this.$message.error("请先选择一条数据");
+      }
+    },
     shRecord() {
       this.shRecordModal = true;
       queryLc({ processInstanceId: this.tableDetail.processId }).then((res) => {

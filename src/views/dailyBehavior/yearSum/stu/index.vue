@@ -6,6 +6,15 @@
           <span class="title">学年小结</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
+          <div style="margin-right: 15px">
+            <el-dropdown split-button @command="xnxjDaochu">
+              <span class="el-dropdown-link"> 学年小结表导出</span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="1">PDF下载</el-dropdown-item>
+                <el-dropdown-item command="2">Word下载</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           <div class="btns borderLight" @click="showDel">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
@@ -391,10 +400,22 @@
       :lctModal="lctModal"
       @handleCloseLct="handleCloseLct"
     ></lctCom>
+    <el-dialog
+      title="学年小结导出确认"
+      :visible.sync="xnxjModal"
+      width="30%"
+      :close-on-click-modal="false"
+    >
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="xnxjModalCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="xnxjModaldaochu()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
-import { query } from "@/api/dailyBehavior/xjyd";
 import {
   getbascic,
   getXnxq,
@@ -403,8 +424,8 @@ import {
   tj,
   back,
   del,
+  xnxjExp,
 } from "@/api/dailyBehavior/xnxjStu";
-import { querywj, delwj } from "@/api/assistantWork/classEvent";
 import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
@@ -412,6 +433,7 @@ export default {
   components: { lctCom },
   data() {
     return {
+      xnxjModal: false,
       formAdd: { xn: "", zwxj: "" },
       //草稿状态和退回状态有编辑功能  01 || 08
       submitModal: false,
@@ -546,25 +568,59 @@ export default {
   },
 
   methods: {
+    xnxjModalCancel() {
+      this.xnxjModal = false;
+    },
+    xnxjModaldaochu() {
+      var data = [];
+      for (var x = 0; x < this.multipleSelection.length; x++) {
+        data.push({
+          exType: this.Type,
+          id: this.multipleSelection[x].id,
+          processId: this.multipleSelection[x].processId,
+          sqlx: this.multipleSelection[x].pyccm,
+          xh: this.multipleSelection[x].xh,
+        });
+      }
+      xnxjExp(data).then((res) => {
+        this.downloadFn(res, "学年小结表导出下载", "zip");
+        this.xnxjModal = false;
+      });
+    },
+    xnxjDaochu(ins) {
+      this.Type = ins == "1" ? "pdf" : "docx";
+      if (this.multipleSelection.length > 0) {
+        this.xnxjModal = true;
+      } else {
+        this.$message.error("请先选择一条数据");
+      }
+    },
     getXnxq1() {
       getXnxq().then((res) => {
         this.xnxqList = res.data;
-        console.log("res", res);
       });
     },
     tjModal() {
       var falg = 1;
+      //判断是否是草稿数据
       for (var i = 0; i < this.val.length; i++) {
         if (this.val[i].status !== "01") falg = 2;
       }
-      if (falg == 1) {
-        if (this.tjArr && this.tjArr.length > 0) {
-          this.submitModal = true;
-        } else {
-          this.$message.error("请先勾选数据");
-        }
+      const newArr = this.val.map((item) => item.xn);
+      const arrSet = new Set(newArr);
+      arrSet.size === newArr.length;
+      if (arrSet.size < this.val.length) {
+        this.$message.error("请不要选择重复学年");
       } else {
-        this.$message.error("不是草稿状态数据，不可以提交");
+        if (falg == 1) {
+          if (this.tjArr && this.tjArr.length > 0) {
+            this.submitModal = true;
+          } else {
+            this.$message.error("请先勾选数据");
+          }
+        } else {
+          this.$message.error("不是草稿状态数据，不可以提交");
+        }
       }
     },
     tj() {
@@ -627,24 +683,6 @@ export default {
         }
       });
     },
-    showDetail(row) {
-      this.formEdit = row;
-      this.formEdit.SFTS = row.sfts == 0 ? "否" : "是";
-      this.querywj(row.id);
-    },
-    querywj(data) {
-      //用于文件查询
-      querywj({ businesId: data }).then((res) => {
-        this.formEdit.fileList = res.data;
-        this.formEdit.fileList = this.formEdit.fileList.map((ele) => {
-          return {
-            name: ele.fileName,
-            ...ele,
-          };
-        });
-        this.editModal = true;
-      });
-    },
     chCancel() {
       this.chehuiModal = false;
     },
@@ -701,6 +739,7 @@ export default {
       this.query();
     },
     handleSelectionChange(val) {
+      this.multipleSelection = val;
       this.val = val;
       this.delArr = val.map((item) => item.id);
       this.tjArr = val.map((item) => item.id);
@@ -769,14 +808,12 @@ export default {
         orderPx: this.queryParams.orderPx ? this.queryParams.orderPx : "",
       };
       queryList(data).then((res) => {
-        console.log("res", res);
         this.tableDate = res.data;
         this.queryParams.totalCount = res.totalCount;
       });
     },
     async xinzeng() {
       await getbascic({ xh: this.$store.getters.userId }).then((res) => {
-        console.log("res", res);
         this.basicInfo = res.data;
       });
       this.addModal = true;

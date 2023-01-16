@@ -86,7 +86,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="item3 stuInfoClick" @click="fdycpClick">
+      <div class="item stuInfoClick" @click="fdycpClick">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
         </div>
@@ -99,6 +99,9 @@
           </div>
         </div>
       </div>
+      <div class="item stuInfoClick"></div>
+      <div class="item stuInfoClick"></div>
+      <div class="item stuInfoClick"></div>
     </div>
     <div class="headline">
       <span class="tohead">奖惩管理</span>
@@ -155,7 +158,7 @@
       <span class="tohead">日常行为管理</span>
     </div>
     <div class="row">
-      <div class="item3 stuInfoClick" @click="qingjiaClick">
+      <div class="item stuInfoClick" @click="qingjiaClick">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
         </div>
@@ -268,7 +271,7 @@
     </div>
     <el-row>
       <div class="row">
-        <div class="item" @click="xnxj">
+        <div class="item stuInfoClick" @click="xnxj">
           <div class="medalImage">
             <img src="~@/assets/images/medal.png" alt="" />
           </div>
@@ -279,6 +282,9 @@
             </div>
           </div>
         </div>
+        <div class="item stuInfoClick"></div>
+        <div class="item stuInfoClick"></div>
+        <div class="item stuInfoClick"></div>
       </div>
     </el-row>
   </div>
@@ -424,6 +430,7 @@ export default {
   align-items: center;
   border-radius: 8px;
 }
+
 .item3 {
   flex: 1;
   width: 348px;

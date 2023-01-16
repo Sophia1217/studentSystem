@@ -71,4 +71,16 @@ export function edit(query) {
   }
 
 
+  // 批量导出学籍异动信息
+export function xnxjExp(query) {
+  return request({
+      url: '/rcswXnxj/export/rcswXnxjXi',
+      method: 'post',
+      data: query,
+      responseType:'blob'
+  })
+}
+
+ 
+
   

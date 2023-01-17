@@ -6,6 +6,15 @@
           <span class="title">保留学籍</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
+          <div style="margin-right: 15px">
+            <el-dropdown split-button @command="xjydDaochu">
+              <span class="el-dropdown-link"> 学籍异动表导出</span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="1">PDF下载</el-dropdown-item>
+                <el-dropdown-item command="2">Word下载</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           <div class="btns borderLight" @click="showDel">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
@@ -241,6 +250,19 @@
         <span slot="footer" class="dialog-footer">
           <el-button @click="addCance">取 消</el-button>
           <el-button type="primary" class="confirm" @click="addClick"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
+      <el-dialog
+        title="学籍异动表导出确认"
+        :visible.sync="xjydModal"
+        width="30%"
+        :close-on-click-modal="false"
+      >
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="xjydModalCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="xjydModaldaochu()"
             >确 定</el-button
           >
         </span>
@@ -493,7 +515,7 @@
   </div>
 </template>
 <script>
-import { edit, del, query, back, tj } from "@/api/dailyBehavior/xjyd";
+import { edit, del, query, back, tj, xjydExp } from "@/api/dailyBehavior/xjyd";
 import { querywj, delwj } from "@/api/assistantWork/classEvent";
 import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
@@ -531,6 +553,7 @@ export default {
       dmpxxzm: [],
       dmsfbzm: [],
       chehuiModal: false,
+      xjydModal: false,
       sqlxList: [
         { dm: "征兵入伍", mc: "征兵入伍" },
         { dm: "境内交换生项目", mc: "境内交换生项目" },
@@ -734,6 +757,33 @@ export default {
             break;
         }
       });
+    },
+    xjydModalCancel() {
+      this.xjydModal = false;
+    },
+    xjydModaldaochu() {
+      var data = [];
+      for (var x = 0; x < this.val.length; x++) {
+        data.push({
+          exType: this.Type,
+          id: this.val[x].id,
+          processId: this.val[x].processid,
+          sqlx: this.val[x].sqlx,
+          xh: this.val[x].xh,
+        });
+      }
+      xjydExp(data).then((res) => {
+        this.downloadFn(res, "学籍异动表导出下载", "zip");
+        this.xjydModal = false;
+      });
+    },
+    xjydDaochu(ins) {
+      this.Type = ins == "1" ? "pdf" : "docx";
+      if (this.val.length > 0) {
+        this.xjydModal = true;
+      } else {
+        this.$message.error("请先选择一条数据");
+      }
     },
     showDetail(row) {
       this.formEdit = row;

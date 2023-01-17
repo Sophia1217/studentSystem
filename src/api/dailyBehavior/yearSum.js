@@ -70,6 +70,41 @@ export function queryDshList(query) {
     data: query
   })
 }
+//同意操作
+export function tyFlow(query) {
+  return request({
+    url: '/rcswXnxjFlow/tyFlow',
+    method: 'post',
+    data: query
+  })
+}
+//拒绝操作
+export function jjFlow(query) {
+  return request({
+    url: '/rcswXnxjFlow/jjFlow',
+    method: 'post',
+    data: query
+  })
+}
+//退回操作
+export function thFinal(query) {
+  return request({
+    url: '/rcswXnxjFlow/htFlow',
+    method: 'post',
+    data: query
+  })
+}
+//教师端-详情查询
+export function queryDshDetail(query) {
+  return request({
+    url: '/rcswXnxjFlow/queryXnxjInfoById',
+    method: 'post',
+    data: query
+  })
+}
+
+
+
 
 
 

@@ -45,7 +45,7 @@
           </el-table-column>
           <el-table-column prop="jb" label="设置单位级别" sortable="custom">
           </el-table-column>
-          <el-table-column prop="rzzw" label="任职岗位及职务" sortable="custom">
+          <el-table-column prop="rzzwm" label="任职岗位及职务" sortable="custom">
           </el-table-column>
           <el-table-column prop="kssj" label="开始日期" sortable="custom">
           </el-table-column>

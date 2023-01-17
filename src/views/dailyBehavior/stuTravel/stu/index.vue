@@ -1,6 +1,8 @@
 <template>
   <div class="basicInfo">
+    <topTitle :routeTitle="routeTitle"></topTitle>
     <div class="searchWrap">
+      
       <!-- 搜索 -->
       <div class="search">
         <el-input
@@ -507,6 +509,7 @@ export default {
       },
       isEdit: 0, //0详情1编辑
       qitaShow: false,
+      routeTitle: "",
       rules: {
         chqjsid: [
           { required: true, message: "出发站点不能为空", trigger: "change" },
@@ -534,6 +537,7 @@ export default {
 
     this.getAllZd();
     this.getCode("dmsplcm"); //状态
+    this.routeTitle = this.$route.meta.title;
   },
 
   methods: {

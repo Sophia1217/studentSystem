@@ -231,20 +231,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="工作岗位或内容描述" align="center" :render-header="addRedStar">
-              <template slot-scope="scope">
-                <el-form-item
-                  :prop="'addData.' + scope.$index + '.gzgw'"
-                  :rules="rules.gzgw"
-                >
-                  <el-input 
-                    v-model="scope.row.gzgw" 
-                    type="text"
-                    maxlength="500"
-                  />
-                </el-form-item>
-              </template>
-            </el-table-column>
+
             <el-table-column label="证明人" align="center" width="120px" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
@@ -266,6 +253,14 @@
               </template>
             </el-table-column>
           </el-table>
+          <el-form-item prop="gzgw" :rules="rules.gzgw" label="工作岗位或内容描述：">
+            <el-input 
+              v-model="formAdd.gzgw" 
+              type="text"
+              maxlength="500"
+              show-word-limit
+            />
+          </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="addCance">取 消</el-button>
@@ -383,20 +378,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="工作岗位或内容描述" align="center" :render-header="addRedStar">
-              <template slot-scope="scope">
-                <el-form-item
-                  :prop="'editData.' + scope.$index + '.gzgw'"
-                  :rules="rules.gzgw"
-                >
-                  <el-input 
-                    v-model="scope.row.gzgw" 
-                    type="text"
-                    maxlength="500"
-                  />
-                </el-form-item>
-              </template>
-            </el-table-column>
+
             <el-table-column label="证明人" width="120px" :render-header="addRedStar">
               <template slot-scope="scope">
                 <el-form-item
@@ -418,6 +400,14 @@
               </template>
             </el-table-column>
           </el-table>
+          <el-form-item prop="gzgw" :rules="rules.gzgw" label="工作岗位或内容描述：">
+            <el-input 
+              v-model="formEdit.gzgw" 
+              type="text"
+              maxlength="500"
+              show-word-limit
+            />
+          </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="editCance">取 消</el-button>
@@ -480,8 +470,8 @@ export default {
       editModal: false,
       submitModal: false,
       delModal: false,
-      formAdd: { addData: [] },
-      formEdit: { editData: [] },
+      formAdd: { addData: [], gzgw:"" },
+      formEdit: { editData: [], gzgw:""},
       tableDate: [],
       queryParams: {
         pageNum: 1,
@@ -626,6 +616,7 @@ export default {
     bianji(row) {
       this.formEdit.editData = [];
       this.formEdit.editData.push(row);
+      this.formEdit.gzgw = row.gzgw;
       this.editModal = true;
     },
     editCance() {
@@ -636,6 +627,7 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
+        this.formEdit.editData[0].gzgw = this.formEdit.gzgw;
         let data = this.formEdit.editData[0];
         edit(data).then((res) => {
           if (res.errcode == "00") {
@@ -663,7 +655,7 @@ export default {
           kssj: data.kssj,
           jssj: data.jssj,
           zmr: data.zmr,
-          gzgw:data.gzgw,
+          gzgw: this.formAdd.gzgw,
           lxfs: data.lxfs,
           xh: this.$store.getters.userId,
         };
@@ -693,6 +685,7 @@ export default {
     },
     xinzeng() {
       this.formAdd.addData = []; // 每次打开弹框先将弹框的table数组置空
+      this.formAdd.gzgw = "";
       var newLine = {
         xmmc: "",
         zzdw: "",
@@ -703,7 +696,6 @@ export default {
         jssj: "",
         zmr: "",
         lxfs: "",
-        gzgw:"",
       };
       this.formAdd.addData.push(newLine);
       this.addModal = true;

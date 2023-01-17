@@ -36,6 +36,10 @@
             sortable="custom"
           >
           </el-table-column>
+          <el-table-column prop="jlxn" label="奖励（学）年度" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="zsbh" label="证（名）书编号" sortable="custom">
+          </el-table-column>
           <el-table-column prop="jb" label="级别" sortable="custom">
           </el-table-column>
           <el-table-column prop="dj" label="等级" sortable="custom">
@@ -113,6 +117,38 @@
                   :rules="rules.jxjmc"
                 >
                   <el-input v-model="scope.row.jxjmc" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="奖励（学）年度"
+              align="center"
+              :render-header="addRedStar"
+            >
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.jlxn'"
+                  :rules="rules.jlxn"
+                >
+                  <el-select
+                    v-model="scope.row.jlxn"
+                    placeholder="请选择"
+                    size="small"
+                  >
+                    <el-option
+                      v-for="(item, index) in xnOptions"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    />
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="证（名）书编号" align="center">
+              <template slot-scope="scope">
+                <el-form-item :prop="'addData.' + scope.$index + '.zsbh'">
+                  <el-input v-model="scope.row.zsbh" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -267,6 +303,38 @@
                   :rules="rules.jxjmc"
                 >
                   <el-input v-model="scope.row.jxjmc" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="奖励（学）年度"
+              align="center"
+              :render-header="addRedStar"
+            >
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.jlxn'"
+                  :rules="rules.jlxn"
+                >
+                  <el-select
+                    v-model="scope.row.jlxn"
+                    placeholder="请选择"
+                    size="small"
+                  >
+                    <el-option
+                      v-for="(item, index) in xnOptions"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    />
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="证（名）书编号" align="center">
+              <template slot-scope="scope">
+                <el-form-item :prop="'editData.' + scope.$index + '.zsbh'">
+                  <el-input v-model="scope.row.zsbh" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -431,6 +499,7 @@ import {
 } from "@/api/growFiles/scholarships";
 import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+import { queryXn } from "@/api/dailyBehavior/yearSum";
 export default {
   name: "scholarships",
   components: { lctCom },
@@ -455,6 +524,7 @@ export default {
       jbmOps: [],
       djmOps: [],
       jxjlxmOps: [],
+      xnOptions: [],
       val: [],
       url: "",
       rules: {
@@ -477,7 +547,7 @@ export default {
         jxjlxm: [
           { required: true, message: "奖学金类型不能为空", trigger: "change" },
         ],
-        jlxnd: [
+        jlxn: [
           {
             required: true,
             message: "奖励（学）年度不能为空",
@@ -498,12 +568,18 @@ export default {
   watch: {},
   mounted() {
     this.getinList();
+    this.getXn();
     this.getCode("dmxgjljbm");
     this.getCode("dmjldjm");
     this.getCode("dmjxjlxm");
     this.getCode("dmsplcm");
   },
   methods: {
+    getXn() {
+      queryXn().then((res) => {
+        this.xnOptions = res.data;
+      });
+    },
     // 表单校验
     checkFormAdd() {
       // 1.校验必填项

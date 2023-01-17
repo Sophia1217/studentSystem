@@ -31,14 +31,14 @@
           <el-row>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
-                <div class="title">软件著作权类型</div>
-                <div class="content">{{ ele.rjzzqlx }}</div>
+                <div class="title">权力取得方式</div>
+                <div class="content">{{ ele.rjzzqlxMc }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
-                <div class="title">音像制品类型</div>
-                <div class="content">{{ ele.yxzplx }}</div>
+                <div class="title">权力范围</div>
+                <div class="content">{{ ele.yxzplxMc }}</div>
               </div>
             </el-col>
           </el-row>
@@ -66,7 +66,27 @@
           </el-row>
 
           <el-row>
-            <el-col :span="24" class="rowStyle">
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">开发完成日期</div>
+                <div class="content">{{ ele.kfwcrq }}</div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">首次发表日期</div>
+                <div class="content">{{ ele.scfbrq }}</div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">发证日期</div>
+                <div class="content">{{ ele.fzrq }}</div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">学校署名顺序</div>
                 <div class="content">{{ ele.xxsmsx }}</div>
@@ -178,22 +198,55 @@
                   <el-form-item prop="rjzzqlx">
                     <div class="wrap">
                       <div class="title">
-                        <span style="color: red">*</span>软件著作权类型
+                        <span style="color: red">*</span>权力取得方式
                       </div>
                       <div class="content">
-                        <el-input v-model="formAddLw.rjzzqlx"></el-input>
+                        <!-- <el-input v-model="formAddLw.rjzzqlx"></el-input> -->
+                        <el-select
+                          v-model="formAddLw.rjzzqlx"
+                          placeholder="请选择"
+                          size="small"
+                        >
+                          <el-option
+                            v-for="(item, index) in rjzzqlqdfsmOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          />
+                        </el-select>
                       </div>
                     </div>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="yxzplx">
+                  <el-form-item prop="yxzplxList">
                     <div class="wrap">
                       <div class="title">
-                        <span style="color: red">*</span>音像制品类型
+                        <span style="color: red">*</span>权力范围
                       </div>
                       <div class="content">
-                        <el-input v-model="formAddLw.yxzplx"></el-input>
+                        <el-select
+                          v-model="formAddLw.yxzplxList"
+                          placeholder="请选择"
+                          size="small"
+                          multiple
+                          collapse-tags
+                          collapse-tags-tooltip
+                          @change="changeSelect"
+                          @remove-tag="removeTag"
+                        >
+                          <el-option
+                            label="全选"
+                            value="01"
+                            @click.native="selectAll"
+                          />
+                          <el-option
+                            v-for="(item, index) in rjzzqlfwmOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          />
+                        </el-select>
                       </div>
                     </div>
                   </el-form-item>
@@ -233,27 +286,74 @@
                         <span style="color: red">*</span>著作权人
                       </div>
                       <div class="content">
-                        <el-input
-                          v-model="formAddLw.zzqr"
-                          style="width: 300%"
-                        ></el-input>
+                        <el-input v-model="formAddLw.zzqr"></el-input>
                       </div>
                     </div>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="24" class="rowStyle">
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="kfwcrq">
+                    <div class="wrap">
+                      <div class="title">
+                        <span style="color: red">*</span>开发完成日期
+                      </div>
+                      <div class="content">
+                        <el-date-picker
+                          v-model="formAddLw.kfwcrq"
+                          format="yyyy-MM-dd"
+                          value-format="yyyy-MM-dd"
+                          placeholder="选择日期"
+                        />
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="scfbrq">
+                    <div class="wrap">
+                      <div class="title">
+                        <span style="color: red">*</span>首次发表日期
+                      </div>
+                      <div class="content">
+                        <el-date-picker
+                          v-model="formAddLw.scfbrq"
+                          format="yyyy-MM-dd"
+                          value-format="yyyy-MM-dd"
+                          placeholder="选择日期"
+                        />
+                      </div>
+                    </div>
+                  </el-form-item> </el-col
+              ></el-row>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="fzrq">
+                    <div class="wrap">
+                      <div class="title">
+                        <span style="color: red">*</span>发证日期
+                      </div>
+                      <div class="content">
+                        <el-date-picker
+                          v-model="formAddLw.fzrq"
+                          format="yyyy-MM-dd"
+                          value-format="yyyy-MM-dd"
+                          placeholder="选择日期"
+                        />
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="12" class="rowStyle">
                   <el-form-item prop="xxsmsx">
                     <div class="wrap">
                       <div class="title">
                         <span style="color: red">*</span>学校署名顺序
                       </div>
                       <div class="content">
-                        <el-input
-                          v-model="formAddLw.xxsmsx"
-                          style="width: 300%"
-                        ></el-input>
+                        <el-input v-model="formAddLw.xxsmsx"></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -327,19 +427,51 @@
                 <el-col :span="12" class="rowStyle">
                   <el-form-item prop="rjzzqlx">
                     <div class="wrap">
-                      <div class="title">软件著作权类型</div>
+                      <div class="title">权力取得方式</div>
                       <div class="content">
-                        <el-input v-model="formEditLw.rjzzqlx"></el-input>
+                        <el-select
+                          v-model="formEditLw.rjzzqlx"
+                          placeholder="请选择"
+                          size="small"
+                        >
+                          <el-option
+                            v-for="(item, index) in rjzzqlqdfsmOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          />
+                        </el-select>
                       </div>
                     </div>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12" class="rowStyle">
-                  <el-form-item prop="yxzplx">
+                  <el-form-item prop="yxzplxList">
                     <div class="wrap">
-                      <div class="title">音像制品类型</div>
+                      <div class="title">权力范围</div>
                       <div class="content">
-                        <el-input v-model="formEditLw.yxzplx"></el-input>
+                        <el-select
+                          v-model="formEditLw.yxzplxList"
+                          placeholder="请选择"
+                          size="small"
+                          multiple
+                          collapse-tags
+                          collapse-tags-tooltip
+                          @change="changeSelect2"
+                          @remove-tag="removeTag2"
+                        >
+                          <el-option
+                            label="全选"
+                            value="01"
+                            @click.native="selectAll2"
+                          />
+                          <el-option
+                            v-for="(item, index) in rjzzqlfwmOps"
+                            :key="index"
+                            :label="item.mc"
+                            :value="item.dm"
+                          />
+                        </el-select>
                       </div>
                     </div>
                   </el-form-item>
@@ -373,25 +505,72 @@
                     <div class="wrap">
                       <div class="title">著作权人</div>
                       <div class="content">
-                        <el-input
-                          v-model="formEditLw.zzqr"
-                          style="width: 300%"
-                        ></el-input>
+                        <el-input v-model="formEditLw.zzqr"></el-input>
                       </div>
                     </div>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="24" class="rowStyle">
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="kfwcrq">
+                    <div class="wrap">
+                      <div class="title">
+                        <span style="color: red">*</span>开发完成日期
+                      </div>
+                      <div class="content">
+                        <el-date-picker
+                          v-model="formEditLw.kfwcrq"
+                          format="yyyy-MM-dd"
+                          value-format="yyyy-MM-dd"
+                          placeholder="选择日期"
+                        />
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="scfbrq">
+                    <div class="wrap">
+                      <div class="title">
+                        <span style="color: red">*</span>首次发表日期
+                      </div>
+                      <div class="content">
+                        <el-date-picker
+                          v-model="formEditLw.scfbrq"
+                          format="yyyy-MM-dd"
+                          value-format="yyyy-MM-dd"
+                          placeholder="选择日期"
+                        />
+                      </div>
+                    </div>
+                  </el-form-item> </el-col
+              ></el-row>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <el-form-item prop="fzrq">
+                    <div class="wrap">
+                      <div class="title">
+                        <span style="color: red">*</span>发证日期
+                      </div>
+                      <div class="content">
+                        <el-date-picker
+                          v-model="formEditLw.fzrq"
+                          format="yyyy-MM-dd"
+                          value-format="yyyy-MM-dd"
+                          placeholder="选择日期"
+                        />
+                      </div>
+                    </div>
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="12" class="rowStyle">
                   <el-form-item prop="xxsmsx">
                     <div class="wrap">
                       <div class="title">学校署名顺序</div>
                       <div class="content">
-                        <el-input
-                          v-model="formEditLw.xxsmsx"
-                          style="width: 300%"
-                        ></el-input>
+                        <el-input v-model="formEditLw.xxsmsx"></el-input>
                       </div>
                     </div>
                   </el-form-item>
@@ -499,15 +678,15 @@ export default {
         rjzzqlx: [
           {
             required: true,
-            message: "软件著作权类型不能为空",
+            message: "权力取得方式不能为空",
             trigger: "blur",
           },
         ],
         xxsmsx: [
           { required: true, message: "学校署名顺序不能为空", trigger: "blur" },
         ],
-        yxzplx: [
-          { required: true, message: "音像制品类型不能为空", trigger: "blur" },
+        yxzplxList: [
+          { required: true, message: "权力范围不能为空", trigger: "blur" },
         ],
         zsh: [
           {
@@ -519,15 +698,92 @@ export default {
         zzqr: [
           { required: true, message: "著作权人不能为空", trigger: "blur" },
         ],
+        scfbrq: [
+          { required: true, message: "首次发表日期不能为空", trigger: "blur" },
+        ],
+        kfwcrq: [
+          { required: true, message: "开发完成日期不能为空", trigger: "blur" },
+        ],
+        fzrq: [
+          { required: true, message: "发证日期不能为空", trigger: "blur" },
+        ],
       },
+      rjzzqlfwmOps: [],
+      rjzzqlqdfsmOps: [],
     };
   },
   watch: {},
   mounted() {
     this.getLwList();
     this.getCode("dmsplcm");
+    this.getCode("dmrjzzqlfwm");
+    this.getCode("dmrjzzqlqdfsm");
   },
   methods: {
+    changeQlfw(value) {
+      console.log("qlfw", value);
+    },
+    //全选
+    selectAll() {
+      if (this.formAddLw.yxzplxList.length < this.rjzzqlfwmOps.length) {
+        this.formAddLw.yxzplxList = [];
+        this.rjzzqlfwmOps.map((item) => {
+          this.formAddLw.yxzplxList.push(item.dm);
+        });
+        this.formAddLw.yxzplxList.unshift("01");
+        console.log(this.formAddLw.yxzplxList);
+      } else {
+        this.formAddLw.yxzplxList = [];
+      }
+    },
+    changeSelect(val) {
+      if (!val.includes("01") && val.length === this.rjzzqlfwmOps.length) {
+        this.formAddLw.yxzplxList.unshift("01");
+      } else if (
+        val.includes("01") &&
+        val.length - 1 < this.rjzzqlfwmOps.length
+      ) {
+        this.formAddLw.yxzplxList = this.formAddLw.yxzplxList.filter((item) => {
+          return item !== "01";
+        });
+      }
+    },
+    removeTag(val) {
+      if (val === "01") {
+        this.formAddLw.yxzplxList = [];
+      }
+    },
+    selectAll2() {
+      if (this.formEditLw.yxzplxList.length < this.rjzzqlfwmOps.length) {
+        this.formEditLw.yxzplxList = [];
+        this.rjzzqlfwmOps.map((item) => {
+          this.formEditLw.yxzplxList.push(item.dm);
+        });
+        this.formEditLw.yxzplxList.unshift("01");
+        console.log(this.formEditLw.yxzplxList);
+      } else {
+        this.formEditLw.yxzplxList = [];
+      }
+    },
+    changeSelect2(val) {
+      if (!val.includes("01") && val.length === this.rjzzqlfwmOps.length) {
+        this.formEditLw.yxzplxList.unshift("01");
+      } else if (
+        val.includes("01") &&
+        val.length - 1 < this.rjzzqlfwmOps.length
+      ) {
+        this.formEditLw.yxzplxList = this.formEditLw.yxzplxList.filter(
+          (item) => {
+            return item !== "01";
+          }
+        );
+      }
+    },
+    removeTag2(val) {
+      if (val === "01") {
+        this.formEditLw.yxzplxList = [];
+      }
+    },
     // 表单校验
     checkFormAdd() {
       // 1.校验必填项
@@ -611,6 +867,12 @@ export default {
           case "dmsplcm":
             this.ztStatus = res.data;
             break;
+          case "dmrjzzqlfwm":
+            this.rjzzqlfwmOps = res.data.slice(1);
+            break;
+          case "dmrjzzqlqdfsm":
+            this.rjzzqlqdfsmOps = res.data;
+            break;
         }
       });
     },
@@ -623,6 +885,16 @@ export default {
     },
     bianji(index) {
       this.formEditLw = this.LwDetail[index];
+      if (
+        this.formEditLw.yxzplxList[0] == "01" &&
+        this.formEditLw.yxzplxList.length == 1
+      ) {
+        this.formEditLw.yxzplxList = this.formEditLw.yxzplxList.concat(
+          this.rjzzqlfwmOps.map((item) => {
+            return item.dm;
+          })
+        );
+      }
       this.fileListAdd = [];
       this.editModal = true;
     },
@@ -634,13 +906,22 @@ export default {
         var data = this.formEditLw;
         let formData = new FormData();
         formData.append("xxsmsx", data.xxsmsx);
-        formData.append("yxzplx", data.yxzplx);
+        if (data.yxzplxList.length > this.rjzzqlfwmOps.length) {
+          formData.append("yxzplxList[" + 0 + "]", "01");
+        } else {
+          for (let i = 0; i < data.yxzplxList.length; i++) {
+            formData.append("yxzplxList[" + i + "]", data.yxzplxList[i]);
+          }
+        }
         formData.append("zsh", data.zsh);
         formData.append("zzqr", data.zzqr);
         formData.append("djh", data.djh);
         formData.append("rjzzmc", data.rjzzmc);
         formData.append("rjzzqlx", data.rjzzqlx);
         formData.append("id", data.id);
+        formData.append("fzrq", data.fzrq);
+        formData.append("scfbrq", data.scfbrq);
+        formData.append("kfwcrq", data.kfwcrq);
         formData.append("xh", this.$route.query.xh);
         if (this.fileListAdd.length > 0) {
           this.fileListAdd.map((file) => {
@@ -675,12 +956,21 @@ export default {
         var data = this.formAddLw;
         let formData = new FormData();
         formData.append("xxsmsx", data.xxsmsx);
-        formData.append("yxzplx", data.yxzplx);
+        if (data.yxzplxList.length > this.rjzzqlfwmOps.length) {
+          formData.append("yxzplxList[" + 0 + "]", "01");
+        } else {
+          for (let i = 0; i < data.yxzplxList.length; i++) {
+            formData.append("yxzplxList[" + i + "]", data.yxzplxList[i]);
+          }
+        }
         formData.append("zsh", data.zsh);
         formData.append("zzqr", data.zzqr);
         formData.append("djh", data.djh);
         formData.append("rjzzmc", data.rjzzmc);
         formData.append("rjzzqlx", data.rjzzqlx);
+        formData.append("fzrq", data.fzrq);
+        formData.append("scfbrq", data.scfbrq);
+        formData.append("kfwcrq", data.kfwcrq);
         formData.append("xh", this.$route.query.xh);
         //formData.append("id", data.id);
 

@@ -39,6 +39,10 @@
             sortable="custom"
           >
           </el-table-column>
+          <el-table-column prop="jlxn" label="奖励（学）年度" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="zsbh" label="证（名）书编号" sortable="custom">
+          </el-table-column>
           <el-table-column prop="jb" label="级别" sortable="custom">
           </el-table-column>
           <el-table-column prop="dj" label="等级" sortable="custom">
@@ -61,7 +65,23 @@
           </el-table-column>
           <el-table-column prop="hjsj" label="获奖时间" sortable="custom">
           </el-table-column>
-
+          <el-table-column
+            prop="fileList"
+            label="附件"
+            align="center"
+            width="300"
+          >
+            <template slot-scope="scope">
+              <div v-for="item in scope.row.fileList">
+                <div style="display: flex; justify-content: space-between">
+                  <a>
+                    {{ item.fileName }}
+                  </a>
+                  <!-- <el-button>预览</el-button> -->
+                </div>
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column prop="status" label="审核状态" sortable="custom">
             <template slot-scope="scope">
               <el-select
@@ -151,6 +171,38 @@
                   :rules="rules.jxjmc"
                 >
                   <el-input v-model="scope.row.jxjmc" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="奖励（学）年度"
+              align="center"
+              :render-header="addRedStar"
+            >
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.jlxn'"
+                  :rules="rules.jlxn"
+                >
+                  <el-select
+                    v-model="scope.row.jlxn"
+                    placeholder="请选择"
+                    size="small"
+                  >
+                    <el-option
+                      v-for="(item, index) in xnOptions"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    />
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="证（名）书编号" align="center">
+              <template slot-scope="scope">
+                <el-form-item :prop="'addData.' + scope.$index + '.zsbh'">
+                  <el-input v-model="scope.row.zsbh" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -285,7 +337,7 @@
                   class="el-upload"
                   :auto-upload="false"
                   ref="upload"
-                  :file-list="scope.row.files"
+                  :file-list="scope.row.fileList"
                   :on-change="fileChange"
                   accept=".pdf,.jpg"
                   :before-remove="beforeRemove"
@@ -322,6 +374,38 @@
                   :rules="rules.jxjmc"
                 >
                   <el-input v-model="scope.row.jxjmc" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="奖励（学）年度"
+              align="center"
+              :render-header="addRedStar"
+            >
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'editData.' + scope.$index + '.jlxn'"
+                  :rules="rules.jlxn"
+                >
+                  <el-select
+                    v-model="scope.row.jlxn"
+                    placeholder="请选择"
+                    size="small"
+                  >
+                    <el-option
+                      v-for="(item, index) in xnOptions"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    />
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="证（名）书编号" align="center">
+              <template slot-scope="scope">
+                <el-form-item :prop="'editData.' + scope.$index + '.zsbh'">
+                  <el-input v-model="scope.row.zsbh" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -519,6 +603,8 @@ import {
 } from "@/api/growFiles/scholarships";
 import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+
+import { queryXn } from "@/api/dailyBehavior/yearSum";
 export default {
   name: "scholarships",
   components: { lctCom },
@@ -569,7 +655,7 @@ export default {
         jxjlxm: [
           { required: true, message: "奖学金类型不能为空", trigger: "change" },
         ],
-        jlxnd: [
+        jlxn: [
           {
             required: true,
             message: "奖励（学）年度不能为空",
@@ -585,17 +671,24 @@ export default {
           },
         ],
       },
+      xnOptions: [],
     };
   },
   watch: {},
   mounted() {
     this.getinList();
+    this.getXn();
     this.getCode("dmxgjljbm");
     this.getCode("dmjldjm");
     this.getCode("dmjxjlxm");
     this.getCode("dmsplcm");
   },
   methods: {
+    getXn() {
+      queryXn().then((res) => {
+        this.xnOptions = res.data;
+      });
+    },
     // 表单校验
     checkFormAdd() {
       // 1.校验必填项
@@ -752,6 +845,7 @@ export default {
       //         };
       //       });
       //        this.fileListAdd = [];
+
       this.formEdit.editData.push(row);
       this.editModal = true;
     },
@@ -760,24 +854,26 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        let data = this.formEdit.editData[0];
-        //  var data = this.formEdit.editData[0];
-        // let formData = new FormData();
-        //         formData.append("jxjmc", data.jxjmc);
-        //         formData.append("hjsj", data.hjsj);
-        //         formData.append("djm", data.djm);
-        //         formData.append("jbm", data.jbm);
-        //         formData.append("jxjlxm", data.jxjlxm);
-        //         formData.append("je", data.je);
-        //         formData.append("sldw", data.sldw);
+        var data = this.formEdit.editData[0];
+        let formData = new FormData();
+        formData.append("jxjmc", data.jxjmc);
+        formData.append("hjsj", data.hjsj);
+        formData.append("djm", data.djm);
+        formData.append("jbm", data.jbm);
+        formData.append("jxjlxm", data.jxjlxm);
+        formData.append("je", data.je);
+        formData.append("sldw", data.sldw);
+        formData.append("jlxn", data.jlxn);
+        formData.append("zsbh", data.zsbh);
+        formData.append("xh", this.$store.getters.userId);
 
-        // formData.append("id", data.id);
-        // formData.append("xh", this.$store.getters.userId);
-        // if (this.fileListAdd.length > 0) {
-        //   this.fileListAdd.map((file) => {
-        //     formData.append("files", file.raw);
-        //   });
-        // }
+        formData.append("id", data.id);
+
+        if (this.fileListAdd.length > 0) {
+          this.fileListAdd.map((file) => {
+            formData.append("fileList", file.raw);
+          });
+        }
 
         updateJxj(data).then((res) => {
           if (res.errcode == "00") {
@@ -803,7 +899,9 @@ export default {
         jxjlxm: "",
         je: "",
         sldw: "",
-        files: [],
+        zsbh: "",
+        sldw: "",
+        fileList: [],
       };
       this.fileList = [];
       this.formAdd.addData.push(newLine);
@@ -814,33 +912,37 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        let data = {
-          jxjmc: this.formAdd.addData[0].jxjmc,
-          hjsj: this.formAdd.addData[0].hjsj,
-          djm: this.formAdd.addData[0].djm,
-          jbm: this.formAdd.addData[0].jbm,
-          jxjlxm: this.formAdd.addData[0].jxjlxm,
-          je: this.formAdd.addData[0].je,
-          sldw: this.formAdd.addData[0].sldw,
-          xh: this.$store.getters.userId,
-        };
-        //var data = this.formAdd.addData[0];
+        // let data = {
+        //   jxjmc: this.formAdd.addData[0].jxjmc,
+        //   hjsj: this.formAdd.addData[0].hjsj,
+        //   djm: this.formAdd.addData[0].djm,
+        //   jbm: this.formAdd.addData[0].jbm,
+        //   jxjlxm: this.formAdd.addData[0].jxjlxm,
+        //   je: this.formAdd.addData[0].je,
+        //   sldw: this.formAdd.addData[0].sldw,
+        //   jlxn: this.formAdd.addData[0].jlxn,
+        //   zsbh: this.formAdd.addData[0].zsbh,
+        //   xh: this.$store.getters.userId,
+        // };
+        var data = this.formAdd.addData[0];
 
-        // let formData = new FormData();
-        //         formData.append("jxjmc", data.jxjmc);
-        //         formData.append("hjsj", data.hjsj);
-        //         formData.append("djm", data.djm);
-        //         formData.append("jbm", data.jbm);
-        //         formData.append("jxjlxm", data.jxjlxm);
-        //         formData.append("je", data.je);
-        //         formData.append("sldw", data.sldw);
-        //         formData.append("xh", this.$store.getters.userId);
-        //         if (this.fileList.length > 0) {
-        //           this.fileList.map((file) => {
-        //             formData.append("files", file.raw);
-        //           });
-        //         }
-        insertJxj(data).then((res) => {
+        let formData = new FormData();
+        formData.append("jxjmc", data.jxjmc);
+        formData.append("hjsj", data.hjsj);
+        formData.append("djm", data.djm);
+        formData.append("jbm", data.jbm);
+        formData.append("jxjlxm", data.jxjlxm);
+        formData.append("je", data.je);
+        formData.append("sldw", data.sldw);
+        formData.append("jlxn", data.jlxn);
+        formData.append("zsbh", data.zsbh);
+        formData.append("xh", this.$store.getters.userId);
+        if (this.fileList.length > 0) {
+          this.fileList.map((file) => {
+            formData.append("fileList", file.raw);
+          });
+        }
+        insertJxj(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("新增成功");
             this.getinList();

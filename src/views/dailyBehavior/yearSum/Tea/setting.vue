@@ -3,7 +3,7 @@
     <div class="tableWrap">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">参与自评列表</span>
+          <span class="title">小结设置列表</span>
           <!-- <i class="Updataicon" /> -->
         </div>
 
@@ -45,7 +45,11 @@
                       }
                     "
                   >
-                    <el-button type="text" size="small">
+                    <el-button
+                      type="text"
+                      size="small"
+                      @click="thmb(scope.row, 1)"
+                    >
                       <span class="handleName">替换模板</span>
                     </el-button>
                   </el-upload>
@@ -80,7 +84,11 @@
                     }
                   "
                 >
-                  <el-button type="text" size="small">
+                  <el-button
+                    type="text"
+                    size="small"
+                    @click="thmb(scope.row, 2)"
+                  >
                     <span class="handleName">替换模板</span>
                   </el-button>
                 </el-upload>
@@ -285,6 +293,8 @@ export default {
         sqkfsj: "",
         bksfile: [],
         yjsfile: [],
+        bkfjId: "",
+        yjsfjId: "",
         bkfileInfo: "",
         yjsfileInfo: "",
         fileList: [],
@@ -431,13 +441,14 @@ export default {
           }
         } else {
           this.form.fileList = [this.form.bksfile, this.form.yjsfile];
+          console.log("this.form.fileList", this.form.fileList);
           if (this.form.fileList.length > 0) {
             this.form.fileList.map((item) => {
               formData.append("files", item);
             });
           }
         }
-        console.log("this.form.fileList", this.form.fileList);
+        //console.log("this.form.fileList", this.form.fileList);
 
         importRcswXnxjsz(formData).then((res) => {
           this.showJoin = false;
@@ -516,27 +527,26 @@ export default {
       });
       querywj({ businesId: value + "bk" }).then((res) => {
         this.form.bksfile = res.data;
-        // this.form.bksfile = this.form.bksfile.map((ele) => {
-        //   return {
-        //     name: ele.fileName,
-        //     ...ele,
-        //   };
-        // });
+        this.form.bksfile = this.form.bksfile.map((ele) => {
+          return {
+            name: ele.fileName,
+            ...ele,
+          };
+        });
       });
       querywj({ businesId: value + "yjs" }).then((res) => {
         this.form.yjsfile = res.data;
-        // this.form.yjsfile = this.form.yjsfile.map((ele) => {
-        //   return {
-        //     name: ele.fileName,
-        //     ...ele,
-        //   };
-        // });
+        this.form.yjsfile = this.form.yjsfile.map((ele) => {
+          return {
+            name: ele.fileName,
+            ...ele,
+          };
+        });
       });
-
       Exportwj({ id: this.form.bkfjId.toString() }).then((res) => {
         console.log("res", res);
         // console.log("typeofres", typeof res);
-        this.form.bksfile = new File([res], this.form.bksfile[0].fileName, {
+        this.form.bksfile = new File([res], this.form.bksfile[0].name, {
           type: "application/pdf",
           lastModified: Date.now(),
         });
@@ -544,7 +554,7 @@ export default {
       });
       Exportwj({ id: this.form.yjsfjId.toString() }).then((res) => {
         //this.url = window.URL.createObjectURL(res);
-        this.form.yjsfile = new File([res], this.form.yjsfile[0].fileName, {
+        this.form.yjsfile = new File([res], this.form.yjsfile[0].name, {
           type: "application/pdf",
           lastModified: Date.now(),
         });
@@ -633,13 +643,20 @@ export default {
     },
     beforeUpload(file, row, index) {
       if (index == 1) {
-        delwj({ id: row.bkfjId.toString() }).then((res) => {
-          this.businesId = row.id + "bk";
-        });
-      } else if (index == 2) {
-        delwj({ id: row.yjsfjId.toString() }).then((res) => {
-          this.businesId = row.id + "yjs";
-        });
+        console.log("文件上传前", file);
+        delwj({ id: row.bkfjId.toString() }).then((res) => {});
+      } else {
+        console.log("文件上传前", this.businesId);
+        delwj({ id: row.yjsfjId.toString() }).then((res) => {});
+      }
+    },
+    thmb(row, index) {
+      if (index == 1) {
+        this.businesId = row.bkId;
+        console.log("thmb", this.businesId);
+      } else {
+        this.businesId = row.yjsId;
+        console.log("thmb", this.businesId);
       }
     },
   },

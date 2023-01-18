@@ -2,9 +2,14 @@
   <div class="xnXqSet">
     <div class="formWrap">
       <div class="title">当前学年学期设置</div>
-      <el-form ref="ruleForm" :model="form" :rules="rules" label-width="120px">
-        <el-form-item label="当前学年" prop="dqxn">
-          <el-select v-model="form.dqxn" placeholder="请选择学年" size="small">
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+        <el-form-item label="当前学年" prop="year">
+          <el-select
+            v-model="form.year"
+            placeholder="请选择学年"
+            size="small"
+            clearable
+          >
             <el-option
               v-for="(item, index) in xnOps"
               :key="index"
@@ -13,10 +18,15 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="当前学期" prop="dqxq">
-          <el-select v-model="form.dqxn" placeholder="请选择学期" size="small">
+        <el-form-item label="当前学期" prop="term">
+          <el-select
+            v-model="form.term"
+            placeholder="请选择学期"
+            size="small"
+            clearable
+          >
             <el-option
-              v-for="(item, index) in xnOps"
+              v-for="(item, index) in xqOps"
               :key="index"
               :label="item.mc"
               :value="item.dm"
@@ -24,13 +34,13 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="当前年度" prop="dqnd">
-          <el-select v-model="form.dqxn" placeholder="" size="small">
+        <el-form-item label="当前年度" prop="nd">
+          <el-select v-model="form.nd" placeholder="" size="small" clearable>
             <el-option
-              v-for="(item, index) in xnOps"
+              v-for="(item, index) in ndOps"
               :key="index"
-              :label="item.mc"
-              :value="item.dm"
+              :label="item"
+              :value="item"
             />
           </el-select>
         </el-form-item>
@@ -43,9 +53,9 @@
             @click="onSubmit"
             >保存</el-button
           >
-          <el-button size="small" @click="handleCel('ruleForm')"
+          <!-- <el-button size="small" @click="handleCel('ruleForm')"
             >取消</el-button
-          >
+          > -->
         </el-form-item>
       </el-form>
     </div>
@@ -53,151 +63,93 @@
 </template>
 
 <script>
-import {
-  getModeifyTime,
-  stuInfoModifyParamService,
-} from "@/api/student/fieldSettings";
+import { insertYearTerm } from "@/api/systemMan/xnXq";
+import { queryXn } from "@/api/dailyBehavior/yearSum";
+import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
+import { getYears } from "@/api/test/fdySelfTest";
 export default {
   name: "xnXqSet",
 
   data() {
     return {
       AUTHFLAG: false,
-      form: {
-        dqxn: "2022",
-      },
+      form: {},
       rules: {
-        dqxn: [{ required: true, message: "请选择", trigger: "blur" }],
-        shkg: [{ required: true, message: "请选择", trigger: "blur" }],
+        year: [{ required: true, message: "请选择", trigger: "change" }],
+        term: [{ required: true, message: "请选择", trigger: "change" }],
+        nd: [{ required: true, message: "请选择", trigger: "change" }],
       },
+      xqOps: [],
+      xnOps: [],
+      ndOps: [],
     };
   },
 
   mounted() {
     this.authConfirm(this.$route.path.split("/")[2]);
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
-    this.getParameterStu();
+    this.getCode("dmxqm");
+    this.getOps();
   },
 
   methods: {
-    //学生信息修改参数开放查询
-    getParameterStu() {
-      getModeifyTime().then((res) => {
-        this.form.sqkg = res.sqkg;
-        var b = res.sqkfsj;
-        var a = res.sqjssj;
-        var arr = [];
-        arr.push(b);
-        arr.push(a);
-        this.$set(this.form, "applyDate", arr);
-        this.form.shkg = res.shkg;
-        var c = res.shkfsj;
-        var d = res.shjssj;
-        var brr = [];
-        brr.push(c);
-        brr.push(d);
-        this.$set(this.form, "auditApplyDate", brr);
-        console.log("时间", this.form.auditApplyDate);
+    getOps() {
+      queryXn().then((res) => {
+        this.xnOps = res.data;
+      });
+      getYears().then((response) => {
+        // 获取年级列表数据
+        if (response.errcode == "00") {
+          this.ndOps = response.data.rows;
+        }
       });
     },
-    //学生信息修改参数申请开放
+
+    getCode(data) {
+      this.getCodeInfoByEnglish(data);
+    },
+    getCodeInfoByEnglish(paramsData) {
+      let data = { codeTableEnglish: paramsData };
+      getCodeInfoByEnglish(data)
+        .then((res) => {
+          switch (paramsData) {
+            case "dmxqm":
+              this.xqOps = res.data;
+              break;
+          }
+        })
+        .catch((err) => {});
+    },
+    checkForm() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.form.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
     onSubmit() {
-      let sqkfsj = "";
-      let sqjssj = "";
-      let shkfsj = "";
-      let shjssj = "";
+      let data = {
+        nd: this.form.nd,
+        term: this.form.term,
+        year: this.form.year,
+      };
+      if (!this.checkForm()) {
+        this.$message.error("请完善表单相关信息！");
 
-      let flag = false;
-      if (this.form.sqkg == 1 || this.form.shkg == 1) {
-        console.log("11");
-        if (this.form.sqkg == 1 && this.form.shkg == 1) {
-          //判时间
-          if (
-            this.form.applyDate[0] != "" &&
-            this.form.applyDate.length > 0 &&
-            this.form.auditApplyDate[0] != "" &&
-            this.form.auditApplyDate.length > 0
-          ) {
-            sqkfsj = this.form.applyDate[0];
-            sqjssj = this.form.applyDate[1];
-            shkfsj = this.form.auditApplyDate[0];
-            shjssj = this.form.auditApplyDate[1];
-
-            let start = this.form.applyDate[1];
-            let end = this.form.auditApplyDate[1];
-            if (start > end) {
-              this.$message.error("审核开放结束时间需要晚于申请开放结束时间！");
-              return;
-            } else {
-              flag = true;
-            }
-          } else {
-            this.$message({
-              message: "请选择开放时间!",
-              type: "warning",
-            });
-          }
-        } else if (this.form.sqkg == 1) {
-          if (this.form.applyDate[0] != "" && this.form.applyDate.length > 0) {
-            sqkfsj = this.form.applyDate[0];
-            sqjssj = this.form.applyDate[1];
-            flag = true;
-          } else {
-            this.$message({
-              message: "请选择申请开放时间!",
-              type: "warning",
-            });
-          }
-        } else {
-          if (
-            this.form.auditApplyDate[0] != "" &&
-            this.form.auditApplyDate.length > 0
-          ) {
-            shkfsj = this.form.auditApplyDate[0];
-            shjssj = this.form.auditApplyDate[1];
-            flag = true;
-          } else {
-            this.$message({
-              message: "请选择审核开放时间!",
-              type: "warning",
-            });
-          }
-        }
+        return;
       } else {
-        flag = true;
-        // this.$message({
-        //   message: "请选择开放时间!",
-        //   type: "warning",
-        // });
-      }
-      if (flag == true) {
-        console.log(flag);
-        let data = {
-          shkg: this.form.shkg,
-          shkfsj: shkfsj,
-          shjssj: shjssj,
-          sqkg: this.form.sqkg,
-          sqkfsj: sqkfsj,
-          sqjssj: sqjssj,
-        };
-        //创建
-        stuInfoModifyParamService(data)
-          .then((res) => {
-            if (res.errcode == "00") {
-              this.$message({
-                message: res.errmsg,
-                type: "success",
-              });
-              this.handleCel("ruleForm");
-              this.getParameterStu();
-            }
-          })
-          .catch((err) => {});
+        insertYearTerm(this.form).then((res) => {
+          this.$message.success("保存成功！");
+        });
       }
     },
-    handleCel(formName) {
-      this.$refs[formName].resetFields();
-    },
+    // handleCel(formName) {
+    //   this.$refs[formName].resetFields();
+    // },
   },
 };
 </script>
@@ -213,6 +165,8 @@ export default {
       font-weight: 400;
       font-size: 18px;
       color: #000;
+      text-align: center;
+      margin-bottom: 10px;
     }
   }
 }

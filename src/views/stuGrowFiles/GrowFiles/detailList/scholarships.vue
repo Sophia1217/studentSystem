@@ -41,7 +41,7 @@
           </el-table-column>
           <el-table-column prop="jlxn" label="奖励（学）年度" sortable="custom">
           </el-table-column>
-          <el-table-column prop="zsbh" label="证（名）书编号" sortable="custom">
+          <el-table-column prop="zsbh" label="证（明）书编号" sortable="custom">
           </el-table-column>
           <el-table-column prop="jb" label="级别" sortable="custom">
           </el-table-column>
@@ -199,7 +199,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="证（名）书编号" align="center">
+            <el-table-column label="证（明）书编号" align="center">
               <template slot-scope="scope">
                 <el-form-item :prop="'addData.' + scope.$index + '.zsbh'">
                   <el-input v-model="scope.row.zsbh" />
@@ -402,7 +402,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="证（名）书编号" align="center">
+            <el-table-column label="证（明）书编号" align="center">
               <template slot-scope="scope">
                 <el-form-item :prop="'editData.' + scope.$index + '.zsbh'">
                   <el-input v-model="scope.row.zsbh" />

@@ -404,7 +404,9 @@
               </template>
             </el-table-column>
           </el-table>
-          <h3 v-if="whatType == '3'">工作岗位或内容描述 ：{{ tableDetails[0].gzgw }}</h3>
+          <h3 v-if="whatType == '3'">
+            工作岗位或内容描述 ：{{ tableDetails[0].gzgw }}
+          </h3>
           <el-table :data="tableDetails" v-if="whatType == '4'">
             <el-table-column
               fixed="left"
@@ -747,7 +749,7 @@
                 <el-row>
                   <el-col :span="24" class="rowStyle">
                     <div class="wrap">
-                      <div class="title">英文名</div>
+                      <div class="title">论文英文名</div>
                       <div class="content">{{ ele.lwywmc }}</div>
                     </div>
                   </el-col>
@@ -755,22 +757,22 @@
                 <el-row>
                   <el-col :span="12" class="rowStyle">
                     <div class="wrap">
-                      <div class="title">发表刊物</div>
+                      <div class="title">刊物名称</div>
                       <div class="content">{{ ele.fbkw }}</div>
                     </div>
                   </el-col>
                   <el-col :span="12" class="rowStyle">
                     <div class="wrap">
-                      <div class="title">出版物类型</div>
-                      <div class="content">{{ ele.cbwlx }}</div>
+                      <div class="title">刊物类型</div>
+                      <div class="content">{{ ele.cbwlxMc }}</div>
                     </div>
                   </el-col>
                 </el-row>
                 <el-row>
                   <el-col :span="12" class="rowStyle">
                     <div class="wrap">
-                      <div class="title">署名</div>
-                      <div class="content">{{ ele.sm }}</div>
+                      <div class="title">署名顺序</div>
+                      <div class="content">{{ ele.smMc }}</div>
                     </div>
                   </el-col>
                   <el-col :span="12" class="rowStyle">
@@ -881,7 +883,7 @@
                 <el-row>
                   <el-col :span="24" class="rowStyle">
                     <div class="wrap">
-                      <div class="title">专利名称</div>
+                      <div class="title">专利（发明）名称</div>
                       <div class="content">{{ ele.zlmc }}</div>
                     </div>
                   </el-col>
@@ -896,7 +898,7 @@
                   <el-col :span="12" class="rowStyle">
                     <div class="wrap">
                       <div class="title">专利类型</div>
-                      <div class="content">{{ ele.zllx }}</div>
+                      <div class="content">{{ ele.zllxMc }}</div>
                     </div>
                   </el-col>
                 </el-row>
@@ -909,17 +911,37 @@
                   </el-col>
                   <el-col :span="12" class="rowStyle">
                     <div class="wrap">
-                      <div class="title">申请人</div>
+                      <div class="title">申请（发明）人</div>
                       <div class="content">{{ ele.sqr }}</div>
                     </div>
                   </el-col>
                 </el-row>
 
                 <el-row>
-                  <el-col :span="24" class="rowStyle">
+                  <el-col :span="12" class="rowStyle">
                     <div class="wrap">
-                      <div class="title">成果所属单位</div>
-                      <div class="content">{{ ele.cgssdw }}</div>
+                      <div class="title">专利权人</div>
+                      <div class="content">{{ ele.zlr }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">署名顺序</div>
+                      <div class="content">{{ ele.smsx }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">授权公告号</div>
+                      <div class="content">{{ ele.sqggh }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">授权公告日</div>
+                      <div class="content">{{ ele.sqggr }}</div>
                     </div>
                   </el-col>
                 </el-row>
@@ -992,7 +1014,7 @@
                   <el-col :span="12" class="rowStyle">
                     <div class="wrap">
                       <div class="title">类别</div>
-                      <div class="content">{{ ele.zzlb }}</div>
+                      <div class="content">{{ ele.zzlbMc }}</div>
                     </div>
                   </el-col>
                   <el-col :span="12" class="rowStyle">
@@ -1011,7 +1033,7 @@
                   </el-col>
                   <el-col :span="12" class="rowStyle">
                     <div class="wrap">
-                      <div class="title">出版社级别</div>
+                      <div class="title">ISBN号</div>
                       <div class="content">{{ ele.cbsjb }}</div>
                     </div>
                   </el-col>
@@ -1020,7 +1042,7 @@
                 <el-row>
                   <el-col :span="24" class="rowStyle">
                     <div class="wrap">
-                      <div class="title">作者</div>
+                      <div class="title">署名顺序</div>
                       <div class="content">{{ ele.gtzz }}</div>
                     </div>
                   </el-col>
@@ -1092,7 +1114,7 @@
                 <el-row>
                   <el-col :span="24" class="rowStyle">
                     <div class="wrap">
-                      <div class="title">软著名称</div>
+                      <div class="title">软件名称</div>
                       <div class="content">{{ ele.rjzzmc }}</div>
                     </div>
                   </el-col>
@@ -1101,14 +1123,14 @@
                 <el-row>
                   <el-col :span="12" class="rowStyle">
                     <div class="wrap">
-                      <div class="title">软件著作权类型</div>
-                      <div class="content">{{ ele.rjzzqlx }}</div>
+                      <div class="title">权力取得方式</div>
+                      <div class="content">{{ ele.rjzzqlxMc }}</div>
                     </div>
                   </el-col>
                   <el-col :span="12" class="rowStyle">
                     <div class="wrap">
-                      <div class="title">音像制品类型</div>
-                      <div class="content">{{ ele.yxzplx }}</div>
+                      <div class="title">权力范围</div>
+                      <div class="content">{{ ele.yxzplxMc }}</div>
                     </div>
                   </el-col>
                 </el-row>
@@ -1136,7 +1158,27 @@
                 </el-row>
 
                 <el-row>
-                  <el-col :span="24" class="rowStyle">
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">开发完成日期</div>
+                      <div class="content">{{ ele.kfwcrq }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">首次发表日期</div>
+                      <div class="content">{{ ele.scfbrq }}</div>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12" class="rowStyle">
+                    <div class="wrap">
+                      <div class="title">发证日期</div>
+                      <div class="content">{{ ele.fzrq }}</div>
+                    </div>
+                  </el-col>
+                  <el-col :span="12" class="rowStyle">
                     <div class="wrap">
                       <div class="title">学校署名顺序</div>
                       <div class="content">{{ ele.xxsmsx }}</div>
@@ -1253,8 +1295,8 @@
                 <el-row>
                   <el-col :span="24" class="rowStyle">
                     <div class="wrap">
-                      <div class="title">作者</div>
-                      <div class="content">{{ ele.zzxm }}</div>
+                      <div class="title">本人署名顺序</div>
+                      <div class="content">{{ ele.zzxmMc }}</div>
                     </div>
                   </el-col>
                 </el-row>
@@ -1503,11 +1545,13 @@ export default {
       ],
       tableHeader7: [
         { dm: "jxjmc", mc: "奖学金名称" },
+        { dm: "jlxn", mc: "奖励（学）年度" },
+        { dm: "zsbh", mc: "证（明）书编号" },
         { dm: "jb", mc: "级别" },
         { dm: "dj", mc: "等级" },
-        { dm: "je", mc: "金额" },
+        { dm: "je", mc: "奖励金额度（元）" },
         { dm: "jxjlx", mc: "奖学金类型" },
-        { dm: "sldw", mc: "设立单位" },
+        { dm: "sldw", mc: "设立单位或个人" },
         { dm: "hjsj", mc: "获奖时间" },
       ],
       tableHeader8: [
@@ -1552,8 +1596,8 @@ export default {
         { dm: "frdb", mc: "法人代表" },
         { dm: "zyyw", mc: "主营业务" },
         { dm: "srzw", mc: "所任职务" },
-        { dm: "qssj", mc: "参与起始时间"},
-        { dm: "jssj", mc: "参与结束时间"},
+        { dm: "qssj", mc: "参与起始时间" },
+        { dm: "jssj", mc: "参与结束时间" },
       ],
       tableHeader12: [
         //等级证书
@@ -1567,7 +1611,7 @@ export default {
       defaultRes: {},
       detailModal: false,
       whatType: "",
-      tableDetails: [{gzgw:"",fwnr:""}],
+      tableDetails: [{ gzgw: "", fwnr: "" }],
       upDownIndex: 0,
     };
   },

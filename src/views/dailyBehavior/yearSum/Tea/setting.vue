@@ -108,7 +108,8 @@
                 range-separator="至"
                 start-placeholder="起始年月日"
                 end-placeholder="结束年月日"
-                value-format="yyyy-MM-dd "
+                format="yyyy年MM月dd日"
+                value-format="yyyy-MM-dd"
                 @change="timeChange(scope.row)"
                 :disabled="scope.row.sqKg == '0' ? false : true"
                 :clearable="false"
@@ -281,7 +282,7 @@ export default {
     return {
       flag: 1, //自己上传1 复制学年2
       basicInfoList: [],
-      sqkfsj: [],
+
       businesId: "",
       uploadUrl: process.env.VUE_APP_BASE_API + "/fileCommon/uploadFileCommon",
       sfyx: "",
@@ -384,6 +385,8 @@ export default {
       this.isbks = 1;
       this.isyjs = 1;
       this.flag = 1;
+      this.form.sqKg = "1";
+      this.form.sqkfsj = [];
     },
     getXn() {
       queryXn().then((res) => {
@@ -403,8 +406,10 @@ export default {
 
           arr.push(a);
           arr.push(b);
+
           this.$set(val, "sqkfsj", arr);
         }
+        console.log("this.basicInfoList", this.basicInfoList);
       });
     },
     Join() {
@@ -422,6 +427,7 @@ export default {
         let formData = new FormData();
 
         formData.append("xn", this.form.dqxn);
+        formData.append("sqKg", this.form.sqKg);
         formData.append(
           "sqStartDate",
           this.form.sqkfsj[0] ? this.form.sqkfsj[0] : ""
@@ -440,13 +446,15 @@ export default {
             });
           }
         } else {
-          this.form.fileList = [this.form.bksfile, this.form.yjsfile];
-          console.log("this.form.fileList", this.form.fileList);
-          if (this.form.fileList.length > 0) {
-            this.form.fileList.map((item) => {
-              formData.append("files", item);
-            });
-          }
+          // this.form.fileList = [this.form.bksfile, this.form.yjsfile];
+          // console.log("this.form.fileList", this.form.fileList);
+          // if (this.form.fileList.length > 0) {
+          //   this.form.fileList.map((item) => {
+          //     formData.append("files", item);
+          //   });
+          // }
+          formData.append("files", this.form.bksfile);
+          formData.append("files", this.form.yjsfile);
         }
         //console.log("this.form.fileList", this.form.fileList);
 
@@ -456,7 +464,6 @@ export default {
         });
       }
     },
-
     timeChange(row) {
       let data = {
         id: row.id,
@@ -469,6 +476,7 @@ export default {
       });
     },
     kgChange(row) {
+      console.log("kgchange");
       if (row.sqKg == "1") {
         this.$set(row, "sqkfsj", []);
         let data = {
@@ -643,20 +651,16 @@ export default {
     },
     beforeUpload(file, row, index) {
       if (index == 1) {
-        console.log("文件上传前", file);
         delwj({ id: row.bkfjId.toString() }).then((res) => {});
       } else {
-        console.log("文件上传前", this.businesId);
         delwj({ id: row.yjsfjId.toString() }).then((res) => {});
       }
     },
     thmb(row, index) {
       if (index == 1) {
         this.businesId = row.bkId;
-        console.log("thmb", this.businesId);
       } else {
         this.businesId = row.yjsId;
-        console.log("thmb", this.businesId);
       }
     },
   },

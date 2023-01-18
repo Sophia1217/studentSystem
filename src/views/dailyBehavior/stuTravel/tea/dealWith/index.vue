@@ -454,7 +454,7 @@ export default {
     },
 
     async hadleDetail(row) {
-      console.log("row", row);
+      console.log("row", row); 
       this.formDetails = row;
       this.formDetails.shyj = row.comment[0];
       this.detailModal = true;

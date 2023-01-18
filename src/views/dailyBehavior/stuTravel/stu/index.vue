@@ -260,7 +260,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="20">
-            <el-form-item label="申请备注" prop="sqbz" :rules="rules.sqbz">
+            <el-form-item label="申请理由" prop="sqbz" :rules="rules.sqbz">
               <el-input
                 v-model="formAdd.sqbz"
                 type="textarea"
@@ -379,7 +379,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="20">
-            <el-form-item label="申请备注" prop="sqbz" :rules="rules.sqbz">
+            <el-form-item label="申请理由" prop="sqbz" :rules="rules.sqbz">
               <el-input
                 v-model="formEdit.sqbz"
                 type="textarea"

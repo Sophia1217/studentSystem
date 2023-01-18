@@ -17,6 +17,7 @@
         <el-tab-pane label="双创工作" name="8"></el-tab-pane>
         <el-tab-pane label="学习成绩" name="9"></el-tab-pane>
         <el-tab-pane label="培训经历" name="10"></el-tab-pane>
+        <el-tab-pane label="等级证书" name="15"></el-tab-pane>
       </el-tabs>
     </div>
     <div class="detail_right" v-if="activeName == '0'">
@@ -65,6 +66,9 @@
     <div class="detail_right" v-if="activeName == '14'">
       <yjbg></yjbg>
     </div>
+    <div class="detail_right" v-if="activeName == '15'">
+      <djzs></djzs>
+    </div>
   </div>
 </template>
 <script>
@@ -83,6 +87,7 @@ import kyzl from "./tchDetailList/kyzl";
 import kyzz from "./tchDetailList/kyzz";
 import kyrz from "./tchDetailList/kyrz";
 import yjbg from "./tchDetailList/yjbg";
+import djzs from "./tchDetailList/djzs";
 export default {
   components: { 
     xnwpxjlVue,
@@ -100,6 +105,7 @@ export default {
     kyzz,
     kyrz,
     yjbg,
+    djzs,
   },
   data() {
     return {

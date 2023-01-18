@@ -102,6 +102,26 @@ export function queryDshDetail(query) {
     data: query
   })
 }
+//管理端-已提交列表导出
+export function exportAdmin(query) {
+  return request({
+    url: '/rcswXnxjFlow/excelExportRcswXnxjAdmin',
+    method: 'post',
+    responseType:"blob",
+    data: query
+  })
+}
+//管理端-已提交列表查询
+export function queryAdminList(query) {
+  return request({
+    url: '/rcswXnxjFlow/queryXnxjAdminList',
+    method: 'post',
+    data: query
+  })
+}
+
+
+
 
 
 

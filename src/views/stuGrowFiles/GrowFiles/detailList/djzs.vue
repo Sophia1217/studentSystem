@@ -33,7 +33,7 @@
             width="50"
           ></el-table-column>
           <el-table-column
-            prop="zslxm"
+            prop="zslxmc"
             label="证书类型"
             sortable="custom"
             :show-overflow-tooltip="true"
@@ -197,7 +197,7 @@
                   :prop="'addData.' + scope.$index + '.kmm'"
                   :rules="rules.kmm"
                 >
-                  <el-input v-model="scope.row.kmm" />
+                  <el-input maxlength="100" v-model="scope.row.kmm" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -211,7 +211,7 @@
                   :prop="'addData.' + scope.$index + '.dj'"
                   :rules="rules.dj"
                 >
-                  <el-input v-model="scope.row.dj" />
+                  <el-input maxlength="100" v-model="scope.row.dj" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -226,7 +226,7 @@
                   :prop="'addData.' + scope.$index + '.zf'"
                   :rules="rules.zf"
                 >
-                  <el-input v-model="scope.row.zf" />
+                  <el-input maxlength="100" v-model="scope.row.zf" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -240,7 +240,7 @@
                   :prop="'addData.' + scope.$index + '.zsbh'"
                   :rules="rules.zsbh"
                 >
-                  <el-input v-model="scope.row.zsbh" />
+                  <el-input maxlength="100" v-model="scope.row.zsbh" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -254,7 +254,7 @@
                   :prop="'addData.' + scope.$index + '.fzdw'"
                   :rules="rules.fzdw"
                 >
-                  <el-input v-model="scope.row.fzdw" />
+                  <el-input maxlength="100" v-model="scope.row.fzdw" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -343,7 +343,7 @@
                   :prop="'editData.' + scope.$index + '.kmm'"
                   :rules="rules.kmm"
                 >
-                  <el-input v-model="scope.row.kmm" />
+                  <el-input maxlength="100" v-model="scope.row.kmm" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -357,7 +357,7 @@
                   :prop="'editData.' + scope.$index + '.dj'"
                   :rules="rules.dj"
                 >
-                  <el-input v-model="scope.row.dj" />
+                  <el-input maxlength="100" v-model="scope.row.dj" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -371,7 +371,7 @@
                   :prop="'editData.' + scope.$index + '.zf'"
                   :rules="rules.zf"
                 >
-                  <el-input v-model="scope.row.zf" />
+                  <el-input maxlength="100" v-model="scope.row.zf" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -385,7 +385,7 @@
                   :prop="'editData.' + scope.$index + '.zsbh'"
                   :rules="rules.zsbh"
                 >
-                  <el-input v-model="scope.row.zsbh" />
+                  <el-input maxlength="100" v-model="scope.row.zsbh" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -399,7 +399,7 @@
                   :prop="'editData.' + scope.$index + '.fzdw'"
                   :rules="rules.fzdw"
                 >
-                  <el-input v-model="scope.row.fzdw" />
+                  <el-input maxlength="100" v-model="scope.row.fzdw" />
                 </el-form-item>
               </template>
             </el-table-column>

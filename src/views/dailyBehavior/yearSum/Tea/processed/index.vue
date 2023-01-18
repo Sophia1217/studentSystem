@@ -167,7 +167,7 @@
               v-for="(item, index) in allXn"
               :key="index"
               :label="item.mc"
-              :value="item.dm"
+              :value="item.mc"
             ></el-option>
           </el-select>
           <span>学年</span>
@@ -759,7 +759,7 @@ export default {
       queryXn()
         .then((res) => {
           this.allXn = res.data;
-          this.moreIform.xn = res.data[0].dm;
+          this.moreIform.xn = res.data[0].mc;
           this.handleSearch();
         })
         .catch((err) => {});

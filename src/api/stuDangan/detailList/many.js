@@ -133,4 +133,12 @@ export function queryYjbg(query) {
     data: query
   })
 }
+// 等级证书列表查询
+export function queryDjzs(query) {
+  return request({
+    url: '/czdaNldjzs/queryCzdaNldjzsList',
+    method: 'post',
+    data: query
+  })
+}
   

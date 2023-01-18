@@ -50,6 +50,23 @@
           </el-table-column>
           <el-table-column prop="zsbh" label="证书编号" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
+          <el-table-column
+            prop="fileList"
+            label="支撑材料"
+            align="center"
+            min-width="200"
+          >
+            <template slot-scope="scope">
+              <div v-for="item in scope.row.fileList">
+                <div style="display: flex; justify-content: space-between">
+                  <a>
+                    {{ item.fileName }}
+                  </a>
+                  <!-- <el-button>预览</el-button> -->
+                </div>
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column prop="status" label="审核状态" sortable="custom">
             <template slot-scope="scope">
               <el-select
@@ -197,7 +214,7 @@
                       v-for="(item, index) in allXn"
                       :key="index"
                       :label="item.mc"
-                      :value="item.dm"
+                      :value="item.mc"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -211,14 +228,14 @@
                 >
                   <el-select
                     v-model="scope.row.jldx"
-                    @change="changeJldx"
+                    @change="changeJldxAdd"
                     placeholder="请选择"
                   >
                     <el-option
                       v-for="(item, index) in jldxOps"
                       :key="index"
                       :label="item.mc"
-                      :value="item.dm"
+                      :value="item.mc"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -266,6 +283,23 @@
                 >
                   <el-input maxlength="200" v-model="scope.row.zsbh" />
                 </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="支撑材料" width="200px">
+              <template slot-scope="scope">
+                <el-upload
+                  action="#"
+                  multiple
+                  class="el-upload"
+                  :auto-upload="false"
+                  ref="upload"
+                  :file-list="scope.row.files"
+                  :on-change="fileChange"
+                  accept=".pdf,.jpg"
+                  :before-remove="beforeRemove"
+                >
+                  <el-button size="small" type="primary">点击上传</el-button>
+                </el-upload>
               </template>
             </el-table-column>
           </el-table>
@@ -351,10 +385,10 @@
                     placeholder="请选择"
                   >
                     <el-option
-                      v-for="(item, index) in jbOps"
+                      v-for="(item, index) in allXn"
                       :key="index"
                       :label="item.mc"
-                      :value="item.dm"
+                      :value="item.mc"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -368,14 +402,14 @@
                 >
                   <el-select
                     v-model="scope.row.jldx"
-                    @change="changeJldx"
+                    @change="changeJldxEdit"
                     placeholder="请选择"
                   >
                     <el-option
                       v-for="(item, index) in jldxOps"
                       :key="index"
                       :label="item.mc"
-                      :value="item.dm"
+                      :value="item.mc"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -423,6 +457,23 @@
                 >
                   <el-input maxlength="200" v-model="scope.row.zsbh" />
                 </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="支撑材料" width="200">
+              <template slot-scope="scope">
+                <el-upload
+                  action="#"
+                  multiple
+                  class="el-upload"
+                  accept=".pdf,.jpg"
+                  :auto-upload="false"
+                  ref="upload"
+                  :file-list="scope.row.fileList"
+                  :on-change="fileChange"
+                  :before-remove="beforeRemove"
+                >
+                  <el-button size="small" type="primary">点击上传</el-button>
+                </el-upload>
               </template>
             </el-table-column>
           </el-table>
@@ -476,6 +527,7 @@ import { edit, del, query, tj, back } from "@/api/stuDangan/detailList/rych";
 import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
+import { delwj } from "@/api/assistantWork/classEvent";
 
 export default {
   components: { lctCom },
@@ -508,6 +560,8 @@ export default {
         {dm:'1', mc: '团队'},
         {dm:'2', mc: '组织'},
       ],
+      fileList: [],
+      fileListAdd: [],
       showGrwc:2, //1个人位次不可写，2可写个人位次
       rules: {
         bzdw: [
@@ -638,6 +692,30 @@ export default {
       this.delArr = val.map((item) => item.id);
       this.subArr = val.map((item) => item.id);
     },
+    beforeRemove(file, fileList) {
+      console.log("file", file);
+      console.log("fileList", fileList);
+      let uid = file.uid;
+      let idx = fileList.findIndex((item) => item.uid === uid);
+      fileList.splice(idx, 0);
+      this.fileList = fileList;
+      if (file.id) {
+        //如果是后端返回的文件就走删除接口，不然前端自我删除
+        delwj({ id: file.id.toString() }).then();
+      }
+    },
+    fileChange(file, fileList) {
+      if (Number(file.size / 1024 / 1024) > 1) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
+        this.$message.error("单个文件大小不得超过2M");
+      } else if (file.status == "ready") {
+        this.fileListAdd = [];
+        this.fileListAdd.push(file); //修改编辑的文件参数
+      }
+      this.fileList = fileList;
+    },
     bianji(row) {
       this.formEdit.editData = [];
       this.formEdit.editData.push(row);
@@ -652,7 +730,25 @@ export default {
         return;
       } else {
         let data = this.formEdit.editData[0];
-        edit(data).then((res) => {
+        let formData = new FormData();
+        formData.append("bzdw", data.bzdw);
+        formData.append("djm", data.djm);
+        formData.append("hjsj", data.hjsj);
+        formData.append("rymc", data.rymc);
+        formData.append("psxnd", data.psxnd);
+        formData.append("jldx", data.jldx);
+        formData.append("grwc", data.grwc);
+        formData.append("jbm", data.jbm);
+        formData.append("zsbh", data.zsbh);
+
+        formData.append("id", data.id);
+        formData.append("xh", this.$store.getters.userId);
+        if (this.fileListAdd.length > 0) {
+          this.fileListAdd.map((file) => {
+            formData.append("files", file.raw);
+          });
+        }
+        edit(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("编辑成功");
             this.query();
@@ -669,20 +765,23 @@ export default {
         return;
       } else {
         var data = this.formAdd.addData[0];
-        var params = {
-          bzdw: data.bzdw,
-          djm: data.djm,
-          hjsj: data.hjsj,
-          jbm: data.jbm,
-          rymc: data.rymc,
-          zsbh: data.zsbh,
-          psxnd: data.psxnd,
-          jldx: data.jldx,
-          grwc: data.grwc,
-          xh: this.$store.getters.userId,
-    
-        };
-        edit(params).then((res) => {
+        let formData = new FormData();
+        formData.append("bzdw", data.bzdw);
+        formData.append("djm", data.djm);
+        formData.append("hjsj", data.hjsj);
+        formData.append("rymc", data.rymc);
+        formData.append("psxnd", data.psxnd);
+        formData.append("jldx", data.jldx);
+        formData.append("grwc", data.grwc);
+        formData.append("jbm", data.jbm);
+        formData.append("zsbh", data.zsbh);
+        formData.append("xh", this.$store.getters.userId);
+        if (this.fileList.length > 0) {
+          this.fileList.map((file) => {
+            formData.append("files", file.raw);
+          });
+        }
+        edit(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("新增成功");
             this.query();
@@ -718,8 +817,10 @@ export default {
         psxnd: "",
         jldx: "",
         grwc: "",
+        files: [],
       };
       this.formAdd.addData.push(newLine);
+      this.fileList = [];
       this.addModal = true;
     },
     //提交
@@ -785,9 +886,18 @@ export default {
     channelInputLimit(e) {
 		  e.returnValue = ''
 		},
-    changeJldx(val){
-      if(val && val == 0){
+    changeJldxAdd(val){
+      if(val && val == "个人"){
         this.showGrwc = 1;
+        this.formAdd.addData[0].grwc = "1";
+      } else{
+        this.showGrwc = 2;
+      };
+    },
+    changeJldxEdit(val){
+      if(val && val == "个人"){
+        this.showGrwc = 1;
+        this.formEdit.editData[0].grwc = "1";
       } else{
         this.showGrwc = 2;
       };

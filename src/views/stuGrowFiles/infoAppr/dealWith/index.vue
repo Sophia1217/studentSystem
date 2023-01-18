@@ -404,6 +404,7 @@
               </template>
             </el-table-column>
           </el-table>
+          <h3 v-if="whatType == '3'">工作岗位或内容描述 ：{{ tableDetails[0].gzgw }}</h3>
           <el-table :data="tableDetails" v-if="whatType == '4'">
             <el-table-column
               fixed="left"
@@ -562,6 +563,23 @@
                 sortable="custom"
               ></el-table-column>
             </div>
+            <el-table-column
+              prop="fileList"
+              label="支撑材料"
+              align="center"
+              width="200"
+            >
+              <template slot-scope="scope">
+                <div v-for="item in scope.row.fileList">
+                  <div style="display: flex; justify-content: space-between">
+                    <a>
+                      {{ item.fileName }}
+                    </a>
+                    <!-- <el-button>预览</el-button> -->
+                  </div>
+                </div>
+              </template>
+            </el-table-column>
             <el-table-column prop="status" label="审核状态" sortable="custom">
               <template slot-scope="scope" fixed="right">
                 <el-select
@@ -595,7 +613,7 @@
             </div>
             <el-table-column
               prop="fileList"
-              label=""
+              label="参赛凭证"
               sortable="custom"
               align="center"
               width="200"
@@ -643,6 +661,54 @@
                 sortable="custom"
               ></el-table-column>
             </div>
+            <el-table-column prop="status" label="审核状态" sortable="custom">
+              <template slot-scope="scope" fixed="right">
+                <el-select
+                  v-model="scope.row.status"
+                  placeholder="请选择"
+                  :disabled="true"
+                >
+                  <el-option
+                    v-for="(item, index) in spjgOps"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-table :data="tableDetails" v-if="whatType == '17'">
+            <el-table-column
+              fixed="left"
+              type="index"
+              label="序号"
+              width="50"
+            ></el-table-column>
+            <div v-for="(item, index) in tableHeader12" :key="index">
+              <el-table-column
+                :prop="item.dm"
+                :label="item.mc"
+                sortable="custom"
+              ></el-table-column>
+            </div>
+            <el-table-column
+              prop="fileList"
+              label="支撑材料"
+              align="center"
+              width="200"
+            >
+              <template slot-scope="scope">
+                <div v-for="item in scope.row.fileList">
+                  <div style="display: flex; justify-content: space-between">
+                    <a>
+                      {{ item.fileName }}
+                    </a>
+                    <!-- <el-button>预览</el-button> -->
+                  </div>
+                </div>
+              </template>
+            </el-table-column>
             <el-table-column prop="status" label="审核状态" sortable="custom">
               <template slot-scope="scope" fixed="right">
                 <el-select
@@ -1308,6 +1374,7 @@ import {
   queryKyzz,
   queryRjzz,
   queryYjbg,
+  queryDjzs,
 } from "@/api/stuDangan/detailList/many";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
@@ -1353,7 +1420,7 @@ export default {
         { mc: "资格认证" },
         { mc: "志愿服务" },
         { mc: "荣誉称号" },
-        { mc: "千部经历" },
+        { mc: "干部经历" },
         { mc: "活动信息" },
         { mc: "创业经历" },
         { mc: "科研论文" },
@@ -1361,6 +1428,7 @@ export default {
         { mc: "科研著作" },
         { mc: "软件著作" },
         { mc: "研究报告" },
+        { mc: "等级证书" },
       ],
       queryParams: {
         pageNum: 1,
@@ -1398,20 +1466,20 @@ export default {
       ],
       tableHeader3: [
         { dm: "xmmc", mc: "项目名称" },
-        { dm: "zzdw", mc: "组织单位" },
+        { dm: "zzdw", mc: "组织单位或个人" },
         { dm: "dj", mc: "等级" },
         { dm: "lxchinese", mc: "类型" },
         { dm: "sjdd", mc: "实践地点" },
         { dm: "kssj", mc: "开始时间" },
         { dm: "jssj", mc: "结束时间" },
         { dm: "zmr", mc: "证明人" },
-        { dm: "lxfs", mc: "联系方式" },
+        { dm: "lxfs", mc: "证明人联系方式" },
       ],
       tableHeader4: [
-        { dm: "xmmc", mc: "项目名称" },
+        { dm: "xmmc", mc: "项目（活动名称）" },
         { dm: "zzdw", mc: "组织单位" },
         { dm: "fwsc", mc: "服务时长(小时)" },
-        { dm: "fwdd", mc: "服务地点" },
+        { dm: "fwdd", mc: "服务单位（地点）" },
         { dm: "fwdx", mc: "服务对象" },
         { dm: "kssj", mc: "开始时间" },
         { dm: "jssj", mc: "结束时间" },
@@ -1444,9 +1512,9 @@ export default {
       ],
       tableHeader8: [
         //干部经历
-        { dm: "rzzz", mc: "任职组织" },
-        { dm: "sldw", mc: "设立单位" },
-        { dm: "jb", mc: "级别" },
+        { dm: "rzzz", mc: "任职组织名称" },
+        { dm: "sldw", mc: "设立（挂靠）单位" },
+        { dm: "jb", mc: "设置单位级别" },
         { dm: "rzzw", mc: "任职职务" },
         { dm: "kssj", mc: "开始日期" },
         { dm: "jssj", mc: "结束日期" },
@@ -1459,7 +1527,10 @@ export default {
         { dm: "jb", mc: "级别" },
         { dm: "dj", mc: "等级" },
         { dm: "bzdw", mc: "表彰单位" },
-        { dm: "hjsj", mc: "获奖时间" },
+        { dm: "psxnd", mc: "评审学年度（年）" },
+        { dm: "grwc", mc: "个人位次" },
+        { dm: "jldx", mc: "奖励对象" },
+        { dm: "hjsj", mc: "发证时间" },
         { dm: "zsbh", mc: "证书编号" },
       ],
       tableHeader10: [
@@ -1481,11 +1552,22 @@ export default {
         { dm: "frdb", mc: "法人代表" },
         { dm: "zyyw", mc: "主营业务" },
         { dm: "srzw", mc: "所任职务" },
+        { dm: "qssj", mc: "参与起始时间"},
+        { dm: "jssj", mc: "参与结束时间"},
+      ],
+      tableHeader12: [
+        //等级证书
+        { dm: "zslxmc", mc: "证书类型" },
+        { dm: "kmm", mc: "科目" },
+        { dm: "dj", mc: "等级" },
+        { dm: "zsbh", mc: "证书编号" },
+        { dm: "fzdw", mc: "发证单位" },
+        { dm: "fzrq", mc: "发证日期" },
       ],
       defaultRes: {},
       detailModal: false,
       whatType: "",
-      tableDetails: [],
+      tableDetails: [{gzgw:"",fwnr:""}],
       upDownIndex: 0,
     };
   },
@@ -1709,6 +1791,20 @@ export default {
         case "研究报告":
           this.whatType = "16";
           await queryYjbg(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: tar.businesId,
+              mk: tar.mk,
+              processId: tar.processId,
+              status: tar.status,
+              taskId: tar.taskId,
+              xh: tar.xh,
+            }));
+          });
+          break;
+        case "等级证书":
+          this.whatType = "17";
+          await queryDjzs(data).then((res) => {
             this.tableDetails = res.data;
             this.commonParams = res.data.map((v) => ({
               businesId: tar.businesId,
@@ -1945,6 +2041,20 @@ export default {
           case "研究报告":
             this.whatType = "16";
             await queryYjbg(data).then((res) => {
+              this.tableDetails = res.data;
+              this.commonParams = res.data.map((v) => ({
+                businesId: tar.businesId,
+                mk: tar.mk,
+                processId: tar.processId,
+                status: tar.status,
+                taskId: tar.taskId,
+                xh: tar.xh,
+              }));
+            });
+            break;
+          case "等级证书":
+            this.whatType = "17";
+            await queryDjzs(data).then((res) => {
               this.tableDetails = res.data;
               this.commonParams = res.data.map((v) => ({
                 businesId: tar.businesId,
@@ -2256,6 +2366,20 @@ export default {
         case "研究报告":
           this.whatType = "16";
           await queryYjbg(data).then((res) => {
+            this.tableDetails = res.data;
+            this.commonParams = res.data.map((v) => ({
+              businesId: row.businesId,
+              mk: row.mk,
+              processId: row.processId,
+              status: row.status,
+              taskId: row.taskId,
+              xh: row.xh,
+            }));
+          });
+          break;
+        case "等级证书":
+          this.whatType = "17";
+          await queryDjzs(data).then((res) => {
             this.tableDetails = res.data;
             this.commonParams = res.data.map((v) => ({
               businesId: row.businesId,

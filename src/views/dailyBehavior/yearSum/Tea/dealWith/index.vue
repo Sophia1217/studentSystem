@@ -114,7 +114,7 @@
               v-for="(item, index) in allXn"
               :key="index"
               :label="item.mc"
-              :value="item.dm"
+              :value="item.mc"
             ></el-option>
           </el-select>
           <span>学年</span>
@@ -469,7 +469,7 @@ import {
 } from "@/api/dailyBehavior/yearSum"
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getCollege,getGrade } from "@/api/class/maintenanceClass";
-import { getZY, getBJ} from "@/api/student/index";
+import { getZY} from "@/api/student/index";
 import lctCom from "../../../../components/lct";
 import { lctTable } from "@/api/stuDangan/detailList/xiaoneiwai";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
@@ -673,7 +673,7 @@ export default {
       queryXn()
         .then((res) => {
           this.allXn = res.data;
-          this.moreIform.xn = res.data[0].dm;
+          this.moreIform.xn = res.data[0].mc;
           this.handleSearch();
         })
         .catch((err) => {});

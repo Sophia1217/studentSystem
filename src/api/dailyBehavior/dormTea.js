@@ -83,3 +83,44 @@ export function updateZssqFlow(query) {
     data: query
   })
 }
+//教师端-删除
+export function del(query) {
+  return request({
+    url: '/rcswZssq/adminDelete',
+    method: 'post',
+    data: query
+  })
+}
+ //教师端-模板下载
+ export function mbDown(query) {
+  return request({
+    url: '/rcswZssq/downLoad',
+    method: 'post',
+    data: query,
+    responseType:'blob'
+  })
+}
+//教师端-导入
+export function zssqImport(query) {
+  return request({
+      url: '/rcswZssq/importExcel',
+      method: 'post',
+      data: query,
+      responseType:'blob'
+  })
+}
+//教师端-住宿申请-新增
+export function zssqAdd(query) {
+  return request({
+    url: '/rcswZssq/importZssqLs',
+    method: 'post',
+    data: query
+  })
+}
+
+
+
+
+
+
+

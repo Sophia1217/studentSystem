@@ -703,7 +703,7 @@ export default {
         formData.append("fzrq", data.fzrq);
 
         formData.append("id", data.id);
-        formData.append("xh", this.$store.getters.userId);
+        formData.append("xh", this.$route.query.xh,);
         if (this.fileListAdd.length > 0) {
           this.fileListAdd.map((file) => {
             formData.append("files", file.raw);
@@ -735,7 +735,7 @@ export default {
         formData.append("fzdw", data.fzdw);
         formData.append("fzrq", data.fzrq);
 
-        formData.append("xh", this.$store.getters.userId);
+        formData.append("xh", this.$route.query.xh,);
         if (this.fileList.length > 0) {
           this.fileList.map((file) => {
             formData.append("files", file.raw);
@@ -754,7 +754,7 @@ export default {
     },
     query() {
       var data = {
-        xh: this.$store.getters.userId,
+        xh: this.$route.query.xh,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",

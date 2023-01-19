@@ -100,7 +100,7 @@
         label-width="120px"
       >
         <el-row :gutter="20">
-          <el-col :span="20">
+          <el-col :span="12">
             <el-form-item label="申请住宿类型" prop="zslxm" :rules="rules.zslxm">
               <el-select
                 v-model="formAdd.zslxm"
@@ -117,66 +117,12 @@
               </el-select>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="20">
-            <el-form-item
-              label="原住宿地址"
-              prop="yzsdzm"
-              :rules="jzflag ==1 ? rules.yzsdzm :[{ required: false}]"
-            >
-              <div v-if="jzflag ==1">
-                <el-cascader
-                  v-model="formAdd.yzsdzm"
-                  :options="options"
-                  @change="handleChangeJgY"
-                  :props="locationProps"
-                ></el-cascader>
-                <el-input v-model="formAdd.yzsxxdz" 
-                  maxlength="255"
-                  placeholder="请输入详细地址"/>
-              </div>
-              <div v-if="jzflag ==2">
-                <div>{{formAdd.sqld + "  "+ formAdd.sqfj}}</div> 
-                <!-- <div>{{formAdd.sqfj}}</div> -->
-                <!-- <el-select
-                  v-model="formAdd.sqldid"  
-                  placeholder="非集中原寝室楼栋"
-                  @change="changeLD(formAdd.sqldid)"
-                  disabled
-                  collapse-tags
-                >
-                  <el-option
-                    v-for="(item, index) in ldOps"
-                    :key="index"
-                    :label="item.mc"
-                    :value="item.dm"
-                  ></el-option>
-                </el-select> -->
-                <!-- <el-select
-                  v-model="formAdd.sqfjid"  
-                  placeholder="非集中原寝室房间"
-                  disabled
-                  collapse-tags
-                >
-                  <el-option
-                    v-for="(item, index) in fjOps"
-                    :key="index"
-                    :label="item.mc"
-                    :value="item.dm"
-                  ></el-option>
-                </el-select> -->
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" v-if="jzflag ==2">
-          <el-col :span="12">
+          <el-col :span="12" v-if="jzflag ==2">
             <el-form-item
               label="是否退宿"
+              label-width="100px"
               :rules="jzflag ==2 ? rules.sfts :[{ required: false}]"
               prop="sfts"
-
             >
               <el-select
                 v-model="formAdd.sfts"
@@ -193,8 +139,8 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20" v-if="jzflag ==1">
-          <el-col :span="20">
+        <el-row :gutter="20">
+          <el-col :span="12" v-if="jzflag ==1">
             <el-form-item
               label="申请住宿地点"
               prop="sqldid"
@@ -228,9 +174,7 @@
                 </el-select>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row :gutter="20" v-if="jzflag ==2">
-          <el-col :span="19">
+          <el-col :span="12" v-if="jzflag ==2">
             <el-form-item
               label="非集中住宿地址"
               :rules="jzflag ==2 ? rules.xzsdzm :[{ required: false}]"
@@ -243,6 +187,29 @@
                   :props="locationProps"
                 ></el-cascader>
                 <el-input v-model="formAdd.xzsxxdz" maxlength="255" placeholder="请输入详细地址"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              label="原住宿地址"
+              prop="yzsdzm"
+              label-width="100px"
+              :rules="jzflag ==1 ? rules.yzsdzm :[{ required: false}]"
+            >
+              <div v-if="jzflag ==1">
+                <el-cascader
+                  v-model="formAdd.yzsdzm"
+                  :options="options"
+                  @change="handleChangeJgY"
+                  :props="locationProps"
+                ></el-cascader>
+                <el-input v-model="formAdd.yzsxxdz" 
+                  maxlength="255"
+                  placeholder="请输入详细地址"/>
+              </div>
+              <div v-if="jzflag ==2">
+                <div>{{formAdd.sqld + "  "+ formAdd.sqfj}}</div> 
+              </div>
             </el-form-item>
           </el-col>
         </el-row>
@@ -315,7 +282,7 @@
         label-width="120px"
       >
         <el-row :gutter="20">
-          <el-col :span="20">
+          <el-col :span="12">
             <el-form-item label="申请住宿类型" prop="zslxm" :rules="rules.zslxm">
               <div v-show="isEdit == 0">{{formEdit.zslx}}</div>
               <el-select
@@ -335,75 +302,13 @@
               </el-select>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="20">
-            <el-form-item
-              label="原住宿地址"
-              prop="yzsdzm"
-              :rules="jzflag ==1 ? rules.yzsdzm :[{ required: false}]"
-            >
-              <div v-show="jzflag ==1">
-                <div v-show="isEdit == 0">{{formEdit.yzsdz + "  "+ formEdit.yzsxxdz}}</div>
-                <!-- <div v-show="isEdit == 0">{{formEdit.yzsxxdz}}</div> -->
-                <el-cascader
-                  v-model="formEdit.yzsdzm"
-                  v-show="isEdit == 1"
-                  :options="options"
-                  @change="handleChangeJgY"
-                  :props="locationProps"
-                ></el-cascader>
-                <el-input 
-                  v-model="formEdit.yzsxxdz" 
-                  v-show="isEdit == 1"
-                  maxlength="255" 
-                  placeholder="请输入详细地址"/>
-              </div>
-              <div v-if="jzflag ==2">
-                <div>{{formEdit.sqld + "  "+ formEdit.sqfj}}</div> 
-                <!-- <div>{{formEdit.sqfj}}</div> -->
-                <!-- <el-select
-                  v-model="formEdit.sqldid"  
-                  v-show="isEdit == 1"
-                  placeholder="非集中原寝室楼栋"
-                  @change="changeLD(formEdit.sqldid)"
-                  disabled
-                  collapse-tags
-                >
-                  <el-option
-                    v-for="(item, index) in ldOps"
-                    :key="index"
-                    :label="item.mc"
-                    :value="item.dm"
-                  ></el-option>
-                </el-select> -->
-                <!-- <el-select
-                  v-model="formEdit.sqfjid"  
-                  v-show="isEdit == 1"
-                  placeholder="非集中原寝室房间"
-                  disabled
-                  collapse-tags
-                >
-                  <el-option
-                    v-for="(item, index) in fjOps"
-                    :key="index"
-                    :label="item.mc"
-                    :value="item.dm"
-                  ></el-option>
-                </el-select> -->
-              </div>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" v-if="jzflag ==2">
-          <el-col :span="12">
+          <el-col :span="12" v-if="jzflag ==2">
             <el-form-item
               label="是否退宿"
               prop="sfts"
+              label-width="100px"
               :rules="jzflag ==2 ? rules.sfts :[{ required: false}]"
             >
-            
-              <!-- <div v-show="isEdit == 0">{{formEdit.sfts}}</div> -->
               <el-select
                 v-model="formEdit.sfts"
                 :disabled="isEdit == 0"
@@ -420,13 +325,12 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20" v-show="jzflag ==1">
-          <el-col :span="19">
+        <el-row :gutter="20">
+          <el-col :span="12" v-if="jzflag ==1">
             <el-form-item
               label="申请住宿地点"
             >
               <div v-show="isEdit == 0">{{formEdit.sqld + "  "+ formEdit.sqfj}}</div>
-              <!-- <div v-show="isEdit == 0">{{formEdit.sqfj}}</div> -->
               <div v-show="isEdit == 1">
                 <el-select
                   v-model="formEdit.sqldid"  
@@ -458,17 +362,13 @@
               </div>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row :gutter="20" v-show="jzflag ==2">
-          <el-col :span="19">
+          <el-col :span="12" v-if="jzflag ==2">
             <el-form-item
               label="非集中住宿地址"
               :rules="jzflag ==2 ? rules.xzsdzm : [{ required: false}]"
               prop="xzsdzm"
             >
-            
               <div v-show="isEdit == 0">{{formEdit.xzsdz + "  "+ formEdit.xzsxxdz}}</div>
-              <!-- <div v-show="isEdit == 0">{{formEdit.xzsxxdz}}</div> -->
               <div v-show="isEdit == 1">
                 <el-cascader
                   v-model="formEdit.xzsdzm"
@@ -477,6 +377,33 @@
                   :props="locationProps"
                 ></el-cascader>
                 <el-input v-model="formEdit.xzsxxdz" maxlength="255" placeholder="请输入详细地址"/>
+              </div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              label="原住宿地址"
+              prop="yzsdzm"
+              label-width="100px"
+              :rules="jzflag ==1 ? rules.yzsdzm :[{ required: false}]"
+            >
+              <div v-show="jzflag ==1">
+                <div v-show="isEdit == 0">{{formEdit.yzsdz + "  "+ formEdit.yzsxxdz}}</div>
+                <el-cascader
+                  v-model="formEdit.yzsdzm"
+                  v-show="isEdit == 1"
+                  :options="options"
+                  @change="handleChangeJgY"
+                  :props="locationProps"
+                ></el-cascader>
+                <el-input 
+                  v-model="formEdit.yzsxxdz" 
+                  v-show="isEdit == 1"
+                  maxlength="255" 
+                  placeholder="请输入详细地址"/>
+              </div>
+              <div v-if="jzflag ==2">
+                <div>{{formEdit.sqld + "  "+ formEdit.sqfj}}</div> 
               </div>
             </el-form-item>
           </el-col>
@@ -514,7 +441,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-form-item label="申请材料:" width="360px">
+          <el-form-item label="申请材料" width="360px">
             <div v-if="isEdit == 0">
               <div v-for="item in formEdit.fileList">
                 <div style="display: flex; justify-content: space-between">
@@ -670,7 +597,6 @@ export default {
         children: "dataCodeCascadingList", //匹配响应数据中的children }
       },
       options: [],
-      updateJg: "",//若进来自动获取地区则用来更新，简单下拉框不需要
       fileList: [],
       fileListAdd: [],
       rules: {

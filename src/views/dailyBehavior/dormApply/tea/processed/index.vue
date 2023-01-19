@@ -320,7 +320,7 @@
         :visible.sync="detailModal"
         :before-close="detailCancel"
         @close="emptyDetails()"
-        width="60%"
+        width="50%"
       >
         <template>
           <div class="baseInfo">
@@ -391,57 +391,12 @@
             <div class="formLeft"><span class="title">申请信息</span></div>
             <div>
               <el-row :gutter="20">
-                <el-col :span="20">
+                <el-col :span="12">
                   <el-form-item label="申请住宿类型" prop="zslxm" :rules="rules.zslxm">
                     <div>{{formDetails.zslx}}</div>
                   </el-form-item>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12">
-                  <el-form-item
-                    label="原住宿地址"
-                    prop="yzsdzm"
-                  >
-                    <div v-show="jzflag ==1">
-                      <div>{{formDetails.yzsdz + "  "+ formDetails.yzsxxdz}}</div>
-                      <!-- <div>{{formDetails.yzsxxdz}}</div> -->
-                    </div>
-                    <div v-show="jzflag ==2">
-                      <div>{{formDetails.sqld + "  "+ formDetails.sqfj}}</div> 
-                      <!-- <el-select
-                        v-model="formDetails.sqldid"  
-                        placeholder="非集中原寝室楼栋"
-                        @change="changeLD(formDetails.sqldid)"
-                        disabled
-                        collapse-tags
-                      >
-                        <el-option
-                          v-for="(item, index) in ldOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        ></el-option>
-                      </el-select> -->
-                      <!-- <el-select
-                        v-model="formDetails.sqfjid"  
-                        placeholder="非集中原寝室房间"
-                        disabled
-                        collapse-tags
-                      >
-                        <el-option
-                          v-for="(item, index) in fjOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        ></el-option>
-                      </el-select> -->
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20" v-show="jzflag ==2">
-                <el-col :span="12">
+                <el-col :span="12" v-show="jzflag ==2">
                   <el-form-item
                     label="是否退宿"
                     prop="sfts"
@@ -450,8 +405,8 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row :gutter="20" v-show="jzflag ==1">
-                <el-col :span="19">
+              <el-row :gutter="20">
+                <el-col :span="12" v-show="jzflag ==1">
                   <el-form-item
                     label="申请住宿地点"
                     prop="xzsdzm"
@@ -486,20 +441,30 @@
                     </div>
                   </el-form-item>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20" v-show="jzflag ==2">
-                <el-col :span="19">
+                <el-col :span="12" v-show="jzflag ==2">
                   <el-form-item
                     label="非集中住宿地址"
                     prop="xzsdzm"
                   >
                     <div>{{formDetails.xzsdz + "  "+ formDetails.xzsxxdz}}</div>
-                    <!-- <div>{{formDetails.xzsxxdz}}</div> -->
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item
+                    label="原住宿地址"
+                    prop="yzsdzm"
+                  >
+                    <div v-show="jzflag ==1">
+                      <div>{{formDetails.yzsdz + "  "+ formDetails.yzsxxdz}}</div>
+                    </div>
+                    <div v-show="jzflag ==2">
+                      <div>{{formDetails.sqld + "  "+ formDetails.sqfj}}</div> 
+                    </div>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="20">
+                <el-col :span="12">
                   <el-form-item label="住宿时间" prop="datePickerEdit">
                     <div>{{formDetails.zsksrq + " 至 "+ formDetails.zsjsrq}}</div>
                     <!-- <div v-show="isEdit == 1">
@@ -516,9 +481,7 @@
                     </div> -->
                   </el-form-item>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="20">
+                <el-col :span="12">
                   <el-form-item label="申请理由" prop="sqly">
                     <div>{{formDetails.sqly}}</div>
                     <!-- <el-input
@@ -1414,6 +1377,7 @@ export default {
     .formLeft {
       background: #fff;
       display: flex;
+      flex-direction:row;
       align-items: center;
       .title {
         font-weight: 600;

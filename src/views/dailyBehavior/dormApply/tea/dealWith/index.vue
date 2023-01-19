@@ -186,18 +186,31 @@
           <span class="title">待审核列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
+          <div class="btns borderBlue" @click="mbDown" v-show="AUTHFLAG">
+            <i class="icon downIcon"></i><span class="title">模板下载</span>
+          </div>
+          <div class="btns borderBlue" v-show="AUTHFLAG">
+            <el-upload
+              accept=".xlsx,.xls"
+              :auto-upload="true"
+              :action="uploadUrl"
+              :show-file-list="false"
+              :headers="fileHeader"
+              :on-success="upLoadSuccess"
+              :on-error="upLoadError"
+            >
+              <i class="icon blueIcon"></i><span class="title">导入</span>
+            </el-upload>
+          </div>
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <!-- <div class="btns borderRed" @click="back">
-            <i class="icon backIcon"></i><span class="title">退回</span>
+          <div class="btns borderLight" @click="handleDelete" v-show="AUTHFLAG">
+            <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
-          <div class="btns borderRed" @click="refuse">
-            <i class="icon refuseIcon"></i><span class="title">拒绝</span>
+          <div class="btns borderGreen" @click="handleNew" v-show="AUTHFLAG">
+            <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
-          <div class="btns fullGreen" @click="pass">
-            <i class="icon passIcon"></i><span class="title1">通过</span>
-          </div> -->
         </div>
       </div>
       <div class="mt15">
@@ -254,7 +267,7 @@
         title="申报详情"
         :visible.sync="detailModal"
         :before-close="detailCancel"
-        width="60%"
+        width="50%"
       >
         <template>
           <div class="baseInfo">
@@ -325,57 +338,12 @@
             <div class="formLeft"><span class="title">申请信息</span></div>
             <div>
               <el-row :gutter="20">
-                <el-col :span="20">
+                <el-col :span="12">
                   <el-form-item label="申请住宿类型" prop="zslxm" :rules="rules.zslxm">
                     <div>{{formDetails.zslx}}</div>
                   </el-form-item>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="12">
-                  <el-form-item
-                    label="原住宿地址"
-                    prop="yzsdzm"
-                  >
-                    <div v-show="jzflag ==1">
-                      <div>{{formDetails.yzsdz + "  "+ formDetails.yzsxxdz}}</div>
-                      <!-- <div>{{formDetails.yzsxxdz}}</div> -->
-                    </div>
-                    <div v-show="jzflag ==2">
-                      <div>{{formDetails.sqld + "  "+ formDetails.sqfj}}</div> 
-                      <!-- <el-select
-                        v-model="formDetails.sqldid"  
-                        placeholder="非集中原寝室楼栋"
-                        @change="changeLD(formDetails.sqldid)"
-                        disabled
-                        collapse-tags
-                      >
-                        <el-option
-                          v-for="(item, index) in ldOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        ></el-option>
-                      </el-select> -->
-                      <!-- <el-select
-                        v-model="formDetails.sqfjid"  
-                        placeholder="非集中原寝室房间"
-                        disabled
-                        collapse-tags
-                      >
-                        <el-option
-                          v-for="(item, index) in fjOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        ></el-option>
-                      </el-select> -->
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20" v-show="jzflag ==2">
-                <el-col :span="12">
+                <el-col :span="12" v-show="jzflag ==2">
                   <el-form-item
                     label="是否退宿"
                     prop="sfts"
@@ -384,56 +352,45 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row :gutter="20" v-show="jzflag ==1">
-                <el-col :span="19">
+              <el-row :gutter="20">
+                
+              </el-row>
+              <el-row :gutter="20">
+                
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="12" v-show="jzflag ==1">
                   <el-form-item
                     label="申请住宿地点"
                     prop="xzsdzm"
                   >
                     <div>{{formDetails.sqld + "  "+ formDetails.sqfj}}</div> 
-                    <!-- <div>
-                      <el-select
-                        v-model="formDetails.sqldid"  
-                        placeholder="集中寝室楼栋"
-                        @change="changeLD(formDetails.sqldid)"
-                        collapse-tags
-                      >
-                        <el-option
-                          v-for="(item, index) in ldOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        ></el-option>
-                      </el-select>
-                      <el-select
-                        v-model="formDetails.sqfjid"  
-                        placeholder="集中寝室房间"
-                        collapse-tags
-                      >
-                        <el-option
-                          v-for="(item, index) in fjOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        ></el-option>
-                      </el-select>
-                    </div> -->
                   </el-form-item>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20" v-show="jzflag ==2">
-                <el-col :span="19">
+                <el-col :span="12" v-show="jzflag ==2">
                   <el-form-item
                     label="非集中住宿地址"
                     prop="xzsdzm"
                   >
                     <div>{{formDetails.xzsdz + "  "+ formDetails.xzsxxdz}}</div>
-                    <!-- <div>{{formDetails.xzsxxdz}}</div> -->
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item
+                    label="原住宿地址"
+                    prop="yzsdzm"
+                  >
+                    <div v-show="jzflag ==1">
+                      <div>{{formDetails.yzsdz + "  "+ formDetails.yzsxxdz}}</div>
+                    </div>
+                    <div v-show="jzflag ==2">
+                      <div>{{formDetails.sqld + "  "+ formDetails.sqfj}}</div> 
+                    </div>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="20">
+                <el-col :span="12">
                   <el-form-item label="住宿时间" prop="datePickerEdit">
                     <div>{{formDetails.zsksrq + " 至 "+ formDetails.zsjsrq}}</div>
                     <!-- <div v-show="isEdit == 1">
@@ -450,9 +407,7 @@
                     </div> -->
                   </el-form-item>
                 </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="20">
+                <el-col :span="12">
                   <el-form-item label="申请理由" prop="sqly">
                     <div>{{formDetails.sqly}}</div>
                     <!-- <el-input
@@ -551,6 +506,205 @@
           >确 定</el-button>
       </span> -->
       </el-dialog>
+      <el-dialog
+      title="新增申请"
+      :visible.sync="addModal"
+      width="50%"
+      :close-on-click-modal="false"
+      @close="emptyAdd()"
+    >
+      <el-form
+        ref="formAdd"
+        :model="formAdd"
+        :rules="rules"
+        label-width="120px"
+      >
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <el-form-item label="学生姓名" prop="xsxm" :rules="rules.xsxm">
+              <el-autocomplete
+                v-model="formAdd.xsxm"
+                :fetch-suggestions="querySearch"
+                placeholder="请输入学生姓名"
+                :trigger-on-focus="false"
+                @select="handleSelect"
+              ></el-autocomplete>
+              
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-input v-model="formAdd.xsxh" readonly/>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="申请住宿类型" prop="zslxm" :rules="rules.zslxm">
+              <el-select
+                v-model="formAdd.zslxm"
+                placeholder="请选择住宿类型"
+                @change="changeZslx(formAdd.zslxm)"
+                collapse-tags
+              >
+                <el-option
+                  v-for="(item, index) in zslxOps"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="jzflag ==2">
+            <el-form-item
+              label="是否退宿"
+              label-width="100px"
+              :rules="jzflag ==2 ? rules.sfts :[{ required: false}]"
+              prop="sfts"
+            >
+              <el-select
+                v-model="formAdd.sfts"
+                placeholder="非集中是否退宿"
+                collapse-tags
+              >
+                <el-option
+                  v-for="(item, index) in sftsOps"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12" v-if="jzflag ==1">
+            <el-form-item
+              label="申请住宿地点"
+              prop="sqldid"
+            >
+                <el-select
+                  v-model="formAdd.sqldid"  
+                  placeholder="集中寝室楼栋"
+                  @change="changeLD(formAdd.sqldid)"
+                  clearable
+                  collapse-tags
+                >
+                  <el-option
+                    v-for="(item, index) in ldOps"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+                <el-select
+                  v-model="formAdd.sqfjid"  
+                  placeholder="集中寝室房间"
+                  collapse-tags
+                  clearable
+                >
+                  <el-option
+                    v-for="(item, index) in fjOps"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="jzflag ==2">
+            <el-form-item
+              label="非集中住宿地址"
+              :rules="jzflag ==2 ? rules.xzsdzm :[{ required: false}]"
+              prop="xzsdzm"
+            >
+                <el-cascader
+                  v-model="formAdd.xzsdzm"
+                  :options="options"
+                  @change="handleChangeJgX"
+                  :props="locationProps"
+                ></el-cascader>
+                <el-input v-model="formAdd.xzsxxdz" maxlength="255" placeholder="请输入详细地址"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              label="原住宿地址"
+              prop="yzsdzm"
+              label-width="100px"
+              :rules="jzflag ==1 ? rules.yzsdzm :[{ required: false}]"
+            >
+              <div v-if="jzflag ==1">
+                <el-cascader
+                  v-model="formAdd.yzsdzm"
+                  :options="options"
+                  @change="handleChangeJgY"
+                  :props="locationProps"
+                ></el-cascader>
+                <el-input v-model="formAdd.yzsxxdz" 
+                  maxlength="255"
+                  placeholder="请输入详细地址"/>
+              </div>
+              <div v-if="jzflag ==2">
+                <div>{{formAdd.sqld + "  "+ formAdd.sqfj}}</div> 
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="15">
+            <el-form-item label="住宿时间" prop="datePickerAdd"  :rules="rules.datePickerAdd">
+              <el-date-picker
+                type="daterange"
+                placeholder="选择日期"
+                v-model="formAdd.datePickerAdd"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+              ></el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="20">
+            <el-form-item label="申请理由" prop="sqly">
+              <el-input
+                v-model="formAdd.sqly"
+                type="textarea"
+                maxlength="2000"
+                placeholder="请输入"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="20">
+            <el-form-item label="申请材料" width="360px">
+              <el-upload
+                action="#"
+                multiple
+                class="el-upload"
+                :auto-upload="false"
+                ref="upload"
+                :file-list="formAdd.files"
+                :on-change="fileChange"
+                accept=".pdf,.jpg"
+                :before-remove="beforeRemove"
+              >
+                <el-button size="small" type="primary">点击上传</el-button>
+              </el-upload>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="addClick"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
       <pagination
         v-show="queryParams.total > 0"
         :total="queryParams.total"
@@ -564,6 +718,16 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="handleConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <!-- 批量删除对话框 -->
+    <el-dialog title="删除" :visible.sync="showDelete" width="30%">
+      <span>确认删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="rmRecord"
           >确 定</el-button
         >
       </span>
@@ -582,21 +746,43 @@ import {
   queryYshList,
   queryDshDetail,
   exportZjbbFlowed,
+  mbDown,
+  zssqAdd,
+  zssqImport,
+  del,
 } from "@/api/dailyBehavior/dormTea"
+import {
+  queryFj,
+  queryLd,
+  queryLdAndFj,
+} from "@/api/dailyBehavior/dormStu";
 import { getCollege,getGrade } from "@/api/class/maintenanceClass";
 import { getZY, getBJ} from "@/api/student/index";
 import lctCom from "../../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { param } from '../../../../../utils';
+import { getLocationjl } from "@/api/student/index";
+import { delwj } from "@/api/assistantWork/classEvent";
+import { getToken } from "@/utils/auth";
+import { queryStuList } from "@/api/assistantWork/homeSchool";
 export default {
   name: "manStudent",
   components: { CheckboxCom, lctCom },
+  computed: {
+    fileHeader: {
+      get() {
+        return {
+          accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
+          uuid: new Date().getTime(),
+          clientId: "111",
+        };
+      },
+    },
+  },
   data() {
     return {
       showExport: false,
       lctModal: false,
       ztStatus: [],
-      zdOps: [],
       status: [],
       datePicker: [],
       searchVal: "",
@@ -663,15 +849,56 @@ export default {
         checkBox: [],
         isIndeterminate: true,
       },
+      uploadUrl: process.env.VUE_APP_BASE_API + "/rcswZssq/importExcel",
+      addModal: false,
+      formAdd: {
+        xsxm:"",
+        xsxh:"",
+        sqld:"",
+        sqfj:"",
+        yzsdzm: "",
+        xzsdzm: "",
+        datePickerAdd: [],
+      },
+      jzflag: 1,//1集中2非集中
+      zslxOps: [
+        {dm: "1", mc: "校内集中住宿"},
+        {dm: "2", mc: "非集中住宿"},
+      ],
       fjOps:[],
       ldOps:[],
+      sftsOps:[],
+      //地区级联
+      locationProps: {
+        value: "dm", //匹配响应数据中的id
+        label: "mc", //匹配响应数据中的name
+        checkStrictly: true,
+        children: "dataCodeCascadingList", //匹配响应数据中的children }
+      },
+      options: [],
+      fileList: [],
+      fileListAdd: [],
+      showDelete: false,
+      delArr: [],
       rules: {
-        // shjg: [
-        //   { required: true, message: "审核结果不能为空", trigger: "change" },
-        // ],
-        // shyj: [
-        //   { required: true, message: "审核意见不能为空", trigger: "change" },
-        // ],
+        xsxm:[
+          { required: true, message: "学生姓名不能为空", trigger: "change" },
+        ],
+        sfts: [
+          { required: true, message: "是否退宿不能为空", trigger: "change" },
+        ],
+        zslxm: [
+          { required: true, message: "住宿类型不能为空", trigger: "change" },
+        ],
+        yzsdzm: [
+          { required: true, message: "原住宿地址不能为空", trigger: "change" },
+        ],
+        xzsdzm:[
+          { required: true, message: "新住宿地址不能为空", trigger: "change" },
+        ],
+        datePickerAdd:[
+          { required: true, message: "住宿时间不能为空", trigger: "change" },
+        ],
       },
     };
   },
@@ -682,9 +909,26 @@ export default {
     this.getCode("dmpyccm"); // 培养层次dmxbm
     this.getCode("dmxbm"); // 性别
     this.getCode1("dmsplcm"); 
+    this.getCode1("dmsfbzm");//是否
+    this.getLocationjl();
   },
-
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
+  },
   methods: {
+    // 表单校验
+    checkFormAdd() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formAdd.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
     // 导出取消
     handleCancel() {
       this.showExport = false;
@@ -753,6 +997,9 @@ export default {
         switch (val) {
           case "dmsplcm": //审批结果
             this.ztStatus = res.data;
+            break;
+          case "dmsfbzm":
+            this.sftsOps = res.data; //是否
             break;
         }
       });
@@ -930,6 +1177,7 @@ export default {
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
+      this.delArr = val.map((item) => item.businesId);
       this.commonParams = this.multipleSelection.map((v) => ({
         businesId: v.businesId,
         processId: v.processId,
@@ -938,11 +1186,247 @@ export default {
         xh: v.xh,
       }));
     },
+    //导入失败
+    upLoadError(err, file, fileList) {
+      this.$message({
+        type: "error",
+        message: "上传失败",
+      });
+    },
+    upLoadSuccess(res, file, fileList) {
+      if (res.errcode == "00") {
+        this.handleSearch();
+        this.$message({
+          type: "success",
+          message: res.errmsg,
+        });
+      } else {
+        this.$message({
+          type: "error",
+          message: res.errmsg,
+        });
+      }
+    },
     //排序
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
+    },
+    delCancel() {
+      this.showDelete = false;
+    },
+    //批量删除
+    rmRecord() {
+      this.showDelete = false;
+      del({ ids: this.delArr })
+        .then((res) => {
+          this.$message.success("删除成功");
+          this.handleSearch();
+        })
+        .catch((err) => {});
+    },
+    handleDelete() {
+      if (this.delArr && this.delArr.length > 0) {
+          this.showDelete = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      // var falg = 1;
+      // for (var i = 0; i < this.multipleSelection.length; i++) {
+      //   if (this.multipleSelection[i].status !== "01") falg = 2;
+      // }
+      // if (falg == 1) {
+      //   if (this.delArr && this.delArr.length > 0) {
+      //     this.showDelete = true;
+      //   } else {
+      //     this.$message.error("请先勾选数据");
+      //   }
+      // } else {
+      //   this.$message.error("存在非草稿状态数据，不可以删除");
+      // }
+    },
+    //模板下载
+    mbDown() {
+      mbDown().then((res) => {
+        this.downloadFn(res, "住宿申请模板下载", "xlsx");
+      });
+    },
+    beforeRemove(file, fileList) {
+      let uid = file.uid;
+      let idx = fileList.findIndex((item) => item.uid === uid);
+      fileList.splice(idx, 0);
+      this.fileList = fileList;
+      if (file.id) {
+        //如果是后端返回的文件就走删除接口，不然前端自我删除
+        delwj({ id: file.id.toString() }).then();
+      }
+    },
+    fileChange(file, fileList) {
+      if (Number(file.size / 1024 / 1024) > 2) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
+        this.$message.error("单个文件大小不得超过2M");
+      } else if (file.status == "ready") {
+        this.fileListAdd = [];
+        this.fileListAdd.push(file); //修改编辑的文件参数
+      }
+      this.fileList = fileList;
+    },
+    //新增
+    handleNew() {
+      this.formAdd={};
+      this.formAdd.files = [];
+      this.fileList = [];
+      this.addModal = true;
+
+      
+      //获取楼栋
+      queryLd()
+        .then((res)=>{
+          if (res.errcode == "00") {
+            this.ldOps = res.data;
+          }
+        })
+        .catch((err) => {});
+      // 楼栋房间自动回显
+      queryLdAndFj( this.$store.getters.userId ).then((res) =>{
+        this.formAdd.sqld= res.data !==null ? res.data.ld : null;
+        this.formAdd.sqfj= res.data !==null ? res.data.fj : null;
+      });
+      
+    },
+    addCancel() {
+      this.addModal = false;
+    },
+    addClick() {
+      if (!this.checkFormAdd()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        let rqs,
+          rqe = "";
+        if (this.formAdd.datePickerAdd && this.formAdd.datePickerAdd.length > 0) {
+          rqs = this.formAdd.datePickerAdd[0];
+          rqe = this.formAdd.datePickerAdd[1];
+        }
+        let formData = new FormData();
+        formData.append("zslxm", this.formAdd.zslxm);
+        formData.append("zsjsrq", rqe);
+        formData.append("zsksrq", rqs);
+        formData.append("sfts", this.formAdd.sfts ||"");
+        formData.append("sqfjid", this.formAdd.sqfjid ||"");
+        formData.append("sqldid", this.formAdd.sqldid ||"");
+        formData.append("sqly", this.formAdd.sqly);
+        formData.append("xzsdzm", this.formAdd.xzsdzm ||"");
+        formData.append("xzsxxdz", this.formAdd.xzsxxdz ||"");
+        formData.append("yzsdzm", this.formAdd.yzsdzm ||"");
+        formData.append("yzsxxdz", this.formAdd.yzsxxdz);
+        formData.append("xh", this.formAdd.xsxh);
+        if (this.fileList.length > 0) {
+          this.fileList.map((file) => {
+            formData.append("files", file.raw);
+          });
+        }
+        zssqAdd(formData).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("新增成功");
+            this.addModal = false;
+            this.handleSearch();
+          } else {
+            this.$message.error("新增失败");
+          }
+        });
+        
+      }
+    },
+    changeZslx(flag){
+      if( flag && flag == 1){
+        this.jzflag = 1;
+      } else{ 
+        this.jzflag = 2;
+      }
+    },
+    changeLD(flag){
+      queryFj({ dm: flag }).then((res) => {
+        if (res.errcode == "00") {
+          this.fjOps = res.data;
+        } else {
+          this.$message.error("获取房间号失败");
+        }
+      });
+    },
+    getLocationjl() {
+      getLocationjl().then((res) => {
+        this.options = res.data;
+      });
+    },
+    emptyAdd() {
+      this.$nextTick(() => {
+        this.$refs.formAdd.resetFields();
+      });
+    },
+    handleChangeJgY(value) {
+      if (value && value.length == 1) {
+        console.log("value.length",value.length);
+        //若是简单下拉框，则绑定v-model就可以
+        this.formAdd.yzsdzm= this.formAdd.yzsdzm ? this.formAdd.yzsdzm = value[0]: "";
+        console.log(this.formAdd.yzsdzm);
+      } else if (value && value.length == 2) {
+        this.formAdd.yzsdzm= this.formAdd.yzsdzm ? this.formAdd.yzsdzm = value[1]: "";
+        console.log(this.formAdd.yzsdzm);
+      } else {
+        this.formAdd.yzsdzm= this.formAdd.yzsdzm ? this.formAdd.yzsdzm = value[2]: "";
+        console.log(this.formAdd.yzsdzm);
+      }
+    },
+    handleChangeJgX(value) {
+      if (value && value.length == 1) {
+        this.formAdd.xzsdzm= this.formAdd.xzsdzm ? this.formAdd.xzsdzm = value[0]: "";
+      } else if (value && value.length == 2) {
+        this.formAdd.xzsdzm= this.formAdd.xzsdzm ? this.formAdd.xzsdzm = value[1]: "";
+      } else {
+        this.formAdd.xzsdzm= this.formAdd.xzsdzm ? this.formAdd.xzsdzm = value[2]: "";
+      }
+    },
+    //学生
+    querySearch(queryString, cb) {
+      if (queryString != "") {
+        let callBackArr = [];
+        var Xm = { xm: queryString };
+        var result = [];
+        var resultNew = [];
+        queryStuList(Xm).then((res) => {
+          result = res.data.length > 0 ? res.data : [];
+          resultNew = result.map((ele) => {
+            //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
+            //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
+            //此处找后台约定好
+            return {
+              value: `${ele.xm}(${ele.gh})`,
+              gh: ele.gh,
+              xm: ele.xm,
+            };
+          });
+          resultNew.forEach((item) => {
+            if (item.value.indexOf(queryString) > -1) {
+              callBackArr.push(item);
+            }
+          });
+          if (callBackArr.length == 0) {
+            cb([{ value: "暂无数据", price: "暂无数据" }]);
+          } else {
+            cb(callBackArr);
+          }
+        });
+      }
+    },
+    handleSelect(item){
+      this.formAdd.xsxh = item.gh;
+      this.formAdd.xsxm = item.xm;
+      console.log("this.formAdd.xsxh",this.formAdd.xsxh);
+
     },
   },
 };
@@ -1046,14 +1530,13 @@ export default {
           border: 1px solid grey;
           background: #fff;
         }
-        .borderRed {
+        .borderLight {
           border: 1px solid grey;
           color: red;
           background: #fff;
         }
-        .fullGreen {
-          // border:1px solid #005657;
-          color: #fff;
+        .borderGreen {
+          border: 1px solid grey;
           background: #005657;
         }
         .btns {
@@ -1081,9 +1564,6 @@ export default {
             vertical-align: top;
             margin-right: 5px;
           }
-          .deteIcon {
-            background: url("~@/assets/images/yes.png") no-repeat;
-          }
           .blueIcon {
             margin-top: 10px;
             background: url("~@/assets/assistantPng/in.png") no-repeat;
@@ -1092,17 +1572,17 @@ export default {
             margin-top: 10px;
             background: url("~@/assets/assistantPng/out.png") no-repeat;
           }
-          .passIcon {
-            margin-top: 10px;
-            background: url("~@/assets/images/passWhite.png") no-repeat;
+          .lightIcon {
+            margin-top: 9px;
+            background: url("~@/assets/assistantPng/delete.png") no-repeat;
           }
-          .refuseIcon {
+          .greenIcon {
             margin-top: 10px;
-            background: url("~@/assets/images/refuse.png") no-repeat;
+            background: url("~@/assets/assistantPng/add.png") no-repeat;
           }
-          .backIcon {
+          .downIcon {
             margin-top: 10px;
-            background: url("~@/assets/images/back.png") no-repeat;
+            background: url("~@/assets/images/down.png") no-repeat;
           }
         }
       }
@@ -1116,6 +1596,7 @@ export default {
     .formLeft {
       background: #fff;
       display: flex;
+      flex-direction:row;
       align-items: center;
       .title {
         font-weight: 600;

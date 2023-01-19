@@ -101,7 +101,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft"> 
-          <span class="title">待审核列表</span> <i class="Updataicon"></i>
+          <span class="title">已处理列表</span> <i class="Updataicon"></i>
           <el-select
             v-model="moreIform.xn"
             collapse-tags
@@ -114,7 +114,7 @@
               v-for="(item, index) in allXn"
               :key="index"
               :label="item.mc"
-              :value="item.mc"
+              :value="item.dm"
             ></el-option>
           </el-select>
           <span>学年</span>
@@ -690,11 +690,11 @@ export default {
       var data = {
         // xh: row.xh,
         // roleId: this.$store.getters.roleId,
-        id: row.businesId,
+        businesId: row.businesId,
+        processId: row.processid,
       };
       await queryDshDetail(data).then((res) => {
         this.formDetails = res.data;
-        // this.pyccflag = res.data.zslxm;
       });
       
     },

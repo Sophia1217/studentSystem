@@ -184,7 +184,7 @@
                   v-for="(item, index) in xnxqList"
                   :key="index"
                   :label="item.mc"
-                  :value="item.dm"
+                  :value="item.mc"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -298,7 +298,7 @@
                   v-for="(item, index) in xnxqList"
                   :key="index"
                   :label="item.mc"
-                  :value="item.dm"
+                  :value="item.mc"
                 ></el-option>
               </el-select>
             </el-form-item>

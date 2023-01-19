@@ -97,7 +97,7 @@ export function thFinal(query) {
 //教师端-详情查询
 export function queryDshDetail(query) {
   return request({
-    url: '/rcswXnxjFlow/queryXnxjInfoById',
+    url: '/rcswXnxjFlow/queryXnxjFlowedDetail',
     method: 'post',
     data: query
   })

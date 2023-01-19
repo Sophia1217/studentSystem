@@ -66,42 +66,7 @@
               ></el-option>
             </el-select>
           </el-col>
-          <!-- <el-col :span="6">
-            <span>班<span v-html="'\u3000\u3000'"></span>级：</span>
-            <el-select
-              v-model="moreIform.bjList"
-              multiple
-              collapse-tags
-              placeholder="请选择"
-              size="small"
-            >
-              <el-option
-                v-for="item in bjOps"
-                :key="item.dm"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
-          </el-col> -->
         </el-row>
-           <!-- <el-row :gutter="20" class="mt15">
-          <el-col :span="20">
-            <span>住宿类型：</span>
-            <el-select
-              v-model="moreIform.zslxmList"
-              multiple
-              placeholder="请选择"
-              collapse-tags
-            >
-              <el-option
-                v-for="(item, index) in zslxOps"
-                :key="index"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
-          </el-col>
-        </el-row> -->
         <el-row :gutter="20" class="mt15">
           <el-col :span="20">
             <span>申请时间：</span>
@@ -118,24 +83,6 @@
             ></el-date-picker>
           </el-col>
         </el-row>
-        <!-- <el-row :gutter="20" class="mt15">
-          <el-col :span="20">
-            <span>审核状态：</span>
-            <el-select
-              v-model="status"
-              multiple
-              placeholder="请选择"
-              collapse-tags
-            >
-              <el-option
-                v-for="(item, index) in ztStatus"
-                :key="index"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
-          </el-col>
-        </el-row> -->
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">培养层次：</el-col>
           <el-col :span="20">
@@ -167,7 +114,7 @@
               v-for="(item, index) in allXn"
               :key="index"
               :label="item.mc"
-              :value="item.mc"
+              :value="item.dm"
             ></el-option>
           </el-select>
           <span>学年</span>
@@ -176,15 +123,6 @@
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <!-- <div class="btns borderRed" @click="back">
-            <i class="icon backIcon"></i><span class="title">退回</span>
-          </div>
-          <div class="btns borderRed" @click="refuse">
-            <i class="icon refuseIcon"></i><span class="title">拒绝</span>
-          </div>
-          <div class="btns fullGreen" @click="pass">
-            <i class="icon passIcon"></i><span class="title1">通过</span>
-          </div> -->
         </div>
       </div>
       <div class="mt15">
@@ -208,8 +146,6 @@
           <el-table-column prop="dwhmc" label="培养单位" min-width="100" sortable> </el-table-column>
           <el-table-column prop="zydmmc" label="专业" min-width="100" sortable> </el-table-column>
           <el-table-column prop="sqsj" label="申请时间" min-width="100" sortable> </el-table-column>
-          <!-- <el-table-column prop="zsjsrq" label="住宿结束时间" min-width="100" sortable>
-          </el-table-column> -->
           <el-table-column prop="createDwhMc" label="审核进度">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="lctClick(scope.row)">
@@ -776,11 +712,11 @@ export default {
       var data = {
         // xh: row.xh,
         // roleId: this.$store.getters.roleId,
-        id: row.businesId,
+        businesId: row.businesId,
+        processId: row.processid,
       };
       await queryDshDetail(data).then((res) => {
         this.formDetails = res.data;
-        // this.pyccflag = res.data.zslxm;
       });
       
     },

@@ -603,7 +603,7 @@ import {
 } from "@/api/growFiles/scholarships";
 import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
-
+import { delwj } from "@/api/assistantWork/classEvent";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 export default {
   name: "scholarships",
@@ -875,7 +875,7 @@ export default {
           });
         }
 
-        updateJxj(data).then((res) => {
+        updateJxj(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("编辑成功");
             this.getinList();
@@ -900,7 +900,6 @@ export default {
         je: "",
         sldw: "",
         zsbh: "",
-        sldw: "",
         fileList: [],
       };
       this.fileList = [];
@@ -912,18 +911,6 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        // let data = {
-        //   jxjmc: this.formAdd.addData[0].jxjmc,
-        //   hjsj: this.formAdd.addData[0].hjsj,
-        //   djm: this.formAdd.addData[0].djm,
-        //   jbm: this.formAdd.addData[0].jbm,
-        //   jxjlxm: this.formAdd.addData[0].jxjlxm,
-        //   je: this.formAdd.addData[0].je,
-        //   sldw: this.formAdd.addData[0].sldw,
-        //   jlxn: this.formAdd.addData[0].jlxn,
-        //   zsbh: this.formAdd.addData[0].zsbh,
-        //   xh: this.$store.getters.userId,
-        // };
         var data = this.formAdd.addData[0];
 
         let formData = new FormData();

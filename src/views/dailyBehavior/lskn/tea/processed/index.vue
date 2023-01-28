@@ -427,7 +427,7 @@
               <el-table-column label="学年" prop="xnmc"></el-table-column>
               <el-table-column label="学期" prop="xqmc"></el-table-column>
               <el-table-column
-                label="批准金额(元)"
+                label="申请金额(元)"
                 prop="sqje"
               ></el-table-column>
               <el-table-column
@@ -454,7 +454,7 @@
               <el-table-column label="学年" prop="xn"></el-table-column>
               <el-table-column label="学期" prop="xq"></el-table-column>
               <el-table-column
-                label="批准金额(元)"
+                label="申请金额(元)"
                 prop="sqje"
               ></el-table-column>
               <el-table-column
@@ -693,7 +693,7 @@ export default {
       tableHeader: [
         { dm: "dwhmc", mc: "培养单位" },
         { dm: "pyccmmc", mc: "培养层次" },
-        { dm: "sqje", mc: "批准金额" },
+        { dm: "sqje", mc: "申请金额" },
         { dm: "sqlbmc", mc: "申请类别" },
         { dm: "bjmmc", mc: "班级" },
         // { dm: "xnmc", mc: "学年" },
@@ -706,7 +706,7 @@ export default {
         checkBox: [
           { dm: "dwhmc", mc: "培养单位" },
           { dm: "pyccmmc", mc: "培养层次" },
-          { dm: "sqje", mc: "批准金额" },
+          { dm: "sqje", mc: "申请金额" },
           { dm: "sqlbmc", mc: "申请类别" },
           { dm: "bjmmc", mc: "班级" },
           { dm: "xnmc", mc: "学年" },

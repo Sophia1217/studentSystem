@@ -444,7 +444,7 @@
               <el-table-column label="学期" prop="xqmc"></el-table-column>
               <el-table-column
                 label="批准金额(元)"
-                prop="sqje"
+                prop="spje"
               ></el-table-column>
               <el-table-column
                 label="申请原因类别"
@@ -469,7 +469,7 @@
               <el-table-column label="学期" prop="xq"></el-table-column>
               <el-table-column
                 label="批准金额(元)"
-                prop="sqje"
+                prop="spje"
               ></el-table-column>
               <el-table-column
                 label="申请原因类别"
@@ -707,7 +707,7 @@ export default {
       tableHeader: [
         { dm: "dwhmc", mc: "培养单位" },
         { dm: "pyccmmc", mc: "培养层次" },
-        { dm: "sqje", mc: "批准金额" },
+        { dm: "spje", mc: "批准金额" },
         { dm: "sqlbmc", mc: "申请类别" },
         { dm: "bjmmc", mc: "班级" },
         // { dm: "xnmc", mc: "学年" },
@@ -720,7 +720,7 @@ export default {
         checkBox: [
           { dm: "dwhmc", mc: "培养单位" },
           { dm: "pyccmmc", mc: "培养层次" },
-          { dm: "sqje", mc: "批准金额" },
+          { dm: "spje", mc: "批准金额" },
           { dm: "sqlbmc", mc: "申请类别" },
           { dm: "bjmmc", mc: "班级" },
           { dm: "xnmc", mc: "学年" },
@@ -827,7 +827,7 @@ export default {
         var data = {
           xn: res.data.xnmc,
           xq: res.data.xqmc,
-          sqje: res.data.sqje,
+          spje: res.data.spje,
           sqyylb: res.data.sqlbmc,
           fileList: res.data.fileList,
         };

@@ -183,7 +183,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">待审核列表</span> <i class="Updataicon"></i>
+          <span class="title">已处理列表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
           <div class="btns borderBlue" @click="mbDown" v-show="AUTHFLAG">

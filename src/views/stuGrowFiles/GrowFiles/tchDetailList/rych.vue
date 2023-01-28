@@ -687,7 +687,7 @@ export default {
         formData.append("zsbh", data.zsbh);
 
         formData.append("id", data.id);
-        formData.append("xh", this.$store.getters.userId);
+        formData.append("xh", this.$route.query.xh);
         if (this.fileListAdd.length > 0) {
           this.fileListAdd.map((file) => {
             formData.append("files", file.raw);
@@ -720,7 +720,7 @@ export default {
         formData.append("grwc", data.grwc);
         formData.append("jbm", data.jbm);
         formData.append("zsbh", data.zsbh);
-        formData.append("xh", this.$store.getters.userId);
+        formData.append("xh", this.$route.query.xh);
         if (this.fileList.length > 0) {
           this.fileList.map((file) => {
             formData.append("files", file.raw);

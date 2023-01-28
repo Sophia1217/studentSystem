@@ -478,7 +478,7 @@ import {
 } from "@/api/dailyBehavior/dormStu";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getCollege,getGrade } from "@/api/class/maintenanceClass";
-import { getZY, getBJ} from "@/api/student/index";
+import { getZY} from "@/api/student/index";
 import lctCom from "../../../../components/lct";
 import { lctTable } from "@/api/stuDangan/detailList/xiaoneiwai";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
@@ -665,7 +665,6 @@ export default {
         this.moreIform.pread = []; // 班级
       }
       this.getZY(val);
-      this.getBJ(val);
     },
     // 学院找专业
     getZY(val) {
@@ -679,17 +678,7 @@ export default {
           .catch((err) => {});
       }
     },
-    getBJ(val) {
-      this.bjOps = [];
-      let data = { DWH: val };
-      if (Object.keys(val).length !== 0) {
-        getBJ(data)
-          .then((res) => {
-            this.bjOps = res.data;
-          })
-          .catch((err) => {});
-      }
-    },
+
     //获取学年
     getSchoolYears() {
       queryXn()

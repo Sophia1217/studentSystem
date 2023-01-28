@@ -62,7 +62,23 @@
           </el-table-column>
           <el-table-column prop="hjsj" label="获奖时间" sortable="custom">
           </el-table-column>
-
+          <el-table-column
+            prop="fileList"
+            label="附件"
+            align="center"
+            width="300"
+          >
+            <template slot-scope="scope">
+              <div v-for="item in scope.row.fileList">
+                <div style="display: flex; justify-content: space-between">
+                  <a>
+                    {{ item.fileName }}
+                  </a>
+                  <!-- <el-button>预览</el-button> -->
+                </div>
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column prop="status" label="审核状态" sortable="custom">
             <template slot-scope="scope">
               <el-select
@@ -275,6 +291,23 @@
                 </el-form-item>
               </template>
             </el-table-column>
+            <el-table-column label="附件" width="360px">
+              <template slot-scope="scope">
+                <el-upload
+                  action="#"
+                  multiple
+                  class="el-upload"
+                  :auto-upload="false"
+                  ref="upload"
+                  :file-list="scope.row.fileList"
+                  :on-change="fileChange"
+                  accept=".pdf,.jpg"
+                  :before-remove="beforeRemove"
+                >
+                  <el-button size="small" type="primary">点击上传</el-button>
+                </el-upload>
+              </template>
+            </el-table-column>
           </el-table>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -457,6 +490,23 @@
                 </el-form-item>
               </template>
             </el-table-column>
+            <el-table-column label="附件" width="450">
+              <template slot-scope="scope">
+                <el-upload
+                  action="#"
+                  multiple
+                  class="el-upload"
+                  accept=".pdf,.jpg"
+                  :auto-upload="false"
+                  ref="upload"
+                  :file-list="scope.row.fileList"
+                  :on-change="fileChange"
+                  :before-remove="beforeRemove"
+                >
+                  <el-button size="small" type="primary">点击上传</el-button>
+                </el-upload>
+              </template>
+            </el-table-column>
           </el-table>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -500,6 +550,7 @@ import {
 import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
+import { delwj } from "@/api/assistantWork/classEvent";
 export default {
   name: "scholarships",
   components: { lctCom },
@@ -525,6 +576,8 @@ export default {
       djmOps: [],
       jxjlxmOps: [],
       xnOptions: [],
+      fileList: [],
+      fileListAdd: [],
       val: [],
       url: "",
       rules: {
@@ -681,6 +734,30 @@ export default {
       this.val = val;
       this.delArr = val.map((item) => item.id);
     },
+    beforeRemove(file, fileList) {
+      console.log("file", file);
+      console.log("fileList", fileList);
+      let uid = file.uid;
+      let idx = fileList.findIndex((item) => item.uid === uid);
+      fileList.splice(idx, 0);
+      this.fileList = fileList;
+      if (file.id) {
+        //如果是后端返回的文件就走删除接口，不然前端自我删除
+        delwj({ id: file.id.toString() }).then();
+      }
+    },
+    fileChange(file, fileList) {
+      if (Number(file.size / 1024 / 1024) > 1) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
+        this.$message.error("单个文件大小不得超过2M");
+      } else if (file.status == "ready") {
+        this.fileListAdd = [];
+        this.fileListAdd.push(file); //修改编辑的文件参数
+      }
+      this.fileList = fileList;
+    },
     bianji(row) {
       this.formEdit.editData = [];
 
@@ -692,8 +769,27 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        let data = this.formEdit.editData[0];
-        updateJxj(data).then((res) => {
+        var data = this.formEdit.editData[0];
+        let formData = new FormData();
+        formData.append("jxjmc", data.jxjmc);
+        formData.append("hjsj", data.hjsj);
+        formData.append("djm", data.djm);
+        formData.append("jbm", data.jbm);
+        formData.append("jxjlxm", data.jxjlxm);
+        formData.append("je", data.je);
+        formData.append("sldw", data.sldw);
+        formData.append("jlxn", data.jlxn);
+        formData.append("zsbh", data.zsbh);
+        formData.append("xh", this.$route.query.xh);
+
+        formData.append("id", data.id);
+
+        if (this.fileListAdd.length > 0) {
+          this.fileListAdd.map((file) => {
+            formData.append("fileList", file.raw);
+          });
+        }
+        updateJxj(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("编辑成功");
             this.getinList();
@@ -717,7 +813,10 @@ export default {
         jxjlxm: "",
         je: "",
         sldw: "",
+        zsbh: "",
+        fileList: [],
       };
+      this.fileList = [];
       this.formAdd.addData.push(newLine);
       this.addModal = true;
     },
@@ -726,18 +825,24 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        let data = {
-          jxjmc: this.formAdd.addData[0].jxjmc,
-          hjsj: this.formAdd.addData[0].hjsj,
-          djm: this.formAdd.addData[0].djm,
-          jbm: this.formAdd.addData[0].jbm,
-          jxjlxm: this.formAdd.addData[0].jxjlxm,
-          je: this.formAdd.addData[0].je,
-          sldw: this.formAdd.addData[0].sldw,
-          xh: this.$route.query.xh,
-        };
-
-        insertJxj(data).then((res) => {
+        var data = this.formAdd.addData[0];
+        let formData = new FormData();
+        formData.append("jxjmc", data.jxjmc);
+        formData.append("hjsj", data.hjsj);
+        formData.append("djm", data.djm);
+        formData.append("jbm", data.jbm);
+        formData.append("jxjlxm", data.jxjlxm);
+        formData.append("je", data.je);
+        formData.append("sldw", data.sldw);
+        formData.append("jlxn", data.jlxn);
+        formData.append("zsbh", data.zsbh);
+        formData.append("xh", this.$route.query.xh);
+        if (this.fileList.length > 0) {
+          this.fileList.map((file) => {
+            formData.append("fileList", file.raw);
+          });
+        }
+        insertJxj(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("新增成功");
             this.getinList();

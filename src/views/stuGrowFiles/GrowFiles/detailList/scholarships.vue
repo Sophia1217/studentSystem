@@ -752,6 +752,7 @@ export default {
       this.lctModal = false;
     },
     chehui(row) {
+      row.fileList = [];//仅在此模块置空
       RollBackJxj({ ...row }).then((res) => {
         if (res.errcode == "00") {
           this.$message.success("撤销成功");
@@ -762,6 +763,9 @@ export default {
       });
     },
     tj() {
+      for(var i = 0;i< this.val.length;i++){
+        this.val[i].fileList =[];
+      }//仅在此模块置空
       var data = this.val;
       commitJxj(data).then((res) => {
         if (res.errcode == "00") {

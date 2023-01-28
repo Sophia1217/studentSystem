@@ -241,9 +241,24 @@
           </el-table-column>
           <el-table-column prop="createDwhMc" label="审核进度">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="lctClick(scope.row)">
+              <el-button 
+                type="text" 
+                size="small" 
+                @click="lctClick(scope.row)"
+                v-show="scope.row.sftb == '1'"
+              >
                 <i class="scopeIncon lct"></i>
                 <span class="handleName">流转记录</span>
+              </el-button>
+              <el-button 
+                type="text" 
+                size="small" 
+                @click="lctClick(scope.row)"
+                v-show="scope.row.sftb !== '1'"
+                disabled
+              >
+                <i class="scopeIncon lct"></i>
+                <span class="handleName2">流转记录</span>
               </el-button>
             </template>
           </el-table-column>
@@ -1450,6 +1465,12 @@ export default {
     font-weight: 400;
     font-size: 14px;
     color: #005657;
+    line-height: 28px;
+  }
+  .handleName2 {
+    font-weight: 400;
+    font-size: 14px;
+    color: #bfbfbf;
     line-height: 28px;
   }
   .mt15 {

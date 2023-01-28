@@ -1,8 +1,7 @@
 <template>
   <div class="basicInfo">
-    <topTitle :routeTitle="routeTitle"></topTitle>
     <div class="searchWrap">
-      
+      <topTitle :routeTitle="routeTitle"></topTitle>
       <!-- 搜索 -->
       <div class="search">
         <el-input
@@ -447,9 +446,10 @@ import {
 } from "@/api/dailyBehavior/stuTravel";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import lctCom from "../../../components/lct";
+import topTitle from "../../../components/topTitle";
 export default {
   name: "BasicInfo",
-  components: { lctCom },
+  components: { lctCom, topTitle },
   props: [],
   data() {
     return {
@@ -538,6 +538,7 @@ export default {
     this.getAllZd();
     this.getCode("dmsplcm"); //状态
     this.routeTitle = this.$route.meta.title;
+    console.log("title",this.$route.meta.title);
   },
 
   methods: {

@@ -106,10 +106,11 @@
               ><template slot-scope="scope">
                 <el-input
                   v-model="scope.row.yjsjhed"
-                  maxlength="100"
+                  maxlength="10"
                   oninput="this.value=this.value.replace(/[^\d]/g,'')"
                   placeholder="请输入数字"
                   style="width: 100px"
+                  @keyup.enter.native="handleUpdata(scope.row)"
                 />
               </template>
             </el-table-column>

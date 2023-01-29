@@ -618,19 +618,11 @@ export default {
       });
     },
     showDel() {
-      var falg = 1;
-      for (var i = 0; i < this.val.length; i++) {
-        if (this.val[i].status !== "01") falg = 2;
-      }
-      if (falg == 1) {
         if (this.delArr && this.delArr.length > 0) {
           this.delModal = true;
         } else {
           this.$message.error("请先勾选数据");
         }
-      } else {
-        this.$message.error("存在非草稿状态数据，不可以删除");
-      }
     },
     delCancel() {
       this.delModal = false;

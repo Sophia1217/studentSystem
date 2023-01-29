@@ -682,6 +682,7 @@ export default {
         var data = {
           xn: this.formEdit.xn,
           zwxj: this.formEdit.zwxj,
+          id: this.formEdit.id,
         };
         edit(data).then((res) => {
           if (res.errcode == "00") {

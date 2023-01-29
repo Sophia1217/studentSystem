@@ -690,7 +690,9 @@ export default {
       var data = {
         // xh: row.xh,
         // roleId: this.$store.getters.roleId,
-        id: row.businesId,
+        // id: row.businesId,
+        businesId: row.businesId,
+        processId: row.processid,
       };
       await queryDshDetail(data).then((res) => {
         this.formDetails = res.data;

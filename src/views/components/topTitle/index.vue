@@ -39,7 +39,8 @@ export default {
 .topButtonLight {
   cursor: pointer;
   padding: 1px 12px;
-  width: 61px;
+  width: 100px;
+  text-align: center;
   height: 32px;
   left: 152px;
   top: 72px;

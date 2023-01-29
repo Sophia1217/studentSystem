@@ -222,11 +222,12 @@ export default {
   height: 310px;
 }
 .manStudentStyle {
+  background: #fff;
+
   .mt15 {
     margin-top: 15px;
   }
   .searchWrap {
-    background: #fff;
     padding: 20px;
     .search {
       display: flex;

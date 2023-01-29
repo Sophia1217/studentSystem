@@ -1,6 +1,7 @@
 <template>
   <div class="wrap">
     <div class="detail_left">
+      <topTitle :routeTitle="routeTitle"></topTitle>
       <el-tabs v-model="activeName" class="tab_left" tab-position="left">
         <el-tab-pane label="保留学籍" name="0"> </el-tab-pane>
         <el-tab-pane label="休学" name="1"> </el-tab-pane>
@@ -27,17 +28,23 @@ import xx from "../list/xx.vue";
 import tx from "../list/tx.vue";
 import bl from "../list/bl.vue";
 import fx from "../list/fx.vue";
+import topTitle from "../../../components/topTitle";
 export default {
   components: {
     xx,
     tx,
     bl,
     fx,
+    topTitle,
   },
   data() {
     return {
       activeName: "0",
+      routeTitle: "",
     };
+  },
+  mounted() {
+    this.routeTitle = this.$route.meta.title;
   },
 };
 </script>

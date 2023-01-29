@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="tableWrap mt15">
+      <topTitle :routeTitle="routeTitle"></topTitle>
       <div class="headerTop">
         <div class="headerLeft">
           <span class="title">申请列表</span> <i class="Updataicon"></i>
@@ -491,11 +492,11 @@ import { querywj, delwj } from "@/api/assistantWork/classEvent";
 import { queryXnXQ } from "@/api/common/common";
 import lctCom from "../../../components/lct";
 import { getGrade } from "@/api/class/maintenanceClass";
-
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+import topTitle from "../../../components/topTitle";
 
 export default {
-  components: { lctCom },
+  components: { lctCom,topTitle },
   data() {
     return {
       allNj: [],
@@ -529,6 +530,7 @@ export default {
       dmsfbzm: [],
       zh: false,
       chehuiModal: false,
+      routeTitle: "",
       rules: {
         sqly: [
           {
@@ -584,6 +586,7 @@ export default {
     this.getCode("dmsfbzm"); //
     this.getCode("dmxqm"); //学期
     this.getCode("dmlsknsqlb"); //申请原因类别
+    this.routeTitle = this.$route.meta.title;
   },
 
   methods: {

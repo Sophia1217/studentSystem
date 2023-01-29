@@ -1,5 +1,6 @@
 <template>
   <div class="talk">
+    <topTitle :routeTitle="routeTitle"></topTitle>
     <el-tabs v-model="activeName" class="tabs" @tab-click="handleClick">
       <el-tab-pane label="请假单" name="first">
         <span slot="label"><i class="icon tabsicon_ke"></i>请假单</span>
@@ -16,16 +17,20 @@
 <script>
 import apply from "./apply/index.vue";
 import cancel from "./cancel/index.vue";
+import topTitle from "../../../components/topTitle";
 export default {
   name: "insurance",
-  components: { apply, cancel },
+  components: { apply, cancel,topTitle },
   data() {
     return {
       activeName: "first",
+      routeTitle: "",
     };
   },
 
-  mounted() {},
+  mounted() {
+    this.routeTitle = this.$route.meta.title;
+  },
 
   methods: {
     handleClick(tab, event) {

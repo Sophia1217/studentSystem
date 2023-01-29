@@ -1,6 +1,7 @@
 <template>
   <div class="wrap">
     <div class="detail_left">
+      <topTitle :routeTitle="routeTitle"></topTitle>
       <el-tabs v-model="activeName" class="tab_left" tab-position="left">
         <el-tab-pane label="干部经历" name="0"> </el-tab-pane>
         <el-tab-pane label="科研论文" name="1"> </el-tab-pane>
@@ -88,6 +89,7 @@ import kyzz from "./detailList/kyzz";
 import kyrz from "./detailList/kyrz";
 import yjbg from "./detailList/yjbg";
 import djzs from "./detailList/djzs";
+import topTitle from "../../components/topTitle";
 
 export default {
   components: {
@@ -107,11 +109,16 @@ export default {
     kyrz,
     yjbg,
     djzs,
+    topTitle,
   },
   data() {
     return {
       activeName: "0",
+      routeTitle: "",
     };
+  },
+  mounted() {
+    this.routeTitle = this.$route.meta.title;
   },
 };
 </script>

@@ -1,6 +1,7 @@
 <template>
   <div class="basicInfo">
     <div class="searchWrap">
+      <topTitle :routeTitle="routeTitle"></topTitle>
       <!-- 搜索 -->
       <div class="search">
         <el-input
@@ -394,9 +395,10 @@ import {
 } from "@/api/dailyBehavior/docReplace";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import lctCom from "../../components/lct";
+import topTitle from "../../components/topTitle";
 export default {
   name: "BasicInfo",
-  components: { lctCom },
+  components: { lctCom,topTitle },
   props: [],
   data() {
     return {
@@ -443,6 +445,7 @@ export default {
       editModal: false,
       formAdd: {},
       formEdit: {},
+      routeTitle: "",
       rules: {
         zjlx: [
           {
@@ -477,6 +480,7 @@ export default {
     //this.getAllZd();
     this.getCode("dmsplcm"); //状态
     this.getCode("dmxszjlxm"); //证件类型
+    this.routeTitle = this.$route.meta.title;
   },
   methods: {
     // 表单校验

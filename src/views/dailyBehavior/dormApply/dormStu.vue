@@ -3,6 +3,7 @@
 
     <!-- 搜索结果显示表格 -->
     <div class="tableWrap mt15">
+      <topTitle :routeTitle="routeTitle"></topTitle>
       <div class="headerTop">
         <div class="headerLeft">
           <span class="title">住宿申请列表</span>
@@ -529,9 +530,10 @@ import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { getLocationjl } from "@/api/student/index";
 import { delwj } from "@/api/assistantWork/classEvent";
 import lctCom from "../../components/lct";
+import topTitle from "../../components/topTitle";
 export default {
   name: "BasicInfo",
-  components: { lctCom },
+  components: { lctCom,topTitle },
   props: [],
   data() {
     return {
@@ -599,6 +601,7 @@ export default {
       options: [],
       fileList: [],
       fileListAdd: [],
+      routeTitle: "",
       rules: {
         sfts: [
           { required: true, message: "是否退宿不能为空", trigger: "change" },
@@ -629,6 +632,7 @@ export default {
     this.getCode("dmsplcm"); //状态
     this.getCode("dmsfbzm"); // 是否
     this.getLocationjl();
+    this.routeTitle = this.$route.meta.title;
   },
 
   methods: {

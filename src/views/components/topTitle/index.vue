@@ -49,7 +49,7 @@ export default {
 .topButtonBg {
   padding: 1px 12px;
   gap: 12px;
-  min-width: 90px;
+  min-width: 130px;
   text-align: center;
   line-height: 32px;
   height: 32px;

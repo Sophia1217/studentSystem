@@ -1,25 +1,29 @@
 <template>
-  <div class="wrap">
-    <div class="detail_left">
+  <div>
+    <div style="margin-top: 15px">
       <topTitle :routeTitle="routeTitle"></topTitle>
-      <el-tabs v-model="activeName" class="tab_left" tab-position="left">
-        <el-tab-pane label="保留学籍" name="0"> </el-tab-pane>
-        <el-tab-pane label="休学" name="1"> </el-tab-pane>
-        <el-tab-pane label="退学" name="2"> </el-tab-pane>
-        <el-tab-pane label="复学" name="3"> </el-tab-pane>
-      </el-tabs>
     </div>
-    <div class="detail_right" v-if="activeName == '0'">
-      <bl></bl>
-    </div>
-    <div class="detail_right" v-if="activeName == '1'">
-      <xx></xx>
-    </div>
-    <div class="detail_right" v-if="activeName == '2'">
-      <tx></tx>
-    </div>
-    <div class="detail_right" v-if="activeName == '3'">
-      <fx></fx>
+    <div class="wrap">
+      <div class="detail_left">
+        <el-tabs v-model="activeName" class="tab_left" tab-position="left">
+          <el-tab-pane label="保留学籍" name="0"> </el-tab-pane>
+          <el-tab-pane label="休学" name="1"> </el-tab-pane>
+          <el-tab-pane label="退学" name="2"> </el-tab-pane>
+          <el-tab-pane label="复学" name="3"> </el-tab-pane>
+        </el-tabs>
+      </div>
+      <div class="detail_right" v-if="activeName == '0'">
+        <bl></bl>
+      </div>
+      <div class="detail_right" v-if="activeName == '1'">
+        <xx></xx>
+      </div>
+      <div class="detail_right" v-if="activeName == '2'">
+        <tx></tx>
+      </div>
+      <div class="detail_right" v-if="activeName == '3'">
+        <fx></fx>
+      </div>
     </div>
   </div>
 </template>

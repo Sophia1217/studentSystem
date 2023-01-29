@@ -55,6 +55,7 @@ export default {
   height: 32px;
   left: 213px;
   top: 72px;
+  color: white;
   background: #006569;
 }
 </style>

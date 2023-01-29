@@ -187,7 +187,22 @@
                   <i class="scopeIncon chDis"></i>
                   <span style="color: #bfbfbf">撤回</span>
                 </el-button>
-                <el-button type="text" size="small" @click="showDel(index)">
+                <el-button
+                  type="text"
+                  size="small"
+                  :disabled="true"
+                  @click="showDel(index)"
+                  v-show="ele.status !== '01'"
+                >
+                  <i class="scopeIncon del"></i>
+                  <span style="color: #bfbfbf">删除</span>
+                </el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="showDel(index)"
+                  v-show="ele.status == '01'"
+                >
                   <i class="scopeIncon del"></i>
                   <span>删除</span>
                 </el-button>

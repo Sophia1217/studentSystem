@@ -2976,9 +2976,9 @@ export default {
     height: 20px;
     vertical-align: middle;
   }
-  .handledie {
-    background: url("~@/assets/images/details.png");
-  }
+  // .handledie {
+  //   background: url("~@/assets/images/details.png");
+  // }
   .handleName {
     font-weight: 400;
     font-size: 14px;

@@ -534,10 +534,7 @@ export default {
       thly: "",
       tempRadio: false,
       detailModal: false,
-      formDetails: {
-        sqldid:"",
-        sqfjid:"",
-      },
+      formDetails: {},
       editDetails:[],
       editparams:{},
       shjgOps:[
@@ -546,13 +543,6 @@ export default {
         {dm:'03',mc: '退回'},
       ],
       pyccflag: 1,//1本科2硕博
-      zslxOps: [
-        {dm: "1", mc: "校内集中住宿"},
-        {dm: "2", mc: "非集中住宿"},
-      ],
-      fjOps:[],
-      ldOps:[],
-      updateLdFlag: 1,//1楼栋不可修改，2楼栋可修改
       rules: {
         // shjg: [
         //   { required: true, message: "审核结果不能为空", trigger: "change" },
@@ -1102,7 +1092,7 @@ export default {
         display: flex;
         align-items: center;
         .title {
-          flex: 0 0 160px;
+          flex: 0 0 140px;
           line-height: 48px;
           background: #e0e0e0;
           text-align: right;

@@ -209,7 +209,6 @@
         title="申报详情"
         :visible.sync="detailModal"
         :before-close="detailCancel"
-        @close="emptyDetails()"
         width="60%"
       >
         <template>
@@ -392,36 +391,15 @@
                 <el-col :span="20">
                   <el-form-item label="申请审核结果"
                     label-width="120px" 
-                    prop="shjg"
                   >
-                    <el-select
-                      v-model="editDetails.shjg"
-                      collapse-tags
-                      @change="changeJG(editDetails.shjg)"
-                      placeholder="请选择"
-                      disabled
-                      size="small"
-                    >
-                      <el-option
-                        v-for="item in shjgOps"
-                        :key="item.dm"
-                        :label="item.mc"
-                        :value="item.dm"
-                      ></el-option>
-                    </el-select>
+                    <div>{{editDetails.statusChinese}}</div>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row :gutter="20">
                 <el-col :span="20">
-                  <el-form-item label="申请审核意见" label-width="120px" prop="shyj">
-                    <el-input 
-                      v-model="editDetails.shyj"
-                      :autosize="{ minRows: 2 }"
-                      type="textarea"
-                      readonly
-                      maxlength="500"
-                    />
+                  <el-form-item label="申请审核意见" label-width="120px">
+                    <div>{{editDetails.shyj}}</div>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -431,8 +409,6 @@
         </template>
         <span slot="footer" class="dialog-footer">
         <el-button @click="detailCancel">关 闭</el-button>
-        <!-- <el-button type="primary" class="confirm" @click="editClick"
-          >确 定</el-button> -->
       </span>
       </el-dialog>
       <pagination
@@ -523,25 +499,10 @@ export default {
       thly: "",
       tempRadio: false,
       detailModal: false,
-      formDetails: {
-        sqldid:"",
-        sqfjid:"",
-      },
-      editDetails:[],
+      formDetails: {},
+      editDetails:[{shyj:"",statusChinese:"",}],
       editparams:{},
-      shjgOps:[
-        {dm:'01',mc: '通过'},
-        {dm:'02',mc: '拒绝'},
-        {dm:'03',mc: '退回'},
-      ],
       pyccflag: 1,//1本科2硕博
-      zslxOps: [
-        {dm: "1", mc: "校内集中住宿"},
-        {dm: "2", mc: "非集中住宿"},
-      ],
-      fjOps:[],
-      ldOps:[],
-      updateLdFlag: 1,//1楼栋不可修改，2楼栋可修改
       rules: {
         // shjg: [
         //   { required: true, message: "审核结果不能为空", trigger: "change" },
@@ -686,9 +647,9 @@ export default {
       }
       this.detailModal = true;
       this.editparams = row;
+      this.editDetails.shyj = row.commentList[0];
+      this.editDetails.statusChinese = row.statusChinese;
       var data = {
-        // xh: row.xh,
-        // roleId: this.$store.getters.roleId,
         businesId: row.businesId,
         processId: row.processid,
       };
@@ -696,11 +657,6 @@ export default {
         this.formDetails = res.data;
       });
       
-    },
-    emptyDetails() {
-      this.$nextTick(() => {
-        this.$refs.editDetails.resetFields();
-      });
     },
     detailCancel() {
       this.detailModal = false;
@@ -809,22 +765,6 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
     },
-    // changeJG(val){
-    //   console.log("taskId",this.editparams.taskId);
-    //   if(val && val == "03"){
-    //     console.log("this.editDetails.shjg",this.editDetails.shjg);
-    //     var processid = { processid: this.editparams.taskId };
-    //     backFlow(processid).then((res) => {
-    //       this.tableInner = res.data;
-    //     });
-    //     this.thTableModal = true;
-    //   } 
-    //   // else if(val && val == "02"){
-    //   //   console.log(22);
-    //   // } else {
-    //   //   console.log(33);
-    //   // } 
-    // },
   },
 };
 </script>
@@ -1029,7 +969,7 @@ export default {
         display: flex;
         align-items: center;
         .title {
-          flex: 0 0 160px;
+          flex: 0 0 140px;
           line-height: 48px;
           background: #e0e0e0;
           text-align: right;

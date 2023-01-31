@@ -101,7 +101,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft"> 
-          <span class="title">待审核列表</span> <i class="Updataicon"></i>
+          <span class="title">小结列表</span> <i class="Updataicon"></i>
           <el-select
             v-model="moreIform.xn"
             collapse-tags
@@ -209,7 +209,6 @@
         title="申报详情"
         :visible.sync="detailModal"
         :before-close="detailCancel"
-        @close="emptyDetails()"
         width="60%"
       >
         <template>
@@ -386,7 +385,7 @@
               </el-row>
             </div>
           </el-form>
-          <div class="formLeft"><span class="title">审核信息</span></div>
+          <!-- <div class="formLeft"><span class="title">审核信息</span></div>
           <el-form :data="editDetails" ref="editDetails" label-width="110px" :rules="rules">
             <el-row :gutter="20">
                 <el-col :span="20">
@@ -425,14 +424,13 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-          </el-form>
+          </el-form> -->
               
           </div>
         </template>
         <span slot="footer" class="dialog-footer">
         <el-button @click="detailCancel">关 闭</el-button>
-        <!-- <el-button type="primary" class="confirm" @click="editClick"
-          >确 定</el-button> -->
+
       </span>
       </el-dialog>
       <pagination
@@ -535,13 +533,6 @@ export default {
         {dm:'03',mc: '退回'},
       ],
       pyccflag: 1,//1本科2硕博
-      zslxOps: [
-        {dm: "1", mc: "校内集中住宿"},
-        {dm: "2", mc: "非集中住宿"},
-      ],
-      fjOps:[],
-      ldOps:[],
-      updateLdFlag: 1,//1楼栋不可修改，2楼栋可修改
       rules: {
         // shjg: [
         //   { required: true, message: "审核结果不能为空", trigger: "change" },
@@ -699,11 +690,6 @@ export default {
       });
       
     },
-    emptyDetails() {
-      this.$nextTick(() => {
-        this.$refs.editDetails.resetFields();
-      });
-    },
     detailCancel() {
       this.detailModal = false;
       this.commonParams = [];
@@ -811,22 +797,6 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
     },
-    // changeJG(val){
-    //   console.log("taskId",this.editparams.taskId);
-    //   if(val && val == "03"){
-    //     console.log("this.editDetails.shjg",this.editDetails.shjg);
-    //     var processid = { processid: this.editparams.taskId };
-    //     backFlow(processid).then((res) => {
-    //       this.tableInner = res.data;
-    //     });
-    //     this.thTableModal = true;
-    //   } 
-    //   // else if(val && val == "02"){
-    //   //   console.log(22);
-    //   // } else {
-    //   //   console.log(33);
-    //   // } 
-    // },
   },
 };
 </script>
@@ -1031,7 +1001,7 @@ export default {
         display: flex;
         align-items: center;
         .title {
-          flex: 0 0 160px;
+          flex: 0 0 140px;
           line-height: 48px;
           background: #e0e0e0;
           text-align: right;

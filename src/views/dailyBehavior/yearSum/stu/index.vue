@@ -106,7 +106,7 @@
       <el-dialog
         title="新增"
         :visible.sync="addModal"
-        width="50%"
+        width="40%"
         @close="addCance"
         :close-on-click-modal="false"
       >
@@ -115,93 +115,303 @@
           :model="formAdd"
           :rules="rules"
           label-width="150px"
+          style="margin: 0 100px"
+          :label-position="benke == '2' ? 'top' : 'right'"
         >
-          <span class="jbxx">学生基本信息</span>
-          <el-row>
-            <el-col :span="8" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">学号</div>
-                <div class="bs">{{ basicInfo.xh }}</div>
-              </div>
-            </el-col>
-            <el-col :span="8" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">姓名</div>
-                <div class="bs">{{ basicInfo.xm }}</div>
-              </div>
-            </el-col>
-            <el-col :span="8" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">性别</div>
-                <div class="bs">{{ basicInfo.xbmc }}</div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="8" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">培养层次</div>
-                <div class="bs">{{ basicInfo.pyccmc }}</div>
-              </div>
-            </el-col>
-            <el-col :span="8" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">培养单位</div>
-                <div class="bs">{{ basicInfo.dwhmc }}</div>
-              </div>
-            </el-col>
-            <el-col :span="8" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">年级</div>
-                <div class="bs">{{ basicInfo.ssnj }}</div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="8" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">专业</div>
-                <div class="bs">{{ basicInfo.zydmmc }}</div>
-              </div>
-            </el-col>
-            <el-col :span="16" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">班级</div>
-                <div class="bs">{{ basicInfo.bjmmc }}</div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-form-item
-              label="填写学年"
-              style="margin-top: 15px"
-              label-width="85px"
-              prop="xn"
-              :rules="rules.xn"
-            >
-              <el-select v-model="formAdd.xn" placeholder="请选择" clearable>
-                <el-option
-                  v-for="(item, index) in xnxqList"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.mc"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-row>
-          <el-row>
-            <el-form-item label="自我小结" label-width="85px" prop="zwxj">
-              <el-input
-                type="textarea"
-                :rows="15"
-                v-model="formAdd.zwxj"
-                placeholder="请输入内容"
-                show-word-limit
-                maxlength="1500"
+          <div v-if="benke == '3'">
+            <span class="jbxx">学生基本信息</span>
+            <el-row>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">学号</div>
+                  <div class="bs">{{ basicInfo.xh }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">姓名</div>
+                  <div class="bs">{{ basicInfo.xm }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">性别</div>
+                  <div class="bs">{{ basicInfo.xbmc }}</div>
+                </div>
+              </el-col>
+            </el-row>
+
+            <el-row>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">培养层次</div>
+                  <div class="bs">{{ basicInfo.pyccmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">培养单位</div>
+                  <div class="bs">{{ basicInfo.dwhmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">年级</div>
+                  <div class="bs">{{ basicInfo.ssnj }}</div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">专业</div>
+                  <div class="bs">{{ basicInfo.zydmmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="16" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">班级</div>
+                  <div class="bs">{{ basicInfo.bjmmc }}</div>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+          <div v-if="benke == '2'">
+            <span class="jbxx">学生基本信息</span>
+            <el-row>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">学号</div>
+                  <div class="bs">{{ basicInfo.xh }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">姓名</div>
+                  <div class="bs">{{ basicInfo.xm }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">性别</div>
+                  <div class="bs">{{ basicInfo.xbmc }}</div>
+                </div>
+              </el-col>
+            </el-row>
+
+            <el-row>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">出生日期</div>
+                  <div class="bs">{{ basicInfo.csrq }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">民族</div>
+                  <div class="bs">{{ basicInfo.mzmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">政治面貌</div>
+                  <div class="bs">{{ basicInfo.zzmmmc }}</div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">培养单位</div>
+                  <div class="bs">{{ basicInfo.dwhmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">专业</div>
+                  <div class="spcbs">{{ basicInfo.zydmmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">导师</div>
+                  <div class="bs">{{ basicInfo.dsxm }}</div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">攻读学位</div>
+                  <div class="bs">{{ basicInfo.gdxwmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">学位类型</div>
+                  <div class="bs">{{ basicInfo.xwlxmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">移动电话</div>
+                  <div class="bs">{{ basicInfo.yddh }}</div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="spcHs">上学年专业奖学金等级</div>
+                  <div class="bs">{{ basicInfo.sxnjxjdjmc }}</div>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+          <div v-if="benke == '3'">
+            <el-row>
+              <el-form-item
+                label="填写学年"
+                style="margin-top: 15px"
+                label-width="85px"
+                prop="xn"
+                :rules="rules.xn"
               >
-              </el-input>
-            </el-form-item>
-          </el-row>
+                <el-select v-model="formAdd.xn" placeholder="请选择" clearable>
+                  <el-option
+                    v-for="(item, index) in xnxqList"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.mc"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <el-form-item label="自我小结" label-width="85px" prop="zwxj">
+                <el-input
+                  type="textarea"
+                  :rows="15"
+                  v-model="formAdd.zwxj"
+                  placeholder="请输入内容"
+                  show-word-limit
+                  maxlength="1500"
+                >
+                </el-input>
+              </el-form-item>
+            </el-row>
+          </div>
+          <div v-if="benke == '2'">
+            <el-row>
+              <el-form-item
+                label="填写学年"
+                style="margin-top: 15px"
+                label-width="85px"
+                prop="xn"
+                :rules="rules.xn"
+              >
+                <el-select
+                  v-model="formAdd.xn"
+                  placeholder="请选择"
+                  @change="xnChange"
+                  clearable
+                >
+                  <el-option
+                    v-for="(item, index) in xnxqList"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.mc"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <div style="font-size: 16px; color: #606266; font-weight: 700">
+                自我小结
+              </div>
+            </el-row>
+            <el-row>
+              <el-form-item
+                label="政治思想表现"
+                label-width="85px"
+                prop="sxzzbx"
+              >
+                <el-input
+                  type="textarea"
+                  :rows="7"
+                  v-model="formAdd.sxzzbx"
+                  placeholder="请输入内容"
+                  show-word-limit
+                  maxlength="200"
+                >
+                </el-input>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <el-form-item
+                label="课程学习情况"
+                label-width="85px"
+                prop="kcxxqk"
+              >
+                <el-input
+                  type="textarea"
+                  :rows="7"
+                  v-model="formAdd.kcxxqk"
+                  placeholder="请输入内容"
+                  show-word-limit
+                  maxlength="200"
+                >
+                </el-input>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <el-form-item
+                label="科学研究（学位论文）工作和取得的成果、公开发表的学术论文等"
+                label-width="85px"
+                prop="kycg"
+              >
+                <el-input
+                  type="textarea"
+                  :rows="7"
+                  v-model="formAdd.kycg"
+                  placeholder="请输入内容"
+                  show-word-limit
+                  maxlength="200"
+                >
+                </el-input>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <el-form-item
+                label="专业实践、社会实践、学生工作等情况"
+                label-width="85px"
+                prop="zsxsj"
+              >
+                <el-input
+                  type="textarea"
+                  :rows="7"
+                  v-model="formAdd.zsxsj"
+                  placeholder="请输入内容"
+                  show-word-limit
+                  maxlength="200"
+                >
+                </el-input>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <el-form-item label="奖惩情况" label-width="85px" prop="jcqk">
+                <el-input
+                  type="textarea"
+                  :rows="7"
+                  v-model="formAdd.jcqk"
+                  placeholder="请输入内容"
+                  show-word-limit
+                  maxlength="200"
+                >
+                </el-input>
+              </el-form-item>
+            </el-row>
+          </div>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="addCance">取 消</el-button>
@@ -214,110 +424,329 @@
         title="详情"
         :visible.sync="editModal"
         @close="editCance"
-        width="50%"
+        width="40%"
         :close-on-click-modal="false"
       >
         <el-form
           ref="formEdit"
           :model="formEdit"
+          style="margin: 0 100px"
+          :label-position="benke == '2' ? 'top' : 'right'"
           :rules="rules"
           label-width="150px"
         >
-          <span class="jbxx">学生基本信息</span>
-          <el-row>
-            <el-col :span="8" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">学号</div>
-                <div class="bs">{{ basicInfo.xh }}</div>
-              </div>
-            </el-col>
-            <el-col :span="8" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">姓名</div>
-                <div class="bs">{{ basicInfo.xm }}</div>
-              </div>
-            </el-col>
-            <el-col :span="8" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">性别</div>
-                <div class="bs">{{ basicInfo.xbmc }}</div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="8" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">培养层次</div>
-                <div class="bs">{{ basicInfo.pyccmc }}</div>
-              </div>
-            </el-col>
-            <el-col :span="8" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">培养单位</div>
-                <div class="bs">{{ basicInfo.dwhmc }}</div>
-              </div>
-            </el-col>
-            <el-col :span="8" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">年级</div>
-                <div class="bs">{{ basicInfo.ssnj }}</div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="8" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">专业</div>
-                <div class="bs">{{ basicInfo.zydmmc }}</div>
-              </div>
-            </el-col>
-            <el-col :span="16" class="yiny">
-              <div style="display: flex; height: 50px">
-                <div class="hs">班级</div>
-                <div class="bs">{{ basicInfo.bjmmc }}</div>
-              </div>
-            </el-col>
-          </el-row>
+          <div v-if="benke == '3'">
+            <span class="jbxx">学生基本信息</span>
+            <el-row>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">学号</div>
+                  <div class="bs">{{ basicInfo.xh }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">姓名</div>
+                  <div class="bs">{{ basicInfo.xm }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">性别</div>
+                  <div class="bs">{{ basicInfo.xbmc }}</div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">培养层次</div>
+                  <div class="bs">{{ basicInfo.pyccmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">培养单位</div>
+                  <div class="bs">{{ basicInfo.dwhmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">年级</div>
+                  <div class="bs">{{ basicInfo.ssnj }}</div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">专业</div>
+                  <div class="bs">{{ basicInfo.zydmmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="16" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">班级</div>
+                  <div class="bs">{{ basicInfo.bjmmc }}</div>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+          <div v-if="benke == '2'">
+            <span class="jbxx">学生基本信息</span>
+            <el-row>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">学号</div>
+                  <div class="bs">{{ basicInfo.xh }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">姓名</div>
+                  <div class="bs">{{ basicInfo.xm }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">性别</div>
+                  <div class="bs">{{ basicInfo.xbmc }}</div>
+                </div>
+              </el-col>
+            </el-row>
 
-          <el-row>
-            <el-form-item
-              label="填写学年"
-              style="margin-top: 15px"
-              label-width="85px"
-              prop="xn"
-              :rules="rules.xn"
-            >
-              <div v-if="editFlag == '2'">{{ formEdit.xn }}</div>
-              <el-select
-                clearable
-                v-model="formEdit.xn"
-                placeholder="请选择"
-                v-if="editFlag == '3'"
+            <el-row>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">出生日期</div>
+                  <div class="bs">{{ basicInfo.csrq }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">民族</div>
+                  <div class="bs">{{ basicInfo.mzmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">政治面貌</div>
+                  <div class="bs">{{ basicInfo.zzmmmc }}</div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">培养单位</div>
+                  <div class="bs">{{ basicInfo.dwhmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">专业</div>
+                  <div class="spcbs">{{ basicInfo.zydmmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">导师</div>
+                  <div class="bs">{{ basicInfo.dsxm }}</div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">攻读学位</div>
+                  <div class="bs">{{ basicInfo.gdxwmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">学位类型</div>
+                  <div class="bs">{{ basicInfo.xwlxmc }}</div>
+                </div>
+              </el-col>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="hs">移动电话</div>
+                  <div class="bs">{{ basicInfo.yddh }}</div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8" class="yiny">
+                <div style="display: flex; height: 50px">
+                  <div class="spcHs">上学年专业奖学金等级</div>
+                  <div class="bs">{{ basicInfo.sxnjxjdjmc }}</div>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+          <div v-if="benke == '3'">
+            <el-row>
+              <el-form-item
+                label="填写学年"
+                style="margin-top: 15px"
+                label-width="85px"
+                prop="xn"
+                :rules="rules.xn"
               >
-                <el-option
-                  v-for="(item, index) in xnxqList"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.mc"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-row>
-          <el-row>
-            <el-form-item label="自我小结" label-width="85px" prop="zwxj">
-              <div v-if="editFlag == '2'">{{ formEdit.zwxj }}</div>
-              <el-input
-                v-if="editFlag == '3'"
-                type="textarea"
-                :rows="15"
-                v-model="formEdit.zwxj"
-                placeholder="请输入内容"
-                show-word-limit
-                maxlength="1500"
+                <div v-if="editFlag == '2'">{{ formEdit.xn }}</div>
+                <el-select
+                  clearable
+                  v-model="formEdit.xn"
+                  placeholder="请选择"
+                  v-if="editFlag == '3'"
+                >
+                  <el-option
+                    v-for="(item, index) in xnxqList"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.mc"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <el-form-item label="自我小结" label-width="85px" prop="zwxj">
+                <div v-if="editFlag == '2'">{{ formEdit.zwxj }}</div>
+                <el-input
+                  v-if="editFlag == '3'"
+                  type="textarea"
+                  :rows="15"
+                  v-model="formEdit.zwxj"
+                  placeholder="请输入内容"
+                  show-word-limit
+                  maxlength="1500"
+                >
+                </el-input>
+              </el-form-item>
+            </el-row>
+          </div>
+          <div v-if="benke == '2'">
+            <el-row>
+              <el-form-item
+                label="填写学年"
+                style="margin-top: 15px"
+                label-width="85px"
+                prop="xn"
+                :rules="rules.xn"
               >
-              </el-input>
-            </el-form-item>
-          </el-row>
+                <div v-if="editFlag == '2'">{{ formEdit.xn }}</div>
+                <el-select
+                  clearable
+                  v-model="formEdit.xn"
+                  placeholder="请选择"
+                  v-if="editFlag == '3'"
+                >
+                  <el-option
+                    v-for="(item, index) in xnxqList"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.mc"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <div style="font-size: 16px; color: #606266; font-weight: 700">
+                自我小结
+              </div>
+            </el-row>
+            <el-row>
+              <el-form-item
+                label="政治思想表现"
+                label-width="85px"
+                prop="sxzzbx"
+              >
+                <div v-if="editFlag == '2'">{{ formEdit.sxzzbx }}</div>
+                <el-input
+                  v-if="editFlag == '3'"
+                  type="textarea"
+                  :rows="7"
+                  v-model="formEdit.sxzzbx"
+                  placeholder="请输入内容"
+                  show-word-limit
+                  maxlength="200"
+                >
+                </el-input>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <el-form-item
+                label="课程学习情况"
+                label-width="85px"
+                prop="kcxxqk"
+              >
+                <div v-if="editFlag == '2'">{{ formEdit.kcxxqk }}</div>
+                <el-input
+                  v-if="editFlag == '3'"
+                  type="textarea"
+                  :rows="7"
+                  v-model="formEdit.kcxxqk"
+                  placeholder="请输入内容"
+                  show-word-limit
+                  maxlength="200"
+                >
+                </el-input>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <el-form-item
+                label="科学研究（学位论文）工作和取得的成果、公开发表的学术论文等"
+                label-width="85px"
+                prop="kycg"
+              >
+                <div v-if="editFlag == '2'">{{ formEdit.kycg }}</div>
+                <el-input
+                  v-if="editFlag == '3'"
+                  type="textarea"
+                  :rows="7"
+                  v-model="formEdit.kycg"
+                  placeholder="请输入内容"
+                  show-word-limit
+                  maxlength="200"
+                >
+                </el-input>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <el-form-item
+                label="专业实践、社会实践、学生工作等情况"
+                label-width="85px"
+                prop="zsxsj"
+              >
+                <div v-if="editFlag == '2'">{{ formEdit.zsxsj }}</div>
+                <el-input
+                  v-if="editFlag == '3'"
+                  type="textarea"
+                  :rows="7"
+                  v-model="formEdit.zsxsj"
+                  placeholder="请输入内容"
+                  show-word-limit
+                  maxlength="200"
+                >
+                </el-input>
+              </el-form-item>
+            </el-row>
+            <el-row>
+              <el-form-item label="奖惩情况" label-width="85px" prop="jcqk">
+                <div v-if="editFlag == '2'">{{ formEdit.jcqk }}</div>
+                <el-input
+                  v-if="editFlag == '3'"
+                  type="textarea"
+                  :rows="7"
+                  v-model="formEdit.jcqk"
+                  placeholder="请输入内容"
+                  show-word-limit
+                  maxlength="200"
+                >
+                </el-input>
+              </el-form-item>
+            </el-row>
+          </div>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button v-if="editFlag == 2" @click="editCance">关 闭</el-button>
@@ -424,7 +853,15 @@ export default {
   data() {
     return {
       xnxjModal: false,
-      formAdd: { xn: "", zwxj: "" },
+      formAdd: {
+        xn: "",
+        zwxj: "",
+        jcqk: "",
+        kcxxqk: "",
+        kycg: "",
+        sxzzbx: "",
+        zsxsj: "",
+      },
       //草稿状态和退回状态有编辑功能  01 || 08
       submitModal: false,
       lctModal: false,
@@ -451,6 +888,8 @@ export default {
       basicInfo: {},
       xnxqList: [],
       rulesBlcak: {},
+      benke: "2",
+      XN: "",
       rules: {
         xn: [
           {
@@ -463,6 +902,42 @@ export default {
           {
             required: true,
             message: "自我小结不能为空",
+            trigger: "blur",
+          },
+        ],
+        jcqk: [
+          {
+            required: true,
+            message: "奖惩情况不能为空",
+            trigger: "blur",
+          },
+        ],
+        kcxxqk: [
+          {
+            required: true,
+            message: "课程学习情况不能为空",
+            trigger: "blur",
+          },
+        ],
+        zsxsj: [
+          {
+            required: true,
+            message: "专业实践、社会实践、学生工作等情况不能为空",
+            trigger: "blur",
+          },
+        ],
+        kycg: [
+          {
+            required: true,
+            message:
+              "科学研究（学位论文）工作和取得的成果、公开发表的学术论文等不能为空",
+            trigger: "blur",
+          },
+        ],
+        sxzzbx: [
+          {
+            required: true,
+            message: "政治思想表现不能为空",
             trigger: "blur",
           },
         ],
@@ -682,18 +1157,27 @@ export default {
         var data = {
           xn: this.formEdit.xn,
           zwxj: this.formEdit.zwxj,
+          jcqk: this.formEdit.jcqk,
+          kcxxqk: this.formEdit.kcxxqk,
+          kycg: this.formEdit.kycg,
+          sxzzbx: this.formEdit.sxzzbx,
+          zsxsj: this.formEdit.zsxsj,
           id: this.formEdit.id,
         };
         edit(data).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("编辑成功");
             this.query();
+            this.editModal = false;
           } else {
             this.$message.error("编辑失败");
           }
         });
-        this.editModal = false;
       }
+    },
+    xnChange(e) {
+      this.XN = e;
+      this.getBASIC();
     },
     addClick() {
       if (!this.checkFormAdd()) {
@@ -703,8 +1187,12 @@ export default {
         var data = {
           xn: this.formAdd.xn,
           zwxj: this.formAdd.zwxj,
+          jcqk: this.formAdd.jcqk,
+          kcxxqk: this.formAdd.kcxxqk,
+          kycg: this.formAdd.kycg,
+          sxzzbx: this.formAdd.sxzzbx,
+          zsxsj: this.formAdd.zsxsj,
         };
-
         edit(data).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("新增成功");
@@ -730,60 +1218,42 @@ export default {
       });
     },
     getBASIC() {
-      getbascic({ xh: this.$store.getters.userId }).then((res) => {
+      getbascic({ xh: this.$store.getters.userId, xn: this.XN }).then((res) => {
+        //区分是本科还是研究生的弹框，默认是本科,初次加载获取到当前学号的培养层次就存起来，新增详情都会用到
+        if (res.data?.pyccm == "3") {
+          this.benke = "3";
+        } else {
+          this.benke = "2";
+        }
         this.basicInfo = res.data;
       });
     },
     xinzeng() {
-      this.formAdd = {};
+      this.formAdd = {
+        xn: "",
+        zwxj: "",
+        jcqk: "",
+        kcxxqk: "",
+        kycg: "",
+        sxzzbx: "",
+        zsxsj: "",
+      };
       this.addModal = true;
     },
     addCance() {
       this.addModal = false;
       this.$refs.formAdd.resetFields();
     },
-    // 判断 开始时间 结束时间
-    changeDate(flag) {
-      let startTimeAdd = this.formAdd.startTime; //新增开始时间
-      let endTimeAdd = this.formAdd.endTime; //新增开始时间
-      let startTimeEdit = this.formAdd.startTime; //编辑开始时间
-      let endTimeEdit = this.formAdd.endTime; //编辑开始时间
-      if (flag == 1) {
-        //新增开始时间
-        if (startTimeAdd && endTimeAdd) {
-          if (startTimeAdd > endTimeAdd) {
-            startTimeAdd = null;
-            this.$message.error("开始时间不能大于结束时间！");
-          }
-        }
-      } else if (flag == 2) {
-        //新增结束时间
-        if (endTimeAdd) {
-          if (startTimeAdd > endTimeAdd) {
-            endTimeAdd = null;
-            this.$message.error("结束时间不能小于开始时间！");
-          }
-        }
-      } else if (flag == 3) {
-        if (startTimeEdit && endTimeEdit) {
-          if (startTimeEdit > endTimeEdit) {
-            startTimeEdit = null;
-            this.$message.error("开始时间不能大于结束时间！");
-          }
-        }
-      } else {
-        if (endTimeEdit) {
-          if (startTimeEdit > endTimeEdit) {
-            endTimeEdit = null;
-            this.$message.error("结束时间不能小于开始时间！");
-          }
-        }
-      }
-    },
   },
 };
 </script>
 <style lang="scss" scoped>
+.spcHs {
+  flex: 0 0 100px;
+  background: #ccc;
+  padding-left: 20px;
+  padding-top: 7px;
+}
 .jbxx {
   font-family: "PingFang SC";
   font-style: normal;
@@ -809,6 +1279,11 @@ export default {
   padding-left: 40px;
   padding-top: 14px;
 }
+.spcbs {
+  padding-left: 20px;
+  padding-top: 7px;
+}
+
 .scopeIncon {
   display: inline-block;
   width: 20px;

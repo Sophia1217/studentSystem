@@ -136,7 +136,7 @@
     <el-dialog
       title="新增"
       :visible.sync="showJoin"
-      width="30%"
+      width="50%"
       @close="emptyDetails()"
     >
       <div class="form">

@@ -115,7 +115,7 @@
           :model="formAdd"
           :rules="rules"
           label-width="150px"
-          style="margin: 0 100px"
+          style="margin: 0 30px"
           :label-position="benke == '2' ? 'top' : 'right'"
         >
           <div v-if="benke == '3'">
@@ -229,7 +229,7 @@
               <el-col :span="8" class="yiny">
                 <div style="display: flex; height: 50px">
                   <div class="hs">专业</div>
-                  <div class="spcbs">{{ basicInfo.zydmmc }}</div>
+                  <div class="bs">{{ basicInfo.zydmmc }}</div>
                 </div>
               </el-col>
               <el-col :span="8" class="yiny">
@@ -430,7 +430,7 @@
         <el-form
           ref="formEdit"
           :model="formEdit"
-          style="margin: 0 100px"
+          style="margin: 0 30px"
           :label-position="benke == '2' ? 'top' : 'right'"
           :rules="rules"
           label-width="150px"
@@ -545,7 +545,7 @@
               <el-col :span="8" class="yiny">
                 <div style="display: flex; height: 50px">
                   <div class="hs">专业</div>
-                  <div class="spcbs">{{ basicInfo.zydmmc }}</div>
+                  <div class="bs">{{ basicInfo.zydmmc }}</div>
                 </div>
               </el-col>
               <el-col :span="8" class="yiny">
@@ -1276,12 +1276,11 @@ export default {
   padding-top: 14px;
 }
 .bs {
-  padding-left: 40px;
-  padding-top: 14px;
-}
-.spcbs {
   padding-left: 20px;
-  padding-top: 7px;
+  display: inline-block;
+  position: relative;
+  top: 80%;
+  transform: translateY(-50%);
 }
 
 .scopeIncon {

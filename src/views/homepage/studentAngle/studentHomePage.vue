@@ -107,14 +107,14 @@
       <span class="tohead">奖惩管理</span>
     </div>
     <div class="row">
-      <div class="item">
+      <div class="item stuInfoClick" @click="pjpyClick">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
         </div>
         <div class="content">
-          <div class="title1"><span class="stuinfoTitle">评奖结果</span></div>
+          <div class="title1"><span class="stuinfoTitle">评奖评优</span></div>
           <div class="title2">
-            <span class="baseInfo">模块建设中</span>
+            <span class="baseInfo">评奖评优集体奖项</span>
           </div>
         </div>
       </div>
@@ -131,25 +131,27 @@
           </div>
         </div>
       </div>
-      <div class="item">
+      <div class="item" @click="jtqkdcbClick">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
         </div>
         <div class="content">
-          <div class="title1"><span class="stuinfoTitle">奖项审核</span></div>
+          <div class="title1">
+            <span class="stuinfoTitle">家庭情况调查表</span>
+          </div>
           <div class="title2">
-            <span class="baseInfo">模块建设中</span>
+            <span class="baseInfo">家庭情况调查表填写</span>
           </div>
         </div>
       </div>
-      <div class="item">
+      <div class="item" @click="knsrdClick">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
         </div>
         <div class="content">
-          <div class="title1"><span class="stuinfoTitle">资助结果</span></div>
+          <div class="title1"><span class="stuinfoTitle">困难生认定</span></div>
           <div class="title2">
-            <span class="baseInfo">模块建设中</span>
+            <span class="baseInfo">困难生认定申请</span>
           </div>
         </div>
       </div>
@@ -358,6 +360,21 @@ export default {
     fdycpClick() {
       this.$router.push({
         path: "/fdyTest",
+      });
+    },
+    pjpyClick() {
+      this.$router.push({
+        path: "/awardsApply",
+      });
+    },
+    jtqkdcbClick() {
+      this.$router.push({
+        path: "/familySituationTable",
+      });
+    },
+    knsrdClick() {
+      this.$router.push({
+        path: "/difficultIdentity",
       });
     },
   },

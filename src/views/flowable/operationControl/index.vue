@@ -197,6 +197,8 @@ export default {
       this.businessName = row.businessname;
       this.value = row.flowname;
       this.addParams.id = row.id;
+      //弹框时直接回调触发change事件
+      this.seletChange(row.flowid);
       this.showExport = true;
     },
     //排序

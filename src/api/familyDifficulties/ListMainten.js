@@ -15,6 +15,7 @@ export function deleteData(query) {
     return request({
         url: '/rcswJtknXjmd/downLoad',
         method: 'post',
+        responseType:'blob',
         data: query
     })
   }

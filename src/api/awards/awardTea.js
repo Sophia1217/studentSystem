@@ -100,6 +100,15 @@ export function pjpyAdd(query) {
     data: query
   })
 }
+//教师端-评奖等级批量修改
+export function pjdjUpdate(query) {
+  return request({
+    url: '/rcswPjpyFlow/teaUpdateByBatch',
+    method: 'post',
+    data: query
+  })
+}
+
 
 
 

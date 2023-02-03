@@ -60,8 +60,8 @@
               size="small"
             >
               <el-option
-                v-for="item in allDwh"
-                :key="item.dm"
+                v-for="(item,index) in pjjxOps"
+                :key="index"
                 :label="item.mc"
                 :value="item.dm"
               ></el-option>
@@ -70,7 +70,7 @@
           <el-col :span="6">
             <span>评奖等级：</span>
             <el-select
-              v-model="moreIform.pjjxList"
+              v-model="moreIform.pjdjList"
               multiple
               collapse-tags
               @change="changeXY"
@@ -78,8 +78,8 @@
               size="small"
             >
               <el-option
-                v-for="item in allDwh"
-                :key="item.dm"
+                v-for="(item,index) in pjdjOps"
+                :key="index"
                 :label="item.mc"
                 :value="item.dm"
               ></el-option>
@@ -411,6 +411,10 @@ import {
   pjpyAdd,
   del,
 } from "@/api/awards/awardTea"
+import {
+  getAllpjjx,
+  getAllpjjxxx,
+} from "@/api/awards/stu";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getCollege,getGrade } from "@/api/class/maintenanceClass";
 import { getZY} from "@/api/student/index";
@@ -446,7 +450,7 @@ export default {
       moreIform: {
         dwhList: [], // 学院下拉框
         pjjxList: [],
-        pjjxList: [],
+        pjdjList: [],
         ssnjList:[],
       },
       exportParams: {},
@@ -488,6 +492,8 @@ export default {
       jxlb: "1",//个人奖项为1，集体奖项为2
       uploadUrl: process.env.VUE_APP_BASE_API + "/rcswPjpyFlow/importExcel",
       delArr: [],
+      pjdjOps: [],
+      pjjxOps: [],
       rules: {
         // shjg: [
         //   { required: true, message: "审核结果不能为空", trigger: "change" },
@@ -504,12 +510,24 @@ export default {
     this.getAllCollege();
     this.getSchoolYears();
     this.getCode("dmpyccm"); // 培养层次dmxbm
-    this.getCode("dmxbm"); // 性别
-    this.getCode1("dmsplcm"); 
     this.getAllGrade();
+    this.getJX();
   },
 
   methods: {
+    //奖项
+    getJX() {
+      getAllpjjx({ jxlb: "1" }).then((res) => {
+        this.pjjxOps = res.data;
+      });
+    },
+    changeJX(val) {
+      // getAllpjjxxx({ dm: val }).then((res) => {
+      //   this.pjdjOps = res.data.pjdjList;
+      //   // this.formAdd.pjzqXn = res.data.pjzqXn;
+      //   // this.formAdd.pjzqXq = res.data.pjzqXq;
+      // });
+    },
     changeXn(){
       this.handleSearch();
     },
@@ -526,7 +544,7 @@ export default {
       this.exportParams.pageNum = 0;
       this.exportParams.pageSize = 0;
       this.$set(this.exportParams, "idList", idList);
-      exportDsh(this.exportParams)
+      exportYsh(this.exportParams)
         .then((res) => {
           this.downloadFn(res, "评奖评优待审核列表导出.xlsx", "xlsx");
           if(this.$store.getters.excelcount > 0){
@@ -550,7 +568,7 @@ export default {
         xh: this.select == "xh" ? this.searchVal : null,
         dwhList: this.moreIform.dwhList,
         pjjxList: this.moreIform.pjjxList,
-        pjjxList: this.moreIform.pjjxList,
+        pjdjList: this.moreIform.pjdjList,
         ssnjList: this.moreIform.ssnjList,
         pyccmList: this.training.choose || [],
         loginId: this.$store.getters.userId,
@@ -564,16 +582,6 @@ export default {
       };//这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
       this.exportParams = data;
       this.showExport = true;
-    },
-    getCode1(val) {
-      const data = { codeTableEnglish: val };
-      getCodeInfoByEnglish(data).then((res) => {
-        switch (val) {
-          case "dmsplcm": //审批结果
-            this.ztStatus = res.data;
-            break;
-        }
-      });
     },
     getAllCollege() {
       getCollege()
@@ -657,7 +665,7 @@ export default {
         xh: this.select == "xh" ? this.searchVal : null,
         dwhList: this.moreIform.dwhList,
         pjjxList: this.moreIform.pjjxList,
-        pjjxList: this.moreIform.pjjxList,
+        pjdjList: this.moreIform.pjdjList,
         ssnjList: this.moreIform.ssnjList,
         pyccmList: this.training.choose || [],
         loginId: this.$store.getters.userId,
@@ -704,9 +712,6 @@ export default {
             case "dmpyccm":
               this.$set(this.training, "checkBox", res.data);
               break;
-            // case "dmxbm":
-            //   this.$set(this.dmxbmOPs, "checkBox", res.data);
-            //   this.xbOps = res.data;
           }
         })
         .catch((err) => {});
@@ -733,7 +738,7 @@ export default {
       this.delArr = val.map((item) => item.businesId);
       this.commonParams = this.multipleSelection.map((v) => ({
         businesId: v.businesId,
-        processid: v.processid,
+        processId: v.processid,
         status: v.status,
         taskId: v.taskId,
         xh: v.xh,
@@ -768,8 +773,9 @@ export default {
     },
     //模板下载
     mbDown() {
-      mbDown().then((res) => {
+      mbDown({jxlb: this.jxlb}).then((res) => {
         this.downloadFn(res, "评奖评优模板下载", "xlsx");
+        this.$message.success("操作成功");
       });
     },
     beforeRemove(file, fileList) {

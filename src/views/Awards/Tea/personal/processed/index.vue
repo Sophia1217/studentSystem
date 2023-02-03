@@ -55,13 +55,13 @@
               v-model="moreIform.pjjxList"
               multiple
               collapse-tags
-              @change="changeXY"
+              @change="changeJX"
               placeholder="请选择"
               size="small"
             >
               <el-option
-                v-for="item in allDwh"
-                :key="item.dm"
+                v-for="(item,index) in pjjxOps"
+                :key="index"
                 :label="item.mc"
                 :value="item.dm"
               ></el-option>
@@ -70,16 +70,15 @@
           <el-col :span="6">
             <span>评奖等级：</span>
             <el-select
-              v-model="moreIform.pjjxList"
+              v-model="moreIform.pjdjList"
               multiple
               collapse-tags
-              @change="changeXY"
               placeholder="请选择"
               size="small"
             >
               <el-option
-                v-for="item in allDwh"
-                :key="item.dm"
+                v-for="(item,index) in pjdjOps"
+                :key="index"
                 :label="item.mc"
                 :value="item.dm"
               ></el-option>
@@ -230,12 +229,31 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="同意提示" :visible.sync="multiModal" width="30%">
-        <el-row style="margin-left:15px">
+      <el-dialog title="批量审批" :visible.sync="multiModal" width="30%">
+        <el-row style="margin:0 0 15px 15px">
           <el-col :span="20">
-            <span>批量通过等级：</span>
+            <span>审核结果： </span>
             <el-select
-              v-model="moreIform.dwhList"
+              v-model="shjgGd"
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+              disabled
+            >
+              <el-option
+                v-for="item in shjgOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
+            </el-col>
+        </el-row>
+        <el-row style="margin:0 0 15px 15px">
+          <el-col :span="20">
+            <span>评奖等级：</span>
+            <el-select
+              v-model="updateDj"
               collapse-tags
               placeholder="请选择"
               size="small"
@@ -502,12 +520,17 @@ import {
   backFlow,
 } from "@/api/dailyBehavior/dormTea";
 import {
+  getAllpjjx,
+  getAllpjjxxx,
+} from "@/api/awards/stu";
+import {
   queryDshList,
   queryDshDetail,
   exportDsh,
   tyFlow,
   jjFlow,
   thFinal,
+  pjdjUpdate,
 } from "@/api/awards/awardTea"
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getCollege,getGrade } from "@/api/class/maintenanceClass";
@@ -522,7 +545,6 @@ export default {
     return {
       showExport: false,
       lctModal: false,
-      ztStatus: [],
       zdOps: [],
       status: [],
       datePicker: [],
@@ -532,7 +554,7 @@ export default {
       moreIform: {
         dwhList: [], // 学院下拉框
         pjjxList: [],
-        pjjxList: [],
+        pjdjList: [],
         ssnjList:[],
       },
       exportParams: {},
@@ -568,6 +590,7 @@ export default {
       formDetails: {},
       editDetails:[],
       editparams:{},
+      shjgGd:"01",
       shjgOps:[
         {dm:'01',mc: '通过'},
         {dm:'02',mc: '拒绝'},
@@ -577,6 +600,10 @@ export default {
       directModal:false,
       allNj: [], //年级下拉
       jxlb: "1",//个人奖项为1，集体奖项为2
+      pjdjOps: [],
+      pjjxOps: [],
+      updateArr: [],
+      updateDj: "",
       rules: {
         // shjg: [
         //   { required: true, message: "审核结果不能为空", trigger: "change" },
@@ -592,13 +619,25 @@ export default {
     // this.handleSearch();
     this.getAllCollege();
     this.getSchoolYears();
-    this.getCode("dmpyccm"); // 培养层次dmxbm
-    this.getCode("dmxbm"); // 性别
-    this.getCode1("dmsplcm"); 
+    this.getCode("dmpyccm"); // 培养层次
     this.getAllGrade();
+    this.getJX();
   },
 
   methods: {
+    //奖项
+    getJX() {
+      getAllpjjx({ jxlb: "1" }).then((res) => {
+        this.pjjxOps = res.data;
+      });
+    },
+    changeJX(val) {
+      // getAllpjjxxx({ dm: val }).then((res) => {
+      //   this.pjdjOps = res.data.pjdjList;
+      //   // this.formAdd.pjzqXn = res.data.pjzqXn;
+      //   // this.formAdd.pjzqXq = res.data.pjzqXq;
+      // });
+    },
     changeXn(){
       this.handleSearch();
     },
@@ -639,7 +678,7 @@ export default {
         xh: this.select == "xh" ? this.searchVal : null,
         dwhList: this.moreIform.dwhList,
         pjjxList: this.moreIform.pjjxList,
-        pjjxList: this.moreIform.pjjxList,
+        pjdjList: this.moreIform.pjdjList,
         ssnjList: this.moreIform.ssnjList,
         pyccmList: this.training.choose || [],
         loginId: this.$store.getters.userId,
@@ -653,16 +692,6 @@ export default {
       };//这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
       this.exportParams = data;
       this.showExport = true;
-    },
-    getCode1(val) {
-      const data = { codeTableEnglish: val };
-      getCodeInfoByEnglish(data).then((res) => {
-        switch (val) {
-          case "dmsplcm": //审批结果
-            this.ztStatus = res.data;
-            break;
-        }
-      });
     },
     getRow(index, row) {
       this.multipleSelection1 = row;
@@ -824,7 +853,7 @@ export default {
         xh: this.select == "xh" ? this.searchVal : null,
         dwhList: this.moreIform.dwhList,
         pjjxList: this.moreIform.pjjxList,
-        pjjxList: this.moreIform.pjjxList,
+        pjdjList: this.moreIform.pjdjList,
         ssnjList: this.moreIform.ssnjList,
         pyccmList: this.training.choose || [],
         loginId: this.$store.getters.userId,
@@ -871,9 +900,6 @@ export default {
             case "dmpyccm":
               this.$set(this.training, "checkBox", res.data);
               break;
-            // case "dmxbm":
-            //   this.$set(this.dmxbmOPs, "checkBox", res.data);
-            //   this.xbOps = res.data;
           }
         })
         .catch((err) => {});
@@ -897,9 +923,10 @@ export default {
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
+      this.updateArr = val.map((item) => item.businesId);
       this.commonParams = this.multipleSelection.map((v) => ({
         businesId: v.businesId,
-        processid: v.processid,
+        processId: v.processid,
         status: v.status,
         taskId: v.taskId,
         xh: v.xh,
@@ -945,7 +972,6 @@ export default {
         tyFlow(data).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("审核已通过");
-            this.detailModal = false;
             this.handleSearch();
           }
         });
@@ -953,8 +979,22 @@ export default {
     },
     //批量审批，不同等级
     passMulti() {
-      if (this.commonParams.length > 0) {
-        this.multiModal = true;
+      if (this.multipleSelection.length > 0) {
+        var flagSame = 1;//相同
+        for (let i = 0; i < this.multipleSelection.length; i++) {
+          for (let j = 0; j < this.multipleSelection.length; j++) {
+            if (this.multipleSelection[i].pjjxmc !== this.multipleSelection[j].pjjxmc) {
+              flagSame = 2;//不同奖项
+              break;
+            } 
+          } 
+        }
+        if (flagSame == 1) {
+          this.multiModal = true;
+          console.log("相同奖项");
+        } else{ 
+          this.$message.warning("批量审批功能仅限同一奖项审批！");
+        }
       } else {
         this.$message.error("请先选择一条数据");
       }
@@ -963,20 +1003,25 @@ export default {
       this.multiModal = false;
     },
     //批量审批通过确认
-    multiConfirm() {
+    async multiConfirm() {
       var data = this.commonParams.map((item) => ({
           ...item,
           opMsg: "审核通过",
-          pddj:"一等",
         }));
-        tyFlow(data).then((res) => {
-          if (res.errcode == "00") {
-            this.$message.success("审核已通过");
-            this.detailModal = false;
+      var params = {
+        businesIdList: this.updateArr,
+        jxlb: this.jxlb,
+        pjdj: "一等奖",
+        // this.updateDj
+      };
+      await pjdjUpdate(params).then((res) => {
+        console.log("评奖修改");
+          tyFlow(data).then((res) => {
+            this.$message.success("批量审核已通过");
+            this.multiModal =false;
             this.handleSearch();
-          }
         });
-      this.multiModal = false;
+      });
     },
     //拒绝
     refuse() {

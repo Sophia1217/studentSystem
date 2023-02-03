@@ -203,14 +203,14 @@
           >
           </el-table-column>
           <el-table-column
-            prop="pycc"
+            prop="pyccmmc"
             label="培养层次"
             min-width="100"
             sortable="custom"
           >
           </el-table-column>
           <el-table-column
-            prop="dwh"
+            prop="dwhmc"
             label="培养单位"
             min-width="100"
             sortable="custom"
@@ -224,28 +224,50 @@
           >
           </el-table-column>
           <el-table-column
-            prop="zdbzrqlb"
+            prop="zdbzrqlbmc"
             label="重点保障人群类别"
             min-width="100"
             sortable="custom"
           >
           </el-table-column>
           <el-table-column
-            prop="rdjg"
+            prop="rdjgmc"
             label="困难认定结果"
             min-width="100"
             sortable="custom"
           >
           </el-table-column>
-          <el-table-column prop="updateTime" label="认定时间" min-width="100">
+          <el-table-column prop="rdsj" label="认定时间" min-width="100">
           </el-table-column>
           <el-table-column prop="wrdyy" label="未认定原因" min-width="100">
           </el-table-column>
-          <el-table-column prop="fj" label="附件" width="140">
+          <el-table-column prop="fileList" label="附件" width="200">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="xzWj(scope.row)">
-                <span class="handleName">{{ scope.row.bkfileName }}</span>
-              </el-button>
+              <!-- <div v-for="(item,index)in scope.row.fileList" :key="index">
+                <el-button type="text" size="small" @click="xzWj(item)">
+                  <span class="handleName">{{ item.fileName }}</span>
+                </el-button>
+              </div> -->
+
+              <div v-for="item in scope.row.fileList">
+                <div style="display: flex; justify-content: space-between">
+                  <el-button type="text" size="small" @click="xzWj(item)">
+                    <span class="handleName">{{ item.fileName }}</span>
+                  </el-button>
+                  <!-- <el-button>预览</el-button> -->
+                </div>
+              </div>
+
+              <!-- <el-upload
+                action="#"
+                class="el-upload"
+                :auto-upload="false"
+                ref="upload"
+                :show-file-list="true"
+                :file-list="scope.row.fileList"
+                disabled
+              >
+              </el-upload> -->
             </template>
           </el-table-column>
         </el-table>
@@ -286,11 +308,7 @@ import { getCollege, getGrade } from "@/api/class/maintenanceClass";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import CheckboxCom from "../../../components/checkboxCom";
 import { getToken } from "@/utils/auth";
-import {
-  maintainQuery,
-  maintainExp,
-  mbDown1,
-} from "@/api/assistantWork/baoxian";
+import { querywj, delwj, Exportwj } from "@/api/assistantWork/classEvent";
 import {
   deleteData,
   downLoad,
@@ -414,6 +432,12 @@ export default {
         });
       }
     },
+    xzWj(val) {
+      Exportwj({ id: val.id.toString() }).then((res) => {
+        this.url = window.URL.createObjectURL(res);
+        this.downloadFn(res, val.fileName);
+      });
+    },
     mbDown() {
       downLoad().then((res) => {
         this.downloadFn(res, "困难生认定模板下载", "xlsx");
@@ -432,9 +456,10 @@ export default {
     handleRemove() {
       if (this.multipleSelection.length > 0) {
         let idlist = this.multipleSelection.map((item) => item.id);
-        deleteData({ idList: idlist }).then((res) => {
+        deleteData(idlist).then((res) => {
           this.$message.success("删除成功");
           this.showRemove = false;
+          this.handleSearch();
         });
       } else {
         this.$message.error("请至少选择一条数据！");
@@ -444,56 +469,34 @@ export default {
       this.showRemove = false;
     },
     expBx() {
-      if (this.delArr && this.delArr.length > 0) {
-        var ids = this.delArr;
-        maintainExp({ idList: ids }).then((res) => {
-          this.downloadFn(res, "保险维护信息下载", "xlsx");
-          if (this.$store.getters.excelcount > 0) {
-            this.$message.success(
-              `已成功导出${this.$store.getters.excelcount}条数据`
-            );
-          }
-          this.handleSearch();
-        });
-      } else {
-        let data = {
-          xzmc: this.select == "1" ? this.searchVal : null,
-          xzlx: this.select == "2" ? this.searchVal : null,
-          pageNum: this.queryParams.pageNum,
-          pageSize: this.queryParams.pageSize,
-          orderZd: this.queryParams.orderZd,
-          orderPx: this.queryParams.orderPx,
-        };
-        maintainExp({ ...data }).then((res) => {
-          this.downloadFn(res, "保险维护信息下载", "xlsx");
-          if (this.$store.getters.excelcount > 0) {
-            this.$message.success(
-              `已成功导出${this.$store.getters.excelcount}条数据`
-            );
-          }
-          this.handleSearch();
-        });
-      }
+      let data = {
+        xh: this.select == "1" ? this.searchVal : null,
+        xm: this.select == "2" ? this.searchVal : null,
+        dwhList: this.queryParams.dwh,
+        endRdsj: this.datePicker ? this.datePicker[1] : null,
+        startRdsj: this.datePicker ? this.datePicker[0] : null,
+        njList: this.queryParams.nj,
+        pyccmList: this.queryParams.pycc,
+        rdjg: this.queryParams.rdjg,
+        wrdyy: "",
+        zdbzrqlbm: this.queryParams.zdbzrqlbm,
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+        idList: this.delArr,
+      };
+      excelExport(data).then((res) => {
+        this.downloadFn(res, "困难生认定列表下载", "xlsx");
+        if (this.$store.getters.excelcount > 0) {
+          this.$message.success(
+            `已成功导出${this.$store.getters.excelcount}条数据`
+          );
+        }
+        this.handleSearch();
+      });
+
       this.showExport = false;
-    },
-    del() {
-      if (this.delArr && this.delArr.length > 0) {
-        delTalk({ ids: this.delArr }).then((res) => this.handleSearch());
-      } else {
-        this.$message.error("请先勾选数据");
-      }
-    },
-    hadleDetail1() {
-      this.$router.push({
-        path: "/assistantWork/addTalk",
-      });
-    },
-    hadleDetail2(row, index) {
-      const { id } = row;
-      this.$router.push({
-        path: "/assistantWork/maintainBx",
-        query: { id: id, state: index },
-      });
     },
     changeSelect() {
       this.searchVal = "";

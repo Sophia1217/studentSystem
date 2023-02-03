@@ -43,7 +43,7 @@
           >
           </el-table-column
           ><el-table-column
-            prop="pydw"
+            prop="ssdwdmmc"
             label="培养单位"
             sortable="custom"
             :show-overflow-tooltip="true"
@@ -137,13 +137,13 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">性别</div>
-                <div class="content">{{ basicInfo.pyccmmc }}</div>
+                <div class="content">{{ basicInfo.xbmc }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">培养层次</div>
-                <div class="content">{{ basicInfo.pyccmmc }}</div>
+                <div class="content">{{ basicInfo.pyccmc }}</div>
               </div>
             </el-col>
           </el-row>
@@ -158,7 +158,7 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">年级</div>
-                <div class="content">{{ basicInfo.nj }}</div>
+                <div class="content">{{ basicInfo.ssnj }}</div>
               </div>
             </el-col>
           </el-row>
@@ -278,13 +278,13 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">性别</div>
-                <div class="content">{{ basicInfo.pyccmmc }}</div>
+                <div class="content">{{ basicInfo.xbmc }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">培养层次</div>
-                <div class="content">{{ basicInfo.pyccmmc }}</div>
+                <div class="content">{{ basicInfo.pyccmc }}</div>
               </div>
             </el-col>
           </el-row>
@@ -299,7 +299,7 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">年级</div>
-                <div class="content">{{ basicInfo.nj }}</div>
+                <div class="content">{{ basicInfo.ssnj }}</div>
               </div>
             </el-col>
           </el-row>

@@ -25,6 +25,7 @@ export function excelExport(query) {
     return request({
         url: '/rcswJtknXjmd/excelExport',
         method: 'post',
+        responseType:'blob',
         data: query
     })
   }

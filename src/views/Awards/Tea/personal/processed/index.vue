@@ -52,7 +52,7 @@
           <el-col :span="6">
             <span>评奖奖项：</span>
             <el-select
-              v-model="moreIform.dwhList"
+              v-model="moreIform.pjjxList"
               multiple
               collapse-tags
               @change="changeXY"
@@ -70,7 +70,7 @@
           <el-col :span="6">
             <span>评奖等级：</span>
             <el-select
-              v-model="moreIform.dwhList"
+              v-model="moreIform.pjjxList"
               multiple
               collapse-tags
               @change="changeXY"
@@ -88,17 +88,17 @@
           <el-col :span="6">
             <span>年<span v-html="'\u3000\u3000'"></span>级：</span>
             <el-select
-              v-model="moreIform.zydmList"
+              v-model="moreIform.ssnjList"
               multiple
               collapse-tags
               placeholder="请选择"
               size="small"
             >
               <el-option
-                v-for="item in zyOps"
-                :key="item.dm"
-                :label="item.mc"
-                :value="item.dm"
+                v-for="(item,index) in allNj"
+                :key="index"
+                :label="item"
+                :value="item"
               ></el-option>
             </el-select>
           </el-col>
@@ -138,14 +138,14 @@
       <div class="headerTop">
         <div class="headerLeft"> 
           <span class="title">待审核列表</span> <i class="Updataicon"></i>
-          <span>评选周期：</span>
+          <span style="margin-left:15px">评选周期：</span>
           <el-select
             v-model="moreIform.xn"
             collapse-tags
             @change="changeXn"
             placeholder="请选择"
             
-            style="width: 130px; margin:0 15px 0"
+            style="width: 130px; margin:0 0 15px 0"
           >
             <el-option
               v-for="(item, index) in allXn"
@@ -166,8 +166,11 @@
           <div class="btns borderRed" @click="refuse">
             <i class="icon refuseIcon"></i><span class="title">拒绝</span>
           </div>
-          <div class="btns fullGreen" @click="pass">
-            <i class="icon passIcon"></i><span class="title1">通过</span>
+          <div class="btns fullGreen" @click="passDirect">
+            <i class="icon passIcon"></i><span class="title1">直接通过</span>
+          </div>
+          <div class="btns fullGreen" @click="passMulti">
+            <i class="icon passIcon"></i><span class="title1">批量审批</span>
           </div>
         </div>
       </div>
@@ -190,10 +193,11 @@
           <el-table-column prop="xm" label="姓名" width="85" sortable> </el-table-column>
           <el-table-column prop="pyccmc" label="培养层次" min-width="100" sortable> </el-table-column>
           <el-table-column prop="dwhmc" label="培养单位" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="zydmmc" label="年级" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="zydmmc" label="评奖奖项" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="zydmmc" label="评奖等级" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="ssnj" label="年级" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="pjjxmc" label="评奖奖项" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="pjdj" label="评奖等级" min-width="100" sortable> </el-table-column>
           <el-table-column prop="sqsj" label="申请时间" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="statusChinese" label="审核状态" min-width="100" sortable> </el-table-column>
           <el-table-column prop="createDwhMc" label="审核进度">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="lctClick(scope.row)">
@@ -217,6 +221,42 @@
           </el-table-column>
         </el-table>
       </div>
+      <el-dialog title="同意提示" :visible.sync="directModal" width="30%">
+        <span>确认直接批量通过？</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="directCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="directConfirm"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
+      <el-dialog title="同意提示" :visible.sync="multiModal" width="30%">
+        <el-row style="margin-left:15px">
+          <el-col :span="20">
+            <span>批量通过等级：</span>
+            <el-select
+              v-model="moreIform.dwhList"
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in allDwh"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
+            </el-col>
+        </el-row>
+          
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="multiCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="multiConfirm"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
       <el-dialog title="拒绝理由" :visible.sync="jjModal" width="30%">
         <template>
           <el-input placeholder="请输入拒绝理由" v-model="jjly"></el-input>
@@ -285,172 +325,102 @@
           <el-form :data="formDetails" label-width="110px">
             <div class="formLeft"><span class="title">学生基本信息</span></div>
             <div class="backDetail">
-            
             <div class="formRight">
               <el-row>
-                <el-col :span="8" class="rowStyle">
+                <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">学号</div>
                     <div class="content">{{ formDetails.xh }}</div>
                   </div>
                 </el-col>
-                <el-col :span="8" class="rowStyle">
+                <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">姓名</div>
                     <div class="content">{{ formDetails.xm }}</div>
                   </div>
-                </el-col>
-                <el-col :span="8" class="rowStyle">
+                </el-col> 
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
                   <div class="wrap">
                     <div class="title">性别</div>
                     <div class="content">{{ formDetails.xbmc }}</div>
                   </div>
                 </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">培养层次</div>
+                    <div class="content">{{ formDetails.pyccmc }}</div>
+                  </div>
+                </el-col>
               </el-row>
-              <div v-if="pyccflag == 1">
-                <el-row>
-                  <el-col :span="8" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">培养层次</div>
-                      <div class="content">{{ formDetails.pyccmc }}</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="8" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">培养单位</div>
-                      <div class="content">{{ formDetails.dwhmc }}</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="8" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">年级</div>
-                      <div class="content">{{ formDetails.ssnj }}</div>
-                    </div>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="8" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">专业</div>
-                      <div class="content">{{ formDetails.zydmmc }}</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="16" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">班级</div>
-                      <div class="content">{{ formDetails.bjmmc }}</div>
-                    </div>
-                  </el-col>
-                </el-row>
-              </div>
-              <div v-if="pyccflag == 2">
-                <el-row>
-                  <el-col :span="8" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">出生日期</div>
-                      <div class="content">{{ formDetails.csrq }}</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="8" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">民族</div>
-                      <div class="content">{{ formDetails.mzmc }}</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="8" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">政治面貌</div>
-                      <div class="content">{{ formDetails.zzmmmc }}</div>
-                    </div>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="8" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">培养单位</div>
-                      <div class="content">{{ formDetails.dwhmc }}</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="8" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">专业</div>
-                      <div class="content">{{ formDetails.zydmmc }}</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="8" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">导师</div>
-                      <div class="content">{{ formDetails.dsxm }}</div>
-                    </div>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="8" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">攻读学位</div>
-                      <div class="content">{{ formDetails.gdxwmc }}</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="8" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">学位类型</div>
-                      <div class="content">{{ formDetails.xwlxmc }}</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="8" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">移动电话</div>
-                      <div class="content">{{ formDetails.yddh }}</div>
-                    </div>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="24" class="rowStyle">
-                    <div class="wrap">
-                      <div class="title">上学年学业奖学金等级</div>
-                      <div class="content">{{ formDetails.sxnjxjdjmc }}</div>
-                    </div>
-                  </el-col>
-                </el-row>
-              </div>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">培养单位</div>
+                    <div class="content">{{ formDetails.dwhmc }}</div>
+                  </div>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">年级</div>
+                    <div class="content">{{ formDetails.ssnj }}</div>
+                  </div>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">专业</div>
+                    <div class="content">{{ formDetails.zydmmc }}</div>
+                  </div>
+                </el-col>
+                <el-col :span="12" class="rowStyle">
+                  <div class="wrap">
+                    <div class="title">班级</div>
+                    <div class="content">{{ formDetails.bjmmc }}</div>
+                  </div>
+                </el-col>
+              </el-row>
             </div>
             </div>
-            <el-row :gutter="20">
-              <el-form-item label="填写学年" label-width="85px">
-                <div>{{ formDetails.xn }}</div>
-              </el-form-item>
-            </el-row>
-            <el-row :gutter="20" v-if="pyccflag == 1">
-              <el-form-item label="自我小结" label-width="85px">
-                <div>{{ formDetails.zwxj }}</div>
-              </el-form-item>
-            </el-row>
-            <div v-if="pyccflag == 2">
-              <div class="formLeft"><span class="title">自我小结</span></div>
+            <div>
+              <div class="formLeft"><span class="title">申请信息</span></div>
               <el-row :gutter="20">
-                <el-form-item label="政治思想表现" label-width="300px">
-                  <div>{{ formDetails.sxzzbx }}</div>
+                <el-form-item label="评奖奖项">
+                  <div>{{ formDetails.pjjxmc }}</div>
                 </el-form-item>
               </el-row>
               <el-row :gutter="20">
-                <el-form-item label="课程学习情况" label-width="300px">
-                  <div>{{ formDetails.kcxxqk }}</div>
+                <el-form-item label="评奖等级">
+                  <div>{{ formDetails.pjdj }}</div>
                 </el-form-item>
               </el-row>
               <el-row :gutter="20">
-                <el-form-item label="科学研究（学位论文）工作和取得的成果、公开发表的学术论文等" label-width="300px">
-                  <div>{{ formDetails.kycg }}</div>
+                <el-form-item label="评奖周期">
+                  <div>{{ formDetails.pjzqXn +' '+ formDetails.pjzqXq}}</div>
                 </el-form-item>
               </el-row>
               <el-row :gutter="20">
-                <el-form-item label="专业实践、社会实践、学生工作等情况" label-width="300px">
-                  <div>{{ formDetails.zsxsj }}</div>
+                <el-form-item label="申请理由">
+                  <div>{{ formDetails.sqly }}</div>
                 </el-form-item>
               </el-row>
               <el-row :gutter="20">
-                <el-form-item label="奖惩情况" label-width="300px">
-                  <div>{{ formDetails.jcqk }}</div>
-                </el-form-item>
+
+                  <el-form-item label="附件信息">
+                    <div>
+                      <div v-for="item in formDetails.fileList">
+                        <div style="display: flex; justify-content: space-between ">
+                          <a>
+                            <span style="color: #005657">{{ item.fileName }}</span>
+                          </a>
+                          <!-- <el-button>预览</el-button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </el-form-item>
+ 
               </el-row>
             </div>
           </el-form>
@@ -538,7 +508,7 @@ import {
   tyFlow,
   jjFlow,
   thFinal,
-} from "@/api/dailyBehavior/yearSum"
+} from "@/api/awards/awardTea"
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getCollege,getGrade } from "@/api/class/maintenanceClass";
 import { getZY} from "@/api/student/index";
@@ -561,10 +531,9 @@ export default {
       isMore: false,
       moreIform: {
         dwhList: [], // 学院下拉框
-        zydmList: [],
-        bjList: [],
-        xn:"",
-        zslxmList:[],
+        pjjxList: [],
+        pjjxList: [],
+        ssnjList:[],
       },
       exportParams: {},
       leng: 0,
@@ -604,7 +573,10 @@ export default {
         {dm:'02',mc: '拒绝'},
         {dm:'03',mc: '退回'},
       ],
-      pyccflag: 1,//1本科2硕博
+      multiModal:false,
+      directModal:false,
+      allNj: [], //年级下拉
+      jxlb: "1",//个人奖项为1，集体奖项为2
       rules: {
         // shjg: [
         //   { required: true, message: "审核结果不能为空", trigger: "change" },
@@ -623,6 +595,7 @@ export default {
     this.getCode("dmpyccm"); // 培养层次dmxbm
     this.getCode("dmxbm"); // 性别
     this.getCode1("dmsplcm"); 
+    this.getAllGrade();
   },
 
   methods: {
@@ -644,7 +617,7 @@ export default {
       this.$set(this.exportParams, "idList", idList);
       exportDsh(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "学年小结待审核列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "评奖评优待审核列表导出.xlsx", "xlsx");
           if(this.$store.getters.excelcount > 0){
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -656,22 +629,28 @@ export default {
       this.showExport = false;
     },
     async expor() {
+      let rqs,rqe = "";
+      if (this.datePicker && this.datePicker.length > 0) {
+        rqs = this.datePicker[0];
+        rqe = this.datePicker[1];
+      }
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
         dwhList: this.moreIform.dwhList,
-        zydmList: this.moreIform.zydmList,
-        // bjmList: this.moreIform.bjList,
-        xn: this.moreIform.xn,
-        // zslxmList: this.moreIform.zslxmList,
+        pjjxList: this.moreIform.pjjxList,
+        pjjxList: this.moreIform.pjjxList,
+        ssnjList: this.moreIform.ssnjList,
         pyccmList: this.training.choose || [],
         loginId: this.$store.getters.userId,
-
+        sqsjStart: rqs || "",
+        sqsjEnd: rqe || "",
+        jxlb: this.jxlb,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
-      }; //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
+      };//这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
       this.exportParams = data;
       this.showExport = true;
     },
@@ -730,7 +709,14 @@ export default {
           .catch((err) => {});
       }
     },
-
+    //获取年级
+    getAllGrade() {
+      getGrade()
+        .then((res) => {
+          this.allNj = res.data.rows;
+        })
+        .catch((err) => {});
+    },
     //获取学年
     getSchoolYears() {
       queryXn()
@@ -743,23 +729,15 @@ export default {
     },
     async hadleDetail(row) {
       console.log("row", row);
-      if(row.pyccmc == "本科"){
-        this.pyccflag = 1;
-      } else{
-        this.pyccflag = 2;
-      }
       this.detailModal = true;
       this.editparams = row;
       var data = {
-        // xh: row.xh,
-        // roleId: this.$store.getters.roleId,
         businesId: row.businesId,
         processId: row.processid,
       };
       await queryDshDetail(data).then((res) => {
         this.formDetails = res.data;
       });
-      
     },
     editClick(){
       if (!this.editDetails.shjg) {
@@ -775,7 +753,7 @@ export default {
           opMsg: this.editDetails.shyj ? this.editDetails.shyj : "已通过",
         };
           //通过
-          tyFlow(data).then((res) => {
+          tyFlow([data]).then((res) => {
             if (res.errcode == "00") {
               this.$message.success("审核已通过");
               this.detailModal = false;
@@ -793,7 +771,7 @@ export default {
           opMsg: this.editDetails.shyj ? this.editDetails.shyj : "已拒绝",
         };
         //拒绝
-        jjFlow(data).then((res) => {
+        jjFlow([data]).then((res) => {
         if (res.errcode == "00") {
           this.$message.success("已拒绝");
           this.detailModal = false;
@@ -812,7 +790,7 @@ export default {
           actName: this.multipleSelection1.actName,
 
         };
-        thFinal(data).then((res) => {
+        thFinal([data]).then((res) => {
           if (res.errcode == "00") {
             this.detailModal = false;
             this.$message.success("退回成功");
@@ -845,14 +823,14 @@ export default {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
         dwhList: this.moreIform.dwhList,
-        zydmList: this.moreIform.zydmList,
-        // bjList: this.moreIform.bjList,
-        xn: this.moreIform.xn,
-        // zslxmList: this.moreIform.zslxmList,
+        pjjxList: this.moreIform.pjjxList,
+        pjjxList: this.moreIform.pjjxList,
+        ssnjList: this.moreIform.ssnjList,
         pyccmList: this.training.choose || [],
         loginId: this.$store.getters.userId,
         sqsjStart: rqs || "",
         sqsjEnd: rqe || "",
+        jxlb: this.jxlb,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
@@ -919,7 +897,6 @@ export default {
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      console.log("row",val);
       this.commonParams = this.multipleSelection.map((v) => ({
         businesId: v.businesId,
         processid: v.processid,
@@ -944,19 +921,24 @@ export default {
         });
         this.thTableModal = true;
       } 
-      // else if(val && val == "02"){
-      //   console.log(22);
-      // } else {
-      //   console.log(33);
-      // } 
     },
     getRow(index, row) {
       this.multipleSelection1 = row;
     },
-    //通过
-    pass() {
+    //直接通过
+    passDirect() {
       if (this.commonParams.length > 0) {
-        var data = this.commonParams.map((item) => ({
+        this.directModal = true;
+      } else {
+        this.$message.error("请先选择一条数据");
+      }
+    },
+    directCancel() {
+      this.directModal = false;
+    },
+    //直接通过确认
+    directConfirm() {
+      var data = this.commonParams.map((item) => ({
           ...item,
           opMsg: "审核通过",
         }));
@@ -967,9 +949,34 @@ export default {
             this.handleSearch();
           }
         });
+      this.directModal = false;
+    },
+    //批量审批，不同等级
+    passMulti() {
+      if (this.commonParams.length > 0) {
+        this.multiModal = true;
       } else {
         this.$message.error("请先选择一条数据");
       }
+    },
+    multiCancel() {
+      this.multiModal = false;
+    },
+    //批量审批通过确认
+    multiConfirm() {
+      var data = this.commonParams.map((item) => ({
+          ...item,
+          opMsg: "审核通过",
+          pddj:"一等",
+        }));
+        tyFlow(data).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("审核已通过");
+            this.detailModal = false;
+            this.handleSearch();
+          }
+        });
+      this.multiModal = false;
     },
     //拒绝
     refuse() {
@@ -1209,11 +1216,10 @@ export default {
     }
   }
   .baseInfo{
-    // padding: 20px;
     margin-left: 30px;
     margin-right: 30px;
-    // overflow-x: auto;
-    .formLeft {
+  }
+  .formLeft {
       background: #fff;
       display: flex;
       align-items: center;
@@ -1229,7 +1235,6 @@ export default {
         color: #1f1f1f;
         line-height: 30px;
       }
-    }
   }
   .backDetail {
     display: flex;
@@ -1248,7 +1253,7 @@ export default {
         display: flex;
         align-items: center;
         .title {
-          flex: 0 0 140px;
+          flex: 0 0 160px;
           line-height: 48px;
           background: #e0e0e0;
           text-align: right;

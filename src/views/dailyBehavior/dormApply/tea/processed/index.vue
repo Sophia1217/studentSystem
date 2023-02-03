@@ -1370,11 +1370,10 @@ export default {
     }
   }
   .baseInfo{
-    // padding: 20px;
     margin-left: 30px;
     margin-right: 30px;
-    // overflow-x: auto;
-    .formLeft {
+  }
+  .formLeft {
       background: #fff;
       display: flex;
       flex-direction:row;
@@ -1386,7 +1385,6 @@ export default {
         line-height: 20px;
       }
     }
-  }
   .backDetail {
     display: flex;
     margin-bottom: 20px;
@@ -1404,7 +1402,7 @@ export default {
         display: flex;
         align-items: center;
         .title {
-          flex: 0 0 160px;
+          flex: 0 0 150px;
           line-height: 48px;
           background: #e0e0e0;
           text-align: right;

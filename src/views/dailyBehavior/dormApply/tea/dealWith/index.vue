@@ -1247,19 +1247,6 @@ export default {
         } else {
           this.$message.error("请先勾选数据");
         }
-      // var falg = 1;
-      // for (var i = 0; i < this.multipleSelection.length; i++) {
-      //   if (this.multipleSelection[i].status !== "01") falg = 2;
-      // }
-      // if (falg == 1) {
-      //   if (this.delArr && this.delArr.length > 0) {
-      //     this.showDelete = true;
-      //   } else {
-      //     this.$message.error("请先勾选数据");
-      //   }
-      // } else {
-      //   this.$message.error("存在非草稿状态数据，不可以删除");
-      // }
     },
     //模板下载
     mbDown() {
@@ -1610,11 +1597,10 @@ export default {
     }
   }
   .baseInfo{
-    // padding: 20px;
     margin-left: 30px;
     margin-right: 30px;
-    // overflow-x: auto;
-    .formLeft {
+  }
+  .formLeft {
       background: #fff;
       display: flex;
       flex-direction:row;
@@ -1626,7 +1612,6 @@ export default {
         line-height: 20px;
       }
     }
-  }
   .backDetail {
     display: flex;
     margin-bottom: 20px;

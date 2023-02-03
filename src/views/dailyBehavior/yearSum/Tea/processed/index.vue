@@ -146,6 +146,7 @@
           <el-table-column prop="dwhmc" label="培养单位" min-width="100" sortable> </el-table-column>
           <el-table-column prop="zydmmc" label="专业" min-width="100" sortable> </el-table-column>
           <el-table-column prop="sqsj" label="申请时间" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="statusChinese" label="审核状态" min-width="100" sortable> </el-table-column>
           <el-table-column prop="createDwhMc" label="审核进度">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="lctClick(scope.row)">
@@ -214,10 +215,12 @@
       >
         <template>
           <div class="baseInfo">
-          <el-form :data="formDetails" label-width="110px">
+          <el-form :data="formDetails" 
+            label-width="110px"
+            :label-position="pyccflag == 2 ? 'top' : 'right'"
+          >
             <div class="formLeft"><span class="title">学生基本信息</span></div>
             <div class="backDetail">
-            
             <div class="formRight">
               <el-row>
                 <el-col :span="8" class="rowStyle">
@@ -347,40 +350,40 @@
               </div>
             </div>
             </div>
-            <el-row :gutter="20">
+            <el-row>
               <el-form-item label="填写学年" label-width="85px">
                 <div>{{ formDetails.xn }}</div>
               </el-form-item>
             </el-row>
-            <el-row :gutter="20" v-if="pyccflag == 1">
+            <el-row v-if="pyccflag == 1">
               <el-form-item label="自我小结" label-width="85px">
                 <div>{{ formDetails.zwxj }}</div>
               </el-form-item>
             </el-row>
             <div v-if="pyccflag == 2">
               <div class="formLeft"><span class="title">自我小结</span></div>
-              <el-row :gutter="20">
-                <el-form-item label="政治思想表现" label-width="300px">
+              <el-row>
+                <el-form-item label="政治思想表现" label-width="85px">
                   <div>{{ formDetails.sxzzbx }}</div>
                 </el-form-item>
               </el-row>
-              <el-row :gutter="20">
-                <el-form-item label="课程学习情况" label-width="300px">
+              <el-row>
+                <el-form-item label="课程学习情况" label-width="85px">
                   <div>{{ formDetails.kcxxqk }}</div>
                 </el-form-item>
               </el-row>
-              <el-row :gutter="20">
-                <el-form-item label="科学研究（学位论文）工作和取得的成果、公开发表的学术论文等" label-width="300px">
+              <el-row>
+                <el-form-item label="科学研究（学位论文）工作和取得的成果、公开发表的学术论文等" label-width="85px">
                   <div>{{ formDetails.kycg }}</div>
                 </el-form-item>
               </el-row>
-              <el-row :gutter="20">
-                <el-form-item label="专业实践、社会实践、学生工作等情况" label-width="300px">
+              <el-row>
+                <el-form-item label="专业实践、社会实践、学生工作等情况" label-width="85px">
                   <div>{{ formDetails.zsxsj }}</div>
                 </el-form-item>
               </el-row>
-              <el-row :gutter="20">
-                <el-form-item label="奖惩情况" label-width="300px">
+              <el-row>
+                <el-form-item label="奖惩情况" label-width="85px">
                   <div>{{ formDetails.jcqk }}</div>
                 </el-form-item>
               </el-row>
@@ -1092,7 +1095,7 @@ export default {
         display: flex;
         align-items: center;
         .title {
-          flex: 0 0 140px;
+          flex: 0 0 150px;
           line-height: 48px;
           background: #e0e0e0;
           text-align: right;

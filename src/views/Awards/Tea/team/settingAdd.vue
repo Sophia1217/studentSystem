@@ -198,7 +198,7 @@
               placeholder="比例值"
             />
           </el-col>
-          <el-col :span="6" :offset="8">
+          <el-col :span="6" :offset="6">
             <span class="span1"
               >合计：{{ formAdd.zrs }}人
               <span v-html="'\u3000'"></span> 剩余指标：{{ this.syzb }}
@@ -360,56 +360,6 @@
           >
         </span>
       </el-dialog>
-      <!-- <el-dialog title="面向对象条件新增" :visible.sync="innerModal" width="36%">
-      <template>
-        <div>
-          <el-table :data="pyccNewList">
-            <el-table-column prop="tjzw" label="条件值">
-              <template slot-scope="scope">
-                <el-select
-                  collapse-tags
-                  placeholder="请选择"
-                  size="small"
-                  @change="pyccInnerChange($event, scope.row)"
-                  v-model="scope.row.tjzw"
-                >
-                  <el-option
-                    v-for="(item, index) in leftOptions"
-                    :key="index"
-                    :label="item.tjzw"
-                    :value="{ value: item.tjmz, label: item.tjzw }"
-                  ></el-option>
-                </el-select>
-              </template>
-            </el-table-column>
-            <el-table-column prop="cbrs" label="设置">
-              <template slot-scope="scope">
-                <el-select
-                  collapse-tags
-                  placeholder="请选择"
-                  size="small"
-                  @change="pyccChange($event, scope.row)"
-                  v-model="scope.row.tar"
-                >
-                  <el-option
-                    v-for="(item, index) in rightOptions"
-                    :key="index"
-                    :label="item.codeKey"
-                    :value="item.codeValue"
-                  ></el-option>
-                </el-select>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-      </template>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="innerCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="innersave"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog> -->
     </div>
     <div class="editBottom">
       <div class="btn cancel" @click="cancelAdd">取消</div>
@@ -514,7 +464,7 @@ export default {
           { jx: "一等奖" },
           { jx: "二等奖" },
           { jx: "三等奖" },
-          { jx: "四等奖" },
+          { jx: "优秀奖" },
         ],
         sjArr: [], //评审时间
       },

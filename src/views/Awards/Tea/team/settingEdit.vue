@@ -15,11 +15,21 @@
             prop="pjjx"
             :rules="rules.pjjx"
           >
-            <el-input v-model="formAdd.pjjx" placeholder="请输入评奖奖项">
+            <span v-if="bjzt == '1'">{{ formAdd.pjjx }}</span>
+            <el-input
+              v-else
+              v-model="formAdd.pjjx"
+              placeholder="请输入评奖奖项"
+            >
             </el-input>
           </el-form-item>
           <el-form-item label="英文名称" label-width="80px">
-            <el-input v-model="formAdd.ywmc" placeholder="请输入评奖奖项">
+            <span v-if="bjzt == '1'">{{ formAdd.ywmc }}</span>
+            <el-input
+              v-else
+              v-model="formAdd.ywmc"
+              placeholder="请输入评奖奖项"
+            >
             </el-input>
           </el-form-item>
           <el-form-item
@@ -28,30 +38,35 @@
             prop="pjxn"
             :rules="rules.pjxn"
           >
-            <el-select
-              v-model="formAdd.pjxn"
-              placeholder="请选择学年"
-              clearable
+            <span v-if="bjzt == '1'"
+              >{{ formAdd.pjxn }} {{ formAdd.pjxq }}</span
             >
-              <el-option
-                v-for="(item, index) in xnxqList"
-                :key="index"
-                :label="item.mc"
-                :value="item.mc"
-              ></el-option>
-            </el-select>
-            <el-select
-              v-model="formAdd.pjxqm"
-              placeholder="请选择学期"
-              clearable
-            >
-              <el-option
-                v-for="(item, index) in dmxqm"
-                :key="index"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
+            <div v-else>
+              <el-select
+                v-model="formAdd.pjxn"
+                placeholder="请选择学年"
+                clearable
+              >
+                <el-option
+                  v-for="(item, index) in xnxqList"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.mc"
+                ></el-option>
+              </el-select>
+              <el-select
+                v-model="formAdd.pjxqm"
+                placeholder="请选择学期"
+                clearable
+              >
+                <el-option
+                  v-for="(item, index) in dmxqm"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </div>
           </el-form-item>
           <el-form-item
             label="评审时间"
@@ -59,7 +74,11 @@
             prop="sjArr"
             :rules="rules.sjArr"
           >
+            <span v-if="bjzt == '1'"
+              >{{ formAdd.pssjstart }}至 {{ formAdd.pssjend }}</span
+            >
             <el-date-picker
+              v-else
               v-model="formAdd.sjArr"
               type="daterange"
               range-separator="至"
@@ -76,10 +95,13 @@
             prop="jxjbm"
             :rules="rules.jxjbm"
           >
+            <span v-if="bjzt == '1'">{{ formAdd.jxjb }}</span>
             <el-select
+              v-else
               v-model="formAdd.jxjbm"
               placeholder="请选择奖项级别"
               clearable
+              @change="jxjbChange"
             >
               <el-option
                 v-for="(item, index) in jxjbList"
@@ -90,13 +112,15 @@
             </el-select>
           </el-form-item>
           <el-form-item label="培养单位" label-width="80px">
+            <span v-if="bjzt == '1'">{{ formAdd.pydw }}</span>
             <el-select
+              v-else
               style="width: 500px"
               v-model="formAdd.pydwmList"
               placeholder="请选择培养单位"
               multiple
               clearable
-              :disabled="formAdd.jxjbm == '院级' ? false : true"
+              :disabled="formAdd.jxjbm == '01' ? false : true"
             >
               <el-option
                 v-for="(item, index) in allDwh"
@@ -122,7 +146,9 @@
                     :prop="`jxdjList.${scope.$index}.jx`"
                     :rules="rules.jxdjListRule"
                   >
+                    <span v-if="bjzt == '1'">{{ scope.row.jx }}</span>
                     <el-input
+                      v-else
                       maxlength="100"
                       v-model="scope.row.jx"
                       placeholder="请输入"
@@ -130,7 +156,11 @@
                   </el-form-item>
                 </template>
               </el-table-column>
-              <el-table-column label="添加选项" align="center">
+              <el-table-column
+                label="添加选项"
+                align="center"
+                v-if="bjzt == '2'"
+              >
                 <template slot-scope="scope">
                   <div style="margin-bottom: 20px">
                     <i
@@ -152,7 +182,10 @@
             label-width="100px"
             style="margin-left: -15px"
           >
-            <el-radio-group v-model="formAdd.sfyxcftj">
+            <span v-if="bjzt == '1'">{{
+              formAdd.sfyxcftj == "1" ? "是" : "否"
+            }}</span>
+            <el-radio-group v-else v-model="formAdd.sfyxcftj">
               <el-radio :label="1">是</el-radio>
               <el-radio :label="2">否</el-radio>
             </el-radio-group>
@@ -164,7 +197,13 @@
         <el-row :gutter="20">
           <el-col :span="1.5"> <span class="span1">总人数</span></el-col>
           <el-col :span="4.5">
+            <span
+              v-if="bjzt == '1'"
+              style="display: inline-block; margin-top: 7px"
+              >{{ formAdd.zrs }}</span
+            >
             <el-input-number
+              v-else
               v-model="formAdd.zrs"
               size="small"
               controls-position="right"
@@ -172,7 +211,7 @@
             ></el-input-number
           ></el-col>
           <el-col :span="4.5">
-            <div class="btns borderGreen" @click="monfp">
+            <div class="btns borderGreen" @click="monfp" v-if="bjzt == '2'">
               <span class="title1">模拟分配</span>
             </div></el-col
           >
@@ -180,7 +219,10 @@
         <el-row :gutter="20" style="margin-top: 25px; margin-left: -22px">
           <el-col :span="1.5"> <span class="span1">指标细化</span></el-col>
           <el-col :span="6" class="heightCom">
-            <el-radio-group v-model="formAdd.zbxhfs">
+            <span v-if="bjzt == '1'" style="display: inline-block">{{
+              formAdd.zbxhfs ? "按总额" : "按比例"
+            }}</span>
+            <el-radio-group v-model="formAdd.zbxhfs" v-else>
               <el-radio :label="1">按总额</el-radio>
               <el-radio :label="2">按比例</el-radio>
             </el-radio-group>
@@ -197,7 +239,7 @@
               placeholder="比例值"
             />
           </el-col>
-          <el-col :span="6" :offset="8">
+          <el-col :span="6" :offset="6">
             <span class="span1"
               >合计：{{ formAdd.zrs }}人
               <span v-html="'\u3000'"></span> 剩余指标：{{ this.syzb }}
@@ -213,7 +255,9 @@
             <el-table-column prop="jsrs" label="计算人数" />
             <el-table-column prop="zzrs" label="最终人数">
               <template slot-scope="scope">
+                <span v-if="bjzt == '1'">{{ scope.row.zzrs }}</span>
                 <el-input
+                  v-else
                   style="width: 80px"
                   type="number"
                   @change="zzrschange"
@@ -246,7 +290,9 @@
                       :prop="`pyccDefList.${scope.$index}.tjmzList`"
                       :rules="rules.inner"
                     >
+                      <span v-if="bjzt == '1'">{{ scope.row.tjmzzw }}</span>
                       <el-select
+                        v-else
                         collapse-tags
                         placeholder="请选择"
                         multiple
@@ -254,18 +300,10 @@
                         v-model="scope.row.tjmzList"
                       >
                         <el-option
-                          v-if="scope.row.tjzw != '年级'"
-                          v-for="(item, index) in scope.row.option"
+                          v-for="(item, index) in scope.row.tjmbList"
                           :key="`${index}` + index"
                           :label="item.mc"
                           :value="item.dm"
-                        ></el-option>
-                        <el-option
-                          v-if="scope.row.tjzw == '年级'"
-                          v-for="(item, index) in allNj"
-                          :key="index"
-                          :label="item"
-                          :value="item"
                         ></el-option>
                       </el-select>
                     </el-form-item>
@@ -280,11 +318,12 @@
               >
                 <span class="title1">新增条件</span>
               </div>
-
               <el-table :data="formInner.pyccAddList">
                 <el-table-column prop="tjzw" label="条件值" width="220px">
                   <template slot-scope="scope">
+                    <span v-if="bjzt == '1'">{{ scope.row.tjzw }}</span>
                     <el-form-item
+                      v-else
                       label-width="0"
                       :prop="`pyccAddList.${scope.$index}.tjzw`"
                       style="margin-bottom: 15px"
@@ -315,7 +354,9 @@
                 </el-table-column>
                 <el-table-column prop="cbrs" label="设置">
                   <template slot-scope="scope">
+                    <span v-if="bjzt == '1'">{{ scope.row.tjmzzw }}</span>
                     <el-form-item
+                      v-else
                       label-width="0"
                       :prop="`pyccAddList.${scope.$index}.tjmzList`"
                       style="margin-bottom: 15px"
@@ -329,10 +370,10 @@
                         v-model="scope.row.tjmzList"
                       >
                         <el-option
-                          v-for="(item, index) in scope.row.option"
+                          v-for="(item, index) in scope.row.tjmbList"
                           :key="index"
-                          :label="item.codeKey"
-                          :value="item.codeValue"
+                          :label="item.mc"
+                          :value="item.dm"
                         ></el-option>
                       </el-select>
                     </el-form-item>
@@ -361,8 +402,16 @@
       </el-dialog>
     </div>
     <div class="editBottom">
-      <div class="btn cancel" @click="cancelAdd">取消</div>
-      <div class="btn confirm" @click="finalSave">保存</div>
+      <div class="btn confirm" @click="colseDe" v-if="bjzt == '1'">关闭</div>
+      <div
+        class="btn confirm"
+        @click="edit"
+        v-if="bjzt == '1' && this.auth == '1'"
+      >
+        编辑
+      </div>
+      <div class="btn cancel" v-if="bjzt == '2'" @click="cancelAdd">取消</div>
+      <div class="btn confirm" @click="finalSave" v-if="bjzt == '2'">保存</div>
     </div>
   </div>
 </template>
@@ -381,6 +430,7 @@ import { getXnxq } from "@/api/dailyBehavior/xnxjStu";
 export default {
   data() {
     return {
+      bjzt: "1", //1是看 2是改
       mxdxModal: false,
       innerModal: false,
       leftOptions: [], //新增条件左侧下拉框
@@ -459,48 +509,23 @@ export default {
         sfyxcftj: 1, //重复提交
         szzl: "1",
         jxfpLIST: [],
-        jxdjList: [
-          { jx: "一等奖" },
-          { jx: "二等奖" },
-          { jx: "三等奖" },
-          { jx: "四等奖" },
-        ],
+        jxdjList: [],
         sjArr: [], //评审时间
       },
       formInner: {
         pyccAddList: [], //新增条件
-        pyccDefList: [
-          {
-            tjyw: "pyccm",
-            tjzw: "培养层次",
-            option: [],
-            tjmzList: [],
-            tjnfsc: "1",
-          },
-          {
-            tjyw: "nj",
-            tjzw: "年级",
-            option: [],
-            tjmzList: [],
-            tjnfsc: "1",
-          },
-          {
-            tjyw: "sfsfs",
-            tjzw: "师范生属性",
-            option: [],
-            tjmzList: [],
-            tjnfsc: "1",
-          },
-        ], //默认条件
+        pyccDefList: [], //默认条件
       },
       resultArr: [], //合并条件
       xnxqList: [],
       num: 1,
       lgnSn: "",
+      auth: "",
     };
   },
   mounted() {
     this.lgnSn = this.$route.query.id; //逻辑主键
+    this.auth = this.$route.query.au; //逻辑主键
     this.getDetail1();
     this.addPyccList(); //查询所有的新增类型
     this.getAllCollege();
@@ -514,10 +539,45 @@ export default {
     this.getCode("dmxqm"); //学期
   },
   methods: {
+    colseDe() {
+      this.$router.push({
+        path: "/awardsTea/personalSetting",
+      });
+    },
+    cancelAdd() {
+      this.bjzt = "1";
+    },
+    edit() {
+      this.bjzt = "2";
+    },
     getDetail1() {
       getDetail({ id: this.lgnSn }).then((res) => {
         this.formAdd = res.data.rcswPjszJbReq;
-        console.log("res", res);
+        var data = res.data.rcswPjszJbReq.jxdjList;
+        this.$set(this.formAdd, "sjArr", [
+          res.data.rcswPjszJbReq.pssjstart,
+          res.data.rcswPjszJbReq.pssjend,
+        ]);
+        this.formAdd.jxdjList = data.map((item) => {
+          return {
+            jx: item,
+          };
+        });
+        for (var i = 0; i < res.data.rcswPjszDxReqList.length; i++) {
+          if (res.data.rcswPjszDxReqList[i].tjnfsc == "1") {
+            this.formInner.pyccDefList.push(res.data.rcswPjszDxReqList[i]);
+          } else {
+            this.formInner.pyccAddList.push(res.data.rcswPjszDxReqList[i]);
+          }
+        }
+        this.formAdd.jxfpLIST = res.data.rcswPjszFpReqList;
+        this.formAdd.sfyxcftj = Number(this.formAdd.sfyxcftj);
+        this.formAdd.zbxhfs = Number(this.formAdd.zbxhfs);
+        this.syzb =
+          this.formAdd.zrs -
+          this.formAdd.jxfpLIST.reduce((pre, cur) => {
+            return pre + Number(cur.zzrs);
+          }, 0);
       });
     },
     jia() {
@@ -542,12 +602,12 @@ export default {
         this.xnxqList = res.data;
       });
     },
-    cancelAdd() {
-      this.$router.push({
-        path: "/awardsTea/personalSetting",
-      });
-    },
 
+    jxjbChange(e) {
+      if (e == "02") {
+        this.formAdd.pydwmList = []; //选了校级 将培养单位置空
+      }
+    },
     checkFormAdd() {
       // 1.校验必填项
       let validForm = false;
@@ -568,10 +628,15 @@ export default {
         for (var i = 0; i < this.formAdd.jxdjList.length; i++) {
           arr.push(this.formAdd.jxdjList[i].jx);
         }
+        this.resultArr = [
+          ...this.formInner.pyccDefList,
+          ...this.formInner.pyccAddList,
+        ]; //把默认和新增的对象合并给后台
         var data = {
           rcswPjszFpReqList: this.formAdd.jxfpLIST,
           rcswPjszDxReqList: this.resultArr,
           rcswPjszJbReq: {
+            id: this.lgnSn,
             pydwmList: this.formAdd.pydwmList,
             zbxhbl: this.formAdd.zbxhbl,
             zbxhfs: this.formAdd.zbxhfs,
@@ -589,6 +654,7 @@ export default {
           },
         };
         addSave(data).then((res) => {
+          this.$message.success("保存成功");
           this.$router.push({
             path: "/awardsTea/personalSetting",
           });
@@ -667,12 +733,20 @@ export default {
         orderPx: "",
       };
       this.formInner.pyccAddList[index].tjyw = value;
-      this.formInner.pyccAddList[index].tjzw = label; //为后端数据结构赋值
+      this.formInner.pyccAddList[index].tjzw = label;
+      this.formInner.pyccAddList[index].tjmbm = mz; //为后端数据结构赋值
+      this.formInner.pyccAddList[index].tjmzList = []; //左边变化，右边置空，新增不需要这个逻辑
       listQuery(data).then((res) => {
-        this.formInner.pyccAddList[index].option = res.data;
+        this.formInner.pyccAddList[index].tjmbList = res.data.map((item) => {
+          return {
+            dm: item.codeValue,
+            mc: item.codeKey,
+          };
+        });
       });
     },
     pyccChange(e, row) {
+      console.log("this,allAJ", this.allNj);
       //这里处理选择本科还是研究生不同展示的逻辑
       if (row.tjzw == "培养层次") {
         if ((e.includes("1") || e.includes("2")) && e.includes("3")) {
@@ -680,37 +754,42 @@ export default {
             {
               tjyw: "pyccm",
               tjzw: "培养层次",
-              option: this.pyccOption,
+              tjmbList: this.pyccOption,
               tjmzList: e,
               tjnfsc: "1",
+              tjmbm: "dmpyccm",
             },
             {
               tjyw: "nj",
               tjzw: "年级",
-              option: this.allNj,
+              tjmbList: this.allNj,
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "nj",
             },
             {
               tjyw: "sfsfs",
               tjzw: "师范生属性",
-              option: this.dmsfslxmList,
+              tjmbList: this.dmsfslxmList, //dmsfslxm
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "dmsfslxm",
             },
             {
               tjyw: "xxxs",
               tjzw: "学习形式",
-              option: this.dmrsxxxsmList,
+              tjmbList: this.dmrsxxxsmList,
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "dmrsxxxsm",
             },
             {
               tjyw: "xz",
-              tjzw: "学制 ",
-              option: this.dmxzList,
+              tjzw: "学制",
+              tjmbList: this.dmxzList,
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "dmxz",
             },
           ];
         } else if (e.includes("2") || e.includes("1")) {
@@ -718,30 +797,34 @@ export default {
             {
               tjyw: "pyccm",
               tjzw: "培养层次",
-              option: this.pyccOption,
+              tjmbList: this.pyccOption, //dmpyccm
               tjmzList: e,
               tjnfsc: "1",
+              tjmbm: "dmpyccm",
             },
             {
               tjyw: "nj",
               tjzw: "年级",
-              option: this.allNj,
+              tjmbList: this.allNj, // nj
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "nj",
             },
             {
               tjyw: "xxxs",
               tjzw: "学习形式",
-              option: this.dmrsxxxsmList,
+              tjmbList: this.dmrsxxxsmList, //dmrsxxxsm
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "dmrsxxxsm",
             },
             {
               tjyw: "xz",
-              tjzw: "学制 ",
-              option: this.dmxzList,
+              tjzw: "学制",
+              tjmbList: this.dmxzList, //dmxz
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "dmxz",
             },
           ];
         } else if (e.includes("3")) {
@@ -749,23 +832,26 @@ export default {
             {
               tjyw: "pyccm",
               tjzw: "培养层次",
-              option: this.pyccOption,
+              tjmbList: this.pyccOption,
               tjmzList: e,
               tjnfsc: "1",
+              tjmbm: "dmpyccm",
             },
             {
               tjyw: "nj",
               tjzw: "年级",
-              option: this.allNj,
+              tjmbList: this.allNj,
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "nj",
             },
             {
               tjyw: "sfsfs",
               tjzw: "师范生属性",
-              option: this.dmsfslxmList,
+              tjmbList: this.dmsfslxmList,
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "dmsfslxm",
             },
           ];
         } else if (!e.includes("2") || !e.includes("3")) {
@@ -773,25 +859,28 @@ export default {
             {
               tjyw: "pyccm",
               tjzw: "培养层次",
-              option: this.pyccOption,
+              tjmbList: this.pyccOption,
               tjmzList: e,
               tjnfsc: "1",
+              tjmbm: "dmpyccm",
             },
           ];
         }
       }
     },
     setting() {
-      this.formInner.pyccDefList[0].option = this.pyccOption;
-      this.formInner.pyccDefList[1].option = this.allNj;
-      this.formInner.pyccDefList[2].option = this.dmsfslxmList;
       this.mxdxModal = true;
     },
 
     getAllGrade() {
       getGrade()
         .then((res) => {
-          this.allNj = res.data.rows;
+          this.allNj = res.data.rows.map((item) => {
+            return {
+              dm: item,
+              mc: item,
+            };
+          });
         })
         .catch((err) => {});
     },
@@ -832,9 +921,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .el-form-item__label {
-//   font-size: 17px;
-// }
 .topDIV {
   display: flex;
 

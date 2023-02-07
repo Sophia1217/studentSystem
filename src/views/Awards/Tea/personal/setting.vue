@@ -321,7 +321,6 @@ export default {
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         jxwh: this.select == "jxwh" ? this.searchVal : "",
-
         szzl: "1",
       };
       pjList(data).then((res) => {
@@ -336,9 +335,14 @@ export default {
       });
     },
     hadleDetail(row) {
+      var auth = "1";
+      if ((row.sqkg && row.sqkg == "1") || (row.isTime && row.isTime == "2")) {
+        auth = "2";
+      }
       this.$router.push({
         path: "/awardsTea/personalSettingEdit",
         query: {
+          au: auth, //1是可以编辑  2是不可以
           id: row.id,
         },
       });
@@ -347,31 +351,6 @@ export default {
     sjCancel() {
       this.sjModal = false;
     },
-    // kgChange(row) {
-    //   if (row.kgzt == "1") {
-    //     this.$set(row, "sqkfsj", []);
-
-    //     let data = {
-    //       businessName:
-    //         row.businessName == "学籍异动_保留学籍" ||
-    //         row.businessName == "学籍异动_复学" ||
-    //         row.businessName == "学籍异动_退学" ||
-    //         row.businessName == "学籍异动_休学"
-    //           ? "学籍异动"
-    //           : row.businessName,
-    //       id: row.id,
-    //       kgzt: row.kgzt,
-    //       qt: row.qt,
-    //       sqkfqje: row.sqkfsj[1] ? row.sqkfsj[1] : "",
-    //       sqkfqjs: row.sqkfsj[0] ? row.sqkfsj[0] : "",
-    //     };
-    //     updateSqkgsjsz(data).then((res) => {
-    //       this.getList();
-    //     });
-    //   } else {
-    //     this.$message.warning("请选择开放时间！");
-    //   }
-    // },
     //获取培养层次
     getCode(data) {
       this.getCodeInfoByEnglish(data);

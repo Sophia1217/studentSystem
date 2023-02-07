@@ -80,6 +80,7 @@
               v-model="formAdd.jxjbm"
               placeholder="请选择奖项级别"
               clearable
+              @change="jxjbChange"
             >
               <el-option
                 v-for="(item, index) in jxjbList"
@@ -96,7 +97,7 @@
               placeholder="请选择培养单位"
               multiple
               clearable
-              :disabled="formAdd.jxjbm == '院级' ? false : true"
+              :disabled="formAdd.jxjbm == '01' ? false : true"
             >
               <el-option
                 v-for="(item, index) in allDwh"
@@ -597,7 +598,11 @@ export default {
         path: "/awardsTea/personalSetting",
       });
     },
-
+    jxjbChange(e) {
+      if (e == "02") {
+        this.formAdd.pydwmList = []; //选了校级 将培养单位置空
+      }
+    },
     checkFormAdd() {
       // 1.校验必填项
       let validForm = false;
@@ -717,7 +722,8 @@ export default {
         orderPx: "",
       };
       this.formInner.pyccAddList[index].tjyw = value;
-      this.formInner.pyccAddList[index].tjzw = label; //为后端数据结构赋值
+      this.formInner.pyccAddList[index].tjzw = label;
+      this.formInner.pyccAddList[index].tjmbm = mz; //为后端数据结构赋值
       listQuery(data).then((res) => {
         this.formInner.pyccAddList[index].option = res.data;
       });
@@ -733,6 +739,7 @@ export default {
               option: this.pyccOption,
               tjmzList: e,
               tjnfsc: "1",
+              tjmbm: "dmpyccm",
             },
             {
               tjyw: "nj",
@@ -740,13 +747,15 @@ export default {
               option: this.allNj,
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "nj",
             },
             {
               tjyw: "sfsfs",
               tjzw: "师范生属性",
-              option: this.dmsfslxmList,
+              option: this.dmsfslxmList, //dmsfslxm
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "dmsfslxm",
             },
             {
               tjyw: "xxxs",
@@ -754,13 +763,15 @@ export default {
               option: this.dmrsxxxsmList,
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "dmrsxxxsm",
             },
             {
               tjyw: "xz",
-              tjzw: "学制 ",
+              tjzw: "学制",
               option: this.dmxzList,
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "dmxz",
             },
           ];
         } else if (e.includes("2") || e.includes("1")) {
@@ -768,30 +779,34 @@ export default {
             {
               tjyw: "pyccm",
               tjzw: "培养层次",
-              option: this.pyccOption,
+              option: this.pyccOption, //dmpyccm
               tjmzList: e,
               tjnfsc: "1",
+              tjmbm: "dmpyccm",
             },
             {
               tjyw: "nj",
               tjzw: "年级",
-              option: this.allNj,
+              option: this.allNj, // nj
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "nj",
             },
             {
               tjyw: "xxxs",
               tjzw: "学习形式",
-              option: this.dmrsxxxsmList,
+              option: this.dmrsxxxsmList, //dmrsxxxsm
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "dmrsxxxsm",
             },
             {
               tjyw: "xz",
-              tjzw: "学制 ",
-              option: this.dmxzList,
+              tjzw: "学制",
+              option: this.dmxzList, //dmxz
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "dmxz",
             },
           ];
         } else if (e.includes("3")) {
@@ -802,6 +817,7 @@ export default {
               option: this.pyccOption,
               tjmzList: e,
               tjnfsc: "1",
+              tjmbm: "dmpyccm",
             },
             {
               tjyw: "nj",
@@ -809,6 +825,7 @@ export default {
               option: this.allNj,
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "nj",
             },
             {
               tjyw: "sfsfs",
@@ -816,6 +833,7 @@ export default {
               option: this.dmsfslxmList,
               tjmzList: [],
               tjnfsc: "1",
+              tjmbm: "dmsfslxm",
             },
           ];
         } else if (!e.includes("2") || !e.includes("3")) {
@@ -826,15 +844,20 @@ export default {
               option: this.pyccOption,
               tjmzList: e,
               tjnfsc: "1",
+              tjmbm: "dmpyccm",
             },
           ];
         }
       }
     },
     setting() {
+      // tjmbm
       this.formInner.pyccDefList[0].option = this.pyccOption;
+      this.formInner.pyccDefList[0].tjmbm = "dmpyccm";
       this.formInner.pyccDefList[1].option = this.allNj;
+      this.formInner.pyccDefList[1].tjmbm = "nj";
       this.formInner.pyccDefList[2].option = this.dmsfslxmList;
+      this.formInner.pyccDefList[2].tjmbm = "dmsfslxm";
       this.mxdxModal = true;
     },
 

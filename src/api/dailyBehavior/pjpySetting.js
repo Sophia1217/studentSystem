@@ -81,6 +81,17 @@ export function changePjsz(query) {
 }
 
 
+//评奖设置查询
+export function getDetail(query) {
+    return request({
+        url: '/pjpysz/getPjszDetail',
+        method: 'get',
+        params: query
+    })
+}
+
+
+
 
 
 

@@ -359,56 +359,6 @@
           >
         </span>
       </el-dialog>
-      <!-- <el-dialog title="面向对象条件新增" :visible.sync="innerModal" width="36%">
-        <template>
-          <div>
-            <el-table :data="pyccNewList">
-              <el-table-column prop="tjzw" label="条件值">
-                <template slot-scope="scope">
-                  <el-select
-                    collapse-tags
-                    placeholder="请选择"
-                    size="small"
-                    @change="pyccInnerChange($event, scope.row)"
-                    v-model="scope.row.tjzw"
-                  >
-                    <el-option
-                      v-for="(item, index) in leftOptions"
-                      :key="index"
-                      :label="item.tjzw"
-                      :value="{ value: item.tjmz, label: item.tjzw }"
-                    ></el-option>
-                  </el-select>
-                </template>
-              </el-table-column>
-              <el-table-column prop="cbrs" label="设置">
-                <template slot-scope="scope">
-                  <el-select
-                    collapse-tags
-                    placeholder="请选择"
-                    size="small"
-                    @change="pyccChange($event, scope.row)"
-                    v-model="scope.row.tar"
-                  >
-                    <el-option
-                      v-for="(item, index) in rightOptions"
-                      :key="index"
-                      :label="item.codeKey"
-                      :value="item.codeValue"
-                    ></el-option>
-                  </el-select>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-        </template>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="innerCancel">取 消</el-button>
-          <el-button type="primary" class="confirm" @click="innersave"
-            >确 定</el-button
-          >
-        </span>
-      </el-dialog> -->
     </div>
     <div class="editBottom">
       <div class="btn cancel" @click="cancelAdd">取消</div>
@@ -425,8 +375,8 @@ import {
   mxdxSure,
   mnfp,
   addSave,
+  getDetail,
 } from "@/api/dailyBehavior/pjpySetting";
-
 import { getXnxq } from "@/api/dailyBehavior/xnxjStu";
 export default {
   data() {
@@ -544,18 +494,14 @@ export default {
         ], //默认条件
       },
       resultArr: [], //合并条件
-      // pyccNewList: [
-      //   {
-      //     tjzw: "",
-      //     option: [],
-      //     tjmzList: "",
-      //   },
-      // ],
       xnxqList: [],
       num: 1,
+      lgnSn: "",
     };
   },
   mounted() {
+    this.lgnSn = this.$route.query.id; //逻辑主键
+    this.getDetail1();
     this.addPyccList(); //查询所有的新增类型
     this.getAllCollege();
     this.getCode("dmpyccm"); //培养层次1
@@ -566,10 +512,14 @@ export default {
     this.getCode("dmxz"); //学制5
     this.getCode("dmpjpyjxjbm"); //奖项级别
     this.getCode("dmxqm"); //学期
-    // this.getCode(""); //奖项级别
-    // this.getCode(""); //评奖奖项
   },
   methods: {
+    getDetail1() {
+      getDetail({ id: this.lgnSn }).then((res) => {
+        this.formAdd = res.data.rcswPjszJbReq;
+        console.log("res", res);
+      });
+    },
     jia() {
       var obj = { jx: "" };
       this.formAdd.jxdjList.push(obj);

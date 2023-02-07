@@ -36,7 +36,6 @@
               v-model="moreIform.dwhList"
               multiple
               collapse-tags
-              @change="changeXY"
               placeholder="请选择"
               size="small"
             >
@@ -78,8 +77,8 @@
               <el-option
                 v-for="(item,index) in pjdjOps"
                 :key="index"
-                :label="item.mc"
-                :value="item.dm"
+                :label="item"
+                :value="item"
               ></el-option>
             </el-select>
           </el-col>
@@ -384,24 +383,24 @@
             <div>
               <div class="formLeft"><span class="title">申请信息</span></div>
               <el-row :gutter="20">
-                <el-col :span="12">
+                <el-col :span="10">
                   <el-form-item label="评奖奖项">
                     <div>{{ formDetails.pjjxmc }}</div>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="10">
                   <el-form-item label="评奖等级">
                     <div>{{ formDetails.pjdj }}</div>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="12">
+                <el-col :span="10">
                   <el-form-item label="集体名称">
                     <div>{{ formDetails.jtmc }}</div>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="10">
                   <el-form-item label="其他">
                     <div>{{ formDetails.qt }}</div>
                   </el-form-item>
@@ -413,19 +412,22 @@
                 </el-form-item>
               </el-row> -->
               <el-row :gutter="20">
-                <el-col :span="10">
+                <el-col :span="20">
                   <el-form-item label="培养单位">
                     <div>{{ formDetails.dwhmc }}</div>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-form-item label="申请理由">
-                  <div>{{ formDetails.sqly }}</div>
-                </el-form-item>
+                <el-col :span="20">
+                  <el-form-item label="申请理由">
+                    <div>{{ formDetails.sqly }}</div>
+                  </el-form-item>
+                </el-col>
+
               </el-row>
               <el-row :gutter="20">
-
+                <el-col :span="20">
                   <el-form-item label="附件信息">
                     <div>
                       <div v-for="item in formDetails.fileList">
@@ -438,7 +440,7 @@
                       </div>
                     </div>
                   </el-form-item>
- 
+                </el-col>
               </el-row>
             </div>
           </el-form>
@@ -531,6 +533,7 @@ import {
   jjFlow,
   thFinal,
   pjdjUpdate,
+  getPjdjByPjjx,
 } from "@/api/awards/awardTea"
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getCollege,getGrade } from "@/api/class/maintenanceClass";
@@ -560,8 +563,6 @@ export default {
       leng: 0,
       tableData: [],
       allDwh: [],
-      zyOps: [], // 专业下拉
-      bjOps: [], // 班级下拉
       allXn: [], //学年下拉
       commonParams: [],
       queryParams: {
@@ -631,11 +632,13 @@ export default {
       });
     },
     changeJX(val) {
-      // getAllpjjxxx({ dm: val }).then((res) => {
-      //   this.pjdjOps = res.data.pjdjList;
-      //   // this.formAdd.pjzqXn = res.data.pjzqXn;
-      //   // this.formAdd.pjzqXq = res.data.pjzqXq;
-      // });
+      if (val && val.length == 0) {
+        this.moreIform.pjdjList = []; //等级
+      } else{
+        getPjdjByPjjx({pjjxList: val}).then((res) => {
+          this.pjdjOps = res.data;
+        });
+      };
     },
     changeXn(){
       this.handleSearch();
@@ -715,25 +718,6 @@ export default {
           this.allDwh = res.data.rows;
         })
         .catch((err) => {});
-    },
-    changeXY(val) {
-      if (val && val.length == 0) {
-        this.moreIform.stuInfo = []; // 专业
-        this.moreIform.pread = []; // 班级
-      }
-      this.getZY(val);
-    },
-    // 学院找专业
-    getZY(val) {
-      this.zyOps = [];
-      let data = { DWH: val };
-      if (Object.keys(val).length !== 0) {
-        getZY(data)
-          .then((res) => {
-            this.zyOps = res.data;
-          })
-          .catch((err) => {});
-      }
     },
     //获取年级
     getAllGrade() {

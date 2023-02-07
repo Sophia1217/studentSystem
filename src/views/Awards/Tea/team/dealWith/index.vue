@@ -36,7 +36,6 @@
               v-model="moreIform.dwhList"
               multiple
               collapse-tags
-              @change="changeXY"
               placeholder="请选择"
               size="small"
             >
@@ -54,7 +53,7 @@
               v-model="moreIform.pjjxList"
               multiple
               collapse-tags
-              @change="changeXY"
+              @change="changeJXDuo"
               placeholder="请选择"
               size="small"
             >
@@ -72,15 +71,14 @@
               v-model="moreIform.pjdjList"
               multiple
               collapse-tags
-              @change="changeXY"
               placeholder="请选择"
               size="small"
             >
               <el-option
-                v-for="(item,index) in pjdjOps"
+                v-for="(item,index) in pjdjDuoOps"
                 :key="index"
-                :label="item.mc"
-                :value="item.dm"
+                :label="item"
+                :value="item"
               ></el-option>
             </el-select>
           </el-col>
@@ -293,24 +291,24 @@
             <div>
               <div class="formLeft"><span class="title">申请信息</span></div>
               <el-row :gutter="20">
-                <el-col :span="12">
+                <el-col :span="10">
                   <el-form-item label="评奖奖项">
                     <div>{{ formDetails.pjjxmc }}</div>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="10">
                   <el-form-item label="评奖等级">
                     <div>{{ formDetails.pjdj }}</div>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :span="12">
+                <el-col :span="10">
                   <el-form-item label="集体名称">
                     <div>{{ formDetails.jtmc }}</div>
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="10">
                   <el-form-item label="其他">
                     <div>{{ formDetails.qt }}</div>
                   </el-form-item>
@@ -322,19 +320,22 @@
                 </el-form-item>
               </el-row> -->
               <el-row :gutter="20">
-                <el-col :span="10">
+                <el-col :span="20">
                   <el-form-item label="培养单位">
                     <div>{{ formDetails.dwhmc }}</div>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-form-item label="申请理由">
-                  <div>{{ formDetails.sqly }}</div>
-                </el-form-item>
+                <el-col :span="20">
+                  <el-form-item label="申请理由">
+                    <div>{{ formDetails.sqly }}</div>
+                  </el-form-item>
+                </el-col>
+
               </el-row>
               <el-row :gutter="20">
-
+                <el-col :span="20">
                   <el-form-item label="附件信息">
                     <div>
                       <div v-for="item in formDetails.fileList">
@@ -347,7 +348,7 @@
                       </div>
                     </div>
                   </el-form-item>
- 
+                </el-col>
               </el-row>
             </div>
           </el-form>
@@ -375,6 +376,142 @@
         <span slot="footer" class="dialog-footer">
         <el-button @click="detailCancel">关 闭</el-button>
       </span>
+      </el-dialog>
+      <el-dialog
+        title="新增"
+        :visible.sync="addModal"
+        width="50%"
+        @close="addCance"
+        :close-on-click-modal="false"
+      >
+        <div class="headline">基本信息</div>
+        <div class="tableStyle">
+          <el-row :gutter="20">
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">学号</div>
+                <div class="content">{{ formDetails.xh }}</div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">姓名</div>
+                <div class="content">{{ formDetails.xm }}</div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">性别</div>
+                <div class="content">{{ formDetails.xbmc }}</div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">培养层次</div>
+                <div class="content">{{ formDetails.pyccmc }}</div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">培养单位</div>
+                <div class="content">{{ formDetails.dwhmc }}</div>
+              </div>
+            </el-col>
+
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">年级</div>
+                <div class="content">{{ formDetails.ssnj }}</div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">专业</div>
+                <div class="content">{{ formDetails.zydmmc }}</div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">班级</div>
+                <div class="content">{{ formDetails.bjmmc }}</div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="headline">申请信息</div>
+        <div class="tableStyle">
+          <el-form
+            ref="formAdd"
+            :model="formAdd"
+            :rules="rules"
+            label-width="150px"
+          >
+            <el-form-item label="评奖奖项" prop="pjjx" :rules="rules.pjjx">
+              <el-select v-model="formAdd.pjjx" @change="changeJX">
+                <el-option
+                  v-for="(item, index) in pjjxOps"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="评奖等级" prop="pjdj" :rules="rules.pjdj">
+              <el-select v-model="formAdd.pjdj">
+                <el-option
+                  v-for="(item, index) in pjdjOps"
+                  :key="index"
+                  :label="item"
+                  :value="item"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-row>
+              <el-col :col="12">
+                <el-form-item label="集体名称" prop="jtmc">
+                  {{ formAdd.jtmc }}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-form-item label="其他" prop="qt" :rules="rules.qt">
+              <el-input v-model="formAdd.qt" maxlength="100" />
+            </el-form-item>
+            <el-form-item label="申请理由" prop="sqly">
+              <el-input
+                type="textarea"
+                v-model="formAdd.sqly"
+                maxlength="500"
+              />
+            </el-form-item>
+            <el-form-item label="附件信息" prop="fj">
+              <el-upload
+                action="#"
+                multiple
+                class="el-upload"
+                :auto-upload="false"
+                ref="upload"
+                :file-list="formAdd.fileList"
+                :on-change="fileChange"
+                accept=".pdf,.jpg"
+                :before-remove="beforeRemove"
+              >
+                <el-button size="small" type="primary">点击上传</el-button>
+              </el-upload>
+            </el-form-item>
+          </el-form>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="addCance">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="addClick"
+            >确 定</el-button
+          >
+        </span>
       </el-dialog>
       <pagination
         v-show="queryParams.total > 0"
@@ -410,6 +547,7 @@ import {
   mbDown,
   pjpyAdd,
   del,
+  getPjdjByPjjx,
 } from "@/api/awards/awardTea"
 import {
   getAllpjjx,
@@ -492,7 +630,10 @@ export default {
       uploadUrl: process.env.VUE_APP_BASE_API + "/rcswPjpyFlow/importExcel",
       delArr: [],
       pjdjOps: [],
+      pjdjDuoOps: [],
       pjjxOps: [],
+      formAdd: { pjzqXn: "", pjzqXq: "" },
+      addModal: false,
       rules: {
         // shjg: [
         //   { required: true, message: "审核结果不能为空", trigger: "change" },
@@ -514,18 +655,32 @@ export default {
   },
 
   methods: {
+    // 表单校验
+    checkFormAdd() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formAdd.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
     //奖项
     getJX() {
       getAllpjjx({ jxlb: "2" }).then((res) => {
         this.pjjxOps = res.data;
       });
     },
-    changeJX(val) {
-      // getAllpjjxxx({ dm: val }).then((res) => {
-      //   this.pjdjOps = res.data.pjdjList;
-      //   // this.formAdd.pjzqXn = res.data.pjzqXn;
-      //   // this.formAdd.pjzqXq = res.data.pjzqXq;
-      // });
+    changeJXDuo(val) {
+      if (val && val.length == 0) {
+        this.moreIform.pjdjList = []; //等级
+      } else{
+        getPjdjByPjjx({pjjxList: val}).then((res) => {
+          this.pjdjDuoOps = res.data;
+        });
+      };
     },
     changeXn(){
       this.handleSearch();
@@ -586,25 +741,6 @@ export default {
           this.allDwh = res.data.rows;
         })
         .catch((err) => {});
-    },
-    changeXY(val) {
-      if (val && val.length == 0) {
-        this.moreIform.stuInfo = []; // 专业
-        this.moreIform.pread = []; // 班级
-      }
-      this.getZY(val);
-    },
-    // 学院找专业
-    getZY(val) {
-      this.zyOps = [];
-      let data = { DWH: val };
-      if (Object.keys(val).length !== 0) {
-        getZY(data)
-          .then((res) => {
-            this.zyOps = res.data;
-          })
-          .catch((err) => {});
-      }
     },
     //获取年级
     getAllGrade() {
@@ -818,11 +954,54 @@ export default {
     },
     //新增
     handleNew() {
-      // this.formAdd={};
-      // this.formAdd.files = [];
-      // this.fileList = [];
-      // this.addModal = true;
-      console.log("xinzeng");
+      this.formAdd = {};
+      this.formAdd.fileList = [];
+      this.fileList = [];
+      this.addModal = true;
+    },
+    addCance() {
+      this.addModal = false;
+      this.$refs.formAdd.resetFields();
+      this.pjdjOps = [];
+    },
+    changeJX(val) {
+      getAllpjjxxx({ dm: val }).then((res) => {
+        this.pjdjOps = res.data.pjdjList;
+        this.formAdd.pjzqXn = res.data.pjzqXn;
+        this.formAdd.pjzqXq = res.data.pjzqXq;
+      });
+    },
+    addClick() {
+      if (!this.checkFormAdd()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        let formData = new FormData();
+
+        formData.append("jxlb", "2");
+        formData.append("pjdj", this.formAdd.pjdj);
+        formData.append("pjjx", this.formAdd.pjjx);
+        formData.append("sqly", this.formAdd.sqly);
+        formData.append("pjzqXn", this.formAdd.pjzqXn);
+        formData.append("pjzqXq", this.formAdd.pjzqXq);
+        //formData.append("jtmc", this.formAdd.jtmc);
+        formData.append("qt", this.formAdd.qt);
+        formData.append("xh", this.$store.getters.userId);
+        if (this.fileList.length > 0) {
+          this.fileList.map((file) => {
+            formData.append("files", file.raw);
+          });
+        }
+        Addpjpysq(formData).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("新增成功");
+            this.query();
+          } else {
+            this.$message.error("新增失败");
+          }
+        });
+        this.addModal = false;
+      }
     },
   },
 };

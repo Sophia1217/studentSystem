@@ -3,7 +3,7 @@ import request from '@/utils/request'
 //教师端-待审核列表导出
 export function exportDsh(query) {
   return request({
-    url: '/rcswPjpyFlow/excelExportRcswPjpyFlow',
+    url: '/rcswJtknKnsq/excelExportTodo',
     method: 'post',
     responseType:"blob",
     data: query
@@ -12,7 +12,7 @@ export function exportDsh(query) {
 //教师端-已处理列表导出
 export function exportYsh(query) {
   return request({
-    url: '/rcswPjpyFlow/excelExportRcswPjpyFlowed',
+    url: '/rcswJtknKnsq/excelExportDone',
     method: 'post',
     responseType:"blob",
     data: query
@@ -21,7 +21,7 @@ export function exportYsh(query) {
 //教师端-已审核列表查询
 export function queryYshList(query) {
   return request({
-    url: '/rcswPjpyFlow/queryPjpyFlowedList',
+    url: '/rcswJtknKnsq/doneList',
     method: 'post',
     data: query
   })
@@ -29,7 +29,7 @@ export function queryYshList(query) {
 //教师端-待审核列表查询
 export function queryDshList(query) {
   return request({
-    url: '/rcswPjpyFlow/queryPjpyFlowList',
+    url: '/rcswJtknKnsq/toDoList',
     method: 'post',
     data: query
   })
@@ -37,15 +37,24 @@ export function queryDshList(query) {
 //同意操作
 export function tyFlow(query) {
   return request({
-    url: '/rcswPjpyFlow/tyFlow',
+    url: '/rcswJtknKnsq/directAgreeJtkn',
     method: 'post',
     data: query
   })
 }
+//教师端-批量审核/单个审核
+export function tyBatchFlow(query) {
+  return request({
+    url: '/rcswJtknKnsq/batchAgreeJtkn',
+    method: 'post',
+    data: query
+  })
+}
+
 //拒绝操作
 export function jjFlow(query) {
   return request({
-    url: '/rcswPjpyFlow/jjFlow',
+    url: '/rcswJtknKnsq/rejectJtkn',
     method: 'post',
     data: query
   })
@@ -53,7 +62,7 @@ export function jjFlow(query) {
 //退回操作
 export function thFinal(query) {
   return request({
-    url: '/rcswPjpyFlow/htFlow',
+    url: '/rcswJtknKnsq/rebackJtkn',
     method: 'post',
     data: query
   })
@@ -61,7 +70,7 @@ export function thFinal(query) {
 //教师端-详情查询
 export function queryDshDetail(query) {
   return request({
-    url: '/rcswPjpyFlow/queryPjpyFlowedDetail',
+    url: '/rcswJtknKnsq/queryDetail',
     method: 'post',
     data: query
   })
@@ -69,7 +78,7 @@ export function queryDshDetail(query) {
 //教师端-删除
 export function del(query) {
   return request({
-    url: '/rcswPjpyFlow/adminDelete',
+    url: '/rcswJtknKnsq/delete',
     method: 'post',
     data: query
   })
@@ -77,25 +86,25 @@ export function del(query) {
  //教师端-模板下载
  export function mbDown(query) {
   return request({
-    url: '/rcswPjpyFlow/downLoad',
+    url: '/rcswJtknKnsq/downLoad',
     method: 'post',
     data: query,
     responseType:'blob'
   })
 }
 //教师端-导入
-export function pjpyImport(query) {
+export function jtknImport(query) {
   return request({
-      url: '/rcswPjpyFlow/importExcel',
+      url: '/rcswJtknKnsq/import',
       method: 'post',
       data: query,
       responseType:'blob'
   })
 }
-//教师端-评奖评优-新增（待修改）
+//教师端-评奖评优-新增
 export function pjpyAdd(query) {
   return request({
-    url: '/rcswPjpyFlow/importZssqLs',
+    url: '/rcswJtknKnsq/importInsertJtknKnssq',
     method: 'post',
     data: query
   })
@@ -104,14 +113,6 @@ export function pjpyAdd(query) {
 export function pjdjUpdate(query) {
   return request({
     url: '/rcswPjpyFlow/teaUpdateByBatch',
-    method: 'post',
-    data: query
-  })
-}
-//评奖评优-根据多个奖项获取等级
-export function getPjdjByPjjx(query) {
-  return request({
-    url: '/rcswPjpyFlow/getPjdjByPjjx',
     method: 'post',
     data: query
   })

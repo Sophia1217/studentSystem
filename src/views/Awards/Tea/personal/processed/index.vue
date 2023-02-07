@@ -37,7 +37,6 @@
               v-model="moreIform.dwhList"
               multiple
               collapse-tags
-              @change="changeXY"
               placeholder="请选择"
               size="small"
             >
@@ -79,8 +78,8 @@
               <el-option
                 v-for="(item,index) in pjdjOps"
                 :key="index"
-                :label="item.mc"
-                :value="item.dm"
+                :label="item"
+                :value="item"
               ></el-option>
             </el-select>
           </el-col>
@@ -531,10 +530,10 @@ import {
   jjFlow,
   thFinal,
   pjdjUpdate,
+  getPjdjByPjjx,
 } from "@/api/awards/awardTea"
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getCollege,getGrade } from "@/api/class/maintenanceClass";
-import { getZY} from "@/api/student/index";
 import lctCom from "../../../../components/lct";
 import { lctTable } from "@/api/stuDangan/detailList/xiaoneiwai";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
@@ -632,11 +631,14 @@ export default {
       });
     },
     changeJX(val) {
-      // getAllpjjxxx({ dm: val }).then((res) => {
-      //   this.pjdjOps = res.data.pjdjList;
-      //   // this.formAdd.pjzqXn = res.data.pjzqXn;
-      //   // this.formAdd.pjzqXq = res.data.pjzqXq;
-      // });
+      if (val && val.length == 0) {
+        this.moreIform.pjdjList = []; //等级
+      } else{
+        getPjdjByPjjx({pjjxList: val}).then((res) => {
+          this.pjdjOps = res.data;
+        });
+      };
+      
     },
     changeXn(){
       this.handleSearch();
@@ -718,25 +720,6 @@ export default {
           this.allDwh = res.data.rows;
         })
         .catch((err) => {});
-    },
-    changeXY(val) {
-      if (val && val.length == 0) {
-        this.moreIform.stuInfo = []; // 专业
-        this.moreIform.pread = []; // 班级
-      }
-      this.getZY(val);
-    },
-    // 学院找专业
-    getZY(val) {
-      this.zyOps = [];
-      let data = { DWH: val };
-      if (Object.keys(val).length !== 0) {
-        getZY(data)
-          .then((res) => {
-            this.zyOps = res.data;
-          })
-          .catch((err) => {});
-      }
     },
     //获取年级
     getAllGrade() {

@@ -92,6 +92,7 @@
                 v-model="queryParams.rdjg"
                 placeholder="请选择"
                 size="small"
+                clearable
               >
                 <el-option
                   v-for="item in rdjgOps"
@@ -111,6 +112,7 @@
                 v-model="queryParams.zdbzrqlbm"
                 placeholder="请选择"
                 size="small"
+                clearable
               >
                 <el-option
                   v-for="item in bzrqlbOps"

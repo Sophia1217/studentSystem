@@ -50,7 +50,7 @@
           >
           </el-table-column>
           <el-table-column
-            prop="pjjx"
+            prop="pjjxmc"
             label="评奖奖项"
             sortable="custom"
             :show-overflow-tooltip="true"
@@ -826,6 +826,7 @@ export default {
     },
     xinzeng() {
       this.formAdd = {};
+      this.formAdd.fileList = [];
       this.fileList = [];
       this.addModal = true;
     },
@@ -841,6 +842,7 @@ export default {
         this.formAdd.pjzqXq = res.data.pjzqXq;
         this.formAdd.jtmc = res.data.jtmc;
       });
+      this.formAdd.pjdj ? (this.formAdd.pjdj = "") : "";
     },
     changeJXEdit(val) {
       getAllpjjxxx({ dm: val }).then((res) => {
@@ -851,6 +853,7 @@ export default {
         this.formEdit.pjzqXq = res.data.pjzqXq;
         // }
       });
+      this.formEdit.pjdj ? (this.formEdit.pjdj = "") : "";
     },
     beforeRemove(file, fileList) {
       console.log("file", file);

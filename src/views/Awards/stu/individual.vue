@@ -797,6 +797,7 @@ export default {
     },
     xinzeng() {
       this.formAdd = {};
+      this.formAdd.fileList = [];
       this.fileList = [];
       this.addModal = true;
     },
@@ -811,6 +812,7 @@ export default {
         this.formAdd.pjzqXn = res.data.pjzqXn;
         this.formAdd.pjzqXq = res.data.pjzqXq;
       });
+      this.formAdd.pjdj ? (this.formAdd.pjdj = "") : "";
     },
     changeJXEdit(val) {
       getAllpjjxxx({ dm: val }).then((res) => {
@@ -820,6 +822,7 @@ export default {
         this.formEdit.pjzqXq = res.data.pjzqXq;
         // }
       });
+      this.formEdit.pjdj ? (this.formEdit.pjdj = "") : "";
     },
     beforeRemove(file, fileList) {
       console.log("file", file);

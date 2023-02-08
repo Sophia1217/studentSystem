@@ -787,7 +787,7 @@ export default {
         formData.append("pjzqXn", this.formAdd.pjzqXn);
         formData.append("pjzqXq", this.formAdd.pjzqXq);
         //formData.append("jtmc", this.formAdd.jtmc);
-        formData.append("qt", this.formAdd.qt);
+        formData.append("qt", this.formAdd.qt ? this.formAdd.qt : "");
         formData.append("xh", this.$store.getters.userId);
         if (this.fileList.length > 0) {
           this.fileList.map((file) => {
@@ -840,6 +840,7 @@ export default {
         this.pjdjOps = res.data.pjdjList;
         this.formAdd.pjzqXn = res.data.pjzqXn;
         this.formAdd.pjzqXq = res.data.pjzqXq;
+        this.formAdd.pjzqXqmc = res.data.pjzqXqmc;
         this.formAdd.jtmc = res.data.jtmc;
       });
       this.formAdd.pjdj ? (this.formAdd.pjdj = "") : "";
@@ -851,6 +852,7 @@ export default {
 
         this.formEdit.pjzqXn = res.data.pjzqXn;
         this.formEdit.pjzqXq = res.data.pjzqXq;
+        this.formEdit.pjzqXqmc = res.data.pjzqXqmc;
         // }
       });
       this.formEdit.pjdj ? (this.formEdit.pjdj = "") : "";

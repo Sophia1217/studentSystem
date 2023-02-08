@@ -97,7 +97,6 @@
           <el-table-column
             prop="jg"
             label="审核进度"
-            sortable="custom"
             :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
@@ -367,22 +366,28 @@
           >
             <el-form-item label="认定周期">{{ formEdit.rdzqpj }}</el-form-item>
             <el-form-item label="申请等级" prop="sqdj" :rules="rules.sqdj">
-              <el-select v-model="formEdit.sqdj">
-                <el-option
-                  v-for="(item, index) in rddjOps"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select>
+              <div v-if="editFlag == 2">{{ formEdit.sqdjmc }}</div>
+              <div v-else>
+                <el-select v-model="formEdit.sqdj">
+                  <el-option
+                    v-for="(item, index) in rddjOps"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+              </div>
             </el-form-item>
 
             <el-form-item label="申请理由" prop="sqly">
-              <el-input
-                type="textarea"
-                v-model="formEdit.sqly"
-                maxlength="500"
-              />
+              <div v-if="editFlag == 2">{{ formEdit.sqly }}</div>
+              <div v-else>
+                <el-input
+                  type="textarea"
+                  v-model="formEdit.sqly"
+                  maxlength="500"
+                />
+              </div>
             </el-form-item>
             <el-form-item label="附件信息" prop="files">
               <el-upload
@@ -473,7 +478,7 @@
       @handleCloseLct="handleCloseLct"
     ></lctCom>
     <el-dialog
-      title="学年小结导出确认"
+      title="导出确认"
       :visible.sync="xnxjModal"
       width="30%"
       :close-on-click-modal="false"

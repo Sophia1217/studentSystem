@@ -199,7 +199,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="评奖周期" prop="pjzq">
-              {{ formAdd.pjzqXn + formAdd.pjzqXq }}
+              {{ formAdd.pjzqXn + (formAdd.pjzqXqmc ? formAdd.pjzqXqmc : "") }}
             </el-form-item>
 
             <el-form-item label="申请理由" prop="sqly">
@@ -335,7 +335,9 @@
               </div>
             </el-form-item>
             <el-form-item label="评奖周期" prop="pjzq">
-              {{ formEdit.pjzqXn + formEdit.pjzqXq }}
+              {{
+                formEdit.pjzqXn + (formEdit.pjzqXqmc ? formEdit.pjzqXqmc : "")
+              }}
             </el-form-item>
 
             <el-form-item label="申请理由" prop="sqly">
@@ -811,6 +813,7 @@ export default {
         this.pjdjOps = res.data.pjdjList;
         this.formAdd.pjzqXn = res.data.pjzqXn;
         this.formAdd.pjzqXq = res.data.pjzqXq;
+        this.formAdd.pjzqXqmc = res.data.pjzqXqmc;
       });
       this.formAdd.pjdj ? (this.formAdd.pjdj = "") : "";
     },
@@ -820,6 +823,7 @@ export default {
 
         this.formEdit.pjzqXn = res.data.pjzqXn;
         this.formEdit.pjzqXq = res.data.pjzqXq;
+        this.formEdit.pjzqXqmc = res.data.pjzqXqmc;
         // }
       });
       this.formEdit.pjdj ? (this.formEdit.pjdj = "") : "";

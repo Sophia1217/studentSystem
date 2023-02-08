@@ -164,38 +164,38 @@
           ></el-table-column>
           <el-table-column
             label="学号"
-            prop="xh"
+            prop="XH"
             min-width="100"
           ></el-table-column>
           <el-table-column
             label="姓名"
-            prop="xm"
+            prop="XM"
             min-width="80"
           ></el-table-column>
           <el-table-column
             label="政治面貌"
-            prop="xm"
+            prop="ZZMM"
             min-width="100"
           ></el-table-column>
           <el-table-column
             label="民族"
-            prop="xm"
+            prop="MZMC"
             min-width="80"
           ></el-table-column>
           <el-table-column
             label="培养单位"
-            prop="xm"
+            prop="DWMC"
             min-width="100"
           ></el-table-column>
           <el-table-column
             label="专业"
-            prop="xm"
+            prop="ZYDMC"
             min-width="100"
           ></el-table-column>
           <el-table-column label="年级" prop="xm" width="80"></el-table-column>
           <el-table-column
             label="培养层次"
-            prop="xm"
+            prop="PYCC"
             width="80"
           ></el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
@@ -203,7 +203,7 @@
               <el-button
                 type="text"
                 size="small"
-                @click="hadleDetail(scope.row, 1)"
+                @click="hadleDetail(scope.row)"
               >
                 <i class="scopeIncon handledie"></i>
                 <span class="handleName">详情</span>
@@ -215,7 +215,7 @@
     </div>
 
     <el-dialog title="导出确认" :visible.sync="daochuModal" width="30%">
-      <span>确认导出{{ leng }}条学生数据？</span>
+      <span>确认导出？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="daochu()"
@@ -248,6 +248,7 @@ import {
   fileDown,
 } from "@/api/student/index";
 import { getToken } from "@/utils/auth";
+import { queryList } from "@/api/familyDifficulties/table";
 export default {
   name: "absentee",
   components: { CheckboxCom, checkboxComDynic },
@@ -427,10 +428,10 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      getManageRegStuInfoPageList(data)
+      queryList(data)
         .then((res) => {
-          this.tableData = res.data.data;
-          this.queryParams.total = res.data.total;
+          this.tableData = res.data.list;
+          this.queryParams.total = res.data.totalcount;
         })
         .catch((err) => {});
     },
@@ -553,12 +554,19 @@ export default {
     daochu() {
       this.daochuModal = false;
     },
-
-    // 导出确认
-    handleConfirm() {
+    handleCancel() {
       this.daochuModal = false;
     },
-    hadleDetail(row, flag) {},
+
+    hadleDetail(row) {
+      console.log(1111);
+      this.$router.push({
+        path: "/familyDifficult/familyTableDetail",
+        // query: {
+        //   id: row.XH,
+        // },
+      });
+    },
 
     //排序
     changeTableSort(column) {

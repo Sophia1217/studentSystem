@@ -223,14 +223,20 @@
           </el-table-column>
           <el-table-column prop="wrdyy" label="未认定原因" min-width="100">
             <template slot-scope="scope">
-              <el-input
+              <el-select
                 v-model="scope.row.wrdyy"
-                maxlength="20"
-                placeholder="请输入"
+                placeholder="请选择"
                 style="width: 150px"
-                show-overflow-tooltips
-                @keyup.enter.native="handleUpdata(scope.row)"
-              />
+                clearable
+                @change="handleUpdata(scope.row)"
+              >
+                <el-option
+                  v-for="item in wrdyyOps"
+                  :key="item.dm"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
             </template>
           </el-table-column>
           <el-table-column prop="fj" label="附件" width="200">
@@ -344,6 +350,7 @@ export default {
       pyccOps: [],
       rdjgOps: [],
       bzrqlbOps: [],
+      wrdyyOps: [],
       tableData: [],
       queryParams: {
         pageNum: 1,
@@ -365,6 +372,7 @@ export default {
     this.getCode("dmpyccm"); // 培养层次
     this.getCode("dmkndjm"); //
     this.getCode("dmtsknlbm"); //
+    this.getCode("dmwrdyy");
   },
   created() {
     this.authConfirm(this.$route.path.split("/")[2]);
@@ -405,6 +413,9 @@ export default {
               break;
             case "dmtsknlbm":
               this.bzrqlbOps = res.data;
+              break;
+            case "dmwrdyy":
+              this.wrdyyOps = res.data;
               break;
           }
         })

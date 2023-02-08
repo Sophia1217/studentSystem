@@ -9,3 +9,22 @@ export function queryList(query) {
         data: query
     })
   }
+
+  
+
+export function InsertJtList(query) {
+    return request({
+        url: '/rcswJtknJtqkdc/InsertJtList',
+        method: 'post',
+        data: query
+    })
+  }
+  
+//家庭情况调查学生列表详情
+export function GetDetail(query) {
+    return request({
+        url: '/rcswJtknJtqkdc/GetDetail',
+        method: 'get',
+        params: query
+    })
+  }

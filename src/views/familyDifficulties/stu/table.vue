@@ -6,14 +6,10 @@
         <p class="toptitle">华中师范大学学生及家庭情况调查表</p>
         <div class="timeWrap">
           <span class="updataTime"
-            >创建时间：{{
-              formatDate(detailInfoData.fdyZpJbqkRes.updateTime)
-            }}</span
+            >创建时间：{{ formatDate(tableData.createTime) }}</span
           >
           <span class="updataTime"
-            >更新时间：{{
-              formatDate(detailInfoData.fdyZpJbqkRes.updateTime)
-            }}</span
+            >更新时间：{{ formatDate(tableData.updateTime) }}</span
           >
         </div>
       </div>
@@ -26,7 +22,7 @@
               <div class="wrap">
                 <div class="title">学号</div>
                 <div class="content">
-                  {{ detailInfoData.fdyZpJbqkRes.xm }}
+                  {{ detailInfoData.XH }}
                 </div>
               </div>
             </el-col>
@@ -34,17 +30,17 @@
               <div class="wrap">
                 <div class="title">姓名</div>
                 <div class="content">
-                  {{ detailInfoData.fdyZpJbqkRes.xb }}
+                  {{ detailInfoData.XM }}
                 </div>
               </div>
             </el-col>
           </el-row>
-          <el-row>
+          <el-row :gutter="20">
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">性别</div>
                 <div class="content">
-                  {{ detailInfoData.fdyZpJbqkRes.csrq }}
+                  {{ detailInfoData.XB }}
                 </div>
               </div>
             </el-col>
@@ -52,7 +48,7 @@
               <div class="wrap">
                 <div class="title">学院</div>
                 <div class="content">
-                  {{ detailInfoData.fdyZpJbqkRes.csrq }}
+                  {{ detailInfoData.DWMC }}
                 </div>
               </div>
             </el-col>
@@ -62,7 +58,7 @@
               <div class="wrap">
                 <div class="title">专业</div>
                 <div class="content">
-                  {{ detailInfoData.fdyZpJbqkRes.zgxl }}
+                  {{ detailInfoData.ZYDMC }}
                 </div>
               </div>
             </el-col>
@@ -70,7 +66,7 @@
               <div class="wrap">
                 <div class="title">年级</div>
                 <div class="content">
-                  {{ detailInfoData.fdyZpJbqkRes.zgxl }}
+                  {{ detailInfoData.NJ }}
                 </div>
               </div>
             </el-col>
@@ -80,7 +76,7 @@
               <div class="wrap">
                 <div class="title">出生年月</div>
                 <div class="content">
-                  {{ detailInfoData.fdyZpJbqkRes.lx }}
+                  {{ detailInfoData.CSRQ }}
                 </div>
               </div>
             </el-col>
@@ -88,7 +84,7 @@
               <div class="wrap">
                 <div class="title">籍贯</div>
                 <div class="content">
-                  {{ detailInfoData.fdyZpJbqkRes.pycc }}
+                  {{ detailInfoData.xh }}
                 </div>
               </div>
             </el-col>
@@ -98,7 +94,7 @@
               <div class="wrap">
                 <div class="title">身份证号码</div>
                 <div class="content">
-                  {{ detailInfoData.fdyZpJbqkRes.rs }}
+                  {{ detailInfoData.SFZJH }}
                 </div>
               </div>
             </el-col>
@@ -106,7 +102,7 @@
               <div class="wrap">
                 <div class="title">政治面貌</div>
                 <div class="content">
-                  {{ detailInfoData.fdyZpJbqkRes.tkcs }}
+                  {{ detailInfoData.xh }}
                 </div>
               </div>
             </el-col>
@@ -116,7 +112,7 @@
               <div class="wrap">
                 <div class="title">民族</div>
                 <div class="content">
-                  {{ detailInfoData.fdyZpJbqkRes.rs }}
+                  {{ tableData.xh }}
                 </div>
               </div>
             </el-col>
@@ -124,7 +120,7 @@
               <div class="wrap">
                 <div class="title">毕业学校</div>
                 <div class="content">
-                  {{ detailInfoData.fdyZpJbqkRes.tkcs }}
+                  {{ tableData.xh }}
                 </div>
               </div>
             </el-col>
@@ -134,13 +130,10 @@
               <div class="wrap">
                 <div class="title">家庭人口数</div>
                 <div class="content" v-if="isEdit == 1">
-                  <el-input-number
-                    v-model="detailInfoData.fdyZpJbqkRes.xgjz"
-                    max="100"
-                  />
+                  <el-input-number v-model="tableData.jt_rks" :max="100" />
                 </div>
                 <div class="content" v-else>
-                  {{ detailInfoData.fdyZpJbqkRes.xgjz }}
+                  {{ tableData.xh }}
                 </div>
               </div>
             </el-col>
@@ -148,7 +141,7 @@
               <div class="wrap">
                 <div class="title">本人号码</div>
                 <div class="content">
-                  {{ detailInfoData.fdyZpJbqkRes.tkcs }}
+                  {{ detailInfoData.YDDH }}
                 </div>
               </div>
             </el-col>
@@ -159,7 +152,7 @@
                 <div class="title">单亲</div>
                 <div class="content">
                   <el-radio-group
-                    v-model="detailInfoData.fdyZpJbqkRes.tkcs"
+                    v-model="tableData.sfdq"
                     :disabled="isEdit !== 1"
                   >
                     <el-radio label="1" size="large">是</el-radio>
@@ -173,7 +166,7 @@
                 <div class="title">孤残学生</div>
                 <div class="content">
                   <el-radio-group
-                    v-model="detailInfoData.fdyZpJbqkRes.tkcs"
+                    v-model="tableData.sfgcxs"
                     :disabled="isEdit !== 1"
                   >
                     <el-radio label="1" size="large">是</el-radio>
@@ -189,7 +182,7 @@
                 <div class="title">烈士子女</div>
                 <div class="content">
                   <el-radio-group
-                    v-model="detailInfoData.fdyZpJbqkRes.tkcs"
+                    v-model="tableData.sflszn"
                     :disabled="isEdit !== 1"
                   >
                     <el-radio label="1" size="large">是</el-radio>
@@ -203,7 +196,7 @@
                 <div class="title">农村特困救助供养</div>
                 <div class="content">
                   <el-radio-group
-                    v-model="detailInfoData.fdyZpJbqkRes.tkcs"
+                    v-model="tableData.sfnctkjzgy"
                     :disabled="isEdit !== 1"
                   >
                     <el-radio label="1" size="large">是</el-radio>
@@ -219,7 +212,7 @@
                 <div class="title">家庭紧急困难残疾学生及残疾人子女</div>
                 <div class="content">
                   <el-radio-group
-                    v-model="detailInfoData.fdyZpJbqkRes.tkcs"
+                    v-model="tableData.sf_cj"
                     :disabled="isEdit !== 1"
                   >
                     <el-radio label="1" size="large">是</el-radio>
@@ -242,7 +235,7 @@
                 <div class="title">低保户</div>
                 <div class="content">
                   <el-radio-group
-                    v-model="detailInfoData.fdyZpJbqkRes.tkcs"
+                    v-model="tableData.sfdbh"
                     :disabled="isEdit !== 1"
                   >
                     <el-radio label="1" size="large">是</el-radio>
@@ -256,7 +249,7 @@
                 <div class="title">建档立卡家庭</div>
                 <div class="content">
                   <el-radio-group
-                    v-model="detailInfoData.fdyZpJbqkRes.tkcs"
+                    v-model="tableData.sfjdlkjt"
                     :disabled="isEdit !== 1"
                   >
                     <el-radio label="1" size="large">是</el-radio>
@@ -272,7 +265,7 @@
                 <div class="title">有大病患者</div>
                 <div class="content">
                   <el-radio-group
-                    v-model="detailInfoData.fdyZpJbqkRes.tkcs"
+                    v-model="tableData.sfydbhz"
                     :disabled="isEdit !== 1"
                   >
                     <el-radio label="1" size="large">是</el-radio>
@@ -286,7 +279,7 @@
                 <div class="title">父母丧失劳动能力</div>
                 <div class="content">
                   <el-radio-group
-                    v-model="detailInfoData.fdyZpJbqkRes.tkcs"
+                    v-model="tableData.sffmssldnl"
                     :disabled="isEdit !== 1"
                   >
                     <el-radio label="1" size="large">是</el-radio>
@@ -302,12 +295,13 @@
                 <div class="title">家庭人均年收入（元）</div>
                 <div class="content" v-if="isEdit == 1">
                   <el-input-number
-                    v-model="detailInfoData.fdyZpJbqkRes.xgjz"
-                    max="100"
+                    v-model="tableData.jtrjnsr"
+                    :min="0"
+                    :max="1000000"
                   />
                 </div>
                 <div class="content" v-else>
-                  {{ detailInfoData.fdyZpJbqkRes.xgjz }}
+                  {{ tableData.xh }}
                 </div>
               </div>
             </el-col>
@@ -316,12 +310,13 @@
                 <div class="title">需赡养人数（人）</div>
                 <div class="content" v-if="isEdit == 1">
                   <el-input-number
-                    v-model="detailInfoData.fdyZpJbqkRes.xgjz"
-                    max="100"
+                    v-model="tableData.xsyrs"
+                    :min="0"
+                    :max="100"
                   />
                 </div>
                 <div class="content" v-else>
-                  {{ detailInfoData.fdyZpJbqkRes.xgjz }}
+                  {{ tableData.xh }}
                 </div>
               </div>
             </el-col>
@@ -331,7 +326,7 @@
               <div class="wrap">
                 <div class="title">详细通讯地址</div>
                 <div class="content">
-                  {{ detailInfoData.fdyZpJbqkRes.rs }}
+                  {{ detailInfoData.JTZZ }}
                 </div>
               </div>
             </el-col>
@@ -341,7 +336,7 @@
               <div class="wrap">
                 <div class="title">邮政编码</div>
                 <div class="content">
-                  {{ detailInfoData.fdyZpJbqkRes.rs }}
+                  {{ tableData.xh }}
                 </div>
               </div>
             </el-col>
@@ -349,7 +344,7 @@
               <div class="wrap">
                 <div class="title">联系电话</div>
                 <div class="content">
-                  {{ detailInfoData.fdyZpJbqkRes.tkcs }}
+                  {{ tableData.xh }}
                 </div>
               </div>
             </el-col>
@@ -363,7 +358,7 @@
           <i class="addIcon" /> 新增
         </div>
       </div>
-      <div class="tableArea">
+      <div class="tableStyle">
         <el-table :data="detailInfoData.zgJxkyqkList" style="width: 100%">
           <el-table-column prop="kcmc" label="姓名" />
           <el-table-column prop="ksl" label="出生年月" />
@@ -386,7 +381,7 @@
       <!-- 影响家庭经济状况相关信息 -->
       <div class="headline">影响家庭经济状况相关信息</div>
       <div class="tableStyle">
-        <div class="pieceName">学生本学年已获资助情况</div>
+        <!-- <div class="pieceName">学生本学年已获资助情况</div> -->
         <div class="inputArea">
           <div class="title">学生本学年已获资助情况</div>
           <div class="content">
@@ -394,7 +389,7 @@
               type="textarea"
               :rows="5"
               maxlength="500"
-              v-model="detailInfoData.fdyZpJbqkRes.wdmqk"
+              v-model="tableData.jt_zz"
               :readonly="isEdit == 0"
             />
           </div>
@@ -404,7 +399,7 @@
               type="textarea"
               :rows="5"
               maxlength="500"
-              v-model="detailInfoData.fdyZpJbqkRes.txthqk"
+              v-model="tableData.jt_zrzh"
               :readonly="isEdit == 0"
             />
           </div>
@@ -415,7 +410,7 @@
               type="textarea"
               :rows="5"
               maxlength="500"
-              v-model="detailInfoData.fdyZpJbqkRes.xfjyqk"
+              v-model="tableData.jt_tfyw"
               :readonly="isEdit == 0"
             />
           </div>
@@ -425,7 +420,7 @@
               type="textarea"
               :rows="5"
               maxlength="500"
-              v-model="detailInfoData.fdyZpJbqkRes.txthqk"
+              v-model="tableData.jt_ldnl"
               :readonly="isEdit == 0"
             />
           </div>
@@ -435,7 +430,7 @@
               type="textarea"
               :rows="5"
               maxlength="500"
-              v-model="detailInfoData.fdyZpJbqkRes.txthqk"
+              v-model="tableData.jt_fz"
               :readonly="isEdit == 0"
             />
           </div>
@@ -445,7 +440,7 @@
               type="textarea"
               :rows="5"
               maxlength="500"
-              v-model="detailInfoData.fdyZpJbqkRes.txthqk"
+              v-model="tableData.jt_sy"
               :readonly="isEdit == 0"
             />
           </div>
@@ -455,10 +450,17 @@
               type="textarea"
               :rows="5"
               maxlength="500"
-              v-model="detailInfoData.fdyZpJbqkRes.txthqk"
+              v-model="tableData.jt_qt"
               :readonly="isEdit == 0"
             />
           </div>
+        </div>
+        <div style="padding: 30px">
+          <el-checkbox
+            v-model="checked"
+            label="本人承诺以上所填资料真实，如有虚假，愿承担相应责任"
+            @change="dayin"
+          />
         </div>
       </div>
     </div>
@@ -482,30 +484,36 @@ import {
   updateFdyZpDetail,
   getFdyNdByGh,
 } from "@/api/test/fdySelfTest";
-import { getGrade } from "@/api/assistantWork/listen";
+import { InsertJtList, GetDetail } from "@/api/familyDifficulties/table";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+
 export default {
   data() {
     return {
       isEdit: 1,
       nd: "",
-      gh: this.$route.query.gh
-        ? this.$route.query.gh
+      xh: this.$route.query.XH
+        ? this.$route.query.XH
         : this.$store.getters.userId,
       activeName: "0",
       detailInfoData: {},
       njOptions: [],
       lwjbmOps: [],
       pxjbmOps: [], //培训级别码
+      tableData: {},
+      checked: false,
     };
   },
   created() {},
   mounted() {
     this.getCode("dmlwkwjbm");
     this.getCode("dmpxjbm");
-    //this.getOption();
+    this.getDetail();
   },
   methods: {
+    dayin() {
+      console.log(this.checked);
+    },
     getCode(data) {
       this.getCodeInfoByEnglish(data);
     },
@@ -522,70 +530,24 @@ export default {
         }
       });
     },
-    async getOption() {
-      await getFdyNdByGh({ gh: this.gh }).then((response) => {
-        // 获取年级列表数据
-        if (response.errcode == "00") {
-          this.njOptions = response.data;
-          console.log(response);
-          this.nd = this.$route.query.nd
-            ? this.$route.query.nd
-            : this.njOptions[0];
-        }
-      });
-      this.getDetail();
-    },
-    ndChange() {
-      this.getDetail();
-    },
+    // async getOption() {
+    //   await getFdyNdByGh({ gh: this.gh }).then((response) => {
+    //     // 获取年级列表数据
+    //     if (response.errcode == "00") {
+    //       this.njOptions = response.data;
+    //       console.log(response);
+    //       this.nd = this.$route.query.nd
+    //         ? this.$route.query.nd
+    //         : this.njOptions[0];
+    //     }
+    //   });
+    //   this.getDetail();
+    // },
+
     getDetail() {
-      getFdyZpDetail({ nd: this.nd, gh: this.gh }).then((res) => {
+      GetDetail({ xh: this.xh }).then((res) => {
         console.log(res);
-        this.$set(
-          this.detailInfoData,
-          "fdyZpJbqkRes",
-          res.data.fdyZpJbqkRes ? res.data.fdyZpJbqkRes : {} //基本情况
-        );
-        this.$set(
-          this.detailInfoData,
-          "fdyZpXshjResList",
-          res.data.fdyZpXshjResList ? res.data.fdyZpXshjResList : [] //学生获奖
-        );
-        this.$set(
-          this.detailInfoData,
-          "fdyZpXswjResList",
-          res.data.fdyZpXswjResList ? res.data.fdyZpXswjResList : [] //学生违纪
-        );
-        this.$set(
-          this.detailInfoData,
-          "zgJlbzList",
-          res.data.zgJlbzList ? res.data.zgJlbzList : [] //个人或将
-        );
-        this.$set(
-          this.detailInfoData,
-          "zgJxkyqkList",
-          res.data.zgJxkyqkList ? res.data.zgJxkyqkList : [] //授课情况
-        );
-        this.$set(
-          this.detailInfoData,
-          "zgLwkyqkList",
-          res.data.zgLwkyqkList ? res.data.zgLwkyqkList : [] //论文成果
-        );
-        this.$set(
-          this.detailInfoData,
-          "zgXmkyqkList",
-          res.data.zgXmkyqkList ? res.data.zgXmkyqkList : [] //课题研究
-        );
-        this.$set(
-          this.detailInfoData,
-          "zgXxpxList",
-          res.data.zgXxpxList ? res.data.zgXxpxList : [] //培训情况
-        );
-        this.$set(
-          this.detailInfoData,
-          "zgZzkyqkList",
-          res.data.zgZzkyqkList ? res.data.zgZzkyqkList : [] //专住书记
-        );
+        this.detailInfoData = res.data.list;
       });
     },
     addDetailInfoData(index) {
@@ -606,15 +568,20 @@ export default {
     //     this.detailInfoData.fdyZpXswjResList.splice(index, 1);
     //   }
     // },
+    handleCancle() {},
     handlUpdata() {
-      this.$set(this.detailInfoData, "gh", this.detailInfoData.fdyZpJbqkRes.gh);
-      this.$set(this.detailInfoData, "nd", this.nd);
-      let data = this.detailInfoData;
-      updateFdyZpDetail(data)
-        .then((res) => {
-          this.$message.success("保存成功");
-        })
-        .catch((err) => {});
+      if (!this.checked) {
+        this.$message.error("请勾选承诺协议!");
+      } else {
+        this.$set(this.tableData, "xh", this.xh);
+        //this.$set(this.tableData, "xm", this.nd);
+        let data = this.tableData;
+        InsertJtList(data)
+          .then((res) => {
+            this.$message.success("保存成功");
+          })
+          .catch((err) => {});
+      }
     },
   },
 };
@@ -623,22 +590,10 @@ export default {
 .wrap {
   display: flex;
   flex-direction: row;
-
-  .detail_left {
-    flex: 0 0 120px;
-    margin-right: 24px;
-    background: #fff;
-    // height: calc(100vh - 170px);
-    padding: 20px;
-    box-sizing: border-box;
-
-    .tab-left {
-      padding: 0 40px;
-    }
-  }
   .detail_right {
     flex: 1;
     background: #fff;
+    padding: 30px;
     .right_top {
       .toptitle {
         text-align: center;
@@ -657,104 +612,109 @@ export default {
           margin-left: 20px;
         }
       }
-      .headline {
-        padding-left: 20px;
-        box-sizing: border-box;
-        font-weight: 600;
-        font-size: 20px;
+    }
+    .headline {
+      padding-left: 20px;
+      box-sizing: border-box;
+      font-weight: 600;
+      font-size: 20px;
+      color: #000;
+      line-height: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .editBtn {
+        padding: 4px 5px;
+        margin-right: 20px;
+        // border: 1px solid #005657;
+        border-radius: 4px;
+        font-weight: 400;
+        font-size: 14px;
         color: #005657;
-        line-height: 28px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .tableStyle {
-        position: relative;
-        padding: 20px;
-        .information {
-          padding: 0 20px;
-          .rowStyle {
-            padding: 0 !important;
-            margin: 0;
-            border-bottom: 1px solid #cccccc;
-          }
-          .wrap {
-            display: flex;
-            align-items: center;
-            .title {
-              flex: 0 0 160px;
-              line-height: 48px;
-              background: #e0e0e0;
-              text-align: right;
-              padding-right: 5px;
-              margin: 0 !important;
-            }
-            .content {
-              font-weight: 400;
-              font-size: 14px;
-              color: #1f1f1f;
-              line-height: 22px;
-              margin-left: 16px;
-            }
-          }
-        }
-        .pieceName {
-          box-sizing: border-box;
-          padding-top: 20px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          font-weight: 500;
-          font-size: 18px;
-          color: #1f1f1f;
-          line-height: 28px;
-          .editBtn {
-            padding: 4px 5px;
-            margin-right: 20px;
-            // border: 1px solid #005657;
-            border-radius: 4px;
-            font-weight: 400;
-            font-size: 14px;
-            color: #005657;
-            cursor: pointer;
-            .addIcon {
-              display: inline-block;
-              width: 20px;
-              height: 20px;
-              background: url("~@/assets/images/arrowDown.png") no-repeat;
-              vertical-align: middle;
-              margin-bottom: 4px;
-            }
-          }
-        }
-        .inputArea {
-          display: flex;
-          flex-direction: column;
-          //align-items: center;
-          .title {
-            //   flex: 0 0 160px;
-            //   line-height: 48px;
-            //   background: #e0e0e0;
-            //   text-align: right;
-            //   padding-right: 5px;
-            //   margin: 0 !important;
-            font-weight: 400;
-            font-size: 16px;
-            color: #1f1f1f;
-            line-height: 22px;
-            margin: 16px;
-            text-align: left;
-          }
-          .content {
-            .cishu {
-              margin-bottom: 10px;
-            }
-          }
+        cursor: pointer;
+        .addIcon {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          background: url("~@/assets/images/arrowDown.png") no-repeat;
+          vertical-align: middle;
+          margin-bottom: 4px;
         }
       }
     }
+
+    .tableStyle {
+      position: relative;
+      padding: 20px;
+      .information {
+        padding: 0 20px;
+        .rowStyle {
+          padding: 0 !important;
+          margin: 0;
+          border-bottom: 1px solid #cccccc;
+        }
+        .wrap {
+          display: flex;
+          align-items: center;
+          .title {
+            flex: 0 0 200px;
+            line-height: 48px;
+            background: #e0e0e0;
+            text-align: right;
+            padding-right: 5px;
+            margin: 0 !important;
+          }
+          .content {
+            font-weight: 400;
+            font-size: 14px;
+            color: #1f1f1f;
+            line-height: 22px;
+            margin-left: 16px;
+          }
+        }
+      }
+      .pieceName {
+        box-sizing: border-box;
+        padding-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 500;
+        font-size: 18px;
+        color: #1f1f1f;
+        line-height: 28px;
+      }
+      .inputArea {
+        display: flex;
+        flex-direction: column;
+        //align-items: center;
+        .title {
+          //   flex: 0 0 160px;
+          //   line-height: 48px;
+          //   background: #e0e0e0;
+          //   text-align: right;
+          //   padding-right: 5px;
+          //   margin: 0 !important;
+          font-weight: 400;
+          font-size: 16px;
+          color: #1f1f1f;
+          line-height: 22px;
+          margin: 16px;
+          text-align: left;
+        }
+        .content {
+          .cishu {
+            margin-bottom: 10px;
+          }
+        }
+      }
+      .tableArea {
+        padding-right: 20px;
+        padding-left: 20px;
+      }
+    }
   }
+
   .editBottom {
     width: 100%;
     height: 60px;

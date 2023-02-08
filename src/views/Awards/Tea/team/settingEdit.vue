@@ -18,6 +18,7 @@
             <span v-if="bjzt == '1'">{{ formAdd.pjjx }}</span>
             <el-input
               v-else
+              maxlength="50"
               v-model="formAdd.pjjx"
               placeholder="请输入评奖奖项"
             >
@@ -26,6 +27,7 @@
           <el-form-item label="英文名称" label-width="80px">
             <span v-if="bjzt == '1'">{{ formAdd.ywmc }}</span>
             <el-input
+              maxlength="50"
               v-else
               v-model="formAdd.ywmc"
               placeholder="请输入评奖奖项"
@@ -131,8 +133,17 @@
             </el-select>
           </el-form-item>
           <el-form-item label="面向对象" label-width="80px">
-            <span @click="setting" style="color: #005657; cursor: pointer"
-              >去设置</span
+            <span v-if="bjzt == '1'">已设置</span>
+            <span
+              @click="setting"
+              style="color: #005657; cursor: pointer"
+              v-else
+            >
+              {{
+                formInner.pyccDefList[0].tjmzList.length > 0
+                  ? "已设置"
+                  : "去设置"
+              }}</span
             ></el-form-item
           >
           <el-form-item label="奖项等级" label-width="80px">
@@ -149,7 +160,7 @@
                     <span v-if="bjzt == '1'">{{ scope.row.jx }}</span>
                     <el-input
                       v-else
-                      maxlength="100"
+                      maxlength="50"
                       v-model="scope.row.jx"
                       placeholder="请输入"
                     ></el-input>
@@ -220,7 +231,7 @@
           <el-col :span="1.5"> <span class="span1">指标细化</span></el-col>
           <el-col :span="6" class="heightCom">
             <span v-if="bjzt == '1'" style="display: inline-block">{{
-              formAdd.zbxhfs ? "按总额" : "按比例"
+              formAdd.zbxhfs == "1" ? "按总额" : "按比例"
             }}</span>
             <el-radio-group v-model="formAdd.zbxhfs" v-else>
               <el-radio :label="1">按总额</el-radio>
@@ -228,10 +239,14 @@
             </el-radio-group>
           </el-col>
           <el-col :span="4">
+            <span v-if="bjzt == '1' && formAdd.zbxhfs == 2">
+              比例值 ： {{ formAdd.zbxhbl }}</span
+            >
             <el-input
+              v-else
               class="input1"
               style="height: 28px; line-height: 28px"
-              v-if="formAdd.zbxhfs == '2'"
+              v-if="formAdd.zbxhfs == 2 && bjzt == '2'"
               v-model="formAdd.zbxhbl"
               type="number"
               :max="100"
@@ -239,7 +254,7 @@
               placeholder="比例值"
             />
           </el-col>
-          <el-col :span="6" :offset="6">
+          <el-col :span="6" :offset="4">
             <span class="span1"
               >合计：{{ formAdd.zrs }}人
               <span v-html="'\u3000'"></span> 剩余指标：{{ this.syzb }}
@@ -394,7 +409,7 @@
           </div>
         </template>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="">取 消</el-button>
+          <el-button @click="quxaio">取 消</el-button>
           <el-button type="primary" class="confirm" @click="mxdxSAVE"
             >确 定</el-button
           >
@@ -578,6 +593,7 @@ export default {
           this.formAdd.jxfpLIST.reduce((pre, cur) => {
             return pre + Number(cur.zzrs);
           }, 0);
+        console.log("this.formInner", this.formInner);
       });
     },
     jia() {
@@ -693,7 +709,7 @@ export default {
           ...this.formInner.pyccAddList,
         ]; //把默认和新增的对象合并给后台
         var data = {
-          pydwmList: [],
+          pydwmList: this.formAdd.pydwmList,
           rcswPjszDxReqList: this.resultArr,
         };
         mxdxSure(data).then((res) => {
@@ -745,8 +761,10 @@ export default {
         });
       });
     },
+    quxaio() {
+      this.mxdxModal = false;
+    },
     pyccChange(e, row) {
-      console.log("this,allAJ", this.allNj);
       //这里处理选择本科还是研究生不同展示的逻辑
       if (row.tjzw == "培养层次") {
         if ((e.includes("1") || e.includes("2")) && e.includes("3")) {

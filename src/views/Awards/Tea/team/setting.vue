@@ -105,6 +105,7 @@
                 :rules="rules.pjjx"
               >
                 <el-input
+                  maxlength="50"
                   style="width: 200px"
                   v-model="formAdd.pjjx"
                   placeholder="请输入评奖奖项"
@@ -113,6 +114,7 @@
               </el-form-item>
               <el-form-item label="英文名称" prop="ywmc" label-width="80px">
                 <el-input
+                  maxlength="50"
                   style="width: 200px"
                   v-model="formAdd.ywmc"
                   placeholder="请输入评奖奖项"
@@ -193,7 +195,7 @@
                         :rules="rules.jxdjListRule"
                       >
                         <el-input
-                          maxlength="100"
+                          maxlength="50"
                           v-model="scope.row.jx"
                           placeholder="请输入"
                         ></el-input>
@@ -263,6 +265,7 @@
                 <el-input
                   v-else
                   style="width: 200px"
+                  maxlength="50"
                   v-model="formEdit.pjjx"
                   placeholder="请输入评奖奖项"
                 >
@@ -271,6 +274,7 @@
               <el-form-item label="英文名称" label-width="80px">
                 <span v-if="bjzt == '1'">{{ formEdit.ywmc }}</span>
                 <el-input
+                  maxlength="50"
                   v-else
                   style="width: 200px"
                   v-model="formEdit.ywmc"
@@ -370,7 +374,7 @@
                         :rules="rules.jxdjListRule"
                       >
                         <el-input
-                          maxlength="100"
+                          maxlength="50"
                           v-model="scope.row.jx"
                           placeholder="请输入"
                         ></el-input>

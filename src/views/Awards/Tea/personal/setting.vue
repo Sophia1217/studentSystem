@@ -4,6 +4,7 @@
       <div class="search">
         <el-input
           placeholder="请输入"
+          maxlength="50"
           v-model.trim="searchVal"
           class="inputSelect"
           clearable

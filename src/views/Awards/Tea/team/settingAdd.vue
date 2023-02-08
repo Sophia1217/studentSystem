@@ -15,11 +15,19 @@
             prop="pjjx"
             :rules="rules.pjjx"
           >
-            <el-input v-model="formAdd.pjjx" placeholder="请输入评奖奖项">
+            <el-input
+              v-model="formAdd.pjjx"
+              placeholder="请输入评奖奖项"
+              maxlength="50"
+            >
             </el-input>
           </el-form-item>
           <el-form-item label="英文名称" label-width="80px">
-            <el-input v-model="formAdd.ywmc" placeholder="请输入评奖奖项">
+            <el-input
+              v-model="formAdd.ywmc"
+              placeholder="请输入英文名称"
+              maxlength="50"
+            >
             </el-input>
           </el-form-item>
           <el-form-item
@@ -108,9 +116,9 @@
             </el-select>
           </el-form-item>
           <el-form-item label="面向对象" label-width="80px">
-            <span @click="setting" style="color: #005657; cursor: pointer"
-              >去设置</span
-            ></el-form-item
+            <span @click="setting" style="color: #005657; cursor: pointer">{{
+              formInner.pyccDefList[0].tjmzList.length > 0 ? "已设置" : "去设置"
+            }}</span></el-form-item
           >
           <el-form-item label="奖项等级" label-width="80px">
             <el-table ref="multipleTable" :data="formAdd.jxdjList">
@@ -124,7 +132,7 @@
                     :rules="rules.jxdjListRule"
                   >
                     <el-input
-                      maxlength="100"
+                      maxlength="50"
                       v-model="scope.row.jx"
                       placeholder="请输入"
                     ></el-input>
@@ -354,7 +362,7 @@
           </div>
         </template>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="">取 消</el-button>
+          <el-button @click="quxaio">取 消</el-button>
           <el-button type="primary" class="confirm" @click="mxdxSAVE"
             >确 定</el-button
           >
@@ -363,6 +371,7 @@
     </div>
     <div class="editBottom">
       <div class="btn cancel" @click="cancelAdd">取消</div>
+      <div class="btn cancel" @click="testA">ceshi xi</div>
       <div class="btn confirm" @click="finalSave">保存</div>
     </div>
   </div>
@@ -380,8 +389,24 @@ import {
 
 import { getXnxq } from "@/api/dailyBehavior/xnxjStu";
 export default {
+  computed: {
+    syzb: {
+      get() {
+        return (
+          this.formAdd.zrs -
+          (this.formAdd.jxfpLIST.length > 0
+            ? this.formAdd.jxfpLIST.reduce((pre, cur) => {
+                return pre + Number(cur.zzrs);
+              }, 0)
+            : 0)
+        );
+      },
+      set() {},
+    },
+  },
   data() {
     return {
+      hello: "xixixi",
       mxdxModal: false,
       innerModal: false,
       leftOptions: [], //新增条件左侧下拉框
@@ -395,7 +420,7 @@ export default {
       allDwh: [], // 学院下拉框
       dmxqm: [], //学期下拉框
       xnList: [], //学年下拉框
-      syzb: 0, //剩余指标
+      // syzb: 0, //剩余指标
       rules: {
         pjjx: [
           {
@@ -450,7 +475,7 @@ export default {
       formAdd: {
         zbxhbl: "",
         zbxhfs: 1,
-        zrs: "",
+        zrs: 1,
         pjjx: "", //评奖奖项
         ywmc: "", //英文名称
         pjxn: "", //评奖学年
@@ -478,20 +503,20 @@ export default {
             tjmzList: [],
             tjnfsc: "1",
           },
-          {
-            tjyw: "nj",
-            tjzw: "年级",
-            option: [],
-            tjmzList: [],
-            tjnfsc: "1",
-          },
-          {
-            tjyw: "sfsfs",
-            tjzw: "师范生属性",
-            option: [],
-            tjmzList: [],
-            tjnfsc: "1",
-          },
+          // {
+          //   tjyw: "nj",
+          //   tjzw: "年级",
+          //   option: [],
+          //   tjmzList: [],
+          //   tjnfsc: "1",
+          // },
+          // {
+          //   tjyw: "sfsfs",
+          //   tjzw: "师范生属性",
+          //   option: [],
+          //   tjmzList: [],
+          //   tjnfsc: "1",
+          // },
         ], //默认条件
       },
       resultArr: [], //合并条件
@@ -521,6 +546,17 @@ export default {
     // this.getCode(""); //评奖奖项
   },
   methods: {
+    testA() {
+      console.log("this.teste", this.test);
+    },
+    quxaio() {
+      if (!this.checkFormInner()) {
+        this.$message.error("设置值不得为空！");
+        return;
+      } else {
+        this.mxdxModal = false;
+      }
+    },
     jia() {
       var obj = { jx: "" };
       this.formAdd.jxdjList.push(obj);
@@ -632,7 +668,7 @@ export default {
           ...this.formInner.pyccAddList,
         ]; //把默认和新增的对象合并给后台
         var data = {
-          pydwmList: [],
+          pydwmList: this.formAdd.pydwmList,
           rcswPjszDxReqList: this.resultArr,
         };
         mxdxSure(data).then((res) => {
@@ -801,13 +837,19 @@ export default {
       }
     },
     setting() {
-      // tjmbm
+      console.log("asd");
+      console.log("this.formInner.pyccDefList", this.formInner.pyccDefList);
       this.formInner.pyccDefList[0].option = this.pyccOption;
       this.formInner.pyccDefList[0].tjmbm = "dmpyccm";
-      this.formInner.pyccDefList[1].option = this.allNj;
-      this.formInner.pyccDefList[1].tjmbm = "nj";
-      this.formInner.pyccDefList[2].option = this.dmsfslxmList;
-      this.formInner.pyccDefList[2].tjmbm = "dmsfslxm";
+      // this.formInner.pyccDefList.length > 1
+      //   ? (this.formInner.pyccDefList[1].option = this.allNj)
+      //   : "";
+      // this.formInner.pyccDefList.length > 1
+      //   ? (this.formInner.pyccDefList[1].tjmbm = "nj")
+      //   : "";
+      //   this.formInner.pyccDefList.length > 1
+      // this.formInner.pyccDefList[2].option = this.dmsfslxmList;
+      // this.formInner.pyccDefList[2].tjmbm = "dmsfslxm";
       this.mxdxModal = true;
     },
 

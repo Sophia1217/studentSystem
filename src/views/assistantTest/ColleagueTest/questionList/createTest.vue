@@ -30,7 +30,7 @@
                 style="width: 80%"
                 v-model="form.wjDy"
                 placeholder="请输入问卷导语"
-                maxlength="50"
+                maxlength="500"
                 class="inputSelect"
                 clearable
               >

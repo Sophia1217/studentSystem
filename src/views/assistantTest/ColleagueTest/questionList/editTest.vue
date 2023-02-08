@@ -29,7 +29,7 @@
               <el-input
                 style="width: 80%"
                 v-model="form.wjDy"
-                maxlength="50"
+                maxlength="500"
                 placeholder="请输入问卷导语"
                 class="inputSelect"
                 clearable

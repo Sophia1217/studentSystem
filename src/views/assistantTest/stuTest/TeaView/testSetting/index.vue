@@ -90,7 +90,7 @@
                 <span class="handleName">详情</span>
               </el-button>
               <el-button type="text" size="small" @click="hadleEdit(scope.row)">
-                <i class="scopeIncon handledie"></i>
+                <i class="scopeIncon handleEdit"></i>
                 <span class="handleName">编辑</span>
               </el-button>
             </template>
@@ -466,7 +466,7 @@ export default {
         var arr = [];
         var arr1 = [];
         this.detailALL.tmPycc = this.detailALL.tmPyccList;
-        this.detailALL.tmPyccname = this.detailALL.tmPyccnameList;
+        // this.detailALL.tmPyccname = this.detailALL.tmPyccnameList;
         arr.push(this.detailALL.id);
         arr1.push(this.detailALL);
         await delTest({ ids: arr }).then((res) => {});

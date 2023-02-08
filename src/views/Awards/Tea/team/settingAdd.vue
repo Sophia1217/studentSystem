@@ -568,6 +568,7 @@ export default {
       this.formInner.pyccAddList.splice(index, 1);
     },
     zzrschange() {
+      console.log("cessd");
       this.syzb =
         this.formAdd.zrs -
         this.formAdd.jxfpLIST.reduce((pre, cur) => {

@@ -266,7 +266,7 @@
 
             <span>推荐理由：</span>
               <el-input 
-                v-model="editDetails.tjly"
+                v-model="tjly"
                 :autosize="{ minRows: 2 }"
                 type="textarea"
                 maxlength="500"
@@ -435,12 +435,12 @@
               <div class="formLeft"><span class="title">申请信息</span></div>
               <el-row :gutter="20">
                 <el-form-item label="认定周期">
-                  <div>{{ formDetails.xnmc +' '+ formDetails.xqmc}}</div>
+                  <div>{{ formDetails.xn +' '+ formDetails.xqmc}}</div>
                 </el-form-item>
               </el-row>
               <el-row :gutter="20">
                 <el-form-item label="申请等级">
-                  <div>{{ formDetails.sqdj }}</div>
+                  <div>{{ formDetails.sqdjmc }}</div>
                 </el-form-item>
               </el-row>
               <el-row :gutter="20">
@@ -477,6 +477,71 @@
                     <el-select
                       v-model="editDetails.shjg"
                       collapse-tags
+                      v-if="userflag ==1"
+                      @change="changeJG(editDetails.shjg)"
+                      placeholder="请选择"
+                      size="small"
+                    >
+                      <el-option
+                        v-for="item in shjgOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      ></el-option>
+                    </el-select>
+                    <div v-else>
+                      <div>{{editDetails.statusChinese}}</div> 
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="推荐档次" label-width="120px">
+                    <el-select
+                      v-model="editDetails.tjdj"
+                      collapse-tags
+                       v-if="userflag ==1"
+                      placeholder="请选择"
+                      size="small"
+                    >
+                      <el-option
+                        v-for="item in rddjOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      ></el-option>
+                    </el-select>
+                    <div v-else >{{ editDetails.tjdjmc }}</div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="推荐理由" label-width="120px" prop="shyj">
+                    <el-input 
+                      v-model="editDetails.shyj"
+                      v-if="userflag ==1"
+                      :autosize="{ minRows: 2 }"
+                      type="textarea"
+                      maxlength="500"
+                    />
+                    <div v-else>
+                      <div>{{editDetails.tjly}}</div> 
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <div v-if="userflag ==2" class="formLeft"><span class="title">学院意见</span></div>
+              <el-row :gutter="20" v-if="userflag ==2">
+                <el-col :span="20">
+                  <el-form-item label="审核结果"
+                    label-width="120px" 
+                    prop="shjg"
+                  >
+                    <el-select
+                      v-model="editDetails.shjg"
+                      collapse-tags
                       @change="changeJG(editDetails.shjg)"
                       placeholder="请选择"
                       size="small"
@@ -491,22 +556,22 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row :gutter="20">
+              <el-row :gutter="20" v-if="userflag ==2">
                 <el-col :span="20">
-                  <el-form-item label="推荐档次">
-                    <div>{{ formDetails.tjdc }}</div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="推荐理由" label-width="120px" prop="shyj">
-                    <el-input 
-                      v-model="editDetails.shyj"
-                      :autosize="{ minRows: 2 }"
-                      type="textarea"
-                      maxlength="500"
-                    />
+                  <el-form-item label="推荐档次" label-width="120px">
+                    <el-select
+                      v-model="editDetails.tjdj"
+                      collapse-tags
+                      placeholder="请选择"
+                      size="small"
+                    >
+                      <el-option
+                        v-for="item in rddjOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      ></el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -550,9 +615,6 @@ import CheckboxCom from "../../../../components/checkboxCom";
 import {
   backFlow,
 } from "@/api/dailyBehavior/dormTea";
-import {
-  pjdjUpdate,
-} from "@/api/awards/awardTea"
 import {
   exportDsh,
   queryDshList,
@@ -639,6 +701,7 @@ export default {
       updateArr: [],
       updateDj: "",
       tjly:"",
+      userflag: 1,
       rules: {
         // shjg: [
         //   { required: true, message: "审核结果不能为空", trigger: "change" },
@@ -658,6 +721,7 @@ export default {
     this.getCode("dmxbm"); 
     this.getCode("dmkndjm"); //认定等级
     this.getAllGrade();
+    this.userflag = this.$store.getters.roleId == "05" ? 2:1; //05学院负责人06辅导员
   },
 
   methods: {
@@ -765,11 +829,15 @@ export default {
       this.detailModal = true;
       this.editparams = row;
       var data = {
-        businesId: row.id,
-        processId: row.processid,
+        id: row.id,
+        xh: row.xh,
       };
       await queryDshDetail(data).then((res) => {
         this.formDetails = res.data;
+        this.editDetails.tjdjmc = res.data.tjdjmc;
+        this.editDetails.tjly = res.data.tjly;
+        this.editDetails.statusChinese = res.data.statusChinese;
+        
       });
     },
     editClick(){
@@ -1017,16 +1085,12 @@ export default {
       this.multiModal = false;
     },
     //批量审批通过确认
-    async multiConfirm() {
-      var data = this.commonParams.map((item) => ({
+    multiConfirm() {
+      var paramas ={
+        flowEntityReqs: this.commonParams.map((item) => ({
           ...item,
           opMsg: this.tjly ? this.tjly : "审核通过",
-          tjdj: this.updateDj,
-          tjly: this.tjly ? this.tjly : "审核通过",
-        }));
-      var paramas ={
-        flowEntityReqs: this.commonParams.map((item) => ({...item})),
-        opMsg: this.tjly ? this.tjly : "审核通过",
+        })),
         tjdj: this.updateDj,
         tjly: this.tjly ? this.tjly : "审核通过",
       }

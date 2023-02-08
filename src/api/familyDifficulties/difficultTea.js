@@ -102,17 +102,9 @@ export function jtknImport(query) {
   })
 }
 //教师端-评奖评优-新增
-export function pjpyAdd(query) {
+export function jtknAdd(query) {
   return request({
     url: '/rcswJtknKnsq/importInsertJtknKnssq',
-    method: 'post',
-    data: query
-  })
-}
-//教师端-评奖等级批量修改
-export function pjdjUpdate(query) {
-  return request({
-    url: '/rcswPjpyFlow/teaUpdateByBatch',
     method: 'post',
     data: query
   })

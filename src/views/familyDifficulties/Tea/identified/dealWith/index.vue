@@ -336,7 +336,7 @@
               </el-row>
               <el-row :gutter="20">
                 <el-form-item label="申请等级">
-                  <div>{{ formDetails.sqdj }}</div>
+                  <div>{{ formDetails.sqdjmc }}</div>
                 </el-form-item>
               </el-row>
               <el-row :gutter="20">
@@ -361,25 +361,82 @@
               </el-row>
             </div>
           </el-form>
-          <div class="formLeft"><span class="title">审核信息</span></div>
+          <div class="formLeft"><span class="title">民主决议</span></div>
           <el-form :data="editDetails" ref="editDetails" label-width="110px" :rules="rules">
             <el-row :gutter="20">
                 <el-col :span="20">
-                  <el-form-item label="申请审核结果"
+                  <el-form-item label="审核结果"
                     label-width="120px" 
                   >
-                    <div>{{editDetails.statusChinese}}</div>
+                    <div>
+                      <div>{{editDetails.statusChinese}}</div> 
+                    </div>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row :gutter="20">
                 <el-col :span="20">
-                  <el-form-item label="申请审核意见" label-width="120px">
-                    <div>{{editDetails.shyj}}</div>
+                  <el-form-item label="推荐档次" label-width="120px">
+                    <div>{{ editDetails.tjdjmc }}</div>
                   </el-form-item>
                 </el-col>
               </el-row>
-          </el-form>  
+              <el-row :gutter="20">
+                <el-col :span="20">
+                  <el-form-item label="推荐理由" label-width="120px" prop="shyj">
+                    <div>
+                      <div>{{editDetails.tjly}}</div> 
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <div v-if="userflag ==2" class="formLeft"><span class="title">学院意见</span></div>
+              <el-row :gutter="20" v-if="userflag ==2">
+                <el-col :span="20">
+                  <el-form-item label="审核结果"
+                    label-width="120px" 
+                    prop="shjg"
+                  >
+                    <div>
+                      <div>{{editDetails.tjly}}</div> 
+                    </div>
+                    <!-- <el-select
+                      v-model="editDetails.shjg"
+                      collapse-tags
+                      @change="changeJG(editDetails.shjg)"
+                      placeholder="请选择"
+                      size="small"
+                    >
+                      <el-option
+                        v-for="item in shjgOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      ></el-option>
+                    </el-select> -->
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="20" v-if="userflag ==2">
+                <el-col :span="20">
+                  <el-form-item label="推荐档次" label-width="120px">
+                    <!-- <el-select
+                      v-model="editDetails.tjdj"
+                      collapse-tags
+                      placeholder="请选择"
+                      size="small"
+                    >
+                      <el-option
+                        v-for="item in rddjOps"
+                        :key="item.dm"
+                        :label="item.mc"
+                        :value="item.dm"
+                      ></el-option>
+                    </el-select> -->
+                  </el-form-item>
+                </el-col>
+              </el-row>
+          </el-form> 
           </div>
         </template>
         <span slot="footer" class="dialog-footer">
@@ -413,13 +470,13 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">性别</div>
-                <div class="content">{{ formDetails.xbmc }}</div>
+                <div class="content">{{ formDetails.xbmmc }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">培养层次</div>
-                <div class="content">{{ formDetails.pyccmc }}</div>
+                <div class="content">{{ formDetails.pyccmmc }}</div>
               </div>
             </el-col>
           </el-row>
@@ -427,7 +484,7 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">培养单位</div>
-                <div class="content">{{ formDetails.dwhmc }}</div>
+                <div class="content">{{ formDetails.ssdwdmmc }}</div>
               </div>
             </el-col>
 
@@ -448,7 +505,29 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">班级</div>
-                <div class="content">{{ formDetails.bjmmc }}</div>
+                <div class="content">{{ formDetails.bjmc }}</div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">手机号码</div>
+                <div class="content">{{ formDetails.yddh }}</div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">家庭人口数</div>
+                <div class="content">{{ formDetails.jtrks }}</div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">人均年收入</div>
+                <div class="content">{{ formDetails.rjnsr }}</div>
               </div>
             </el-col>
           </el-row>
@@ -461,8 +540,11 @@
             :rules="rules"
             label-width="150px"
           >
-            <el-form-item label="评奖奖项" prop="pjjx" :rules="rules.pjjx">
-              <el-select v-model="formAdd.pjjx" @change="changeJX">
+            <el-form-item label="认定周期">{{
+              formDetails.xnmc + (formDetails.xqmc ? formDetails.xqmc : "")
+            }}</el-form-item>
+            <el-form-item label="申请等级" prop="sqdj" :rules="rules.sqdj">
+              <el-select v-model="formAdd.sqdj">
                 <el-option
                   v-for="(item, index) in rddjOps"
                   :key="index"
@@ -470,19 +552,6 @@
                   :value="item.dm"
                 ></el-option>
               </el-select>
-            </el-form-item>
-            <el-form-item label="评奖等级" prop="pjdj" :rules="rules.pjdj">
-              <el-select v-model="formAdd.pjdj">
-                <el-option
-                  v-for="(item, index) in pjdjOps"
-                  :key="index"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="评奖周期" prop="pjzq">
-              {{ formAdd.pjzqXn + formAdd.pjzqXq }}
             </el-form-item>
 
             <el-form-item label="申请理由" prop="sqly">
@@ -548,7 +617,7 @@ import {
   queryYshList,
   queryDshDetail,
   mbDown,
-  pjpyAdd,
+  jtknAdd,
   del,
 } from "@/api/familyDifficulties/difficultTea"
 import {
@@ -635,13 +704,14 @@ export default {
       ],
       allNj: [], //年级下拉
       jxlb: "1",//个人奖项为1，集体奖项为2
-      uploadUrl: process.env.VUE_APP_BASE_API + "/rcswPjpyFlow/importExcel",
+      uploadUrl: process.env.VUE_APP_BASE_API + "/rcswJtknKnsq/import",
       delArr: [],
       pjdjOps: [],
       pjdjDuoOps: [],
       rddjOps: [],
-      formAdd: { pjzqXn: "", pjzqXq: "" },
+      formAdd: { xn: "", zwxj: "" },
       addModal: false,
+      userflag: 1,
       rules: {
         // shjg: [
         //   { required: true, message: "审核结果不能为空", trigger: "change" },
@@ -661,6 +731,7 @@ export default {
     this.getCode("dmxbm"); 
     this.getCode("dmkndjm"); //认定等级
     this.getAllGrade();
+    this.userflag = this.$store.getters.roleId == "05" ? 2:1; //05学院负责人06辅导员
   },
 
   methods: {
@@ -687,14 +758,14 @@ export default {
     handleConfirm() {
       let idList = [];
       for (let item_row of this.multipleSelection) {
-        idList.push(item_row.businesId);
+        idList.push(item_row.id);
       }
       this.exportParams.pageNum = 0;
       this.exportParams.pageSize = 0;
       this.$set(this.exportParams, "idList", idList);
       exportYsh(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "评奖评优待审核列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "困难申请待审核列表导出.xlsx", "xlsx");
           if(this.$store.getters.excelcount > 0){
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -760,14 +831,16 @@ export default {
       console.log("row", row);
       this.detailModal = true;
       this.editparams = row;
-      this.editDetails.shyj = row.commentList[0];
-      this.editDetails.statusChinese = row.statusChinese;
+      // this.editDetails.shyj = row.commentList[0];
       var data = {
-        businesId: row.businesId,
-        processId: row.processid,
+        id: row.id,
+        xh: row.xh,
       };
       await queryDshDetail(data).then((res) => {
         this.formDetails = res.data;
+        this.editDetails.tjdjmc = res.data.tjdjmc;
+        this.editDetails.tjly = res.data.tjly;
+        this.editDetails.statusChinese = res.data.statusChinese;
       });
     },
     emptyDetails() {
@@ -926,8 +999,8 @@ export default {
     },
     //模板下载
     mbDown() {
-      mbDown({jxlb: this.jxlb}).then((res) => {
-        this.downloadFn(res, "评奖评优模板下载", "xlsx");
+      mbDown().then((res) => {
+        this.downloadFn(res, "困难申请模板下载", "xlsx");
         this.$message.success("操作成功");
       });
     },
@@ -1001,7 +1074,7 @@ export default {
             formData.append("files", file.raw);
           });
         }
-        pjpyAdd(formData).then((res) => {
+        jtknAdd(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("新增成功");
             this.query();
@@ -1270,6 +1343,47 @@ export default {
         margin-right: 5px;
       }
       
+    }
+  }
+  .headline {
+    padding: 15px;
+    box-sizing: border-box;
+    font-weight: 600;
+    font-size: 20px;
+    color: #1f1f1f;
+    line-height: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .tableStyle {
+    padding: 0 20px;
+    .rowStyle {
+      padding: 0 !important;
+      margin: 0;
+      border-bottom: 1px solid #cccccc;
+    }
+    .wrap {
+      display: flex;
+      align-items: center;
+      .title {
+        flex: 0 0 160px;
+        line-height: 48px;
+        background: #e0e0e0;
+        text-align: right;
+        padding-right: 5px;
+        margin: 0 !important;
+      }
+      .content {
+        font-weight: 400;
+        font-size: 14px;
+        color: #1f1f1f;
+        line-height: 22px;
+        margin-left: 16px;
+        ::v-deep .el-input {
+          width: 200px;
+        }
+      }
     }
   }
 }

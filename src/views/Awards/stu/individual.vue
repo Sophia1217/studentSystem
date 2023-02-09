@@ -809,7 +809,7 @@ export default {
       this.pjdjOps = [];
     },
     changeJX(val) {
-      getAllpjjxxx({ dm: val }).then((res) => {
+      getAllpjjxxx({ dm: val, jxlb: "1" }).then((res) => {
         this.pjdjOps = res.data.pjdjList;
         this.formAdd.pjzqXn = res.data.pjzqXn;
         this.formAdd.pjzqXq = res.data.pjzqXq;

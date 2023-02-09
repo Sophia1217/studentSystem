@@ -239,16 +239,9 @@ import checkboxComDynic from "../../../components/checkboxComDynic";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getZY, getBJ, importRegStuExcel } from "@/api/student/index";
 import { getCollege, getGrade } from "@/api/class/maintenanceClass";
-import {
-  getManageRegStuInfoSearchSpread,
-  getManageRegStuInfoPageList,
-  gradStu,
-  stuCard,
-  stuReg,
-  fileDown,
-} from "@/api/student/index";
+import { getManageRegStuInfoSearchSpread } from "@/api/student/index";
 import { getToken } from "@/utils/auth";
-import { queryList } from "@/api/familyDifficulties/table";
+import { queryList, excelExportTodo } from "@/api/familyDifficulties/table";
 export default {
   name: "absentee",
   components: { CheckboxCom, checkboxComDynic },
@@ -501,58 +494,21 @@ export default {
     },
     // 打开导出弹窗
     handleExport() {
-      //   let csrqs,
-      //     csrqe = "";
-      //   if (this.datePicker && this.datePicker.length > 0) {
-      //     csrqs = this.datePicker[0];
-      //     csrqe = this.datePicker[1];
-      //   }
-      //   let data = {
-      //     xh: this.select == "xh" ? this.searchVal : null,
-      //     xm: this.select == "xm" ? this.searchVal : null,
-      //     sfzjh: this.select == "sfzjh" ? this.searchVal : null,
-      //     yddh: this.select == "yddh" ? this.searchVal : null,
-      //     jg: this.select == "jg" ? this.searchVal : "",
-      //     csdm: this.select == "csdm" ? this.searchVal : "",
-      //     gjdqm: this.select == "gjdqm" ? this.searchVal : "",
-      //     xbm: this.dmxbmOPs.choose,
-      //     csrqs: csrqs,
-      //     csrqe: csrqe,
-      //     pyccm: this.training.choose,
-      //     xz: this.learnHe.choose,
-      //     xjzt: this.studentStatus.choose,
-      //     zzmmm: this.politica.choose,
-      //     sfzx: this.inSchool.choose,
-      //     xxxs: this.isQuan.choose,
-      //     mzm: this.ethnic.choose,
-      //     bjm: this.moreIform.pread,
-      //     dwh: this.moreIform.manageReg,
-      //     zydm: this.moreIform.stuInfo,
-      //     nj: this.moreIform.grade,
-      //     pageNum: this.queryParams.pageNum,
-      //     pageSize: this.queryParams.pageSize,
-      //     limitSql: "",
-      //     orderZd: this.queryParams.orderZd,
-      //     orderPx: this.queryParams.orderPx,
-      //   }; //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
-      //   this.manageRegStuInfoParam = data;
-      //   if (this.multipleSelection.length > 0) {
-      //     this.leng = this.multipleSelection.length;
-      //   } else {
-      //     await getManageRegStuInfoPageList(data)
-      //       .then((res) => {
-      //         this.leng = res.data.total;
-      //       })
-      //       .catch((err) => {});
-      //   }
-      if (this.multipleSelection.length > 0) {
-        this.daochuModal = true;
-      } else {
-        this.$message.warning("当前无数据导出");
-      }
+      this.daochuModal = true;
     },
     daochu() {
-      this.daochuModal = false;
+      excelExportTodo(data)
+        .then((res) => {
+          this.downloadFn(res, "家庭调查表列表导出", "xlsx");
+          if (this.$store.getters.excelcount > 0) {
+            this.$message.success(
+              `已成功导出${this.$store.getters.excelcount}条数据`
+            );
+          }
+          this.handleSearch();
+          this.daochuModal = false;
+        })
+        .catch((err) => {});
     },
     handleCancel() {
       this.daochuModal = false;
@@ -562,9 +518,9 @@ export default {
       console.log(1111);
       this.$router.push({
         path: "/familyDifficult/familyTableDetail",
-        // query: {
-        //   id: row.XH,
-        // },
+        query: {
+          xh: row.XH,
+        },
       });
     },
 

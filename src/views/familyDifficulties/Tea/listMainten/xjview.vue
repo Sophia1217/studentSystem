@@ -241,7 +241,7 @@
           </el-table-column>
           <el-table-column prop="rdsj" label="认定时间" min-width="100">
           </el-table-column>
-          <el-table-column prop="wrdyy" label="未认定原因" min-width="100">
+          <el-table-column prop="wrdyymc" label="未认定原因" min-width="100">
           </el-table-column>
           <el-table-column prop="fileList" label="附件" width="200">
             <template slot-scope="scope">
@@ -443,6 +443,7 @@ export default {
     mbDown() {
       downLoad().then((res) => {
         this.downloadFn(res, "困难生认定模板下载", "xlsx");
+        this.$message.success("下载成功！");
       });
     },
     handleExport() {

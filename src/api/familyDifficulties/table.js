@@ -28,3 +28,16 @@ export function GetDetail(query) {
         params: query
     })
   }
+
+  
+
+//家庭情况调查学生列表导出
+export function excelExportTodo(query) {
+  return request({
+      url: '/rcswJtknJtqkdc/excelExportTodo',
+      method: 'post',
+      data: query,
+      responseType:'blob'
+
+  })
+}

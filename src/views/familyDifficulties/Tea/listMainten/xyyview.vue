@@ -229,6 +229,9 @@
                 style="width: 150px"
                 clearable
                 @change="handleUpdata(scope.row)"
+                v-show="
+                  scope.row.rdjgmc == '未认定' || scope.row.rdjgmc == '非困难'
+                "
               >
                 <el-option
                   v-for="item in wrdyyOps"
@@ -251,8 +254,15 @@
                 :data="fileData"
                 :on-success="upLoadSuccess"
                 :on-error="upLoadError"
+                v-show="
+                  scope.row.rdjgmc == '未认定' || scope.row.rdjgmc == '非困难'
+                "
               >
-                <el-button type="text" size="small" @click="scwj(scope.row)"
+                <el-button
+                  type="text"
+                  size="small"
+                  style="color: #005657"
+                  @click="scwj(scope.row)"
                   >点击上传</el-button
                 >
               </el-upload>

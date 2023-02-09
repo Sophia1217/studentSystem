@@ -339,7 +339,15 @@ export default {
       //   }
     },
     jia(row, index, ind) {
-      var obj = { tmFz: "", tmName: "" };
+      var obj = {
+        tmFz: "",
+        tmName: "",
+        tmType: "文字题",
+        wjId: "",
+        tmLy: "2",
+        tmMk: this.formAdd.dwXxWjTmList[ind].tmMk,
+      };
+     
       this.formAdd.dwXxWjTmList[ind].tmxxList.push(obj);
     },
     jian(row, index, ind) {

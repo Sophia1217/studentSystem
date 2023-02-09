@@ -369,7 +369,14 @@ export default {
       this.formAdd.dwXxWjTmList[ind].tmxxList.splice(index, 0, downDate);
     },
     jia(row, index, ind) {
-      var obj = { tmFz: "", tmName: "" };
+      var obj = {
+        tmFz: "",
+        tmName: "",
+        tmLy: "3",
+        tmMk: this.formAdd.dwXxWjTmList[ind].tmMk,
+        tmType: "文字题",
+        wjId: "",
+      };
       this.formAdd.dwXxWjTmList[ind].tmxxList.push(obj);
     },
     jian(row, index, ind) {

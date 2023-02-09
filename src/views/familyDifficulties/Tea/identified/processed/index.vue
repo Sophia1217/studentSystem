@@ -852,6 +852,7 @@ export default {
           taskId: this.editparams.taskId,
           xh: this.editparams.xh,
           opMsg: this.editDetails.shyj ? this.editDetails.shyj : "已通过",
+          tjly: this.editDetails.shyj ? this.editDetails.shyj : "已通过",
         };
           //通过
           tyFlow([data]).then((res) => {
@@ -1064,6 +1065,7 @@ export default {
       var data = this.commonParams.map((item) => ({
           ...item,
           opMsg: "审核通过",
+          tjly: "审核通过",
         }));
         tyFlow(data).then((res) => {
           if (res.errcode == "00") {

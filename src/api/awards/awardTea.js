@@ -69,7 +69,7 @@ export function queryDshDetail(query) {
 //教师端-删除
 export function del(query) {
   return request({
-    url: '/rcswPjpyFlow/adminDelete',
+    url: '/rcswPjpyFlow/teaDelete',
     method: 'post',
     data: query
   })
@@ -92,14 +92,15 @@ export function pjpyImport(query) {
       responseType:'blob'
   })
 }
-//教师端-评奖评优-新增（待修改）
+//教师端-页面单条数据新增
 export function pjpyAdd(query) {
   return request({
-    url: '/rcswPjpyFlow/importZssqLs',
+    url: '/rcswPjpyFlow/importTeaInsertOne',
     method: 'post',
     data: query
   })
 }
+
 //教师端-评奖等级批量修改
 export function pjdjUpdate(query) {
   return request({

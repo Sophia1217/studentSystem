@@ -390,13 +390,20 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">学号</div>
-                <div class="content">{{ formDetails.xh }}</div>
+                <div class="content">{{ formAdd.xsxh }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">姓名</div>
-                <div class="content">{{ formDetails.xm }}</div>
+                <!-- <div class="content">{{ formDetails.xm }}</div> -->
+                  <el-autocomplete
+                    v-model="formAdd.xsxm"
+                    :fetch-suggestions="querySearch"
+                    placeholder="请输入学生姓名"
+                    :trigger-on-focus="false"
+                    @select="handleSelect"
+                  ></el-autocomplete>
               </div>
             </el-col>
           </el-row>
@@ -404,13 +411,13 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">性别</div>
-                <div class="content">{{ formDetails.xbmc }}</div>
+                <div class="content">{{ basicInfo.xbmc }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">培养层次</div>
-                <div class="content">{{ formDetails.pyccmc }}</div>
+                <div class="content">{{ basicInfo.pyccmc }}</div>
               </div>
             </el-col>
           </el-row>
@@ -418,14 +425,14 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">培养单位</div>
-                <div class="content">{{ formDetails.dwhmc }}</div>
+                <div class="content">{{ basicInfo.dwhmc }}</div>
               </div>
             </el-col>
 
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">年级</div>
-                <div class="content">{{ formDetails.ssnj }}</div>
+                <div class="content">{{ basicInfo.ssnj }}</div>
               </div>
             </el-col>
           </el-row>
@@ -433,13 +440,13 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">专业</div>
-                <div class="content">{{ formDetails.zydmmc }}</div>
+                <div class="content">{{ basicInfo.zydmmc }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">班级</div>
-                <div class="content">{{ formDetails.bjmmc }}</div>
+                <div class="content">{{ basicInfo.bjmmc }}</div>
               </div>
             </el-col>
           </el-row>
@@ -478,6 +485,11 @@
                   {{ formAdd.jtmc }}
                 </el-form-item>
               </el-col>
+              <!-- <el-col :col="12">
+                <el-form-item label="集体名称" prop="jtmc">
+                  {{ basicInfo.ssbjmc }}
+                </el-form-item>
+              </el-col>-->
             </el-row>
             <el-form-item label="其他" prop="qt" :rules="rules.qt">
               <el-input v-model="formAdd.qt" maxlength="100" />
@@ -560,6 +572,10 @@ import lctCom from "../../../../components/lct";
 import { lctTable } from "@/api/stuDangan/detailList/xiaoneiwai";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getToken } from "@/utils/auth";
+import { queryStuList } from "@/api/familyDifficulties/difficultTea";
+import {
+  queryKnssqxsjbxx,
+} from "@/api/familyDifficulties/stu";
 export default {
   name: "manStudent",
   components: { CheckboxCom, lctCom },
@@ -633,14 +649,30 @@ export default {
       pjdjDuoOps: [],
       pjjxOps: [],
       formAdd: { pjzqXn: "", pjzqXq: "" },
+      basicInfo: {},
       addModal: false,
       rules: {
-        // shjg: [
-        //   { required: true, message: "审核结果不能为空", trigger: "change" },
-        // ],
-        // shyj: [
-        //   { required: true, message: "审核意见不能为空", trigger: "change" },
-        // ],
+        pjdj: [
+          {
+            required: true,
+            message: "评奖等级不能为空",
+            trigger: "blur",
+          },
+        ],
+        pjjx: [
+          {
+            required: true,
+            message: "评奖奖项不能为空",
+            trigger: "blur",
+          },
+        ],
+        sqly: [
+          {
+            required: true,
+            message: "申请理由不能为空",
+            trigger: "blur",
+          },
+        ],
       },
     };
   },
@@ -969,6 +1001,7 @@ export default {
         this.pjdjOps = res.data.pjdjList;
         this.formAdd.pjzqXn = res.data.pjzqXn;
         this.formAdd.pjzqXq = res.data.pjzqXq;
+        this.formAdd.jtmc = res.data.jtmc;
       });
     },
     addClick() {
@@ -986,22 +1019,64 @@ export default {
         formData.append("pjzqXq", this.formAdd.pjzqXq);
         //formData.append("jtmc", this.formAdd.jtmc);
         formData.append("qt", this.formAdd.qt);
-        formData.append("xh", this.$store.getters.userId);
+        formData.append("xh", this.formAdd.xsxh);
         if (this.fileList.length > 0) {
           this.fileList.map((file) => {
             formData.append("files", file.raw);
           });
         }
-        Addpjpysq(formData).then((res) => {
+        pjpyAdd(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("新增成功");
-            this.query();
+            this.handleSearch();
+            this.addModal = false;
           } else {
             this.$message.error("新增失败");
           }
         });
-        this.addModal = false;
+        
       }
+    },
+    //学生
+    querySearch(queryString, cb) {
+      if (queryString != "") {
+        let callBackArr = [];
+        var Xm = { xm: queryString };
+        var result = [];
+        var resultNew = [];
+        queryStuList(Xm).then((res) => {
+          result = res.data.length > 0 ? res.data : [];
+          resultNew = result.map((ele) => {
+            //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
+            //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
+            //此处找后台约定好
+            return {
+              value: `${ele.xm}(${ele.gh})`,
+              gh: ele.gh,
+              xm: ele.xm,
+            };
+          });
+          resultNew.forEach((item) => {
+            if (item.value.indexOf(queryString) > -1) {
+              callBackArr.push(item);
+            }
+          });
+          if (callBackArr.length == 0) {
+            cb([{ value: "暂无数据", price: "暂无数据" }]);
+          } else {
+            cb(callBackArr);
+          }
+        });
+      }
+    },
+    handleSelect(item){
+      this.formAdd.xsxh = item.gh;
+      this.formAdd.xsxm = item.xm;
+      console.log("this.formAdd.xsxh",this.formAdd.xsxh);
+      queryKnssqxsjbxx({xh: this.formAdd.xsxh}).then((res) => {
+        this.basicInfo = res.data;
+      });
+
     },
   },
 };
@@ -1250,6 +1325,47 @@ export default {
         margin-right: 5px;
       }
       
+    }
+  }
+  .headline {
+    padding: 15px;
+    box-sizing: border-box;
+    font-weight: 600;
+    font-size: 20px;
+    color: #1f1f1f;
+    line-height: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .tableStyle {
+    padding: 0 20px;
+    .rowStyle {
+      padding: 0 !important;
+      margin: 0;
+      border-bottom: 1px solid #cccccc;
+    }
+    .wrap {
+      display: flex;
+      align-items: center;
+      .title {
+        flex: 0 0 160px;
+        line-height: 48px;
+        background: #e0e0e0;
+        text-align: right;
+        padding-right: 5px;
+        margin: 0 !important;
+      }
+      .content {
+        font-weight: 400;
+        font-size: 14px;
+        color: #1f1f1f;
+        line-height: 22px;
+        margin-left: 16px;
+        ::v-deep .el-input {
+          width: 200px;
+        }
+      }
     }
   }
 }

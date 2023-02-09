@@ -109,6 +109,35 @@ export function jtknAdd(query) {
     data: query
   })
 }
+//困难生申请-学生资助中心数据导出
+export function exportAll(query) {
+  return request({
+    url: '/rcswJtknKnsq/excelExportAll',
+    method: 'post',
+    responseType:"blob",
+    data: query
+  })
+}
+//困难生列表查询-学生资助中心
+export function queryAllList(query) {
+  return request({
+    url: '/rcswJtknKnsq/queryListForZzzx',
+    method: 'post',
+    data: query
+  })
+}
+//查询登录人权限范围内的-工号姓名模糊查询
+export function queryStuList(query) {
+  return request({
+    url: '/commonMethod/getXmXghWithAuth',
+    method: 'post',
+    data: query
+  })
+}
+
+
+
+
 
 
 

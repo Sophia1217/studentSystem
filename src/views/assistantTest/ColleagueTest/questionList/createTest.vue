@@ -521,6 +521,7 @@ export default {
         orderPx: "",
       },
       AUTHFLAG: false,
+      nw: 1, //1代表内
     };
   },
   mounted() {
@@ -640,7 +641,7 @@ export default {
         });
         if (newArr.length > 0) {
           this.test(newArr);
-          this.preModal = true;
+          this.nw == 1 ? (this.preModal = true) : "";
         } else {
           this.$message.warning("当前无可预览数据");
         }
@@ -728,12 +729,12 @@ export default {
     scWj() {
       var arr = [];
       if (this.scType == 1) {
-        arr = this.tableData1.map((item) => item.id);
-      } else {
-        for (var x = 0; x < this.previewArr.length; x++) {
-          for (var y = 0; y < this.previewArr[x].childs.length; y++) {
-            arr.push(this.previewArr[x].childs[y].id);
-          }
+        this.nw = 2; //此处用于预览内外数据一致 配合yulan()这个方法
+        this.yulan();
+      }
+      for (var x = 0; x < this.previewArr.length; x++) {
+        for (var y = 0; y < this.previewArr[x].childs.length; y++) {
+          arr.push(this.previewArr[x].childs[y].id);
         }
       }
       var data = {

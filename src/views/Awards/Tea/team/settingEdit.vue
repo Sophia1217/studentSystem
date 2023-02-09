@@ -289,6 +289,7 @@
         title="面向对象"
         :visible.sync="mxdxModal"
         width="45%"
+        @close="quxiao1"
         :close-on-click-modal="false"
       >
         <template>
@@ -409,7 +410,7 @@
           </div>
         </template>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="quxaio">取 消</el-button>
+          <el-button @click="quxiao">取 消</el-button>
           <el-button type="primary" class="confirm" @click="mxdxSAVE"
             >确 定</el-button
           >
@@ -524,6 +525,7 @@ export default {
         sfyxcftj: 1, //重复提交
         szzl: "1",
         jxfpLIST: [],
+        sfdjMnfp:0,
         jxdjList: [],
         sjArr: [], //评审时间
       },
@@ -596,6 +598,7 @@ export default {
         console.log("this.formInner", this.formInner);
       });
     },
+
     jia() {
       var obj = { jx: "" };
       this.formAdd.jxdjList.push(obj);
@@ -640,41 +643,45 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        var arr = [];
-        for (var i = 0; i < this.formAdd.jxdjList.length; i++) {
-          arr.push(this.formAdd.jxdjList[i].jx);
-        }
-        this.resultArr = [
-          ...this.formInner.pyccDefList,
-          ...this.formInner.pyccAddList,
-        ]; //把默认和新增的对象合并给后台
-        var data = {
-          rcswPjszFpReqList: this.formAdd.jxfpLIST,
-          rcswPjszDxReqList: this.resultArr,
-          rcswPjszJbReq: {
-            id: this.lgnSn,
-            pydwmList: this.formAdd.pydwmList,
-            zbxhbl: this.formAdd.zbxhbl,
-            zbxhfs: this.formAdd.zbxhfs,
-            zrs: this.formAdd.zrs,
-            jxdjList: arr,
-            pssjend: this.formAdd.sjArr[1],
-            pssjstart: this.formAdd.sjArr[0],
-            szzl: "1", //注意区别 1 个人  2集体
-            sfyxcftj: this.formAdd.sfyxcftj, //重复提交
-            jxjbm: this.formAdd.jxjbm, //奖项级别码
-            pjxqm: this.formAdd.pjxqm, //评奖学期
-            pjxn: this.formAdd.pjxn, //评奖学年
-            ywmc: this.formAdd.ywmc, //英文名称
-            pjjx: this.formAdd.pjjx, //评奖奖项
-          },
-        };
-        addSave(data).then((res) => {
-          this.$message.success("保存成功");
-          this.$router.push({
-            path: "/awardsTea/personalSetting",
+        if (this.formInner.pyccDefList[0].tjmzList.length > 0) {
+          var arr = [];
+          for (var i = 0; i < this.formAdd.jxdjList.length; i++) {
+            arr.push(this.formAdd.jxdjList[i].jx);
+          }
+          this.resultArr = [
+            ...this.formInner.pyccDefList,
+            ...this.formInner.pyccAddList,
+          ]; //把默认和新增的对象合并给后台
+          var data = {
+            rcswPjszFpReqList: this.formAdd.jxfpLIST,
+            rcswPjszDxReqList: this.resultArr,
+            rcswPjszJbReq: {
+              id: this.lgnSn,
+              pydwmList: this.formAdd.pydwmList,
+              zbxhbl: this.formAdd.zbxhbl,
+              zbxhfs: this.formAdd.zbxhfs,
+              zrs: this.formAdd.zrs,
+              jxdjList: arr,
+              pssjend: this.formAdd.sjArr[1],
+              pssjstart: this.formAdd.sjArr[0],
+              szzl: "1", //注意区别 1 个人  2集体
+              sfyxcftj: this.formAdd.sfyxcftj, //重复提交
+              jxjbm: this.formAdd.jxjbm, //奖项级别码
+              pjxqm: this.formAdd.pjxqm, //评奖学期
+              pjxn: this.formAdd.pjxn, //评奖学年
+              ywmc: this.formAdd.ywmc, //英文名称
+              pjjx: this.formAdd.pjjx, //评奖奖项
+            },
+          };
+          addSave(data).then((res) => {
+            this.$message.success("保存成功");
+            this.$router.push({
+              path: "/awardsTea/personalSetting",
+            });
           });
-        });
+        } else {
+          this.$message.error("面向对象暂未设置");
+        }
       }
     },
     monfp() {
@@ -761,8 +768,20 @@ export default {
         });
       });
     },
-    quxaio() {
-      this.mxdxModal = false;
+    quxiao() {
+      if (!this.checkFormInner()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        this.mxdxModal = false;
+      }
+    },
+    quxiao1() {
+      if (!this.checkFormInner()) {
+        this.$message.error("请完善表单相关信息！");
+        this.mxdxModal = true;
+      } else {
+      }
     },
     pyccChange(e, row) {
       //这里处理选择本科还是研究生不同展示的逻辑

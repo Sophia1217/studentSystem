@@ -415,7 +415,7 @@
               </el-row>
               <el-row :gutter="20">
                 <el-form-item label="评奖周期">
-                  <div>{{ formDetails.pjzqXn +' '+ formDetails.pjzqXq}}</div>
+                  <div>{{ formDetails.pjzqXn +' '+ (formDetails.pjzqXqmc ? formDetails.pjzqXqmc : "")}}</div>
                 </el-form-item>
               </el-row>
               <el-row :gutter="20">

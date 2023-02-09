@@ -323,7 +323,7 @@
               </el-row>
               <el-row :gutter="20">
                 <el-form-item label="评奖周期">
-                  <div>{{ formDetails.pjzqXn +' '+ formDetails.pjzqXq}}</div>
+                  <div>{{ formDetails.pjzqXn +' '+ (formDetails.pjzqXqmc ? formDetails.pjzqXqmc : "")}}</div>
                 </el-form-item>
               </el-row>
               <el-row :gutter="20">
@@ -477,7 +477,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="评奖周期" prop="pjzq">
-              {{ formAdd.pjzqXn + " "+(formAdd.pjzqXq ? formAdd.pjzqXq : "")}}
+              {{ formAdd.pjzqXn + " "+(formAdd.pjzqXqmc ? formAdd.pjzqXqmc : "")}}
             </el-form-item>
 
             <el-form-item label="申请理由" prop="sqly">
@@ -1022,10 +1022,11 @@ export default {
       this.pjdjOps = [];
     },
     changeJX(val) {
-      getAllpjjxxx({ dm: val }).then((res) => {
+      getAllpjjxxx({ dm: val,jxlb:this.jxlb }).then((res) => {
         this.pjdjOps = res.data.pjdjList;
         this.formAdd.pjzqXn = res.data.pjzqXn;
         this.formAdd.pjzqXq = res.data.pjzqXq;
+        this.formAdd.pjzqXqmc = res.data.pjzqXqmc;
       });
     },
     //学生

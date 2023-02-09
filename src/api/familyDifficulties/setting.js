@@ -16,5 +16,15 @@ export function insertJtknSqsz(query) {
       data: query
   })
 }
+//家庭困难-申请设置流程图查询
+export function getFlowid(query) {
+  return request({
+      url: '/rcswJtknSqsz/getFlowid',
+      method: 'get',
+      params: query
+  })
+}
+
+
 
 

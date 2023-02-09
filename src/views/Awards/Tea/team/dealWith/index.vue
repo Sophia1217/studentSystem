@@ -1000,7 +1000,7 @@ export default {
       this.pjdjOps = [];
     },
     changeJX(val) {
-      getAllpjjxxx({ dm: val }).then((res) => {
+      getAllpjjxxx({ dm: val,jxlb:this.jxlb }).then((res) => {
         this.pjdjOps = res.data.pjdjList;
         this.formAdd.pjzqXn = res.data.pjzqXn;
         this.formAdd.pjzqXq = res.data.pjzqXq;
@@ -1021,7 +1021,7 @@ export default {
         formData.append("pjjx", this.formAdd.pjjx);
         formData.append("sqly", this.formAdd.sqly);
         formData.append("pjzqXn", this.formAdd.pjzqXn);
-        formData.append("pjzqXq", this.formAdd.pjzqXq);
+        formData.append("pjzqXq", this.formAdd.pjzqXq || "");
         //formData.append("jtmc", this.formAdd.jtmc);
         formData.append("qt", this.formAdd.qt ? this.formAdd.qt : "");
         formData.append("xh", this.formAdd.xsxh);

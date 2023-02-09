@@ -68,7 +68,7 @@
           <el-col :span="8">
             <span>年<span v-html="'\u3000\u3000'"></span>级：</span>
             <el-select
-              v-model="moreIform.ssnjList"
+              v-model="moreIform.njList"
               multiple
               collapse-tags
               placeholder="请选择"
@@ -646,6 +646,7 @@ export default {
         dwhList: [], // 学院下拉框
         sqdjList: [],
         njList:[],
+        xn:"",
       },
       exportParams: {},
       leng: 0,
@@ -766,6 +767,7 @@ export default {
         dwhList: this.moreIform.dwhList,
         sqdjList: this.moreIform.sqdjList,
         njList: this.moreIform.njList,
+        xn: this.moreIform.xn,
         pyccmList: this.training.choose || [],
         loginId: this.$store.getters.userId,
         startSqsj: rqs || "",
@@ -841,7 +843,7 @@ export default {
       });
     },
     editClick(){
-      if (!this.editDetails.shjg) {
+      if (!this.editDetails.shjg || !this.editDetails.tjdj) {
         this.$message.error("审核结果不能为空");
       } else{
       if(this.editDetails.shjg == "01"){
@@ -852,7 +854,9 @@ export default {
           taskId: this.editparams.taskId,
           xh: this.editparams.xh,
           opMsg: this.editDetails.shyj ? this.editDetails.shyj : "已通过",
-          tjly: this.editDetails.shyj ? this.editDetails.shyj : "已通过",
+          tjly: this.editDetails.shyj ? this.editDetails.shyj : "",
+          tjdj: this.editDetails.tjdj,
+          sqdj: this.editparams.sqdj,//申请等级
         };
           //通过
           tyFlow([data]).then((res) => {
@@ -927,6 +931,7 @@ export default {
         dwhList: this.moreIform.dwhList,
         sqdjList: this.moreIform.sqdjList,
         njList: this.moreIform.njList,
+        xn: this.moreIform.xn,
         pyccmList: this.training.choose || [],
         loginId: this.$store.getters.userId,
         startSqsj: rqs || "",
@@ -1027,6 +1032,7 @@ export default {
         status: v.status,
         taskId: v.taskId,
         xh: v.xh,
+        sqdj: v.sqdj,
       }));
     },
     //排序
@@ -1065,7 +1071,8 @@ export default {
       var data = this.commonParams.map((item) => ({
           ...item,
           opMsg: "审核通过",
-          tjly: "审核通过",
+          tjly: "",
+          tjdj:item.sqdj,
         }));
         tyFlow(data).then((res) => {
           if (res.errcode == "00") {
@@ -1088,18 +1095,24 @@ export default {
     },
     //批量审批通过确认
     multiConfirm() {
-      var paramas ={
-        flowEntityReqs: this.commonParams.map((item) => ({
-          ...item,
-          opMsg: this.tjly ? this.tjly : "审核通过",
-        })),
-        tjdj: this.updateDj,
-        tjly: this.tjly ? this.tjly : "审核通过",
-      }
-      tyBatchFlow(paramas).then((res) => {
-        this.$message.success("批量审核已通过");
-        this.handleSearch();
-      });
+      if (this.updateDj !== "") {
+        var paramas ={
+          flowEntityReqs: this.commonParams.map((item) => ({
+            ...item,
+            opMsg: this.tjly ? this.tjly : "审核通过",
+          })),
+          tjdj: this.updateDj,
+          tjly: this.tjly ? this.tjly : "",
+        }
+        tyBatchFlow(paramas).then((res) => {
+          this.$message.success("批量审核已通过");
+          this.multiModal = false;
+          this.handleSearch();
+        });
+      } else {
+        this.$message.warning("请选择推荐档次");
+      };
+      
     },
     //拒绝
     refuse() {

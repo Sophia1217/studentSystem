@@ -10,6 +10,7 @@
                 collapse-tags
                 placeholder="请选择学年"
                 size="small"
+                :disabled ="form.sqkg == '1'? true :false"
               >
                 <el-option
                   v-for="(item,index) in allXn"
@@ -26,6 +27,7 @@
                 collapse-tags
                 placeholder="请选择学期"
                 size="small"
+                :disabled ="form.sqkg == '1'? true :false"
               >
                 <el-option
                   v-for="item in xqOps"
@@ -46,6 +48,7 @@
             format="yyyy 年 MM 月 dd 日"
             value-format="yyyy-MM-dd"
             :clearable="false"
+            :disabled ="form.sqkg == '1'? true :false"
           >
           </el-date-picker>
         </el-form-item>
@@ -89,29 +92,29 @@
         </el-form-item>
       </el-form>
     </div>
-    <lctCom
-      ref="child"
-      :lctModal="lctModal"
-      @handleCloseLct="handleCloseLct"
-    ></lctCom>
+    <el-dialog
+      title="流程图"
+      :visible.sync="lctModal"
+      width="70%"
+    >
+      <!-- <el-image :src="readImage.src"></el-image> -->
+      <flow :xmlData="xmlData" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import {
-  getModeifyTime,
-  stuInfoModifyParamService,
-} from "@/api/student/fieldSettings";
-import {
   sqszDetail,
   insertJtknSqsz,
+  getFlowid,
 } from "@/api/familyDifficulties/setting";
+import flow from "@/views/flowable/task/record/flow";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
-import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
   name: "difficultSetting",
-  components: { lctCom },
+  components: { flow, },
   data() {
     return {
       AUTHFLAG: false,
@@ -126,6 +129,7 @@ export default {
       dengjiData:[],
       xqOps:[],
       allXn:[],
+      xmlData: "",
       rules: {
         rdxn: [{ required: true, message: "请选择", trigger: "change" }],
         applyDate: [{ required: true, message: "请选择", trigger: "blur" }],
@@ -139,9 +143,18 @@ export default {
     this.handleSearch();
     this.getCode("dmxqm");//学期
     this.getSchoolYears();
+    this.getFlow();
   },
 
   methods: {
+    getFlow(){
+      
+      getFlowid()
+        .then((res) => {
+          this.xmlData = res.data;
+        })
+        .catch((err) => {});
+    },
     // 表单校验
     checkForm() {
       // 1.校验必填项
@@ -190,11 +203,9 @@ export default {
         console.log("arr",this.form.applyDate);
       })
     },
-    handleCloseLct() {
-      this.lctModal = false;
-    },
       //流程
     lctClick() {
+      this.lctModal = true;
       // if (!!row.processid) {
       //   this.$refs.child.inner(row.processid);
       //   this.lctModal = true;

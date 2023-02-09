@@ -1153,7 +1153,7 @@ export default {
         formData.append("xq", this.basicInfo.xqm);
         formData.append("tjdj", this.formAdd.tjdj);
         formData.append("shjg", this.formAdd.shjg);
-        formData.append("tjly", this.formAdd.tjly);
+        formData.append("tjly", this.formAdd.tjly ||"");
         if (this.fileList.length > 0) {
           this.fileList.map((file) => {
             formData.append("files", file.raw);
@@ -1174,13 +1174,6 @@ export default {
     addCance() {
       this.addModal = false;
       this.$refs.formAdd.resetFields();
-    },
-    changeJX(val) {
-      getAllpjjxxx({ dm: val }).then((res) => {
-        // this.pjdjOps = res.data.pjdjList;
-        this.formAdd.pjzqXn = res.data.pjzqXn;
-        this.formAdd.pjzqXq = res.data.pjzqXq;
-      });
     },
     //学生
     querySearch(queryString, cb) {

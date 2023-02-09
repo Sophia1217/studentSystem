@@ -120,7 +120,7 @@
           <span class="title">待审核列表</span> <i class="Updataicon"></i>
           <span style="margin-left:15px">评选周期：</span>
           <el-select
-            v-model="moreIform.xn"
+            v-model="moreIform.pjzqXn"
             collapse-tags
             @change="changeXn"
             placeholder="请选择"
@@ -558,6 +558,7 @@ export default {
         dwhList: [], // 学院下拉框
         pjjxList: [],
         pjdjList: [],
+        pjzqXn:"",
       },
       exportParams: {},
       leng: 0,
@@ -678,6 +679,7 @@ export default {
       let data = {
         jtmc: this.select == "jtmc" ? this.searchVal : null,
         dwhList: this.moreIform.dwhList,
+        pjzqXn: this.moreIform.pjzqXn,
         pjjxList: this.moreIform.pjjxList,
         pjdjList: this.moreIform.pjdjList,
         pyccmList: this.training.choose || [],
@@ -732,7 +734,7 @@ export default {
       queryXn()
         .then((res) => {
           this.allXn = res.data;
-          this.moreIform.xn = res.data[0].mc;
+          this.moreIform.pjzqXn = res.data[0].mc;
           this.handleSearch();
         })
         .catch((err) => {});
@@ -832,6 +834,7 @@ export default {
       let data = {
         jtmc: this.select == "jtmc" ? this.searchVal : null,
         dwhList: this.moreIform.dwhList,
+        pjzqXn: this.moreIform.pjzqXn,
         pjjxList: this.moreIform.pjjxList,
         pjdjList: this.moreIform.pjdjList,
         // pyccmList: this.training.choose || [],

@@ -120,7 +120,7 @@
           <span class="title">已处理列表</span> <i class="Updataicon"></i>
           <span style="margin-left:15px">评选周期：</span>
           <el-select
-            v-model="moreIform.xn"
+            v-model="moreIform.pjzqXn"
             collapse-tags
             @change="changeXn"
             placeholder="请选择"
@@ -411,13 +411,13 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">性别</div>
-                <div class="content">{{ basicInfo.xbmc }}</div>
+                <div class="content">{{ basicInfo.xbmmc }}</div>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">培养层次</div>
-                <div class="content">{{ basicInfo.pyccmc }}</div>
+                <div class="content">{{ basicInfo.pyccmmc }}</div>
               </div>
             </el-col>
           </el-row>
@@ -425,7 +425,7 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">培养单位</div>
-                <div class="content">{{ basicInfo.dwhmc }}</div>
+                <div class="content">{{ basicInfo.ssdwdmmc }}</div>
               </div>
             </el-col>
 
@@ -446,7 +446,7 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">班级</div>
-                <div class="content">{{ basicInfo.bjmmc }}</div>
+                <div class="content">{{ basicInfo.bjmc }}</div>
               </div>
             </el-col>
           </el-row>
@@ -605,6 +605,7 @@ export default {
         dwhList: [], // 学院下拉框
         pjjxList: [],
         pjdjList: [],
+        pjzqXn:"",
       },
       exportParams: {},
       leng: 0,
@@ -643,7 +644,7 @@ export default {
       ],
       allNj: [], //年级下拉
       jxlb: "2",//个人奖项为1，集体奖项为2
-      uploadUrl: process.env.VUE_APP_BASE_API + "/rcswPjpyFlow/importExcel",
+      uploadUrl: process.env.VUE_APP_BASE_API + "/rcswPjpyFlow/importExcelCollective",
       delArr: [],
       pjdjOps: [],
       pjdjDuoOps: [],
@@ -752,6 +753,7 @@ export default {
       let data = {
         jtmc: this.select == "jtmc" ? this.searchVal : null,
         dwhList: this.moreIform.dwhList,
+        pjzqXn: this.moreIform.pjzqXn,
         pjjxList: this.moreIform.pjjxList,
         pjdjList: this.moreIform.pjdjList,
         // pyccmList: this.training.choose || [],
@@ -787,7 +789,7 @@ export default {
       queryXn()
         .then((res) => {
           this.allXn = res.data;
-          this.moreIform.xn = res.data[0].mc;
+          this.moreIform.pjzqXn = res.data[0].mc;
           this.handleSearch();
         })
         .catch((err) => {});
@@ -828,6 +830,7 @@ export default {
       let data = {
         jtmc: this.select == "jtmc" ? this.searchVal : null,
         dwhList: this.moreIform.dwhList,
+        pjzqXn: this.moreIform.pjzqXn,
         pjjxList: this.moreIform.pjjxList,
         pjdjList: this.moreIform.pjdjList,
         // pyccmList: this.training.choose || [],
@@ -1001,8 +1004,10 @@ export default {
         this.pjdjOps = res.data.pjdjList;
         this.formAdd.pjzqXn = res.data.pjzqXn;
         this.formAdd.pjzqXq = res.data.pjzqXq;
+        this.formAdd.pjzqXqmc = res.data.pjzqXqmc;
         this.formAdd.jtmc = res.data.jtmc;
       });
+      this.formAdd.pjdj ? (this.formAdd.pjdj = "") : "";
     },
     addClick() {
       if (!this.checkFormAdd()) {
@@ -1018,7 +1023,7 @@ export default {
         formData.append("pjzqXn", this.formAdd.pjzqXn);
         formData.append("pjzqXq", this.formAdd.pjzqXq);
         //formData.append("jtmc", this.formAdd.jtmc);
-        formData.append("qt", this.formAdd.qt);
+        formData.append("qt", this.formAdd.qt ? this.formAdd.qt : "");
         formData.append("xh", this.formAdd.xsxh);
         if (this.fileList.length > 0) {
           this.fileList.map((file) => {
@@ -1028,12 +1033,13 @@ export default {
         pjpyAdd(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("新增成功");
-            this.handleSearch();
             this.addModal = false;
+            this.handleSearch();
           } else {
             this.$message.error("新增失败");
           }
         });
+        
         
       }
     },

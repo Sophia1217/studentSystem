@@ -1,7 +1,7 @@
 <template>
   <div class="difficultSetting">
     <div class="formWrap">
-      <el-form ref="ruleForm" :model="form" :rules="rules" label-width="120px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-row :gutter="20">
           <el-col :span="14">
             <el-form-item label="认定周期" prop="rdxn">
@@ -76,7 +76,7 @@
           ></el-switch>
         </el-form-item>
         <el-form-item>
-          <el-button size="small" @click="handleCel('ruleForm')"
+          <el-button size="small" @click="handleCel"
             >取消</el-button
           >
           <el-button
@@ -119,18 +119,16 @@ export default {
         sqkg: "",
         rdxn: "",
         rdxqm: "",
-
+        id:"",
         applyDate: [], // 申请开放时间
-        shkg: "",
-        auditApplyDate: [], //审核开放时间
       },
       lctModal: false,
       dengjiData:[],
       xqOps:[],
       allXn:[],
       rules: {
-        sqkg: [{ required: true, message: "请选择", trigger: "blur" }],
-        shkg: [{ required: true, message: "请选择", trigger: "blur" }],
+        rdxn: [{ required: true, message: "请选择", trigger: "change" }],
+        applyDate: [{ required: true, message: "请选择", trigger: "blur" }],
       },
     };
   },
@@ -144,6 +142,18 @@ export default {
   },
 
   methods: {
+    // 表单校验
+    checkForm() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.form.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
     //获取学年
     getSchoolYears() {
       queryXn()
@@ -168,6 +178,7 @@ export default {
         this.form.sqkg = res.data.sqkg || "";
         this.form.rdxn = res.data.rdxn|| "";
         this.form.rdxqm = res.data.rdxqm ||"";
+        this.form.id = res.data.id ||"";
         // this.form = res.data;
         this.dengjiData = res.data.kndjList;
         var b = res.data.sqsjstart;
@@ -192,34 +203,40 @@ export default {
       // }
     },
     onSubmit(){
-      let sqsjstart = "";
-      let sqsjend = "";
-      if (this.form.sqkg == 1) {
-          if (this.form.applyDate && this.form.applyDate.length > 0) {
-            sqsjstart = this.form.applyDate[0];
-            sqsjend = this.form.applyDate[1];
-          } else {
+      if (!this.checkForm() || this.form.rdxqm =="") {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else{
+        let sqsjstart = "";
+        let sqsjend = "";
+        if (this.form.applyDate && this.form.applyDate.length > 0) {
+          sqsjstart = this.form.applyDate[0];
+          sqsjend = this.form.applyDate[1];
+        } else {
             this.$message({
               message: "请选择申请时间!",
               type: "warning",
             });
           }
+        let data ={
+          id: this.form.id,
+          sqsjstart: sqsjstart,
+          sqsjend: sqsjend,
+          rdxn: this.form.rdxn,
+          rdxqm: this.form.rdxqm,
+          sqkg: this.form.sqkg,
+        };
+        insertJtknSqsz(data).then((res) =>{
+          this.$message.success("操作成功");
+          this.handleSearch();
+        });
       };
-      let data ={
-        sqsjstart: sqsjstart,
-        sqsjend: sqsjend,
-        rdxn: this.form.rdxn,
-        rdxqm: this.form.rdxqm,
-        sqkg: this.form.sqkg,
-      };
-      insertJtknSqsz(data).then((res) =>{
-        this.$message.success("操作成功");
-        this.handleSearch();
-      });
+      
     },
 
-    handleCel(formName) {
-      this.$refs[formName].resetFields();
+    handleCel() {
+      this.$router.go(-1);
+      // window.history.go(-1);区别
     },
   },
 };

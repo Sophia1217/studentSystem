@@ -68,7 +68,7 @@
           <el-col :span="8">
             <span>年<span v-html="'\u3000\u3000'"></span>级：</span>
             <el-select
-              v-model="moreIform.ssnjList"
+              v-model="moreIform.njList"
               multiple
               collapse-tags
               placeholder="请选择"
@@ -609,7 +609,7 @@
               </el-row>
               <el-row :gutter="20">
                 <el-col :span="20">
-                  <el-form-item label="推荐档次" label-width="120px">
+                  <el-form-item label="推荐档次" label-width="120px" prop="tjdj">
                     <el-select
                       v-model="formAdd.tjdj"
                       collapse-tags
@@ -725,6 +725,7 @@ export default {
         dwhList: [], // 学院下拉框
         sqdjList: [],
         njList:[],
+        xn:"",
       },
       exportParams: {},
       leng: 0,
@@ -780,12 +781,26 @@ export default {
       addModal: false,
       userflag: 1,
       rules: {
-        // shjg: [
-        //   { required: true, message: "审核结果不能为空", trigger: "change" },
-        // ],
-        // shyj: [
-        //   { required: true, message: "审核意见不能为空", trigger: "change" },
-        // ],
+        sqdj: [
+          {
+            required: true,
+            message: "申请等级不能为空",
+            trigger: "blur",
+          },
+        ],
+        sqly: [
+          {
+            required: true,
+            message: "申请理由不能为空",
+            trigger: "blur",
+          },
+        ],
+        shjg: [
+          { required: true, message: "审核结果不能为空", trigger: "change" },
+        ],
+        tjdj: [
+          { required: true, message: "推荐档次不能为空", trigger: "blur" },
+        ],
       },
     };
   },
@@ -855,6 +870,7 @@ export default {
         dwhList: this.moreIform.dwhList,
         sqdjList: this.moreIform.sqdjList,
         njList: this.moreIform.njList,
+        xn: this.moreIform.xn,
         pyccmList: this.training.choose || [],
         loginId: this.$store.getters.userId,
         startSqsj: rqs || "",
@@ -935,6 +951,7 @@ export default {
         dwhList: this.moreIform.dwhList,
         sqdjList: this.moreIform.sqdjList,
         njList: this.moreIform.njList,
+        xn: this.moreIform.xn,
         pyccmList: this.training.choose || [],
         loginId: this.$store.getters.userId,
         startSqsj: rqs || "",

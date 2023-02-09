@@ -68,7 +68,7 @@
           <el-col :span="8">
             <span>年<span v-html="'\u3000\u3000'"></span>级：</span>
             <el-select
-              v-model="moreIform.ssnjList"
+              v-model="moreIform.njList"
               multiple
               collapse-tags
               placeholder="请选择"
@@ -532,6 +532,7 @@ export default {
         sqdjList: [],
         njList:[],
         statusList:[],
+        xn:"",
       },
       exportParams: {},
       tableData: [],
@@ -638,6 +639,7 @@ export default {
         dwhList: this.moreIform.dwhList,
         sqdjList: this.moreIform.sqdjList,
         njList: this.moreIform.njList,
+        xn: this.moreIform.xn,
         pyccmList: this.training.choose || [],
         loginId: this.$store.getters.userId,
         startSqsj: rqs || "",
@@ -710,6 +712,7 @@ export default {
         dwhList: this.moreIform.dwhList,
         sqdjList: this.moreIform.sqdjList,
         njList: this.moreIform.njList,
+        xn: this.moreIform.xn,
         pyccmList: this.training.choose || [],
         loginId: this.$store.getters.userId,
         startSqsj: rqs || "",

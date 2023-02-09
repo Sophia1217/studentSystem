@@ -138,7 +138,7 @@
           <span class="title">已处理列表</span> <i class="Updataicon"></i>
           <span style="margin-left:15px">评选周期：</span>
           <el-select
-            v-model="moreIform.xn"
+            v-model="moreIform.pjzqXn"
             collapse-tags
             @change="changeXn"
             placeholder="请选择"
@@ -591,6 +591,7 @@ export default {
         pjjxList: [],
         pjdjList: [],
         ssnjList:[],
+        pjzqXn:"",
       },
       exportParams: {},
       leng: 0,
@@ -629,7 +630,7 @@ export default {
       ],
       allNj: [], //年级下拉
       jxlb: "1",//个人奖项为1，集体奖项为2
-      uploadUrl: process.env.VUE_APP_BASE_API + "/rcswPjpyFlow/importExcel",
+      uploadUrl: process.env.VUE_APP_BASE_API + "/rcswPjpyFlow/importExcelIndividual",
       delArr: [],
       pjdjOps: [],
       pjdjDuoOps: [],
@@ -739,6 +740,7 @@ export default {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
         dwhList: this.moreIform.dwhList,
+        pjzqXn: this.moreIform.pjzqXn,
         pjjxList: this.moreIform.pjjxList,
         pjdjList: this.moreIform.pjdjList,
         ssnjList: this.moreIform.ssnjList,
@@ -775,7 +777,7 @@ export default {
       queryXn()
         .then((res) => {
           this.allXn = res.data;
-          this.moreIform.xn = res.data[0].mc;
+          this.moreIform.pjzqXn = res.data[0].mc;
           this.handleSearch();
         })
         .catch((err) => {});
@@ -817,6 +819,7 @@ export default {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
         dwhList: this.moreIform.dwhList,
+        pjzqXn: this.moreIform.pjzqXn,
         pjjxList: this.moreIform.pjjxList,
         pjdjList: this.moreIform.pjdjList,
         ssnjList: this.moreIform.ssnjList,

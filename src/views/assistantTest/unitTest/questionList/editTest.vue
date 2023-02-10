@@ -212,6 +212,33 @@
         <el-button @click="scWj">确 认</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="新增模块确认"
+      :visible.sync="xinzModal"
+      width="20%"
+      :close-on-click-modal="false"
+    >
+      <div>
+        <el-form ref="formAdd" :model="formAdd" :rules="rules">
+          <el-form-item
+            label="模块："
+            label-width="80px"
+            prop="xinzMK"
+            :rules="rules.xinzMK"
+          >
+            <el-autocomplete
+              v-model="formAdd.xinzMK"
+              :fetch-suggestions="querySearchAsync"
+              placeholder="请输入内容"
+            ></el-autocomplete>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <!-- <el-button @click="scModalCancel">关 闭</el-button> -->
+        <el-button @click="xinzCon">确 认</el-button>
+      </span>
+    </el-dialog>
     <div
       style="
         background: white;
@@ -242,8 +269,17 @@ export default {
   components: { CheckboxCom },
   data() {
     return {
+      formAdd: { xinzMK: "" },
+      xinzList: [],
       scModal: false,
       rules: {
+        xinzMK: [
+          {
+            required: true,
+            message: "新增模块名不能为空",
+            trigger: "blur",
+          },
+        ],
         wjName: [
           {
             required: true,
@@ -287,6 +323,7 @@ export default {
           },
         ],
       },
+      xinzModal: false,
       preModal: false,
       form: {
         wjName: "",
@@ -535,18 +572,48 @@ export default {
         this.listDetail1();
       });
     },
-    xinzeng() {
-      var data = {
-        tmLy: "2",
-        tmMk: "",
-        tmFz: "",
-        tmName: "",
-        tmType: "文字题",
-        wjId: this.routeId,
-      };
-      editJiaru(data).then((res) => {
-        this.listDetail1();
+    querySearchAsync(queryString, cb) {
+      if (queryString == "") {
+        queryString = " ";
+      }
+      let callBackArr = [];
+      var result = [];
+      var resultNew = [];
+      mkQuery({ tmMk: queryString }).then((res) => {
+        result = res.data;
+        resultNew = result.map((ele) => {
+          return {
+            value: ele.mc,
+            label: ele.mc,
+          };
+        });
+        resultNew.forEach((item) => {
+          callBackArr.push(item);
+        });
+        cb(callBackArr);
       });
+    },
+    xinzCon() {
+      if (!this.checkFormAdd()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        var data = {
+          tmLy: "2",
+          tmMk: this.formAdd.xinzMK,
+          tmFz: "",
+          tmName: "",
+          tmType: "文字题",
+          wjId: this.routeId,
+        };
+        editJiaru(data).then((res) => {
+          this.listDetail1();
+          this.xinzModal = false;
+        });
+      }
+    },
+    xinzeng() {
+      this.xinzModal = true;
     },
     openModal() {
       if (!this.checkForm()) {
@@ -580,6 +647,17 @@ export default {
         validForm1 = valid;
       });
       if (!validForm || !validForm1) {
+        return false;
+      }
+      return true;
+    },
+    checkFormAdd() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formAdd.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
         return false;
       }
       return true;

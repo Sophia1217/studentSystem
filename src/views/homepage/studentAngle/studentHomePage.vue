@@ -131,7 +131,7 @@
           </div>
         </div>
       </div>
-      <div class="item" @click="jtqkdcbClick">
+      <div class="item stuInfoClick" @click="jtqkdcbClick">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
         </div>
@@ -144,7 +144,7 @@
           </div>
         </div>
       </div>
-      <div class="item" @click="knsrdClick">
+      <div class="item stuInfoClick" @click="knsrdClick">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
         </div>
@@ -528,7 +528,7 @@ export default {
 }
 
 .title1 {
-  width: 144px;
+  width: 180px;
   height: 33px;
 }
 

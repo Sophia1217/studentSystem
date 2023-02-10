@@ -164,38 +164,38 @@
           ></el-table-column>
           <el-table-column
             label="学号"
-            prop="XH"
+            prop="xh"
             min-width="100"
           ></el-table-column>
           <el-table-column
             label="姓名"
-            prop="XM"
+            prop="xm"
             min-width="80"
           ></el-table-column>
           <el-table-column
             label="政治面貌"
-            prop="ZZMM"
+            prop="zzmm"
             min-width="100"
           ></el-table-column>
           <el-table-column
             label="民族"
-            prop="MZMC"
+            prop="mzmc"
             min-width="80"
           ></el-table-column>
           <el-table-column
             label="培养单位"
-            prop="DWMC"
+            prop="dwmc"
             min-width="100"
           ></el-table-column>
           <el-table-column
             label="专业"
-            prop="ZYDMC"
+            prop="zydmc"
             min-width="100"
           ></el-table-column>
-          <el-table-column label="年级" prop="xm" width="80"></el-table-column>
+          <el-table-column label="年级" prop="bj" width="80"></el-table-column>
           <el-table-column
             label="培养层次"
-            prop="PYCC"
+            prop="pycc"
             width="80"
           ></el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
@@ -259,6 +259,7 @@ export default {
       moreIform: {
         manageReg: [], // 学院
         stuInfo: [], // 专业
+        grade: [], //年级
       },
       allDwh: [], // 学院下拉框
       zyOps: [], // 专业下拉
@@ -423,7 +424,7 @@ export default {
       };
       queryList(data)
         .then((res) => {
-          this.tableData = res.data.list;
+          this.tableData = res.data.data;
           this.queryParams.total = res.data.totalcount;
         })
         .catch((err) => {});
@@ -497,6 +498,20 @@ export default {
       this.daochuModal = true;
     },
     daochu() {
+      let data = {
+        xh: this.select == "xh" ? this.searchVal : null,
+        xm: this.select == "xm" ? this.searchVal : null,
+        pyccm: this.training.choose,
+        zzmmm: this.politica.choose,
+        mzm: this.ethnic.choose,
+        dwh: this.moreIform.manageReg,
+        zydm: this.moreIform.stuInfo,
+        nj: this.moreIform.grade,
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+      };
       excelExportTodo(data)
         .then((res) => {
           this.downloadFn(res, "家庭调查表列表导出", "xlsx");

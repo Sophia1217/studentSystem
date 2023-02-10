@@ -11,10 +11,18 @@ export function queryList(query) {
   }
 
   
+//家庭情况调查学生列表修改
 
 export function InsertJtList(query) {
     return request({
         url: '/rcswJtknJtqkdc/InsertJtList',
+        method: 'post',
+        data: query
+    })
+  }
+  export function importUpdateJtqkdc(query) {
+    return request({
+        url: '/rcswJtknJtqkdc/importUpdateJtqkdc',
         method: 'post',
         data: query
     })

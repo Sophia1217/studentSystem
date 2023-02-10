@@ -177,9 +177,9 @@
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns fullGreen" @click="handleNew">
+          <!-- <div class="btns fullGreen" @click="handleNew">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="mt15">

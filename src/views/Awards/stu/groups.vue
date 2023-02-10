@@ -747,6 +747,7 @@ export default {
         formData.append("sqly", this.formEdit.sqly);
         //formData.append("jtmc", this.formEdit.jtmc);
         formData.append("qt", this.formEdit.qt);
+        formData.append("jtmc", this.formEdit.jtmc);
         formData.append(
           "pjzqXn",
           this.formEdit.pjzqXn ? this.formEdit.pjzqXn : null
@@ -786,7 +787,7 @@ export default {
         formData.append("sqly", this.formAdd.sqly);
         formData.append("pjzqXn", this.formAdd.pjzqXn);
         formData.append("pjzqXq", this.formAdd.pjzqXq);
-        //formData.append("jtmc", this.formAdd.jtmc);
+        formData.append("jtmc", this.formAdd.jtmc);
         formData.append("qt", this.formAdd.qt ? this.formAdd.qt : "");
         formData.append("xh", this.$store.getters.userId);
         if (this.fileList.length > 0) {

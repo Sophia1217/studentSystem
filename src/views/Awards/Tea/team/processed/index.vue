@@ -237,10 +237,10 @@
               size="small"
             >
               <el-option
-                v-for="item in allDwh"
-                :key="item.dm"
-                :label="item.mc"
-                :value="item.dm"
+                v-for="(item,index) in pjdjPlOps"
+                :key="index"
+                :label="item"
+                :value="item"
               ></el-option>
             </el-select>
             </el-col>
@@ -605,6 +605,7 @@ export default {
       pjjxOps: [],
       updateArr: [],
       updateDj: "",
+      pjdjPlOps:[],//批量审批等级
       rules: {
         // shjg: [
         //   { required: true, message: "审核结果不能为空", trigger: "change" },
@@ -972,6 +973,11 @@ export default {
           } 
         }
         if (flagSame == 1) {
+          this.updateDj = "";
+          var sameJx = [this.multipleSelection[0].pjjx];
+          getPjdjByPjjx({pjjxList: sameJx}).then((res) => {
+            this.pjdjPlOps = res.data;
+          });
           this.multiModal = true;
           console.log("相同奖项");
         } else{ 
@@ -986,24 +992,27 @@ export default {
     },
     //批量审批通过确认
     async multiConfirm() {
-      var data = this.commonParams.map((item) => ({
-          ...item,
-          opMsg: "审核通过",
-        }));
-      var params = {
-        businesIdList: this.updateArr,
-        jxlb: this.jxlb,
-        pjdj: "一等奖",
-        // this.updateDj
-      };
-      await pjdjUpdate(params).then((res) => {
-        console.log("评奖修改");
-          tyFlow(data).then((res) => {
-            this.$message.success("批量审核已通过");
-            this.multiModal =false;
-            this.handleSearch();
+      if (!this.updateDj) {
+        this.$message.warning("请选择推荐档次！")
+      } else{
+        var data = this.commonParams.map((item) => ({
+            ...item,
+            opMsg: "审核通过",
+          }));
+        var params = {
+          businesIdList: this.updateArr,
+          jxlb: this.jxlb,
+          pjdj: this.updateDj,
+        };
+        await pjdjUpdate(params).then((res) => {
+          console.log("评奖修改");
+            tyFlow(data).then((res) => {
+              this.$message.success("批量审核已通过");
+              this.multiModal =false;
+              this.handleSearch();
+          });
         });
-      });
+      };
     },
     //拒绝
     refuse() {

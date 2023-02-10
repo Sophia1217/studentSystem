@@ -655,7 +655,7 @@ export default {
       pjdjOps: [],
       pjdjDuoOps: [],
       pjjxOps: [],
-      formAdd: { pjzqXn: "", pjzqXq: "" },
+      formAdd: { pjzqXn: "", pjzqXq: "",xsxh:"" },
       basicInfo: {},
       addModal: false,
       rules: {
@@ -1006,6 +1006,7 @@ export default {
       this.pjdjOps = [];
     },
     changeJX(val) {
+      this.pjdjOps = [];
       var data ={
         pjjx: val, 
         jxlb: this.jxlb, 
@@ -1019,7 +1020,7 @@ export default {
       });
     },
     addClick() {
-      if (!this.checkFormAdd || !this.formAdd.xsxh()) {
+      if (!this.checkFormAdd || !this.formAdd.xsxh) {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
@@ -1088,7 +1089,7 @@ export default {
       this.formAdd.xsxh = item.gh;
       this.formAdd.xsxm = item.xm;
       this.formAdd.pjjx = "",
-      this.formAdd.pjdj = "",
+      this.formAdd.pjjxOps = [],
       console.log("this.formAdd.xsxh",this.formAdd.xsxh);
       queryKnssqxsjbxx({xh: this.formAdd.xsxh}).then((res) => {
         this.basicInfo = res.data;
@@ -1131,7 +1132,8 @@ export default {
       this.formAdd.xsxh = item.gh;
       this.formAdd.xsxm = item.xm;
       this.formAdd.pjjx = "",
-      this.formAdd.pjdj = "",
+      // this.formAdd.pjdj = "",
+      this.formAdd.pjjxOps = [],
       console.log("this.formAdd.xsxh",this.formAdd.xsxh);
       queryKnssqxsjbxx({xh: this.formAdd.xsxh}).then((res) => {
         this.basicInfo = res.data;

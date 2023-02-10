@@ -813,7 +813,7 @@ export default {
       this.pjdjOps = [];
     },
     changeJX(val) {
-      
+      this.pjdjOps = [];
       getAllpjjxxx({ dm: val, jxlb: "1" }).then((res) => {
         this.pjdjOps = res.data.pjdjList;
         this.formAdd.pjzqXn = res.data.pjzqXn;

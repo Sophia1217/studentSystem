@@ -641,7 +641,14 @@ export default {
       pjdjOps: [],
       pjdjDuoOps: [],
       pjjxOps: [],
-      formAdd: { pjzqXn: "", pjzqXq: "",xsxh:"",xsxm:"" },
+      formAdd: { 
+        pjzqXn: "", 
+        pjzqXq: "",
+        xsxh:"",
+        xsxm:"",
+        pjdj:"",
+        pjjx:"",
+      },
       basicInfo: {},
       addModal: false,
       rules: {
@@ -1028,6 +1035,7 @@ export default {
       this.pjdjOps = [];
     },
     changeJX(val) {
+      this.pjdjOps = [];
       var data ={
         pjjx: val, 
         jxlb: this.jxlb, 
@@ -1076,7 +1084,8 @@ export default {
       this.formAdd.xsxh = item.gh;
       this.formAdd.xsxm = item.xm;
       this.formAdd.pjjx = "",
-      this.formAdd.pjdj = "",
+      // this.formAdd.pjdj = "",
+      this.pjdjOps = [];
       console.log("this.formAdd.xsxh",this.formAdd.xsxh);
       queryKnssqxsjbxx({xh: this.formAdd.xsxh}).then((res) => {
         this.basicInfo = res.data;
@@ -1120,7 +1129,7 @@ export default {
       this.formAdd.xsxm = item.xm;
       console.log("this.formAdd.xsxh",this.formAdd.xsxh);
       this.formAdd.pjjx = "",
-      this.formAdd.pjdj = "",
+      this.pjdjOps = [];
       queryKnssqxsjbxx({xh: this.formAdd.xsxh}).then((res) => {
         this.basicInfo = res.data;
       });

@@ -230,7 +230,9 @@
                 clearable
                 @change="handleUpdata(scope.row)"
                 v-show="
-                  scope.row.rdjgmc == '未认定' || scope.row.rdjgmc == '非困难'
+                  scope.row.rdjgmc !== '特别困难' &&
+                  scope.row.rdjgmc !== '一般困难' &&
+                  scope.row.rdjgmc !== '困难'
                 "
               >
                 <el-option
@@ -255,7 +257,9 @@
                 :on-success="upLoadSuccess"
                 :on-error="upLoadError"
                 v-show="
-                  scope.row.rdjgmc == '未认定' || scope.row.rdjgmc == '非困难'
+                  scope.row.rdjgmc !== '特别困难' &&
+                  scope.row.rdjgmc !== '一般困难' &&
+                  scope.row.rdjgmc !== '困难'
                 "
               >
                 <el-button

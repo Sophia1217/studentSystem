@@ -846,7 +846,7 @@ export default {
       this.formAdd.pjdj ? (this.formAdd.pjdj = "") : "";
     },
     changeJXEdit(val) {
-      getAllpjjxxx({ dm: val }).then((res) => {
+      getAllpjjxxx({ dm: val, jxlb: "2" }).then((res) => {
         this.pjdjOps = res.data.pjdjList;
         this.formEdit.jtmc = res.data.jtmc;
 

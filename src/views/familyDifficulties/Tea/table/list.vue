@@ -189,10 +189,10 @@
           ></el-table-column>
           <el-table-column
             label="专业"
-            prop="zydmc"
+            prop="zymc"
             min-width="100"
           ></el-table-column>
-          <el-table-column label="年级" prop="bj" width="80"></el-table-column>
+          <el-table-column label="年级" prop="nj" width="80"></el-table-column>
           <el-table-column
             label="培养层次"
             prop="pycc"
@@ -298,6 +298,8 @@ export default {
         pageNum: 1,
         pageSize: 10,
         total: 0,
+        orderPx: "",
+        orderZd: "",
       },
       AUTHFLAG: false,
     };
@@ -424,8 +426,8 @@ export default {
       };
       queryList(data)
         .then((res) => {
-          this.tableData = res.data.data;
-          this.queryParams.total = res.data.totalcount;
+          this.tableData = res.data;
+          this.queryParams.total = res.totalCount;
         })
         .catch((err) => {});
     },
@@ -498,32 +500,48 @@ export default {
       this.daochuModal = true;
     },
     daochu() {
-      let data = {
-        xh: this.select == "xh" ? this.searchVal : null,
-        xm: this.select == "xm" ? this.searchVal : null,
-        pyccm: this.training.choose,
-        zzmmm: this.politica.choose,
-        mzm: this.ethnic.choose,
-        dwh: this.moreIform.manageReg,
-        zydm: this.moreIform.stuInfo,
-        nj: this.moreIform.grade,
-        pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
-      };
-      excelExportTodo(data)
-        .then((res) => {
-          this.downloadFn(res, "家庭调查表列表导出", "xlsx");
-          if (this.$store.getters.excelcount > 0) {
-            this.$message.success(
-              `已成功导出${this.$store.getters.excelcount}条数据`
-            );
-          }
-          this.handleSearch();
-          this.daochuModal = false;
-        })
-        .catch((err) => {});
+      if (this.multipleSelection.length > 0) {
+        let xhlist = this.multipleSelection.map((item) => item.xh);
+        excelExportTodo({ xhList: xhlist })
+          .then((res) => {
+            this.downloadFn(res, "家庭调查表列表导出", "xlsx");
+            if (this.$store.getters.excelcount > 0) {
+              this.$message.success(
+                `已成功导出${this.$store.getters.excelcount}条数据`
+              );
+            }
+            this.handleSearch();
+            this.daochuModal = false;
+          })
+          .catch((err) => {});
+      } else {
+        let data = {
+          xh: this.select == "xh" ? this.searchVal : null,
+          xm: this.select == "xm" ? this.searchVal : null,
+          pyccm: this.training.choose,
+          zzmmm: this.politica.choose,
+          mzm: this.ethnic.choose,
+          dwh: this.moreIform.manageReg,
+          zydm: this.moreIform.stuInfo,
+          nj: this.moreIform.grade,
+          pageNum: this.queryParams.pageNum,
+          pageSize: this.queryParams.pageSize,
+          orderZd: this.queryParams.orderZd,
+          orderPx: this.queryParams.orderPx,
+        };
+        excelExportTodo(data)
+          .then((res) => {
+            this.downloadFn(res, "家庭调查表列表导出", "xlsx");
+            if (this.$store.getters.excelcount > 0) {
+              this.$message.success(
+                `已成功导出${this.$store.getters.excelcount}条数据`
+              );
+            }
+            this.handleSearch();
+            this.daochuModal = false;
+          })
+          .catch((err) => {});
+      }
     },
     handleCancel() {
       this.daochuModal = false;

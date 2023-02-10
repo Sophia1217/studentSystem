@@ -603,7 +603,6 @@ export default {
           this.formAdd.jxfpLIST.reduce((pre, cur) => {
             return pre + Number(cur.zzrs);
           }, 0);
-        console.log("this.formInner", this.formInner);
       });
     },
 

@@ -444,6 +444,14 @@ import {
 } from "@/api/dailyBehavior/pjpySetting";
 import { getXnxq } from "@/api/dailyBehavior/xnxjStu";
 export default {
+  computed: {
+    resultArr: {
+      get() {
+        return [...this.formInner.pyccDefList, ...this.formInner.pyccAddList]; //把默认和新增的对象合并给后台
+      },
+      set() {},
+    },
+  },
   data() {
     return {
       bjzt: "1", //1是看 2是改
@@ -525,7 +533,7 @@ export default {
         sfyxcftj: 1, //重复提交
         szzl: "1",
         jxfpLIST: [],
-        sfdjMnfp:0,
+        sfdjMnfp: 0,
         jxdjList: [],
         sjArr: [], //评审时间
       },
@@ -533,7 +541,7 @@ export default {
         pyccAddList: [], //新增条件
         pyccDefList: [], //默认条件
       },
-      resultArr: [], //合并条件
+      // resultArr: [], //合并条件
       xnxqList: [],
       num: 1,
       lgnSn: "",
@@ -648,10 +656,7 @@ export default {
           for (var i = 0; i < this.formAdd.jxdjList.length; i++) {
             arr.push(this.formAdd.jxdjList[i].jx);
           }
-          this.resultArr = [
-            ...this.formInner.pyccDefList,
-            ...this.formInner.pyccAddList,
-          ]; //把默认和新增的对象合并给后台
+
           var data = {
             rcswPjszFpReqList: this.formAdd.jxfpLIST,
             rcswPjszDxReqList: this.resultArr,
@@ -693,7 +698,11 @@ export default {
         zrs: this.formAdd.zrs,
       };
       mnfp(data).then((res) => {
-        this.formAdd.jxfpLIST = res.data;
+        // this.formAdd.jxfpLIST = res.data;
+        //但是this.$ set 方法还有另一种情况，就是当你要设置的key已经存在于这个对象或数组中的时候，它只会更改data并不会为该key添加响应检测，所以页面上的依赖jxfpLIST的试图就不会更新，解决这个问题的办法就是在设置值之前先把这个属性删除掉，然后再进行this.$set
+        //当this.$set无效时 也可以强制更新此页面 this.$forceUpdate();
+        this.$delete(this.formAdd, "jxfpLIST");
+        this.$set(this.formAdd, "jxfpLIST", res.data);
       });
     },
     checkFormInner() {
@@ -711,10 +720,6 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        this.resultArr = [
-          ...this.formInner.pyccDefList,
-          ...this.formInner.pyccAddList,
-        ]; //把默认和新增的对象合并给后台
         var data = {
           pydwmList: this.formAdd.pydwmList,
           rcswPjszDxReqList: this.resultArr,

@@ -403,6 +403,12 @@ export default {
       },
       set() {},
     },
+    resultArr: {
+      get() {
+        return [...this.formInner.pyccDefList, ...this.formInner.pyccAddList]; //把默认和新增的对象合并给后台
+      },
+      set() {},
+    },
   },
   data() {
     return {
@@ -520,14 +526,8 @@ export default {
           // },
         ], //默认条件
       },
-      resultArr: [], //合并条件
-      // pyccNewList: [
-      //   {
-      //     tjzw: "",
-      //     option: [],
-      //     tjmzList: "",
-      //   },
-      // ],
+      // resultArr: [], //合并条件
+
       xnxqList: [],
       num: 1,
     };
@@ -677,10 +677,10 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        this.resultArr = [
-          ...this.formInner.pyccDefList,
-          ...this.formInner.pyccAddList,
-        ]; //把默认和新增的对象合并给后台
+        // this.resultArr = [
+        //   ...this.formInner.pyccDefList,
+        //   ...this.formInner.pyccAddList,
+        // ]; //把默认和新增的对象合并给后台
         var data = {
           pydwmList: this.formAdd.pydwmList,
           rcswPjszDxReqList: this.resultArr,

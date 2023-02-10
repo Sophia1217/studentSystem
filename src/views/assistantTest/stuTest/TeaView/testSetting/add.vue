@@ -385,7 +385,6 @@ export default {
       var result = [];
       var resultNew = [];
       mkQuery({ tmMk: queryString }).then((res) => {
-        // console.log("res", res);
         result = res.data;
         resultNew = result.map((ele) => {
           return {
@@ -393,20 +392,10 @@ export default {
             label: ele.mc,
           };
         });
-        // console.log("resultNew", resultNew);
         resultNew.forEach((item) => {
-          // if (item.value.indexOf(queryString) > -1) {
           callBackArr.push(item);
-          // }
         });
-        // console.log("callBackArr", callBackArr);
         cb(callBackArr);
-
-        // if (callBackArr.length == 0) {
-        //   this.$message.error("暂无相关数据");
-        // } else {
-        //   cb(callBackArr);
-        // }
       });
     },
     changePycc(item, ind) {

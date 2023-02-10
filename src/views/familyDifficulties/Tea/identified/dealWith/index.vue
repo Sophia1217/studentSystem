@@ -331,7 +331,7 @@
               <div class="formLeft"><span class="title">申请信息</span></div>
               <el-row :gutter="20">
                 <el-form-item label="认定周期">
-                  <div>{{ formDetails.xnmc +' '+ formDetails.xqmc}}</div>
+                  <div>{{ formDetails.xn +' '+ formDetails.xqmc}}</div>
                 </el-form-item>
               </el-row>
               <el-row :gutter="20">
@@ -395,10 +395,9 @@
                 <el-col :span="20">
                   <el-form-item label="审核结果"
                     label-width="120px" 
-                    prop="shjg"
                   >
                     <div>
-                      <div>{{editDetails.tjly}}</div> 
+                      <div>{{editDetails.statusChinese}}</div> 
                     </div>
                     <!-- <el-select
                       v-model="editDetails.shjg"
@@ -420,19 +419,9 @@
               <el-row :gutter="20" v-if="userflag ==2">
                 <el-col :span="20">
                   <el-form-item label="推荐档次" label-width="120px">
-                    <!-- <el-select
-                      v-model="editDetails.tjdj"
-                      collapse-tags
-                      placeholder="请选择"
-                      size="small"
-                    >
-                      <el-option
-                        v-for="item in rddjOps"
-                        :key="item.dm"
-                        :label="item.mc"
-                        :value="item.dm"
-                      ></el-option>
-                    </el-select> -->
+                    <div>
+                      <div>{{editDetails.xyTjdjmc}}</div> 
+                    </div>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -921,9 +910,10 @@ export default {
       };
       await queryDshDetail(data).then((res) => {
         this.formDetails = res.data;
-        this.editDetails.tjdjmc = res.data.tjdjmc;
+        this.editDetails.tjdjmc = res.data.tjdjmc ||"";
         this.editDetails.tjly = res.data.tjly;
         this.editDetails.statusChinese = res.data.statusChinese;
+        this.editDetails.xyTjdjmc = res.data.xyTjdjmc ||"";
       });
     },
     emptyDetails() {

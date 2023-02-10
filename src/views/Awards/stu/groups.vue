@@ -749,11 +749,11 @@ export default {
         formData.append("qt", this.formEdit.qt);
         formData.append(
           "pjzqXn",
-          this.formAdd.pjzqXn ? this.formAdd.pjzqXn : null
+          this.formEdit.pjzqXn ? this.formEdit.pjzqXn : null
         );
         formData.append(
           "pjzqXq",
-          this.formAdd.pjzqXq ? this.formAdd.pjzqXq : null
+          this.formEdit.pjzqXq ? this.formEdit.pjzqXq : null
         );
         formData.append("xh", this.$store.getters.userId);
         formData.append("id", this.formEdit.id);

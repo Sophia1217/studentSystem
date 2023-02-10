@@ -329,7 +329,7 @@
               <div class="formLeft"><span class="title">申请信息</span></div>
               <el-row :gutter="20">
                 <el-form-item label="认定周期">
-                  <div>{{ formDetails.xn +' '+ formDetails.xqmc}}</div>
+                  <div>{{ formDetails.xn +' '+ formDetails.xqmc ||""}}</div>
                 </el-form-item>
               </el-row>
               <el-row :gutter="20">

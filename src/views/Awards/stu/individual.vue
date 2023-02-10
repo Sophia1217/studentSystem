@@ -727,11 +727,11 @@ export default {
         formData.append("sqly", this.formEdit.sqly);
         formData.append(
           "pjzqXn",
-          this.formAdd.pjzqXn ? this.formAdd.pjzqXn : null
+          this.formEdit.pjzqXn ? this.formEdit.pjzqXn : null
         );
         formData.append(
           "pjzqXq",
-          this.formAdd.pjzqXq ? this.formAdd.pjzqXq : null
+          this.formEdit.pjzqXq ? this.formEdit.pjzqXq : null
         );
         formData.append("xh", this.$store.getters.userId);
         formData.append("id", this.formEdit.id);
@@ -813,6 +813,7 @@ export default {
       this.pjdjOps = [];
     },
     changeJX(val) {
+      
       getAllpjjxxx({ dm: val, jxlb: "1" }).then((res) => {
         this.pjdjOps = res.data.pjdjList;
         this.formAdd.pjzqXn = res.data.pjzqXn;
@@ -822,6 +823,7 @@ export default {
       this.formAdd.pjdj ? (this.formAdd.pjdj = "") : "";
     },
     changeJXEdit(val) {
+      this.pjdjOps = [];
       getAllpjjxxx({ dm: val, jxlb: "1" }).then((res) => {
         this.pjdjOps = res.data.pjdjList;
 

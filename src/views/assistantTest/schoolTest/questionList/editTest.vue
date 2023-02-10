@@ -459,6 +459,7 @@ export default {
         tmName: "",
         tmType: "文字题",
         wjId: this.routeId,
+        tmpx: Number(row.tmpx) + 1,
       };
       editJiaru(data).then((res) => {
         this.listDetail1();

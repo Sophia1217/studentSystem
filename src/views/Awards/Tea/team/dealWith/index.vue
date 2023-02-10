@@ -940,7 +940,7 @@ export default {
     //模板下载
     mbDown() {
       mbDown({jxlb: this.jxlb}).then((res) => {
-        this.downloadFn(res, "评奖评优模板下载", "xlsx");
+        this.downloadFn(res, "集体奖项模板下载", "xlsx");
         this.$message.success("操作成功");
       });
     },

@@ -813,7 +813,7 @@ export default {
         formData.append("sqly", this.formAdd.sqly);
         formData.append("xn", this.basicInfo.xn);
         formData.append("xq", this.basicInfo.xqm);
-        formData.append("tjdj", this.formAdd.sqdj);
+        // formData.append("tjdj", this.formAdd.sqdj);
         if (this.fileList.length > 0) {
           this.fileList.map((file) => {
             formData.append("files", file.raw);

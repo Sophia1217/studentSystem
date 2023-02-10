@@ -843,11 +843,14 @@ export default {
       });
     },
     editClick(){
-      if (!this.editDetails.shjg || !this.editDetails.tjdj) {
+      if (!this.editDetails.shjg) {
         this.$message.error("审核结果不能为空");
       } else{
       if(this.editDetails.shjg == "01"){
-        var data ={
+        if (!this.editDetails.tjdj) {
+          this.$message.error("推荐档次不能为空");
+        } else{
+          var data ={
           businesId: this.editparams.id,
           processId: this.editparams.processid,
           status: this.editparams.status,
@@ -866,7 +869,7 @@ export default {
               this.handleSearch();
             }
           });
-
+        }
       } else if(this.editDetails.shjg == "02"){
         var data ={
           businesId: this.editparams.id,
@@ -1033,6 +1036,7 @@ export default {
         taskId: v.taskId,
         xh: v.xh,
         sqdj: v.sqdj,
+        tjdj: v.tjdj,
       }));
     },
     //排序
@@ -1072,7 +1076,6 @@ export default {
           ...item,
           opMsg: "审核通过",
           tjly: "",
-          tjdj:item.sqdj,
         }));
         tyFlow(data).then((res) => {
           if (res.errcode == "00") {

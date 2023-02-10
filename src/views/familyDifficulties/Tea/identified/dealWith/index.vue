@@ -445,7 +445,13 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">学号</div>
-                <div class="content">{{ formAdd.xsxh }}</div>
+                  <el-autocomplete
+                    v-model="formAdd.xsxh"
+                    :fetch-suggestions="querySearchByXh"
+                    placeholder="请输入学生学号"
+                    :trigger-on-focus="false"
+                    @select="handleSelectXh"
+                  ></el-autocomplete>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
@@ -766,7 +772,7 @@ export default {
       pjdjDuoOps: [],
       rddjOps: [],
       formAdd: { xn: "", zwxj: "",shjg:"" },
-      basicInfo: {},
+      basicInfo: { xn:""},
       addModal: false,
       userflag: 1,
       rules: {
@@ -1206,6 +1212,47 @@ export default {
       });
 
     },
+    //通过学号查姓名信息
+    querySearchByXh(queryString, cb) {
+      if (queryString != "") {
+        let callBackArr = [];
+        var Xh = { xh: queryString };
+        var result = [];
+        var resultNew = [];
+        queryStuList(Xh).then((res) => {
+          result = res.data.length > 0 ? res.data : [];
+          resultNew = result.map((ele) => {
+            //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
+            //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
+            //此处找后台约定好
+            return {
+              value: `${ele.xm}(${ele.gh})`,
+              gh: ele.gh,
+              xm: ele.xm,
+            };
+          });
+          resultNew.forEach((item) => {
+            if (item.value.indexOf(queryString) > -1) {
+              callBackArr.push(item);
+            }
+          });
+          if (callBackArr.length == 0) {
+            cb([{ value: "暂无数据", price: "暂无数据" }]);
+          } else {
+            cb(callBackArr);
+          }
+        });
+      }
+    },
+    handleSelectXh(item){
+      this.formAdd.xsxh = item.gh;
+      this.formAdd.xsxm = item.xm;
+      console.log("this.formAdd.xsxh",this.formAdd.xsxh);
+      queryKnssqxsjbxx({xh: this.formAdd.xsxh}).then((res) => {
+        this.basicInfo = res.data;
+      });
+    },
+
   },
 };
 </script>

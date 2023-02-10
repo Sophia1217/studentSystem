@@ -487,8 +487,8 @@ export default {
       var data = {
         tmLy: "2",
         tmMk: row.tmMk,
-        tmFz: "",
-        tmName: "",
+        tmFz: 0,
+        tmName: "题目模板",
         tmType: "文字题",
         wjId: this.routeId,
         tmpx: Number(row.tmpx) + 1,

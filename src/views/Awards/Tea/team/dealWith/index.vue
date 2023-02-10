@@ -566,10 +566,10 @@ import {
   pjpyAdd,
   del,
   getPjdjByPjjx,
+  getAllpjjxxxByXh,
 } from "@/api/awards/awardTea"
 import {
   getAllpjjx,
-  getAllpjjxxx,
 } from "@/api/awards/stu";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getCollege,getGrade } from "@/api/class/maintenanceClass";
@@ -1006,17 +1006,20 @@ export default {
       this.pjdjOps = [];
     },
     changeJX(val) {
-      getAllpjjxxx({ dm: val,jxlb:this.jxlb }).then((res) => {
+      var data ={
+        pjjx: val, 
+        jxlb: this.jxlb, 
+        xh: this.formAdd.xsxh !=="" ? this.formAdd.xsxh : null, 
+      };
+      getAllpjjxxxByXh(data).then((res) => {
         this.pjdjOps = res.data.pjdjList;
         this.formAdd.pjzqXn = res.data.pjzqXn;
         this.formAdd.pjzqXq = res.data.pjzqXq;
         this.formAdd.pjzqXqmc = res.data.pjzqXqmc;
-        this.formAdd.jtmc = res.data.jtmc;
       });
-      this.formAdd.pjdj ? (this.formAdd.pjdj = "") : "";
     },
     addClick() {
-      if (!this.checkFormAdd()) {
+      if (!this.checkFormAdd || !this.formAdd.xsxh()) {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
@@ -1084,6 +1087,8 @@ export default {
     handleSelect(item){
       this.formAdd.xsxh = item.gh;
       this.formAdd.xsxm = item.xm;
+      this.formAdd.pjjx = "",
+      this.formAdd.pjdj = "",
       console.log("this.formAdd.xsxh",this.formAdd.xsxh);
       queryKnssqxsjbxx({xh: this.formAdd.xsxh}).then((res) => {
         this.basicInfo = res.data;
@@ -1125,6 +1130,8 @@ export default {
     handleSelectXh(item){
       this.formAdd.xsxh = item.gh;
       this.formAdd.xsxm = item.xm;
+      this.formAdd.pjjx = "",
+      this.formAdd.pjdj = "",
       console.log("this.formAdd.xsxh",this.formAdd.xsxh);
       queryKnssqxsjbxx({xh: this.formAdd.xsxh}).then((res) => {
         this.basicInfo = res.data;

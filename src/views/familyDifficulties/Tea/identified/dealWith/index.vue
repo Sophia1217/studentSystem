@@ -681,10 +681,6 @@ import {
 import {
   queryKnssqxsjbxx,
 } from "@/api/familyDifficulties/stu";
-import {
-  getAllpjjx,
-  getAllpjjxxx,
-} from "@/api/awards/stu";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getCollege,getGrade } from "@/api/class/maintenanceClass";
 import lctCom from "../../../../components/lct";
@@ -1137,7 +1133,7 @@ export default {
       this.addModal = true;
     },
     addClick() {
-      if (!this.checkFormAdd()) {
+      if (!this.checkFormAdd() || !this.formAdd.xsxh) {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
@@ -1206,6 +1202,8 @@ export default {
     handleSelect(item){
       this.formAdd.xsxh = item.gh;
       this.formAdd.xsxm = item.xm;
+      this.formAdd.sqdj = "",
+      this.formAdd.tjdj = "",
       console.log("this.formAdd.xsxh",this.formAdd.xsxh);
       queryKnssqxsjbxx({xh: this.formAdd.xsxh}).then((res) => {
         this.basicInfo = res.data;
@@ -1247,6 +1245,8 @@ export default {
     handleSelectXh(item){
       this.formAdd.xsxh = item.gh;
       this.formAdd.xsxm = item.xm;
+      this.formAdd.sqdj = "",
+      this.formAdd.tjdj = "",
       console.log("this.formAdd.xsxh",this.formAdd.xsxh);
       queryKnssqxsjbxx({xh: this.formAdd.xsxh}).then((res) => {
         this.basicInfo = res.data;

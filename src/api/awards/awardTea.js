@@ -117,7 +117,14 @@ export function getPjdjByPjjx(query) {
     data: query
   })
 }
-
+//评奖评优获取所有申请奖项的所有信息(通过学号)
+export function getAllpjjxxxByXh(query) {
+  return request({
+      url: '/rcswPjpyFlow/getAllpjjxxxByStuXh',
+      method: 'post',
+      data: query
+  })
+}
 
 
 

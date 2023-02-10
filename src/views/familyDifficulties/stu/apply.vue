@@ -781,8 +781,8 @@ export default {
       } else {
         let formData = new FormData();
         formData.append("xh", this.$store.getters.userId);
-        formData.append("sqdj", this.formAdd.sqdj);
-        formData.append("sqly", this.formAdd.sqly);
+        formData.append("sqdj", this.formEdit.sqdj);
+        formData.append("sqly", this.formEdit.sqly);
         formData.append("id", this.formEdit.id);
         formData.append("xn", this.basicInfo.xn);
         formData.append("xq", this.basicInfo.xq);

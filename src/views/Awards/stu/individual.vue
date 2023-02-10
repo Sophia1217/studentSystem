@@ -199,7 +199,10 @@
               </el-select>
             </el-form-item>
             <el-form-item label="评奖周期" prop="pjzq">
-              {{ formAdd.pjzqXn + (formAdd.pjzqXqmc ? formAdd.pjzqXqmc : "") }}
+              {{
+                (formAdd.pjzqXn || "") +
+                (formAdd.pjzqXqmc ? formAdd.pjzqXqmc : "")
+              }}
             </el-form-item>
 
             <el-form-item label="申请理由" prop="sqly">
@@ -336,7 +339,8 @@
             </el-form-item>
             <el-form-item label="评奖周期" prop="pjzq">
               {{
-                formEdit.pjzqXn + (formEdit.pjzqXqmc ? formEdit.pjzqXqmc : "")
+                (formEdit.pjzqXn || "") +
+                (formEdit.pjzqXqmc ? formEdit.pjzqXqmc : "")
               }}
             </el-form-item>
 

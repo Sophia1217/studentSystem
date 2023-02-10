@@ -471,6 +471,7 @@
       <div class="btn confirm" @click="handlUpdata">保存</div>
     </div> -->
     <div v-if="isEdit != 1" class="editBottom">
+      <div class="btn cancel" @click="handleBack">返回</div>
       <div class="btn editIcon" @click="editButtonClick">编辑</div>
     </div>
 
@@ -498,9 +499,7 @@ export default {
     return {
       isEdit: 2,
       nd: "",
-      xh: this.$route.query.XH
-        ? this.$route.query.XH
-        : this.$store.getters.userId,
+      xh: this.$store.getters.userId,
       activeName: "0",
       detailInfoData: {},
       jtList: [],
@@ -594,13 +593,9 @@ export default {
         });
       }
     },
-    // deleteWorkBrifeData(row, index, flag) {
-    //   if (flag == "a") {
-    //     this.detailInfoData.fdyZpXshjResList.splice(index, 1);
-    //   } else if (flag == "b") {
-    //     this.detailInfoData.fdyZpXswjResList.splice(index, 1);
-    //   }
-    // },
+    handleBack() {
+      this.$router.go(-1);
+    },
     handleCancle() {
       this.isEdit = 2;
     },

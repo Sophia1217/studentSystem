@@ -552,7 +552,7 @@ export default {
       this.$router.push({
         path: "/familyDifficult/familyTableDetail",
         query: {
-          xh: row.XH,
+          xh: row.xh,
         },
       });
     },

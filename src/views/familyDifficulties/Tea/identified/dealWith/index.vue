@@ -1247,11 +1247,12 @@ export default {
     handleSelect(item) {
       this.formAdd.xsxh = item.gh;
       this.formAdd.xsxm = item.xm;
-      (this.formAdd.sqdj = ""),
-        (this.formAdd.tjdj = ""),
-        queryKnssqxsjbxx({ xh: this.formAdd.xsxh }).then((res) => {
-          this.basicInfo = res.data;
-        });
+      this.$set(this.formAdd,"sqdj","");
+      this.$set(this.formAdd,"tjdj","");
+      queryKnssqxsjbxx({xh: this.formAdd.xsxh}).then((res) => {
+        this.basicInfo = res.data;
+      });
+
     },
     //通过学号查姓名信息
     querySearchByXh(queryString, cb) {
@@ -1288,12 +1289,13 @@ export default {
     handleSelectXh(item) {
       this.formAdd.xsxh = item.gh;
       this.formAdd.xsxm = item.xm;
-      (this.formAdd.sqdj = ""),
-        (this.formAdd.tjdj = ""),
-        queryKnssqxsjbxx({ xh: this.formAdd.xsxh }).then((res) => {
-          this.basicInfo = res.data;
-        });
+      this.$set(this.formAdd,"sqdj","");
+      this.$set(this.formAdd,"tjdj","");
+      queryKnssqxsjbxx({xh: this.formAdd.xsxh}).then((res) => {
+        this.basicInfo = res.data;
+      });
     },
+
   },
 };
 </script>

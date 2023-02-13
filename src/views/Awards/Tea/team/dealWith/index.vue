@@ -1088,9 +1088,9 @@ export default {
     handleSelect(item){
       this.formAdd.xsxh = item.gh;
       this.formAdd.xsxm = item.xm;
-      this.formAdd.pjjx = "",
+      this.$set(this.formAdd,"pjjx","");
+      this.$set(this.formAdd,"pjdj","");
       this.formAdd.pjjxOps = [],
-      console.log("this.formAdd.xsxh",this.formAdd.xsxh);
       queryKnssqxsjbxx({xh: this.formAdd.xsxh}).then((res) => {
         this.basicInfo = res.data;
       });
@@ -1131,8 +1131,8 @@ export default {
     handleSelectXh(item){
       this.formAdd.xsxh = item.gh;
       this.formAdd.xsxm = item.xm;
-      this.formAdd.pjjx = "",
-      // this.formAdd.pjdj = "",
+      this.$set(this.formAdd,"pjjx","");
+      this.$set(this.formAdd,"pjdj","");
       this.formAdd.pjjxOps = [],
       console.log("this.formAdd.xsxh",this.formAdd.xsxh);
       queryKnssqxsjbxx({xh: this.formAdd.xsxh}).then((res) => {

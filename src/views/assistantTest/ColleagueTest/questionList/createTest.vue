@@ -85,7 +85,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="6" v-if="isMxnj">
             <el-form-item label="面向年级：" prop="wjNj" :rules="rules.wjNj">
               <el-select v-model="form.wjNj" placeholder="请选择" clearable>
                 <el-option
@@ -512,6 +512,7 @@ export default {
         orderZd: "",
         orderPx: "",
       },
+      isMxnj: true,
       scType: 1,
       queryParams1: {
         pageNum: 1,
@@ -744,7 +745,7 @@ export default {
         wjDy: this.form.wjDy,
         wjName: this.form.wjName,
         wjLy: "1",
-        wjNj: this.form.wjNj,
+        wjNj: this.form.wjNj ? this.form.wjNj : "",
         wjPycc: this.form.tmPycc,
         wjYear: this.form.tmYear,
         wjTnjps: this.form.wjTnjps,
@@ -845,6 +846,9 @@ export default {
     },
     // 查询
     handleSearch() {
+      this.form.tmPycc && (this.form.tmPycc == "1" || this.form.tmPycc == "2")
+        ? (this.isMxnj = false)
+        : (this.isMxnj = true);
       let data = {
         tmMk: this.training.choose,
         tmName: this.tmName,

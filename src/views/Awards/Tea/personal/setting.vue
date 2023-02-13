@@ -140,10 +140,7 @@
                   clearable
                   maxlength="50"
                   width="200px"
-                  :disabled="
-                    (scope.row.sqkg == '0' ? false : true) ||
-                    (scope.row.isTime == '1' ? false : true)
-                  "
+                  :disabled="scope.row.sqkg == '0' ? false : true"
                   @blur="alterjxwh(scope.row)"
                   @keyup.enter.native="alterjxwh($event, scope.row)"
                 />
@@ -160,10 +157,7 @@
                   range-separator="至"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
-                  :disabled="
-                    (scope.row.sqkg == '0' ? false : true) ||
-                    (scope.row.isTime == '1' ? false : true)
-                  "
+                  :disabled="scope.row.sqkg == '0' ? false : true"
                   @blur="alterjxwh(scope.row)"
                   :clearable="false"
                 >
@@ -178,7 +172,6 @@
                   inactive-color="#E0E0E0"
                   active-value="1"
                   inactive-value="0"
-                  :disabled="scope.row.isTime == '1' ? false : true"
                   @change="alterjxwh(scope.row)"
                 ></el-switch>
               </template>
@@ -337,7 +330,7 @@ export default {
     },
     hadleDetail(row) {
       var auth = "1";
-      if ((row.sqkg && row.sqkg == "1") || (row.isTime && row.isTime == "2")) {
+      if (row.sqkg && row.sqkg == "1") {
         auth = "2";
       }
       this.$router.push({

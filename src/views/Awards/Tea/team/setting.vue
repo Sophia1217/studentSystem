@@ -45,10 +45,7 @@
                   range-separator="至"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
-                  :disabled="
-                    (scope.row.sqkg == '0' ? false : true) ||
-                    (scope.row.isTime == '1' ? false : true)
-                  "
+                  :disabled="scope.row.sqkg == '0' ? false : true"
                   @blur="alterjxwh(scope.row)"
                   :clearable="false"
                 >
@@ -63,7 +60,6 @@
                   inactive-color="#E0E0E0"
                   active-value="1"
                   inactive-value="0"
-                  :disabled="scope.row.isTime == '1' ? false : true"
                   @change="alterjxwh(scope.row)"
                 ></el-switch>
               </template>
@@ -759,7 +755,7 @@ export default {
       });
     },
     hadleDetail(row) {
-      if ((row.sqkg && row.sqkg == "1") || (row.isTime && row.isTime == "2")) {
+      if (row.sqkg && row.sqkg == "1") {
         this.auth = "2";
       }
       this.lgnsn = row.id;

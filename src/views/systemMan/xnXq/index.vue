@@ -143,7 +143,7 @@ export default {
 
         return;
       } else {
-        insertYearTerm(this.form).then((res) => {
+        insertYearTerm(data).then((res) => {
           this.$message.success("保存成功！");
         });
       }

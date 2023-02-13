@@ -310,8 +310,8 @@
                     /> </el-select
                 ></template>
               </el-table-column>
-              <el-table-column prop="pxmc" label="时长"> </el-table-column>
-              <el-table-column prop="pxmc" label="时长" />
+              <el-table-column prop="qssj" label="起始时间"> </el-table-column>
+              <el-table-column prop="jssj" label="结束时间" />
               <!-- <el-table-column prop="bz" label="备注">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.bz" placeholder="请输入" />
@@ -488,11 +488,13 @@
               <el-table-column prop="xmmc" label="名称" />
               <el-table-column prop="xmjb" label="级别" />
               <el-table-column prop="brwc" label="作者排名" />
-              <el-table-column prop="bz" label="备注">
+              <el-table-column prop="qssj" label="起始时间" />
+              <el-table-column prop="jssj" label="结束时间" />
+              <!-- <el-table-column prop="bz" label="备注">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.bz" placeholder="请输入" />
                 </template>
-              </el-table-column>
+              </el-table-column> -->
             </el-table>
           </div>
           <div class="pieceName">
@@ -531,11 +533,13 @@
                 </template>
               </el-table-column>
               <el-table-column prop="brwc" label="作者排名" />
-              <el-table-column prop="bz" label="备注">
+              <el-table-column prop="fbsj" label="发表时间" />
+
+              <!-- <el-table-column prop="bz" label="备注">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.bz" placeholder="请输入" />
                 </template>
-              </el-table-column>
+              </el-table-column> -->
             </el-table>
           </div>
           <div class="pieceName">
@@ -554,11 +558,13 @@
               <el-table-column prop="zzmc" label="书名" />
               <el-table-column prop="cbs" label="出版社" />
               <el-table-column prop="brwc" label="作者排名" />
-              <el-table-column prop="bz" label="备注">
+              <el-table-column prop="cbsj" label="出版时间" />
+
+              <!-- <el-table-column prop="bz" label="备注">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.bz" placeholder="请输入" />
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <!-- <el-table-column type="fixed" label="操作">
                 <template slot-scope="scope">
                   <div
@@ -599,12 +605,13 @@
               <el-table-column type="index" label="序号" width="50" />
               <el-table-column prop="jxmc" label="名称" />
               <el-table-column prop="jxjb" label="级别" />
+              <el-table-column prop="hjsj" label="获奖时间" />
 
-              <el-table-column prop="bz" label="备注">
+              <!-- <el-table-column prop="bz" label="备注">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.bz" placeholder="请输入" />
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <!-- <el-table-column type="fixed" label="操作">
                 <template slot-scope="scope">
                   <div
@@ -889,7 +896,7 @@ export default {
 
       .tableStyle {
         position: relative;
-        padding: 20px 20px 30px 20px;
+        padding: 20px 20px 60px 20px;
         .information {
           padding: 0 20px;
           .rowStyle {

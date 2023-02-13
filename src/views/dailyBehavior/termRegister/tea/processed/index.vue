@@ -704,7 +704,7 @@ export default {
         zcsjStart: rqe || "",
         // xnm: this.queryParams.xnm,
         xnmc: this.queryParams.xnm,
-        xqmList: this.queryParams.xqmList,
+        // xqmList: this.queryParams.xqmList,
         zcztm: "0",
 
         pageNum: this.queryParams.pageNum,

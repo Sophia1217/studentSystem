@@ -643,7 +643,7 @@ export default {
         pyccmList: this.training.choose || [],
         zcsjStart: rqs || "",
         zcsjStart: rqe || "",
-        xnm: this.queryParams.xnm,
+        xnmc: this.queryParams.xnm,
         //xqmList: this.queryParams.xqmList,
         zcztm: "1",
 

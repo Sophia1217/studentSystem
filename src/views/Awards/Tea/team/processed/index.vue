@@ -143,9 +143,9 @@
           <div class="btns borderRed" @click="back">
             <i class="icon backIcon"></i><span class="title">退回</span>
           </div>
-          <!-- <div class="btns borderRed" @click="refuse">
+          <div class="btns borderRed" @click="refuse">
             <i class="icon refuseIcon"></i><span class="title">拒绝</span>
-          </div> -->
+          </div>
           <div class="btns fullGreen" @click="passDirect">
             <i class="icon passIcon"></i><span class="title1">直接通过</span>
           </div>

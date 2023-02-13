@@ -442,7 +442,7 @@ export default {
     },
     mbDown() {
       downLoad().then((res) => {
-        this.downloadFn(res, "困难生认定模板下载", "xlsx");
+        this.downloadFn(res, "名单维护模板下载", "xlsx");
         this.$message.success("下载成功！");
       });
     },
@@ -490,7 +490,7 @@ export default {
         idList: this.delArr,
       };
       excelExport(data).then((res) => {
-        this.downloadFn(res, "困难生认定列表下载", "xlsx");
+        this.downloadFn(res, "重点保障人群校级学生名单下载", "xlsx");
         if (this.$store.getters.excelcount > 0) {
           this.$message.success(
             `已成功导出${this.$store.getters.excelcount}条数据`

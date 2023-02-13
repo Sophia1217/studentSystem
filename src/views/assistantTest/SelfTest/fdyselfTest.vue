@@ -98,7 +98,7 @@
             <el-row :gutter="20">
               <el-col :span="24" class="rowStyle">
                 <div class="wrap">
-                  <div class="title">所辖培养层次</div>
+                  <div class="title">所带培养层次</div>
                   <div class="content">
                     {{ detailInfoData.fdyZpJbqkRes.pycc }}
                   </div>
@@ -271,11 +271,13 @@
               <el-table-column type="index" label="序号" width="50" />
               <el-table-column prop="kcmc" label="课程名称" />
               <el-table-column prop="ksl" label="课时量"> </el-table-column>
-              <el-table-column prop="bz" label="备注">
+              <el-table-column prop="qssj" label="起始时间" />
+              <el-table-column prop="jssj" label="起始时间" />
+              <!-- <el-table-column prop="bz" label="备注">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.bz" placeholder="请输入" />
                 </template>
-              </el-table-column>
+              </el-table-column> -->
             </el-table>
           </div>
           <div class="pieceName">
@@ -309,11 +311,12 @@
                 ></template>
               </el-table-column>
               <el-table-column prop="pxmc" label="时长"> </el-table-column>
-              <el-table-column prop="bz" label="备注">
+              <el-table-column prop="pxmc" label="时长" />
+              <!-- <el-table-column prop="bz" label="备注">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.bz" placeholder="请输入" />
                 </template>
-              </el-table-column>
+              </el-table-column> -->
             </el-table>
           </div>
           <div class="pieceName">
@@ -853,6 +856,7 @@ export default {
   .detail_right {
     flex: 1;
     background: #fff;
+
     .right_top {
       .toptitle {
         text-align: center;
@@ -885,7 +889,7 @@ export default {
 
       .tableStyle {
         position: relative;
-        padding: 20px;
+        padding: 20px 20px 30px 20px;
         .information {
           padding: 0 20px;
           .rowStyle {

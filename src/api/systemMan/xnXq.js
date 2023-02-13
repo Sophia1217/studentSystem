@@ -10,3 +10,12 @@ export function insertYearTerm(data) {
     data: data
   })
 }
+
+//回显查询当前学年学期
+export function queryCurrentYearTerm(data) {
+  return request({
+    url: '/managerYearTerm/queryCurrentYearTerm',
+    method: 'post',
+    data: data
+  })
+}

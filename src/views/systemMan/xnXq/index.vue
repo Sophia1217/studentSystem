@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { insertYearTerm } from "@/api/systemMan/xnXq";
+import { insertYearTerm, queryCurrentYearTerm } from "@/api/systemMan/xnXq";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getYears } from "@/api/test/fdySelfTest";
@@ -90,6 +90,7 @@ export default {
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getCode("dmxqm");
     this.getOps();
+    this.getDetail();
   },
 
   methods: {
@@ -150,6 +151,11 @@ export default {
     // handleCel(formName) {
     //   this.$refs[formName].resetFields();
     // },
+    getDetail() {
+      queryCurrentYearTerm().then((res) => {
+        this.form = res.data;
+      });
+    },
   },
 };
 </script>

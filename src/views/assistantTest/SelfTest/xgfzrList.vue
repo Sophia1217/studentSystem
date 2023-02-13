@@ -80,7 +80,7 @@
         </el-row>
 
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">所辖培养层次：</el-col>
+          <el-col :span="3">所带培养层次：</el-col>
           <el-col :span="20">
             <div class="checkbox">
               <checkboxCom
@@ -154,7 +154,7 @@
           <el-table-column prop="ssnj" label="年级" sortable="custom" />
           <el-table-column
             prop="pycc"
-            label="所辖培养层次"
+            label="所带培养层次"
             min-width="100"
             sortable="custom"
           />
@@ -263,7 +263,7 @@
           <el-table-column prop="ssnj" label="年级" sortable="custom" />
           <el-table-column
             prop="pycc"
-            label="所辖培养层次"
+            label="所带培养层次"
             min-width="100"
             sortable="custom"
           />

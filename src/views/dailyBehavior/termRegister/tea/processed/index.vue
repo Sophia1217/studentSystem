@@ -194,12 +194,38 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="xm" label="姓名" min-width="85" sortable> </el-table-column>
-          <el-table-column prop="pycc" label="培养层次" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="dwmc" label="培养单位" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="zcztmc" label="注册状态" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="qfztmc" label="欠费状态" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="xh" label="学号" min-width="100" sortable>
+          </el-table-column>
+          <el-table-column prop="xm" label="姓名" min-width="85" sortable>
+          </el-table-column>
+          <el-table-column
+            prop="pycc"
+            label="培养层次"
+            min-width="100"
+            sortable
+          >
+          </el-table-column>
+          <el-table-column
+            prop="dwmc"
+            label="培养单位"
+            min-width="100"
+            sortable
+          >
+          </el-table-column>
+          <el-table-column
+            prop="zcztmc"
+            label="注册状态"
+            min-width="100"
+            sortable
+          >
+          </el-table-column>
+          <el-table-column
+            prop="qfztmc"
+            label="欠费状态"
+            min-width="100"
+            sortable
+          >
+          </el-table-column>
           <!-- <el-table-column prop="zcsj" label="注册时间" min-width="100" sortable>
           </el-table-column> -->
           <!-- <el-table-column prop="czrxm" label="操作人" min-width="100" sortable>
@@ -224,70 +250,61 @@
           <!-- <el-input placeholder="请输入拒绝理由" v-model="jjly"></el-input> -->
           <el-form :model="editDetails2" ref="editDetails2" :rules="rules">
             <el-row :gutter="20">
-                <el-col :span="8">
-                  <el-form-item label="注册学期"
-                    label-width="80px" 
-                    prop="zcxqm"
+              <el-col :span="8">
+                <el-form-item label="注册学期" label-width="80px" prop="zcxqm">
+                  <el-select
+                    v-model="editDetails2.zcxqm"
+                    collapse-tags
+                    placeholder="请选择"
+                    size="small"
                   >
-                    <el-select
-                      v-model="editDetails2.zcxqm"
-                      collapse-tags
-                      placeholder="请选择"
-                      size="small"
-                    >
-                      <el-option
-                        v-for="item in xqOps"
-                        :key="item.dm"
-                        :label="item.mc"
-                        :value="item.dm"
-                      ></el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="注册状态"
-                    label-width="80px" 
-                    prop="zcztm"
+                    <el-option
+                      v-for="item in xqOps"
+                      :key="item.dm"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="注册状态" label-width="80px" prop="zcztm">
+                  <el-select
+                    v-model="editDetails2.zcztm"
+                    collapse-tags
+                    placeholder="请选择"
+                    size="small"
                   >
-                    <el-select
-                      v-model="editDetails2.zcztm"
-                      collapse-tags
-                      placeholder="请选择"
-                      size="small"
-                    >
-                      <el-option
-                        v-for="item in zcztOps"
-                        :key="item.dm"
-                        :label="item.mc"
-                        :value="item.dm"
-                      ></el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="备注" label-width="100px">
-                    <el-input 
-                      v-model="editDetails2.zcbz"
-                      maxlength="500"
-                    />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="注册时间" prop="zcsj">
-                    <el-date-picker
-                      v-model="editDetails2.zcsj"
-                      type="datetime"
-                      value-format="yyyy-MM-dd HH:mm:ss"
-                      placeholder="请选择时间"
-                      :append-to-body="false"
-                      disabled
-                    >
-                    </el-date-picker>
-                  </el-form-item>
-                </el-col>
-              </el-row>
+                    <el-option
+                      v-for="item in zcztOps"
+                      :key="item.dm"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="备注" label-width="100px">
+                  <el-input v-model="editDetails2.zcbz" maxlength="500" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="20">
+                <el-form-item label="注册时间" prop="zcsj">
+                  <el-date-picker
+                    v-model="editDetails2.zcsj"
+                    type="datetime"
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                    placeholder="请选择时间"
+                    :append-to-body="false"
+                    disabled
+                  >
+                  </el-date-picker>
+                </el-form-item>
+              </el-col>
+            </el-row>
           </el-form>
         </template>
         <span slot="footer" class="dialog-footer">
@@ -306,78 +323,76 @@
       >
         <template>
           <div class="baseInfo">
-          <el-form :data="formDetails">
-            <div class="formLeft"><span class="title">基本信息</span></div>
-            <div class="backDetail">
-            
-            <div class="formRight">
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">学号</div>
-                    <div class="content">{{ formDetails.xh }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">姓名</div>
-                    <div class="content">{{ formDetails.xm }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">培养层次</div>
-                    <div class="content">{{ formDetails.pycc }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">培养单位</div>
-                    <div class="content">{{ formDetails.dwmc }}</div>
-                  </div>
-                </el-col>
-                
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">专业</div>
-                    <div class="content">{{ formDetails.zy }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">年级</div>
-                    <div class="content">{{ formDetails.nj }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="24" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">班级</div>
-                    <div class="content">{{ formDetails.bjmmc }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-            </div>
-            </div>
-            <div>
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="学年" prop="zslxm">
-                    <div>{{formDetails.xnmc}}</div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-          </el-form>
-          <div class="formLeft">
-                <span class="title">缴费信息</span>
+            <el-form :data="formDetails">
+              <div class="formLeft"><span class="title">基本信息</span></div>
+              <div class="backDetail">
+                <div class="formRight">
+                  <el-row>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">学号</div>
+                        <div class="content">{{ formDetails.xh }}</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">姓名</div>
+                        <div class="content">{{ formDetails.xm }}</div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">培养层次</div>
+                        <div class="content">{{ formDetails.pycc }}</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">培养单位</div>
+                        <div class="content">{{ formDetails.dwmc }}</div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">专业</div>
+                        <div class="content">{{ formDetails.zy }}</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">年级</div>
+                        <div class="content">{{ formDetails.nj }}</div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="24" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">班级</div>
+                        <div class="content">{{ formDetails.bjmmc }}</div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                </div>
               </div>
-          <el-table :data="tableDetails">
+              <div>
+                <el-row :gutter="20">
+                  <el-col :span="20">
+                    <el-form-item label="学年" prop="zslxm">
+                      <div>{{ formDetails.xnmc }}</div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+            </el-form>
+            <div class="formLeft">
+              <span class="title">缴费信息</span>
+            </div>
+            <el-table :data="tableDetails">
               <el-table-column
                 fixed="left"
                 type="index"
@@ -389,12 +404,13 @@
               <el-table-column prop="sjje" label="实缴金额（元）" />
               <el-table-column prop="qfje" label="欠费金额（元）" />
             </el-table>
-          <div class="formLeft"><span class="title">注册信息</span></div>
-          <el-form :model="editDetails" ref="editDetails" :rules="rules">
-            <el-row :gutter="20">
+            <div class="formLeft"><span class="title">注册信息</span></div>
+            <el-form :model="editDetails" ref="editDetails" :rules="rules">
+              <el-row :gutter="20">
                 <el-col :span="8">
-                  <el-form-item label="注册学期"
-                    label-width="80px" 
+                  <el-form-item
+                    label="注册学期"
+                    label-width="80px"
                     prop="zcxqm"
                   >
                     <el-select
@@ -413,8 +429,9 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="注册状态"
-                    label-width="80px" 
+                  <el-form-item
+                    label="注册状态"
+                    label-width="80px"
                     prop="zcztm"
                   >
                     <el-select
@@ -434,10 +451,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="备注" label-width="100px">
-                    <el-input 
-                      v-model="editDetails.zcbz"
-                      maxlength="500"
-                    />
+                    <el-input v-model="editDetails.zcbz" maxlength="500" />
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -456,15 +470,15 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-          </el-form>
-              
+            </el-form>
           </div>
         </template>
         <span slot="footer" class="dialog-footer">
-        <el-button @click="detailCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="editClick"
-          >确 定</el-button>
-      </span>
+          <el-button @click="detailCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="editClick"
+            >确 定</el-button
+          >
+        </span>
       </el-dialog>
       <pagination
         v-show="queryParams.total > 0"
@@ -493,9 +507,9 @@ import {
   queryXqzcList,
   queryXqzcDetail,
   exportXqzcUnReg,
-} from "@/api/dailyBehavior/termRegTea"
-import { getCollege,getGrade } from "@/api/class/maintenanceClass";
-import { getZY, getBJ} from "@/api/student/index";
+} from "@/api/dailyBehavior/termRegTea";
+import { getCollege, getGrade } from "@/api/class/maintenanceClass";
+import { getZY, getBJ } from "@/api/student/index";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { queryXnXq } from "@/api/dailyBehavior/vocationTea";
 export default {
@@ -515,8 +529,8 @@ export default {
         dwhList: [], // 学院下拉框
         zydmList: [],
         bjmList: [],
-        njList:[],
-        qfztmList:[],
+        njList: [],
+        qfztmList: [],
       },
       exportParams: {},
       leng: 0,
@@ -532,7 +546,6 @@ export default {
         total: 0,
         xnm: [],
         xqmList: [],
-
       },
       training: {
         // 培养层次
@@ -551,19 +564,19 @@ export default {
       tempRadio: false,
       detailModal: false,
       formDetails: {},
-      editDetails:{},
-      editDetails2:{},
+      editDetails: {},
+      editDetails2: {},
       tableDetails: [],
-      editparams:{},
-      zcztOps:[
-        {dm:'0', mc: '未注册'},
-        {dm:'1', mc: '已注册'},
+      editparams: {},
+      zcztOps: [
+        { dm: "0", mc: "未注册" },
+        { dm: "1", mc: "已注册" },
       ],
-      qfztOps:[
-        {dm:'0', mc: '未完费'},
-        {dm:'1', mc: '已完费'},
+      qfztOps: [
+        { dm: "0", mc: "未完费" },
+        { dm: "1", mc: "已完费" },
       ],
-      xqOps:[],
+      xqOps: [],
       //学年学期
       XnxqProps: {
         value: "dm", //匹配响应数据中的id
@@ -589,7 +602,7 @@ export default {
     // this.handleSearch();
     this.getAllCollege();
     this.getCode("dmpyccm"); // 培养层次
-    this.getCode1("dmsplcm"); 
+    this.getCode1("dmsplcm");
     this.getXnxq();
   },
 
@@ -621,10 +634,11 @@ export default {
       queryXnXq().then((res) => {
         this.options = res.data;
         this.xqOps = res.data[0].dataCodeCascadingList;
-        for (let item of res.data[0].dataCodeCascadingList) {
-          if (item.dataCodeCascadingList !== null) {
-            this.dqXnxq = [res.data[0].dm, item.dm];
-          }
+        for (let item of res.data) {
+          for (let num of item.dataCodeCascadingList)
+            if (num.dataCodeCascadingList !== null) {
+              this.dqXnxq = [item.dm, num.dm];
+            }
         }
         this.queryParams.xnm.push(this.dqXnxq[0]);
         this.queryParams.xqmList.push(this.dqXnxq[1]);
@@ -642,7 +656,6 @@ export default {
         //     this.queryParams.total = res.totalCount;
         //   })
         //   .catch((err) => {});
-        
       });
     },
 
@@ -673,7 +686,7 @@ export default {
       exportXqzcUnReg(this.exportParams)
         .then((res) => {
           this.downloadFn(res, "未注册列表导出.xlsx", "xlsx");
-          if(this.$store.getters.excelcount > 0){
+          if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
             );
@@ -685,11 +698,11 @@ export default {
     },
     async expor() {
       let rqs,
-          rqe = "";
-        if (this.datePicker && this.datePicker.length > 0) {
-          rqs = this.datePicker[0];
-          rqe = this.datePicker[1];
-        }
+        rqe = "";
+      if (this.datePicker && this.datePicker.length > 0) {
+        rqs = this.datePicker[0];
+        rqe = this.datePicker[1];
+      }
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
@@ -763,14 +776,14 @@ export default {
       if (!this.checkFormEdit2()) {
         this.$message.error("请完善表单相关信息！");
         return;
-      } else{
+      } else {
         var data = this.commonParams.map((item) => ({
           ...item,
           czrgh: this.$store.getters.userId,
           zcbz: this.editDetails2.zcbz || "",
           zcsj: this.editDetails2.zcsj,
-          zcxqm: this.editDetails2.zcxqm,//注册学期码
-          zcztm: this.editDetails2.zcztm,//注册状态码
+          zcxqm: this.editDetails2.zcxqm, //注册学期码
+          zcztm: this.editDetails2.zcztm, //注册状态码
         }));
         zcFlow(data).then((res) => {
           if (res.errcode == "00") {
@@ -781,7 +794,6 @@ export default {
         });
         this.zcModal = false;
       }
-      
     },
     getAllCollege() {
       getCollege()
@@ -842,22 +854,21 @@ export default {
         this.formDetails = res.data;
         this.tableDetails = res.data.jfList;
       });
-      
     },
-    editClick(){
+    editClick() {
       if (!this.checkFormEdit()) {
         this.$message.error("请完善表单相关信息！");
         return;
-      } else{
-        var data ={
+      } else {
+        var data = {
           id: this.editparams.id,
-          sfqjdm: this.editparams.sfqjdm,//待定，收费区间代码
+          sfqjdm: this.editparams.sfqjdm, //待定，收费区间代码
           xh: this.editparams.xh,
           czrgh: this.$store.getters.userId,
           zcbz: this.editDetails.zcbz || "",
           zcsj: this.editDetails.zcsj,
-          zcxqm: this.editDetails.zcxqm,//注册学期码
-          zcztm: this.editDetails.zcztm,//注册状态码
+          zcxqm: this.editDetails.zcxqm, //注册学期码
+          zcztm: this.editDetails.zcztm, //注册状态码
         };
 
         zcFlow([data]).then((res) => {
@@ -884,11 +895,11 @@ export default {
     // 查询
     handleSearch() {
       let rqs,
-          rqe = "";
-        if (this.datePicker && this.datePicker.length > 0) {
-          rqs = this.datePicker[0];
-          rqe = this.datePicker[1];
-        }
+        rqe = "";
+      if (this.datePicker && this.datePicker.length > 0) {
+        rqs = this.datePicker[0];
+        rqe = this.datePicker[1];
+      }
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
@@ -957,7 +968,7 @@ export default {
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      console.log("val",val);
+      console.log("val", val);
       this.commonParams = this.multipleSelection.map((v) => ({
         id: v.id,
         xh: v.xh,
@@ -1138,7 +1149,7 @@ export default {
       }
     }
   }
-  .baseInfo{
+  .baseInfo {
     // padding: 20px;
     margin-left: 30px;
     margin-right: 30px;

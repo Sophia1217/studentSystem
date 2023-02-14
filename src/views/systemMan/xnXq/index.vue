@@ -67,6 +67,7 @@ import { insertYearTerm, queryCurrentYearTerm } from "@/api/systemMan/xnXq";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getYears } from "@/api/test/fdySelfTest";
+import { getGrade } from "@/api/class/maintenanceClass";
 export default {
   name: "xnXqSet",
 
@@ -98,7 +99,7 @@ export default {
       queryXn().then((res) => {
         this.xnOps = res.data;
       });
-      getYears().then((response) => {
+      getGrade().then((response) => {
         // 获取年级列表数据
         if (response.errcode == "00") {
           this.ndOps = response.data.rows;

@@ -5,7 +5,7 @@ import request from '@/utils/request'
 //学年查询
 export function queryXn(query) {
     return request({
-      url: '/commonMethod/queryXn',
+      url: '/commonMethod/queryXnNew',
       method: 'post',
       data: query
     })

@@ -522,10 +522,11 @@ export default {
     getXnxq() {
       queryXnXq().then((res) => {
         this.options = res.data;
-        for (let item of res.data[0].dataCodeCascadingList) {
-          if (item.dataCodeCascadingList !== null) {
-            this.dqXnxq = [res.data[0].dm, item.dm];
-          }
+        for (let item of res.data) {
+          for (let num of item.dataCodeCascadingList)
+            if (num.dataCodeCascadingList !== null) {
+              this.dqXnxq = [item.dm, num.dm];
+            }
         }
         this.queryParams.xm = this.select == "xm" ? this.searchVal : "";
         this.queryParams.xh = this.select == "xh" ? this.searchVal : "";

@@ -58,7 +58,7 @@
               size="small"
             >
               <el-option
-                v-for="(item,index) in pjjxOps"
+                v-for="(item, index) in pjjxOps"
                 :key="index"
                 :label="item.mc"
                 :value="item.dm"
@@ -75,7 +75,7 @@
               size="small"
             >
               <el-option
-                v-for="(item,index) in pjdjDuoOps"
+                v-for="(item, index) in pjdjDuoOps"
                 :key="index"
                 :label="item"
                 :value="item"
@@ -116,16 +116,15 @@
     <!-- table -->
     <div class="tableWrap mt15">
       <div class="headerTop">
-        <div class="headerLeft"> 
+        <div class="headerLeft">
           <span class="title">已处理列表</span> <i class="Updataicon"></i>
-          <span style="margin-left:15px">评选周期：</span>
+          <span style="margin-left: 15px">评选周期：</span>
           <el-select
             v-model="moreIform.pjzqXn"
             collapse-tags
             @change="changeXn"
             placeholder="请选择"
-            
-            style="width: 130px; margin:0 0 15px 0"
+            style="width: 130px; margin: 0 0 15px 0"
           >
             <el-option
               v-for="(item, index) in allXn"
@@ -137,13 +136,13 @@
           <span>学年</span>
         </div>
         <div class="headerRight">
-          <div class="btns borderBlue" @click="mbDown">
+          <div class="btns borderBlue" @click="mbDown" v-show="AUTHFLAG">
             <i class="icon downIcon"></i><span class="title">模板下载</span>
           </div>
-          <div class="btns borderRed" @click="handleDelete">
+          <div class="btns borderRed" @click="handleDelete" v-show="AUTHFLAG">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
-          <div class="btns borderBlue">
+          <div class="btns borderBlue" v-show="AUTHFLAG">
             <el-upload
               accept=".xlsx,.xls"
               :auto-upload="true"
@@ -159,7 +158,7 @@
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns fullGreen" @click="handleNew">
+          <div class="btns fullGreen" @click="handleNew" v-show="AUTHFLAG">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
         </div>
@@ -179,12 +178,43 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="jtmc" label="集体名称" width="100" sortable> </el-table-column>
-          <el-table-column prop="dwhmc" label="培养单位" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="pjjxmc" label="评奖奖项" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="pjdj" label="评奖等级" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="sqsj" label="申请时间" min-width="100" sortable> </el-table-column>
-          <el-table-column prop="statusChinese" label="审核状态" min-width="100" sortable> </el-table-column>
+          <el-table-column prop="jtmc" label="集体名称" width="100" sortable>
+          </el-table-column>
+          <el-table-column
+            prop="dwhmc"
+            label="培养单位"
+            min-width="100"
+            sortable
+          >
+          </el-table-column>
+          <el-table-column
+            prop="pjjxmc"
+            label="评奖奖项"
+            min-width="100"
+            sortable
+          >
+          </el-table-column>
+          <el-table-column
+            prop="pjdj"
+            label="评奖等级"
+            min-width="100"
+            sortable
+          >
+          </el-table-column>
+          <el-table-column
+            prop="sqsj"
+            label="申请时间"
+            min-width="100"
+            sortable
+          >
+          </el-table-column>
+          <el-table-column
+            prop="statusChinese"
+            label="审核状态"
+            min-width="100"
+            sortable
+          >
+          </el-table-column>
           <el-table-column prop="createDwhMc" label="审核进度">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="lctClick(scope.row)">
@@ -209,14 +239,14 @@
         </el-table>
       </div>
       <el-dialog title="删除" :visible.sync="showDelete" width="30%">
-      <span>确认删除？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="delCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="rmRecord"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
+        <span>确认删除？</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="delCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="rmRecord"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
       <el-dialog
         title="申报详情"
         :visible.sync="detailModal"
@@ -226,156 +256,167 @@
       >
         <template>
           <div class="baseInfo">
-          <el-form :data="formDetails" label-width="110px">
-            <div class="formLeft"><span class="title">学生基本信息</span></div>
-            <div class="backDetail">
-            <div class="formRight">
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">学号</div>
-                    <div class="content">{{ formDetails.xh }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">姓名</div>
-                    <div class="content">{{ formDetails.xm }}</div>
-                  </div>
-                </el-col> 
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">性别</div>
-                    <div class="content">{{ formDetails.xbmc }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">培养层次</div>
-                    <div class="content">{{ formDetails.pyccmc }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">培养单位</div>
-                    <div class="content">{{ formDetails.dwhmc }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">年级</div>
-                    <div class="content">{{ formDetails.ssnj }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">专业</div>
-                    <div class="content">{{ formDetails.zydmmc }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">班级</div>
-                    <div class="content">{{ formDetails.bjmmc }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-            </div>
-            </div>
-            <div>
-              <div class="formLeft"><span class="title">申请信息</span></div>
-              <el-row :gutter="20">
-                <el-col :span="10">
-                  <el-form-item label="评奖奖项">
-                    <div>{{ formDetails.pjjxmc }}</div>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="10">
-                  <el-form-item label="评奖等级">
-                    <div>{{ formDetails.pjdj }}</div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="10">
-                  <el-form-item label="集体名称">
-                    <div>{{ formDetails.jtmc }}</div>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="10">
-                  <el-form-item label="其他">
-                    <div>{{ formDetails.qt }}</div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <!-- <el-row :gutter="20">
+            <el-form :data="formDetails" label-width="110px">
+              <div class="formLeft">
+                <span class="title">学生基本信息</span>
+              </div>
+              <div class="backDetail">
+                <div class="formRight">
+                  <el-row>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">学号</div>
+                        <div class="content">{{ formDetails.xh }}</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">姓名</div>
+                        <div class="content">{{ formDetails.xm }}</div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">性别</div>
+                        <div class="content">{{ formDetails.xbmc }}</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">培养层次</div>
+                        <div class="content">{{ formDetails.pyccmc }}</div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">培养单位</div>
+                        <div class="content">{{ formDetails.dwhmc }}</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">年级</div>
+                        <div class="content">{{ formDetails.ssnj }}</div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">专业</div>
+                        <div class="content">{{ formDetails.zydmmc }}</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">班级</div>
+                        <div class="content">{{ formDetails.bjmmc }}</div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                </div>
+              </div>
+              <div>
+                <div class="formLeft"><span class="title">申请信息</span></div>
+                <el-row :gutter="20">
+                  <el-col :span="10">
+                    <el-form-item label="评奖奖项">
+                      <div>{{ formDetails.pjjxmc }}</div>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="10">
+                    <el-form-item label="评奖等级">
+                      <div>{{ formDetails.pjdj }}</div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="10">
+                    <el-form-item label="集体名称">
+                      <div>{{ formDetails.jtmc }}</div>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="10">
+                    <el-form-item label="其他">
+                      <div>{{ formDetails.qt }}</div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <!-- <el-row :gutter="20">
                 <el-form-item label="评奖周期">
                   <div>{{ formDetails.pjzqXn +' '+ formDetails.pjzqXq}}</div>
                 </el-form-item>
               </el-row> -->
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="培养单位">
-                    <div>{{ formDetails.dwhmc }}</div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="申请理由">
-                    <div>{{ formDetails.sqly }}</div>
-                  </el-form-item>
-                </el-col>
-
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="附件信息">
-                    <div>
-                      <div v-for="item in formDetails.fileList">
-                        <div style="display: flex; justify-content: space-between ">
-                          <a>
-                            <span style="color: #005657">{{ item.fileName }}</span>
-                          </a>
-                          <!-- <el-button>预览</el-button> -->
+                <el-row :gutter="20">
+                  <el-col :span="20">
+                    <el-form-item label="培养单位">
+                      <div>{{ formDetails.dwhmc }}</div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="20">
+                    <el-form-item label="申请理由">
+                      <div>{{ formDetails.sqly }}</div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="20">
+                    <el-form-item label="附件信息">
+                      <div>
+                        <div v-for="item in formDetails.fileList">
+                          <div
+                            style="
+                              display: flex;
+                              justify-content: space-between;
+                            "
+                          >
+                            <a>
+                              <span style="color: #005657">{{
+                                item.fileName
+                              }}</span>
+                            </a>
+                            <!-- <el-button>预览</el-button> -->
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-          </el-form>
-          <div class="formLeft"><span class="title">审核信息</span></div>
-          <el-form :data="editDetails" ref="editDetails" label-width="110px" :rules="rules">
-            <el-row :gutter="20">
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+            </el-form>
+            <div class="formLeft"><span class="title">审核信息</span></div>
+            <el-form
+              :data="editDetails"
+              ref="editDetails"
+              label-width="110px"
+              :rules="rules"
+            >
+              <el-row :gutter="20">
                 <el-col :span="20">
-                  <el-form-item label="申请审核结果"
-                    label-width="120px" 
-                  >
-                    <div>{{editDetails.statusChinese}}</div>
+                  <el-form-item label="申请审核结果" label-width="120px">
+                    <div>{{ editDetails.statusChinese }}</div>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row :gutter="20">
                 <el-col :span="20">
                   <el-form-item label="申请审核意见" label-width="120px">
-                    <div>{{editDetails.shyj}}</div>
+                    <div>{{ editDetails.shyj }}</div>
                   </el-form-item>
                 </el-col>
               </el-row>
-          </el-form>  
+            </el-form>
           </div>
         </template>
         <span slot="footer" class="dialog-footer">
-        <el-button @click="detailCancel">关 闭</el-button>
-      </span>
+          <el-button @click="detailCancel">关 闭</el-button>
+        </span>
       </el-dialog>
       <el-dialog
         title="新增"
@@ -391,25 +432,25 @@
               <div class="wrap">
                 <div class="title">学号</div>
                 <el-autocomplete
-                    v-model="formAdd.xsxh"
-                    :fetch-suggestions="querySearchByXh"
-                    placeholder="请输入学生学号"
-                    :trigger-on-focus="false"
-                    @select="handleSelectXh"
-                  ></el-autocomplete>
+                  v-model="formAdd.xsxh"
+                  :fetch-suggestions="querySearchByXh"
+                  placeholder="请输入学生学号"
+                  :trigger-on-focus="false"
+                  @select="handleSelectXh"
+                ></el-autocomplete>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">姓名</div>
                 <!-- <div class="content">{{ formDetails.xm }}</div> -->
-                  <el-autocomplete
-                    v-model="formAdd.xsxm"
-                    :fetch-suggestions="querySearch"
-                    placeholder="请输入学生姓名"
-                    :trigger-on-focus="false"
-                    @select="handleSelect"
-                  ></el-autocomplete>
+                <el-autocomplete
+                  v-model="formAdd.xsxm"
+                  :fetch-suggestions="querySearch"
+                  placeholder="请输入学生姓名"
+                  :trigger-on-focus="false"
+                  @select="handleSelect"
+                ></el-autocomplete>
               </div>
             </el-col>
           </el-row>
@@ -567,21 +608,17 @@ import {
   del,
   getPjdjByPjjx,
   getAllpjjxxxByXh,
-} from "@/api/awards/awardTea"
-import {
-  getAllpjjx,
-} from "@/api/awards/stu";
+} from "@/api/awards/awardTea";
+import { getAllpjjx } from "@/api/awards/stu";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
-import { getCollege,getGrade } from "@/api/class/maintenanceClass";
-import { getZY} from "@/api/student/index";
+import { getCollege, getGrade } from "@/api/class/maintenanceClass";
+import { getZY } from "@/api/student/index";
 import lctCom from "../../../../components/lct";
 import { lctTable } from "@/api/stuDangan/detailList/xiaoneiwai";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getToken } from "@/utils/auth";
 import { queryStuList } from "@/api/familyDifficulties/difficultTea";
-import {
-  queryKnssqxsjbxx,
-} from "@/api/familyDifficulties/stu";
+import { queryKnssqxsjbxx } from "@/api/familyDifficulties/stu";
 export default {
   name: "manStudent",
   components: { CheckboxCom, lctCom },
@@ -598,6 +635,7 @@ export default {
   },
   data() {
     return {
+      AUTHFLAG: false,
       showExport: false,
       lctModal: false,
       ztStatus: [],
@@ -611,7 +649,7 @@ export default {
         dwhList: [], // 学院下拉框
         pjjxList: [],
         pjdjList: [],
-        pjzqXn:"",
+        pjzqXn: "",
       },
       exportParams: {},
       leng: 0,
@@ -641,21 +679,22 @@ export default {
       tempRadio: false,
       detailModal: false,
       formDetails: {},
-      editDetails:[{shyj:"",statusChinese:"",}],
-      editparams:{},
-      shjgOps:[
-        {dm:'01',mc: '通过'},
-        {dm:'02',mc: '拒绝'},
-        {dm:'03',mc: '退回'},
+      editDetails: [{ shyj: "", statusChinese: "" }],
+      editparams: {},
+      shjgOps: [
+        { dm: "01", mc: "通过" },
+        { dm: "02", mc: "拒绝" },
+        { dm: "03", mc: "退回" },
       ],
       allNj: [], //年级下拉
-      jxlb: "2",//个人奖项为1，集体奖项为2
-      uploadUrl: process.env.VUE_APP_BASE_API + "/rcswPjpyFlow/importExcelCollective",
+      jxlb: "2", //个人奖项为1，集体奖项为2
+      uploadUrl:
+        process.env.VUE_APP_BASE_API + "/rcswPjpyFlow/importExcelCollective",
       delArr: [],
       pjdjOps: [],
       pjdjDuoOps: [],
       pjjxOps: [],
-      formAdd: { pjzqXn: "", pjzqXq: "",xsxh:"" },
+      formAdd: { pjzqXn: "", pjzqXq: "", xsxh: "" },
       basicInfo: {},
       addModal: false,
       rules: {
@@ -685,6 +724,8 @@ export default {
   },
 
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     // this.handleSearch();
     this.getAllCollege();
     this.getSchoolYears();
@@ -715,13 +756,13 @@ export default {
     changeJXDuo(val) {
       if (val && val.length == 0) {
         this.moreIform.pjdjList = []; //等级
-      } else{
-        getPjdjByPjjx({pjjxList: val}).then((res) => {
+      } else {
+        getPjdjByPjjx({ pjjxList: val }).then((res) => {
           this.pjdjDuoOps = res.data;
         });
-      };
+      }
     },
-    changeXn(){
+    changeXn() {
       this.handleSearch();
     },
     // 导出取消
@@ -740,7 +781,7 @@ export default {
       exportYsh(this.exportParams)
         .then((res) => {
           this.downloadFn(res, "评奖评优待审核列表导出.xlsx", "xlsx");
-          if(this.$store.getters.excelcount > 0){
+          if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
             );
@@ -751,7 +792,8 @@ export default {
       this.showExport = false;
     },
     async expor() {
-      let rqs,rqe = "";
+      let rqs,
+        rqe = "";
       if (this.datePicker && this.datePicker.length > 0) {
         rqs = this.datePicker[0];
         rqe = this.datePicker[1];
@@ -771,7 +813,7 @@ export default {
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
-      };//这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
+      }; //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
       this.exportParams = data;
       this.showExport = true;
     },
@@ -828,7 +870,8 @@ export default {
     },
     // 查询
     handleSearch() {
-      let rqs,rqe = "";
+      let rqs,
+        rqe = "";
       if (this.datePicker && this.datePicker.length > 0) {
         rqs = this.datePicker[0];
         rqe = this.datePicker[1];
@@ -863,7 +906,7 @@ export default {
     handleCloseLct() {
       this.lctModal = false;
     },
-      //流程
+    //流程
     lctClick(row) {
       if (!!row.processid) {
         this.$refs.child.inner(row.processid);
@@ -945,7 +988,7 @@ export default {
     },
     //模板下载
     mbDown() {
-      mbDown({jxlb: this.jxlb}).then((res) => {
+      mbDown({ jxlb: this.jxlb }).then((res) => {
         this.downloadFn(res, "集体奖项模板下载", "xlsx");
         this.$message.success("操作成功");
       });
@@ -975,10 +1018,10 @@ export default {
     //删除
     handleDelete() {
       if (this.delArr && this.delArr.length > 0) {
-          this.showDelete = true;
-        } else {
-          this.$message.error("请先勾选数据");
-        }
+        this.showDelete = true;
+      } else {
+        this.$message.error("请先勾选数据");
+      }
     },
     delCancel() {
       this.showDelete = false;
@@ -1007,10 +1050,10 @@ export default {
     },
     changeJX(val) {
       this.pjdjOps = [];
-      var data ={
-        pjjx: val, 
-        jxlb: this.jxlb, 
-        xh: this.formAdd.xsxh !=="" ? this.formAdd.xsxh : null, 
+      var data = {
+        pjjx: val,
+        jxlb: this.jxlb,
+        xh: this.formAdd.xsxh !== "" ? this.formAdd.xsxh : null,
       };
       getAllpjjxxxByXh(data).then((res) => {
         this.pjdjOps = res.data.pjdjList;
@@ -1049,8 +1092,6 @@ export default {
             this.$message.error("新增失败");
           }
         });
-        
-        
       }
     },
     //学生
@@ -1085,16 +1126,15 @@ export default {
         });
       }
     },
-    handleSelect(item){
+    handleSelect(item) {
       this.formAdd.xsxh = item.gh;
       this.formAdd.xsxm = item.xm;
-      this.$set(this.formAdd,"pjjx","");
-      this.$set(this.formAdd,"pjdj","");
-      this.formAdd.pjjxOps = [],
-      queryKnssqxsjbxx({xh: this.formAdd.xsxh}).then((res) => {
-        this.basicInfo = res.data;
-      });
-
+      this.$set(this.formAdd, "pjjx", "");
+      this.$set(this.formAdd, "pjdj", "");
+      (this.formAdd.pjjxOps = []),
+        queryKnssqxsjbxx({ xh: this.formAdd.xsxh }).then((res) => {
+          this.basicInfo = res.data;
+        });
     },
     //通过学号查姓名信息
     querySearchByXh(queryString, cb) {
@@ -1128,14 +1168,14 @@ export default {
         });
       }
     },
-    handleSelectXh(item){
+    handleSelectXh(item) {
       this.formAdd.xsxh = item.gh;
       this.formAdd.xsxm = item.xm;
-      this.$set(this.formAdd,"pjjx","");
-      this.$set(this.formAdd,"pjdj","");
-      this.formAdd.pjjxOps = [],
-      console.log("this.formAdd.xsxh",this.formAdd.xsxh);
-      queryKnssqxsjbxx({xh: this.formAdd.xsxh}).then((res) => {
+      this.$set(this.formAdd, "pjjx", "");
+      this.$set(this.formAdd, "pjdj", "");
+      (this.formAdd.pjjxOps = []),
+        console.log("this.formAdd.xsxh", this.formAdd.xsxh);
+      queryKnssqxsjbxx({ xh: this.formAdd.xsxh }).then((res) => {
         this.basicInfo = res.data;
       });
     },
@@ -1311,26 +1351,26 @@ export default {
       }
     }
   }
-  .baseInfo{
+  .baseInfo {
     margin-left: 30px;
     margin-right: 30px;
   }
   .formLeft {
-      background: #fff;
-      display: flex;
-      align-items: center;
-      .title {
-        font-weight: 600;
-        font-size: 16px;
-        color: #1f1f1f;
-        line-height: 30px;
-      }
-      .title2 {
-        font-weight: 600;
-        font-size: 14px;
-        color: #1f1f1f;
-        line-height: 30px;
-      }
+    background: #fff;
+    display: flex;
+    align-items: center;
+    .title {
+      font-weight: 600;
+      font-size: 16px;
+      color: #1f1f1f;
+      line-height: 30px;
+    }
+    .title2 {
+      font-weight: 600;
+      font-size: 14px;
+      color: #1f1f1f;
+      line-height: 30px;
+    }
   }
   .backDetail {
     display: flex;
@@ -1385,7 +1425,6 @@ export default {
         vertical-align: top;
         margin-right: 5px;
       }
-      
     }
   }
   .headline {

@@ -423,6 +423,7 @@
         class="btn confirm"
         @click="edit"
         v-if="bjzt == '1' && this.auth == '1'"
+        v-show="AUTHFLAG"
       >
         编辑
       </div>
@@ -454,6 +455,7 @@ export default {
   },
   data() {
     return {
+      AUTHFLAG: false,
       bjzt: "1", //1是看 2是改
       mxdxModal: false,
       innerModal: false,
@@ -549,6 +551,8 @@ export default {
     };
   },
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.lgnSn = this.$route.query.id; //逻辑主键
     this.auth = this.$route.query.au; //逻辑主键
     this.getDetail1();

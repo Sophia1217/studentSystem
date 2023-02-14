@@ -645,6 +645,7 @@
             type="textarea"
             :rows="10"
             maxlength="2000"
+            show-word-limit
             v-model="detailInfoData.fdyZpJbqkRes.ndzj"
             :readonly="isEdit == 0"
           />

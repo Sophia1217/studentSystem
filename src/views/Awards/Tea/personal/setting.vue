@@ -118,7 +118,7 @@
             <span class="title">评奖设置列表</span>
           </div>
           <div class="headerRight">
-            <div class="btns borderGreen" @click="xinzeng">
+            <div class="btns borderGreen" @click="xinzeng" v-show="AUTHFLAG">
               <i class="icon greenIcon"></i><span class="title1">新增</span>
             </div>
           </div>
@@ -226,6 +226,7 @@ export default {
   name: "BasicInfo",
   data() {
     return {
+      AUTHFLAG: false,
       //查询四个参数以及可以复用的码表
       jxjbList: [],
       pjjxList: [],
@@ -256,6 +257,8 @@ export default {
     };
   },
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getList();
     this.getCode("dmpyccm"); //培养层次
     this.getCode("dmpjpyjxjbm"); //奖项级别

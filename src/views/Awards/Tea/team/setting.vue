@@ -7,7 +7,7 @@
             <span class="title">集体奖项设置列表</span>
           </div>
           <div class="headerRight">
-            <div class="btns borderGreen" @click="xinzeng">
+            <div class="btns borderGreen" @click="xinzeng" v-show="AUTHFLAG">
               <i class="icon greenIcon"></i><span class="title1">新增</span>
             </div>
           </div>
@@ -457,6 +457,7 @@ import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
   data() {
     return {
+      AUTHFLAG: false,
       bjzt: "1",
       auth: "1",
       dmxqm: [], //学期下拉框
@@ -565,6 +566,8 @@ export default {
     };
   },
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getList();
     this.getXnxq1(); //学年2
     this.getCode("dmxqm"); //学期

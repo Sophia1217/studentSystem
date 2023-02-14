@@ -625,6 +625,7 @@ import {
   thFinal,
 } from "@/api/familyDifficulties/difficultTea"
 import { queryXn } from "@/api/dailyBehavior/yearSum";
+import { sqszDetail } from "@/api/familyDifficulties/setting";
 import { getCollege,getGrade } from "@/api/class/maintenanceClass";
 import lctCom from "../../../../components/lct";
 import { lctTable } from "@/api/stuDangan/detailList/xiaoneiwai";
@@ -821,7 +822,11 @@ export default {
       queryXn()
         .then((res) => {
           this.allXn = res.data;
-          this.moreIform.xn = res.data[0].mc;
+        })
+        .catch((err) => {});
+      sqszDetail()
+        .then((res) => {
+          this.moreIform.xn = res.data.rdxn;
           this.handleSearch();
         })
         .catch((err) => {});

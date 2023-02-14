@@ -106,7 +106,7 @@
               style="width: 90px; margin:0 15px 0"
             >
               <el-option
-                v-for="(item, index) in allNj"
+                v-for="(item, index) in allNd"
                 :key="index"
                 :label="item"
                 :value="item"
@@ -189,6 +189,7 @@ import CheckboxCom from "../../../components/checkboxCom";
 import {
   queryXgfzrList,
 } from "@/api/test/schoolTest";
+import { getYears } from "@/api/test/fdySelfTest";
 import { getCollege, getGrade } from "@/api/class/maintenanceClass";//待定
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
@@ -207,6 +208,7 @@ export default {
       tableData: [],
       allDwh: [],
       allNj: [],
+      allNd:[],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -265,7 +267,13 @@ export default {
       getGrade()
         .then((res) => {
           this.allNj = res.data.rows;
-          this.moreIform.nd = res.data.rows[1];
+        })
+        .catch((err) => {});
+        //年度
+      getYears()
+        .then((res) => {
+          this.allNd = res.data.rows;
+          this.moreIform.nd = res.data.rows[0];
           this.handleSearch();
         })
         .catch((err) => {});

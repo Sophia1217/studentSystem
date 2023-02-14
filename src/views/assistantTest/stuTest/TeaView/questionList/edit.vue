@@ -47,6 +47,7 @@
               :rules="rules.tmYear"
             >
               <el-select
+                style="width: 140px"
                 v-model="form.tmYear"
                 placeholder="请选择"
                 clearable
@@ -69,6 +70,7 @@
               :rules="rules.tmPycc"
             >
               <el-select
+                style="width: 140px"
                 v-model="form.tmPycc"
                 ref="selectLabel"
                 @change="handleSearch"
@@ -87,7 +89,12 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="面向年级：" prop="wjNj" :rules="rules.wjNj">
-              <el-select v-model="form.wjNj" placeholder="请选择" clearable>
+              <el-select
+                v-model="form.wjNj"
+                placeholder="请选择"
+                clearable
+                style="width: 140px"
+              >
                 <el-option
                   v-for="(ele, index) in options2"
                   :key="index"

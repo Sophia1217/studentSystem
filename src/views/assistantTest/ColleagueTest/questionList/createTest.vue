@@ -50,6 +50,7 @@
                 v-model="form.tmYear"
                 placeholder="请选择"
                 clearable
+                style="width: 140px"
                 @change="handleSearch"
               >
                 <el-option
@@ -69,6 +70,7 @@
               :rules="rules.tmPycc"
             >
               <el-select
+                style="width: 140px"
                 @change="handleSearch"
                 v-model="form.tmPycc"
                 ref="selectLabel"
@@ -87,7 +89,12 @@
           </el-col>
           <el-col :span="6" v-if="isMxnj">
             <el-form-item label="面向年级：" prop="wjNj" :rules="rules.wjNj">
-              <el-select v-model="form.wjNj" placeholder="请选择" clearable>
+              <el-select
+                v-model="form.wjNj"
+                placeholder="请选择"
+                clearable
+                style="width: 140px"
+              >
                 <el-option
                   v-for="(ele, index) in options2"
                   :key="index"
@@ -104,7 +111,13 @@
               prop="wjTnjps"
               :rules="rules.wjTnjps"
             >
-              <el-select v-model="form.wjTnjps" placeholder="请选择" clearable>
+              <el-select
+                v-model="form.wjTnjps"
+                @change="changeTnjhp"
+                placeholder="请选择"
+                clearable
+                style="width: 140px"
+              >
                 <el-option
                   v-for="item in dmsfbzm"
                   :key="item.dm"
@@ -418,6 +431,20 @@ import { queryList, scWj, getDetail, mkQuery } from "@/api/test/testSetting";
 import { getGrade } from "@/api/class/maintenanceClass";
 import Sortable from "sortablejs";
 export default {
+  computed: {
+    isMxnj: {
+      get() {
+        return (
+          this.form.wjTnjps == "1" ? true : false, //仅限同年级评审优先级高于面向培养层次，若为是，则面向年级必须展示
+          this.form.wjTnjps != "1" &&
+          this.form.tmPycc &&
+          this.form.tmPycc == "12"
+            ? false
+            : true
+        );
+      },
+    },
+  },
   components: { CheckboxCom },
   data() {
     return {
@@ -512,7 +539,6 @@ export default {
         orderZd: "",
         orderPx: "",
       },
-      isMxnj: true,
       scType: 1,
       queryParams1: {
         pageNum: 1,
@@ -836,6 +862,8 @@ export default {
           switch (paramsData) {
             case "dmpyccm":
               this.options1 = res.data;
+              this.options1.splice(0, 2);
+              this.options1.unshift({ dm: "12", mc: "硕博" });
               break;
             case "dmsfbzm":
               this.dmsfbzm = res.data; //是否
@@ -844,11 +872,15 @@ export default {
         })
         .catch((err) => {});
     },
+    changeTnjhp() {
+      // this.form.wjTnjps == "1" ? (this.isMxnj = true) : (this.isMxnj = false);
+      // this.handleSearch();
+    },
     // 查询
     handleSearch() {
-      this.form.tmPycc && (this.form.tmPycc == "1" || this.form.tmPycc == "2")
-        ? (this.isMxnj = false)
-        : (this.isMxnj = true);
+      // this.form.wjTnjps != "1" && this.form.tmPycc && this.form.tmPycc == "12"
+      //   ? (this.isMxnj = false)
+      //   : (this.isMxnj = true);
       let data = {
         tmMk: this.training.choose,
         tmName: this.tmName,

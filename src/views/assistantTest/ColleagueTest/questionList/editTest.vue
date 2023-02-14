@@ -87,24 +87,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="6" v-if="isMxnj">
-            <el-form-item label="面向年级：" prop="wjNj" :rules="rules.wjNj">
-              <el-select
-                v-model="form.wjNj"
-                placeholder="请选择"
-                clearable
-                style="width: 140px"
-              >
-                <el-option
-                  v-for="(ele, index) in options2"
-                  :key="index"
-                  :label="ele"
-                  :value="ele"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
+
           <el-col :span="6">
             <el-form-item
               label="仅限同年级评审："
@@ -122,6 +105,24 @@
                   :key="item.dm"
                   :label="item.mc"
                   :value="item.dm"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" v-if="isMxnj">
+            <el-form-item label="面向年级：">
+              <el-select
+                v-model="form.wjNj"
+                placeholder="请选择"
+                clearable
+                style="width: 140px"
+              >
+                <el-option
+                  v-for="(ele, index) in options2"
+                  :key="index"
+                  :label="ele"
+                  :value="ele"
                 >
                 </el-option>
               </el-select>
@@ -443,14 +444,7 @@ export default {
   computed: {
     isMxnj: {
       get() {
-        return (
-          this.form.wjTnjps == "1" ? true : false, //仅限同年级评审优先级高于面向培养层次，若为是，则面向年级必须展示
-          this.form.wjTnjps != "1" &&
-          this.form.tmPycc &&
-          this.form.tmPycc == "12"
-            ? false
-            : true
-        );
+        return this.form.wjTnjps == "1" ? true : false;
       },
     },
   },

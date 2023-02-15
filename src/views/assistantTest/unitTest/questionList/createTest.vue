@@ -99,7 +99,7 @@
                 :rules="rules.tmMk"
               >
                 <el-input
-                  maxlength="10"
+                  maxlength="50"
                   v-model="item.tmMk"
                   @blur="
                     (a) => {
@@ -347,7 +347,7 @@ export default {
         tmLy: "2",
         tmMk: this.formAdd.dwXxWjTmList[ind].tmMk,
       };
-     
+
       this.formAdd.dwXxWjTmList[ind].tmxxList.push(obj);
     },
     jian(row, index, ind) {

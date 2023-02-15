@@ -98,7 +98,7 @@
                 :rules="rules.tmMk"
               >
                 <el-input
-                  maxlength="10"
+                  maxlength="50"
                   v-model="item.tmMk"
                   @blur="
                     (a) => {

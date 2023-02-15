@@ -101,3 +101,12 @@ export function getYears(query) {
       data: query
   })
 }
+//导出
+export function Export(query) {
+  return request({
+      url: '/export/rcswFdyZpbxx',
+      method: 'post',
+      data: query,
+      responseType:'blob'
+  })
+}

@@ -646,7 +646,6 @@ export default {
     },
     // 分配班级tips点击“确定”按钮
     submitTips() {
-      // console.log("分配班级确认！");
       let rmsj = this.form.rmsj;
       let rmrgh = this.$store.getters.userId;
       getAssignFdy({
@@ -655,8 +654,6 @@ export default {
         rmrgh,
         rmsj,
       }).then((res) => {
-        // console.log(res);
-
         this.$message({
           message: "分配成功",
           type: "success",

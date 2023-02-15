@@ -117,6 +117,20 @@
               </div>
             </el-col>
           </el-row>
+          <el-row :gutter="20" class="mt15">
+            <el-col :span="3"
+              >类<span v-html="'\u3000\u3000'"></span>别：</el-col
+            >
+            <el-col :span="20">
+              <div class="checkbox">
+                <checkboxCom
+                  :obj-prop="category"
+                  @training="handleCheckAllCategoryChange"
+                  @checkedTraining="handleCheckedCategoryChange"
+                />
+              </div>
+            </el-col>
+          </el-row>
         </el-row>
       </div>
     </div>
@@ -254,6 +268,7 @@ export default {
         zzmmList: [],
         dwmcList: [],
         gwList: [],
+        lbList: [],
         pageNum: 1,
         total: 0,
         pageSize: 10,
@@ -286,6 +301,16 @@ export default {
           // { mc: "辅导员", dm: "辅导员" },
           // { mc: "班主任", dm: "班主任" },
           // { mc: "导师", dm: "导师" },
+        ],
+        isIndeterminate: true,
+      },
+      category: {
+        // 类别
+        checkAll: false,
+        choose: [],
+        checkBox: [
+          { mc: "兼职", dm: 1 },
+          { mc: "专职", dm: 0 },
         ],
         isIndeterminate: true,
       },
@@ -400,6 +425,7 @@ export default {
       this.queryParams.zzmmList = this.politica.choose;
       this.queryParams.dwmcList = this.workPlace;
       this.queryParams.gwList = this.position.choose;
+      this.queryParams.lbList = this.category.choose;
       getPoliticalWorkList(this.queryParams)
         .then((res) => {
           this.tableData = res.stafflistRes;
@@ -490,6 +516,24 @@ export default {
       this.politica.isIndeterminate =
         checkedCount > 0 && checkedCount < this.politica.checkBox.length;
     },
+    // 类别全选
+    handleCheckAllCategoryChange(val) {
+      const allCheck = [];
+      for (const i in this.category.checkBox) {
+        allCheck.push(this.category.checkBox[i].dm);
+      }
+      this.category.choose = val ? allCheck : [];
+
+      this.queryParams.lbList = this.category.choose;
+    },
+    // 类别单选
+    handleCheckedCategoryChange(value) {
+      const checkedCount = value.length;
+      this.category.checkAll = checkedCount === this.category.checkBox.length;
+      this.category.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.category.checkBox.length;
+      this.queryParams.lbList = this.category.choose;
+    },
     // 多选
     handleSelectionChange(arr, index) {
       this.multipleSelection = [...arr]; // 存储已被勾选的数据
@@ -523,6 +567,7 @@ export default {
           zzmmList: this.politica.choose,
           dwmcList: this.workPlace,
           gwList: this.position.choose,
+          lbList: this.category.choose,
         };
         this.manageRegStuInfoParam = data;
         await getPoliticalWorkList(data)

@@ -189,6 +189,7 @@
                 type="textarea"
                 :rows="5"
                 maxlength="500"
+                show-word-limit
                 v-model="detailInfoData.fdyZpJbqkRes.wdmqk"
                 :readonly="isEdit == 0"
               />
@@ -199,6 +200,7 @@
                 type="textarea"
                 :rows="5"
                 maxlength="500"
+                show-word-limit
                 v-model="detailInfoData.fdyZpJbqkRes.txthqk"
                 :readonly="isEdit == 0"
               />
@@ -220,6 +222,7 @@
                 type="textarea"
                 :rows="5"
                 maxlength="500"
+                show-word-limit
                 v-model="detailInfoData.fdyZpJbqkRes.cqqk"
                 :readonly="isEdit == 0"
               />
@@ -241,6 +244,7 @@
                 type="textarea"
                 :rows="5"
                 maxlength="500"
+                show-word-limit
                 v-model="detailInfoData.fdyZpJbqkRes.bthdqk"
                 :readonly="isEdit == 0"
               />
@@ -251,6 +255,7 @@
                 type="textarea"
                 :rows="5"
                 maxlength="500"
+                show-word-limit
                 v-model="detailInfoData.fdyZpJbqkRes.xfjyqk"
                 :readonly="isEdit == 0"
               />
@@ -375,12 +380,14 @@
                   <span v-else>{{ scope.row.hjdc }}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="hjbz" label="备注">
+              <el-table-column prop="hjbz" label="获奖时间">
                 <template slot-scope="scope">
-                  <el-input
-                    v-if="isEdit == 1"
+                  <el-date-picker
                     v-model="scope.row.hjbz"
-                    placeholder="请输入"
+                    value-format="yyyy-MM-dd"
+                    placeholder="选择日期"
+                    type="date"
+                    v-if="isEdit == 1"
                   />
                   <span v-else>{{ scope.row.hjbz }}</span>
                 </template>
@@ -585,6 +592,7 @@
                 type="textarea"
                 :rows="5"
                 maxlength="500"
+                show-word-limit
                 v-model="detailInfoData.fdyZpJbqkRes.zyzz"
                 :readonly="isEdit == 0"
               />
@@ -655,6 +663,9 @@
     <div class="editBottom" v-show="isEdit == 1">
       <div class="btn confirm" @click="handlUpdata">保存</div>
     </div>
+    <!-- <div class="editBottom" v-show="isEdit !== 1">
+      <div class="btn cancel" @click="Export">导出</div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -841,6 +852,7 @@ export default {
         })
         .catch((err) => {});
     },
+    Export() {},
   },
 };
 </script>

@@ -148,13 +148,13 @@
           <span>学年</span>
         </div>
         <div class="headerRight">
-          <div class="btns borderBlue" @click="mbDown">
+          <div class="btns borderBlue" @click="mbDown" v-show="userflag == 3">
             <i class="icon downIcon"></i><span class="title">模板下载</span>
           </div>
-          <div class="btns borderRed" @click="handleDelete">
+          <div class="btns borderRed" @click="handleDelete" v-show="userflag == 3">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
-          <div class="btns borderBlue">
+          <div class="btns borderBlue" v-show="userflag == 3">
             <el-upload
               accept=".xlsx,.xls"
               :auto-upload="true"
@@ -170,7 +170,7 @@
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns fullGreen" @click="handleNew">
+          <div class="btns fullGreen" @click="handleNew" v-show="userflag == 3">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
         </div>
@@ -750,6 +750,7 @@ export default {
   },
   data() {
     return {
+      AUTHFLAG: false,
       showExport: false,
       lctModal: false,
       ztStatus: [],
@@ -844,14 +845,17 @@ export default {
   },
 
   mounted() {
-    // this.handleSearch();
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
+
     this.getAllCollege();
     this.getSchoolYears();
     this.getCode("dmpyccm"); // 培养层次dmxbm
     this.getCode("dmxbm");
     this.getCode("dmkndjm"); //认定等级
     this.getAllGrade();
-    this.userflag = this.$store.getters.roleId == "05" ? 2 : 1; //05学院负责人06辅导员
+    this.userflag = this.$store.getters.roleId == "05" ? 2 
+      :(this.$store.getters.roleId == "06" ? 3:1) ; //05学院负责人06辅导员
   },
 
   methods: {

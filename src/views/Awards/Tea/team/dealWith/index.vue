@@ -136,13 +136,13 @@
           <span>学年</span>
         </div>
         <div class="headerRight">
-          <div class="btns borderBlue" @click="mbDown" v-show="AUTHFLAG">
+          <div class="btns borderBlue" @click="mbDown" v-show="AUTHFLAG && userflag == 2">
             <i class="icon downIcon"></i><span class="title">模板下载</span>
           </div>
-          <div class="btns borderRed" @click="handleDelete" v-show="AUTHFLAG">
+          <div class="btns borderRed" @click="handleDelete" v-show="AUTHFLAG && userflag == 2">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
-          <div class="btns borderBlue" v-show="AUTHFLAG">
+          <div class="btns borderBlue" v-show="AUTHFLAG && userflag == 2">
             <el-upload
               accept=".xlsx,.xls"
               :auto-upload="true"
@@ -158,7 +158,7 @@
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns fullGreen" @click="handleNew" v-show="AUTHFLAG">
+          <div class="btns fullGreen" @click="handleNew" v-show="AUTHFLAG && userflag == 2">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
         </div>
@@ -697,6 +697,7 @@ export default {
       formAdd: { pjzqXn: "", pjzqXq: "", xsxh: "" },
       basicInfo: {},
       addModal: false,
+      userflag: 1,
       rules: {
         pjdj: [
           {
@@ -732,6 +733,7 @@ export default {
     this.getCode("dmpyccm"); // 培养层次dmxbm
     this.getAllGrade();
     this.getJX();
+    this.userflag = this.$store.getters.roleId == "06" ? 2 : 1; //05学院负责人06辅导员
   },
 
   methods: {

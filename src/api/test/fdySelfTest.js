@@ -104,7 +104,7 @@ export function getYears(query) {
 //导出
 export function Export(query) {
   return request({
-      url: '/export/rcswFdyZpbxx',
+      url: '/fdyzp/export/rcswFdyZpbxx',
       method: 'post',
       data: query,
       responseType:'blob'

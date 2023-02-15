@@ -757,7 +757,7 @@ export default {
         wjNj: this.form.wjNj ? this.form.wjNj : "",
         wjPycc: this.form.tmPycc,
         wjYear: this.form.tmYear,
-        wjTnjps: "0",
+        wjTnjps: this.form.wjTnjps,
       };
       updataScWj(data).then((res) => {
         this.$message.success("问卷已生成");

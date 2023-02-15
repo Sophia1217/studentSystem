@@ -493,8 +493,24 @@
             <el-table :data="detailInfoData.zgXmkyqkList" style="width: 100%">
               <el-table-column type="index" label="序号" width="50" />
               <el-table-column prop="xmmc" label="名称" />
-              <el-table-column prop="xmjb" label="级别" />
-              <el-table-column prop="brwc" label="作者排名" />
+              <el-table-column prop="xmjb" label="级别">
+                <template slot-scope="scope">
+                  <el-select
+                    v-model="scope.row.xmjb"
+                    placeholder="请选择"
+                    size="small"
+                    disabled
+                  >
+                    <el-option
+                      v-for="(item, index) in xmjbmOps"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    />
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column prop="brwc" label="作者排名"> </el-table-column>
               <el-table-column prop="qssj" label="起始时间" />
               <el-table-column prop="jssj" label="结束时间" />
               <!-- <el-table-column prop="bz" label="备注">
@@ -691,6 +707,7 @@ export default {
       njOptions: [],
       lwjbmOps: [],
       pxjbmOps: [], //培训级别码
+      xmjbmOps: [], //项目级别码
     };
   },
   created() {
@@ -700,6 +717,7 @@ export default {
   mounted() {
     this.getCode("dmlwkwjbm");
     this.getCode("dmpxjbm");
+    this.getCode("dmxmjbm");
     this.getOption();
   },
   methods: {
@@ -715,6 +733,9 @@ export default {
             break;
           case "dmpxjbm":
             this.pxjbmOps = res.data;
+            break;
+          case "dmxmjbm":
+            this.xmjbmOps = res.data;
             break;
         }
       });

@@ -161,12 +161,16 @@ export default {
       });
     },
     editItem(item) {
-      this.$router.push({
-        path: "/assistantTest/ColleagueTest/editTest",
-        query: {
-          id: item.id,
-        },
-      });
+      if (item.sfyx == 1) {
+        this.$router.push({
+          path: "/assistantTest/ColleagueTest/editTest",
+          query: {
+            id: item.id,
+          },
+        });
+      } else {
+        this.$message.warning("问卷已生效，不可编辑！");
+      }
     },
     downTest(item) {
       if (item.sfyx == 1) {

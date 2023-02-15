@@ -118,14 +118,14 @@
         </div>
 
         <div class="headerRight">
-          <div class="btns borderOrange" @click="Setting">
+          <div class="btns borderOrange" @click="Setting" v-show="AUTHFLAG">
             <i class="icon setIcon"></i><span class="title">设置</span>
           </div>
 
-          <div class="btns borderLight" @click="Delete">
+          <div class="btns borderLight" @click="Delete" v-show="AUTHFLAG">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
-          <div class="btns borderGreen" @click="Join">
+          <div class="btns borderGreen" @click="Join" v-show="AUTHFLAG">
             <i class="icon addIcon"></i><span class="title1">加入</span>
           </div>
         </div>
@@ -319,6 +319,7 @@ export default {
   props: [],
   data() {
     return {
+      AUTHFLAG: false,
       title: "",
       // // 总条数
       total: 0,
@@ -407,16 +408,15 @@ export default {
   },
   computed: {},
   watch: {},
-  created() {},
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
+  },
   mounted() {
     this.getOption();
 
     this.getCode("dmxbm");
     this.getCode("dmpyccm");
-  },
-  created() {
-    this.authConfirm(this.$route.path.split("/")[2]);
-    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
 
   methods: {

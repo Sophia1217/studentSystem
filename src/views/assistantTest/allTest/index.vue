@@ -118,11 +118,11 @@
         </div>
 
         <div class="headerRight">
-          <div style="margin-right: 15px">{{ this.time }}更新</div>
-          <div class="btns borderOrange" @click="Updata">
+          <div style="margin-right: 15px" v-show="AUTHFLAG">{{ this.time }}更新</div>
+          <div class="btns borderOrange" @click="Updata" v-show="AUTHFLAG">
             <i class="icon setIcon"></i><span class="title">更新</span>
           </div>
-          <div class="btns borderOrange" @click="Setting">
+          <div class="btns borderOrange" @click="Setting" v-show="AUTHFLAG">
             <i class="icon setIcon"></i><span class="title">设置</span>
           </div>
           <div class="btns borderOrange" @click="Export">
@@ -286,6 +286,7 @@ export default {
   props: [],
   data() {
     return {
+      AUTHFLAG: false,
       rules: {
         qzbl: [
           {

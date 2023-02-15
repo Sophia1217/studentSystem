@@ -660,7 +660,7 @@
         </div>
       </div>
     </div>
-    <div class="editBottom" v-show="isEdit == 1">
+    <div class="editBottom" v-show="isEdit == 1 && AUTHFLAG">
       <div class="btn confirm" @click="handlUpdata">保存</div>
     </div>
     <!-- <div class="editBottom" v-show="isEdit !== 1">
@@ -679,6 +679,7 @@ import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
   data() {
     return {
+      AUTHFLAG: false,
       isEdit: this.$route.query.isEdit ? this.$route.query.isEdit : 1,
       nd: "",
       gh: this.$route.query.gh
@@ -691,7 +692,10 @@ export default {
       pxjbmOps: [], //培训级别码
     };
   },
-  created() {},
+  created() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
+  },
   mounted() {
     this.getCode("dmlwkwjbm");
     this.getCode("dmpxjbm");

@@ -118,6 +118,9 @@
         </div>
 
         <div class="headerRight">
+          <div class="btns borderOrange" @click="handleExport">
+            <i class="icon outIcon"></i><span class="title">自评表导出</span>
+          </div>
           <div class="btns borderOrange" @click="Setting" v-show="AUTHFLAG">
             <i class="icon setIcon"></i><span class="title">设置</span>
           </div>
@@ -296,6 +299,15 @@
         >
       </span>
     </el-dialog>
+    <el-dialog title="导出确认" :visible.sync="showExport" width="30%">
+      <span>确认导出？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="daochu()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -310,6 +322,7 @@ import {
   getKgsz,
   insertKgsz,
   getYears,
+  Export,
 } from "@/api/test/fdySelfTest";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getGrade } from "@/api/assistantWork/listen";
@@ -327,6 +340,7 @@ export default {
       showSet: false,
       showDelete: false,
       showJoin: false,
+      showExport: false,
       sqkfsj: [],
       sfyx: "0",
       searchVal: "",
@@ -695,52 +709,35 @@ export default {
       this.queryParams2.orderPx = column.order === "descending" ? 1 : 0; // 0是asc升序，1是desc降序
       this.getNotList();
     },
-    // // 打开导出弹窗
-    // async handleExport() {
-    //   if (this.multipleSelection.length > 0) {
-    //     this.len = this.multipleSelection.length;
-    //   } else {
-    //     let data = {
-    //       gh: this.select == 1 ? this.searchVal : "",
-    //       xm: this.select == 2 ? this.searchVal : "",
-    //       dwmcList: this.workPlace,
-    //       genderList: this.pyccOps.choose,
-    //       sfdbList: this.status.choose,
-    //       lbList: this.category.choose,
-    //     };
-    //     this.exportParams = data;
-    //     await fdyList(data)
-    //       .then((res) => {
-    //         this.len = res.count;
-    //       })
-    //       .catch((err) => {});
-    //   }
-    //   if (this.len > 0) {
-    //     this.showExport = true;
-    //   } else {
-    //     this.$message.warning("当前无数据导出");
-    //   }
+    // 打开导出弹窗
+    async handleExport() {
+      if (this.multipleSelection.length > 0) {
+        this.showExport = true;
+      } else {
+        this.$message.warning("当前无数据导出");
+      }
+    },
+    // 导出取消
+    handleCancel() {
+      this.showExport = false;
+    },
+    // 导出确认
+    daochu() {
+      var data = [];
+      for (var x = 0; x < this.multipleSelection.length; x++) {
+        data.push({
+          exType: "docx",
+          id: this.multipleSelection[x].id,
+        });
+      }
 
-    //   this.title = "导出";
-    // },
-    // // 导出取消
-    // handleCancel() {
-    //   this.showExport = false;
-    // },
-    // // 导出确认
-    // handleConfirm() {
-    //   var arr = this.list.length > 0 ? this.list.map((item) => item.gh) : [];
-
-    //   var exportParams = this.queryParams;
-    //   exportParams.pageSize = 0;
-    //   this.$set(exportParams, "ghList", arr);
-
-    //   outAssistant(exportParams)
-    //     .then((res) => this.downloadFn(res, "辅导员任命导出", "xlsx"))
-    //     .catch((err) => {});
-
-    //   this.showExport = false;
-    // },
+      Export(data)
+        .then((res) => {
+          this.downloadFn(res, "辅导员自评表导出下载", "zip");
+          this.showExport = false;
+        })
+        .catch((err) => {});
+    },
   },
 };
 </script>
@@ -877,6 +874,10 @@ export default {
           .setIcon {
             margin-top: 10px;
             background: url("~@/assets/images/set.png") no-repeat;
+          }
+          .outIcon {
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/out.png") no-repeat;
           }
         }
       }

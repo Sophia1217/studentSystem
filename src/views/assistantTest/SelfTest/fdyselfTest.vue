@@ -663,9 +663,9 @@
     <div class="editBottom" v-show="isEdit == 1 && AUTHFLAG">
       <div class="btn confirm" @click="handlUpdata">保存</div>
     </div>
-    <!-- <div class="editBottom" v-show="isEdit !== 1">
+    <div class="editBottom" v-show="isEdit !== 1">
       <div class="btn cancel" @click="Export">导出</div>
-    </div> -->
+    </div>
   </div>
 </template>
 <script>
@@ -673,6 +673,7 @@ import {
   getFdyZpDetail,
   updateFdyZpDetail,
   getFdyNdByGh,
+  Export,
 } from "@/api/test/fdySelfTest";
 import { getGrade } from "@/api/assistantWork/listen";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
@@ -856,7 +857,21 @@ export default {
         })
         .catch((err) => {});
     },
-    Export() {},
+    Export() {
+      var data = [];
+
+      data.push({
+        exType: "docx",
+        id: this.detailInfoData.fdyZpJbqkRes.id,
+      });
+
+      Export(data)
+        .then((res) => {
+          this.downloadFn(res, "辅导员自评表导出下载", "zip");
+          this.showExport = false;
+        })
+        .catch((err) => {});
+    },
   },
 };
 </script>

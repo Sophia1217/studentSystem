@@ -87,7 +87,11 @@
           <span class="title">在岗班主任列表</span> <i class="Updataicon" />
         </div>
         <div class="headerRight">
-          <div class="btns borderOrange" @click="handleRemove" v-show="AUTHFLAG">
+          <div
+            class="btns borderOrange"
+            @click="handleRemove"
+            v-show="AUTHFLAG"
+          >
             <i class="icon removeButton" /><span class="title">批量免去</span>
           </div>
           <div class="btns borderGreen" @click="handleImport" v-show="AUTHFLAG">
@@ -118,8 +122,18 @@
               <span v-if="scope.row.xb == 2">女</span>
             </template> -->
           </el-table-column>
-          <el-table-column prop="gzdw" label="工作单位" min-width="100" sortable />
-          <el-table-column prop="dbzt" label="带班状态" min-width="100" sortable>
+          <el-table-column
+            prop="gzdw"
+            label="工作单位"
+            min-width="100"
+            sortable
+          />
+          <el-table-column
+            prop="dbzt"
+            label="带班状态"
+            min-width="100"
+            sortable
+          >
             <!-- <template slot-scope="scope">
               <div v-if="scope.row.dbzt == 1">
                 <span class="greenDot">●</span><span>是</span>
@@ -413,6 +427,7 @@ export default {
     this.getCode("dmxbm"); // 性别
     this.getCode("dmpyccm");
     this.getOptions();
+    this.handleSearch();
   },
   created() {
     this.authConfirm(this.$route.path.split("/")[2]);

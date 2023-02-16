@@ -2987,8 +2987,8 @@ export default {
       sxzymOps: [], //专业
       zylbmOps: [], //专业类别
       gwxzOps: [
-        { dm: "0", mc: "专职" },
-        { dm: "1", mc: "兼职" },
+        { dm: "0", mc: "专职辅导员" },
+        { dm: "1", mc: "兼职辅导员" },
       ],
       zgxlmOps: [], //学历
       xbmOps: [],

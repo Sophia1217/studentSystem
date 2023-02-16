@@ -17,7 +17,11 @@
         >
           <el-row>
             <el-form-item label="教育主题" prop="jyzt">
-              <el-input v-model="eduDetailForm.jyzt" clearable />
+              <el-input
+                v-model="eduDetailForm.jyzt"
+                maxlength="500"
+                clearable
+              />
             </el-form-item>
           </el-row>
           <el-row>
@@ -25,6 +29,7 @@
               ><el-form-item label="关键词" prop="keyword">
                 <el-input
                   v-model="eduDetailForm.keyword"
+                  maxlength="500"
                   clearable
                 /> </el-form-item
             ></el-col>
@@ -144,7 +149,7 @@
               ></el-row>
             </el-form-item>
             <el-form-item label="其他">
-              <el-input v-model="eduDetailForm.other"></el-input
+              <el-input v-model="eduDetailForm.other" maxlength="500"></el-input
             ></el-form-item>
             <el-form-item label="人数" prop="peopleNum">
               <el-input v-model.number="eduDetailForm.peopleNum"></el-input
@@ -178,7 +183,10 @@
           <el-row>
             <el-col :span="6.5">
               <el-form-item label="开展地点" prop="place">
-                <el-input v-model="eduDetailForm.place"></el-input>
+                <el-input
+                  v-model="eduDetailForm.place"
+                  maxlength="500"
+                ></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="15">
@@ -214,7 +222,7 @@
           <el-row>
             <el-form-item label="备注">
               <el-input
-                maxlength="2000"
+                maxlength="1000"
                 placeholder="请输入..."
                 show-word-limit
                 v-model="eduDetailForm.beizhu"

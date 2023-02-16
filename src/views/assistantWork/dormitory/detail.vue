@@ -122,6 +122,7 @@
                   v-model="visitDetailForm.zfzt"
                   :disabled="isEdit == '1' ? true : false"
                   clearable
+                  maxlength="500"
                 />
               </el-form-item>
             </el-col>
@@ -187,7 +188,7 @@
           <el-row>
             <el-form-item label="走访情况">
               <el-input
-                maxlength="2000"
+                maxlength="1000"
                 placeholder="请输入..."
                 show-word-limit
                 style="width: 1000px"
@@ -263,7 +264,9 @@
       "
       class="editBottom"
     >
-      <div class="btn editIcon" @click="editButtonClick" v-show="AUTHFLAG">编辑</div>
+      <div class="btn editIcon" @click="editButtonClick" v-show="AUTHFLAG">
+        编辑
+      </div>
     </div>
 
     <div v-if="isEdit == 2" class="editBottom">

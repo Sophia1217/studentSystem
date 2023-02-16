@@ -56,6 +56,7 @@
               <el-input
                 :disabled="isEdit == '1' ? true : false"
                 v-model="eduDetailForm.jyzt"
+                maxlength="500"
                 clearable
               />
             </el-form-item>
@@ -66,6 +67,7 @@
                 <el-input
                   :disabled="isEdit == '1' ? true : false"
                   v-model="eduDetailForm.keyword"
+                  maxlength="500"
                   clearable
                 /> </el-form-item
             ></el-col>
@@ -246,6 +248,7 @@
                 <el-input
                   :disabled="isEdit == '1' ? true : false"
                   v-model="eduDetailForm.place"
+                  maxlength="500"
                 ></el-input>
               </el-form-item>
             </el-col>
@@ -284,7 +287,7 @@
           <el-row>
             <el-form-item label="备注">
               <el-input
-                maxlength="2000"
+                maxlength="1000"
                 placeholder="请输入..."
                 show-word-limit
                 v-model="eduDetailForm.beizhu"

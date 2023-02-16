@@ -76,7 +76,11 @@
           <el-row :gutter="10">
             <el-col :span="6.5">
               <el-form-item label="走访主题" prop="zfzt">
-                <el-input v-model="visitDetailForm.zfzt" clearable />
+                <el-input
+                  v-model="visitDetailForm.zfzt"
+                  maxlength="500"
+                  clearable
+                />
               </el-form-item>
             </el-col>
             <el-col :span="15">
@@ -136,7 +140,7 @@
           <el-row>
             <el-form-item label="走访情况">
               <el-input
-                maxlength="2000"
+                maxlength="1000"
                 placeholder="请输入..."
                 show-word-limit
                 v-model="visitDetailForm.situation"

@@ -284,7 +284,19 @@
             </div>
           </div>
         </div>
-        <div class="item stuInfoClick"></div>
+        <div class="item stuInfoClick" @click="bysjdbClick">
+          <div class="medalImage">
+            <img src="~@/assets/images/medal.png" alt="" />
+          </div>
+          <div class="content">
+            <div class="title1">
+              <span class="stuinfoTitle">毕业生鉴定表</span>
+            </div>
+            <div class="title2">
+              <span class="baseInfo">毕业生填写</span>
+            </div>
+          </div>
+        </div>
         <div class="item stuInfoClick"></div>
         <div class="item stuInfoClick"></div>
       </div>
@@ -375,6 +387,11 @@ export default {
     knsrdClick() {
       this.$router.push({
         path: "/difficultIdentity",
+      });
+    },
+    bysjdbClick() {
+      this.$router.push({
+        path: "/graduateIdentification",
       });
     },
   },

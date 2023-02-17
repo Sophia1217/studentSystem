@@ -222,7 +222,7 @@
               <el-input
                 type="textarea"
                 :rows="5"
-                maxlength="100"
+                maxlength="500"
                 show-word-limit
                 v-model="detailInfoData.fdyZpJbqkRes.cqqk"
                 :readonly="isEdit == 0"
@@ -279,7 +279,7 @@
               <el-table-column prop="kcmc" label="课程名称" />
               <el-table-column prop="ksl" label="课时量"> </el-table-column>
               <el-table-column prop="qssj" label="起始时间" />
-              <el-table-column prop="jssj" label="起始时间" />
+              <el-table-column prop="jssj" label="结束时间" />
               <!-- <el-table-column prop="bz" label="备注">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.bz" placeholder="请输入" />
@@ -636,10 +636,27 @@
           <div class="tableArea">
             <el-table :data="detailInfoData.zgJlbzList" style="width: 100%">
               <el-table-column type="index" label="序号" width="50" />
-              <el-table-column prop="jxmc" label="名称" />
-              <el-table-column prop="jxjb" label="级别" />
-              <el-table-column prop="hjsj" label="获奖时间" />
+              <el-table-column prop="jxmc" label="名称">
+                <template slot-scope="scope">
+                  <div>{{ scope.row.jxmc }}</div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="jxjb" label="级别">
+                <template slot-scope="scope">
+                  <el-cascader
+                    v-model="scope.row.jxjb"
+                    :options="jxjbOps"
+                    disabled
+                    :props="OpsProps"
+                  ></el-cascader>
+                </template>
+              </el-table-column>
 
+              <el-table-column prop="hjsj" label="获奖时间">
+                <template slot-scope="scope">
+                  <div>{{ scope.row.hjsj }}</div>
+                </template>
+              </el-table-column>
               <!-- <el-table-column prop="bz" label="备注">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.bz" placeholder="请输入" />
@@ -685,12 +702,15 @@
         </div>
       </div>
     </div>
-    <div class="editBottom" v-show="isEdit == 1 && AUTHFLAG">
-      <div class="btn confirm" @click="handlUpdata">保存</div>
-    </div>
-    <div class="editBottom" v-show="isEdit !== 1">
+    <div class="editBottom" v-show="AUTHFLAG">
+      <div class="btn confirm" @click="handlUpdata" v-show="isEdit == 1">
+        保存
+      </div>
       <div class="btn cancel" @click="Export">导出</div>
     </div>
+    <!-- <div class="editBottom" >
+      
+    </div> -->
   </div>
 </template>
 <script>
@@ -701,7 +721,7 @@ import {
   Export,
 } from "@/api/test/fdySelfTest";
 import { getGrade } from "@/api/assistantWork/listen";
-import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+import { getCodeInfoByEnglish, getZgJxjb } from "@/api/politicalWork/basicInfo";
 export default {
   data() {
     return {
@@ -717,6 +737,13 @@ export default {
       lwjbmOps: [],
       pxjbmOps: [], //培训级别码
       xmjbmOps: [], //项目级别码
+      jxjbOps: [],
+      OpsProps: {
+        value: "dm", //匹配响应数据中的id
+        label: "mc", //匹配响应数据中的name
+        checkStrictly: true,
+        children: "dataCodeCascadingList", //匹配响应数据中的children }
+      },
     };
   },
   created() {
@@ -727,9 +754,16 @@ export default {
     this.getCode("dmlwkwjbm");
     this.getCode("dmpxjbm");
     this.getCode("dmxmjbm");
+    this.getJXJB();
     this.getOption();
   },
   methods: {
+    getJXJB() {
+      getZgJxjb().then((res) => {
+        this.jxjbOps = res.data;
+      });
+    },
+
     getCode(data) {
       this.getCodeInfoByEnglish(data);
     },

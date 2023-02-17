@@ -2004,7 +2004,7 @@
                    <el-cascader
                       v-model="scope.row.zsmc"
                       :options="zsmcOps"
-                      @change="handleChangeZsmc(value,scope.row)"
+                      @change="(val)=>{handleChangeZsmc(val,scope.row)}"
                     :disabled="zgZyzgsAuth.ZSMC==2"
                       :props="OpsProps"
                       filterable
@@ -2088,7 +2088,7 @@
                   <el-cascader
                       v-model="scope.row.jsdw"
                       :options="jsdwlxOps"
-                      @change="handleChangeJsdwlx(value.scope.row)"
+                      @change="(val)=>{handleChangeJsdwlx(val.scope.row)}"
                       :disabled="zgGwdlsAuth.JSDW==2"
                       :props="OpsProps"
                       filterable
@@ -2425,7 +2425,7 @@
                   <el-cascader
                       v-model="scope.row.qklx"
                       :options="qklxOps"
-                      @change="handleChangeQklx(value,scope.row)"
+                      @change="(val)=>{handleChangeQklx(val,scope.row)}"
                     :disabled="zgLwkyqksAuth.QKLX==2"
                       :props="OpsProps"
                       filterable
@@ -2738,7 +2738,9 @@
                   <el-cascader
                       v-model="scope.row.cglx"
                       :options="cglxOps"
-                      @change="handleChangeCglx(value,scope.row)"
+                      @change="(val)=>{
+                        handleChangeCglx(val,scope.row)
+                      }"
               :disabled="zgQtkyqksAuth.CGLX==2"
                       :props="OpsProps"
                       filterable
@@ -2887,7 +2889,7 @@
                   <el-cascader
                       v-model="scope.row.jxjb"
                       :options="jxjbOps"
-                      @change="handleChangeJxjb(value,scope.row)"
+                      @change="(val)=>{handleChangeJxjb(val,scope.row)}"
                       :disabled="zgJlbzsAuth.JXJB==2"
                       :props="OpsProps"
                       filterable
@@ -2977,7 +2979,7 @@ export default {
         ? this.$route.query.activeName
         : "1",
       isEdit: 1,
-      value: "测试",
+      //value: "测试",
       //选项
       sfOps: [],
       hyzkmOps: [],
@@ -3066,7 +3068,7 @@ export default {
         value: "dm", //匹配响应数据中的id
         label: "mc", //匹配响应数据中的name
         checkStrictly: true,
-        children: "dataCode", //匹配响应数据中的children }
+        children: "dataCodeCascadingList", //匹配响应数据中的children }
       },
     };
   },

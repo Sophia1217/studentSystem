@@ -15,7 +15,7 @@
         </div>
         <div class="content" v-for="(tm, num) in mk.fdycpTmJgResList">
           <div class="question">
-            题目：{{ tm.fdycpTm.tmName }}({{ tm.fdycpTm.tmFz }}分)
+            {{ tm.tmNum }}.{{ tm.fdycpTm.tmName }}({{ tm.fdycpTm.tmFz }}分)
           </div>
           <div class="answer" v-if="tm.fdycpTm.tmType == '选择题'">
             <el-form-item

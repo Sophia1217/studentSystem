@@ -178,6 +178,7 @@
               size="small"
               @keyup.enter.native="$event.target.blur"
               @blur="handleInputConfirm"
+              maxlength="30"
             >
             </el-input>
             <el-button
@@ -282,6 +283,7 @@
                 v-model="form.detailPlace"
                 placeholder="请输入"
                 :disabled="edit == '1' ? true : false"
+                maxlength="500"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -291,7 +293,7 @@
             <el-form-item label="走访情况" prop="state">
               <el-input
                 v-model="form.state"
-                maxlength="2000"
+                maxlength="1000"
                 show-word-limit
                 :autosize="{ minRows: 4, maxRows: 10 }"
                 type="textarea"
@@ -707,6 +709,10 @@ export default {
             res.data.jfddList.length > 0 ? res.data.jfddList[0].dm : [];
           this.form.cityPlace =
             res.data.jfddList.length > 0 ? res.data.jfddList[1].dm : [];
+          if (res.data.jfxs == "线下走访") {
+            this.getCity(this.form.proPlace);
+            this.getXian(this.form.cityPlace);
+          }
           this.form.countryPlace =
             res.data.jfddList.length > 0 ? res.data.jfddList[2].dm : [];
 
@@ -742,10 +748,6 @@ export default {
             } else {
               this.partDate[i].value = "";
             }
-          }
-          if (this.form.homeModel == "线下走访") {
-            this.getCity(this.form.proPlace);
-            this.getXian(this.form.cityPlace);
           }
         })
         .catch((err) => {

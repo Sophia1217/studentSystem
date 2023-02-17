@@ -66,6 +66,7 @@
                 v-model="form.orgUnit"
                 placeholder="请输入"
                 :disabled="edit == '1' ? true : false"
+                 maxlength="200"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -90,6 +91,7 @@
               size="small"
               @keyup.enter.native="$event.target.blur"
               @blur="handleInputConfirm(3)"
+               maxlength="30"
             >
             </el-input>
             <el-button
@@ -107,6 +109,7 @@
                 v-model="form.theme"
                 placeholder="请输入"
                 :disabled="edit == '1' ? true : false"
+                 maxlength="200"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -155,6 +158,7 @@
                 v-model="form.place"
                 placeholder="请输入"
                 :disabled="edit == '1' ? true : false"
+                 maxlength="500"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -179,6 +183,7 @@
               size="small"
               @keyup.enter.native="$event.target.blur"
               @blur="handleInputConfirm(2)"
+               maxlength="30"
             >
             </el-input>
             <el-button

@@ -84,7 +84,7 @@
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="家访主题" prop="theme">
-              <el-input v-model="form.theme" placeholder="请输入"></el-input>
+              <el-input v-model="form.theme" placeholder="请输入" maxlength="50"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="2">
@@ -108,6 +108,7 @@
               size="small"
               @keyup.enter.native="$event.target.blur"
               @blur="handleInputConfirm"
+               maxlength="30"
             >
             </el-input>
             <el-button
@@ -200,6 +201,7 @@
               <el-input
                 v-model="form.detailPlace"
                 placeholder="请输入"
+                maxlength="500"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -209,7 +211,7 @@
             <el-form-item label="走访情况" prop="state">
               <el-input
                 v-model="form.state"
-                maxlength="2000"
+                maxlength="1000"
                 show-word-limit
                 :autosize="{ minRows: 4, maxRows: 10 }"
                 type="textarea"

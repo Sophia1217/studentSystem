@@ -879,8 +879,8 @@ export default {
     },
     changeXY(val) {
       if (val && val.length == 0) {
-        this.moreIform.stuInfo = []; // 专业
-        this.moreIform.pread = []; // 班级
+        this.moreIform.zydmList = []; // 专业
+        this.moreIform.bjList = []; // 班级
       }
       this.getZY(val);
       this.getBJ(val);

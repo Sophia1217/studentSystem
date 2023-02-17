@@ -118,16 +118,16 @@
           </div>
         </div>
       </div>
-      <div class="item">
+      <div class="item stuInfoClick" @click="jiangzhuClick">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
         </div>
         <div class="content">
           <div class="title1">
-            <span class="stuinfoTitle">学生评奖申请</span>
+            <span class="stuinfoTitle">奖助申请</span>
           </div>
           <div class="title2">
-            <span class="baseInfo">模块建设中</span>
+            <span class="baseInfo">奖学金、助学金申请</span>
           </div>
         </div>
       </div>
@@ -392,6 +392,11 @@ export default {
     bysjdbClick() {
       this.$router.push({
         path: "/graduateIdentification",
+      });
+    },
+    jiangzhuClick() {
+      this.$router.push({
+        path: "/awardSubsidyApply",
       });
     },
   },

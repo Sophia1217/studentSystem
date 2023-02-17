@@ -1028,8 +1028,8 @@ export default {
     },
     changeXY(val) {
       if (val && val.length == 0) {
-        this.moreIform.stuInfo = []; // 专业
-        this.moreIform.pread = []; // 班级
+        this.moreIform.zydmList = []; // 专业
+        this.moreIform.bjList = []; // 班级
       }
       this.getZY(val);
       this.getBJ(val);
@@ -1320,11 +1320,11 @@ export default {
         formData.append("sfts", this.formAdd.sfts ||"");
         formData.append("sqfjid", this.formAdd.sqfjid ||"");
         formData.append("sqldid", this.formAdd.sqldid ||"");
-        formData.append("sqly", this.formAdd.sqly);
+        formData.append("sqly", this.formAdd.sqly ||"");
         formData.append("xzsdzm", this.formAdd.xzsdzm ||"");
         formData.append("xzsxxdz", this.formAdd.xzsxxdz ||"");
         formData.append("yzsdzm", this.formAdd.yzsdzm ||"");
-        formData.append("yzsxxdz", this.formAdd.yzsxxdz);
+        formData.append("yzsxxdz", this.formAdd.yzsxxdz ||"");
         formData.append("xh", this.formAdd.xsxh);
         if (this.fileList.length > 0) {
           this.fileList.map((file) => {
@@ -1349,11 +1349,19 @@ export default {
       } else{ 
         this.jzflag = 2;
       }
+        this.$set(this.formAdd,"yzsdzm","");
+        this.$set(this.formAdd,"yzsxxdz","");
+        this.$set(this.formAdd,"sfts","");
+        this.$set(this.formAdd,"sqfjid","");
+        this.$set(this.formAdd,"sqldid","");
+        this.$set(this.formAdd,"xzsdzm","");
+        this.$set(this.formAdd,"xzsxxdz","");
     },
     changeLD(flag){
       queryFj({ dm: flag }).then((res) => {
         if (res.errcode == "00") {
           this.fjOps = res.data;
+          this.$set(this.formAdd,"sqfjid","");
         } else {
           this.$message.error("获取房间号失败");
         }

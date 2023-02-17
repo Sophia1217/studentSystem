@@ -8,7 +8,7 @@
         <el-row :gutter="20">
           <el-col :span="5">
             <el-form-item label="组织单位" prop="orgUnit">
-              <el-input v-model="form.orgUnit" placeholder="请输入"></el-input>
+              <el-input v-model="form.orgUnit" placeholder="请输入" maxlength="200"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="2">
@@ -32,6 +32,7 @@
               size="small"
               @keyup.enter.native="$event.target.blur"
               @blur="handleInputConfirm(3)"
+               maxlength="30"
             >
             </el-input>
             <el-button
@@ -45,7 +46,7 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="活动主题">
-              <el-input v-model="form.theme" placeholder="请输入"></el-input>
+              <el-input v-model="form.theme" placeholder="请输入" maxlength="200"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -86,7 +87,7 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="活动地址" prop="place">
-              <el-input v-model="form.place" placeholder="请输入"></el-input>
+              <el-input v-model="form.place" placeholder="请输入" maxlength="500"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="2">
@@ -110,6 +111,7 @@
               size="small"
               @keyup.enter.native="$event.target.blur"
               @blur="handleInputConfirm(2)"
+               maxlength="30"
             >
             </el-input>
             <el-button

@@ -106,7 +106,7 @@
               <el-select
                 v-model="formAdd.zslxm"
                 placeholder="请选择住宿类型"
-                @change="changeZslx(formAdd.zslxm)"
+                @change="changeZslx(formAdd.zslxm,1)"
                 collapse-tags
               >
                 <el-option
@@ -290,7 +290,7 @@
                 v-model="formEdit.zslxm"
                 v-show="isEdit == 1"
                 placeholder="请选择住宿类型"
-                @change="changeZslx(formEdit.zslxm)"
+                @change="changeZslx(formEdit.zslxm,2)"
                 collapse-tags
                 disabled
               >
@@ -848,11 +848,11 @@ export default {
         formData.append("sfts", this.formAdd.sfts ||"");
         formData.append("sqfjid", this.formAdd.sqfjid ||"");
         formData.append("sqldid", this.formAdd.sqldid ||"");
-        formData.append("sqly", this.formAdd.sqly);
+        formData.append("sqly", this.formAdd.sqly ||"");
         formData.append("xzsdzm", this.formAdd.xzsdzm ||"");
         formData.append("xzsxxdz", this.formAdd.xzsxxdz ||"");
         formData.append("yzsdzm", this.formAdd.yzsdzm ||"");
-        formData.append("yzsxxdz", this.formAdd.yzsxxdz);
+        formData.append("yzsxxdz", this.formAdd.yzsxxdz ||"");
         formData.append("xh", this.$store.getters.userId);
         if (this.fileList.length > 0) {
           this.fileList.map((file) => {
@@ -909,11 +909,11 @@ export default {
         formData.append("sfts", this.formEdit.sfts ||"");
         formData.append("sqfjid", this.formEdit.sqfjid ||"");
         formData.append("sqldid", this.formEdit.sqldid ||"");
-        formData.append("sqly", this.formEdit.sqly);
+        formData.append("sqly", this.formEdit.sqly ||"");
         formData.append("xzsdzm", this.formEdit.xzsdzm ||"");
         formData.append("xzsxxdz", this.formEdit.xzsxxdz ||"");
         formData.append("yzsdzm", this.formEdit.yzsdzm ||"");
-        formData.append("yzsxxdz", this.formEdit.yzsxxdz);
+        formData.append("yzsxxdz", this.formEdit.yzsxxdz ||"");
         formData.append("xh", this.formEdit.xh);
         formData.append("id", this.formEdit.id);
         if (this.fileListAdd.length > 0) {
@@ -980,12 +980,30 @@ export default {
         this.$message.error("存在非待审核状态数据，不可以撤回");
       }
     },
-    changeZslx(flag){
+    changeZslx(flag,val){
       if( flag && flag == 1){
         this.jzflag = 1;
       } else{ 
         this.jzflag = 2;
-      }
+      };
+      if(val == 1){
+        this.$set(this.formAdd,"yzsdzm","");
+        this.$set(this.formAdd,"yzsxxdz","");
+        this.$set(this.formAdd,"sfts","");
+        this.$set(this.formAdd,"sqfjid","");
+        this.$set(this.formAdd,"sqldid","");
+        this.$set(this.formAdd,"xzsdzm","");
+        this.$set(this.formAdd,"xzsxxdz","");
+      } else{ 
+        this.$set(this.formEdit,"yzsdzm","");
+        this.$set(this.formEdit,"yzsxxdz","");
+        this.$set(this.formEdit,"sfts","");
+        this.$set(this.formEdit,"sqfjid","");
+        this.$set(this.formEdit,"sqldid","");
+        this.$set(this.formEdit,"xzsdzm","");
+        this.$set(this.formEdit,"xzsxxdz","");
+      };
+      
     },
     changeLD(flag){
       queryFj({ dm: flag }).then((res) => {

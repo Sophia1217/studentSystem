@@ -213,6 +213,7 @@
                   v-model="detailInfoData.fdyZpJbqkRes.cqcs"
                   oninput="this.value=this.value.replace(/[^\d]/g,'')"
                   placeholder="请输入数字"
+                  maxlength="5"
                 /><span>次</span>
               </div>
               <div class="cishu" v-else>
@@ -221,7 +222,7 @@
               <el-input
                 type="textarea"
                 :rows="5"
-                maxlength="500"
+                maxlength="100"
                 show-word-limit
                 v-model="detailInfoData.fdyZpJbqkRes.cqqk"
                 :readonly="isEdit == 0"
@@ -235,6 +236,7 @@
                   v-model="detailInfoData.fdyZpJbqkRes.bthdcs"
                   placeholder="请输入数字"
                   oninput="this.value=this.value.replace(/[^\d]/g,'')"
+                  maxlength="5"
                 /><span>次</span>
               </div>
               <div class="cishu" v-else>
@@ -346,6 +348,7 @@
                     v-if="isEdit == 1"
                     v-model="scope.row.hjxm"
                     placeholder="请输入"
+                    maxlength="100"
                   />
                   <span v-else>{{ scope.row.hjxm }}</span>
                 </template>
@@ -356,6 +359,7 @@
                     v-if="isEdit == 1"
                     v-model="scope.row.hjmc"
                     placeholder="请输入"
+                    maxlength="100"
                   />
                   <span v-else>{{ scope.row.hjmc }}</span>
                 </template>
@@ -366,6 +370,7 @@
                     v-if="isEdit == 1"
                     v-model="scope.row.hjjb"
                     placeholder="请输入"
+                    maxlength="100"
                   />
                   <span v-else>{{ scope.row.hjjb }}</span>
                 </template>
@@ -376,6 +381,7 @@
                     v-if="isEdit == 1"
                     v-model="scope.row.hjdc"
                     placeholder="请输入"
+                    maxlength="100"
                   />
                   <span v-else>{{ scope.row.hjdc }}</span>
                 </template>
@@ -426,6 +432,7 @@
                     v-if="isEdit == 1"
                     v-model="scope.row.wjqk"
                     placeholder="请输入"
+                    maxlength="100"
                   />
                   <span v-else>{{ scope.row.wjqk }}</span>
                 </template>
@@ -436,6 +443,7 @@
                     v-if="isEdit == 1"
                     v-model="scope.row.wjcf"
                     placeholder="请输入"
+                    maxlength="100"
                   />
                   <span v-else>{{ scope.row.wjcf }}</span>
                 </template>
@@ -445,6 +453,7 @@
                   <el-input
                     v-if="isEdit == 1"
                     v-model="scope.row.wjbz"
+                    maxlength="100"
                     placeholder="请输入"
                   />
                   <span v-else>{{ scope.row.wjbz }}</span>

@@ -206,6 +206,7 @@
                 v-model="date"
                 :disabled="edit == 2 ? false : true"
                 format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
                 type="date"
                 :clearable="false"
                 placeholder="选择日期"

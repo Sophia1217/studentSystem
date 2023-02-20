@@ -18,5 +18,14 @@ export function queryXjydAuth(query) {
   })
 }
 
+// 根据模块名称返回对应流程编号
+export function queryFlowIdByMk(query) {
+  return request({
+    url: "/flowable/getFlowIdByMk",
+    method: 'get',
+    params: query
+  })
+}
+
 
 

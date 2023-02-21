@@ -81,12 +81,12 @@
           <el-form-item
             label="学生可申请岗位数"
             class="formItemDuty"
-            prop="xsksqgw"
+            prop="xsgwKsqgws"
             :rules="rules.common"
           >
             <div class="formItemDutyIn">
               <el-input-number
-                v-model="formAdd.xsksqgw"
+                v-model="formAdd.xsgwKsqgws"
                 controls-position="right"
                 :min="0"
                 :max="10"
@@ -470,7 +470,7 @@ export default {
         yrdwGggwcjsx: 1, //用人单位酬金上限
         //////学生岗位参数设置
         xsgwKhdgws: 0, //学生可获得岗位数
-        xsksqgw: 0, //学生可申请岗位数
+        xsgwKsqgws: 0, //学生可申请岗位数
         xsgwSqkg: false, //学生岗位申请开关
         xssqsj: [], //学生岗位申请起止时间  xsgwStartDate xsgwEndDate
         xsgwZgsc: 1, //学生岗位申请是否需要通过资格审查
@@ -660,7 +660,7 @@ export default {
 
   .leftDIV {
     width: 100%;
-    padding: 20px 20%;
+    padding: 20px 15%;
   }
 }
 .editBottom {

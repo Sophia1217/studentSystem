@@ -54,7 +54,6 @@
           @selection-change="handleSelectionChange"
           @sort-change="changeTableSort"
         >
-          <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
             type="index"
             label="序号"
@@ -179,13 +178,8 @@ export default {
     },
     // 导出确认
     handleConfirm() {
-      let idList = [];
-      for (let item_row of this.multipleSelection) {
-        idList.push(item_row.businesId);
-      }
       this.exportParams.pageNum = 0;
       this.exportParams.pageSize = 0;
-      this.$set(this.exportParams, "idList", idList);
       tjExp(this.exportParams)
         .then((res) => {
           this.downloadFn(res, "数据统计导出.xlsx", "xlsx");

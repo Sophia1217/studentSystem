@@ -254,6 +254,7 @@ export default {
         path: "/awardSubsidyTable",
         query:{
           businesId: row.businesId,
+          status: row.status,
         },
       });
     },
@@ -424,6 +425,7 @@ export default {
         path: "/awardSubsidyTable",
         query:{
           businesId: "",
+          status: "",
         },
       });
     },

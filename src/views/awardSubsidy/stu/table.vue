@@ -9,16 +9,16 @@
       <div class="tableStyle">
         <!-- 本科基本情况 -->
         <div class="imgWrap" v-if="pyccflag == 1">
-            <div class="photo">
-              <img
-                :src="
-                  detailInfoData
-                    ? 'data:image/png;base64,' + detailInfoData.photo
-                    : ''
-                "
-                alt="照片"
-              />
-            </div>
+          <div class="photo">
+            <img
+              :src="
+                detailInfoData
+                  ? 'data:image/png;base64,' + detailInfoData.photo
+                  : ''
+              "
+              alt="照片"
+            />
+          </div>
         </div>
         <div class="information" v-if="pyccflag == 1">
           <el-row :gutter="20">
@@ -123,7 +123,11 @@
                 <div class="title">英语四六级分数</div>
                 <div class="content">
                   <div v-show="isEdit == 1">{{ formAdd.yysljfs }}</div>
-                  <el-input v-model="formAdd.yysljfs" v-show="isEdit == 2" maxlength="10"/> 
+                  <el-input
+                    v-model="formAdd.yysljfs"
+                    v-show="isEdit == 2"
+                    maxlength="10"
+                  />
                 </div>
               </div>
             </el-col>
@@ -140,7 +144,14 @@
             <el-col :span="24" class="rowStyle">
               <div class="wrap">
                 <div class="title">本学年学习成绩</div>
-                <div class="content">平均学分绩：{{detailInfoData.pjxfj}} 必修课：{{detailInfoData.bxkms}}门，通过：{{ detailInfoData.bxktgms}}门  成绩排名：{{detailInfoData.cjpm}}  综合排名名次：{{detailInfoData.cjpm}}</div>
+                <div class="content">
+                  平均学分绩：{{ detailInfoData.pjxfj }} 必修课：{{
+                    detailInfoData.bxkms
+                  }}门，通过：{{ detailInfoData.bxktgms }}门 成绩排名：{{
+                    detailInfoData.cjpm
+                  }}
+                  综合排名名次：{{ detailInfoData.cjpm }}
+                </div>
               </div>
             </el-col>
           </el-row>
@@ -240,87 +251,95 @@
         </div>
       </div>
       <div class="headline top">申请信息</div>
-      <el-form :model="formAdd" ref="formAdd" label-width="110px" :rules="rules">
+      <el-form :model="formAdd" ref="formAdd" label-width="110px">
         <el-row :gutter="20">
           <el-col :span="5">
-              <el-form-item label="奖助类别"
-                label-width="110px" 
-                prop="jzlb"
+            <el-form-item
+              label="奖助类别"
+              label-width="110px"
+              prop="jzlbm"
+              :rules="rules.jzlbm"
+            >
+              <div v-show="isEdit == 1">{{ formAdd.jzlbMc }}</div>
+              <el-select
+                v-model="formAdd.jzlbm"
+                collapse-tags
+                v-show="isEdit == 2"
+                @change="changeLb"
+                placeholder="请选择"
+                size="small"
               >
-                <div v-show="isEdit == 1">{{formAdd.jzlbMc}}</div>
-                <el-select
-                  v-model="formAdd.jzlbm"
-                  collapse-tags
-                  v-show="isEdit == 2"
-                  @change="changeLb"
-                  placeholder="请选择"
-                  size="small"
-                >
-                  <el-option
-                    v-for="item in jzlbOps"
-                    :key="item.dm"
-                    :label="item.mc"
-                    :value="item.dm"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
+                <el-option
+                  v-for="item in jzlbOps"
+                  :key="item.dm"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </el-form-item>
           </el-col>
           <el-col :span="5">
-              <el-form-item label="申请项目"
-                label-width="110px" 
-                prop="jzlb"
+            <el-form-item
+              label="申请项目"
+              label-width="110px"
+              prop="zzxmId"
+              :rules="rules.zzxmId"
+            >
+              <div v-show="isEdit == 1">{{ formAdd.zzxmmc }}</div>
+              <el-select
+                v-model="formAdd.zzxmId"
+                collapse-tags
+                v-show="isEdit == 2"
+                @change="changeXm"
+                placeholder="请选择"
+                size="small"
               >
-                <div v-show="isEdit == 1">{{formAdd.zzxmmc}}</div>
-                <el-select
-                  v-model="formAdd.zzxmId"
-                  collapse-tags
-                  v-show="isEdit == 2"
-                  @change="changeXm"
-                  placeholder="请选择"
-                  size="small"
-                >
-                  <el-option
-                    v-for="item in zzxmOps"
-                    :key="item.dm"
-                    :label="item.mc"
-                    :value="item.dm"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
+                <el-option
+                  v-for="item in zzxmOps"
+                  :key="item.dm"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </el-form-item>
           </el-col>
           <el-col :span="5">
-              <el-form-item label="申请等级"
-                label-width="110px" 
-                prop="jzlb"
+            <el-form-item
+              label="申请等级"
+              label-width="110px"
+              prop="sqdjId"
+              :rules="rules.sqdjId"
+            >
+              <div v-show="isEdit == 1">{{ formAdd.sqdj }}</div>
+              <el-select
+                v-model="formAdd.sqdjId"
+                collapse-tags
+                v-show="isEdit == 2"
+                placeholder="请选择"
+                size="small"
               >
-                <div v-show="isEdit == 1">{{formAdd.sqdj}}</div>
-                <el-select
-                  v-model="formAdd.sqdjId"
-                  collapse-tags
-                  v-show="isEdit == 2"
-                  placeholder="请选择"
-                  size="small"
-                >
-                  <el-option
-                    v-for="item in sqdjOps"
-                    :key="item.dm"
-                    :label="item.mc"
-                    :value="item.dm"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
+                <el-option
+                  v-for="item in sqdjOps"
+                  :key="item.dm"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </el-form-item>
           </el-col>
           <el-col :span="5">
-              <el-form-item label="评奖周期">
-                <div>{{(formAdd.pjxn ||"") + ' ' + (formAdd.pjxqMc ||"")}}</div>
-                <!-- <el-input v-model="formAdd.pjxn" v-show="isEdit == 2" readonly/>  -->
-              </el-form-item>
+            <el-form-item label="评奖周期">
+              <div>
+                {{ (formAdd.pjxn || "") + " " + (formAdd.pjxqMc || "") }}
+              </div>
+              <!-- <el-input v-model="formAdd.pjxn" v-show="isEdit == 2" readonly/>  -->
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="20">
             <el-form-item label="申请人自述">
-              <div v-show="isEdit == 1">{{formAdd.sqrzs}}</div>
+              <div v-show="isEdit == 1">{{ formAdd.sqrzs }}</div>
               <el-input
                 type="textarea"
                 :rows="6"
@@ -333,11 +352,16 @@
           </el-col>
         </el-row>
       </el-form>
-      
     </div>
     <div v-if="isEdit != 2" class="editBottom">
       <div class="btn cancel" @click="handleBack">返回</div>
-      <div class="btn editIcon" @click="editButtonClick">编辑</div>
+      <div
+        class="btn editIcon"
+        @click="editButtonClick"
+        v-show="status == '01' || status == '08'"
+      >
+        编辑
+      </div>
     </div>
 
     <div v-if="isEdit == 2" class="editBottom">
@@ -360,6 +384,7 @@ export default {
   data() {
     return {
       businesId: this.$route.query.businesId,
+      status: this.$route.query.status,
       isEdit: 1, //2编辑，1只读
       nd: "",
       xh: this.$store.getters.userId,
@@ -368,72 +393,81 @@ export default {
       pxjbmOps: [], //培训级别码
       tableData: {},
       pyccflag: 1, //1本科2硕博
-      formAdd:{
-        yysljfs:"",
-        pjxn:"",
-        pjxqMc:"",
-        jzlbm:"",
-        zzxmId:"",
-        sqdjId:"",
-        sqrzs:"",
+      formAdd: {
+        yysljfs: "",
+        pjxn: "",
+        pjxqm: "",
+        jzlbm: "",
+        zzxmId: "",
+        sqdjId: "",
+        sqrzs: "",
       },
-      formTable:{
-        jxList:[ //奖项
-          { jx: "", jxmc:"", bjdw:"" },
+      formTable: {
+        jxList: [
+          //奖项
+          { jx: "", jxmc: "", bjdw: "" },
         ],
-        lwList: [ //论文
-          { jx: "", jxmc:"", bjdw:"" },
+        lwList: [
+          //论文
+          { jx: "", jxmc: "", bjdw: "" },
         ],
-        kycgList: [ //科研成果
-          { jx: "", jxmc:"", bjdw:"" },
+        kycgList: [
+          //科研成果
+          { jx: "", jxmc: "", bjdw: "" },
         ],
-        shsjList: [ //社会实践
-          { jx: "", jxmc:"", bjdw:"" },
+        shsjList: [
+          //社会实践
+          { jx: "", jxmc: "", bjdw: "" },
         ],
-        ddwtList: [ //道德文体
-          { jx: "", jxmc:"", bjdw:"" },
+        ddwtList: [
+          //道德文体
+          { jx: "", jxmc: "", bjdw: "" },
         ],
-        kycgYanList: [ //科研成果（研）
-          { jx: "", jxmc:"", bjdw:"" },
+        kycgYanList: [
+          //科研成果（研）
+          { jx: "", jxmc: "", bjdw: "" },
         ],
-        hjqkYanList: [ //获奖情况
-          { jx: "", jxmc:"", bjdw:"" },
+        hjqkYanList: [
+          //获奖情况
+          { jx: "", jxmc: "", bjdw: "" },
         ],
       },
-      jzlbOps:[
+      jzlbOps: [
         { dm: "1", mc: "奖学金" },
         { dm: "2", mc: "助学金" },
-      ], 
-      sqdjOps:[],
-      zzxmOps:[],
+      ],
+      sqdjOps: [],
+      zzxmOps: [],
       rules: {
-        sqdj: [
+        yysljfs: [
           {
             required: true,
-            message: "申请等级不能为空",
+            message: "英语四六级不能为空",
             trigger: "blur",
           },
         ],
-        sqly: [
+        jzlbm: [
           {
             required: true,
-            message: "申请理由不能为空",
-            trigger: "blur",
+            message: "奖助类别不能为空",
+            trigger: "change",
           },
         ],
-        jxdjListRule: [
+        zzxmId: [
           {
             required: true,
-            message: "奖项不能为空",
-            trigger: "blur",
+            message: "申请项目不能为空",
+            trigger: "change",
           },
+        ],
+        sqdjId: [
+          { required: true, message: "申请等级不能为空", trigger: "change" },
         ],
       },
     };
   },
   created() {},
   mounted() {
-
     // this.getCode("dmpxjbm");
     this.getDetail();
   },
@@ -467,39 +501,41 @@ export default {
       this.isEdit = 2;
     },
     getDetail() {
-      if (this.businesId !=="") {
+      if (this.businesId !== "") {
         //详情
         this.isEdit = 1;
         console.log("id有值");
-        getDetail({businesId: this.businesId}).then((res) => {
+        getDetail({ businesId: this.businesId }).then((res) => {
           this.detailInfoData = res.data;
           this.formAdd = res.data;
-
+          console.log("status", this.status);
           this.getZzxm(this.formAdd.jzlbm);
           this.getSqdj(this.formAdd.zzxmId);
         });
-        
-      } else{
-        this.isEdit = 2;//新增，编辑
+      } else {
+        this.isEdit = 2; //新增，编辑
         console.log("id空空");
-        queryXsInfo({xh: this.$store.getters.userId}).then((res)=>{
-          this.detailInfoData = res.data;
-        }).catch((err)=>{});
-        this.formAdd.pjxn = res.data.pjxn ||"";
-        this.formAdd.pjxqMc = res.data.pjxqMc ||"";
-      };
+        queryXsInfo({ xh: this.$store.getters.userId })
+          .then((res) => {
+            this.detailInfoData = res.data;
+          })
+          .catch((err) => {});
+      }
     },
     //获取资助项目
-    getZzxm(val){
-      this.sqdjOps =[];
-      queryAllZzxm({jzlbm: val}).then((res) => {
-        this.zzxmOps = res.data; 
+    getZzxm(val) {
+      this.sqdjOps = [];
+      queryAllZzxm({ jzlbm: val }).then((res) => {
+        this.zzxmOps = res.data.zzxmDataCodeList;
+        this.formAdd.pjxn = res.data.pjxn || "";
+        this.formAdd.pjxqMc = res.data.pjxq || "";
+        this.formAdd.pjxqm = res.data.pjxqm || "";
       });
     },
     //获取等级
-    getSqdj(val){
-      this.sqdjOps =[];
-      queryAllDj({zzxmId: val}).then((res) => {
+    getSqdj(val) {
+      this.sqdjOps = [];
+      queryAllDj({ zzxmId: val }).then((res) => {
         this.sqdjOps = res.data;
       });
     },
@@ -519,27 +555,29 @@ export default {
           zzxmId: this.formAdd.zzxmId,
           sqdjId: this.formAdd.sqdjId,
           sqrzs: this.formAdd.sqrzs,
+          pjxn: this.formAdd.pjxn,
+          pjxqm: this.formAdd.pjxqm,
+          id: this.businesId || "",
         };
         insert(data)
           .then((res) => {
             this.$message.success("保存成功");
             this.$router.go(-1);
-            
           })
           .catch((err) => {});
       }
     },
     //类别
     changeLb(val) {
-      this.zzxmOps =[];
+      this.zzxmOps = [];
+      this.sqdjOps = [];
       this.getZzxm(val);
     },
     //项目
     changeXm(val) {
-      this.sqdjOps =[];
+      this.sqdjOps = [];
       this.getSqdj(val);
     },
-
   },
 };
 </script>
@@ -599,10 +637,10 @@ export default {
         }
       }
     }
-    .top{
+    .top {
       padding-bottom: 10px;
     }
-    .baseline{
+    .baseline {
       padding-left: 20px;
       padding-top: 10px;
       box-sizing: border-box;

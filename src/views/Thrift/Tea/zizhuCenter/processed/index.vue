@@ -108,7 +108,7 @@
           >
           </el-table-column>
           <el-table-column
-            prop="gwDetailMc	"
+            prop="gwDetailMc"
             label="岗位"
             min-width="100"
             sortable
@@ -122,7 +122,7 @@
           >
           </el-table-column>
           <el-table-column
-            prop="pyccmmc"
+            prop="gwYrdw"
             label="用人部门"
             min-width="100"
             sortable
@@ -295,19 +295,15 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import {
-  queryDshList,
   tyFlow,
   jjFlow,
   backFlow,
   thFinal,
   exportZjbbFlow,
-  queryDshDetail,
-  queryDetailList,
 } from "@/api/dailyBehavior/stuTravelTea";
-import { getCollege } from "@/api/class/maintenanceClass";
+import { queryDshList } from "@/api/thrift/gwAudit";
 import lctCom from "../../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { param } from "../../../../../utils";
 export default {
   name: "manStudent",
   components: { CheckboxCom, lctCom },
@@ -327,12 +323,13 @@ export default {
       },
       exportParams: {},
       tableData: [],
-      allDwh: [],
       commonParams: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
         total: 0,
+        orderZd: "",
+        orderPx: "",
       },
       training: {
         // 培养层次
@@ -372,8 +369,6 @@ export default {
 
   mounted() {
     this.handleSearch();
-    this.getAllCollege();
-    this.getCode("dmpyccm"); // 培养层次
     this.getCode1("dmsplcm"); // 培养层次
   },
 
@@ -524,14 +519,6 @@ export default {
         }
       });
     },
-    getAllCollege() {
-      getCollege()
-        .then((res) => {
-          this.allDwh = res.data.rows;
-        })
-        .catch((err) => {});
-    },
-
     hadleDetail(row) {
       console.log("row", row);
       this.$router.push({
@@ -619,12 +606,6 @@ export default {
     },
     // 查询
     handleSearch() {
-      let rqs,
-        rqe = "";
-      if (this.datePicker && this.datePicker.length > 0) {
-        rqs = this.datePicker[0];
-        rqe = this.datePicker[1];
-      }
       let data = {
         gwMainMc: this.select == "gwMainMc" ? this.searchVal : null,
         gwDetailMc: this.select == "gwDetailMc" ? this.searchVal : null,

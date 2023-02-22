@@ -119,6 +119,15 @@
           <span>学年</span>
         </div>
         <div class="headerRight">
+          <div style="margin-right: 15px">
+            <el-dropdown split-button @command="Daochu">
+              <span class="el-dropdown-link"> 鉴定表导出</span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="1">PDF下载</el-dropdown-item>
+                <el-dropdown-item command="2">Word下载</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
@@ -151,13 +160,13 @@
           >
           </el-table-column>
           <el-table-column
-            prop="dwhmc"
+            prop="ssdwdmc"
             label="培养单位"
             min-width="100"
             sortable
           >
           </el-table-column>
-          <el-table-column prop="zydmmc" label="专业" min-width="100" sortable>
+          <el-table-column prop="zydmc" label="专业" min-width="100" sortable>
           </el-table-column>
           <el-table-column
             prop="sqsj"
@@ -167,11 +176,25 @@
           >
           </el-table-column>
           <el-table-column
-            prop="statusChinese"
+            prop="status"
             label="审核状态"
-            min-width="100"
-            sortable
+            width="110"
+            sortable="custom"
           >
+            <template slot-scope="scope">
+              <el-select
+                v-model="scope.row.status"
+                placeholder="请选择"
+                :disabled="true"
+              >
+                <el-option
+                  v-for="(item, index) in ztStatus"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </template>
           </el-table-column>
           <el-table-column prop="createDwhMc" label="审核进度">
             <template slot-scope="scope">
@@ -231,227 +254,6 @@
         </span>
       </el-dialog>
 
-      <el-dialog
-        title="申报详情"
-        :visible.sync="detailModal"
-        :before-close="detailCancel"
-        width="60%"
-      >
-        <template>
-          <div class="baseInfo">
-            <el-form
-              :data="formDetails"
-              :label-position="pyccflag == 2 ? 'top' : 'right'"
-              label-width="110px"
-            >
-              <div class="formLeft">
-                <span class="title">学生基本信息</span>
-              </div>
-              <div class="backDetail">
-                <div class="formRight">
-                  <el-row>
-                    <el-col :span="8" class="rowStyle">
-                      <div class="wrap">
-                        <div class="title">学号</div>
-                        <div class="content">{{ formDetails.xh }}</div>
-                      </div>
-                    </el-col>
-                    <el-col :span="8" class="rowStyle">
-                      <div class="wrap">
-                        <div class="title">姓名</div>
-                        <div class="content">{{ formDetails.xm }}</div>
-                      </div>
-                    </el-col>
-                    <el-col :span="8" class="rowStyle">
-                      <div class="wrap">
-                        <div class="title">性别</div>
-                        <div class="content">{{ formDetails.xbmc }}</div>
-                      </div>
-                    </el-col>
-                  </el-row>
-                  <div v-if="pyccflag == 1">
-                    <el-row>
-                      <el-col :span="8" class="rowStyle">
-                        <div class="wrap">
-                          <div class="title">培养层次</div>
-                          <div class="content">{{ formDetails.pyccmc }}</div>
-                        </div>
-                      </el-col>
-                      <el-col :span="8" class="rowStyle">
-                        <div class="wrap">
-                          <div class="title">培养单位</div>
-                          <div class="content">{{ formDetails.dwhmc }}</div>
-                        </div>
-                      </el-col>
-                      <el-col :span="8" class="rowStyle">
-                        <div class="wrap">
-                          <div class="title">年级</div>
-                          <div class="content">{{ formDetails.ssnj }}</div>
-                        </div>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="8" class="rowStyle">
-                        <div class="wrap">
-                          <div class="title">专业</div>
-                          <div class="content">{{ formDetails.zydmmc }}</div>
-                        </div>
-                      </el-col>
-                      <el-col :span="16" class="rowStyle">
-                        <div class="wrap">
-                          <div class="title">班级</div>
-                          <div class="content">{{ formDetails.bjmmc }}</div>
-                        </div>
-                      </el-col>
-                    </el-row>
-                  </div>
-                  <div v-if="pyccflag == 2">
-                    <el-row>
-                      <el-col :span="8" class="rowStyle">
-                        <div class="wrap">
-                          <div class="title">出生日期</div>
-                          <div class="content">{{ formDetails.csrq }}</div>
-                        </div>
-                      </el-col>
-                      <el-col :span="8" class="rowStyle">
-                        <div class="wrap">
-                          <div class="title">民族</div>
-                          <div class="content">{{ formDetails.mzmc }}</div>
-                        </div>
-                      </el-col>
-                      <el-col :span="8" class="rowStyle">
-                        <div class="wrap">
-                          <div class="title">政治面貌</div>
-                          <div class="content">{{ formDetails.zzmmmc }}</div>
-                        </div>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="8" class="rowStyle">
-                        <div class="wrap">
-                          <div class="title">培养单位</div>
-                          <div class="content">{{ formDetails.dwhmc }}</div>
-                        </div>
-                      </el-col>
-                      <el-col :span="8" class="rowStyle">
-                        <div class="wrap">
-                          <div class="title">专业</div>
-                          <div class="content">{{ formDetails.zydmmc }}</div>
-                        </div>
-                      </el-col>
-                      <el-col :span="8" class="rowStyle">
-                        <div class="wrap">
-                          <div class="title">导师</div>
-                          <div class="content">{{ formDetails.dsxm }}</div>
-                        </div>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="8" class="rowStyle">
-                        <div class="wrap">
-                          <div class="title">攻读学位</div>
-                          <div class="content">{{ formDetails.gdxwmc }}</div>
-                        </div>
-                      </el-col>
-                      <el-col :span="8" class="rowStyle">
-                        <div class="wrap">
-                          <div class="title">学位类型</div>
-                          <div class="content">{{ formDetails.xwlxmc }}</div>
-                        </div>
-                      </el-col>
-                      <el-col :span="8" class="rowStyle">
-                        <div class="wrap">
-                          <div class="title">移动电话</div>
-                          <div class="content">{{ formDetails.yddh }}</div>
-                        </div>
-                      </el-col>
-                    </el-row>
-                    <el-row>
-                      <el-col :span="24" class="rowStyle">
-                        <div class="wrap">
-                          <div class="title">上学年学业奖学金等级</div>
-                          <div class="content">
-                            {{ formDetails.sxnjxjdjmc }}
-                          </div>
-                        </div>
-                      </el-col>
-                    </el-row>
-                  </div>
-                </div>
-              </div>
-              <el-row>
-                <el-form-item label="填写学年" label-width="85px">
-                  <div>{{ formDetails.xn }}</div>
-                </el-form-item>
-              </el-row>
-              <el-row v-if="pyccflag == 1">
-                <el-form-item label="自我小结" label-width="85px">
-                  <div>{{ formDetails.zwxj }}</div>
-                </el-form-item>
-              </el-row>
-              <div v-if="pyccflag == 2">
-                <div class="formLeft"><span class="title">自我小结</span></div>
-                <el-row>
-                  <el-form-item label="政治思想表现" label-width="300px">
-                    <div>{{ formDetails.sxzzbx }}</div>
-                  </el-form-item>
-                </el-row>
-                <el-row>
-                  <el-form-item label="课程学习情况" label-width="300px">
-                    <div>{{ formDetails.kcxxqk }}</div>
-                  </el-form-item>
-                </el-row>
-                <el-row>
-                  <el-form-item
-                    label="科学研究（学位论文）工作和取得的成果、公开发表的学术论文等"
-                    label-width="300px"
-                  >
-                    <div>{{ formDetails.kycg }}</div>
-                  </el-form-item>
-                </el-row>
-                <el-row>
-                  <el-form-item
-                    label="专业实践、社会实践、学生工作等情况"
-                    label-width="300px"
-                  >
-                    <div>{{ formDetails.zsxsj }}</div>
-                  </el-form-item>
-                </el-row>
-                <el-row>
-                  <el-form-item label="奖惩情况" label-width="300px">
-                    <div>{{ formDetails.jcqk }}</div>
-                  </el-form-item>
-                </el-row>
-              </div>
-            </el-form>
-            <div class="formLeft"><span class="title">审核信息</span></div>
-            <el-form
-              :data="editDetails"
-              ref="editDetails"
-              label-width="110px"
-              :rules="rules"
-            >
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="申请审核结果" label-width="120px">
-                    <div>{{ editDetails.statusChinese }}</div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="20">
-                  <el-form-item label="申请审核意见" label-width="120px">
-                    <div>{{ editDetails.shyj }}</div>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
-          </div>
-        </template>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="detailCancel">关 闭</el-button>
-        </span>
-      </el-dialog>
       <pagination
         v-show="queryParams.total > 0"
         :total="queryParams.total"
@@ -465,6 +267,19 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="handleConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+     <el-dialog
+      title="导出确认"
+      :visible.sync="xnxjModal"
+      width="30%"
+      :close-on-click-modal="false"
+    >
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="xnxjModalCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="xnxjModaldaochu()"
           >确 定</el-button
         >
       </span>
@@ -488,15 +303,24 @@ import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getCollege, getGrade } from "@/api/class/maintenanceClass";
 import { getZY } from "@/api/student/index";
 import lctCom from "../../../../components/lct";
-import { lctTable } from "@/api/stuDangan/detailList/xiaoneiwai";
+import {
+  queryByjdFlowedList,
+  queryByjdFlowList,
+  htFlow,
+  jjFlow,
+  tyFlow,
+  exportByjd
+} from "@/api/dailyBehavior/graduationIdt";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
   name: "manStudent",
   components: { CheckboxCom, lctCom },
   data() {
     return {
+      AUTHFLAG: false,
       showExport: false,
       lctModal: false,
+      xnxjModal:false,
       ztStatus: [],
       zdOps: [],
       status: [],
@@ -512,16 +336,18 @@ export default {
         zslxmList: [],
       },
       exportParams: {},
-      leng: 0,
       tableData: [],
       allDwh: [],
       zyOps: [], // 专业下拉
       allXn: [], //学年下拉
+
       commonParams: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
         total: 0,
+        orderZd: "",
+        orderPx: "",
       },
       training: {
         // 培养层次
@@ -532,30 +358,14 @@ export default {
       },
       multipleSelection: [],
       multipleSelection1: "",
-      jjModal: false,
-      jjly: "",
-      tableInner: [],
-      thTableModal: false,
-      thModal: false,
-      thly: "",
-      tempRadio: false,
-      detailModal: false,
-      formDetails: {},
-      editDetails: [{ shyj: "", statusChinese: "" }],
-      editparams: {},
       pyccflag: 1, //1本科2硕博
-      rules: {
-        // shjg: [
-        //   { required: true, message: "审核结果不能为空", trigger: "change" },
-        // ],
-        // shyj: [
-        //   { required: true, message: "审核意见不能为空", trigger: "change" },
-        // ],
-      },
+     
     };
   },
 
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     // this.handleSearch();
     this.getAllCollege();
     this.getSchoolYears();
@@ -628,20 +438,8 @@ export default {
       this.multipleSelection1 = row;
       console.log(row);
     },
-    thTableCancel() {
-      this.thTableModal = false;
-      this.editDetails.shjg = "";
-    },
-    thTableConfirm() {
-      if (!!this.tempRadio || this.tempRadio === 0) {
-        this.thTableModal = false;
-        if (this.detailModal == false) {
-          this.thModal = true;
-        }
-      } else {
-        this.$message.error("请先勾选退回的节点");
-      }
-    },
+   
+   
     getAllCollege() {
       getCollege()
         .then((res) => {
@@ -678,23 +476,10 @@ export default {
         })
         .catch((err) => {});
     },
-    async hadleDetail(row) {
-      console.log("row", row);
-      if (row.pyccmc == "本科") {
-        this.pyccflag = 1;
-      } else {
-        this.pyccflag = 2;
-      }
-      this.detailModal = true;
-      this.editparams = row;
-      this.editDetails.shyj = row.commentList[0];
-      this.editDetails.statusChinese = row.statusChinese;
-      var data = {
-        businesId: row.businesId,
-        processId: row.processid,
-      };
-      await queryDshDetail(data).then((res) => {
-        this.formDetails = res.data;
+    hadleDetail(row) {
+      this.$router.push({
+        path: "/dailyBehavior/graduateIdt/graDetail",
+        query: { xh: row.xh, taskId: row.taskId, isEdit: 3 },
       });
     },
     detailCancel() {
@@ -715,21 +500,21 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        dwhList: this.moreIform.dwhList,
-        zydmList: this.moreIform.zydmList,
+        ssdwdm: this.moreIform.dwhList,
+        zydm: this.moreIform.zydmList,
         // bjList: this.moreIform.bjList,
         xn: this.moreIform.xn,
         // zslxmList: this.moreIform.zslxmList,
-        pyccmList: this.training.choose || [],
+        pyccm: this.training.choose || [],
         loginId: this.$store.getters.userId,
-        sqsjStart: rqs || "",
-        sqsjEnd: rqe || "",
+        sqsjs: rqs || "",
+        sqsje: rqe || "",
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryYshList(data)
+      queryByjdFlowedList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
@@ -804,6 +589,33 @@ export default {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
+    },
+    Daochu(ins) {
+      this.Type = ins == "1" ? "pdf" : "docx";
+      if (this.multipleSelection.length > 0) {
+        this.xnxjModal = true;
+      } else {
+        this.$message.error("请先选择一条数据");
+      }
+    },
+    xnxjModalCancel() {
+      this.xnxjModal = false;
+    },
+    xnxjModaldaochu() {
+      var data = [];
+      for (var x = 0; x < this.multipleSelection.length; x++) {
+        data.push({
+          exType: this.Type,
+          id: this.multipleSelection[x].id,
+          processid: this.multipleSelection[x].processid,
+          sqlx: this.multipleSelection[x].pyccm,
+          xh: this.multipleSelection[x].xh,
+        });
+      }
+      exportByjd(data).then((res) => {
+        this.downloadFn(res, "毕业鉴定表导出下载", "zip");
+        this.xnxjModal = false;
+      });
     },
   },
 };

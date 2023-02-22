@@ -386,16 +386,16 @@
                   <span v-else>{{ scope.row.hjdc }}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="hjbz" label="获奖时间">
+              <el-table-column prop="sj" label="获奖时间">
                 <template slot-scope="scope">
                   <el-date-picker
-                    v-model="scope.row.hjbz"
+                    v-model="scope.row.sj"
                     value-format="yyyy-MM-dd"
                     placeholder="选择日期"
                     type="date"
                     v-if="isEdit == 1"
                   />
-                  <span v-else>{{ scope.row.hjbz }}</span>
+                  <span v-else>{{ scope.row.sj }}</span>
                 </template>
               </el-table-column>
               <el-table-column type="fixed" label="操作" v-if="isEdit == 1">

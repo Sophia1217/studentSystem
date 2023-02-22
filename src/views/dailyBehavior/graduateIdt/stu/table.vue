@@ -1,9 +1,10 @@
 <template>
   <div class="wrap">
+    <topTitle :routeTitle="routeTitle"></topTitle>
     <!-- 基本情况 -->
     <div class="detail_right">
       <div class="right_top">
-        <p class="toptitle">华中师范大学学生及家庭情况调查表</p>
+        <p class="toptitle">华中师范大学毕业生鉴定表</p>
         <!-- <div class="timeWrap">
           <span class="updataTime"
             >创建时间：{{ formatDate(tableData.createTime) }}</span
@@ -16,6 +17,18 @@
       <!-- 学生本人基本情况 -->
       <!-- <div class="headline">学生本人基本情况</div> -->
       <div class="tableStyle">
+        <div class="imgWrap">
+          <div class="photo">
+            <img
+              :src="
+                detailInfoData
+                  ? 'data:image/png;base64,' + detailInfoData.byzp
+                  : ''
+              "
+              alt="照片"
+            />
+          </div>
+        </div>
         <div class="information">
           <el-row :gutter="20">
             <el-col :span="12" class="rowStyle">
@@ -30,7 +43,7 @@
               <div class="wrap">
                 <div class="title">性别</div>
                 <div class="content">
-                  {{ detailInfoData.xbmmc }}
+                  {{ detailInfoData.xbmc }}
                 </div>
               </div>
             </el-col>
@@ -40,7 +53,7 @@
               <div class="wrap">
                 <div class="title">曾用名</div>
                 <div class="content">
-                  {{ detailInfoData.xbmmc }}
+                  {{ detailInfoData.cym }}
                 </div>
               </div>
             </el-col>
@@ -48,7 +61,7 @@
               <div class="wrap">
                 <div class="title">出生年月</div>
                 <div class="content">
-                  {{ detailInfoData.dwhmc }}
+                  {{ detailInfoData.csrq }}
                 </div>
               </div>
             </el-col>
@@ -57,16 +70,28 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">家庭出身</div>
-                <div class="content">
-                  {{ detailInfoData.zydmmc }}
+                <div class="content" v-if="isEdit != 1">
+                  {{ detailInfoData.jtcs }}
+                </div>
+                <div class="content" v-else>
+                  <el-input
+                    v-model="detailInfoData.jtcs"
+                    maxlength="100"
+                  ></el-input>
                 </div>
               </div>
             </el-col>
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">本人成分</div>
-                <div class="content">
-                  {{ detailInfoData.nj }}
+                <div class="content" v-if="isEdit != 1">
+                  {{ detailInfoData.brcf }}
+                </div>
+                <div class="content" v-else>
+                  <el-input
+                    v-model="detailInfoData.brcf"
+                    maxlength="100"
+                  ></el-input>
                 </div>
               </div>
             </el-col>
@@ -76,7 +101,7 @@
               <div class="wrap">
                 <div class="title">籍贯</div>
                 <div class="content">
-                  {{ detailInfoData.csrq }}
+                  {{ detailInfoData.jgmc }}
                 </div>
               </div>
             </el-col>
@@ -84,7 +109,7 @@
               <div class="wrap">
                 <div class="title">民族</div>
                 <div class="content">
-                  {{ detailInfoData.jgmc }}
+                  {{ detailInfoData.mzmc }}
                 </div>
               </div>
             </el-col>
@@ -93,8 +118,15 @@
             <el-col :span="24" class="rowStyle">
               <div class="wrap">
                 <div class="title">现在家庭住址</div>
-                <div class="content">
-                  {{ detailInfoData.sfzjh }}
+                <div class="content" v-if="isEdit != 1">
+                  {{ detailInfoData.xjtzz }}
+                </div>
+                <div class="content" v-else>
+                  <el-input
+                    v-model="detailInfoData.xjtzz"
+                    maxlength="100"
+                    style="width: 300%"
+                  ></el-input>
                 </div>
               </div>
             </el-col>
@@ -104,11 +136,11 @@
               <div class="wrap">
                 <div class="title">是否华侨侨居何处</div>
                 <div class="content" v-if="isEdit != 1">
-                  {{ detailInfoData.sfzjh }}
+                  {{ detailInfoData.sfhqQjhc }}
                 </div>
                 <div class="content" v-else>
                   <el-input
-                    v-model="detailInfoData.sfzjh"
+                    v-model="detailInfoData.sfhqQjhc"
                     maxlength="100"
                     style="width: 300%"
                   ></el-input>
@@ -121,11 +153,11 @@
               <div class="wrap">
                 <div class="title">本人身体健康状况</div>
                 <div class="content" v-if="isEdit != 1">
-                  {{ detailInfoData.sfzjh }}
+                  {{ detailInfoData.brstzk }}
                 </div>
                 <div class="content" v-else>
                   <el-input
-                    v-model="detailInfoData.sfzjh"
+                    v-model="detailInfoData.brstzk"
                     maxlength="100"
                     style="width: 300%"
                   ></el-input>
@@ -138,13 +170,13 @@
               <div class="wrap">
                 <div class="title">何时何地何人介参加共产党或共青团</div>
                 <div class="content" v-if="isEdit != 1">
-                  {{ detailInfoData.sfzjh }}
+                  {{ detailInfoData.sfrdxq }}
                 </div>
                 <div class="content" v-else>
                   <el-input
                     type="textarea"
                     :rows="2"
-                    v-model="detailInfoData.sfzjh"
+                    v-model="detailInfoData.sfrdxq"
                     maxlength="500"
                     style="width: 300%"
                   ></el-input>
@@ -159,13 +191,13 @@
                   婚否？对方姓名、政治面貌、现在何处、任何处
                 </div>
                 <div class="content" v-if="isEdit != 1">
-                  {{ detailInfoData.sfzjh }}
+                  {{ detailInfoData.hyxq }}
                 </div>
                 <div class="content" v-else>
                   <el-input
                     type="textarea"
                     :rows="2"
-                    v-model="detailInfoData.sfzjh"
+                    v-model="detailInfoData.hyxq"
                     maxlength="500"
                     style="width: 300%"
                   ></el-input>
@@ -178,13 +210,13 @@
               <div class="wrap">
                 <div class="title">家庭经济情况及主要经济来源</div>
                 <div class="content" v-if="isEdit != 1">
-                  {{ detailInfoData.sfzjh }}
+                  {{ detailInfoData.jtjjzk }}
                 </div>
                 <div class="content" v-else>
                   <el-input
                     type="textarea"
                     :rows="2"
-                    v-model="detailInfoData.sfzjh"
+                    v-model="detailInfoData.jtjjzk"
                     maxlength="500"
                     style="width: 300%"
                   ></el-input>
@@ -197,13 +229,13 @@
               <div class="wrap">
                 <div class="title">何时何地因何原因受过何种奖励或处分</div>
                 <div class="content" v-if="isEdit != 1">
-                  {{ detailInfoData.sfzjh }}
+                  {{ detailInfoData.cfxq }}
                 </div>
                 <div class="content" v-else>
                   <el-input
                     type="textarea"
                     :rows="2"
-                    v-model="detailInfoData.sfzjh"
+                    v-model="detailInfoData.cfxq"
                     maxlength="500"
                     style="width: 300%"
                   ></el-input>
@@ -214,7 +246,7 @@
         </div>
       </div>
 
-      <!-- 家庭成员信息 -->
+      <!-- 学习经历 -->
       <div class="headline">
         <div>学习经历</div>
         <div class="editBtn" @click="addDetailInfoData(1)" v-if="isEdit == 1">
@@ -222,13 +254,15 @@
         </div>
       </div>
       <div class="tableStyle">
-        <el-table :data="jtList" style="width: 100%">
-          <el-table-column prop="nsr" label="自何年何月起至何年何月止">
+        <el-table :data="tableData" style="width: 100%">
+          <el-table-column prop="xxsj" label="自何年何月起至何年何月止">
             <template slot-scope="scope">
-              <div v-if="isEdit != 1">{{ scope.row.nsr }}</div>
+              <div v-if="isEdit != 1">
+                {{ scope.row.ssjlkssj }}至{{ scope.row.xxjljssj }}
+              </div>
               <div v-else>
                 <el-date-picker
-                  v-model="scope.row.nsrscope.row.nsr"
+                  v-model="scope.row.xxsj"
                   value-format="yyyy-MM-dd"
                   type="daterange"
                   start-placeholder="开始时间"
@@ -239,38 +273,46 @@
             </template>
           </el-table-column>
           <el-table-column
-            prop="bz"
+            prop="jlxq"
             label="在何地、何校（或单位）学习（或任何职）"
           >
             <template slot-scope="scope">
-              <div v-if="isEdit != 1">{{ scope.row.nsr }}</div>
+              <div v-if="isEdit != 1">{{ scope.row.jlxq }}</div>
               <div v-else>
                 <el-input
-                  v-model="scope.row.bz"
+                  v-model="scope.row.jlxq"
                   placeholder="请输入"
                   maxlength="100"
                 />
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="bz" label="证明人 现在何处">
+          <el-table-column prop="zmrxq" label="证明人 现在何处">
             <template slot-scope="scope">
-              <div v-if="isEdit != 1">{{ scope.row.nsr }}</div>
+              <div v-if="isEdit != 1">{{ scope.row.zmrxq }}</div>
               <div v-else>
                 <el-input
-                  v-model="scope.row.bz"
+                  v-model="scope.row.zmrxq"
                   placeholder="请输入"
                   maxlength="100"
                 />
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column type="fixed" label="操作" v-if="isEdit == 1">
+            <template slot-scope="scope">
+              <div
+                class="deleteBtn"
+                @click="deleteWorkBrifeData(scope.row, scope.$index)"
+              >
+                <i class="el-icon-close" />
               </div>
             </template>
           </el-table-column>
         </el-table>
       </div>
-      <!-- 影响家庭经济状况相关信息 -->
-      <!-- <div class="headline">影响家庭经济状况相关信息</div> -->
+      <!--家庭情况</div> -->
       <div class="tableStyle">
-        <!-- <div class="pieceName">学生本学年已获资助情况</div> -->
         <div class="inputArea">
           <div class="title">
             家庭主要成员和主要社会关系，他们的姓名、年龄，在何地、何单位、任何职，政治面貌，现在与本人的关系如何
@@ -281,7 +323,7 @@
               :rows="3"
               maxlength="500"
               show-word-limit
-              v-model="tableData.jtZz"
+              v-model="detailInfoData.jtcyxq"
               :readonly="isEdit == 2"
             />
           </div>
@@ -294,7 +336,7 @@
               :rows="3"
               maxlength="500"
               show-word-limit
-              v-model="tableData.jtZrzh"
+              v-model="detailInfoData.jtcyzkxq"
               :readonly="isEdit == 2"
             />
           </div>
@@ -306,7 +348,7 @@
               :rows="5"
               maxlength="1500"
               show-word-limit
-              v-model="tableData.jtTfyw"
+              v-model="detailInfoData.zwjd"
               :readonly="isEdit == 2"
             />
           </div>
@@ -317,9 +359,9 @@
               :rows="5"
               maxlength="1500"
               show-word-limit
-              v-model="tableData.jtLdnl"
+              v-model="detailInfoData.bzjd"
               placeholder="班主任审核时需要填写"
-              :readonly="isEdit == 2"
+              readonly
             />
           </div>
           <div class="title">院系党组织意见</div>
@@ -329,8 +371,19 @@
               :rows="5"
               maxlength="1500"
               show-word-limit
-              v-model="tableData.jtFz"
+              v-model="detailInfoData.ydzzyj"
               placeholder="院系审核时需要填写"
+              readonly
+            />
+          </div>
+          <div class="title">毕业实习单位和主要内容</div>
+          <div class="content">
+            <el-input
+              type="textarea"
+              :rows="3"
+              maxlength="500"
+              show-word-limit
+              v-model="detailInfoData.xxdwxq"
               :readonly="isEdit == 2"
             />
           </div>
@@ -341,7 +394,7 @@
               :rows="3"
               maxlength="500"
               show-word-limit
-              v-model="tableData.jtSy"
+              v-model="detailInfoData.bysj"
               :readonly="isEdit == 2"
             />
           </div>
@@ -352,7 +405,7 @@
               :rows="3"
               maxlength="500"
               show-word-limit
-              v-model="tableData.jtQt"
+              v-model="detailInfoData.yhtc"
               :readonly="isEdit == 2"
             />
           </div>
@@ -363,8 +416,9 @@
               :rows="3"
               maxlength="500"
               show-word-limit
-              v-model="tableData.jtQt"
+              v-model="detailInfoData.yzxx"
               :readonly="isEdit == 2"
+              
             />
           </div>
           <div class="title">本人工作意愿</div>
@@ -374,7 +428,7 @@
               :rows="3"
               maxlength="500"
               show-word-limit
-              v-model="tableData.jtQt"
+              v-model="detailInfoData.gzyy"
               :readonly="isEdit == 2"
             />
           </div>
@@ -387,7 +441,11 @@
       <div class="btn confirm" @click="handlUpdata">保存</div>
     </div> -->
     <div v-if="isEdit != 1" class="editBottom">
-      <div class="btn cancel" @click="handleBack">审核记录</div>
+      <div class="btn cancel" @click="lctClick">审核记录</div>
+      <div class="btn cancel" @click="chModal">撤回</div>
+
+      <div class="btn editIcon" @click="tjModal">提交</div>
+
       <div class="btn cancel" @click="handleBack">返回</div>
       <div class="btn editIcon" @click="editButtonClick">编辑</div>
     </div>
@@ -396,22 +454,47 @@
       <div class="btn cancel" @click="handleCancle">取消</div>
       <div class="btn confirm" @click="handlUpdata">保存</div>
     </div>
+    <el-dialog title="撤回" :visible.sync="chehuiModal" width="20%">
+      <span>确认撤回？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="chCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="ch()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <el-dialog title="提交" :visible.sync="submitModal" width="30%">
+      <template>
+        <div>
+          <span>确认提交？</span>
+        </div>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="subCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="tj">确 定</el-button>
+      </span>
+    </el-dialog>
+    <lctCom
+      ref="child"
+      :lctModal="lctModal"
+      @handleCloseLct="handleCloseLct"
+    ></lctCom>
   </div>
 </template>
 <script>
 import {
-  getFdyZpDetail,
-  updateFdyZpDetail,
-  getFdyNdByGh,
-} from "@/api/test/fdySelfTest";
-import {
-  importUpdateJtqkdc,
-  InsertJtList,
-  GetDetail,
-} from "@/api/familyDifficulties/table";
+  getXsJbxx,
+  updateByjdDetail,
+  byjdCxById,
+  tjByjd,
+  getByjdDetail,
+} from "@/api/dailyBehavior/graduationIdt";
+import lctCom from "../../../components/lct";
+import topTitle from "../../../components/topTitle";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
 export default {
+  components: { lctCom, topTitle },
   data() {
     return {
       isEdit: 2,
@@ -419,12 +502,14 @@ export default {
       xh: this.$store.getters.userId,
       activeName: "0",
       detailInfoData: {},
-      jtList: [],
+      routeTitle: "毕业生鉴定表",
       njOptions: [],
       lwjbmOps: [],
       pxjbmOps: [], //培训级别码
-      tableData: {},
-      checked: false,
+      tableData: [],
+      lctModal: false,
+      chehuiModal: false,
+      submitModal: false,
     };
   },
   created() {},
@@ -453,6 +538,9 @@ export default {
         }
       });
     },
+    deleteWorkBrifeData(row, index) {
+      this.tableData.splice(index, 1);
+    },
     // async getOption() {
     //   await getFdyNdByGh({ gh: this.gh }).then((response) => {
     //     // 获取年级列表数据
@@ -470,44 +558,27 @@ export default {
       this.isEdit = 1;
     },
     getDetail() {
-      GetDetail({ xh: this.xh }).then((res) => {
+      // getXsJbxx().then((res) => {
+      //   console.log(res);
+      //   this.detailInfoData = res.data;
+      // });
+      getByjdDetail({ xh: this.xh }).then((res) => {
         console.log(res);
-
-        // this.tableData.jt_fz = res.data.addList.jt_fz;
-        // this.tableData.jt_ldnl = res.data.addList.jt_ldnl || "";
-        // this.tableData.jt_qt = res.data.addList.jt_qt || "";
-        // this.tableData.jt_rks = res.data.addList.jt_rks || "";
-        // this.tableData.jt_sy = res.data.addList.jt_sy || "";
-        // this.tableData.jt_tfyw = res.data.addList.jt_tfyw || "";
-        // this.tableData.jt_zrzh = res.data.addList.jt_zrzh || "";
-        // this.tableData.jt_zz = res.data.addList.jt_zz || "";
-        // this.tableData.jtrjnsr = res.data.addList.jtrjnsr || "";
-        // this.tableData.sf_cj = res.data.addList.sf_cj || "";
-        // this.tableData.sfdbh = res.data.addList.sfdbh || "";
-        // this.tableData.sfdq = res.data.addList.sfdq || "";
-        // this.tableData.sffmssldnl = res.data.addList.sffmssldnl || "";
-        // this.tableData.sfgcxs = res.data.addList.sfgcxs || "";
-        // this.tableData.sfjdlkjt = res.data.addList.sfjdlkjt || "";
-        // this.tableData.sflszn = res.data.addList.sflszn || "";
-        // this.tableData.sfnctkjzgy = res.data.addList.sfydbhz || "";
-        // this.tableData.sfydbhz = res.data.addList.sfydbhz || "";
-        // this.tableData.xsyrs = res.data.addList.xsyrs || "";
-        // this.tableData.id = res.data.addList.xsyrs || "";
-        this.tableData = res.data.addList;
-
-        this.detailInfoData = res.data.jbxx;
-        this.jtList = res.data.jtList;
+        this.detailInfoData = res.data.rcswByjdJbxxRes;
+        this.tableData = res.data.byjdXxjlListRes || [];
+        if (res.data.byjdXxjlListRes) {
+          for (var i = 0; i < res.data.byjdXxjlListRes.length; i++) {
+            this.$set(this.tableData[i], "xxsj", [
+              res.data.byjdXxjlListRes[i].ssjlkssj || "",
+              res.data.byjdXxjlListRes[i].xxjljssj || "",
+            ]);
+          }
+        }
       });
     },
     addDetailInfoData(index) {
       if (index == 1) {
-        this.$router.push({
-          path: "/student/studetails",
-          query: {
-            xh: this.$store.getters.userId,
-            activeName: "7",
-          },
-        });
+        this.tableData.push({});
       }
     },
     handleBack() {
@@ -517,31 +588,100 @@ export default {
       this.isEdit = 2;
     },
     handlUpdata() {
-      if (!this.checked) {
-        this.$message.error("请勾选承诺协议!");
-      } else {
-        this.$set(this.tableData, "xh", this.xh);
-        this.$set(this.tableData, "xm", this.detailInfoData.xm);
-        this.$set(this.tableData, "jtcyList", this.jtList);
-        let data = this.tableData;
-        // if (this.tableData.id == null) {
-        //   InsertJtList(data)
-        //     .then((res) => {
-        //       this.$message.success("保存成功");
-        //       this.getDetail();
-        //       this.isEdit = 2;
-        //     })
-        //     .catch((err) => {});
-        // } else {
-        InsertJtList(data)
-          .then((res) => {
-            this.$message.success("保存成功");
-            this.getDetail();
-            this.isEdit = 2;
-          })
-          .catch((err) => {});
+      // if (!this.checked) {
+      //   this.$message.error("请勾选承诺协议!");
+      // } else {
+      if (this.tableData.length > 0) {
+        for (var i = 0; i < this.tableData.length; i++) {
+          this.$set(
+            this.tableData[i],
+            "ssjlkssj",
+            this.tableData[i].xxsj[0] || ""
+          );
+          this.$set(
+            this.tableData[i],
+            "xxjljssj",
+            this.tableData[i].xxsj[1] || ""
+          );
+          this.$delete(this.tableData[i], "xxsj");
+          this.$set(this.tableData[i], "xh", this.xh);
+        }
       }
-      //}
+
+      //this.$delete(this.tableData, "xxsj");
+      let data = {
+        byjdXxjlListRes: this.tableData,
+        rcswByjdJbxxRes: this.detailInfoData,
+        xh: this.xh,
+      };
+      updateByjdDetail(data)
+        .then((res) => {
+          this.$message.success("保存成功");
+          this.getDetail();
+          this.isEdit = 2;
+        })
+        .catch((err) => {});
+    },
+    //}
+    //},
+    tjModal() {
+      if (this.detailInfoData.status == "01") {
+        this.submitModal = true;
+      } else {
+        this.$message.error("不是草稿状态数据，不可以提交");
+      }
+    },
+    tj() {
+      let data = {
+        byjdXxjlListRes: this.tableData,
+        rcswByjdJbxxRes: this.detailInfoData,
+        xh: this.xh,
+      };
+      tjByjd(data).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("提交成功");
+          this.getDetail();
+          this.submitModal = false;
+        } else {
+          this.$message.error("提交失败");
+        }
+      });
+    },
+    subCancel() {
+      this.submitModal = false;
+    },
+    lctClick() {
+      if (!!this.detailInfoData.processid) {
+        this.$refs.child.inner(this.detailInfoData.processid);
+        this.lctModal = true;
+      } else {
+        this.$message.warning("数据未保存，不能提交！");
+      }
+    },
+    handleCloseLct() {
+      this.lctModal = false;
+    },
+    chCancel() {
+      this.chehuiModal = false;
+    },
+    ch() {
+      let data = {
+        byjdXxjlListRes: this.tableData,
+        rcswByjdJbxxRes: this.detailInfoData,
+        xh: this.xh,
+      };
+      byjdCxById(data).then((res) => {
+        this.$message.success("撤回成功");
+        this.getDetail();
+        this.chehuiModal = false;
+      });
+    },
+    chModal() {
+      if (this.detailInfoData.status !== "02") {
+        this.$message.error("存在非待审核状态数据，不可以撤回");
+      } else {
+        this.chehuiModal = true;
+      }
     },
   },
 };
@@ -606,6 +746,22 @@ export default {
     .tableStyle {
       position: relative;
       padding: 20px;
+      .imgWrap {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        z-index: 100;
+        .photo {
+          width: 160px;
+          height: 206px;
+          background: #fff;
+          overflow: hidden;
+          img {
+            width: 160px;
+            height: 206px;
+          }
+        }
+      }
       .information {
         padding: 0 20px;
         .rowStyle {

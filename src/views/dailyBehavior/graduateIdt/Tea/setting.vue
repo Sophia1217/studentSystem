@@ -8,7 +8,7 @@
         </div>
 
         <div class="headerRight">
-          <div class="btns borderGreen" @click="Join">
+          <div class="btns borderGreen" @click="Join" v-show="AUTHFLAG">
             <i class="icon addIcon"></i><span class="title1">新增</span>
           </div>
         </div>
@@ -287,7 +287,7 @@ export default {
     return {
       flag: 1, //自己上传1 复制学年2
       basicInfoList: [],
-
+      AUTHFLAG: false,
       businesId: "",
       uploadUrl: process.env.VUE_APP_BASE_API + "/fileCommon/uploadFileCommon",
       sfyx: "",
@@ -362,6 +362,8 @@ export default {
   watch: {},
   created() {},
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getList();
     this.getXn();
   },

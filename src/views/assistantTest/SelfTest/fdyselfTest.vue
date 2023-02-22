@@ -96,11 +96,21 @@
               </el-col>
             </el-row>
             <el-row :gutter="20">
-              <el-col :span="24" class="rowStyle">
+              <el-col :span="20" class="rowStyle">
                 <div class="wrap">
                   <div class="title">所带培养层次</div>
                   <div class="content">
                     {{ detailInfoData.fdyZpJbqkRes.pycc }}
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="20" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">工作单位</div>
+                  <div class="content">
+                    {{ detailInfoData.fdyZpJbqkRes.dwmc }}
                   </div>
                 </div>
               </el-col>

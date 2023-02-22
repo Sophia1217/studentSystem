@@ -17,6 +17,7 @@
           >
             <el-option label="工号" value="1" />
             <el-option label="姓名" value="2" />
+            <el-option label="培养层次" value="3" />
           </el-select>
           <el-button
             slot="append"
@@ -79,7 +80,7 @@
           </el-col>
         </el-row>
 
-        <el-row :gutter="20" class="mt15">
+        <!-- <el-row :gutter="20" class="mt15">
           <el-col :span="3">所带培养层次：</el-col>
           <el-col :span="20">
             <div class="checkbox">
@@ -90,7 +91,7 @@
               />
             </div>
           </el-col>
-        </el-row>
+        </el-row> -->
       </div>
     </div>
 
@@ -410,7 +411,7 @@ export default {
         dwhs: [],
         lxs: [],
         njs: [],
-        pyccms: [],
+        pyccms: "",
       },
 
       list: [],
@@ -588,6 +589,7 @@ export default {
       // console.log(this.select, "select");
       this.queryParams.gh = this.select == 1 ? this.searchVal : "";
       this.queryParams.xm = this.select == 2 ? this.searchVal : "";
+      this.queryParams.pyccms = this.select == 3 ? this.searchVal : "";
       this.queryParams.nd = this.ndval;
       queryFdySelfEvaListNew(this.queryParams)
         .then((response) => {
@@ -624,26 +626,26 @@ export default {
       this.queryParams.lxs = this.category.choose;
     },
     // 性别全选
-    handleCheckAllpyccChange(val) {
-      const allCheck = [];
-      for (const i in this.pyccOps.checkBox) {
-        allCheck.push(this.pyccOps.checkBox[i].dm);
-      }
-      this.pyccOps.choose = val ? allCheck : [];
+    // handleCheckAllpyccChange(val) {
+    //   const allCheck = [];
+    //   for (const i in this.pyccOps.checkBox) {
+    //     allCheck.push(this.pyccOps.checkBox[i].mc);
+    //   }
+    //   this.pyccOps.choose = val ? allCheck : [];
 
-      this.pyccOps.isIndeterminate = false;
+    //   this.pyccOps.isIndeterminate = false;
 
-      this.queryParams.pyccms = this.pyccOps.choose;
-    },
-    // 性别单选
-    handleCheckedpyccChange(value) {
-      const checkedCount = value.length;
-      this.pyccOps.checkAll = checkedCount === this.pyccOps.checkBox.length;
-      this.pyccOps.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.pyccOps.checkBox.length;
+    //   this.queryParams.pyccms = this.pyccOps.choose;
+    // },
+    // // 性别单选
+    // handleCheckedpyccChange(value) {
+    //   const checkedCount = value.length;
+    //   this.pyccOps.checkAll = checkedCount === this.pyccOps.checkBox.length;
+    //   this.pyccOps.isIndeterminate =
+    //     checkedCount > 0 && checkedCount < this.pyccOps.checkBox.length;
 
-      this.queryParams.pyccms = this.pyccOps.choose;
-    },
+    //   this.queryParams.pyccms = this.pyccOps.choose;
+    // },
 
     // 多选
     handleSelectionChange(val) {
@@ -694,7 +696,7 @@ export default {
       this.queryParams.pageNum = 1;
       this.queryParams.dwhs = this.workPlace;
       this.queryParams.lxs = this.category.choose;
-      this.queryParams.pyccms = this.pyccOps.choose;
+
       this.queryParams.sfdbList = this.status.choose;
       this.queryParams.njs = this.nj;
       this.getList(this.queryParams);

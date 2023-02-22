@@ -62,15 +62,20 @@
               <span v-if="scope.row.wjFz !== null"
                 >{{ scope.row.wjFz }}分
               </span>
-              <el-button
-                type="text"
-                size="small"
-                @click="hadleDetail(scope.row)"
-                v-else
-              >
-                <i class="scopeIncon handledie" />
-                <span class="handleName">进入互评</span>
-              </el-button>
+              <div v-else>
+                <el-button type="text" size="small" @click="seeZp(scope.row)">
+                  <i class="scopeIncon handledie" />
+                  <span class="handleName">自评详情</span>
+                </el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="hadleDetail(scope.row)"
+                >
+                  <i class="scopeIncon handleEdit" />
+                  <span class="handleName">进入互评</span>
+                </el-button>
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -138,6 +143,16 @@ export default {
   },
 
   methods: {
+    seeZp(row) {
+      this.$router.push({
+        path: "/assistantTest/fdyselfTest",
+        query: {
+          gh: row.gh,
+          nd: this.ndval,
+          isEdit: 0,
+        },
+      });
+    },
     //获取数据列表
     getList() {
       queryThhpList(this.queryParams)

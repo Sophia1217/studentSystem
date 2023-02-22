@@ -98,21 +98,21 @@
         <div class="headerLeft">
           <span class="title">评价列表</span>
           <el-select
-              v-model="moreIform.nd"
-              collapse-tags
-              @change="changNd"
-              placeholder="请选择"
-              size="small"
-              style="width: 90px; margin:0 15px 0"
-            >
-              <el-option
-                v-for="(item, index) in allNd"
-                :key="index"
-                :label="item"
-                :value="item"
-              ></el-option>
-            </el-select>
-            <span>年度</span>
+            v-model="moreIform.nd"
+            collapse-tags
+            @change="changNd"
+            placeholder="请选择"
+            size="small"
+            style="width: 90px; margin: 0 15px 0"
+          >
+            <el-option
+              v-for="(item, index) in allNd"
+              :key="index"
+              :label="item"
+              :value="item"
+            ></el-option>
+          </el-select>
+          <span>年度</span>
         </div>
       </div>
       <div class="mt15">
@@ -143,14 +143,14 @@
             sortable
           >
           </el-table-column>
+          <el-table-column prop="nj" label="年级" min-width="85" sortable>
+          </el-table-column>
           <el-table-column
-            prop="nj"
-            label="年级"
-            min-width="85"
+            prop="sxpycc"
+            label="所辖培养层次"
+            min-width="130"
             sortable
           >
-          </el-table-column>
-          <el-table-column prop="sxpycc" label="所辖培养层次" min-width="130" sortable>
           </el-table-column>
           <el-table-column
             prop="cpfs"
@@ -161,12 +161,16 @@
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
+              <el-button type="text" size="small" @click="seeZp(scope.row)">
+                <i class="scopeIncon handledie" />
+                <span class="handleName">自评详情</span>
+              </el-button>
               <el-button
                 type="text"
                 size="small"
                 @click="hadleDetail(scope.row)"
               >
-                <i class="scopeIncon handledie"></i>
+                <i class="scopeIncon handleEdit"></i>
                 <span class="handleName">进入评分</span>
               </el-button>
             </template>
@@ -186,11 +190,9 @@
 
 <script>
 import CheckboxCom from "../../../components/checkboxCom";
-import {
-  queryXgfzrList,
-} from "@/api/test/unitTest";
+import { queryXgfzrList } from "@/api/test/unitTest";
 import { getYears } from "@/api/test/fdySelfTest";
-import { getCollege, getGrade } from "@/api/class/maintenanceClass";//待定
+import { getCollege, getGrade } from "@/api/class/maintenanceClass"; //待定
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
   name: "manStudent",
@@ -203,17 +205,17 @@ export default {
       isMore: false,
       moreIform: {
         gzdwList: [], // 学院下拉框
-        nd:"",
+        nd: "",
       },
       tableData: [],
       allDwh: [],
       allNj: [],
-      allNd:[],
+      allNd: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        orderZd:"",
-        orderPx:"",
+        orderZd: "",
+        orderPx: "",
         total: 0,
       },
       training: {
@@ -235,7 +237,7 @@ export default {
       },
       multipleSelection: [],
       jdbModal: false,
-      expArr:[],
+      expArr: [],
       rules: {
         // shjg: [
         //   { required: true, message: "审核结果不能为空", trigger: "change" },
@@ -252,7 +254,17 @@ export default {
   },
 
   methods: {
-    changNd(){
+    seeZp(row) {
+      this.$router.push({
+        path: "/assistantTest/fdyselfTest",
+        query: {
+          gh: row.gh,
+          nd: this.ndval,
+          isEdit: 0,
+        },
+      });
+    },
+    changNd() {
       this.handleSearch();
     },
     getAllCollege() {
@@ -277,7 +289,6 @@ export default {
           this.handleSearch();
         })
         .catch((err) => {});
-      
     },
     async hadleDetail(row) {
       console.log("row", row);
@@ -371,7 +382,6 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       this.expArr = this.multipleSelection.map((item) => item.gh);
-
     },
     //排序
     changeTableSort(column) {
@@ -393,6 +403,9 @@ export default {
   }
   .handledie {
     background: url("~@/assets/images/details.png");
+  }
+  .handleEdit {
+    background: url("~@/assets/images/edit.png");
   }
   .handleName {
     font-weight: 400;

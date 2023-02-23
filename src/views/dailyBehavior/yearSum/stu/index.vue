@@ -974,6 +974,7 @@ export default {
           processid: this.multipleSelection[x].processid,
           sqlx: this.multipleSelection[x].pyccm,
           xh: this.multipleSelection[x].xh,
+          xn: this.multipleSelection[x].xn,
         });
       }
       xnxjExp(data).then((res) => {

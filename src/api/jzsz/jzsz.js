@@ -73,3 +73,13 @@ export function addCol(query) {
   })
 }
 
+
+export function queryCol(query) {
+  return request({
+    url: '/rcswJzsqJzsz/queryDjfpXy',
+    method: 'get',
+    params: query
+  })
+}
+
+

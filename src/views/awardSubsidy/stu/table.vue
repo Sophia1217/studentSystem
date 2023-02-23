@@ -352,6 +352,217 @@
           </el-col>
         </el-row>
       </el-form>
+      <!-- 本学年突出表现 -->
+      <div class="headline">
+        <div>本学年突出表现</div>
+      </div>
+      <el-form
+        :model="formTable"
+        ref="formTable"
+        label-width="110px"
+        :rules="rules"
+      >
+        <div class="baseline">
+          <div>奖项</div>
+          <div class="editBtn" @click="addJxData" v-if="isEdit == 2">
+            <i class="addIcon" /> 新增
+          </div>
+        </div>
+        <div class="tableStyle">
+          <el-table
+            ref="multipleTable"
+            :data="formTable.jxList"
+            style="width: 100%"
+          >
+            <el-table-column
+              label="获奖年月"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="奖项名称"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="颁奖单位"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column label="删除选项" align="center">
+              <template slot-scope="scope">
+                <div style="margin-bottom: 20px">
+                  <i
+                    class="icon jian"
+                    v-if="scope.$index > 0"
+                    @click="jian(scope.row, scope.$index, 'jx')"
+                  ></i>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="baseline">
+          <div>论文</div>
+          <div class="editBtn" @click="addLwData" v-if="isEdit == 2">
+            <i class="addIcon" /> 新增
+          </div>
+        </div>
+        <div class="tableStyle">
+          <el-table
+            ref="multipleTable"
+            :data="formTable.lwList"
+            style="width: 100%"
+          >
+            <el-table-column
+              label="发表时间"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="论文题目、第几作者"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="发表刊名、级别（中文权威，CSSCI、省级重点期刊等）"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column label="删除选项" align="center">
+              <template slot-scope="scope">
+                <div style="margin-bottom: 20px">
+                  <i
+                    class="icon jian"
+                    v-if="scope.$index > 0"
+                    @click="jian(scope.row, scope.$index, 'lw')"
+                  ></i>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="baseline">
+          <div>科研成果</div>
+          <div class="editBtn" @click="addKycgData" v-if="isEdit == 2">
+            <i class="addIcon" /> 新增
+          </div>
+        </div>
+        <div class="tableStyle">
+          <el-table
+            ref="multipleTable"
+            :data="formTable.kycgList"
+            style="width: 100%"
+          >
+            <el-table-column
+              label="发表时间"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="创新创业科研成果（是否获得专利）"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="颁奖单位"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column label="删除选项" align="center">
+              <template slot-scope="scope">
+                <div style="margin-bottom: 20px">
+                  <i
+                    class="icon jian"
+                    v-if="scope.$index > 0"
+                    @click="jian(scope.row, scope.$index, 'kycg')"
+                  ></i>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="baseline">
+          <div>社会实践</div>
+          <div class="editBtn" @click="addShsjData" v-if="isEdit == 2">
+            <i class="addIcon" /> 新增
+          </div>
+        </div>
+        <div class="tableStyle">
+          <el-table
+            ref="multipleTable"
+            :data="formTable.shsjList"
+            style="width: 100%"
+          >
+            <el-table-column
+              label="发表时间"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="社会实践名称、内容类型、时长"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="组织单位"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column label="删除选项" align="center">
+              <template slot-scope="scope">
+                <div style="margin-bottom: 20px">
+                  <i
+                    class="icon jian"
+                    v-if="scope.$index > 0"
+                    @click="jian(scope.row, scope.$index, 'shsj')"
+                  ></i>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="baseline">
+          <div>道德文体</div>
+          <div class="editBtn" @click="addDdwtData" v-if="isEdit == 2">
+            <i class="addIcon" /> 新增
+          </div>
+        </div>
+        <div class="tableStyle">
+          <el-table
+            ref="multipleTable"
+            :data="formTable.ddwtList"
+            style="width: 100%"
+          >
+            <el-table-column
+              label="发表时间"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="道德风尚、文体艺术"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="颁奖单位"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column label="删除选项" align="center">
+              <template slot-scope="scope">
+                <div style="margin-bottom: 20px">
+                  <i
+                    class="icon jian"
+                    v-if="scope.$index > 0"
+                    @click="jian(scope.row, scope.$index, 'ddwt')"
+                  ></i>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </el-form>
     </div>
     <div v-if="isEdit != 2" class="editBottom">
       <div class="btn cancel" @click="handleBack">返回</div>
@@ -403,34 +614,11 @@ export default {
         sqrzs: "",
       },
       formTable: {
-        jxList: [
-          //奖项
-          { jx: "", jxmc: "", bjdw: "" },
-        ],
-        lwList: [
-          //论文
-          { jx: "", jxmc: "", bjdw: "" },
-        ],
-        kycgList: [
-          //科研成果
-          { jx: "", jxmc: "", bjdw: "" },
-        ],
-        shsjList: [
-          //社会实践
-          { jx: "", jxmc: "", bjdw: "" },
-        ],
-        ddwtList: [
-          //道德文体
-          { jx: "", jxmc: "", bjdw: "" },
-        ],
-        kycgYanList: [
-          //科研成果（研）
-          { jx: "", jxmc: "", bjdw: "" },
-        ],
-        hjqkYanList: [
-          //获奖情况
-          { jx: "", jxmc: "", bjdw: "" },
-        ],
+        jxList: [],
+        lwList: [],
+        kycgList: [],
+        shsjList: [],
+        ddwtList: [],
       },
       jzlbOps: [
         { dm: "1", mc: "奖学金" },
@@ -525,6 +713,7 @@ export default {
     //获取资助项目
     getZzxm(val) {
       this.sqdjOps = [];
+      this.zzxmOps = [];
       queryAllZzxm({ jzlbm: val }).then((res) => {
         this.zzxmOps = res.data.zzxmDataCodeList;
         this.formAdd.pjxn = res.data.pjxn || "";
@@ -578,6 +767,51 @@ export default {
       this.sqdjOps = [];
       this.getSqdj(val);
     },
+    addJxData() {
+      //新增奖项
+      console.log("新增奖项");
+    },
+    addLwData() {
+      //新增论文
+    },
+    addKycgData() {
+      //新增
+    },
+    addShsjData() {
+      //新增
+    },
+    addDdwtData() {
+      //新增
+    },
+    jian(row, index, flag) {
+      if (flag && flag == "jx") {
+        if (this.formTable.jxList.length > 1) {
+          this.formTable.jxList.splice(index, 1);
+        } else {
+          this.$message.error("至少保留一个题目");
+        }
+        this.formTable.jxList.length > 1;
+      } else if (flag && flag == "lw") {
+        if (this.formTable.lwList.length > 1) {
+          this.formTable.lwList.splice(index, 1);
+        } else {
+          this.$message.error("至少保留一个题目");
+        }
+      } else if (flag && flag == "kycg") {
+        if (this.formTable.lwList.length > 1) {
+          this.formTable.lwList.splice(index, 1);
+        } else {
+          this.$message.error("至少保留一个题目");
+        }
+      } else if (flag && flag == "shsj") {
+        if (this.formTable.lwList.length > 1) {
+          this.formTable.lwList.splice(index, 1);
+        } else {
+          this.$message.error("至少保留一个题目");
+        }
+      } else {
+      }
+    },
   },
 };
 </script>
@@ -618,6 +852,21 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+    .top {
+      padding-bottom: 10px;
+    }
+    .baseline {
+      padding-left: 20px;
+      padding-top: 10px;
+      box-sizing: border-box;
+      font-weight: 600;
+      font-size: 16px;
+      color: #000;
+      line-height: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       .editBtn {
         padding: 4px 5px;
         margin-right: 20px;
@@ -636,21 +885,6 @@ export default {
           margin-bottom: 4px;
         }
       }
-    }
-    .top {
-      padding-bottom: 10px;
-    }
-    .baseline {
-      padding-left: 20px;
-      padding-top: 10px;
-      box-sizing: border-box;
-      font-weight: 600;
-      font-size: 16px;
-      color: #000;
-      line-height: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
     }
 
     .tableStyle {

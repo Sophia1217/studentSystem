@@ -295,13 +295,13 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import {
+  queryDshList,
   tyFlow,
   jjFlow,
   backFlow,
   thFinal,
-  exportZjbbFlow,
-} from "@/api/dailyBehavior/stuTravelTea";
-import { queryDshList } from "@/api/thrift/gwAudit";
+  exportDsh,
+} from "@/api/thrift/gwAudit";
 import lctCom from "../../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
@@ -386,7 +386,7 @@ export default {
       this.exportParams.pageNum = 0;
       this.exportParams.pageSize = 0;
       this.$set(this.exportParams, "ids", ids);
-      exportZjbbFlow(this.exportParams)
+      exportDsh(this.exportParams)
         .then((res) => {
           this.downloadFn(res, "勤工助学岗位审核列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {
@@ -678,7 +678,7 @@ export default {
       this.multipleSelection = val;
       this.commonParams = this.multipleSelection.map((v) => ({
         businesId: v.businesId,
-        processId: v.processId,
+        processId: v.processid,
         status: v.status,
         taskId: v.taskId,
         xh: v.xh,

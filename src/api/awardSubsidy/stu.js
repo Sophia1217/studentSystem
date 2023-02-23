@@ -16,7 +16,7 @@ export function queryList(query) {
     data: query
   })
 }
-//学生端-奖助申请-详情查询
+//学生端教师端-奖助申请-详情查询
 export function getDetail(query) {
   return request({
     url: '/rcswJzsq/queryJzsqDetail',
@@ -32,7 +32,7 @@ export function tjJzsqById(query) {
     data: query
   })
 }
-//奖助申请删除
+//学生端教师端-奖助申请删除
 export function deletebyId(query) {
   return request({
     url: '/rcswJzsq/deleteJzsq',

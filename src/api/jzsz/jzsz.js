@@ -55,3 +55,21 @@ export function changeJzsq(query) {
   })
 }
 
+
+export function getDetail(query) {
+  return request({
+    url: '/rcswJzsqJzsz/getJzsqJzszDetail',
+    method: 'get',
+    params: query
+  })
+}
+
+
+export function addCol(query) {
+  return request({
+      url: '/rcswJzsqJzsz/insertDjfpXy',
+      method: 'post',
+      data: query,
+  })
+}
+

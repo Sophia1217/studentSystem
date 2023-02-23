@@ -72,7 +72,9 @@
                 controls-position="right"
                 :min="0"
                 :max="10"
+                :precision="0"
                 style="width: 25%"
+                @keyup.native="checkInt"
               ></el-input-number>
               <span v-html="'\u3000'"></span
               >(学生可获得勤工岗位的上限值，"0"表示无限制)
@@ -90,6 +92,8 @@
                 controls-position="right"
                 :min="0"
                 :max="10"
+                :precision="0"
+                @keyup.native="checkInt"
                 style="width: 25%"
               ></el-input-number>
               <span v-html="'\u3000'"></span
@@ -496,6 +500,11 @@ export default {
     this.queryFlow();
   },
   methods: {
+    checkInt() {
+      //这里可以写正则
+      // this.formAdd.xsgwKhdgws = this.formAdd.xsgwKhdgws.replace(/[^\d]/g, "");
+      // this.formAdd.xsgwKsqgws = this.formAdd.xsgwKsqgws.replace(/[^\d]/g, "");
+    },
     queryFlow() {
       queryFlowIdByMk({ mk: "勤工助学_岗位设置" }).then((res) => {
         this.flowId = res.data;

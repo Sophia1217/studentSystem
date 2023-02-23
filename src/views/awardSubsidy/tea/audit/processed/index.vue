@@ -69,7 +69,7 @@
           <el-col :span="6">
             <span>申请等级：</span>
             <el-select
-              v-model="moreIform.sqdjIdList"
+              v-model="moreIform.sqdjList"
               multiple
               collapse-tags
               placeholder="请选择"
@@ -301,10 +301,10 @@
               size="small"
             >
               <el-option
-                v-for="(item, index) in pjdjPlOps"
-                :key="index"
-                :label="item"
-                :value="item"
+                v-for="item in sqdjPlOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
               ></el-option>
             </el-select>
           </el-col>
@@ -401,14 +401,15 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import { backFlow } from "@/api/dailyBehavior/dormTea";
-import { pjdjUpdate, getPjdjByPjjx } from "@/api/awards/awardTea";
-import { queryAllDj, queryAllZzxm } from "@/api/awardSubsidy/stu";
+import { queryAllZzxm, queryAllDj } from "@/api/awardSubsidy/stu";
 import {
   queryDshList,
   exportDsh,
   tyFlow,
   jjFlow,
   thFinal,
+  queryAllDjByList,
+  tjdjUpdate,
 } from "@/api/awardSubsidy/jzsqTea";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getCollege, getGrade } from "@/api/class/maintenanceClass";
@@ -430,7 +431,7 @@ export default {
       moreIform: {
         dwhList: [], // 学院下拉框
         zzxmIdList: [],
-        sqdjIdList: [],
+        sqdjList: [],
         njList: [],
         pjzqXn: "",
       },
@@ -472,7 +473,7 @@ export default {
       allNj: [], //年级下拉
       updateArr: [],
       updateDj: "",
-      pjdjPlOps: [], //批量审批等级
+      sqdjPlOps: [], //批量审批等级
       sqdjOps: [],
       zzxmOps: [],
       rules: {
@@ -493,14 +494,16 @@ export default {
     this.getSchoolYears();
     this.getCode("dmpyccm"); // 培养层次
     this.getAllGrade();
+    this.getAllZzxm();
   },
 
   methods: {
     changeXM(val) {
       if (val && val.length == 0) {
-        this.moreIform.pjdjList = []; //等级
+        this.moreIform.sqdjList = []; //等级
       } else {
-        getPjdjByPjjx({ pjjxList: val }).then((res) => {
+        this.sqdjOps = [];
+        queryAllDjByList({ zzxmIdList: val }).then((res) => {
           this.sqdjOps = res.data;
         });
       }
@@ -546,7 +549,7 @@ export default {
         xh: this.select == "xh" ? this.searchVal : null,
         dwhList: this.moreIform.dwhList,
         zzxmIdList: this.moreIform.zzxmIdList,
-        sqdjIdList: this.moreIform.sqdjIdList,
+        sqdjList: this.moreIform.sqdjList,
         njList: this.moreIform.njList,
         pyccmList: this.training.choose || [],
         loginId: this.$store.getters.userId,
@@ -605,13 +608,14 @@ export default {
     async hadleDetail(row) {
       console.log("row", row);
       this.$router.push({
-        path: "/awardSubsidyDetails",
+        path: "/awardSubsidyTea/awardSubsidyDetails",
         query: {
           businesId: row.businesId,
           processId: row.processid,
           status: row.status,
           taskId: row.taskId,
           xh: row.xh,
+          editFlag: 2, //1已审核详情，2待审核详情可编辑
         },
       });
     },
@@ -631,7 +635,7 @@ export default {
         xh: this.select == "xh" ? this.searchVal : null,
         dwhList: this.moreIform.dwhList,
         zzxmIdList: this.moreIform.zzxmIdList,
-        sqdjIdList: this.moreIform.sqdjIdList,
+        sqdjList: this.moreIform.sqdjList,
         njList: this.moreIform.njList,
         pyccmList: this.training.choose || [],
         loginId: this.$store.getters.userId,
@@ -708,6 +712,7 @@ export default {
         status: v.status,
         taskId: v.taskId,
         xh: v.xh,
+        tjdjId: v.tjdjId,
       }));
     },
     //排序
@@ -722,7 +727,29 @@ export default {
     //直接通过
     passDirect() {
       if (this.commonParams.length > 0) {
-        this.directModal = true;
+        var flagSame = 1; //相同
+        for (let i = 0; i < this.multipleSelection.length; i++) {
+          for (let j = 0; j < this.multipleSelection.length; j++) {
+            if (
+              this.multipleSelection[i].zzxmId !==
+                this.multipleSelection[j].zzxmId ||
+              this.multipleSelection[i].pyccmList !==
+                this.multipleSelection[j].pyccmList ||
+              this.multipleSelection[i].njList !==
+                this.multipleSelection[j].njList
+            ) {
+              flagSame = 2; //不同奖项
+              break;
+            }
+          }
+        }
+        if (flagSame == 1) {
+          this.directModal = true;
+        } else {
+          this.$message.warning(
+            "该功能仅限同一奖项、同一培养层次、同一年级审批！"
+          );
+        }
       } else {
         this.$message.error("请先选择一条数据");
       }
@@ -751,8 +778,12 @@ export default {
         for (let i = 0; i < this.multipleSelection.length; i++) {
           for (let j = 0; j < this.multipleSelection.length; j++) {
             if (
-              this.multipleSelection[i].pjjxmc !==
-              this.multipleSelection[j].pjjxmc
+              this.multipleSelection[i].zzxmId !==
+                this.multipleSelection[j].zzxmId ||
+              this.multipleSelection[i].pyccmList !==
+                this.multipleSelection[j].pyccmList ||
+              this.multipleSelection[i].njList !==
+                this.multipleSelection[j].njList
             ) {
               flagSame = 2; //不同奖项
               break;
@@ -761,14 +792,16 @@ export default {
         }
         if (flagSame == 1) {
           this.updateDj = "";
-          var sameJx = [this.multipleSelection[0].pjjx];
-          getPjdjByPjjx({ pjjxList: sameJx }).then((res) => {
-            this.pjdjPlOps = res.data;
+          var sameJx = this.multipleSelection[0].zzxmId;
+          this.sqdjPlOps = [];
+          queryAllDj({ zzxmId: sameJx }).then((res) => {
+            this.sqdjPlOps = res.data;
           });
           this.multiModal = true;
-          console.log("相同奖项");
         } else {
-          this.$message.warning("批量审批功能仅限同一奖项审批！");
+          this.$message.warning(
+            "该功能仅限同一奖项、同一培养层次、同一年级审批！"
+          );
         }
       } else {
         this.$message.error("请先选择一条数据");
@@ -780,7 +813,7 @@ export default {
     //批量审批通过确认
     async multiConfirm() {
       if (!this.updateDj) {
-        this.$message.warning("请选择推荐档次!");
+        this.$message.warning("请选择推荐等级!");
       } else {
         var data = this.commonParams.map((item) => ({
           ...item,
@@ -788,10 +821,9 @@ export default {
         }));
         var params = {
           businesIdList: this.updateArr,
-          pjdj: this.updateDj,
+          tjdjId: this.updateDj,
         };
-        await pjdjUpdate(params).then((res) => {
-          console.log("评奖修改");
+        await tjdjUpdate(params).then((res) => {
           tyFlow(data).then((res) => {
             this.$message.success("批量审核已通过");
             this.multiModal = false;
@@ -861,10 +893,6 @@ export default {
         actId: this.multipleSelection1.actId,
         actName: this.multipleSelection1.actName,
       }));
-      // var targ = {
-      //   czdaFlowNodeRes: this.multipleSelection1,
-      //   czdaFlowOpReqList: data,
-      // };
       thFinal(data).then((res) => {
         if (res.errcode == "00") {
           this.detailModal = false;
@@ -874,21 +902,14 @@ export default {
       });
     },
     //获取资助项目
-    getZzxm(val) {
+    getAllZzxm() {
       this.sqdjOps = [];
       this.zzxmOps = [];
-      queryAllZzxm({ jzlbm: val }).then((res) => {
+      queryAllZzxm({ jzlbm: "3" }).then((res) => {
         this.zzxmOps = res.data.zzxmDataCodeList;
         this.formAdd.pjxn = res.data.pjxn || "";
         this.formAdd.pjxqMc = res.data.pjxq || "";
         this.formAdd.pjxqm = res.data.pjxqm || "";
-      });
-    },
-    //获取等级
-    getSqdj(val) {
-      this.sqdjOps = [];
-      queryAllDj({ zzxmId: val }).then((res) => {
-        this.sqdjOps = res.data;
       });
     },
   },

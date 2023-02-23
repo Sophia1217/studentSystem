@@ -68,11 +68,12 @@ export function exportYsh(query) {
     data: query
   })
 }
-//乘车优惠待审核详情基本信息
-export function queryDetail(query) {
+//勤工助学岗位审核_详情查询
+export function queryQgzxGwshById(query) {
   return request({
     url: '/qgzxGwsh/queryQgzxGwshById',
     method: 'get',
     params: query
   })
 }
+

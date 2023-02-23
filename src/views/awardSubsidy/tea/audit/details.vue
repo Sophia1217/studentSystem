@@ -122,12 +122,7 @@
               <div class="wrap">
                 <div class="title">英语四六级分数</div>
                 <div class="content">
-                  <div v-show="isEdit == 1">{{ formAdd.yysljfs }}</div>
-                  <el-input
-                    v-model="formAdd.yysljfs"
-                    v-show="isEdit == 2"
-                    maxlength="10"
-                  />
+                  <div>{{ formAdd.yysljfs }}</div>
                 </div>
               </div>
             </el-col>
@@ -284,50 +279,73 @@
           </el-col>
         </el-row>
       </el-form>
+      <div class="headline" v-if="editFlag == 2">审核信息</div>
+      <el-form
+        :model="editDetails"
+        ref="editDetails"
+        label-width="110px"
+        :rules="rules"
+      >
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <el-form-item label="审核结果" label-width="120px" prop="shjg">
+              <el-select
+                v-model="editDetails.shjg"
+                v-if="editFlag == 2"
+                collapse-tags
+                @change="changeJG"
+                placeholder="请选择"
+                size="small"
+              >
+                <el-option
+                  v-for="item in shjgOps"
+                  :key="item.dm"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+              <div v-else>{{ formAdd.statusChinese }}</div>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="推荐等级" label-width="120px">
+              <el-select
+                v-model="editDetails.tjdjId"
+                collapse-tags
+                v-if="editFlag == 2"
+                placeholder="请选择"
+                size="small"
+              >
+                <el-option
+                  v-for="item in tjdjOps"
+                  :key="item.dm"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+              <div v-else>{{ formAdd.tjdjmc }}</div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="20">
+            <el-form-item label="审核意见" label-width="120px" prop="shyj">
+              <el-input
+                v-model="editDetails.shyj"
+                v-if="editFlag == 2"
+                :autosize="{ minRows: 2 }"
+                type="textarea"
+                maxlength="500"
+              />
+              <div v-else>{{ formAdd.statusChinese }}</div>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
     </div>
-    <div class="headline top">审核信息</div>
-    <el-form
-      :model="editDetails"
-      ref="editDetails"
-      label-width="110px"
-      :rules="rules"
-    >
-      <el-row :gutter="20">
-        <el-col :span="20">
-          <el-form-item label="申请审核结果" label-width="120px" prop="shjg">
-            <el-select
-              v-model="editDetails.shjg"
-              collapse-tags
-              @change="changeJG(editDetails.shjg)"
-              placeholder="请选择"
-              size="small"
-            >
-              <el-option
-                v-for="item in shjgOps"
-                :key="item.dm"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="20">
-          <el-form-item label="申请审核意见" label-width="120px" prop="shyj">
-            <el-input
-              v-model="editDetails.shyj"
-              :autosize="{ minRows: 2 }"
-              type="textarea"
-              maxlength="500"
-            />
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
     <div class="editBottom">
       <div class="btn cancel" @click="handleCancle">取 消</div>
-      <div class="btn confirm" @click="handlUpdata">确 定</div>
+      <div class="btn confirm" v-if="editFlag == 2" @click="handlUpdata">确 定</div>
     </div>
     <el-dialog title="退回选择" :visible.sync="thTableModal" width="20%">
       <template>
@@ -377,18 +395,17 @@
   </div>
 </template>
 <script>
-import { getDetail, queryAllDj, queryAllZzxm } from "@/api/awardSubsidy/stu";
+import { getDetail, queryAllDj } from "@/api/awardSubsidy/stu";
 import { tyFlow, jjFlow, thFinal } from "@/api/awardSubsidy/jzsqTea";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
 export default {
   data() {
     return {
+      editFlag: this.$route.query.editFlag, //1已审核详情，2待审核详情
       businesId: this.$route.query.businesId,
       status: this.$route.query.status,
-      isEdit: 1, //2编辑，1只读
-      nd: "",
-      xh: this.$store.getters.userId,
+
       activeName: "0",
       detailInfoData: {},
       pxjbmOps: [], //培训级别码
@@ -437,13 +454,17 @@ export default {
         { dm: "1", mc: "奖学金" },
         { dm: "2", mc: "助学金" },
       ],
-      sqdjOps: [],
-      zzxmOps: [],
+      tjdjOps: [],
       editDetails: {},
       tableInner: [],
       thTableModal: false,
       thModal: false,
       thly: "",
+      shjgOps: [
+        { dm: "01", mc: "通过" },
+        { dm: "02", mc: "拒绝" },
+        { dm: "03", mc: "退回" },
+      ],
       rules: {
         yysljfs: [
           {
@@ -503,37 +524,16 @@ export default {
         }
       });
     },
-    editButtonClick() {
-      this.isEdit = 2;
-    },
     getDetail() {
       //详情
-      this.isEdit = 1;
+      // this.isEdit = 1;
       console.log("id有值");
       getDetail({ businesId: this.businesId }).then((res) => {
         this.detailInfoData = res.data;
         this.formAdd = res.data;
-        console.log("status", this.status);
-        this.getZzxm(this.formAdd.jzlbm);
-        this.getSqdj(this.formAdd.zzxmId);
-      });
-    },
-    //获取资助项目
-    getZzxm(val) {
-      this.sqdjOps = [];
-      this.zzxmOps = [];
-      queryAllZzxm({ jzlbm: val }).then((res) => {
-        this.zzxmOps = res.data.zzxmDataCodeList;
-        this.formAdd.pjxn = res.data.pjxn || "";
-        this.formAdd.pjxqMc = res.data.pjxq || "";
-        this.formAdd.pjxqm = res.data.pjxqm || "";
-      });
-    },
-    //获取等级
-    getSqdj(val) {
-      this.sqdjOps = [];
-      queryAllDj({ zzxmId: val }).then((res) => {
-        this.sqdjOps = res.data;
+        queryAllDj({ zzxmId: res.data.zzxmId }).then((res) => {
+          this.tjdjOps = res.data;
+        });
       });
     },
     handleBack() {
@@ -542,9 +542,9 @@ export default {
     handleCancle() {
       this.$router.go(-1);
     },
-    handlUpdata() {
-      if (!this.editDetails.shjg) {
-        this.$message.error("审核结果不能为空");
+    async handlUpdata() {
+      if (!this.editDetails.shjg || !this.editDetails.tjdjId) {
+        this.$message.error("审核结果和推荐等级不能为空");
       } else {
         if (this.editDetails.shjg == "01") {
           var data = {
@@ -552,15 +552,15 @@ export default {
             processId: this.$route.query.processId,
             status: this.$route.query.status,
             taskId: this.$route.query.taskId,
-            xh: this.$route.query.businesId,
+            xh: this.$route.query.xh,
+            tjdjId: this.editDetails.tjdjId,
             opMsg: this.editDetails.shyj ? this.editDetails.shyj : "已通过",
           };
           //通过
           tyFlow([data]).then((res) => {
-            if (res.errcode == "00") {
-              this.$message.success("审核已通过");
-              this.$router.go(-1);
-            }
+            this.$message.success("审核已通过");
+            this.multiModal = false;
+            this.$router.go(-1);
           });
         } else if (this.editDetails.shjg == "02") {
           var data = {
@@ -568,13 +568,14 @@ export default {
             processId: this.$route.query.processId,
             status: this.$route.query.status,
             taskId: this.$route.query.taskId,
-            xh: this.$route.query.businesId,
+            xh: this.$route.query.xh,
             opMsg: this.editDetails.shyj ? this.editDetails.shyj : "已拒绝",
           };
           //拒绝
           jjFlow([data]).then((res) => {
             if (res.errcode == "00") {
               this.$message.success("已拒绝");
+              this.multiModal = false;
               this.$router.go(-1);
             }
           });
@@ -584,7 +585,7 @@ export default {
             processId: this.$route.query.processId,
             status: this.$route.query.status,
             taskId: this.$route.query.taskId,
-            xh: this.$route.query.businesId,
+            xh: this.$route.query.xh,
             opMsg: this.editDetails.shyj ? this.editDetails.shyj : "已退回",
             actId: this.multipleSelection1.actId,
             actName: this.multipleSelection1.actName,
@@ -592,13 +593,24 @@ export default {
           thFinal([data]).then((res) => {
             if (res.errcode == "00") {
               this.$message.success("退回成功");
+              this.multiModal = false;
               this.$router.go(-1);
             }
           });
         }
       }
     },
-
+    changeJG(val) {
+      console.log("taskId", this.$route.query.taskId);
+      if (val && val == "03") {
+        // console.log("this.editDetails.shjg", this.editDetails.shjg);
+        var processId = { processId: this.$route.query.taskId };
+        backFlow(processId).then((res) => {
+          this.tableInner = res.data;
+        });
+        this.thTableModal = true;
+      }
+    },
     getRow(index, row) {
       this.multipleSelection1 = row;
       console.log(row);
@@ -614,6 +626,25 @@ export default {
       } else {
         this.$message.error("请先勾选退回的节点");
       }
+    },
+    thCancel() {
+      this.thModal = false;
+    },
+    thConfirm() {
+      this.thModal = false;
+      var data = this.commonParams.map((item) => ({
+        ...item,
+        opMsg: this.thly,
+        actId: this.multipleSelection1.actId,
+        actName: this.multipleSelection1.actName,
+      }));
+      thFinal(data).then((res) => {
+        if (res.errcode == "00") {
+          this.detailModal = false;
+          this.$message.success("退回成功");
+          this.handleSearch();
+        }
+      });
     },
   },
 };

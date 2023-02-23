@@ -177,6 +177,13 @@
             sortable
           >
           </el-table-column>
+          <el-table-column
+            prop="statusMc"
+            label="审核状态"
+            min-width="100"
+            sortable
+          >
+          </el-table-column>
           <el-table-column prop="createDwhMc" label="审核进度">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="lctClick(scope.row)">
@@ -440,7 +447,7 @@ export default {
             this.$message.success("审核已通过");
             this.detailModal = false;
             this.handleSearch();
-          }
+          } 
         });
       } else {
         this.$message.error("请先选择一条数据");
@@ -525,6 +532,11 @@ export default {
         path: "/Thrift/postAuditDetail",
         query: {
           businesId: row.businesId,
+          processId: row.processid,
+          status: row.status,
+          taskId: row.taskId,
+          xh: row.xh,
+          editFlag: 2, //1已审核详情，2待审核详情可编辑
         },
       });
     },
@@ -577,11 +589,6 @@ export default {
             actId: this.multipleSelection1.actId,
             actName: this.multipleSelection1.actName,
           }));
-          //退回
-          // var targ = {
-          //   czdaFlowNodeRes: this.multipleSelection1,
-          //   czdaFlowOpReqList: data,
-          // };
           thFinal(data).then((res) => {
             if (res.errcode == "00") {
               this.detailModal = false;
@@ -634,8 +641,8 @@ export default {
     },
     //流程
     lctClick(row) {
-      if (!!row.processId) {
-        this.$refs.child.inner(row.processId);
+      if (!!row.processid) {
+        this.$refs.child.inner(row.processid);
         this.lctModal = true;
       } else {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");

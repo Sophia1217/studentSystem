@@ -66,53 +66,23 @@ export function getDetail(query) {
     data: query
   })
 }
-
-
-
-
-
-//教师端-评奖等级批量修改
-export function pjdjUpdate(query) {
+//教师端-奖助申请-查询所有可申请资助项目的等级
+export function queryAllDjByList(query) {
   return request({
-    url: '/rcswPjpyFlow/teaUpdateByBatch',
+    url: '/rcswJzsq/queryAllDjByZzxmIdList',
     method: 'post',
     data: query
   })
 }
-//评奖评优-根据多个奖项获取等级
-export function getPjdjByPjjx(query) {
+//教师端-批量修改
+export function tjdjUpdate(query) {
   return request({
-    url: '/rcswPjpyFlow/getPjdjByPjjx',
+    url: '/rcswJzsq/teaUpdateByBatch',
     method: 'post',
     data: query
   })
 }
-//教师端-页面单条数据新增
-export function pjpyAdd(query) {
-  return request({
-    url: '/rcswPjpyFlow/importTeaInsertOne',
-    method: 'post',
-    data: query
-  })
-}
-//教师端-导入
-export function pjpyImport(query) {
-  return request({
-      url: '/rcswPjpyFlow/importExcel',
-      method: 'post',
-      data: query,
-      responseType:'blob'
-  })
-}
- //教师端-模板下载
- export function mbDown(query) {
-  return request({
-    url: '/rcswPjpyFlow/downLoad',
-    method: 'post',
-    data: query,
-    responseType:'blob'
-  })
-}
+
 
 
 

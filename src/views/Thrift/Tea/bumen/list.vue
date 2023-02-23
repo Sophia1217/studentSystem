@@ -436,6 +436,7 @@ export default {
       console.log(this.delArr);
       copyQgzxGw(data).then((res) => {
         this.$message.success("复制成功！");
+        this.query();
         this.copyModal = false;
       });
     },

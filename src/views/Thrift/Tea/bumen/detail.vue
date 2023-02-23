@@ -94,7 +94,7 @@
         </div>
         <div class="table">
           <el-table
-            :data="detailList"
+            :data="formEdit.detailList"
             ref="multipleTable"
             style="width: 100%"
             @selection-change="handleSelectionChange"
@@ -109,14 +109,35 @@
             ></el-table-column>
             <el-table-column prop="gwDetailMc" label="岗位" :min-width="200">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.gwDetailMc }}</div>
-                <el-input v-model="scope.row.gwDetailMc" clearable v-else />
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwDetailMc'"
+                  :rules="rules.gwDetailMc"
+                >
+                  <div v-if="isEdit == 1">{{ scope.row.gwDetailMc }}</div>
+
+                  <el-input
+                    v-model="scope.row.gwDetailMc"
+                    maxlength="100"
+                    clearable
+                    v-else
+                  />
+                </el-form-item>
               </template>
             </el-table-column>
             <el-table-column prop="gwGzdd" label="工作地点" :min-width="200">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.gwGzdd }}</div>
-                <el-input v-model="scope.row.gwGzdd" clearable v-else />
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwGzdd'"
+                  :rules="rules.gwGzdd"
+                >
+                  <div v-if="isEdit == 1">{{ scope.row.gwGzdd }}</div>
+                  <el-input
+                    v-model="scope.row.gwGzdd"
+                    maxlength="100"
+                    clearable
+                    v-else
+                  />
+                </el-form-item>
               </template>
             </el-table-column>
             <el-table-column
@@ -125,14 +146,19 @@
               :min-width="230"
             >
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.gwYgzl }}</div>
-                <el-input-number
-                  v-else
-                  v-model="scope.row.gwYgzl"
-                  :min="0"
-                  controls-position="right"
-                  @change="count(scope.row)"
-                />
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwYgzl'"
+                  :rules="rules.gwYgzl"
+                >
+                  <div v-if="isEdit == 1">{{ scope.row.gwYgzl }}</div>
+                  <el-input-number
+                    v-else
+                    v-model="scope.row.gwYgzl"
+                    :min="0"
+                    controls-position="right"
+                    @change="count(scope.row)"
+                  />
+                </el-form-item>
               </template>
             </el-table-column>
             <el-table-column
@@ -141,7 +167,21 @@
               :min-width="230"
             >
               <template slot-scope="scope">
-                {{ scope.row.gwYgzsx }}
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwYgzsx'"
+                  :rules="rules.gwYgzsx"
+                >
+                  <div v-if="sfkgg == 2 || isEdit == 1">
+                    {{ scope.row.gwYgzsx }}
+                  </div>
+                  <el-input-number
+                    v-model="scope.row.gwYgzsx"
+                    :min="0"
+                    controls-position="right"
+                    @change="countNXC(scope.row)"
+                    v-else
+                  />
+                </el-form-item>
               </template>
             </el-table-column>
             <el-table-column
@@ -159,43 +199,64 @@
               :min-width="230"
             >
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.gwNzxsrs }}</div>
-                <el-input-number
-                  v-else
-                  v-model="scope.row.gwNzxsrs"
-                  :min="0"
-                  controls-position="right"
-                />
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwNzxsrs'"
+                  :rules="rules.gwNzxsrs"
+                >
+                  <div v-if="isEdit == 1">{{ scope.row.gwNzxsrs }}</div>
+                  <el-input-number
+                    v-else
+                    v-model="scope.row.gwNzxsrs"
+                    :min="0"
+                    controls-position="right"
+                  />
+                </el-form-item>
               </template>
             </el-table-column>
             <el-table-column prop="gwKnss" label="困难生数" :min-width="230">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.gwKnss }}</div>
-                <el-input-number
-                  v-else
-                  v-model="scope.row.gwKnss"
-                  :min="0"
-                  controls-position="right"
-                />
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwKnss'"
+                  :rules="rules.gwKnss"
+                >
+                  <div v-if="isEdit == 1">{{ scope.row.gwKnss }}</div>
+                  <el-input-number
+                    v-else
+                    v-model="scope.row.gwKnss"
+                    :min="0"
+                    :max="scope.row.gwNzxsrs"
+                    controls-position="right"
+                  />
+                </el-form-item>
               </template>
             </el-table-column>
             <el-table-column prop="gwZdls" label="指导老师" :min-width="200">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.gwZdls }}</div>
-                <el-autocomplete
-                  v-else
-                  v-model="scope.row.gwZdls"
-                  :fetch-suggestions="querySearchPart"
-                  placeholder="请输入内容"
-                  :trigger-on-focus="false"
-                  size="small"
-                ></el-autocomplete>
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwZdls'"
+                  :rules="rules.gwZdls"
+                >
+                  <div v-if="isEdit == 1">{{ scope.row.gwZdls }}</div>
+                  <el-autocomplete
+                    v-else
+                    v-model="scope.row.gwZdls"
+                    :fetch-suggestions="querySearchPart"
+                    placeholder="请输入内容"
+                    :trigger-on-focus="false"
+                    size="small"
+                  ></el-autocomplete>
+                </el-form-item>
               </template>
             </el-table-column>
             <el-table-column prop="gwLxfs" label="联系方式" :min-width="200">
               <template slot-scope="scope">
-                <div v-if="isEdit == 1">{{ scope.row.lxfs }}</div>
-                <el-input v-model="scope.row.lxfs" maxlength="50" v-else />
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwLxfs'"
+                  :rules="rules.gwLxfs"
+                >
+                  <div v-if="isEdit == 1">{{ scope.row.gwlxfs }}</div>
+                  <el-input v-model="scope.row.gwlxfs" maxlength="100" v-else />
+                </el-form-item>
               </template>
             </el-table-column>
             <!-- <el-table-column type="fixed" label="操作" fixed="right">
@@ -272,6 +333,7 @@
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getXmXgh } from "@/api/assistantWork/homeSchool";
+import { saveD, queryD } from "@/api/gwsz/gwsz";
 import {
   countYN,
   insertQgzxGw,
@@ -289,6 +351,7 @@ export default {
       xmOptions: [],
       detailList: [],
       xnOptions: [],
+      sfkgg: "", //1是2否
       rules: {
         gwMainMc: [
           { required: true, message: "岗位名称不能为空", trigger: "blur" },
@@ -311,6 +374,31 @@ export default {
             trigger: "change",
           },
         ],
+        gwDetailMc: [
+          { required: true, message: "岗位不能为空", trigger: "blur" },
+        ],
+        gwGzdd: [
+          { required: true, message: "工作地点不能为空", trigger: "blur" },
+        ],
+        gwYgzl: [
+          { required: true, message: "月工作量不能为空", trigger: "blur" },
+        ],
+
+        gwNzxsrs: [
+          { required: true, message: "拟招人数不能为空", trigger: "blur" },
+        ],
+        gwKnss: [
+          { required: true, message: "困难生数不能为空", trigger: "blur" },
+        ],
+        gwZdls: [
+          { required: true, message: "指导老师不能为空", trigger: "blur" },
+        ],
+        gwLxfs: [
+          { required: true, message: "联系方式不能为空", trigger: "blur" },
+        ],
+        gwYgzsx: [
+          { required: true, message: "月工资上限不能为空", trigger: "blur" },
+        ],
       },
       delModal: false,
     };
@@ -330,6 +418,9 @@ export default {
           this.xnOptions = res.data;
         })
         .catch((err) => {});
+      queryD().then((res) => {
+        this.sfkgg = res.data.yrdwGggwcjsx;
+      });
     },
     getYrbm() {
       queryZgJbxxDwh()
@@ -385,7 +476,8 @@ export default {
       this.tjArr = val.map((item) => item.id);
     },
     handleCancle() {
-      this.isEdit == 1;
+      this.isEdit = 1;
+      this.$refs.formEdit.clearValidate();
     },
     count(row) {
       console.log(row.gwYgzl);
@@ -393,6 +485,9 @@ export default {
         this.$set(row, "gwNjyxc", res.data.gwNjyxc);
         this.$set(row, "gwYgzsx", res.data.gwYgzsx);
       });
+    },
+    countNXC(row) {
+      this.$set(row, "gwNjyxc", row.gwYgzsx * 10);
     },
     checkFormEdit() {
       // 1.校验必填项

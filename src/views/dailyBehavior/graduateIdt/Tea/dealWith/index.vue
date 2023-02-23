@@ -101,7 +101,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">已处理列表</span> <i class="Updataicon"></i>
+          <span class="title">已处理列表</span>
           <el-select
             v-model="moreIform.xn"
             collapse-tags
@@ -219,40 +219,6 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog title="退回选择" :visible.sync="thTableModal" width="20%">
-        <template>
-          <el-table
-            :data="tableInner"
-            ref="multipleTable1"
-            style="width: 100%"
-            :default-sort="{ prop: 'date', order: 'descending' }"
-          >
-            <el-table-column width="55">
-              <template slot-scope="scope">
-                <el-radio
-                  :label="scope.$index"
-                  v-model="tempRadio"
-                  @change.native="getRow(scope.$index, scope.row)"
-                  >{{ "" }}</el-radio
-                >
-              </template>
-            </el-table-column>
-            <el-table-column
-              type="index"
-              label="序号"
-              width="50"
-            ></el-table-column>
-            <el-table-column prop="actName" label="节点名称" sortable="custom">
-            </el-table-column>
-          </el-table>
-        </template>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="thTableCancel">取 消</el-button>
-          <el-button type="primary" class="confirm" @click="thTableConfirm"
-            >确 定</el-button
-          >
-        </span>
-      </el-dialog>
 
       <pagination
         v-show="queryParams.total > 0"
@@ -271,7 +237,7 @@
         >
       </span>
     </el-dialog>
-     <el-dialog
+    <el-dialog
       title="导出确认"
       :visible.sync="xnxjModal"
       width="30%"
@@ -309,7 +275,8 @@ import {
   htFlow,
   jjFlow,
   tyFlow,
-  exportByjd
+  exportByjd,
+  excelExporYsht,
 } from "@/api/dailyBehavior/graduationIdt";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
@@ -320,7 +287,7 @@ export default {
       AUTHFLAG: false,
       showExport: false,
       lctModal: false,
-      xnxjModal:false,
+      xnxjModal: false,
       ztStatus: [],
       zdOps: [],
       status: [],
@@ -359,7 +326,6 @@ export default {
       multipleSelection: [],
       multipleSelection1: "",
       pyccflag: 1, //1本科2硕博
-     
     };
   },
 
@@ -390,10 +356,10 @@ export default {
       }
       this.exportParams.pageNum = 0;
       this.exportParams.pageSize = 0;
-      this.$set(this.exportParams, "idList", idList);
-      exportYsh(this.exportParams)
+      this.$set(this.exportParams, "ids", idList);
+      excelExporYsht(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "学年小结待审核列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "鉴定表已审核列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -405,17 +371,24 @@ export default {
       this.showExport = false;
     },
     async expor() {
+      let rqs,
+        rqe = "";
+      if (this.datePicker && this.datePicker.length > 0) {
+        rqs = this.datePicker[0];
+        rqe = this.datePicker[1];
+      }
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        dwhList: this.moreIform.dwhList,
-        zydmList: this.moreIform.zydmList,
-        // bjmList: this.moreIform.bjList,
+        ssdwdm: this.moreIform.dwhList,
+        zydm: this.moreIform.zydmList,
+        // bjList: this.moreIform.bjList,
         xn: this.moreIform.xn,
         // zslxmList: this.moreIform.zslxmList,
-        pyccmList: this.training.choose || [],
+        pyccm: this.training.choose || [],
         loginId: this.$store.getters.userId,
-
+        sqsjs: rqs || "",
+        sqsje: rqe || "",
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
@@ -438,8 +411,7 @@ export default {
       this.multipleSelection1 = row;
       console.log(row);
     },
-   
-   
+
     getAllCollege() {
       getCollege()
         .then((res) => {
@@ -606,10 +578,11 @@ export default {
       for (var x = 0; x < this.multipleSelection.length; x++) {
         data.push({
           exType: this.Type,
-          id: this.multipleSelection[x].id,
+          id: this.multipleSelection[x].businesId,
           processid: this.multipleSelection[x].processid,
           sqlx: this.multipleSelection[x].pyccm,
           xh: this.multipleSelection[x].xh,
+          xn: this.moreIform.xn,
         });
       }
       exportByjd(data).then((res) => {

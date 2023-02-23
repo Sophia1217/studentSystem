@@ -14,6 +14,7 @@
                 <el-form-item
                   label="岗位名称"
                   prop="gwMainMc"
+                  maxlength="100"
                   label-width="100px"
                 >
                   <el-input v-model="formAdd.gwMainMc" clearable />
@@ -86,12 +87,9 @@
         </div>
         <div class="table">
           <el-table
-            :data="detailList"
+            :data="formAdd.detailList"
             ref="multipleTable"
             style="width: 100%"
-            @selection-change="handleSelectionChange"
-            @sort-change="changeTableSort"
-            :default-sort="{ prop: 'date', order: 'descending' }"
           >
             <!-- <el-table-column type="selection" width="55"></el-table-column> -->
             <el-table-column
@@ -101,12 +99,30 @@
             ></el-table-column>
             <el-table-column prop="gwDetailMc" label="岗位" :min-width="200">
               <template slot-scope="scope">
-                <el-input v-model="scope.row.gwDetailMc" clearable />
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwDetailMc'"
+                  :rules="rules.gwDetailMc"
+                >
+                  <el-input
+                    v-model="scope.row.gwDetailMc"
+                    clearable
+                    maxlength="100"
+                  />
+                </el-form-item>
               </template>
             </el-table-column>
             <el-table-column prop="gwGzdd" label="工作地点" :min-width="200">
               <template slot-scope="scope">
-                <el-input v-model="scope.row.gwGzdd" clearable />
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwGzdd'"
+                  :rules="rules.gwGzdd"
+                >
+                  <el-input
+                    v-model="scope.row.gwGzdd"
+                    clearable
+                    maxlength="100"
+                  />
+                </el-form-item>
               </template>
             </el-table-column>
             <el-table-column
@@ -115,12 +131,17 @@
               :min-width="230"
             >
               <template slot-scope="scope">
-                <el-input-number
-                  v-model="scope.row.gwYgzl"
-                  :min="0"
-                  controls-position="right"
-                  @change="count(scope.row)"
-                />
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwYgzl'"
+                  :rules="rules.gwYgzl"
+                >
+                  <el-input-number
+                    v-model="scope.row.gwYgzl"
+                    :min="0"
+                    controls-position="right"
+                    @change="count(scope.row)"
+                  />
+                </el-form-item>
               </template>
             </el-table-column>
             <el-table-column
@@ -129,7 +150,19 @@
               :min-width="230"
             >
               <template slot-scope="scope">
-                {{ scope.row.gwYgzsx }}
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwYgzsx'"
+                  :rules="rules.gwYgzsx"
+                >
+                  <div v-if="sfkgg == 2">{{ scope.row.gwYgzsx }}</div>
+                  <el-input-number
+                    v-model="scope.row.gwYgzsx"
+                    :min="0"
+                    controls-position="right"
+                    @change="countNXC(scope.row)"
+                    v-else
+                  />
+                </el-form-item>
               </template>
             </el-table-column>
             <el-table-column
@@ -147,36 +180,57 @@
               :min-width="230"
             >
               <template slot-scope="scope">
-                <el-input-number
-                  v-model="scope.row.gwNzxsrs"
-                  :min="0"
-                  controls-position="right"
-                />
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwNzxsrs'"
+                  :rules="rules.gwNzxsrs"
+                >
+                  <el-input-number
+                    v-model="scope.row.gwNzxsrs"
+                    :min="0"
+                    controls-position="right"
+                  />
+                </el-form-item>
               </template>
             </el-table-column>
             <el-table-column prop="gwKnss" label="困难生数" :min-width="230">
               <template slot-scope="scope">
-                <el-input-number
-                  v-model="scope.row.gwKnss"
-                  :min="0"
-                  controls-position="right"
-                />
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwKnss'"
+                  :rules="rules.gwKnss"
+                >
+                  <el-input-number
+                    v-model="scope.row.gwKnss"
+                    :min="0"
+                    :max="scope.row.gwNzxsrs"
+                    controls-position="right"
+                  />
+                </el-form-item>
               </template>
             </el-table-column>
             <el-table-column prop="gwZdls" label="指导老师" :min-width="200">
               <template slot-scope="scope">
-                <el-autocomplete
-                  v-model="scope.row.gwZdls"
-                  :fetch-suggestions="querySearchPart"
-                  placeholder="请输入内容"
-                  :trigger-on-focus="false"
-                  size="small"
-                ></el-autocomplete>
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwZdls'"
+                  :rules="rules.gwZdls"
+                >
+                  <el-autocomplete
+                    v-model="scope.row.gwZdls"
+                    :fetch-suggestions="querySearchPart"
+                    placeholder="请输入内容"
+                    :trigger-on-focus="false"
+                    size="small"
+                  ></el-autocomplete>
+                </el-form-item>
               </template>
             </el-table-column>
             <el-table-column prop="gwLxfs" label="联系方式" :min-width="200">
               <template slot-scope="scope">
-                <el-input v-model="scope.row.lxfs" />
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwLxfs'"
+                  :rules="rules.gwLxfs"
+                >
+                  <el-input v-model="scope.row.gwLxfs" maxlength="100" />
+                </el-form-item>
               </template>
             </el-table-column>
             <el-table-column type="fixed" label="操作" fixed="right">
@@ -243,6 +297,7 @@
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getXmXgh } from "@/api/assistantWork/homeSchool";
+import { saveD, queryD } from "@/api/gwsz/gwsz";
 import {
   countYN,
   insertQgzxGw,
@@ -251,10 +306,10 @@ import {
 export default {
   data() {
     return {
-      formAdd: {},
+      formAdd: { detailList: [] },
       gwxzOptions: [],
       xmOptions: [],
-      detailList: [],
+      sfkgg: "", //1是2否
       xnOptions: [],
       rules: {
         gwMainMc: [
@@ -277,6 +332,30 @@ export default {
             message: "岗位起止时间不能为空",
             trigger: "change",
           },
+        ],
+        gwDetailMc: [
+          { required: true, message: "岗位不能为空", trigger: "blur" },
+        ],
+        gwGzdd: [
+          { required: true, message: "工作地点不能为空", trigger: "blur" },
+        ],
+        gwYgzl: [
+          { required: true, message: "月工作量不能为空", trigger: "blur" },
+        ],
+        gwYgzsx: [
+          { required: true, message: "月工资上限不能为空", trigger: "blur" },
+        ],
+        gwNzxsrs: [
+          { required: true, message: "拟招人数不能为空", trigger: "blur" },
+        ],
+        gwKnss: [
+          { required: true, message: "困难生数不能为空", trigger: "blur" },
+        ],
+        gwZdls: [
+          { required: true, message: "指导老师不能为空", trigger: "blur" },
+        ],
+        gwLxfs: [
+          { required: true, message: "联系方式不能为空", trigger: "blur" },
         ],
       },
       delModal: false,
@@ -309,6 +388,9 @@ export default {
           this.xnOptions = res.data;
         })
         .catch((err) => {});
+      queryD().then((res) => {
+        this.sfkgg = res.data.yrdwGggwcjsx;
+      });
     },
     getYrbm() {
       queryZgJbxxDwh()
@@ -335,7 +417,7 @@ export default {
       this.delModal = false;
     },
     deleteWorkBrifeData(row, index) {
-      this.detailList.splice(index, 1);
+      this.formAdd.detailList.splice(index, 1);
     },
     xmChange() {},
     changeTableSort(column) {
@@ -349,26 +431,28 @@ export default {
       this.tjArr = val.map((item) => item.id);
     },
     xinzeng() {
-      this.detailList.push({});
+      this.formAdd.detailList.push({});
     },
     handleCancle() {
+      this.$refs.formAdd.clearValidate();
       this.$router.go(-1);
     },
     count(row) {
-      console.log(row.gwYgzl);
       countYN({ ygzl: row.gwYgzl }).then((res) => {
         this.$set(row, "gwNjyxc", res.data.gwNjyxc);
         this.$set(row, "gwYgzsx", res.data.gwYgzsx);
       });
     },
-
+    countNXC(row) {
+      this.$set(row, "gwNjyxc", row.gwYgzsx * 10);
+    },
     addClick() {
       if (!this.checkFormAdd()) {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
         let data = {
-          detailList: this.detailList,
+          detailList: this.formAdd.detailList,
           gwEndDate: this.formAdd.gwTime[1] || "",
           gwMainMc: this.formAdd.gwMainMc,
           gwMs: this.formAdd.gwMs,

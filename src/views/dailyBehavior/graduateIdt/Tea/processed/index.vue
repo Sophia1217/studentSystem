@@ -101,7 +101,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">待审核列表</span> <i class="Updataicon"></i>
+          <span class="title">待审核列表</span>
           <el-select
             v-model="moreIform.xn"
             collapse-tags
@@ -119,6 +119,15 @@
           <span>学年</span>
         </div>
         <div class="headerRight">
+          <div style="margin-right: 15px">
+            <el-dropdown split-button @command="Daochu">
+              <span class="el-dropdown-link"> 鉴定表导出</span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="1">PDF下载</el-dropdown-item>
+                <el-dropdown-item command="2">Word下载</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
@@ -228,6 +237,19 @@
         >
       </span>
     </el-dialog>
+    <el-dialog
+      title="导出确认"
+      :visible.sync="xnxjModal"
+      width="30%"
+      :close-on-click-modal="false"
+    >
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="xnxjModalCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="xnxjModaldaochu()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
     <lctCom
       ref="child"
       :lctModal="lctModal"
@@ -248,6 +270,8 @@ import {
 import {
   queryByjdFlowedList,
   queryByjdFlowList,
+  excelExportDsh,
+  exportByjd,
 } from "@/api/dailyBehavior/graduationIdt";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getCollege, getGrade } from "@/api/class/maintenanceClass";
@@ -263,6 +287,7 @@ export default {
     return {
       showExport: false,
       lctModal: false,
+      xnxjModal: false,
       ztStatus: [],
       zdOps: [],
       status: [],
@@ -355,10 +380,10 @@ export default {
       }
       this.exportParams.pageNum = 0;
       this.exportParams.pageSize = 0;
-      this.$set(this.exportParams, "idList", idList);
-      exportDsh(this.exportParams)
+      this.$set(this.exportParams, "ids", idList);
+      excelExportDsh(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "学年小结待审核列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "鉴定表待审核列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -370,17 +395,24 @@ export default {
       this.showExport = false;
     },
     async expor() {
+      let rqs,
+        rqe = "";
+      if (this.datePicker && this.datePicker.length > 0) {
+        rqs = this.datePicker[0];
+        rqe = this.datePicker[1];
+      }
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        dwhList: this.moreIform.dwhList,
-        zydmList: this.moreIform.zydmList,
-        // bjmList: this.moreIform.bjList,
+        ssdwdm: this.moreIform.dwhList,
+        zydm: this.moreIform.zydmList,
+        // bjList: this.moreIform.bjList,
         xn: this.moreIform.xn,
         // zslxmList: this.moreIform.zslxmList,
-        pyccmList: this.training.choose || [],
+        pyccm: this.training.choose || [],
         loginId: this.$store.getters.userId,
-
+        sqsjs: rqs || "",
+        sqsje: rqe || "",
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
@@ -614,6 +646,34 @@ export default {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
+    },
+    Daochu(ins) {
+      this.Type = ins == "1" ? "pdf" : "docx";
+      if (this.multipleSelection.length > 0) {
+        this.xnxjModal = true;
+      } else {
+        this.$message.error("请先选择一条数据");
+      }
+    },
+    xnxjModalCancel() {
+      this.xnxjModal = false;
+    },
+    xnxjModaldaochu() {
+      var data = [];
+      for (var x = 0; x < this.multipleSelection.length; x++) {
+        data.push({
+          exType: this.Type,
+          id: this.multipleSelection[x].businesId,
+          processid: this.multipleSelection[x].processid,
+          sqlx: this.multipleSelection[x].pyccm,
+          xh: this.multipleSelection[x].xh,
+          xn: this.moreIform.xn,
+        });
+      }
+      exportByjd(data).then((res) => {
+        this.downloadFn(res, "毕业鉴定表导出下载", "zip");
+        this.xnxjModal = false;
+      });
     },
   },
 };

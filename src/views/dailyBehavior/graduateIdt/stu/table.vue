@@ -16,425 +16,465 @@
       </div>
       <!-- 学生本人基本情况 -->
       <!-- <div class="headline">学生本人基本情况</div> -->
-      <div class="tableStyle">
-        <div class="imgWrap">
-          <div class="photo">
-            <img
-              :src="
-                detailInfoData
-                  ? 'data:image/png;base64,' + detailInfoData.byzp
-                  : ''
-              "
-              alt="照片"
-            />
+      <el-form
+        :model="detailInfoData"
+        ref="formAdd"
+        size="small"
+        :rules="rules"
+      >
+        <div class="tableStyle">
+          <div class="imgWrap">
+            <div class="photo">
+              <img
+                :src="
+                  detailInfoData
+                    ? 'data:image/png;base64,' + detailInfoData.byzp
+                    : ''
+                "
+                alt="照片"
+              />
+            </div>
           </div>
-        </div>
-        <div class="information">
-          <el-row :gutter="20">
-            <el-col :span="12" class="rowStyle">
-              <div class="wrap">
-                <div class="title">姓名</div>
-                <div class="content">
-                  {{ detailInfoData.xm }}
+          <div class="information">
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">姓名</div>
+                  <div class="content">
+                    {{ detailInfoData.xm }}
+                  </div>
                 </div>
-              </div>
-            </el-col>
-            <el-col :span="12" class="rowStyle">
-              <div class="wrap">
-                <div class="title">性别</div>
-                <div class="content">
-                  {{ detailInfoData.xbmc }}
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">性别</div>
+                  <div class="content">
+                    {{ detailInfoData.xbmc }}
+                  </div>
                 </div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="12" class="rowStyle">
-              <div class="wrap">
-                <div class="title">曾用名</div>
-                <div class="content">
-                  {{ detailInfoData.cym }}
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">曾用名</div>
+                  <div class="content">
+                    {{ detailInfoData.cym }}
+                  </div>
                 </div>
-              </div>
-            </el-col>
-            <el-col :span="12" class="rowStyle">
-              <div class="wrap">
-                <div class="title">出生年月</div>
-                <div class="content">
-                  {{ detailInfoData.csrq }}
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">出生年月</div>
+                  <div class="content">
+                    {{ detailInfoData.csrq }}
+                  </div>
                 </div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="12" class="rowStyle">
-              <div class="wrap">
-                <div class="title">家庭出身</div>
-                <div class="content" v-if="isEdit != 1">
-                  {{ detailInfoData.jtcs }}
-                </div>
-                <div class="content" v-else>
-                  <el-input
-                    v-model="detailInfoData.jtcs"
-                    maxlength="100"
-                  ></el-input>
-                </div>
-              </div>
-            </el-col>
-            <el-col :span="12" class="rowStyle">
-              <div class="wrap">
-                <div class="title">本人成分</div>
-                <div class="content" v-if="isEdit != 1">
-                  {{ detailInfoData.brcf }}
-                </div>
-                <div class="content" v-else>
-                  <el-input
-                    v-model="detailInfoData.brcf"
-                    maxlength="100"
-                  ></el-input>
-                </div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="12" class="rowStyle">
-              <div class="wrap">
-                <div class="title">籍贯</div>
-                <div class="content">
-                  {{ detailInfoData.jgmc }}
-                </div>
-              </div>
-            </el-col>
-            <el-col :span="12" class="rowStyle">
-              <div class="wrap">
-                <div class="title">民族</div>
-                <div class="content">
-                  {{ detailInfoData.mzmc }}
-                </div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="24" class="rowStyle">
-              <div class="wrap">
-                <div class="title">现在家庭住址</div>
-                <div class="content" v-if="isEdit != 1">
-                  {{ detailInfoData.xjtzz }}
-                </div>
-                <div class="content" v-else>
-                  <el-input
-                    v-model="detailInfoData.xjtzz"
-                    maxlength="100"
-                    style="width: 300%"
-                  ></el-input>
-                </div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="24" class="rowStyle">
-              <div class="wrap">
-                <div class="title">是否华侨侨居何处</div>
-                <div class="content" v-if="isEdit != 1">
-                  {{ detailInfoData.sfhqQjhc }}
-                </div>
-                <div class="content" v-else>
-                  <el-input
-                    v-model="detailInfoData.sfhqQjhc"
-                    maxlength="100"
-                    style="width: 300%"
-                  ></el-input>
-                </div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="24" class="rowStyle">
-              <div class="wrap">
-                <div class="title">本人身体健康状况</div>
-                <div class="content" v-if="isEdit != 1">
-                  {{ detailInfoData.brstzk }}
-                </div>
-                <div class="content" v-else>
-                  <el-input
-                    v-model="detailInfoData.brstzk"
-                    maxlength="100"
-                    style="width: 300%"
-                  ></el-input>
-                </div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="24" class="rowStyle">
-              <div class="wrap">
-                <div class="title">何时何地何人介参加共产党或共青团</div>
-                <div class="content" v-if="isEdit != 1">
-                  {{ detailInfoData.sfrdxq }}
-                </div>
-                <div class="content" v-else>
-                  <el-input
-                    type="textarea"
-                    :rows="2"
-                    v-model="detailInfoData.sfrdxq"
-                    maxlength="500"
-                    style="width: 300%"
-                  ></el-input>
-                </div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="24" class="rowStyle">
-              <div class="wrap">
-                <div class="title">
-                  婚否？对方姓名、政治面貌、现在何处、任何处
-                </div>
-                <div class="content" v-if="isEdit != 1">
-                  {{ detailInfoData.hyxq }}
-                </div>
-                <div class="content" v-else>
-                  <el-input
-                    type="textarea"
-                    :rows="2"
-                    v-model="detailInfoData.hyxq"
-                    maxlength="500"
-                    style="width: 300%"
-                  ></el-input>
-                </div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="24" class="rowStyle">
-              <div class="wrap">
-                <div class="title">家庭经济情况及主要经济来源</div>
-                <div class="content" v-if="isEdit != 1">
-                  {{ detailInfoData.jtjjzk }}
-                </div>
-                <div class="content" v-else>
-                  <el-input
-                    type="textarea"
-                    :rows="2"
-                    v-model="detailInfoData.jtjjzk"
-                    maxlength="500"
-                    style="width: 300%"
-                  ></el-input>
-                </div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="24" class="rowStyle">
-              <div class="wrap">
-                <div class="title">何时何地因何原因受过何种奖励或处分</div>
-                <div class="content" v-if="isEdit != 1">
-                  {{ detailInfoData.cfxq }}
-                </div>
-                <div class="content" v-else>
-                  <el-input
-                    type="textarea"
-                    :rows="2"
-                    v-model="detailInfoData.cfxq"
-                    maxlength="500"
-                    style="width: 300%"
-                  ></el-input>
-                </div>
-              </div>
-            </el-col>
-          </el-row>
-        </div>
-      </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">家庭出身</div>
+                  <el-form-item :rules="rules.blank" prop="jtcs">
+                    <div class="content" v-if="isEdit != 1">
+                      {{ detailInfoData.jtcs }}
+                    </div>
 
-      <!-- 学习经历 -->
-      <div class="headline">
-        <div>学习经历</div>
-        <div class="editBtn" @click="addDetailInfoData(1)" v-if="isEdit == 1">
-          <i class="addIcon" /> 新增
+                    <div class="content" v-else>
+                      <el-input
+                        v-model="detailInfoData.jtcs"
+                        maxlength="100"
+                      ></el-input>
+                    </div>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">本人成分</div>
+                  <el-form-item :rules="rules.blank" prop="brcf">
+                    <div class="content" v-if="isEdit != 1">
+                      {{ detailInfoData.brcf }}
+                    </div>
+                    <div class="content" v-else>
+                      <el-input
+                        v-model="detailInfoData.brcf"
+                        maxlength="100"
+                      ></el-input>
+                    </div>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">籍贯</div>
+                  <div class="content">
+                    {{ detailInfoData.jgmc }}
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">民族</div>
+                  <div class="content">
+                    {{ detailInfoData.mzmc }}
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="24" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">现在家庭住址</div>
+                  <el-form-item :rules="rules.blank" prop="xjtzz">
+                    <div class="content" v-if="isEdit != 1">
+                      {{ detailInfoData.xjtzz }}
+                    </div>
+                    <div class="content" v-else>
+                      <el-input
+                        v-model="detailInfoData.xjtzz"
+                        maxlength="100"
+                        style="width: 300%"
+                      ></el-input>
+                    </div>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="24" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">是否华侨侨居何处</div>
+                  <el-form-item :rules="rules.blank" prop="sfhqQjhc">
+                    <div class="content" v-if="isEdit != 1">
+                      {{ detailInfoData.sfhqQjhc }}
+                    </div>
+                    <div class="content" v-else>
+                      <el-input
+                        v-model="detailInfoData.sfhqQjhc"
+                        maxlength="100"
+                        style="width: 300%"
+                      ></el-input>
+                    </div>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="24" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">本人身体健康状况</div>
+                  <el-form-item :rules="rules.blank" prop="brstzk">
+                    <div class="content" v-if="isEdit != 1">
+                      {{ detailInfoData.brstzk }}
+                    </div>
+                    <div class="content" v-else>
+                      <el-input
+                        v-model="detailInfoData.brstzk"
+                        maxlength="100"
+                        style="width: 300%"
+                      ></el-input>
+                    </div>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="24" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">何时何地何人介参加共产党或共青团</div>
+                  <el-form-item :rules="rules.blank" prop="sfrdxq">
+                    <div class="content" v-if="isEdit != 1">
+                      {{ detailInfoData.sfrdxq }}
+                    </div>
+                    <div class="content" v-else>
+                      <el-input
+                        type="textarea"
+                        :rows="2"
+                        v-model="detailInfoData.sfrdxq"
+                        maxlength="500"
+                        style="width: 300%"
+                      ></el-input>
+                    </div>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="24" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">
+                    婚否？对方姓名、政治面貌、现在何处、任何处
+                  </div>
+                  <el-form-item :rules="rules.blank" prop="hyxq">
+                    <div class="content" v-if="isEdit != 1">
+                      {{ detailInfoData.hyxq }}
+                    </div>
+                    <div class="content" v-else>
+                      <el-input
+                        type="textarea"
+                        :rows="2"
+                        v-model="detailInfoData.hyxq"
+                        maxlength="500"
+                        style="width: 300%"
+                      ></el-input>
+                    </div>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="24" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">家庭经济情况及主要经济来源</div>
+                  <el-form-item :rules="rules.blank" prop="jtjjzk">
+                    <div class="content" v-if="isEdit != 1">
+                      {{ detailInfoData.jtjjzk }}
+                    </div>
+                    <div class="content" v-else>
+                      <el-input
+                        type="textarea"
+                        :rows="2"
+                        v-model="detailInfoData.jtjjzk"
+                        maxlength="500"
+                        style="width: 300%"
+                      ></el-input>
+                    </div>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="24" class="rowStyle">
+                <div class="wrap">
+                  <div class="title">何时何地因何原因受过何种奖励或处分</div>
+                  <el-form-item :rules="rules.blank" prop="cfxq">
+                    <div class="content" v-if="isEdit != 1">
+                      {{ detailInfoData.cfxq }}
+                    </div>
+                    <div class="content" v-else>
+                      <el-input
+                        type="textarea"
+                        :rows="2"
+                        v-model="detailInfoData.cfxq"
+                        maxlength="500"
+                        style="width: 300%"
+                      ></el-input>
+                    </div>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
         </div>
-      </div>
-      <div class="tableStyle">
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="xxsj" label="自何年何月起至何年何月止">
-            <template slot-scope="scope">
-              <div v-if="isEdit != 1">
-                {{ scope.row.ssjlkssj }}至{{ scope.row.xxjljssj }}
-              </div>
-              <div v-else>
-                <el-date-picker
-                  v-model="scope.row.xxsj"
-                  value-format="yyyy-MM-dd"
-                  type="daterange"
-                  start-placeholder="开始时间"
-                  end-placeholder="结束时间"
-                  clearable
-                />
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="jlxq"
-            label="在何地、何校（或单位）学习（或任何职）"
-          >
-            <template slot-scope="scope">
-              <div v-if="isEdit != 1">{{ scope.row.jlxq }}</div>
-              <div v-else>
-                <el-input
-                  v-model="scope.row.jlxq"
-                  placeholder="请输入"
-                  maxlength="100"
-                />
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column prop="zmrxq" label="证明人 现在何处">
-            <template slot-scope="scope">
-              <div v-if="isEdit != 1">{{ scope.row.zmrxq }}</div>
-              <div v-else>
-                <el-input
-                  v-model="scope.row.zmrxq"
-                  placeholder="请输入"
-                  maxlength="100"
-                />
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column type="fixed" label="操作" v-if="isEdit == 1">
-            <template slot-scope="scope">
-              <div
-                class="deleteBtn"
-                @click="deleteWorkBrifeData(scope.row, scope.$index)"
-              >
-                <i class="el-icon-close" />
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <!--家庭情况</div> -->
-      <div class="tableStyle">
-        <div class="inputArea">
-          <div class="title">
-            家庭主要成员和主要社会关系，他们的姓名、年龄，在何地、何单位、任何职，政治面貌，现在与本人的关系如何
-          </div>
-          <div class="content">
-            <el-input
-              type="textarea"
-              :rows="3"
-              maxlength="500"
-              show-word-limit
-              v-model="detailInfoData.jtcyxq"
-              :readonly="isEdit == 2"
-            />
-          </div>
-          <div class="title">
-            家庭主要成员和主要社会关系中有无被杀、关、管的，与本人关系如何
-          </div>
-          <div class="content">
-            <el-input
-              type="textarea"
-              :rows="3"
-              maxlength="500"
-              show-word-limit
-              v-model="detailInfoData.jtcyzkxq"
-              :readonly="isEdit == 2"
-            />
-          </div>
 
-          <div class="title">自我鉴定</div>
-          <div class="content">
-            <el-input
-              type="textarea"
-              :rows="5"
-              maxlength="1500"
-              show-word-limit
-              v-model="detailInfoData.zwjd"
-              :readonly="isEdit == 2"
-            />
-          </div>
-          <div class="title">班组鉴定</div>
-          <div class="content">
-            <el-input
-              type="textarea"
-              :rows="5"
-              maxlength="1500"
-              show-word-limit
-              v-model="detailInfoData.bzjd"
-              placeholder="班主任审核时需要填写"
-              readonly
-            />
-          </div>
-          <div class="title">院系党组织意见</div>
-          <div class="content">
-            <el-input
-              type="textarea"
-              :rows="5"
-              maxlength="1500"
-              show-word-limit
-              v-model="detailInfoData.ydzzyj"
-              placeholder="院系审核时需要填写"
-              readonly
-            />
-          </div>
-          <div class="title">毕业实习单位和主要内容</div>
-          <div class="content">
-            <el-input
-              type="textarea"
-              :rows="3"
-              maxlength="500"
-              show-word-limit
-              v-model="detailInfoData.xxdwxq"
-              :readonly="isEdit == 2"
-            />
-          </div>
-          <div class="title">毕业论文题目或毕业设计</div>
-          <div class="content">
-            <el-input
-              type="textarea"
-              :rows="3"
-              maxlength="500"
-              show-word-limit
-              v-model="detailInfoData.bysj"
-              :readonly="isEdit == 2"
-            />
-          </div>
-          <div class="title">有何特长</div>
-          <div class="content">
-            <el-input
-              type="textarea"
-              :rows="3"
-              maxlength="500"
-              show-word-limit
-              v-model="detailInfoData.yhtc"
-              :readonly="isEdit == 2"
-            />
-          </div>
-          <div class="title">懂何种外语、程度如何</div>
-          <div class="content">
-            <el-input
-              type="textarea"
-              :rows="3"
-              maxlength="500"
-              show-word-limit
-              v-model="detailInfoData.yzxx"
-              :readonly="isEdit == 2"
-              
-            />
-          </div>
-          <div class="title">本人工作意愿</div>
-          <div class="content">
-            <el-input
-              type="textarea"
-              :rows="3"
-              maxlength="500"
-              show-word-limit
-              v-model="detailInfoData.gzyy"
-              :readonly="isEdit == 2"
-            />
+        <!-- 学习经历 -->
+        <div class="headline">
+          <div>学习经历</div>
+          <div class="editBtn" @click="addDetailInfoData(1)" v-if="isEdit == 1">
+            <i class="addIcon" /> 新增
           </div>
         </div>
-        <div style="padding: 30px"></div>
-      </div>
+        <div class="tableStyle">
+          <el-table :data="tableData" style="width: 100%">
+            <el-table-column prop="xxsj" label="自何年何月起至何年何月止">
+              <template slot-scope="scope">
+                <div v-if="isEdit != 1">
+                  {{ scope.row.ssjlkssj }}至{{ scope.row.xxjljssj }}
+                </div>
+                <div v-else>
+                  <el-date-picker
+                    v-model="scope.row.xxsj"
+                    format="yyyy-MM-dd"
+                    type="daterange"
+                    start-placeholder="开始时间"
+                    end-placeholder="结束时间"
+                    clearable
+                  />
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="jlxq"
+              label="在何地、何校（或单位）学习（或任何职）"
+            >
+              <template slot-scope="scope">
+                <div v-if="isEdit != 1">{{ scope.row.jlxq }}</div>
+                <div v-else>
+                  <el-input
+                    v-model="scope.row.jlxq"
+                    placeholder="请输入"
+                    maxlength="100"
+                  />
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column prop="zmrxq" label="证明人 现在何处">
+              <template slot-scope="scope">
+                <div v-if="isEdit != 1">{{ scope.row.zmrxq }}</div>
+                <div v-else>
+                  <el-input
+                    v-model="scope.row.zmrxq"
+                    placeholder="请输入"
+                    maxlength="100"
+                  />
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column type="fixed" label="操作" v-if="isEdit == 1">
+              <template slot-scope="scope">
+                <div
+                  class="deleteBtn"
+                  @click="deleteWorkBrifeData(scope.row, scope.$index)"
+                >
+                  <i class="el-icon-close" />
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <!--家庭情况</div> -->
+        <div class="tableStyle">
+          <div class="inputArea">
+            <el-form-item :rules="rules.blank" prop="jtcyxq">
+              <div class="title">
+                家庭主要成员和主要社会关系，他们的姓名、年龄，在何地、何单位、任何职，政治面貌，现在与本人的关系如何
+              </div>
+              <div class="content">
+                <el-input
+                  type="textarea"
+                  :rows="3"
+                  maxlength="500"
+                  show-word-limit
+                  v-model="detailInfoData.jtcyxq"
+                  :readonly="isEdit == 2"
+                />
+              </div>
+            </el-form-item>
+            <el-form-item :rules="rules.blank" prop="jtcyzkxq">
+              <div class="title">
+                家庭主要成员和主要社会关系中有无被杀、关、管的，与本人关系如何
+              </div>
+              <div class="content">
+                <el-input
+                  type="textarea"
+                  :rows="3"
+                  maxlength="500"
+                  show-word-limit
+                  v-model="detailInfoData.jtcyzkxq"
+                  :readonly="isEdit == 2"
+                />
+              </div>
+            </el-form-item>
+            <el-form-item :rules="rules.blank" prop="zwjd">
+              <div class="title">自我鉴定</div>
+              <div class="content">
+                <el-input
+                  type="textarea"
+                  :rows="5"
+                  maxlength="1500"
+                  show-word-limit
+                  v-model="detailInfoData.zwjd"
+                  :readonly="isEdit == 2"
+                />
+              </div>
+            </el-form-item>
+            <div class="title">班组鉴定</div>
+            <div class="content">
+              <el-input
+                type="textarea"
+                :rows="5"
+                maxlength="1500"
+                show-word-limit
+                v-model="detailInfoData.bzjd"
+                placeholder="班主任审核时需要填写"
+                readonly
+              />
+            </div>
+            <div class="title">院系党组织意见</div>
+            <div class="content">
+              <el-input
+                type="textarea"
+                :rows="5"
+                maxlength="1500"
+                show-word-limit
+                v-model="detailInfoData.ydzzyj"
+                placeholder="院系审核时需要填写"
+                readonly
+              />
+            </div>
+            <el-form-item :rules="rules.blank" prop="xxdwxq">
+              <div class="title">毕业实习单位和主要内容</div>
+              <div class="content">
+                <el-input
+                  type="textarea"
+                  :rows="3"
+                  maxlength="500"
+                  show-word-limit
+                  v-model="detailInfoData.xxdwxq"
+                  :readonly="isEdit == 2"
+                />
+              </div>
+            </el-form-item>
+            <el-form-item :rules="rules.blank" prop="bysj">
+              <div class="title">毕业论文题目或毕业设计</div>
+              <div class="content">
+                <el-input
+                  type="textarea"
+                  :rows="3"
+                  maxlength="500"
+                  show-word-limit
+                  v-model="detailInfoData.bysj"
+                  :readonly="isEdit == 2"
+                />
+              </div>
+            </el-form-item>
+            <el-form-item :rules="rules.blank" prop="yhtc">
+              <div class="title">有何特长</div>
+              <div class="content">
+                <el-input
+                  type="textarea"
+                  :rows="3"
+                  maxlength="500"
+                  show-word-limit
+                  v-model="detailInfoData.yhtc"
+                  :readonly="isEdit == 2"
+                />
+              </div>
+            </el-form-item>
+            <el-form-item :rules="rules.blank" prop="yzxx">
+              <div class="title">懂何种外语、程度如何</div>
+              <div class="content">
+                <el-input
+                  type="textarea"
+                  :rows="3"
+                  maxlength="500"
+                  show-word-limit
+                  v-model="detailInfoData.yzxx"
+                  :readonly="isEdit == 2"
+                />
+              </div>
+            </el-form-item>
+            <el-form-item :rules="rules.blank" prop="gzyy">
+              <div class="title">本人工作意愿</div>
+              <div class="content">
+                <el-input
+                  type="textarea"
+                  :rows="3"
+                  maxlength="500"
+                  show-word-limit
+                  v-model="detailInfoData.gzyy"
+                  :readonly="isEdit == 2"
+                />
+              </div>
+            </el-form-item>
+          </div>
+          <div style="padding: 30px"></div>
+        </div>
+      </el-form>
     </div>
 
     <!-- <div class="editBottom" v-show="isEdit == 1">
@@ -497,6 +537,7 @@ export default {
   components: { lctCom, topTitle },
   data() {
     return {
+      formAdd: {},
       isEdit: 2,
       nd: "",
       xh: this.$store.getters.userId,
@@ -510,6 +551,9 @@ export default {
       lctModal: false,
       chehuiModal: false,
       submitModal: false,
+      rules: {
+        blank: [{ required: true, message: "不能为空", trigger: "blur" }],
+      },
     };
   },
   created() {},
@@ -519,6 +563,18 @@ export default {
     this.getDetail();
   },
   methods: {
+    // 表单校验
+    checkFormAdd() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formAdd.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
     dayin() {
       console.log(this.checked);
     },
@@ -586,41 +642,44 @@ export default {
     },
     handleCancle() {
       this.isEdit = 2;
+      this.$refs.formAdd.clearValidate();
     },
     handlUpdata() {
-      // if (!this.checked) {
-      //   this.$message.error("请勾选承诺协议!");
-      // } else {
-      if (this.tableData.length > 0) {
-        for (var i = 0; i < this.tableData.length; i++) {
-          this.$set(
-            this.tableData[i],
-            "ssjlkssj",
-            this.tableData[i].xxsj[0] || ""
-          );
-          this.$set(
-            this.tableData[i],
-            "xxjljssj",
-            this.tableData[i].xxsj[1] || ""
-          );
-          this.$delete(this.tableData[i], "xxsj");
-          this.$set(this.tableData[i], "xh", this.xh);
+      if (!this.checkFormAdd()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        if (this.tableData.length > 0) {
+          for (var i = 0; i < this.tableData.length; i++) {
+            this.$set(
+              this.tableData[i],
+              "ssjlkssj",
+              new Date(this.tableData[i].xxsj[0]).getTime() || ""
+            );
+            this.$set(
+              this.tableData[i],
+              "xxjljssj",
+              new Date(this.tableData[i].xxsj[1]).getTime() || ""
+            );
+            this.$delete(this.tableData[i], "xxsj");
+            this.$set(this.tableData[i], "xh", this.xh);
+          }
         }
+        console.log("this.tableData", this.tableData);
+        //this.$delete(this.tableData, "xxsj");
+        let data = {
+          byjdXxjlListRes: this.tableData,
+          rcswByjdJbxxRes: this.detailInfoData,
+          xh: this.xh,
+        };
+        updateByjdDetail(data)
+          .then((res) => {
+            this.$message.success("保存成功");
+            this.getDetail();
+            this.isEdit = 2;
+          })
+          .catch((err) => {});
       }
-
-      //this.$delete(this.tableData, "xxsj");
-      let data = {
-        byjdXxjlListRes: this.tableData,
-        rcswByjdJbxxRes: this.detailInfoData,
-        xh: this.xh,
-      };
-      updateByjdDetail(data)
-        .then((res) => {
-          this.$message.success("保存成功");
-          this.getDetail();
-          this.isEdit = 2;
-        })
-        .catch((err) => {});
     },
     //}
     //},

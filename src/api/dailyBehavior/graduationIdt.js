@@ -127,3 +127,40 @@ export function exportByjd(query) {
     responseType:'blob'
   })
 }
+
+//教师端-列表查询
+export function queryByjdList(query) {
+  return request({
+    url: '/rcswByjd/queryByjdList',
+    method: 'post',
+    data: query
+  })
+}
+
+//已审核列表导出
+export function excelExporYsht(query) {
+  return request({
+    url: '/rcswByjd/excelExporYsht',
+    method: 'post',
+    data: query,
+    responseType:'blob'
+  })
+}
+//学工负责人列表导出
+export function excelExportXg(query) {
+  return request({
+    url: '/rcswByjd/excelExportXg',
+    method: 'post',
+    data: query,
+    responseType:'blob'
+  })
+}
+//待审核列表导出
+export function excelExportDsh(query) {
+  return request({
+    url: '/rcswByjd/excelExportDsh',
+    method: 'post',
+    data: query,
+    responseType:'blob'
+  })
+}

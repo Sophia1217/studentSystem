@@ -375,7 +375,7 @@
               :readonly="flag != 2 || isEdit != 2"
             />
           </div>
-           <div class="title">毕业实习单位和主要内容</div>
+          <div class="title">毕业实习单位和主要内容</div>
           <div class="content">
             <el-input
               type="textarea"
@@ -385,7 +385,7 @@
               v-model="detailInfoData.xxdwxq"
               :readonly="isEdit == 2"
             />
-              </div>
+          </div>
           <div class="title">毕业论文题目或毕业设计</div>
           <div class="content">
             <el-input
@@ -441,7 +441,7 @@
     <div class="editBottom">
       <div class="btn cancel" @click="lctClick">审核记录</div>
       <div class="btn cancel" v-if="isEdit == 2" @click="thClick">退回</div>
-      <div class="btn cancel" v-if="isEdit == 2" @click="jjClick">拒绝</div>
+      <!-- <div class="btn cancel" v-if="isEdit == 2" @click="jjClick">拒绝</div> -->
       <div class="btn editIcon" v-if="isEdit == 2" @click="tjClick">通过</div>
 
       <div class="btn cancel" @click="handleBack">返回</div>
@@ -680,7 +680,7 @@ export default {
         tyFlow(data).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("审核已通过");
-            this.$router.push(-1);
+            this.$router.go(-1);
           }
         });
       }
@@ -708,7 +708,7 @@ export default {
         jjFlow(data).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("已拒绝");
-            this.$router.push(-1);
+            this.$router.go(-1);
           }
         });
       }
@@ -750,7 +750,7 @@ export default {
           if (res.errcode == "00") {
             this.$message.success("退回成功");
             this.thTableModal = false;
-            this.$router.push(-1);
+            this.$router.go(-1);
           }
         });
       } else {

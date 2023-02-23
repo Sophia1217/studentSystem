@@ -302,7 +302,7 @@ export default {
         auth = "2";
       }
       this.$router.push({
-        path: "/awardSubsidyTea/awardSubsidyDetails",
+        path: "/awardSubsidyTea/awardSubsidySettingEdit",
         query: {
           au: auth, //1是可以编辑  2是不可以
           id: row.id,

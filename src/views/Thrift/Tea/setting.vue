@@ -37,6 +37,7 @@
                 format="yyyy 年 MM 月 dd 日"
                 :clearable="false"
                 value-format="yyyy-MM-dd"
+                :disabled="formAdd.yrdwSqkg == 1"
                 v-model="formAdd.yrdwDate"
                 type="daterange"
                 range-separator="~"
@@ -127,6 +128,7 @@
               <el-date-picker
                 format="yyyy 年 MM 月 dd 日"
                 :clearable="false"
+                :disabled="formAdd.xsgk == 1"
                 value-format="yyyy-MM-dd"
                 v-model="formAdd.xssqsj"
                 type="daterange"

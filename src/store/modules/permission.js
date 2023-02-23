@@ -1,11 +1,12 @@
 import auth from '@/plugins/auth'
 // import store from '@/store'
-import router, { constantRoutes, dynamicRoutes } from '@/router'
+import router, { constantRoutes, dynamicRoutes ,stuRoutes} from '@/router'
 import { getRouters } from '@/api/menu'
 import Layout from '@/layout/index'
 import ParentView from '@/components/ParentView'
 import InnerLink from '@/layout/components/InnerLink'
 import { getToken, setToken, removeToken} from '@/utils/auth'
+import store from '..'
 
 const cacheRoutes= {
     addRoutes : []
@@ -59,18 +60,24 @@ const permission = {
             // console.log('获取用户菜单列表返回数据',res)
             var token = res.accessToken || ''
             setToken(token)
-            const sdata = JSON.parse(JSON.stringify(res.menuRows))
-            const rdata = JSON.parse(JSON.stringify(res.menuRows))
-            const Adata = JSON.parse(JSON.stringify(res.menuRows))
+            var sdata = JSON.parse(JSON.stringify(res.menuRows))
+            var rdata = JSON.parse(JSON.stringify(res.menuRows))
+            var Adata = JSON.parse(JSON.stringify(res.menuRows))
+            if (store.state.user.roleType == 1 ) { // 学生
+                sdata = JSON.parse(JSON.stringify(stuRoutes))
+                rdata = JSON.parse(JSON.stringify(stuRoutes))
+                Adata = JSON.parse(JSON.stringify(stuRoutes))
+            }
             const sidebarRoutes = filterAsyncRouter(sdata)
-           var arr =Adata&& Adata.map(e => e.children);
-           var arr1 =arr&& arr.flat();
-           var tar =arr1&&arr1.map((item,index)=>{
-            return Object.assign({},{"auth":item.auth?item.auth:"","name":item.path?item.path:""})
-           })
-           commit('SET_AUTH', tar)
+            var arr =Adata&& Adata.map(e => e.children);
+            var arr1 =arr&& arr.flat();
+            var tar =arr1&&arr1.map((item,index)=>{
+                    return Object.assign({},{"auth":item.auth?item.auth:"","name":item.path?item.path:""})
+            })
+            commit('SET_AUTH', tar)
             const rewriteRoutes = filterAsyncRouter(rdata, false, true)
             rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true })
+            sidebarRoutes.push({ path: '*', redirect: '/404', hidden: true })
             router.addRoutes(sidebarRoutes);
             commit('SET_ROUTES', rewriteRoutes)
             commit('SET_SIDEBAR_ROUTERS', constantRoutes.concat(sidebarRoutes))

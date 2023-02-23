@@ -402,6 +402,513 @@ export const constantRoutes = [
 // 班级管理内部路由
 export const classRoutes = [];
 
+export const stuRoutes = [
+        // {
+        //     "id":0,
+        //     "modId":"00",
+        //     "name":"studentHomePage",
+        //     "path":"/studentHomePage",
+        //     "title":"学生首页",
+        //     "component":"homepage/studentAngle/studentHomePage.vue",
+        //     "icon":"",
+        //     "modPid":"-1",
+        //     "isChild":"2",
+        //     "sortId":4,
+        //     "modStatus":"1",
+        //     "hidden":true,
+        //     "alwaysShow":true,
+        //     "rem":"",
+        //     "roleIds":null,
+        //     "isChecked":null,
+        //     "vueChecked":false,
+        //     "meta":{
+        //         "icon":"",
+        //         "title":"学生首页"
+        //     },
+        //     "children":[
+
+        //     ],
+        //     "childrenId":null,
+        //     "auth":"1"
+        // },
+        {
+            "id":0,
+            "modId":"5101",
+            "name":"studetails",
+            "path":"/student/studetails",
+            "title":"学生信息",
+            "component":"student/absentee/manStudent/details/index",
+            "icon":"studetails",
+            "modPid":"-1",
+            "isChild":"2",
+            "sortId":5,
+            "modStatus":"1",
+            "hidden":true,
+            "alwaysShow":true,
+            "rem":"",
+            "roleIds":null,
+            "isChecked":null,
+            "vueChecked":false,
+            "meta":{
+                "icon":"studetails",
+                "title":"学生信息"
+            },
+            "children":[
+
+            ],
+            "childrenId":null,
+            "auth":"1"
+        },
+        {
+            "id":0,
+            "modId":"5105",
+            "name":"xjydswStu",
+            "path":"/xjydswStu",
+            "title":"学籍异动事务",
+            "component":"dailyBehavior/xjydsw/stu/index",
+            "icon":"",
+            "modPid":"-1",
+            "isChild":"2",
+            "sortId":5,
+            "modStatus":"1",
+            "hidden":true,
+            "alwaysShow":true,
+            "rem":"",
+            "roleIds":null,
+            "isChecked":null,
+            "vueChecked":false,
+            "meta":{
+                "icon":"",
+                "title":"学籍异动事务"
+            },
+            "children":[
+
+            ],
+            "childrenId":null,
+            "auth":"1"
+        },
+        {
+            "id":0,
+            "modId":"5102",
+            "name":"filesDetail",
+            "path":"/stuGrowFiles/filesDetail",
+            "title":"学生档案详情",
+            "component":"stuGrowFiles/GrowFiles/detail",
+            "icon":"stuFilesDetail",
+            "modPid":"-1",
+            "isChild":"2",
+            "sortId":6,
+            "modStatus":"1",
+            "hidden":true,
+            "alwaysShow":true,
+            "rem":"",
+            "roleIds":null,
+            "isChecked":null,
+            "vueChecked":false,
+            "meta":{
+                "icon":"stuFilesDetail",
+                "title":"学生档案详情"
+            },
+            "children":[
+
+            ],
+            "childrenId":null,
+            "auth":"1"
+        },
+        {
+            "id":0,
+            "modId":"5106",
+            "name":"dormStudent",
+            "path":"/dormStudent",
+            "title":"住宿申请",
+            "component":"dailyBehavior/dormApply/dormStu",
+            "icon":"",
+            "modPid":"-1",
+            "isChild":"2",
+            "sortId":6,
+            "modStatus":"1",
+            "hidden":true,
+            "alwaysShow":true,
+            "rem":"",
+            "roleIds":null,
+            "isChecked":null,
+            "vueChecked":false,
+            "meta":{
+                "icon":"",
+                "title":"住宿申请"
+            },
+            "children":[
+
+            ],
+            "childrenId":null,
+            "auth":"1"
+        },
+        {
+            "id":0,
+            "modId":"5103",
+            "name":"stuTravelDetails",
+            "path":"/dailyBehavior/stuTravelDetails",
+            "title":"学生乘车区间优惠",
+            "component":"dailyBehavior/stuTravel/stu/index",
+            "icon":"stuTravelDetails",
+            "modPid":"-1",
+            "isChild":"2",
+            "sortId":7,
+            "modStatus":"1",
+            "hidden":true,
+            "alwaysShow":true,
+            "rem":"",
+            "roleIds":null,
+            "isChecked":null,
+            "vueChecked":false,
+            "meta":{
+                "icon":"stuTravelDetails",
+                "title":"学生乘车区间优惠"
+            },
+            "children":[
+
+            ],
+            "childrenId":null,
+            "auth":"1"
+        },
+        {
+            "id":0,
+            "modId":"5107",
+            "name":"lsknStu",
+            "path":"/lsknStu",
+            "title":"临时困难",
+            "component":"dailyBehavior/lskn/stu/index",
+            "icon":"",
+            "modPid":"-1",
+            "isChild":"2",
+            "sortId":7,
+            "modStatus":"1",
+            "hidden":true,
+            "alwaysShow":true,
+            "rem":"",
+            "roleIds":null,
+            "isChecked":null,
+            "vueChecked":false,
+            "meta":{
+                "icon":"",
+                "title":"临时困难"
+            },
+            "children":[
+
+            ],
+            "childrenId":null,
+            "auth":"1"
+        },
+        {
+            "id":0,
+            "modId":"5104",
+            "name":"docReplace",
+            "path":"/dailyBehavior/docReplace",
+            "title":"证件补办",
+            "component":"dailyBehavior/docReplace/index",
+            "icon":"docReplace",
+            "modPid":"-1",
+            "isChild":"2",
+            "sortId":8,
+            "modStatus":"1",
+            "hidden":true,
+            "alwaysShow":true,
+            "rem":"",
+            "roleIds":null,
+            "isChecked":null,
+            "vueChecked":false,
+            "meta":{
+                "icon":"docReplace",
+                "title":"证件补办"
+            },
+            "children":[
+
+            ],
+            "childrenId":null,
+            "auth":"1"
+        },
+        {
+            "id":0,
+            "modId":"5108",
+            "name":"vocationStu",
+            "path":"/vocationStu",
+            "title":"日常请销假",
+            "component":"dailyBehavior/vocation/stu/index",
+            "icon":"",
+            "modPid":"-1",
+            "isChild":"2",
+            "sortId":8,
+            "modStatus":"1",
+            "hidden":true,
+            "alwaysShow":true,
+            "rem":"",
+            "roleIds":null,
+            "isChecked":null,
+            "vueChecked":false,
+            "meta":{
+                "icon":"",
+                "title":"日常请销假"
+            },
+            "children":[
+
+            ],
+            "childrenId":null,
+            "auth":"1"
+        },
+        {
+            "id":0,
+            "modId":"5109",
+            "name":"fdyTestStu",
+            "path":"/fdyTest",
+            "title":"辅导员测评",
+            "component":"assistantTest/stuTest/stuView/testList",
+            "icon":"",
+            "modPid":"-1",
+            "isChild":"2",
+            "sortId":9,
+            "modStatus":"1",
+            "hidden":true,
+            "alwaysShow":true,
+            "rem":"",
+            "roleIds":null,
+            "isChecked":null,
+            "vueChecked":false,
+            "meta":{
+                "icon":"",
+                "title":"辅导员测评"
+            },
+            "children":[
+
+            ],
+            "childrenId":null,
+            "auth":"1"
+        },
+        {
+            "id":0,
+            "modId":"5110",
+            "name":"fdyTestStutu",
+            "path":"/fdyTestDetail",
+            "title":"辅导员测评问卷",
+            "component":"assistantTest/stuTest/stuView/testDetail",
+            "icon":"",
+            "modPid":"-1",
+            "isChild":"2",
+            "sortId":10,
+            "modStatus":"1",
+            "hidden":true,
+            "alwaysShow":true,
+            "rem":"",
+            "roleIds":null,
+            "isChecked":null,
+            "vueChecked":false,
+            "meta":{
+                "icon":"",
+                "title":"辅导员测评问卷"
+            },
+            "children":[
+
+            ],
+            "childrenId":null,
+            "auth":"1"
+        },
+        {
+            "id":0,
+            "modId":"5111",
+            "name":"yearSumStuList",
+            "path":"/yearSumStuList",
+            "title":"学年小结",
+            "component":"dailyBehavior/yearSum/stu",
+            "icon":"",
+            "modPid":"-1",
+            "isChild":"2",
+            "sortId":11,
+            "modStatus":"1",
+            "hidden":true,
+            "alwaysShow":true,
+            "rem":"",
+            "roleIds":null,
+            "isChecked":null,
+            "vueChecked":false,
+            "meta":{
+                "icon":"",
+                "title":"学年小结"
+            },
+            "children":[
+
+            ],
+            "childrenId":null,
+            "auth":"1"
+        },
+        {
+            "id":0,
+            "modId":"5112",
+            "name":"awardsApply",
+            "path":"/awardsApply",
+            "title":"评奖评优",
+            "component":"Awards/stu/index",
+            "icon":"",
+            "modPid":"-1",
+            "isChild":"2",
+            "sortId":12,
+            "modStatus":"1",
+            "hidden":true,
+            "alwaysShow":true,
+            "rem":"",
+            "roleIds":null,
+            "isChecked":null,
+            "vueChecked":false,
+            "meta":{
+                "icon":"",
+                "title":"评奖评优"
+            },
+            "children":[
+
+            ],
+            "childrenId":null,
+            "auth":"1"
+        },
+        {
+            "id":0,
+            "modId":"5113",
+            "name":"familyTable",
+            "path":"/familySituationTable",
+            "title":"家庭情况调查表",
+            "component":"familyDifficulties/stu/table",
+            "icon":"",
+            "modPid":"-1",
+            "isChild":"2",
+            "sortId":13,
+            "modStatus":"1",
+            "hidden":true,
+            "alwaysShow":true,
+            "rem":"",
+            "roleIds":null,
+            "isChecked":null,
+            "vueChecked":false,
+            "meta":{
+                "icon":"",
+                "title":"家庭情况调查表"
+            },
+            "children":[
+
+            ],
+            "childrenId":null,
+            "auth":"1"
+        },
+        {
+            "id":0,
+            "modId":"5114",
+            "name":"difficultIdentity",
+            "path":"/difficultIdentity",
+            "title":"困难生认定",
+            "component":"familyDifficulties/stu/apply",
+            "icon":"",
+            "modPid":"-1",
+            "isChild":"2",
+            "sortId":14,
+            "modStatus":"1",
+            "hidden":true,
+            "alwaysShow":true,
+            "rem":"",
+            "roleIds":null,
+            "isChecked":null,
+            "vueChecked":false,
+            "meta":{
+                "icon":"",
+                "title":"困难生认定"
+            },
+            "children":[
+
+            ],
+            "childrenId":null,
+            "auth":"1"
+        },
+        {
+            "id":0,
+            "modId":"5115",
+            "name":"graduateIdentification",
+            "path":"/graduateIdentification",
+            "title":"毕业生鉴定表学生端",
+            "component":"dailyBehavior/graduateIdt/stu/table",
+            "icon":"",
+            "modPid":"-1",
+            "isChild":"2",
+            "sortId":15,
+            "modStatus":"1",
+            "hidden":true,
+            "alwaysShow":true,
+            "rem":"",
+            "roleIds":null,
+            "isChecked":null,
+            "vueChecked":false,
+            "meta":{
+                "icon":"",
+                "title":"毕业生鉴定表学生端"
+            },
+            "children":[
+
+            ],
+            "childrenId":null,
+            "auth":"1"
+        },
+        {
+            "id":0,
+            "modId":"5116",
+            "name":"awardSubsidyApply",
+            "path":"/awardSubsidyApply",
+            "title":"奖助申请",
+            "component":"awardSubsidy/stu/index",
+            "icon":"",
+            "modPid":"-1",
+            "isChild":"2",
+            "sortId":16,
+            "modStatus":"1",
+            "hidden":true,
+            "alwaysShow":true,
+            "rem":"",
+            "roleIds":null,
+            "isChecked":null,
+            "vueChecked":false,
+            "meta":{
+                "icon":"",
+                "title":"奖助申请"
+            },
+            "children":[
+
+            ],
+            "childrenId":null,
+            "auth":"1"
+        },
+        {
+            "id":0,
+            "modId":"5117",
+            "name":"awardSubsidyTable",
+            "path":"/awardSubsidyTable",
+            "title":"奖助申请表",
+            "component":"awardSubsidy/stu/table",
+            "icon":"",
+            "modPid":"-1",
+            "isChild":"2",
+            "sortId":17,
+            "modStatus":"1",
+            "hidden":true,
+            "alwaysShow":true,
+            "rem":"",
+            "roleIds":null,
+            "isChecked":null,
+            "vueChecked":false,
+            "meta":{
+                "icon":"",
+                "title":"奖助申请表"
+            },
+            "children":[
+
+            ],
+            "childrenId":null,
+            "auth":"1"
+        }
+    ];
+
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes = [
   {

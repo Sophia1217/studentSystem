@@ -428,7 +428,7 @@ export default {
     hadleDetail(row) {
       this.$router.push({
         path: "/dailyBehavior/graduateIdt/graDetail",
-        query: { xh: row.xh, taskId: row.taskId, isEdit: 2 },
+        query: { xh: row.xh, taskId: row.taskId, isEdit: 3 },
       });
     },
     detailCancel() {

@@ -323,7 +323,7 @@
               maxlength="500"
               show-word-limit
               v-model="detailInfoData.jtcyxq"
-              :readonly="isEdit == 2"
+              :readonly="isEdit != 1"
             />
           </div>
           <div class="title">
@@ -336,7 +336,7 @@
               maxlength="500"
               show-word-limit
               v-model="detailInfoData.jtcyzkxq"
-              :readonly="isEdit == 2"
+              :readonly="isEdit != 1"
             />
           </div>
 
@@ -348,7 +348,7 @@
               maxlength="1500"
               show-word-limit
               v-model="detailInfoData.zwjd"
-              :readonly="isEdit == 2"
+              :readonly="isEdit != 1"
             />
           </div>
           <div class="title">班组鉴定</div>
@@ -383,7 +383,7 @@
               maxlength="500"
               show-word-limit
               v-model="detailInfoData.xxdwxq"
-              :readonly="isEdit == 2"
+              :readonly="isEdit != 1"
             />
           </div>
           <div class="title">毕业论文题目或毕业设计</div>
@@ -394,7 +394,7 @@
               maxlength="200"
               show-word-limit
               v-model="detailInfoData.bysj"
-              :readonly="isEdit == 2"
+              :readonly="isEdit != 1"
             />
           </div>
           <div class="title">有何特长</div>
@@ -405,7 +405,7 @@
               maxlength="200"
               show-word-limit
               v-model="detailInfoData.yhtc"
-              :readonly="isEdit == 2"
+              :readonly="isEdit != 1"
             />
           </div>
           <div class="title">懂何种外语、程度如何</div>
@@ -416,7 +416,7 @@
               maxlength="200"
               show-word-limit
               v-model="detailInfoData.yzxx"
-              :readonly="isEdit == 2"
+              :readonly="isEdit != 1"
             />
           </div>
           <div class="title">本人工作意愿</div>
@@ -427,7 +427,7 @@
               maxlength="200"
               show-word-limit
               v-model="detailInfoData.gzyy"
-              :readonly="isEdit == 2"
+              :readonly="isEdit != 1"
             />
           </div>
         </div>

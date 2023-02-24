@@ -72,7 +72,7 @@
                 v-model="formAdd.xsgwKhdgws"
                 controls-position="right"
                 :min="0"
-                :max="10"
+                :max="100"
                 :precision="0"
                 style="width: 25%"
                 @keyup.native="checkInt"
@@ -92,7 +92,7 @@
                 v-model="formAdd.xsgwKsqgws"
                 controls-position="right"
                 :min="0"
-                :max="10"
+                :max="100"
                 :precision="0"
                 @keyup.native="checkInt"
                 style="width: 25%"
@@ -188,7 +188,7 @@
                 v-model="formAdd.cjffCjbz"
                 controls-position="right"
                 :min="0"
-                :max="10"
+                :max="1000"
                 style="width: 25%"
               ></el-input-number>
               元/小时<span v-html="'\u3000\u3000'"></span>(默认按此标准计算酬金)
@@ -219,7 +219,7 @@
                 v-model="formAdd.cjffSzsxNum"
                 controls-position="right"
                 :min="0"
-                :max="10"
+                :max="1000"
                 style="width: 25%"
               ></el-input-number>
               <span v-if="formAdd.cjffSzsxType == '酬金'"
@@ -348,7 +348,7 @@
                 v-model="formAdd.cjffGwzgcjsx"
                 controls-position="right"
                 :min="0"
-                :max="10"
+                :max="1000"
                 style="width: 25%"
               ></el-input-number>
               <span v-html="'\u3000'"></span>(每个岗位每人每月酬金上限)
@@ -363,7 +363,7 @@
         width="70%"
         append-to-body
       >
-        <flow :xmlData="xmlData" />
+        <flow :xmlData="xmlData"> </flow>
       </el-dialog>
     </div>
     <div class="editBottom">
@@ -379,6 +379,7 @@ import { saveD, queryD } from "@/api/gwsz/gwsz";
 import { readXml } from "@/api/flowable/definition";
 import flow from "@/views/flowable/task/record/flow";
 export default {
+  components: { flow },
   // watch: {
   //   formAdd: {
   //     handler(newVal, oldVal) {
@@ -509,7 +510,7 @@ export default {
     },
     queryFlow() {
       queryFlowIdByMk({ mk: "勤工助学_岗位设置" }).then((res) => {
-        this.flowId = res.data;
+        this.flowId = res.data.flowId;
       });
     },
     /** 流程图查看 */
@@ -601,9 +602,7 @@ export default {
           cjffMonthStart: this.cjffMonthStart, //酬金发放月份设定
           cjffMonthEnd: this.cjffMonthEnd,
         };
-        saveD(data).then((res) => {
-          console.log("Res", res);
-        });
+        saveD(data).then((res) => {});
       }
     },
     checkFormInner() {

@@ -214,6 +214,7 @@
               v-model="formAdd.zrs"
               size="small"
               controls-position="right"
+              :max="100000"
               :min="1"
             ></el-input-number
           ></el-col>
@@ -224,6 +225,7 @@
               size="small"
               controls-position="right"
               :min="1"
+              :max="10000000"
             ></el-input-number
           ></el-col>
           <el-col :span="4.5">
@@ -234,7 +236,7 @@
         </el-row>
         <el-row :gutter="20" style="margin-top: 25px; margin-left: -22px">
           <el-col :span="1.5"> <span class="span1">指标细化</span></el-col>
-          <el-col :span="6" class="heightCom">
+          <el-col :span="9" class="heightCom">
             <el-radio-group v-model="formAdd.zbxhfs">
               <el-radio :label="1">分配指标</el-radio>
               <el-radio :label="2">推荐指标</el-radio>
@@ -667,7 +669,6 @@ export default {
         );
       }
       this.checkedCities = this.qc(this.checkedCities);
-      console.log("checkedCities多选", this.checkedCities);
     },
     qc(pa) {
       let newArr = [];
@@ -711,7 +712,6 @@ export default {
           (item) => childrenArray[ind].dm !== item.dm
         );
       }
-      console.log("this.danxuan", this.checkedCities);
     },
     format1(items) {
       return items.map((item) => {
@@ -780,7 +780,7 @@ export default {
     },
     cancelAdd() {
       this.$router.push({
-        path: "/awardsTea/personalSetting",
+        path: "/awardSubsidyTea/awardSubsidySetting",
       });
     },
     jxjbChange(e) {
@@ -990,8 +990,6 @@ export default {
       }
     },
     setting() {
-      console.log("asd");
-      console.log("this.formInner.pyccDefList", this.formInner.pyccDefList);
       this.formInner.pyccDefList[0].option = this.pyccOption;
       this.formInner.pyccDefList[0].tjmbm = "dmpyccm";
       // this.formInner.pyccDefList.length > 1

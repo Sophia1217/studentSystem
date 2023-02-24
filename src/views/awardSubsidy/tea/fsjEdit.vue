@@ -49,13 +49,13 @@
           <el-form-item label="面向对象">
             <span>已设置</span>
           </el-form-item>
-          <!-- <el-button
+          <el-button
             type="primary"
             size="medium"
             @click="addColumn"
             v-if="bjzt != '1'"
             >添加列</el-button
-          > -->
+          >
           <el-form-item label="奖项等级">
             <el-table ref="multipleTable" :data="formAdd.jxdjList">
               <el-table-column type="index" label="序号" width="50" />
@@ -85,7 +85,7 @@
               <!-- 动态列 -->
               <el-table-column
                 v-for="(item, index) in dynamicColumns"
-                :key="Math.random()"
+                :key="Math.random() * 100"
                 :prop="item.prop"
               >
                 <template slot="header">
@@ -104,8 +104,11 @@
                   ></i>
                 </template>
                 <template slot-scope="scope">
-                  <span v-if="bjzt == '1'">{{ scope.row.nj[item.prop] }}</span>
+                  <span v-if="bjzt == '1'"></span>
                   <el-input-number
+                    controls-position="right"
+                    :min="0"
+                    :max="10"
                     v-if="bjzt == '2'"
                     style="width: 150px"
                     v-model="scope.row.nj[item.prop]"
@@ -287,7 +290,6 @@ export default {
           label: value,
         });
       });
-      console.log("this", this.dynamicColumns);
     },
     deleteColunm(index) {
       this.dynamicColumns.splice(index, 1);
@@ -327,7 +329,7 @@ export default {
     },
     colseDe() {
       this.$router.push({
-        path: "/awardsTea/personalSetting",
+        path: "/awardSubsidyTea/awardSubsidySetting",
       });
     },
     cancelAdd() {
@@ -430,7 +432,7 @@ export default {
           let obj = {};
           this.dynamicColumns.forEach((col) => {
             // 仅把有效的列提交
-            if (data.nj[col.prop]) {
+            if (data.nj[col.prop] || data.nj[col.prop] === 0) {
               obj[col.prop] = data.nj[col.prop];
             }
           });
@@ -454,10 +456,10 @@ export default {
           rcswJzsqJxfpszXyReqs: resArr,
         };
         addCol(data).then((res) => {
-          // this.$router.push({
-          //   path: "/awardsTea/personalSetting",
+          this.$router.push({
+            path: "/awardSubsidyTea/awardSubsidySetting",
+          });
         });
-        // });
       }
     },
   },

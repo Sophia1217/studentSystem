@@ -262,6 +262,7 @@
               v-else
               v-model="formAdd.zrs"
               size="small"
+              :max="100000"
               controls-position="right"
               :min="1"
             ></el-input-number
@@ -275,6 +276,7 @@
             >
             <el-input-number
               v-else
+              :max="10000000"
               v-model="formAdd.zje"
               size="small"
               controls-position="right"
@@ -289,7 +291,7 @@
         </el-row>
         <el-row :gutter="20" style="margin-top: 25px; margin-left: -22px">
           <el-col :span="1.5"> <span class="span1">指标细化：</span></el-col>
-          <el-col :span="6" class="heightCom">
+          <el-col :span="9" class="heightCom">
             <span v-if="bjzt == '1'" style="display: inline-block">{{
               formAdd.zbxhfs == "1" ? "分配指标" : "推荐指标"
             }}</span>
@@ -716,7 +718,7 @@ export default {
   methods: {
     colseDe() {
       this.$router.push({
-        path: "/awardsTea/personalSetting",
+        path: "/awardSubsidyTea/awardSubsidySetting",
       });
     },
     cancelAdd() {
@@ -762,7 +764,6 @@ export default {
     getDetail1() {
       getDetail({ id: this.lgnSn }).then((res) => {
         this.formAdd = res.data.rcswJzsqJxjbszReq;
-        console.log("this.formadd", this.formAdd);
         this.formAdd.jxdjList = res.data.rcswJzsqJxdjszList;
         this.$set(this.formAdd, "sjArr", [
           res.data.rcswJzsqJxjbszReq.pssjstart,
@@ -819,7 +820,6 @@ export default {
         );
       }
       this.checkedCities = this.qc(this.checkedCities);
-      // console.log("checkedCities多选", this.checkedCities);
     },
     qc(pa) {
       let newArr = [];
@@ -863,7 +863,6 @@ export default {
           (item) => childrenArray[ind].dm !== item.dm
         );
       }
-      // console.log("this.danxuan", this.checkedCities);
     },
     format1(items) {
       return items.map((item) => {
@@ -959,7 +958,6 @@ export default {
         return;
       } else {
         if (this.formInner.pyccDefList[0].tjmzList.length > 0) {
-          console.log("this.afasasdad", this.formAdd);
           var data = {
             rcswJzsqJxbkjdszList: this.checkedCities,
             rcswJzsqJxdjszList: this.formAdd.jxdjList,
@@ -984,11 +982,10 @@ export default {
               jzlbm: this.formAdd.jzlbEdit, //奖助类别
             },
           };
-          console.log("data", data);
           addSave(data).then((res) => {
-            // this.$router.push({
-            //   path: "/awardsTea/personalSetting",
-            // });
+            this.$router.push({
+              path: "/awardSubsidyTea/awardSubsidySetting",
+            });
           });
         } else {
           this.$message.error("面向对象暂未设置");

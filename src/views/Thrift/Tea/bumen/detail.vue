@@ -155,6 +155,7 @@
                     v-else
                     v-model="scope.row.gwYgzl"
                     :min="0"
+                    :max="999"
                     controls-position="right"
                     @change="count(scope.row)"
                   />
@@ -177,6 +178,7 @@
                   <el-input-number
                     v-model="scope.row.gwYgzsx"
                     :min="0"
+                    :max="9999999"
                     controls-position="right"
                     @change="countNXC(scope.row)"
                     v-else
@@ -208,6 +210,7 @@
                     v-else
                     v-model="scope.row.gwNzxsrs"
                     :min="0"
+                    :max="9999999"
                     controls-position="right"
                   />
                 </el-form-item>

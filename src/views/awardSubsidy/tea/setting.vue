@@ -27,7 +27,7 @@
       <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20" style="margin-bottom: 15px">
           <el-col :span="8">
-            <span>评奖奖项：</span>
+            <span>资助项目名称：</span>
             <el-select
               multiple
               collapse-tags
@@ -186,7 +186,7 @@
 </template>
 <script>
 import { pjjxListQuery } from "@/api/dailyBehavior/pjpySetting";
-import { jzsqList, changeJzsq } from "@/api/jzsz/jzsz";
+import { jzsqList, changeJzsq, queryXm } from "@/api/jzsz/jzsz";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
   name: "BasicInfo",
@@ -232,8 +232,8 @@ export default {
   },
   methods: {
     pjjxList1() {
-      pjjxListQuery({ jxlb: "1" }).then((res) => {
-        this.PjjxArr = res.data;
+      queryXm({ jzlbm: "3" }).then((res) => {
+        this.PjjxArr = res.data.zzxmDataCodeList;
       });
     },
     changeSelect(val) {
@@ -252,8 +252,8 @@ export default {
       };
       changeJzsq(data).then((res) => {
         this.$message.success("更新成功");
-        this.getList();
       });
+      this.getList();
     },
     // 表单校验
     checkForm() {
@@ -274,7 +274,7 @@ export default {
     },
     getList() {
       let data = {
-        pjjxList: this.pjjxList,
+        zzxmmcList: this.pjjxList,
         jxjbmList: this.jxjbmList,
         pyccmList: this.pyccmList,
         pssjend: this.Csrq && this.Csrq[1] ? this.Csrq[1] : "",
@@ -301,13 +301,24 @@ export default {
       if (row.sqkg && row.sqkg == "1") {
         auth = "2";
       }
-      this.$router.push({
-        path: "/awardSubsidyTea/awardSubsidySettingEdit",
-        query: {
-          au: auth, //1是可以编辑  2是不可以
-          id: row.id,
-        },
-      });
+      //判断是否是副书记 2就是
+      if (this.$store.getters.SJAUTH == "1") {
+        this.$router.push({
+          path: "/awardSubsidyTea/awardSubsidySettingEdit",
+          query: {
+            au: auth, //1是可以编辑  2是不可以
+            id: row.id,
+          },
+        });
+      } else {
+        this.$router.push({
+          path: "/awardSubsidyTea/fsjEdit",
+          query: {
+            au: auth,
+            id: row.id,
+          },
+        });
+      }
     },
 
     sjCancel() {

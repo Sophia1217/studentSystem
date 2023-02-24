@@ -286,8 +286,8 @@ export default {
       };
       changePjsz(data).then((res) => {
         this.$message.success("更新成功");
-        this.getList();
       });
+      this.getList();
     },
     // 表单校验
     checkForm() {

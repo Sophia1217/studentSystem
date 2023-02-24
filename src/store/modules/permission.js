@@ -21,7 +21,8 @@ const permission = {
     sidebarRouters: [],
     AUTH:[],
     AUTHFLAG:false,
-    EXCELCOUNT:0
+    EXCELCOUNT:0,
+    SJAUTH:"1"
   },
   mutations: {
     SET_ROUTES: (state, routes) => {
@@ -46,6 +47,17 @@ const permission = {
     },
     EXCELCOUNT:(state, EXCELCOUNT) => {
       state.EXCELCOUNT =  Number(EXCELCOUNT)
+    },
+    SET_SJAUTH:(state,res)=>{
+      for(var i=0; i<res.length;i++){
+        if( res[i].modId =='1305' && res[i].modId =='1306') { 
+          state.SJAUTH ="1"}   else if(res[i].modId =='1305'){
+        //书记权限是2
+        state.SJAUTH ="2"
+          }else{
+        state.SJAUTH ="1"
+      }
+    }
     }
   },
   actions: {
@@ -74,6 +86,8 @@ const permission = {
             var tar =arr1&&arr1.map((item,index)=>{
                     return Object.assign({},{"auth":item.auth?item.auth:"","name":item.path?item.path:""})
             })
+        
+            commit('SET_SJAUTH', arr1)
             commit('SET_AUTH', tar)
             const rewriteRoutes = filterAsyncRouter(rdata, false, true)
             rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true })

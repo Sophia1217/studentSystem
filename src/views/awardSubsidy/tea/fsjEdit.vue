@@ -50,12 +50,12 @@
             <span>已设置</span>
           </el-form-item>
           <!-- <el-button
-              type="primary"
-              size="medium"
-              @click="addColumn"
-              v-if="bjzt != '1'"
-              >添加列</el-button
-            > -->
+            type="primary"
+            size="medium"
+            @click="addColumn"
+            v-if="bjzt != '1'"
+            >添加列</el-button
+          > -->
           <el-form-item label="奖项等级">
             <el-table ref="multipleTable" :data="formAdd.jxdjList">
               <el-table-column type="index" label="序号" width="50" />
@@ -115,24 +115,24 @@
                 </template>
               </el-table-column>
               <!-- <el-table-column
-                  label="添加选项"
-                  align="center"
-                  v-if="bjzt == '2'"
-                >
-                  <template slot-scope="scope">
-                    <div style="margin-bottom: 20px">
-                      <i
-                        class="icon jia"
-                        @click="jia(scope.row, scope.$index)"
-                      ></i>
-                      <i
-                        class="icon jian"
-                        v-if="scope.$index > 0"
-                        @click="jian(scope.row, scope.$index)"
-                      ></i>
-                    </div>
-                  </template>
-                </el-table-column> -->
+                label="添加选项"
+                align="center"
+                v-if="bjzt == '2'"
+              >
+                <template slot-scope="scope">
+                  <div style="margin-bottom: 20px">
+                    <i
+                      class="icon jia"
+                      @click="jia(scope.row, scope.$index)"
+                    ></i>
+                    <i
+                      class="icon jian"
+                      v-if="scope.$index > 0"
+                      @click="jian(scope.row, scope.$index)"
+                    ></i>
+                  </div>
+                </template>
+              </el-table-column> -->
             </el-table>
           </el-form-item>
           <el-form-item

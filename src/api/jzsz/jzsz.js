@@ -83,3 +83,10 @@ export function queryCol(query) {
 }
 
 
+export function queryXm(query) {
+  return request({
+    url: '/rcswJzsq/queryAllZzxmWithAuth',
+    method: 'get',
+    params: query
+  })
+}

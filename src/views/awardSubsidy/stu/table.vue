@@ -624,35 +624,15 @@
               type="index"
               label="序号"
               width="50"
+              fixed="left"
             ></el-table-column>
-            <el-table-column
-              prop="mkRq"
-              label="模块时间"
-              min-width="100"
-              sortable
-            >
-            </el-table-column>
-            <el-table-column
-              prop="mkMc"
-              label="模块名称"
-              min-width="85"
-              sortable
-            >
-            </el-table-column>
-            <el-table-column
-              prop="mkDj"
-              label="模块等级"
-              min-width="100"
-              sortable
-            >
-            </el-table-column>
-            <el-table-column
-              prop="mkDw"
-              label="模块单位"
-              min-width="100"
-              sortable
-            >
-            </el-table-column>
+            <div v-for="(item, index) in tableHeader" :key="index">
+              <el-table-column
+                :prop="item.dm"
+                :label="item.mc"
+                sortable="custom"
+              ></el-table-column>
+            </div>
           </el-table>
         </div>
       </template>
@@ -742,6 +722,37 @@ export default {
       bxList: [],
       delModal: false,
       delId: [],
+      tableHeader: [],
+      tableHeader1: [
+        { dm: "mkRq", mc: "获奖日期/发证时间" },
+        { dm: "mkMc", mc: "奖项名称/荣誉名称" },
+        { dm: "mkDj", mc: "等级" },
+        { dm: "mkDw", mc: "颁奖单位/表彰单位" },
+      ],
+      tableHeader2: [
+        { dm: "mkRq", mc: "发表(出版)日期" },
+        { dm: "mkMc", mc: "著作/论文名称" },
+        { dm: "mkDj", mc: "署名顺序" },
+        { dm: "mkDw", mc: "刊物名称/出版社" },
+      ],
+      tableHeader3: [
+        { dm: "mkRq", mc: "授权日期" },
+        { dm: "mkMc", mc: "专利/发明/软著名称" },
+        { dm: "mkDj", mc: "署名顺序" },
+        { dm: "mkDw", mc: "类型（权力取得方式）" },
+      ],
+      tableHeader4: [
+        { dm: "mkRq", mc: "采纳时间" },
+        { dm: "mkMc", mc: "报告名称" },
+        { dm: "mkDj", mc: "署名顺序" },
+        { dm: "mkDw", mc: "采纳单位" },
+      ],
+      tableHeader5: [
+        { dm: "mkRq", mc: "起止日期" },
+        { dm: "mkMc", mc: "项目名称" },
+        { dm: "mkDj", mc: "服务时长" },
+        { dm: "mkDw", mc: "组织单位" },
+      ],
       rules: {
         yysljfs: [
           {
@@ -909,14 +920,6 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       console.log("val", val);
-      // this.commonParams = this.multipleSelection.map((v) => ({
-      //   businesId: v.businesId,
-      //   processId: v.processid,
-      //   status: v.status,
-      //   taskId: v.taskId,
-      //   xh: v.xh,
-      //   tjdjId: v.tjdjId,
-      // }));
     },
     addCancel() {
       this.addModal = false;
@@ -952,36 +955,25 @@ export default {
       if (this.formAdd.zzxmId == "") {
         this.$message.warning("请完善申请信息！");
       } else {
-        // var bxList = [];
         switch (val) {
           case "获奖情况":
-            // for (var i = 0; i < this.formTable.hjqkList.length; i++) {
-            //   bxList.push(this.formTable.hjqkList[i].jzsqId);
-            // };
+            this.tableHeader = this.tableHeader1;
             this.forBx(this.formTable.hjqkList);
             break;
           case "专著论文":
-            // for (var i = 0; i < this.formTable.zzlwList.length; i++) {
-            //   bxList.push(this.formTable.zzlwList[i].jzsqId);
-            // }
+            this.tableHeader = this.tableHeader2;
             this.forBx(this.formTable.zzlwList);
             break;
           case "专利发明":
-            // for (var i = 0; i < this.formTable.zlfmList.length; i++) {
-            //   bxList.push(this.formTable.zlfmList[i].jzsqId);
-            // };
+            this.tableHeader = this.tableHeader3;
             this.forBx(this.formTable.zlfmList);
             break;
           case "研究报告":
-            // for (var i = 0; i < this.formTable.yjbgList.length; i++) {
-            //   bxList.push(this.formTable.yjbgList[i].jzsqId);
-            // };
+            this.tableHeader = this.tableHeader4;
             this.forBx(this.formTable.yjbgList);
             break;
           case "社会实践":
-            // for (var i = 0; i < this.formTable.shsjList.length; i++) {
-            //   bxList.push(this.formTable.shsjList[i].jzsqId);
-            // };
+            this.tableHeader = this.tableHeader5;
             this.forBx(this.formTable.shsjList);
             break;
         }

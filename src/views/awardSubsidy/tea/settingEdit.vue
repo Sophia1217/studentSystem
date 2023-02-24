@@ -958,6 +958,10 @@ export default {
         return;
       } else {
         if (this.formInner.pyccDefList[0].tjmzList.length > 0) {
+          for (const key in this.resultArr) {
+            //   // 删除id属性
+            delete this.resultArr[key].tjmbList;
+          }
           var data = {
             rcswJzsqJxbkjdszList: this.checkedCities,
             rcswJzsqJxdjszList: this.formAdd.jxdjList,

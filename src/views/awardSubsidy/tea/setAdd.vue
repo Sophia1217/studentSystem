@@ -813,6 +813,10 @@ export default {
         return;
       } else {
         if (this.formInner.pyccDefList[0].tjmzList.length > 0) {
+          for (const key in this.resultArr) {
+            //   // 删除id属性
+            delete this.resultArr[key].option;
+          }
           var data = {
             rcswJzsqJxbkjdszList: this.checkedCities,
             rcswJzsqJxdjszList: this.formAdd.jxdjList,
@@ -837,9 +841,9 @@ export default {
             },
           };
           addSave(data).then((res) => {
-            // this.$router.push({
-            //   path: "/awardsTea/personalSetting",
-            // });
+            this.$router.push({
+              path: "/awardSubsidyTea/awardSubsidySetting",
+            });
           });
         } else {
           this.$message.error("面向对象暂未设置");
@@ -992,15 +996,6 @@ export default {
     setting() {
       this.formInner.pyccDefList[0].option = this.pyccOption;
       this.formInner.pyccDefList[0].tjmbm = "dmpyccm";
-      // this.formInner.pyccDefList.length > 1
-      //   ? (this.formInner.pyccDefList[1].option = this.allNj)
-      //   : "";
-      // this.formInner.pyccDefList.length > 1
-      //   ? (this.formInner.pyccDefList[1].tjmbm = "nj")
-      //   : "";
-      //   this.formInner.pyccDefList.length > 1
-      // this.formInner.pyccDefList[2].option = this.dmsfslxmList;
-      // this.formInner.pyccDefList[2].tjmbm = "dmsfslxm";
       this.mxdxModal = true;
     },
 

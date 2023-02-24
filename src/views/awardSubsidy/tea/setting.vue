@@ -109,7 +109,7 @@
             <span class="title">奖助设置列表</span>
           </div>
           <div class="headerRight">
-            <div class="btns borderGreen" @click="xinzeng">
+            <div class="btns borderGreen" @click="xinzeng" v-show="AUTHFLAG">
               <i class="icon greenIcon"></i><span class="title1">新增</span>
             </div>
           </div>
@@ -162,6 +162,7 @@
             <el-table-column fixed="right" label="操作" width="180">
               <template slot-scope="scope">
                 <el-button
+                  v-show="AUTHFLAG"
                   type="text"
                   size="small"
                   @click="hadleDetail(scope.row)"

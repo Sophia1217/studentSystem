@@ -367,8 +367,9 @@
       </el-dialog>
     </div>
     <div class="editBottom">
-      <div class="btn cancel" @click="cancelAdd">取消</div>
-      <div class="btn confirm" @click="finalSave">保存</div>
+      <!-- <div class="btn cancel" @click="cancelAdd">取消</div> -->
+
+      <div class="btn confirm" @click="finalSave" v-show="AUTHFLAG">保存</div>
     </div>
   </div>
 </template>
@@ -494,10 +495,13 @@ export default {
         cjffGwcjsx: 1, // 是否设定岗位酬金上限
         cjffGwzgcjsx: 0, //  岗位最高酬金上限
         id: "",
+        AUTHFLAG: false,
       },
     };
   },
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getCode("dmpyccm"); //培养层次1
     this.getDetail();
     this.queryFlow();
@@ -572,11 +576,7 @@ export default {
       } else {
       }
     },
-    cancelAdd() {
-      this.$router.push({
-        path: "/awardsTea/personalSetting",
-      });
-    },
+    cancelAdd() {},
     checkFormAdd() {
       // 1.校验必填项
       let validForm = false;

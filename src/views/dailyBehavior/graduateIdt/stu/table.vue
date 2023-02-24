@@ -612,6 +612,8 @@ export default {
     // },
     editButtonClick() {
       this.isEdit = 1;
+      this.$set(this.detailInfoData, "bzjd", "");
+      this.$set(this.detailInfoData, "ydzzyj", "");
     },
     getDetail() {
       // getXsJbxx().then((res) => {

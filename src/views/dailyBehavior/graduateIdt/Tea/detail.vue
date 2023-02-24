@@ -686,45 +686,45 @@ export default {
       }
     },
     jjClick() {
-      if (this.flag == 1 && !this.detailInfoData.bzjd) {
-        this.$message.error("班组鉴定结果不能为空！");
-      } else if (this.flag == 2 && !this.detailInfoData.ydzzyj) {
-        this.$message.error("院系党组织意见不能为空！");
-      } else {
-        var data = {
-          businesId: this.detailInfoData.id,
-          processId: this.detailInfoData.processid,
-          status: this.detailInfoData.status,
-          taskId: this.$route.query.taskId,
+      // if (this.flag == 1 && !this.detailInfoData.bzjd) {
+      //   this.$message.error("班组鉴定结果不能为空！");
+      // } else if (this.flag == 2 && !this.detailInfoData.ydzzyj) {
+      //   this.$message.error("院系党组织意见不能为空！");
+      // } else {
+      var data = {
+        businesId: this.detailInfoData.id,
+        processId: this.detailInfoData.processid,
+        status: this.detailInfoData.status,
+        taskId: this.$route.query.taskId,
 
-          opMsg:
-            this.flag == 1
-              ? this.detailInfoData.bzjd
-              : this.flag == 2
-              ? this.detailInfoData.ydzzyj
-              : "已拒绝",
-        };
-        //拒绝
-        jjFlow(data).then((res) => {
-          if (res.errcode == "00") {
-            this.$message.success("已拒绝");
-            this.$router.go(-1);
-          }
-        });
-      }
+        opMsg:
+          this.flag == 1
+            ? this.detailInfoData.bzjd
+            : this.flag == 2
+            ? this.detailInfoData.ydzzyj
+            : "已拒绝",
+      };
+      //拒绝
+      jjFlow(data).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("已拒绝");
+          this.$router.go(-1);
+        }
+      });
+      // }
     },
     thClick() {
-      if (this.flag == 1 && !this.detailInfoData.bzjd) {
-        this.$message.error("班组鉴定结果不能为空！");
-      } else if (this.flag == 2 && !this.detailInfoData.ydzzyj) {
-        this.$message.error("院系党组织意见不能为空！");
-      } else {
-        var processId = { processId: this.$route.query.taskId };
-        backFlow(processId).then((res) => {
-          this.tableInner = res.data;
-        });
-        this.thTableModal = true;
-      }
+      // if (this.flag == 1 && !this.detailInfoData.bzjd) {
+      //   this.$message.error("班组鉴定结果不能为空！");
+      // } else if (this.flag == 2 && !this.detailInfoData.ydzzyj) {
+      //   this.$message.error("院系党组织意见不能为空！");
+      // } else {
+      var processId = { processId: this.$route.query.taskId };
+      backFlow(processId).then((res) => {
+        this.tableInner = res.data;
+      });
+      this.thTableModal = true;
+      // }
     },
     thTableCancel() {
       this.thTableModal = false;

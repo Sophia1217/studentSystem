@@ -451,8 +451,8 @@
                         <el-option
                           v-for="(item, index) in scope.row.tjmbList"
                           :key="index"
-                          :label="item.codeKey"
-                          :value="item.codeValue"
+                          :label="item.mc"
+                          :value="item.dm"
                         ></el-option>
                       </el-select>
                     </el-form-item>
@@ -1014,6 +1014,7 @@ export default {
     },
     addTj() {
       var data = {
+        tjmbList: [],
         tjyw: "",
         tjzw: "",
         option: this.leftOptions,
@@ -1041,7 +1042,13 @@ export default {
       this.formInner.pyccAddList[index].tjzw = label;
       this.formInner.pyccAddList[index].tjmbm = mz; //为后端数据结构赋值
       listQuery(data).then((res) => {
-        this.formInner.pyccAddList[index].option = res.data;
+        var data = res.data;
+        this.formInner.pyccAddList[index].tjmbList = data.map((item) => {
+          return {
+            dm: item.codeValue,
+            mc: item.codeKey,
+          };
+        });
       });
     },
     pyccChange(e, row) {

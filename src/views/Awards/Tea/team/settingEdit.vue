@@ -740,6 +740,7 @@ export default {
     },
     addTj() {
       var data = {
+        tjmbList: [],
         tjyw: "",
         tjzw: "",
         option: this.leftOptions,

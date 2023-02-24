@@ -340,16 +340,16 @@ export default {
           { required: true, message: "工作地点不能为空", trigger: "blur" },
         ],
         gwYgzl: [
-          { required: true, message: "月工作量不能为空", trigger: "blur" },
+          { required: true, message: "月工作量不能为空", trigger: "change" },
         ],
         gwYgzsx: [
-          { required: true, message: "月工资上限不能为空", trigger: "blur" },
+          { required: true, message: "月工资上限不能为空", trigger: "change" },
         ],
         gwNzxsrs: [
-          { required: true, message: "拟招人数不能为空", trigger: "blur" },
+          { required: true, message: "拟招人数不能为空", trigger: "change" },
         ],
         gwKnss: [
-          { required: true, message: "困难生数不能为空", trigger: "blur" },
+          { required: true, message: "困难生数不能为空", trigger: "change" },
         ],
         gwZdls: [
           { required: true, message: "指导老师不能为空", trigger: "blur" },
@@ -438,7 +438,7 @@ export default {
       this.$router.go(-1);
     },
     count(row) {
-      countYN({ ygzl: row.gwYgzl }).then((res) => {
+      countYN({ ygzl: row.gwYgzl || "0" }).then((res) => {
         this.$set(row, "gwNjyxc", res.data.gwNjyxc);
         this.$set(row, "gwYgzsx", res.data.gwYgzsx);
       });

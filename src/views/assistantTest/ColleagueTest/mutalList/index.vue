@@ -147,7 +147,7 @@ export default {
       this.$router.push({
         path: "/assistantTest/fdyselfTest",
         query: {
-          gh: row.gh,
+          gh: row.xghBpcr,
           nd: this.ndval,
           isEdit: 0,
         },

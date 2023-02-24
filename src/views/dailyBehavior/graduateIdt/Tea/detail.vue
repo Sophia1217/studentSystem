@@ -176,7 +176,7 @@
                     type="textarea"
                     :rows="2"
                     v-model="detailInfoData.sfrdxq"
-                    maxlength="500"
+                    maxlength="200"
                     style="width: 300%"
                   ></el-input>
                 </div>
@@ -197,7 +197,7 @@
                     type="textarea"
                     :rows="2"
                     v-model="detailInfoData.hyxq"
-                    maxlength="500"
+                    maxlength="200"
                     style="width: 300%"
                   ></el-input>
                 </div>
@@ -216,7 +216,7 @@
                     type="textarea"
                     :rows="2"
                     v-model="detailInfoData.jtjjzk"
-                    maxlength="500"
+                    maxlength="200"
                     style="width: 300%"
                   ></el-input>
                 </div>
@@ -356,7 +356,7 @@
             <el-input
               type="textarea"
               :rows="5"
-              maxlength="1500"
+              maxlength="500"
               show-word-limit
               v-model="detailInfoData.bzjd"
               placeholder="班主任审核时需要填写"
@@ -368,7 +368,7 @@
             <el-input
               type="textarea"
               :rows="5"
-              maxlength="1500"
+              maxlength="500"
               show-word-limit
               v-model="detailInfoData.ydzzyj"
               placeholder="院系审核时需要填写"
@@ -391,7 +391,7 @@
             <el-input
               type="textarea"
               :rows="3"
-              maxlength="500"
+              maxlength="200"
               show-word-limit
               v-model="detailInfoData.bysj"
               :readonly="isEdit == 2"
@@ -402,7 +402,7 @@
             <el-input
               type="textarea"
               :rows="3"
-              maxlength="500"
+              maxlength="200"
               show-word-limit
               v-model="detailInfoData.yhtc"
               :readonly="isEdit == 2"
@@ -413,7 +413,7 @@
             <el-input
               type="textarea"
               :rows="3"
-              maxlength="500"
+              maxlength="200"
               show-word-limit
               v-model="detailInfoData.yzxx"
               :readonly="isEdit == 2"
@@ -424,7 +424,7 @@
             <el-input
               type="textarea"
               :rows="3"
-              maxlength="500"
+              maxlength="200"
               show-word-limit
               v-model="detailInfoData.gzyy"
               :readonly="isEdit == 2"

@@ -254,8 +254,8 @@
                   :prop="'detailList.' + scope.$index + '.gwLxfs'"
                   :rules="rules.gwLxfs"
                 >
-                  <div v-if="isEdit == 1">{{ scope.row.gwlxfs }}</div>
-                  <el-input v-model="scope.row.gwlxfs" maxlength="100" v-else />
+                  <div v-if="isEdit == 1">{{ scope.row.gwLxfs }}</div>
+                  <el-input v-model="scope.row.gwLxfs" maxlength="100" v-else />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -381,14 +381,14 @@ export default {
           { required: true, message: "工作地点不能为空", trigger: "blur" },
         ],
         gwYgzl: [
-          { required: true, message: "月工作量不能为空", trigger: "blur" },
+          { required: true, message: "月工作量不能为空", trigger: "change" },
         ],
 
         gwNzxsrs: [
-          { required: true, message: "拟招人数不能为空", trigger: "blur" },
+          { required: true, message: "拟招人数不能为空", trigger: "change" },
         ],
         gwKnss: [
-          { required: true, message: "困难生数不能为空", trigger: "blur" },
+          { required: true, message: "困难生数不能为空", trigger: "change" },
         ],
         gwZdls: [
           { required: true, message: "指导老师不能为空", trigger: "blur" },
@@ -397,7 +397,7 @@ export default {
           { required: true, message: "联系方式不能为空", trigger: "blur" },
         ],
         gwYgzsx: [
-          { required: true, message: "月工资上限不能为空", trigger: "blur" },
+          { required: true, message: "月工资上限不能为空", trigger: "change" },
         ],
       },
       delModal: false,
@@ -451,7 +451,7 @@ export default {
     getDetail() {
       queryQgzxGwById({ id: this.$route.query.id }).then((res) => {
         console.log(res);
-        this.detailList = res.data.detailList;
+        // this.detailList = res.data.detailList;
         this.formEdit = res.data;
         this.$set(this.formEdit, "gwTime", [
           res.data.gwStartDate,
@@ -481,7 +481,7 @@ export default {
     },
     count(row) {
       console.log(row.gwYgzl);
-      countYN({ ygzl: row.gwYgzl }).then((res) => {
+      countYN({ ygzl: row.gwYgzl || "0" }).then((res) => {
         this.$set(row, "gwNjyxc", res.data.gwNjyxc);
         this.$set(row, "gwYgzsx", res.data.gwYgzsx);
       });
@@ -507,7 +507,7 @@ export default {
         return;
       } else {
         let data = {
-          detailList: this.detailList,
+          detailList: this.formEdit.detailList,
           gwEndDate: this.formEdit.gwTime[1] || "",
           gwMainMc: this.formEdit.gwMainMc,
           gwMs: this.formEdit.gwMs,

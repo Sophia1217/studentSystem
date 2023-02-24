@@ -121,6 +121,62 @@
       <div class="btn borderRed" v-if="editFlag == 2" @click="refuse">拒绝</div>
       <div class="btn confirm" v-if="editFlag == 2" @click="pass">通过</div>
     </div>
+    <el-dialog title="拒绝理由" :visible.sync="jjModal" width="30%">
+      <template>
+        <el-input placeholder="请输入拒绝理由" v-model="jjly"></el-input>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="jjCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="jjConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <el-dialog title="退回选择" :visible.sync="thTableModal" width="20%">
+      <template>
+        <el-table
+          :data="tableInner"
+          ref="multipleTable1"
+          style="width: 100%"
+          :default-sort="{ prop: 'date', order: 'descending' }"
+        >
+          <el-table-column width="55">
+            <template slot-scope="scope">
+              <el-radio
+                :label="scope.$index"
+                v-model="tempRadio"
+                @change.native="getRow(scope.$index, scope.row)"
+                >{{ "" }}</el-radio
+              >
+            </template>
+          </el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            width="50"
+          ></el-table-column>
+          <el-table-column prop="actName" label="节点名称" sortable="custom">
+          </el-table-column>
+        </el-table>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="thTableCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="thTableConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <el-dialog title="退回理由" :visible.sync="thModal" width="30%">
+      <template>
+        <el-input placeholder="请输入退回理由" v-model="thly"></el-input>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="thCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="thConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -229,8 +285,7 @@ export default {
         tyFlow(data).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("审核已通过");
-            this.detailModal = false;
-            this.handleSearch();
+            this.$router.go(-1);
           }
         });
       } else {
@@ -257,8 +312,7 @@ export default {
       jjFlow(data).then((res) => {
         if (res.errcode == "00") {
           this.$message.success("已拒绝");
-          this.detailModal = false;
-          this.handleSearch();
+          this.$router.go(-1);
         }
       });
       this.jjModal = false;
@@ -280,9 +334,7 @@ export default {
     thTableConfirm() {
       if (!!this.tempRadio || this.tempRadio === 0) {
         this.thTableModal = false;
-        if (this.detailModal == false) {
-          this.thModal = true;
-        }
+        this.thModal = true;
       } else {
         this.$message.error("请先勾选退回的节点");
       }
@@ -300,9 +352,8 @@ export default {
       }));
       thFinal(data).then((res) => {
         if (res.errcode == "00") {
-          this.detailModal = false;
           this.$message.success("退回成功");
-          this.handleSearch();
+          this.$router.go(-1);
         }
       });
     },

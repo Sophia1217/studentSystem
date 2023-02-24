@@ -567,7 +567,7 @@
 import { getDetail, queryAllDj, queryTcbxList } from "@/api/awardSubsidy/stu";
 import { tyFlow, jjFlow, thFinal } from "@/api/awardSubsidy/jzsqTea";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
-
+import { backFlow } from "@/api/dailyBehavior/dormTea";
 export default {
   data() {
     return {
@@ -605,6 +605,8 @@ export default {
       thTableModal: false,
       thModal: false,
       thly: "",
+      tempRadio: false,
+      multipleSelection1: "",
       shjgOps: [
         { dm: "01", mc: "通过" },
         { dm: "02", mc: "拒绝" },
@@ -792,17 +794,20 @@ export default {
     },
     thConfirm() {
       this.thModal = false;
-      var data = this.commonParams.map((item) => ({
-        ...item,
-        opMsg: this.thly,
+      var data = {
+        businesId: this.$route.query.businesId,
+        processId: this.$route.query.processId,
+        status: this.$route.query.status,
+        taskId: this.$route.query.taskId,
+        xh: this.$route.query.xh,
+        opMsg: this.editDetails.shyj ? this.editDetails.shyj : "已退回",
         actId: this.multipleSelection1.actId,
         actName: this.multipleSelection1.actName,
-      }));
-      thFinal(data).then((res) => {
+      };
+      thFinal([data]).then((res) => {
         if (res.errcode == "00") {
-          this.detailModal = false;
           this.$message.success("退回成功");
-          this.handleSearch();
+          this.$router.go(-1);
         }
       });
     },

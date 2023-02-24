@@ -123,7 +123,7 @@
             <el-dropdown split-button @command="Daochu">
               <span class="el-dropdown-link"> 鉴定表导出</span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="1">PDF下载</el-dropdown-item>
+                <!-- <el-dropdown-item command="1">PDF下载</el-dropdown-item> -->
                 <el-dropdown-item command="2">Word下载</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>

@@ -348,7 +348,7 @@
                 v-model="formAdd.cjffGwzgcjsx"
                 controls-position="right"
                 :min="0"
-                :max="1000"
+                :max="100000"
                 style="width: 25%"
               ></el-input-number>
               <span v-html="'\u3000'"></span>(每个岗位每人每月酬金上限)

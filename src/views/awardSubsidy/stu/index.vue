@@ -7,13 +7,7 @@
           <span class="title">申请列表</span>
         </div>
         <div class="headerRight">
-          <!-- <div>
-            <div class="btns borderBlue" @click="xnxjDaochu">
-              <i class="icon orangeIcon"></i
-              ><span class="title2">认定表导出</span>
-            </div>
-          </div> -->
-          <div style="margin-right: 15px">
+          <!-- <div style="margin-right: 15px">
             <el-dropdown split-button @command="xnxjDaochu">
               <span class="el-dropdown-link">申请表导出</span>
               <el-dropdown-menu slot="dropdown">
@@ -21,7 +15,7 @@
                 <el-dropdown-item command="2">Word下载</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-          </div>
+          </div> -->
           <div class="btns borderLight" @click="showDel">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>

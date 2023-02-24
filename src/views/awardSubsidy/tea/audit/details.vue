@@ -285,6 +285,7 @@
         ref="editDetails"
         label-width="110px"
         :rules="rules"
+        v-if="editFlag == 2"
       >
         <el-row :gutter="20">
           <el-col :span="10">
@@ -304,7 +305,7 @@
                   :value="item.dm"
                 ></el-option>
               </el-select>
-              <div v-else>{{ formAdd.statusChinese }}</div>
+              <!-- <div v-else>{{ formAdd.statusChinese }}</div> -->
             </el-form-item>
           </el-col>
           <el-col :span="10">
@@ -323,7 +324,7 @@
                   :value="item.dm"
                 ></el-option>
               </el-select>
-              <div v-else>{{ formAdd.tjdjmc }}</div>
+              <!-- <div v-else>{{ formAdd.tjdjmc }}</div> -->
             </el-form-item>
           </el-col>
         </el-row>
@@ -337,7 +338,7 @@
                 type="textarea"
                 maxlength="500"
               />
-              <div v-else>{{ formAdd.statusChinese }}</div>
+              <!-- <div v-else>{{ formAdd.statusChinese }}</div> -->
             </el-form-item>
           </el-col>
         </el-row>
@@ -405,7 +406,6 @@ export default {
       editFlag: this.$route.query.editFlag, //1已审核详情，2待审核详情
       businesId: this.$route.query.businesId,
       status: this.$route.query.status,
-
       activeName: "0",
       detailInfoData: {},
       pxjbmOps: [], //培训级别码

@@ -138,7 +138,7 @@
           <span class="title">待审核列表</span> <i class="Updataicon"></i>
           <span style="margin-left: 15px">评选周期：</span>
           <el-select
-            v-model="moreIform.pjzqXn"
+            v-model="moreIform.pjxn"
             collapse-tags
             @change="changeXn"
             placeholder="请选择"
@@ -301,7 +301,7 @@ export default {
         zzxmIdList: [],
         sqdjList: [],
         njList: [],
-        pjzqXn: "",
+        pjxn: "",
       },
       exportParams: {},
       tableData: [],
@@ -432,7 +432,7 @@ export default {
       queryXn()
         .then((res) => {
           this.allXn = res.data;
-          this.moreIform.pjzqXn = res.data[0].mc;
+          this.moreIform.pjxn = res.data[0].mc;
           this.handleSearch();
         })
         .catch((err) => {});
@@ -473,7 +473,7 @@ export default {
         loginId: this.$store.getters.userId,
         sqsjStart: rqs || "",
         sqsjEnd: rqe || "",
-        pjzqXn: this.moreIform.pjzqXn,
+        pjxn: this.moreIform.pjxn,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,

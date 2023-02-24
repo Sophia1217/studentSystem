@@ -102,5 +102,24 @@ export function queryDataFromCzda(query) {
     data: query
   })
 }
+//本学年突出表现-从突出表现表查询回显列表
+export function queryTcbxList(query) {
+  return request({
+    url: '/rcswJzsq/queryListFromTcbxByStuInfo',
+    method: 'post',
+    data: query
+  })
+}
+//本学年突出表现-从突出表现表删除
+export function deleteDataFromCzda(query) {
+  return request({
+    url: '/rcswJzsq/deleteDataFromCzdaByStuXh',
+    method: 'post',
+    data: query
+  })
+}
+
+
+
 
 

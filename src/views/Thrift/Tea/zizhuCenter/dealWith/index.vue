@@ -319,6 +319,7 @@ export default {
         path: "/Thrift/postAuditDetail",
         query: {
           businesId: row.businesId,
+          editFlag: 1, //1已审核详情，2待审核详情可编辑
         },
       });
     },

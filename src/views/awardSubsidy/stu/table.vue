@@ -364,7 +364,11 @@
       >
         <div class="baseline">
           <div>获奖情况</div>
-          <div class="editBtn" @click="addTableData" v-if="isEdit == 2">
+          <div
+            class="editBtn"
+            @click="addTableData('获奖情况')"
+            v-if="isEdit == 2"
+          >
             <i class="addIcon" /> 新增
           </div>
         </div>
@@ -376,22 +380,22 @@
           >
             <el-table-column
               label="获奖日期/发证时间"
-              prop="hjny"
+              prop="mkRq"
               align="center"
             ></el-table-column>
             <el-table-column
               label="奖项名称/荣誉名称"
-              prop="hjny"
+              prop="mkMc"
               align="center"
             ></el-table-column>
             <el-table-column
               label="等级"
-              prop="hjny"
+              prop="mkDj"
               align="center"
             ></el-table-column>
             <el-table-column
               label="颁奖单位/表彰单位"
-              prop="hjny"
+              prop="mkDw"
               align="center"
             ></el-table-column>
             <el-table-column label="删除选项" align="center">
@@ -399,7 +403,7 @@
                 <div style="margin-bottom: 20px">
                   <i
                     class="icon jian"
-                    v-if="scope.$index > 0"
+                    v-if="isEdit == 2"
                     @click="jian(scope.row, scope.$index, 'hjqk')"
                   ></i>
                 </div>
@@ -409,7 +413,11 @@
         </div>
         <div class="baseline">
           <div>专著论文</div>
-          <div class="editBtn" @click="addTableData" v-if="isEdit == 2">
+          <div
+            class="editBtn"
+            @click="addTableData('专著论文')"
+            v-if="isEdit == 2"
+          >
             <i class="addIcon" /> 新增
           </div>
         </div>
@@ -421,22 +429,22 @@
           >
             <el-table-column
               label="发表(出版)日期"
-              prop="hjny"
+              prop="mkRq"
               align="center"
             ></el-table-column>
             <el-table-column
               label="著作/论文名称"
-              prop="hjny"
+              prop="mkMc"
               align="center"
             ></el-table-column>
             <el-table-column
               label="署名顺序"
-              prop="hjny"
+              prop="mkDj"
               align="center"
             ></el-table-column>
             <el-table-column
               label="刊物名称/出版社"
-              prop="hjny"
+              prop="mkDw"
               align="center"
             ></el-table-column>
             <el-table-column label="删除选项" align="center">
@@ -444,7 +452,7 @@
                 <div style="margin-bottom: 20px">
                   <i
                     class="icon jian"
-                    v-if="scope.$index > 0"
+                    v-if="isEdit == 2"
                     @click="jian(scope.row, scope.$index, 'zzlw')"
                   ></i>
                 </div>
@@ -454,7 +462,11 @@
         </div>
         <div class="baseline">
           <div>专利发明</div>
-          <div class="editBtn" @click="addTableData" v-if="isEdit == 2">
+          <div
+            class="editBtn"
+            @click="addTableData('专利发明')"
+            v-if="isEdit == 2"
+          >
             <i class="addIcon" /> 新增
           </div>
         </div>
@@ -466,22 +478,22 @@
           >
             <el-table-column
               label="授权日期"
-              prop="hjny"
+              prop="mkRq"
               align="center"
             ></el-table-column>
             <el-table-column
               label="专利/发明/软著名称"
-              prop="hjny"
+              prop="mkMc"
               align="center"
             ></el-table-column>
             <el-table-column
               label="署名顺序"
-              prop="hjny"
+              prop="mkDj"
               align="center"
             ></el-table-column>
             <el-table-column
               label="类型（权力取得方式）"
-              prop="hjny"
+              prop="mkDw"
               align="center"
             ></el-table-column>
             <el-table-column label="删除选项" align="center">
@@ -489,7 +501,7 @@
                 <div style="margin-bottom: 20px">
                   <i
                     class="icon jian"
-                    v-if="scope.$index > 0"
+                    v-if="isEdit == 2"
                     @click="jian(scope.row, scope.$index, 'zlfm')"
                   ></i>
                 </div>
@@ -499,7 +511,11 @@
         </div>
         <div class="baseline">
           <div>研究报告</div>
-          <div class="editBtn" @click="addTableData" v-if="isEdit == 2">
+          <div
+            class="editBtn"
+            @click="addTableData('研究报告')"
+            v-if="isEdit == 2"
+          >
             <i class="addIcon" /> 新增
           </div>
         </div>
@@ -511,22 +527,22 @@
           >
             <el-table-column
               label="采纳时间"
-              prop="hjny"
+              prop="mkRq"
               align="center"
             ></el-table-column>
             <el-table-column
               label="报告名称"
-              prop="hjny"
+              prop="mkMc"
               align="center"
             ></el-table-column>
             <el-table-column
               label="署名顺序"
-              prop="hjny"
+              prop="mkDj"
               align="center"
             ></el-table-column>
             <el-table-column
               label="采纳单位"
-              prop="hjny"
+              prop="mkDw"
               align="center"
             ></el-table-column>
             <el-table-column label="删除选项" align="center">
@@ -534,7 +550,7 @@
                 <div style="margin-bottom: 20px">
                   <i
                     class="icon jian"
-                    v-if="scope.$index > 0"
+                    v-if="isEdit == 2"
                     @click="jian(scope.row, scope.$index, 'yjbg')"
                   ></i>
                 </div>
@@ -544,7 +560,11 @@
         </div>
         <div class="baseline">
           <div>社会实践</div>
-          <div class="editBtn" @click="addTableData" v-if="isEdit == 2">
+          <div
+            class="editBtn"
+            @click="addTableData('社会实践')"
+            v-if="isEdit == 2"
+          >
             <i class="addIcon" /> 新增
           </div>
         </div>
@@ -556,22 +576,22 @@
           >
             <el-table-column
               label="起止日期"
-              prop="hjny"
+              prop="mkRq"
               align="center"
             ></el-table-column>
             <el-table-column
               label="项目名称"
-              prop="hjny"
+              prop="mkMc"
               align="center"
             ></el-table-column>
             <el-table-column
               label="服务时长"
-              prop="hjny"
+              prop="mkDj"
               align="center"
             ></el-table-column>
             <el-table-column
               label="组织单位"
-              prop="hjny"
+              prop="mkDw"
               align="center"
             ></el-table-column>
             <el-table-column label="删除选项" align="center">
@@ -579,7 +599,7 @@
                 <div style="margin-bottom: 20px">
                   <i
                     class="icon jian"
-                    v-if="scope.$index > 0"
+                    v-if="isEdit == 2"
                     @click="jian(scope.row, scope.$index, 'shsj')"
                   ></i>
                 </div>
@@ -589,6 +609,69 @@
         </div>
       </el-form>
     </div>
+    <el-dialog title="新增" :visible.sync="addModal" width="50%">
+      <template>
+        <div class="mt15">
+          <el-table
+            :data="tableData"
+            ref="multipleTable"
+            style="width: 100%"
+            :default-sort="{ prop: 'date', order: 'descending' }"
+            @selection-change="handleSelectionChange"
+          >
+            <el-table-column type="selection" width="55"></el-table-column>
+            <el-table-column
+              type="index"
+              label="序号"
+              width="50"
+            ></el-table-column>
+            <el-table-column
+              prop="mkRq"
+              label="模块时间"
+              min-width="100"
+              sortable
+            >
+            </el-table-column>
+            <el-table-column
+              prop="mkMc"
+              label="模块名称"
+              min-width="85"
+              sortable
+            >
+            </el-table-column>
+            <el-table-column
+              prop="mkDj"
+              label="模块等级"
+              min-width="100"
+              sortable
+            >
+            </el-table-column>
+            <el-table-column
+              prop="mkDw"
+              label="模块单位"
+              min-width="100"
+              sortable
+            >
+            </el-table-column>
+          </el-table>
+        </div>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="addConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <el-dialog title="删除" :visible.sync="delModal" width="20%">
+      <span>确认删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="del()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
     <div v-if="isEdit != 2" class="editBottom">
       <div class="btn cancel" @click="handleBack">返回</div>
       <div
@@ -599,7 +682,6 @@
         编辑
       </div>
     </div>
-
     <div v-if="isEdit == 2" class="editBottom">
       <div class="btn cancel" @click="handleCancle">取消</div>
       <div class="btn confirm" @click="handlUpdata">保存</div>
@@ -613,23 +695,25 @@ import {
   queryAllDj,
   queryAllZzxm,
   queryXsInfo,
-  insertDataFromCzda,
+  queryTcbxList,
   queryDataFromCzda,
+  insertDataFromCzda,
+  deleteDataFromCzda,
 } from "@/api/awardSubsidy/stu";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
 export default {
   data() {
     return {
-      businesId: this.$route.query.businesId,
-      status: this.$route.query.status,
+      businesId: "",
+      status: "",
       isEdit: 1, //2编辑，1只读
       nd: "",
-      xh: this.$store.getters.userId,
+      xh: "",
       activeName: "0",
       detailInfoData: {},
       pxjbmOps: [], //培训级别码
-      tableData: {},
+      tableData: [],
       pyccflag: 1, //1本科2硕博
       formAdd: {
         yysljfs: "",
@@ -653,6 +737,11 @@ export default {
       ],
       sqdjOps: [],
       zzxmOps: [],
+      addModal: false,
+      multipleSelection: [],
+      bxList: [],
+      delModal: false,
+      delId:[],
       rules: {
         yysljfs: [
           {
@@ -683,6 +772,9 @@ export default {
   },
   created() {},
   mounted() {
+    this.xh = this.$store.getters.userId;
+    this.status = this.$route.query.status;
+    this.businesId = this.$route.query.businesId;
     // this.getCode("dmpxjbm");
     this.getDetail();
   },
@@ -719,7 +811,7 @@ export default {
       if (this.businesId !== "") {
         //详情
         this.isEdit = 1;
-        console.log("id有值");
+        // console.log("id有值");
         getDetail({ businesId: this.businesId }).then((res) => {
           this.detailInfoData = res.data;
           this.formAdd = res.data;
@@ -729,13 +821,27 @@ export default {
         });
       } else {
         this.isEdit = 2; //新增，编辑
-        console.log("id空空");
+        // console.log("id空空");
         queryXsInfo({ xh: this.$store.getters.userId })
           .then((res) => {
             this.detailInfoData = res.data;
           })
           .catch((err) => {});
       }
+    },
+    //查询突出表现表
+    queryTcbxList() {
+      var data = {
+        xh: this.$store.getters.userId,
+        jzsqId: this.formAdd.zzxmId,
+        pjxn: this.formAdd.pjxn,
+        pjxqm: this.formAdd.pjxqm,
+      };
+      queryTcbxList(data)
+        .then((res) => {
+          this.formTable = res.data;
+        })
+        .catch((err) => {});
     },
     //获取资助项目
     getZzxm(val) {
@@ -787,48 +893,159 @@ export default {
     changeLb(val) {
       this.zzxmOps = [];
       this.sqdjOps = [];
+      this.$set(this.formAdd, "zzxmId", "");
+      this.$set(this.formAdd, "sqdjId", "");
       this.getZzxm(val);
     },
     //项目
     changeXm(val) {
       this.sqdjOps = [];
+      this.$set(this.formAdd, "sqdjId", "");
       this.getSqdj(val);
+      this.queryTcbxList();
+    },
+    // 多选
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+      console.log("val", val);
+      // this.commonParams = this.multipleSelection.map((v) => ({
+      //   businesId: v.businesId,
+      //   processId: v.processid,
+      //   status: v.status,
+      //   taskId: v.taskId,
+      //   xh: v.xh,
+      //   tjdjId: v.tjdjId,
+      // }));
+    },
+    addCancel() {
+      this.addModal = false;
+    },
+    addConfirm() {
+      if (this.multipleSelection.length > 0) {
+        var params = this.multipleSelection.map((item) => ({
+          ...item,
+          jzsqId: this.formAdd.zzxmId,
+          pjxn: this.formAdd.pjxn,
+          pjxqm: this.formAdd.pjxqm,
+        }));
+        insertDataFromCzda(params)
+          .then((res) => {
+            this.$message.success("新增成功");
+            //查询
+            this.addModal = false;
+            this.queryTcbxList();
+          })
+          .catch((err) => {});
+      } else {
+        this.$message.warning("请勾选数据！");
+      }
+    },
+    forBx(val) {
+      this.bxList = [];
+      for (var i = 0; i < val.length; i++) {
+        this.bxList.push(val[i].czdaId);
+      }
     },
     // 新增突出表现
     addTableData(val) {
-      switch (key) {
-        case value:
-          break;
+      if (this.formAdd.zzxmId == "") {
+        this.$message.warning("请完善申请信息！");
+      } else {
+        // var bxList = [];
+        switch (val) {
+          case "获奖情况":
+            // for (var i = 0; i < this.formTable.hjqkList.length; i++) {
+            //   bxList.push(this.formTable.hjqkList[i].jzsqId);
+            // };
+            this.forBx(this.formTable.hjqkList);
+            break;
+          case "专著论文":
+            // for (var i = 0; i < this.formTable.zzlwList.length; i++) {
+            //   bxList.push(this.formTable.zzlwList[i].jzsqId);
+            // }
+            this.forBx(this.formTable.zzlwList);
+            break;
+          case "专利发明":
+            // for (var i = 0; i < this.formTable.zlfmList.length; i++) {
+            //   bxList.push(this.formTable.zlfmList[i].jzsqId);
+            // };
+            this.forBx(this.formTable.zlfmList);
+            break;
+          case "研究报告":
+            // for (var i = 0; i < this.formTable.yjbgList.length; i++) {
+            //   bxList.push(this.formTable.yjbgList[i].jzsqId);
+            // };
+            this.forBx(this.formTable.yjbgList);
+            break;
+          case "社会实践":
+            // for (var i = 0; i < this.formTable.shsjList.length; i++) {
+            //   bxList.push(this.formTable.shsjList[i].jzsqId);
+            // };
+            this.forBx(this.formTable.shsjList);
+            break;
+        }
+        this.addModal = true;
+
+        var data = {
+          czdaIdList: this.bxList,
+          mkType: val,
+          xh: this.xh,
+          pjxn: this.formAdd.pjxn || "",
+          pjxqm: this.formAdd.pjxqm || "",
+        };
+        queryDataFromCzda(data)
+          .then((res) => {
+            this.tableData = res.data;
+          })
+          .catch((err) => {});
       }
     },
+    del() {
+      deleteDataFromCzda({idList: this.delId}).then((res) => {
+        this.queryTcbxList();
+        this.delModal = false;
+        this.$message.success("删除成功");
+      });
+    },
+    delCancel() {
+      this.delModal = false;
+    },
     jian(row, index, flag) {
-      if (flag && flag == "jx") {
-        if (this.formTable.jxList.length > 1) {
-          this.formTable.jxList.splice(index, 1);
-        } else {
-          this.$message.error("至少保留一个题目");
-        }
-        this.formTable.jxList.length > 1;
-      } else if (flag && flag == "lw") {
-        if (this.formTable.lwList.length > 1) {
-          this.formTable.lwList.splice(index, 1);
-        } else {
-          this.$message.error("至少保留一个题目");
-        }
-      } else if (flag && flag == "kycg") {
-        if (this.formTable.lwList.length > 1) {
-          this.formTable.lwList.splice(index, 1);
-        } else {
-          this.$message.error("至少保留一个题目");
-        }
-      } else if (flag && flag == "shsj") {
-        if (this.formTable.lwList.length > 1) {
-          this.formTable.lwList.splice(index, 1);
-        } else {
-          this.$message.error("至少保留一个题目");
-        }
-      } else {
-      }
+      this.delModal = true;
+      this.delId = [row.id];
+      console.log(row.id);
+      // if (flag && flag == "hjqk") {
+      //   if (this.formTable.hjqkList.length > 1) {
+      //     this.delModal = true;
+      //     this.delId = [row.id];
+      //   } else {
+      //     this.$message.error("至少保留一个题目");
+      //   }
+      // } else if (flag && flag == "zzlw") {
+      //   if (this.formTable.zzlwList.length > 1) {
+      //     this.formTable.zzlwList.splice(index, 1);
+      //   } else {
+      //     this.$message.error("至少保留一个题目");
+      //   }
+      // } else if (flag && flag == "zlfm") {
+      //   if (this.formTable.zlfmList.length > 1) {
+      //     this.formTable.zlfmList.splice(index, 1);
+      //   } else {
+      //     this.$message.error("至少保留一个题目");
+      //   }
+      // } else if (flag && flag == "yjbg") {
+      //   if (this.formTable.yjbgList.length > 1) {
+      //     this.formTable.yjbgList.splice(index, 1);
+      //   } else {
+      //     this.$message.error("至少保留一个题目");
+      //   }
+      // } else if (flag && flag == "shsj") {
+      //   if (this.formTable.shsjList.length > 1) {
+      //     this.formTable.shsjList.splice(index, 1);
+      //   } else {
+      //     this.$message.error("至少保留一个题目");
+      //   }
+      // }
     },
   },
 };

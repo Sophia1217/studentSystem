@@ -104,58 +104,22 @@
         <div class="table">
           <el-form-item label="岗位描述" prop="gwMs">
             <div>{{ formEdit.gwMs }}</div>
-            <!-- <el-input
-              type="textarea"
-              v-model="formEdit.gwMs"
-              :rows="5"
-              show-word-limit
-              maxlength="500"
-              readonly="true"
-            /> -->
           </el-form-item>
 
           <el-form-item label="岗位人员要求" prop="gwRyyq">
             <div>{{ formEdit.gwRyyq }}</div>
-            <!-- <el-input
-              type="textarea"
-              v-model="formEdit.gwRyyq"
-              :rows="5"
-              show-word-limit
-              maxlength="500"
-              readonly="true"
-            /> -->
           </el-form-item>
 
           <el-form-item label="备注" prop="gwRemark">
             <div>{{ formEdit.gwRemark }}</div>
-            <!-- <el-input
-              type="textarea"
-              v-model="formEdit.gwRemark"
-              :rows="5"
-              show-word-limit
-              maxlength="500"
-              readonly="true"
-            /> -->
           </el-form-item>
         </div>
       </el-form>
     </div>
     <div class="editBottom">
-      <!-- <div class="btn cancel" @click="handleCancle">取 消</div>
-      <div class="btn confirm" @click="editClick">确 认</div> -->
-      <div class="btn borderRed" @click="back">
-        <!-- <i class="icon backIcon"></i><span class="title">退回</span>
-         -->
-        退回
-      </div>
-      <div class="btn borderRed" @click="refuse">
-        <!-- <i class="icon refuseIcon"></i><span class="title">拒绝</span> -->
-        拒绝
-      </div>
-      <div class="btn confirm" @click="pass">
-        <!-- <i class="icon passIcon"></i><span class="title1">通过</span> -->
-        通过
-      </div>
+      <div class="btn borderRed" v-if="editFlag == 2" @click="back">退回</div>
+      <div class="btn borderRed" v-if="editFlag == 2" @click="refuse">拒绝</div>
+      <div class="btn confirm" v-if="editFlag == 2" @click="pass">通过</div>
     </div>
   </div>
 </template>
@@ -163,12 +127,7 @@
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getXmXgh } from "@/api/assistantWork/homeSchool";
-import {
-  countYN,
-  insertQgzxGw,
-  queryZgJbxxDwh,
-  updateQgzxGw,
-} from "@/api/dailyBehavior/thriftbumen";
+import { queryZgJbxxDwh } from "@/api/dailyBehavior/thriftbumen";
 import {
   tyFlow,
   jjFlow,
@@ -179,10 +138,10 @@ import {
 export default {
   data() {
     return {
-      status: this.$route.query.status,
+      editFlag: this.$route.query.editFlag, //1已审核详情，2待审核详情
+      status: "",
       formEdit: {},
       gwxzOptions: [],
-      xmOptions: [],
       detailList: [],
       xnOptions: [],
       multipleSelection1: "",
@@ -372,8 +331,6 @@ export default {
     handleCancle() {
       this.$router.go(-1);
     },
-
-    editClick() {},
   },
 };
 </script>

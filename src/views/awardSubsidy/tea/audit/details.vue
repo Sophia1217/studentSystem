@@ -279,6 +279,172 @@
           </el-col>
         </el-row>
       </el-form>
+      <!-- 本学年突出表现 -->
+      <div class="headline">
+        <div>本学年突出表现</div>
+      </div>
+      <el-form
+        :model="formTable"
+        ref="formTable"
+        label-width="110px"
+        :rules="rules"
+      >
+        <div class="baseline">
+          <div>获奖情况</div>
+        </div>
+        <div class="tableStyle">
+          <el-table
+            ref="multipleTable"
+            :data="formTable.hjqkList"
+            style="width: 100%"
+          >
+            <el-table-column
+              label="获奖日期/发证时间"
+              prop="mkRq"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="奖项名称/荣誉名称"
+              prop="mkMc"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="等级"
+              prop="mkDj"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="颁奖单位/表彰单位"
+              prop="mkDw"
+              align="center"
+            ></el-table-column>
+          </el-table>
+        </div>
+        <div class="baseline">
+          <div>专著论文</div>
+        </div>
+        <div class="tableStyle">
+          <el-table
+            ref="multipleTable"
+            :data="formTable.zzlwList"
+            style="width: 100%"
+          >
+            <el-table-column
+              label="发表(出版)日期"
+              prop="mkRq"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="著作/论文名称"
+              prop="mkMc"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="署名顺序"
+              prop="mkDj"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="刊物名称/出版社"
+              prop="mkDw"
+              align="center"
+            ></el-table-column>
+          </el-table>
+        </div>
+        <div class="baseline">
+          <div>专利发明</div>
+        </div>
+        <div class="tableStyle">
+          <el-table
+            ref="multipleTable"
+            :data="formTable.zlfmList"
+            style="width: 100%"
+          >
+            <el-table-column
+              label="授权日期"
+              prop="mkRq"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="专利/发明/软著名称"
+              prop="mkMc"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="署名顺序"
+              prop="mkDj"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="类型（权力取得方式）"
+              prop="mkDw"
+              align="center"
+            ></el-table-column>
+          </el-table>
+        </div>
+        <div class="baseline">
+          <div>研究报告</div>
+        </div>
+        <div class="tableStyle">
+          <el-table
+            ref="multipleTable"
+            :data="formTable.yjbgList"
+            style="width: 100%"
+          >
+            <el-table-column
+              label="采纳时间"
+              prop="mkRq"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="报告名称"
+              prop="mkMc"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="署名顺序"
+              prop="mkDj"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="采纳单位"
+              prop="mkDw"
+              align="center"
+            ></el-table-column>
+          </el-table>
+        </div>
+        <div class="baseline">
+          <div>社会实践</div>
+        </div>
+        <div class="tableStyle">
+          <el-table
+            ref="multipleTable"
+            :data="formTable.shsjList"
+            style="width: 100%"
+          >
+            <el-table-column
+              label="起止日期"
+              prop="mkRq"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="项目名称"
+              prop="mkMc"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="服务时长"
+              prop="mkDj"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="组织单位"
+              prop="mkDw"
+              align="center"
+            ></el-table-column>
+          </el-table>
+        </div>
+      </el-form>
       <div class="headline" v-if="editFlag == 2">审核信息</div>
       <el-form
         :model="editDetails"
@@ -346,7 +512,9 @@
     </div>
     <div class="editBottom">
       <div class="btn cancel" @click="handleCancle">取 消</div>
-      <div class="btn confirm" v-if="editFlag == 2" @click="handlUpdata">确 定</div>
+      <div class="btn confirm" v-if="editFlag == 2" @click="handlUpdata">
+        确 定
+      </div>
     </div>
     <el-dialog title="退回选择" :visible.sync="thTableModal" width="20%">
       <template>
@@ -396,7 +564,7 @@
   </div>
 </template>
 <script>
-import { getDetail, queryAllDj } from "@/api/awardSubsidy/stu";
+import { getDetail, queryAllDj, queryTcbxList } from "@/api/awardSubsidy/stu";
 import { tyFlow, jjFlow, thFinal } from "@/api/awardSubsidy/jzsqTea";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
@@ -421,34 +589,11 @@ export default {
         sqrzs: "",
       },
       formTable: {
-        jxList: [
-          //奖项
-          { jx: "", jxmc: "", bjdw: "" },
-        ],
-        lwList: [
-          //论文
-          { jx: "", jxmc: "", bjdw: "" },
-        ],
-        kycgList: [
-          //科研成果
-          { jx: "", jxmc: "", bjdw: "" },
-        ],
-        shsjList: [
-          //社会实践
-          { jx: "", jxmc: "", bjdw: "" },
-        ],
-        ddwtList: [
-          //道德文体
-          { jx: "", jxmc: "", bjdw: "" },
-        ],
-        kycgYanList: [
-          //科研成果（研）
-          { jx: "", jxmc: "", bjdw: "" },
-        ],
-        hjqkYanList: [
-          //获奖情况
-          { jx: "", jxmc: "", bjdw: "" },
-        ],
+        hjqkList: [],
+        zzlwList: [],
+        zlfmList: [],
+        yjbgList: [],
+        shsjList: [],
       },
       jzlbOps: [
         { dm: "1", mc: "奖学金" },
@@ -531,10 +676,25 @@ export default {
       getDetail({ businesId: this.businesId }).then((res) => {
         this.detailInfoData = res.data;
         this.formAdd = res.data;
+        this.queryTcbxList();
         queryAllDj({ zzxmId: res.data.zzxmId }).then((res) => {
           this.tjdjOps = res.data;
         });
       });
+    },
+    //查询突出表现表
+    queryTcbxList() {
+      var data = {
+        xh: this.$route.query.xh,
+        jzsqId: this.formAdd.zzxmId,
+        pjxn: this.formAdd.pjxn,
+        pjxqm: this.formAdd.pjxqm,
+      };
+      queryTcbxList(data)
+        .then((res) => {
+          this.formTable = res.data;
+        })
+        .catch((err) => {});
     },
     handleBack() {
       this.$router.go(-1);

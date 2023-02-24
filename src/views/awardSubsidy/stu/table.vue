@@ -741,7 +741,7 @@ export default {
       multipleSelection: [],
       bxList: [],
       delModal: false,
-      delId:[],
+      delId: [],
       rules: {
         yysljfs: [
           {
@@ -818,6 +818,7 @@ export default {
           console.log("status", this.status);
           this.getZzxm(this.formAdd.jzlbm);
           this.getSqdj(this.formAdd.zzxmId);
+          this.queryTcbxList();
         });
       } else {
         this.isEdit = 2; //新增，编辑
@@ -1001,7 +1002,7 @@ export default {
       }
     },
     del() {
-      deleteDataFromCzda({idList: this.delId}).then((res) => {
+      deleteDataFromCzda({ idList: this.delId }).then((res) => {
         this.queryTcbxList();
         this.delModal = false;
         this.$message.success("删除成功");

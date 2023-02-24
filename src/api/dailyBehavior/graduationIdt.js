@@ -164,3 +164,11 @@ export function excelExportDsh(query) {
     responseType:'blob'
   })
 }
+////公用删除附件
+export function delwj(query) {
+  return request({
+      url: '/fileCommon/deleteFileCommonByBusinesId',
+      method: 'get',
+      params: query
+  })
+}

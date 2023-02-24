@@ -274,7 +274,8 @@ import {
 import flow from "@/views/flowable/task/record/flow";
 import { getToken } from "@/utils/auth";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { querywj, delwj, Exportwj } from "@/api/assistantWork/classEvent";
+import { delwj } from "@/api/dailyBehavior/graduationIdt";
+import { querywj, Exportwj } from "@/api/assistantWork/classEvent";
 export default {
   name: "BasicInfo",
   components: { flow },
@@ -650,10 +651,10 @@ export default {
       });
     },
     beforeUpload(file, row, index) {
-      if (index == 1) {
-        delwj({ id: row.bkfjId.toString() }).then((res) => {});
-      } else {
-        delwj({ id: row.yjsfjId.toString() }).then((res) => {});
+      if (index == 1 && row.bkfjId) {
+        delwj({ businesId: row.bkId.toString() }).then((res) => {});
+      } else if (index == 2 && row.yjsfjId) {
+        delwj({ businesId: row.yjsId.toString() }).then((res) => {});
       }
     },
     thmb(row, index) {

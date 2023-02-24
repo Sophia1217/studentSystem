@@ -363,29 +363,34 @@
         :rules="rules"
       >
         <div class="baseline">
-          <div>奖项</div>
-          <div class="editBtn" @click="addJxData" v-if="isEdit == 2">
+          <div>获奖情况</div>
+          <div class="editBtn" @click="addTableData" v-if="isEdit == 2">
             <i class="addIcon" /> 新增
           </div>
         </div>
         <div class="tableStyle">
           <el-table
             ref="multipleTable"
-            :data="formTable.jxList"
+            :data="formTable.hjqkList"
             style="width: 100%"
           >
             <el-table-column
-              label="获奖年月"
+              label="获奖日期/发证时间"
               prop="hjny"
               align="center"
             ></el-table-column>
             <el-table-column
-              label="奖项名称"
+              label="奖项名称/荣誉名称"
               prop="hjny"
               align="center"
             ></el-table-column>
             <el-table-column
-              label="颁奖单位"
+              label="等级"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="颁奖单位/表彰单位"
               prop="hjny"
               align="center"
             ></el-table-column>
@@ -395,7 +400,7 @@
                   <i
                     class="icon jian"
                     v-if="scope.$index > 0"
-                    @click="jian(scope.row, scope.$index, 'jx')"
+                    @click="jian(scope.row, scope.$index, 'hjqk')"
                   ></i>
                 </div>
               </template>
@@ -403,29 +408,34 @@
           </el-table>
         </div>
         <div class="baseline">
-          <div>论文</div>
-          <div class="editBtn" @click="addLwData" v-if="isEdit == 2">
+          <div>专著论文</div>
+          <div class="editBtn" @click="addTableData" v-if="isEdit == 2">
             <i class="addIcon" /> 新增
           </div>
         </div>
         <div class="tableStyle">
           <el-table
             ref="multipleTable"
-            :data="formTable.lwList"
+            :data="formTable.zzlwList"
             style="width: 100%"
           >
             <el-table-column
-              label="发表时间"
+              label="发表(出版)日期"
               prop="hjny"
               align="center"
             ></el-table-column>
             <el-table-column
-              label="论文题目、第几作者"
+              label="著作/论文名称"
               prop="hjny"
               align="center"
             ></el-table-column>
             <el-table-column
-              label="发表刊名、级别（中文权威，CSSCI、省级重点期刊等）"
+              label="署名顺序"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="刊物名称/出版社"
               prop="hjny"
               align="center"
             ></el-table-column>
@@ -435,7 +445,7 @@
                   <i
                     class="icon jian"
                     v-if="scope.$index > 0"
-                    @click="jian(scope.row, scope.$index, 'lw')"
+                    @click="jian(scope.row, scope.$index, 'zzlw')"
                   ></i>
                 </div>
               </template>
@@ -443,29 +453,34 @@
           </el-table>
         </div>
         <div class="baseline">
-          <div>科研成果</div>
-          <div class="editBtn" @click="addKycgData" v-if="isEdit == 2">
+          <div>专利发明</div>
+          <div class="editBtn" @click="addTableData" v-if="isEdit == 2">
             <i class="addIcon" /> 新增
           </div>
         </div>
         <div class="tableStyle">
           <el-table
             ref="multipleTable"
-            :data="formTable.kycgList"
+            :data="formTable.zlfmList"
             style="width: 100%"
           >
             <el-table-column
-              label="发表时间"
+              label="授权日期"
               prop="hjny"
               align="center"
             ></el-table-column>
             <el-table-column
-              label="创新创业科研成果（是否获得专利）"
+              label="专利/发明/软著名称"
               prop="hjny"
               align="center"
             ></el-table-column>
             <el-table-column
-              label="颁奖单位"
+              label="署名顺序"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="类型（权力取得方式）"
               prop="hjny"
               align="center"
             ></el-table-column>
@@ -475,7 +490,52 @@
                   <i
                     class="icon jian"
                     v-if="scope.$index > 0"
-                    @click="jian(scope.row, scope.$index, 'kycg')"
+                    @click="jian(scope.row, scope.$index, 'zlfm')"
+                  ></i>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="baseline">
+          <div>研究报告</div>
+          <div class="editBtn" @click="addTableData" v-if="isEdit == 2">
+            <i class="addIcon" /> 新增
+          </div>
+        </div>
+        <div class="tableStyle">
+          <el-table
+            ref="multipleTable"
+            :data="formTable.yjbgList"
+            style="width: 100%"
+          >
+            <el-table-column
+              label="采纳时间"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="报告名称"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="署名顺序"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="采纳单位"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column label="删除选项" align="center">
+              <template slot-scope="scope">
+                <div style="margin-bottom: 20px">
+                  <i
+                    class="icon jian"
+                    v-if="scope.$index > 0"
+                    @click="jian(scope.row, scope.$index, 'yjbg')"
                   ></i>
                 </div>
               </template>
@@ -484,7 +544,7 @@
         </div>
         <div class="baseline">
           <div>社会实践</div>
-          <div class="editBtn" @click="addShsjData" v-if="isEdit == 2">
+          <div class="editBtn" @click="addTableData" v-if="isEdit == 2">
             <i class="addIcon" /> 新增
           </div>
         </div>
@@ -495,12 +555,17 @@
             style="width: 100%"
           >
             <el-table-column
-              label="发表时间"
+              label="起止日期"
               prop="hjny"
               align="center"
             ></el-table-column>
             <el-table-column
-              label="社会实践名称、内容类型、时长"
+              label="项目名称"
+              prop="hjny"
+              align="center"
+            ></el-table-column>
+            <el-table-column
+              label="服务时长"
               prop="hjny"
               align="center"
             ></el-table-column>
@@ -516,46 +581,6 @@
                     class="icon jian"
                     v-if="scope.$index > 0"
                     @click="jian(scope.row, scope.$index, 'shsj')"
-                  ></i>
-                </div>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-        <div class="baseline">
-          <div>道德文体</div>
-          <div class="editBtn" @click="addDdwtData" v-if="isEdit == 2">
-            <i class="addIcon" /> 新增
-          </div>
-        </div>
-        <div class="tableStyle">
-          <el-table
-            ref="multipleTable"
-            :data="formTable.ddwtList"
-            style="width: 100%"
-          >
-            <el-table-column
-              label="发表时间"
-              prop="hjny"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              label="道德风尚、文体艺术"
-              prop="hjny"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              label="颁奖单位"
-              prop="hjny"
-              align="center"
-            ></el-table-column>
-            <el-table-column label="删除选项" align="center">
-              <template slot-scope="scope">
-                <div style="margin-bottom: 20px">
-                  <i
-                    class="icon jian"
-                    v-if="scope.$index > 0"
-                    @click="jian(scope.row, scope.$index, 'ddwt')"
                   ></i>
                 </div>
               </template>
@@ -588,6 +613,8 @@ import {
   queryAllDj,
   queryAllZzxm,
   queryXsInfo,
+  insertDataFromCzda,
+  queryDataFromCzda,
 } from "@/api/awardSubsidy/stu";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
@@ -614,11 +641,11 @@ export default {
         sqrzs: "",
       },
       formTable: {
-        jxList: [],
-        lwList: [],
-        kycgList: [],
+        hjqkList: [],
+        zzlwList: [],
+        zlfmList: [],
+        yjbgList: [],
         shsjList: [],
-        ddwtList: [],
       },
       jzlbOps: [
         { dm: "1", mc: "奖学金" },
@@ -767,21 +794,12 @@ export default {
       this.sqdjOps = [];
       this.getSqdj(val);
     },
-    addJxData() {
-      //新增奖项
-      console.log("新增奖项");
-    },
-    addLwData() {
-      //新增论文
-    },
-    addKycgData() {
-      //新增
-    },
-    addShsjData() {
-      //新增
-    },
-    addDdwtData() {
-      //新增
+    // 新增突出表现
+    addTableData(val) {
+      switch (key) {
+        case value:
+          break;
+      }
     },
     jian(row, index, flag) {
       if (flag && flag == "jx") {

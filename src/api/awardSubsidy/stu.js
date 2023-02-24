@@ -85,3 +85,22 @@ export function queryXsInfo(query) {
   })
 }
 
+
+//本学年突出表现-从数据来源新增
+export function insertDataFromCzda(query) {
+  return request({
+    url: '/rcswJzsq/insertDataFromCzdaByStuXh',
+    method: 'post',
+    data: query
+  })
+}
+//本学年突出表现-从数据来源查询
+export function queryDataFromCzda(query) {
+  return request({
+    url: '/rcswJzsq/queryDataFromCzdaByStuXh',
+    method: 'post',
+    data: query
+  })
+}
+
+

@@ -733,10 +733,10 @@ export default {
             if (
               this.multipleSelection[i].zzxmId !==
                 this.multipleSelection[j].zzxmId ||
-              this.multipleSelection[i].pyccmList !==
-                this.multipleSelection[j].pyccmList ||
-              this.multipleSelection[i].njList !==
-                this.multipleSelection[j].njList
+              this.multipleSelection[i].pyccMc !==
+                this.multipleSelection[j].pyccMc ||
+              this.multipleSelection[i].nj !==
+                this.multipleSelection[j].nj
             ) {
               flagSame = 2; //不同奖项
               break;
@@ -780,10 +780,10 @@ export default {
             if (
               this.multipleSelection[i].zzxmId !==
                 this.multipleSelection[j].zzxmId ||
-              this.multipleSelection[i].pyccmList !==
-                this.multipleSelection[j].pyccmList ||
-              this.multipleSelection[i].njList !==
-                this.multipleSelection[j].njList
+              this.multipleSelection[i].pyccMc !==
+                this.multipleSelection[j].pyccMc ||
+              this.multipleSelection[i].nj !==
+                this.multipleSelection[j].nj
             ) {
               flagSame = 2; //不同奖项
               break;

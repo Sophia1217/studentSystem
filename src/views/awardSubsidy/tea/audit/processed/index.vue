@@ -552,6 +552,7 @@ export default {
         sqdjList: this.moreIform.sqdjList,
         njList: this.moreIform.njList,
         pyccmList: this.training.choose || [],
+        pjxn: this.moreIform.pjxn,
         loginId: this.$store.getters.userId,
         sqsjStart: rqs || "",
         sqsjEnd: rqe || "",

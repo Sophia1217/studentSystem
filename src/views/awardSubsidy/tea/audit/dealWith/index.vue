@@ -135,7 +135,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">待审核列表</span> <i class="Updataicon"></i>
+          <span class="title">已处理列表</span> <i class="Updataicon"></i>
           <span style="margin-left: 15px">评选周期：</span>
           <el-select
             v-model="moreIform.pjxn"
@@ -400,6 +400,7 @@ export default {
         sqdjList: this.moreIform.sqdjList,
         njList: this.moreIform.njList,
         pyccmList: this.training.choose || [],
+        pjxn: this.moreIform.pjxn,
         loginId: this.$store.getters.userId,
         sqsjStart: rqs || "",
         sqsjEnd: rqe || "",

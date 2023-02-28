@@ -316,7 +316,7 @@ export default {
     hadleDetail(row) {
       console.log("row", row);
       this.$router.push({
-        path: "/Thrift/postAuditDetail",
+        path: "/Thrift/post/postAuditDetail",
         query: {
           businesId: row.businesId,
           editFlag: 1, //1已审核详情，2待审核详情可编辑

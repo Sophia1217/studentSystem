@@ -529,7 +529,7 @@ export default {
     hadleDetail(row) {
       console.log("row", row);
       this.$router.push({
-        path: "/Thrift/postAuditDetail",
+        path: "/Thrift/post/postAuditDetail",
         query: {
           businesId: row.businesId,
           processId: row.processid,

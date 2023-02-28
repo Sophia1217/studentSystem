@@ -307,7 +307,7 @@ export default {
     },
     showDetail(row) {
       this.$router.push({
-        path: "/Thrift/postApplyDetail",
+        path: "/Thrift/post/postApplyDetail",
         query: { id: row.id, status: row.status },
       });
     },
@@ -499,7 +499,7 @@ export default {
 
     xinzeng() {
       this.$router.push({
-        path: "/Thrift/postApplyAdd",
+        path: "/Thrift/post/postApplyAdd",
       });
     },
   },

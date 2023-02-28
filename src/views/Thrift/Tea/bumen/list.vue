@@ -185,19 +185,38 @@
         <el-button type="primary" class="confirm" @click="tj">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="复制" :visible.sync="copyModal" width="30%">
+    <el-dialog
+      title="复制"
+      :visible.sync="copyModal"
+      width="30%"
+      @close="empty()"
+    >
       <template>
-        <div>
-          <span>已选择{{ len }}条记录，复制后应用学年</span>
-          <el-select v-model="fzxn" style="width: 130px; margin: 0 15px 0">
-            <el-option
-              v-for="(item, index) in xnOptions"
-              :key="index"
-              :label="item.mc"
-              :value="item.mc"
-            ></el-option>
-          </el-select>
-        </div>
+        <el-form :model="fzform" ref="fzform" size="small" :rules="rules">
+          <div>
+            <span>已选择{{ len }}条记录</span>
+            <el-form-item prop="fzxn" label="复制后应用学年">
+              <el-select
+                v-model="fzform.fzxn"
+                style="width: 130px; margin: 0 15px 0"
+              >
+                <el-option
+                  v-for="(item, index) in xnOptions"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.mc"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="岗位起止时间" prop="gwTime" label-width="120px"
+              ><el-date-picker
+                type="daterange"
+                v-model="fzform.gwTime"
+                value-format="yyyy-MM-dd"
+              />
+            </el-form-item>
+          </div>
+        </el-form>
       </template>
       <span slot="footer" class="dialog-footer">
         <el-button @click="copyCancel">取 消</el-button>
@@ -249,7 +268,18 @@ export default {
       chehuiModal: false,
       basicInfo: {},
       xnOptions: [],
-      fzxn: "",
+      fzform: {
+        fzxn: "",
+        gwTime: [],
+      },
+      rules: {
+        gwTime: [
+          { required: true, message: "起止时间不能为空", trigger: "blur" },
+        ],
+        fzxn: [
+          { required: true, message: "复制学年不能为空", trigger: "blur" },
+        ],
+      },
       xn: "",
     };
   },
@@ -261,6 +291,11 @@ export default {
   },
 
   methods: {
+    empty() {
+      this.$nextTick(() => {
+        this.$refs.fzform.resetFields();
+      });
+    },
     getSchoolYears() {
       queryXn()
         .then((res) => {
@@ -323,7 +358,7 @@ export default {
     checkFormAdd() {
       // 1.校验必填项
       let validForm = false;
-      this.$refs.formAdd.validate((valid) => {
+      this.$refs.fzform.validate((valid) => {
         validForm = valid;
       });
       if (!validForm) {
@@ -429,16 +464,23 @@ export default {
       this.copyModal = false;
     },
     copyConfirm() {
-      let data = {
-        ids: this.delArr,
-        xn: this.fzxn,
-      };
-      console.log(this.delArr);
-      copyQgzxGw(data).then((res) => {
-        this.$message.success("复制成功！");
-        this.query();
-        this.copyModal = false;
-      });
+      if (!this.checkFormAdd()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        let data = {
+          ids: this.delArr,
+          xn: this.fzform.fzxn,
+          gwStartDate: this.fzform.gwTime[0] || "",
+          gwEndDate: this.fzform.gwTime[1] || "",
+        };
+        console.log(this.delArr);
+        copyQgzxGw(data).then((res) => {
+          this.$message.success("复制成功！");
+          this.query();
+          this.copyModal = false;
+        });
+      }
     },
 
     query() {

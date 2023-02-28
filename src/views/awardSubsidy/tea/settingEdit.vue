@@ -700,7 +700,6 @@ export default {
     };
   },
   mounted() {
-    this.jdsz(); //不可兼得设置
     this.addPyccList(); //查询所有的新增类型
     this.getAllCollege();
     this.getCode("dmpyccm"); //培养层次1
@@ -714,6 +713,7 @@ export default {
     this.lgnSn = this.$route.query.id; //逻辑主键
     this.auth = this.$route.query.au; //逻辑主键
     this.getDetail1();
+    this.jdsz(); //不可兼得设置
   },
   methods: {
     colseDe() {
@@ -878,7 +878,7 @@ export default {
     },
 
     jdsz() {
-      bkjdsz().then((res) => {
+      bkjdsz({ id: this.lgnSn }).then((res) => {
         this.datas = res.data;
         this.datas = this.format1(this.datas);
       });

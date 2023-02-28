@@ -736,7 +736,7 @@ export default {
         }, 0);
     },
     jdsz() {
-      bkjdsz().then((res) => {
+      bkjdsz({ id: " " }).then((res) => {
         this.datas = res.data;
         this.datas = this.format1(this.datas);
       });

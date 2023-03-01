@@ -906,7 +906,120 @@ export const stuRoutes = [
             ],
             "childrenId":null,
             "auth":"1"
-        }
+      },  
+       {
+          "id":0,
+          "modId":"5118",
+          "name":"qgzxApply",
+          "path":"/qgzxApply",
+          "title":"勤工助学",
+          "component":"Thrift/stu/list",
+          "icon":"",
+          "modPid":"-1",
+          "isChild":"2",
+          "sortId":18,
+          "modStatus":"1",
+          "hidden":true,
+          "alwaysShow":true,
+          "rem":"",
+          "roleIds":null,
+          "isChecked":null,
+          "vueChecked":false,
+          "meta":{
+              "icon":"",
+              "title":"勤工助学"
+          },
+          "children":[
+
+          ],
+          "childrenId":null,
+          "auth":"1"
+      },
+      {
+        "id":0,
+        "modId":"5119",
+        "name":"qgzxDetail",
+        "path":"/qgzxDetail",
+        "title":"勤工助学详情",
+        "component":"Thrift/stu/detail",
+        "icon":"",
+        "modPid":"-1",
+        "isChild":"2",
+        "sortId":19,
+        "modStatus":"1",
+        "hidden":true,
+        "alwaysShow":true,
+        "rem":"",
+        "roleIds":null,
+        "isChecked":null,
+        "vueChecked":false,
+        "meta":{
+            "icon":"",
+            "title":"勤工助学详情"
+        },
+        "children":[
+
+        ],
+        "childrenId":null,
+        "auth":"1"
+    },
+    {
+      "id":0,
+      "modId":"5120",
+      "name":"yjsHelpApply",
+      "path":"/yjsHelpApply",
+      "title":"研究生三助",
+      "component":"yjsHelp/stu/list",
+      "icon":"",
+      "modPid":"-1",
+      "isChild":"2",
+      "sortId":20,
+      "modStatus":"1",
+      "hidden":true,
+      "alwaysShow":true,
+      "rem":"",
+      "roleIds":null,
+      "isChecked":null,
+      "vueChecked":false,
+      "meta":{
+          "icon":"",
+          "title":"研究生三助"
+      },
+      "children":[
+
+      ],
+      "childrenId":null,
+      "auth":"1"
+    },
+    {
+    "id":0,
+    "modId":"5121",
+    "name":"yjsHelpDetail",
+    "path":"/yjsHelpDetail",
+    "title":"研究生三助详情",
+    "component":"yjsHelp/stu/detail",
+    "icon":"",
+    "modPid":"-1",
+    "isChild":"2",
+    "sortId":21,
+    "modStatus":"1",
+    "hidden":true,
+    "alwaysShow":true,
+    "rem":"",
+    "roleIds":null,
+    "isChecked":null,
+    "vueChecked":false,
+    "meta":{
+        "icon":"",
+        "title":"研究生三助详情"
+    },
+    "children":[
+
+    ],
+    "childrenId":null,
+    "auth":"1"
+},
+     
     ];
 
 // 动态路由，基于用户权限动态去加载

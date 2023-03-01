@@ -297,8 +297,32 @@
             </div>
           </div>
         </div>
-        <div class="item stuInfoClick"></div>
-        <div class="item stuInfoClick"></div>
+        <div class="item stuInfoClick" @click="qgzxClick">
+          <div class="medalImage">
+            <img src="~@/assets/images/medal.png" alt="" />
+          </div>
+          <div class="content">
+            <div class="title1">
+              <span class="stuinfoTitle">勤工助学</span>
+            </div>
+            <div class="title2">
+              <span class="baseInfo">勤奋刻苦</span>
+            </div>
+          </div>
+        </div>
+        <div class="item stuInfoClick" @click="yjsszClick">
+          <div class="medalImage">
+            <img src="~@/assets/images/medal.png" alt="" />
+          </div>
+          <div class="content">
+            <div class="title1">
+              <span class="stuinfoTitle">研究生三助</span>
+            </div>
+            <div class="title2">
+              <span class="baseInfo">研究生版勤工助学</span>
+            </div>
+          </div>
+        </div>
       </div>
     </el-row>
   </div>
@@ -397,6 +421,16 @@ export default {
     jiangzhuClick() {
       this.$router.push({
         path: "/awardSubsidyApply",
+      });
+    },
+    qgzxClick() {
+      this.$router.push({
+        path: "/qgzxApply",
+      });
+    },
+    yjsszClick() {
+      this.$router.push({
+        path: "/yjsHelpApply",
       });
     },
   },

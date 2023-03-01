@@ -118,8 +118,15 @@ export default {
         // this.users = res.data.map((item) => {
         //   return { peoValue: "${" + item.peoValue + "}", test: "123", ...item };
         // });
+        // res.data.forEach((val) => {
+        //   val.peoValue = "${" + val.peoValue.toString() + "}";
+        // });
         res.data.forEach((val) => {
-          val.peoValue = "${" + val.peoValue.toString() + "}";
+          if (val.peoValue == "userId") {
+            val.peoValue = val.peoValue;
+          } else {
+            val.peoValue = val.peoValue.substr(3);
+          }
         });
         this.users = res.data;
       });

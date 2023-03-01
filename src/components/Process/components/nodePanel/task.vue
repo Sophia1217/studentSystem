@@ -93,11 +93,14 @@ export default {
     formConfig() {
       const _this = this;
       //处理选中的对象，传给modal框
-      this.obj = _this.formData.assignee
-        ? this.users.find(function (i) {
-            return i.peoValue === _this.formData.assignee;
-          })
-        : {};
+      // this.obj = _this.formData.assignee
+      //   ? this.users.find(function (i) {
+      //       return i.peoValue === _this.formData.assignee;
+      //     })
+      //   : {};
+      //  this.formData.assignee
+      // console.log("_this.formData", _this.formData);
+      // console.log("_this.users", _this.users);
       return {
         inline: false,
         item: [
@@ -125,6 +128,14 @@ export default {
             dic: _this.userTypeOption,
             show: !!_this.showConfig.userType,
           },
+          {
+            xType: "select",
+            name: "test",
+            label: "指定人员",
+            multiple: true,
+            dic: { data: _this.users, label: "peoKey", value: "peoValue" },
+            show: true,
+          },
           // {
           //   xType: "radio",
           //   name: "dataType",
@@ -151,18 +162,18 @@ export default {
           //   label: '候选组(表达式)',
           //   show: !!_this.showConfig.candidateGroupsFixed && _this.formData.userType === 'candidateGroups' && _this.formData.dataType === 'fixed'
           // },
-          {
-            xType: "select",
-            name: "assignee",
-            label: "指定人员",
-            allowCreate: true,
-            filterable: true,
-            dic: { data: _this.users, label: "peoKey", value: "peoValue" },
-            // show:
-            //   !!_this.showConfig.assignee &&
-            //   _this.formData.userType === "assignee",
-            show: true,
-          },
+          // {
+          //   xType: "select",
+          //   name: "assignee",
+          //   label: "指定人员应该隐藏",
+          //   allowCreate: true,
+          //   filterable: true,
+          //   dic: { data: _this.users, label: "peoKey", value: "peoValue" },
+          //   // show:
+          //   //   !!_this.showConfig.assignee &&
+          //   //   _this.formData.userType === "assignee",
+          //   show: true,
+          // },
           // {
           //   xType: "select",
           //   name: "candidateUsers",
@@ -294,14 +305,27 @@ export default {
           delete this.formData[type];
         });
       }
+      this.updateProperties({ "flowable:userType": val });
     },
-    "formData.assignee": function (val, oldVal) {
-      console.log("asdlhas d");
+    "formData.test": function (val, oldVal) {
       console.log("val", val);
-      console.log("oldVal", oldVal);
-      // if (oldVal) {
-      //   console.log("fashneg vibanahusd ");
-      // }
+      this.formData.documentation = "123";
+      //这里加上包含userId的判断就可以了
+      var str = "${peo_",
+        str1 = "peo_",
+        str2 = "peo_",
+        str4 = "";
+      for (var i = 0; i < val.length; i++) {
+        str += val[i] + "_";
+        str1 += val[i] + "_";
+        str2 += val[i] + "_";
+        str4 += val[i] + ",";
+      }
+      this.formData.assignee = str + "}";
+      // this.formData.documentation = str4;
+      this.obj.str1 = str1;
+      this.obj.str2 = str2 + "List";
+      this.updateProperties({ "flowable:test": val });
     },
     // 动态选择流程执行人
     "formData.dataType": function (val) {
@@ -323,7 +347,10 @@ export default {
       };
       this.$emit("dataType", params);
     },
-    "formData.assignee": function (val) {
+    "formData.assignee": function (val, oldVal) {
+      // console.log("旧值", val);
+      // console.log("oldVal", oldVal);
+      this.formData.assignee = val;
       if (this.formData.userType !== "assignee") {
         delete this.element.businessObject.$attrs[`flowable:assignee`];
         return;

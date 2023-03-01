@@ -108,8 +108,8 @@ export default {
     this.formData = formatJsonKeyValue(cache);
     this.formData.isSequential = false;
     this.formData.completionCondition = "${nrOfCompletedInstances>=1}";
-    this.formData.collection = this.obj.peoList;
-    this.formData.elementVariable = this.obj.peoFh;
+    this.formData.elementVariable = this.obj.str1;
+    this.formData.collection = this.obj.str2;
   },
   methods: {
     updateElement() {

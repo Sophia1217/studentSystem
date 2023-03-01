@@ -41,6 +41,17 @@ export default {
     'formData.name': function(val) {
       this.updateProperties({ name: val })
     },
+    // 'formData.userType': function(val) {
+    //   this.updateProperties({ userType: "assignee" })
+    // },
+    // 'formData.test': function(val) {
+    //   console.log("testVal",val);
+    //   this.updateProperties({ test: val })
+    // },
+    // 'formData.assignee': function(val) {
+    //   console.log("assigneeVal",val);
+    //   this.updateProperties({ assignee: val })
+    // },
     'formData.documentation': function(val) {
       if (!val) {
         this.updateProperties({ documentation: [] })

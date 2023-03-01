@@ -241,7 +241,10 @@
             label-width="100px"
             style="margin-left: -15px"
           >
-            <el-radio-group v-model="formAdd.sfyxcftj">
+            <span v-if="bjzt == '1'">{{
+              formAdd.sfyxcftj == "1" ? "是" : "否"
+            }}</span>
+            <el-radio-group v-model="formAdd.sfyxcftj" v-if="bjzt == '2'">
               <el-radio :label="1">是</el-radio>
               <el-radio :label="2">否</el-radio>
             </el-radio-group>

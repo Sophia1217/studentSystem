@@ -103,7 +103,7 @@
           </el-form-item>
           <el-form-item
             label="学生岗位申请开关"
-            prop="xsgk"
+            prop="xsgwSqkg"
             :rules="rules.common"
             class="formItemDuty"
           >
@@ -111,7 +111,7 @@
               <el-switch
                 active-value="1"
                 inactive-value="0"
-                v-model="formAdd.xsgk"
+                v-model="formAdd.xsgwSqkg"
                 active-color="#005657"
                 inactive-color="#e0e0e0"
               >
@@ -312,7 +312,7 @@
             label="酬金发放是否受经费划拨约束"
             prop="cjffJfhbys"
             :rules="rules.common"
-            class="formItemDuty"
+            class="formItemDuty formItemDutybottom"
           >
             <div class="formItemDutyIn">
               <el-radio-group v-model="formAdd.cjffJfhbys">
@@ -323,7 +323,7 @@
               >(此处选‘是’，则用户需完成经费划拨后再进行酬金发放)
             </div>
           </el-form-item>
-          <el-form-item
+          <!-- <el-form-item
             label="是否设定岗位酬金上限"
             prop="cjffGwcjsx"
             :rules="rules.common"
@@ -336,8 +336,8 @@
               </el-radio-group>
               <span v-html="'\u3000'"></span>(每个岗位每人每月酬金上限)
             </div>
-          </el-form-item>
-          <el-form-item
+          </el-form-item> -->
+          <!-- <el-form-item
             label="岗位最高酬金上限"
             prop="cjffGwzgcjsx"
             :rules="rules.common"
@@ -353,7 +353,31 @@
               ></el-input-number>
               <span v-html="'\u3000'"></span>(每个岗位每人每月酬金上限)
             </div>
-          </el-form-item>
+          </el-form-item> -->
+          <el-row :gutter="20" style="margin-top: 25px">
+            <el-col :span="20">
+              <div>
+                勤工助学协议书 ：
+                <el-upload
+                  action="#"
+                  multiple
+                  class="el-upload"
+                  ref="upload"
+                  :data="fileData"
+                  :on-success="upLoadSuccess"
+                  :show-file-list="true"
+                  :file-list="SHfileList"
+                  :before-remove="beforeRemove"
+                  :on-preview="handlePreview"
+                  :action="uploadUrl"
+                  :headers="fileHeader"
+                  accept=".pdf,.jpg"
+                >
+                  <el-button size="small" type="primary">点击上传</el-button>
+                </el-upload>
+              </div>
+            </el-col>
+          </el-row>
         </el-form>
       </div>
       <!-- 流程图 -->
@@ -376,6 +400,8 @@
 <script>
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { queryFlowIdByMk } from "@/api/common/liucheng";
+import { delFile, downloadFile, queryFile } from "@/api/common/file";
+import { getToken } from "@/utils/auth";
 import { saveD, queryD } from "@/api/gwsz/gwsz";
 import { readXml } from "@/api/flowable/definition";
 import flow from "@/views/flowable/task/record/flow";
@@ -396,6 +422,24 @@ export default {
   //   },
   // },
   computed: {
+    fileData: {
+      get() {
+        return {
+          pageType: "gwsz",
+          roleType: "qgzx",
+          businesId: this.formAdd.id,
+        };
+      },
+    },
+    fileHeader: {
+      get() {
+        return {
+          accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
+          uuid: new Date().getTime(),
+          clientId: "111",
+        };
+      },
+    },
     yrdwStartDate: {
       // 岗位申请时间
       get: function () {
@@ -445,6 +489,7 @@ export default {
   },
   data() {
     return {
+      uploadUrl: process.env.VUE_APP_BASE_API + "/fileCommon/uploadFileCommon",
       flowId: "",
       readImage: {
         open: false,
@@ -471,6 +516,8 @@ export default {
           mc: "酬金",
         },
       ],
+      AUTHFLAG: false,
+      SHfileList: [],
       formAdd: {
         //////用人单位参数设置
         yrdwSqkg: false, //岗位申请开关
@@ -495,7 +542,6 @@ export default {
         cjffGwcjsx: 1, // 是否设定岗位酬金上限
         cjffGwzgcjsx: 0, //  岗位最高酬金上限
         id: "",
-        AUTHFLAG: false,
       },
     };
   },
@@ -507,6 +553,46 @@ export default {
     this.queryFlow();
   },
   methods: {
+    handlePreview(file) {
+      downloadFile({ id: file.id }).then((res) => {
+        this.downloadFn(res, file.fileName, file.fileSuffix);
+      });
+    },
+    upLoadSuccess(res, file, fileList) {
+      if (res.errcode == "00") {
+        //成功后调用一遍查询接口，免得下次删除只是前端物理删除，没有请求接口
+        this.queryFile();
+        this.$message({
+          type: "success",
+          message: res.errmsg,
+        });
+      } else {
+        this.$message({
+          type: "error",
+          message: res.errmsg,
+        });
+      }
+    },
+    beforeRemove(file, fileList) {
+      // let uid = file.uid;
+      // let idx = fileList.findIndex((item) => item.uid === uid);
+      // fileList.splice(idx, 0);
+      if (file.id) {
+        //如果是后端返回的文件就走删除接口，不然前端自我删除
+        delFile({ id: file.id.toString() }).then();
+      }
+    },
+    async queryFile() {
+      await queryFile({ businesId: this.formAdd.id }).then((res) => {
+        this.SHfileList = res.data;
+        this.SHfileList = this.SHfileList.map((ele) => {
+          return {
+            name: ele.fileName,
+            ...ele,
+          };
+        });
+      });
+    },
     checkInt() {
       //这里可以写正则
       // this.formAdd.xsgwKhdgws = this.formAdd.xsgwKhdgws.replace(/[^\d]/g, "");
@@ -543,8 +629,8 @@ export default {
         this.formAdd.cjffEndDate = "";
       }
     },
-    getDetail() {
-      queryD().then((res) => {
+    async getDetail() {
+      await queryD().then((res) => {
         this.formAdd = { ...this.formAdd, ...res.data };
         this.formAdd.yrdwDate = [
           this.formAdd.yrdwStartDate,
@@ -559,6 +645,7 @@ export default {
           this.formAdd.cjffMonthEnd,
         ];
       });
+      this.queryFile();
     },
 
     quxiao() {
@@ -675,7 +762,7 @@ export default {
 }
 .editBottom {
   width: 100%;
-  height: 60px;
+  height: 40px;
   background: #fff;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 -2px 6px -1px rgba(0, 0, 0, 0.2);
   position: fixed;

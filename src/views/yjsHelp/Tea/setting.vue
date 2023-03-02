@@ -103,7 +103,7 @@
           </el-form-item>
           <el-form-item
             label="学生岗位申请开关"
-            prop="xsgk"
+            prop="xsgwSqkg"
             :rules="rules.common"
             class="formItemDuty"
           >
@@ -111,7 +111,7 @@
               <el-switch
                 active-value="1"
                 inactive-value="0"
-                v-model="formAdd.xsgk"
+                v-model="formAdd.xsgwSqkg"
                 active-color="#005657"
                 inactive-color="#e0e0e0"
               >
@@ -154,7 +154,7 @@
               >(此处选‘是’，则只有勤工助学学生库内才可岗位申请)
             </div>
           </el-form-item>
-          <el-form-item
+          <!-- <el-form-item
             label="是否显示学生课程时间"
             prop="xsgwKcsj"
             :rules="rules.common"
@@ -166,7 +166,7 @@
                 <el-radio :label="'2'">否</el-radio>
               </el-radio-group>
             </div>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item
             label="审批流程"
             class="formItemDuty formItemDutybottom"
@@ -177,7 +177,7 @@
             </div>
           </el-form-item>
           <h3>酬金发放参数设置</h3>
-          <el-form-item
+          <!-- <el-form-item
             label="酬金标准"
             class="formItemDuty"
             prop="cjffCjbz"
@@ -193,8 +193,62 @@
               ></el-input-number>
               元/小时<span v-html="'\u3000\u3000'"></span>(默认按此标准计算酬金)
             </div>
+          </el-form-item> -->
+          <el-form-item label="月酬金标准" class="formItemDuty">
+            <div class="formItemDutyIn yipai">
+              <el-form-item
+                label="助管"
+                label-width="60px"
+                prop="cjffCjbzZg"
+                :rules="rules.common"
+              >
+                <div style="margin-top: 15px">
+                  <el-input-number
+                    v-model="formAdd.cjffCjbzZg"
+                    controls-position="right"
+                    :min="0"
+                    :max="1000"
+                    style="width: 70%"
+                  ></el-input-number>
+                </div>
+              </el-form-item>
+              <el-form-item
+                label="助研"
+                label-width="60px"
+                prop="cjffCjbzZy"
+                :rules="rules.common"
+              >
+                <div style="margin-top: 15px">
+                  <el-input-number
+                    v-model="formAdd.cjffCjbzZy"
+                    controls-position="right"
+                    :min="0"
+                    :max="1000"
+                    style="width: 70%"
+                  ></el-input-number>
+                </div>
+              </el-form-item>
+
+              <el-form-item
+                label="助教"
+                label-width="60px"
+                prop="cjffCjbzZj"
+                :rules="rules.common"
+              >
+                <div style="margin-top: 15px">
+                  <el-input-number
+                    v-model="formAdd.cjffCjbzZj"
+                    controls-position="right"
+                    :min="0"
+                    :max="1000"
+                    style="width: 70%"
+                  ></el-input-number>
+                  元
+                </div>
+              </el-form-item>
+            </div>
           </el-form-item>
-          <el-form-item
+          <!-- <el-form-item
             label="设置上限(工时&酬金)"
             class="formItemDuty"
             prop="cjffSzsxType"
@@ -231,7 +285,7 @@
                 <span v-html="'\u3000'"></span>(学生每月工时不得超过该值)</span
               >
             </div>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item
             label="酬金发放月份设定"
             prop="cjyfsd"
@@ -323,7 +377,7 @@
               >(此处选‘是’，则用户需完成经费划拨后再进行酬金发放)
             </div>
           </el-form-item>
-          <el-form-item
+          <!-- <el-form-item
             label="是否设定岗位酬金上限"
             prop="cjffGwcjsx"
             :rules="rules.common"
@@ -336,8 +390,8 @@
               </el-radio-group>
               <span v-html="'\u3000'"></span>(每个岗位每人每月酬金上限)
             </div>
-          </el-form-item>
-          <el-form-item
+          </el-form-item> -->
+          <!-- <el-form-item
             label="岗位最高酬金上限"
             prop="cjffGwzgcjsx"
             :rules="rules.common"
@@ -353,7 +407,52 @@
               ></el-input-number>
               <span v-html="'\u3000'"></span>(每个岗位每人每月酬金上限)
             </div>
+          </el-form-item> -->
+          <el-form-item
+            label="岗位人员维护时间设置"
+            prop="cjffGwdDate"
+            :rules="rules.common"
+            class="formItemDuty formItemDutybottom"
+          >
+            <div class="formItemDutyIn">
+              <el-date-picker
+                format="yyyy 年 MM 月 dd 日"
+                :clearable="false"
+                value-format="yyyy-MM-dd"
+                v-model="formAdd.cjffGwdDate"
+                type="daterange"
+                range-separator="~"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                style="width: 60%"
+              >
+              </el-date-picker>
+            </div>
           </el-form-item>
+          <el-row :gutter="20" style="margin-top: 25px">
+            <el-col :span="20">
+              <div>
+                勤工助学协议书 ：
+                <el-upload
+                  action="#"
+                  multiple
+                  class="el-upload"
+                  ref="upload"
+                  :data="fileData"
+                  :on-success="upLoadSuccess"
+                  :show-file-list="true"
+                  :file-list="SHfileList"
+                  :before-remove="beforeRemove"
+                  :on-preview="handlePreview"
+                  :action="uploadUrl"
+                  :headers="fileHeader"
+                  accept=".pdf,.jpg"
+                >
+                  <el-button size="small" type="primary">点击上传</el-button>
+                </el-upload>
+              </div>
+            </el-col>
+          </el-row>
         </el-form>
       </div>
       <!-- 流程图 -->
@@ -374,28 +473,33 @@
   </div>
 </template>
 <script>
-import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { queryFlowIdByMk } from "@/api/common/liucheng";
-import { saveD, queryD } from "@/api/gwsz/gwsz";
+import { saveDNew, queryDNew } from "@/api/gwsz/gwsz";
 import { readXml } from "@/api/flowable/definition";
+import { delFile, downloadFile, queryFile } from "@/api/common/file";
+import { getToken } from "@/utils/auth";
 import flow from "@/views/flowable/task/record/flow";
 export default {
   components: { flow },
-  // watch: {
-  //   formAdd: {
-  //     handler(newVal, oldVal) {
-  //       console.log("formAddwaawd", this.formAdd);
-  //       console.log("[newVal.yrdwStartDate, newVal.yrdwEndDate]", [
-  //         newVal.yrdwStartDate,
-  //         newVal.yrdwEndDate,
-  //       ]);
-  //       this.formAdd.yrdwDate = [newVal.yrdwStartDate, newVal.yrdwEndDate];
-  //     },
-  //     deep: true,
-  //     immediate: true,
-  //   },
-  // },
   computed: {
+    fileData: {
+      get() {
+        return {
+          pageType: "gwsz",
+          roleType: "qgzx",
+          businesId: this.formAdd.id,
+        };
+      },
+    },
+    fileHeader: {
+      get() {
+        return {
+          accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
+          uuid: new Date().getTime(),
+          clientId: "111",
+        };
+      },
+    },
     yrdwStartDate: {
       // 岗位申请时间
       get: function () {
@@ -412,7 +516,7 @@ export default {
       },
     },
     xsgwStartDate: {
-      //是否显示学生课程时间
+      //
       get: function () {
         return this.formAdd.xssqsj && this.formAdd.xssqsj.length > 0
           ? this.formAdd.xssqsj[0]
@@ -420,7 +524,7 @@ export default {
       },
     },
     xsgwEndDate: {
-      //是否显示学生课程时间
+      //
       get: function () {
         return this.formAdd.xssqsj && this.formAdd.xssqsj.length > 0
           ? this.formAdd.xssqsj[1]
@@ -442,9 +546,26 @@ export default {
           : "";
       },
     },
+    // 岗位人员维护时间
+    cjffGwStartDate: {
+      get: function () {
+        return this.formAdd.cjffGwdDate && this.formAdd.cjffGwdDate.length > 0
+          ? this.formAdd.cjffGwdDate[0]
+          : "";
+      },
+    },
+    cjffGwEndDate: {
+      get: function () {
+        return this.formAdd.cjffGwdDate && this.formAdd.cjffGwdDate.length > 0
+          ? this.formAdd.cjffGwdDate[1]
+          : "";
+      },
+    },
   },
   data() {
     return {
+      uploadUrl: process.env.VUE_APP_BASE_API + "/fileCommon/uploadFileCommon",
+      SHfileList: [],
       flowId: "",
       readImage: {
         open: false,
@@ -471,6 +592,7 @@ export default {
           mc: "酬金",
         },
       ],
+      AUTHFLAG: false,
       formAdd: {
         //////用人单位参数设置
         yrdwSqkg: false, //岗位申请开关
@@ -484,36 +606,75 @@ export default {
         xsgwZgsc: 1, //学生岗位申请是否需要通过资格审查
         xsgwKcsj: 1, //是否显示学生课程时间
         //////酬金发放参数设置
-        cjffCjbz: 0, //酬金标准
-        cjffSzsxType: "", //设置上限(工时&酬金)类型
-        cjffSzsxNum: 0, //设置上限(工时&酬金)
+        // cjffCjbz: 0, //酬金标准
+        // cjffSzsxType: "", //设置上限(工时&酬金)类型
+        // cjffSzsxNum: 0, //设置上限(工时&酬金)
         cjyfsd: [], //酬金发放月份设定  cjffMonthStart cjffMonthEnd
         cjffStartDate: "", // 酬金发放开放时间
         cjffEndDate: "", // 酬金发放开放时间
         cjffTzcjje: 1, //是否允许调整酬金金额
         cjffJfhbys: 1, //酬金发放是否受经费划拨约束
         cjffGwcjsx: 1, // 是否设定岗位酬金上限
-        cjffGwzgcjsx: 0, //  岗位最高酬金上限
+        // cjffGwzgcjsx: 0, //  岗位最高酬金上限
+        cjffCjbzZg: "", //助管
+        cjffCjbzZj: "", //助教
+        cjffCjbzZy: "", //助研
+        cjffGwdDate: [], //酬金发放_岗位人员维护时间
         id: "",
-        AUTHFLAG: false,
       },
     };
   },
   mounted() {
     this.authConfirm(this.$route.path.split("/")[2]);
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
-    this.getCode("dmpyccm"); //培养层次1
     this.getDetail();
     this.queryFlow();
   },
   methods: {
+    handlePreview(file) {
+      downloadFile({ id: file.id }).then((res) => {
+        this.downloadFn(res, file.fileName, file.fileSuffix);
+      });
+    },
+    upLoadSuccess(res, file, fileList) {
+      if (res.errcode == "00") {
+        //成功后调用一遍查询接口，免得下次删除只是前端物理删除，没有请求接口
+        this.queryFile();
+        this.$message({
+          type: "success",
+          message: res.errmsg,
+        });
+      } else {
+        this.$message({
+          type: "error",
+          message: res.errmsg,
+        });
+      }
+    },
+    beforeRemove(file, fileList) {
+      if (file.id) {
+        //如果是后端返回的文件就走删除接口，不然前端自我删除
+        delFile({ id: file.id.toString() }).then();
+      }
+    },
+    async queryFile() {
+      await queryFile({ businesId: this.formAdd.id }).then((res) => {
+        this.SHfileList = res.data;
+        this.SHfileList = this.SHfileList.map((ele) => {
+          return {
+            name: ele.fileName,
+            ...ele,
+          };
+        });
+      });
+    },
     checkInt() {
       //这里可以写正则
       // this.formAdd.xsgwKhdgws = this.formAdd.xsgwKhdgws.replace(/[^\d]/g, "");
       // this.formAdd.xsgwKsqgws = this.formAdd.xsgwKsqgws.replace(/[^\d]/g, "");
     },
     queryFlow() {
-      queryFlowIdByMk({ mk: "勤工助学_岗位设置" }).then((res) => {
+      queryFlowIdByMk({ mk: "勤工助学_岗位设置_研究生三助" }).then((res) => {
         this.flowId = res.data.flowId;
       });
     },
@@ -522,8 +683,6 @@ export default {
       if (!!this.flowId) {
         this.readImage.title = "流程图";
         this.readImage.open = true;
-        // this.readImage.src = process.env.VUE_APP_BASE_API + "/flowable/definition/readImage/" + flowId;
-        // 发送请求，获取xml
         readXml(this.flowId).then((res) => {
           this.xmlData = res.data;
         });
@@ -543,9 +702,13 @@ export default {
         this.formAdd.cjffEndDate = "";
       }
     },
-    getDetail() {
-      queryD().then((res) => {
+    async getDetail() {
+      await queryDNew().then((res) => {
         this.formAdd = { ...this.formAdd, ...res.data };
+        this.formAdd.cjffGwdDate = [
+          this.formAdd.cjffGwStartDate,
+          this.formAdd.cjffGwEndDate,
+        ];
         this.formAdd.yrdwDate = [
           this.formAdd.yrdwStartDate,
           this.formAdd.yrdwEndDate,
@@ -559,6 +722,7 @@ export default {
           this.formAdd.cjffMonthEnd,
         ];
       });
+      this.queryFile();
     },
 
     quxiao() {
@@ -601,8 +765,10 @@ export default {
           xsgwEndDate: this.xsgwEndDate,
           cjffMonthStart: this.cjffMonthStart, //酬金发放月份设定
           cjffMonthEnd: this.cjffMonthEnd,
+          cjffGwStartDate: this.cjffGwStartDate, //岗位人员维护时间
+          cjffGwEndDate: this.cjffGwEndDate,
         };
-        saveD(data).then((res) => {});
+        saveDNew(data).then((res) => {});
       }
     },
     checkFormInner() {
@@ -614,16 +780,6 @@ export default {
         return false;
       }
       return true;
-    },
-    getCode(val) {
-      const data = { codeTableEnglish: val };
-      getCodeInfoByEnglish(data).then((res) => {
-        switch (val) {
-          case "dmpyccm": //培养层次
-            this.pyccOption = res.data;
-            break;
-        }
-      });
     },
   },
 };
@@ -643,6 +799,9 @@ export default {
   border-left: 1px solid #e0e0e0;
   border-right: 1px solid #e0e0e0;
   padding: 15px 0 15px 15px;
+}
+.yipai {
+  display: flex;
 }
 .poin {
   cursor: pointer;
@@ -675,7 +834,7 @@ export default {
 }
 .editBottom {
   width: 100%;
-  height: 60px;
+  height: 40px;
   background: #fff;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 -2px 6px -1px rgba(0, 0, 0, 0.2);
   position: fixed;

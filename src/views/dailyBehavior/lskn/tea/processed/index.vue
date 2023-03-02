@@ -1216,8 +1216,6 @@ export default {
       flex-direction: row;
       align-items: center;
       background: #fff;
-      .searchBtn {
-      }
       .elSelect {
         width: 150px;
       }

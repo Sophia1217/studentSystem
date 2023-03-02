@@ -41,16 +41,16 @@ export const constantRoutes = [
       },
     ],
   },
-  // {
-  //   path: "/login",
-  //   component: () => import("@/views/login"),
-  //   hidden: true,
-  // },
-  // {
-  //   path: "/register",
-  //   component: () => import("@/views/register"),
-  //   hidden: true,
-  // },
+  {
+    path: "/login",
+    component: () => import("@/views/login"),
+    hidden: true,
+  },
+  {
+    path: "/register",
+    component: () => import("@/views/register"),
+    hidden: true,
+  },
   {
     path: "/404",
     component: () => import("@/views/error/404"),
@@ -1018,8 +1018,35 @@ export const stuRoutes = [
     ],
     "childrenId":null,
     "auth":"1"
-},
-     
+ },
+ {
+  "id":0,
+  "modId":"5122",
+  "name":"gjzxdk",
+  "path":"/gjzxdk",
+  "title":"国家助学贷款",
+  "component":"gjzxdk/stu/index",
+  "icon":"",
+  "modPid":"-1",
+  "isChild":"2",
+  "sortId":22,
+  "modStatus":"1",
+  "hidden":true,
+  "alwaysShow":true,
+  "rem":"",
+  "roleIds":null,
+  "isChecked":null,
+  "vueChecked":false,
+  "meta":{
+      "icon":"",
+      "title":"国家助学贷款"
+  },
+  "children":[
+
+  ],
+  "childrenId":null,
+  "auth":"1"
+ },
     ];
 
 // 动态路由，基于用户权限动态去加载

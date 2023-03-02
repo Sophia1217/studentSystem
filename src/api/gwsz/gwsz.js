@@ -17,3 +17,23 @@ export function queryD(query) {
     params: query
   })
 }
+
+
+
+//岗位设置-保存研究生三助
+export function saveDNew(query) {
+  return request({
+    url: '/qgzxGwszYjs/updateQgzxGwszYjs',
+    method: 'post',
+    data: query
+  })
+}
+
+//岗位设置-查询研究生三助
+export function queryDNew(query) {
+  return request({
+    url: '/qgzxGwszYjs/queryQgzxGwszYjs',
+    method: 'get',
+    params: query
+  })
+}

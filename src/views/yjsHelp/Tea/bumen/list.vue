@@ -3,7 +3,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">勤工助学</span>
+          <span class="title">研究生三助岗位列表</span>
           <el-select
             v-model="xn"
             @change="changeXn"
@@ -64,23 +64,14 @@
             :show-overflow-tooltip="true"
           >
           </el-table-column>
+          <el-table-column prop="gwTypeMc" label="岗位性质" sortable="custom">
+          </el-table-column>
           <el-table-column prop="gwGzdd" label="工作地点" sortable="custom">
           </el-table-column>
+
           <el-table-column
-            prop="gwYgzl"
-            label="月工作量(小时)"
-            sortable="custom"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="gwYgzsx"
-            label="月工资上限(元)"
-            sortable="custom"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="gwNjyxc"
-            label="年建议薪酬(元)"
+            prop="gwYcjbz"
+            label="月酬金标准(元)"
             sortable="custom"
           >
           </el-table-column>
@@ -188,7 +179,7 @@
     <el-dialog
       title="复制"
       :visible.sync="copyModal"
-      width="30%"
+      width="50%"
       @close="empty()"
     >
       <template>
@@ -239,11 +230,11 @@ import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import {
   queryQgzxGwList,
-  deleteQgzxGw,
-  copyQgzxGw,
+  deleteQgzxGwYjs,
+  copyQgzxGwYjs,
   tjById,
   cxById,
-} from "@/api/dailyBehavior/thriftbumen";
+} from "@/api/thrift/qgzxgwYjs";
 export default {
   components: { lctCom },
   data() {
@@ -307,7 +298,7 @@ export default {
     },
     showDetail(row) {
       this.$router.push({
-        path: "/Thrift/postApplyDetail",
+        path: "/yjsHelp/gwMaintain/postApplyDetail",
         query: { id: row.id, status: row.status },
       });
     },
@@ -440,7 +431,7 @@ export default {
       }
     },
     del() {
-      deleteQgzxGw({ ids: this.delArr }).then((res) => {
+      deleteQgzxGwYjs({ ids: this.delArr }).then((res) => {
         this.query();
         this.delModal = false;
         this.$message.success("删除成功");
@@ -475,7 +466,7 @@ export default {
           gwEndDate: this.fzform.gwTime[1] || "",
         };
         console.log(this.delArr);
-        copyQgzxGw(data).then((res) => {
+        copyQgzxGwYjs(data).then((res) => {
           this.$message.success("复制成功！");
           this.query();
           this.copyModal = false;
@@ -499,7 +490,7 @@ export default {
 
     xinzeng() {
       this.$router.push({
-        path: "/Thrift/postApplyAdd",
+        path: "/yjsHelp/gwMaintain/postApplyAdd",
       });
     },
   },

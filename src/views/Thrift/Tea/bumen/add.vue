@@ -361,6 +361,7 @@ export default {
         ],
       },
       delModal: false,
+      yrbmdm: "",
     };
   },
   mounted() {
@@ -398,6 +399,7 @@ export default {
       queryZgJbxxDwh()
         .then((res) => {
           this.formAdd.gwYrbm = res.data.mc;
+          this.yrbmdm = res.data.dm;
         })
         .catch((err) => {});
     },
@@ -462,7 +464,7 @@ export default {
           gwRyyq: this.formAdd.gwRyyq,
           gwStartDate: this.formAdd.gwTime[0] || "",
           gwType: this.formAdd.gwType,
-          gwYrbm: this.formAdd.gwYrbm,
+          gwYrbm: this.yrbmdm,
           xn: this.formAdd.xn,
         };
         insertQgzxGw(data).then((res) => {

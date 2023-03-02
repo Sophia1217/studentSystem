@@ -26,7 +26,7 @@
                   prop="gwType"
                   label-width="100px"
                 >
-                  <el-select v-model="formAdd.gwType" clearable>
+                  <el-select v-model="formAdd.gwType" @change="changeXZ">
                     <el-option
                       v-for="(item, index) in gwxzOptions"
                       :key="index"
@@ -125,7 +125,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               prop="gwYgzl"
               label="月工作量(小时)"
               :min-width="230"
@@ -144,25 +144,22 @@
                   />
                 </el-form-item>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
-              prop="gwYgzsx"
-              label="月工资上限(元)"
+              prop="gwYcjbz"
+              label="月酬金标准(元)"
               :min-width="230"
             >
               <template slot-scope="scope">
-                <el-form-item
-                  :prop="'detailList.' + scope.$index + '.gwYgzsx'"
-                  :rules="rules.gwYgzsx"
-                >
-                  <div v-if="sfkgg == 2">{{ scope.row.gwYgzsx }}</div>
-                  <el-input-number
+                <el-form-item :prop="'detailList.' + scope.$index + '.gwYcjbz'">
+                  <div>{{ scope.row.gwYcjbz }}</div>
+                  <!-- <el-input-number
                     v-model="scope.row.gwYgzsx"
                     :min="0"
                     controls-position="right"
                     @change="countNXC(scope.row)"
                     v-else
-                  />
+                  /> -->
                 </el-form-item>
               </template>
             </el-table-column>
@@ -301,10 +298,10 @@ import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getXmXgh } from "@/api/assistantWork/homeSchool";
 import { saveD, queryD } from "@/api/gwsz/gwsz";
 import {
-  countYN,
-  insertQgzxGw,
+  queryYsjGwszType,
+  insertQgzxGwYjs,
   queryZgJbxxDwh,
-} from "@/api/dailyBehavior/thriftbumen";
+} from "@/api/thrift/qgzxgwYjs";
 export default {
   data() {
     return {
@@ -313,6 +310,8 @@ export default {
       xmOptions: [],
       sfkgg: "", //1是2否
       xnOptions: [],
+      je: 0,
+
       rules: {
         gwMainMc: [
           { required: true, message: "岗位名称不能为空", trigger: "blur" },
@@ -361,16 +360,31 @@ export default {
         ],
       },
       delModal: false,
+      yrbmdm: "",
     };
   },
   mounted() {
     this.getCode("dmsplcm"); //状态
-    this.getCode("dmqgzxgwxz");
+
     this.getSchoolYears();
     this.getYrbm();
   },
 
   methods: {
+    changeXZ(val) {
+      for (let item of this.gwxzOptions) {
+        if (item.dm == val) {
+          this.je = item.je;
+        }
+      }
+      // for(var i=0;i<detailList.length;i++){
+
+      // }
+      this.formAdd.detailList.map((item) => {
+        this.$set(item, "gwYcjbz", this.je);
+        this.$set(item, "gwNjyxc", this.je * 10);
+      });
+    },
     // 表单校验
     checkFormAdd() {
       // 1.校验必填项
@@ -393,11 +407,15 @@ export default {
       queryD().then((res) => {
         this.sfkgg = res.data.yrdwGggwcjsx;
       });
+      queryYsjGwszType().then((res) => {
+        this.gwxzOptions = res.data;
+      });
     },
     getYrbm() {
       queryZgJbxxDwh()
         .then((res) => {
           this.formAdd.gwYrbm = res.data.mc;
+          this.yrbmdm = res.data.dm;
         })
         .catch((err) => {});
     },
@@ -407,9 +425,6 @@ export default {
         switch (val) {
           case "dmsplcm": //审批结果
             this.ztStatus = res.data;
-            break;
-          case "dmqgzxgwxz": //审批结果
-            this.gwxzOptions = res.data;
             break;
         }
       });
@@ -433,7 +448,14 @@ export default {
       this.tjArr = val.map((item) => item.id);
     },
     xinzeng() {
-      this.formAdd.detailList.push({});
+      if (this.formAdd.gwType) {
+        this.formAdd.detailList.push({
+          gwYcjbz: this.je,
+          gwNjyxc: 10 * this.je,
+        });
+      } else {
+        this.formAdd.detailList.push({});
+      }
     },
     handleCancle() {
       this.$refs.formAdd.clearValidate();
@@ -462,10 +484,10 @@ export default {
           gwRyyq: this.formAdd.gwRyyq,
           gwStartDate: this.formAdd.gwTime[0] || "",
           gwType: this.formAdd.gwType,
-          gwYrbm: this.formAdd.gwYrbm,
+          gwYrbm: this.yrbmdm,
           xn: this.formAdd.xn,
         };
-        insertQgzxGw(data).then((res) => {
+        insertQgzxGwYjs(data).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("新增成功");
             this.$router.go(-1);

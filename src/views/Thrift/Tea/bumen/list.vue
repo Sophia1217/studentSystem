@@ -188,7 +188,7 @@
     <el-dialog
       title="复制"
       :visible.sync="copyModal"
-      width="30%"
+      width="50%"
       @close="empty()"
     >
       <template>

@@ -27,7 +27,11 @@
               <el-col :span="6">
                 <el-form-item label="岗位性质" prop="gwType" label-width="100px"
                   ><div v-if="isEdit == 1">{{ formEdit.gwTypeMc }}</div>
-                  <el-select v-model="formEdit.gwType" clearable v-else>
+                  <el-select
+                    v-model="formEdit.gwType"
+                    @change="changeXZ"
+                    v-else
+                  >
                     <el-option
                       v-for="(item, index) in gwxzOptions"
                       :key="index"
@@ -43,7 +47,7 @@
                   prop="gwYrbm"
                   label-width="100px"
                 >
-                  {{ formEdit.gwYrbm }}
+                  {{ formEdit.gwYrbmc }}
                 </el-form-item>
               </el-col>
             </el-row>
@@ -140,7 +144,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               prop="gwYgzl"
               label="月工作量(小时)"
               :min-width="230"
@@ -161,8 +165,8 @@
                   />
                 </el-form-item>
               </template>
-            </el-table-column>
-            <el-table-column
+            </el-table-column> -->
+            <!-- <el-table-column
               prop="gwYgzsx"
               label="月工资上限(元)"
               :min-width="230"
@@ -183,6 +187,17 @@
                     @change="countNXC(scope.row)"
                     v-else
                   />
+                </el-form-item>
+              </template>
+            </el-table-column> -->
+            <el-table-column
+              prop="gwYcjbz"
+              label="月酬金标准(元)"
+              :min-width="230"
+            >
+              <template slot-scope="scope">
+                <el-form-item :prop="'detailList.' + scope.$index + '.gwYcjbz'">
+                  <div>{{ scope.row.gwYcjbz }}</div>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -338,12 +353,12 @@ import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getXmXgh } from "@/api/assistantWork/homeSchool";
 import { saveD, queryD } from "@/api/gwsz/gwsz";
 import {
-  countYN,
-  insertQgzxGw,
+  queryYsjGwszType,
+  insertQgzxGwYjs,
   queryZgJbxxDwh,
-  queryQgzxGwById,
-  updateQgzxGw,
-} from "@/api/dailyBehavior/thriftbumen";
+  queryQgzxGwYjsById,
+  updateQgzxGwYjs,
+} from "@/api/thrift/qgzxgwYjs";
 export default {
   data() {
     return {
@@ -354,6 +369,7 @@ export default {
       xmOptions: [],
       detailList: [],
       xnOptions: [],
+      je: 0,
       sfkgg: "", //1是2否
       rules: {
         gwMainMc: [
@@ -404,11 +420,12 @@ export default {
         ],
       },
       delModal: false,
+      yrbmdm: "",
     };
   },
   mounted() {
     this.getCode("dmsplcm"); //状态
-    this.getCode("dmqgzxgwxz");
+
     this.getSchoolYears();
     this.getYrbm();
     this.getDetail();
@@ -424,13 +441,31 @@ export default {
       queryD().then((res) => {
         this.sfkgg = res.data.yrdwGggwcjsx;
       });
+      queryYsjGwszType().then((res) => {
+        this.gwxzOptions = res.data;
+      });
     },
     getYrbm() {
       queryZgJbxxDwh()
         .then((res) => {
           this.formEdit.gwYrbm = res.data.mc;
+          this.yrbmdm = res.data.dm;
         })
         .catch((err) => {});
+    },
+    changeXZ(val) {
+      for (let item of this.gwxzOptions) {
+        if (item.dm == val) {
+          this.je = item.je;
+        }
+      }
+      // for(var i=0;i<detailList.length;i++){
+
+      // }
+      this.formEdit.detailList.map((item) => {
+        this.$set(item, "gwYcjbz", this.je);
+        this.$set(item, "gwNjyxc", this.je * 10);
+      });
     },
     getCode(val) {
       const data = { codeTableEnglish: val };
@@ -438,9 +473,6 @@ export default {
         switch (val) {
           case "dmsplcm": //审批结果
             this.ztStatus = res.data;
-            break;
-          case "dmqgzxgwxz": //审批结果
-            this.gwxzOptions = res.data;
             break;
         }
       });
@@ -452,7 +484,7 @@ export default {
       this.$router.go(-1);
     },
     getDetail() {
-      queryQgzxGwById({ id: this.$route.query.id }).then((res) => {
+      queryQgzxGwYjsById({ id: this.$route.query.id }).then((res) => {
         console.log(res);
         // this.detailList = res.data.detailList;
         this.formEdit = res.data;
@@ -518,10 +550,10 @@ export default {
           gwRyyq: this.formEdit.gwRyyq,
           gwStartDate: this.formEdit.gwTime[0] || "",
           gwType: this.formEdit.gwType,
-          gwYrbm: this.formEdit.gwYrbm,
+          gwYrbm: this.yrbmdm,
           xn: this.formEdit.xn,
         };
-        updateQgzxGw(data).then((res) => {
+        updateQgzxGwYjs(data).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("编辑成功");
             this.isEdit = 1;

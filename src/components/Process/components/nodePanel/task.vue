@@ -310,7 +310,6 @@ export default {
     },
     "formData.test": function (val, oldVal) {
       // console.log("test", val);
-
       //这里加上包含userId的判断就可以了
       var str = "${peo_",
         str1 = "peo_",
@@ -329,19 +328,21 @@ export default {
       this.obj.str2 = str2 + "List";
       this.obj.str3 = str + "}";
       this.updateProperties({ "flowable:test": val });
+      //非常怪异的一个位置，有时间研究一下
+      this.updateProperties({ "flowable:assignee": str + "}" });
     },
-    "formData.assignee": function (val, oldVal) {
-      // console.log("obj", this.obj);
-      // console.log("assignee旧值", val);
-      // this.formData.assignee = val;
-      this.formData.assignee = this.obj.str3;
-      // if (this.formData.userType !== "assignee") {
-      //   console.log("jinaliele ma ");
-      //   delete this.element.businessObject.$attrs[`flowable:assignee`];
-      //   return;
-      // }
-      this.updateProperties({ "flowable:assignee": val });
-    },
+    // "formData.assignee": function (val, oldVal) {
+    //   // console.log("obj", this.obj);
+    //   // console.log("assignee旧值", val);
+    //   // this.formData.assignee = val;
+    //   this.formData.assignee = this.obj.str3;
+    //   // if (this.formData.userType !== "assignee") {
+    //   //   console.log("jinaliele ma ");
+    //   //   delete this.element.businessObject.$attrs[`flowable:assignee`];
+    //   //   return;
+    //   // }
+    //   this.updateProperties({ "flowable:assignee": val });
+    // },
     // 动态选择流程执行人
     "formData.dataType": function (val) {
       const that = this;

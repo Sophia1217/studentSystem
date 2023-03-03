@@ -118,7 +118,9 @@
         </div>
 
         <div class="headerRight">
-          <div style="margin-right: 15px" v-show="AUTHFLAG">{{ this.time }}更新</div>
+          <div style="margin-right: 15px" v-show="AUTHFLAG">
+            {{ this.time }}更新
+          </div>
           <div class="btns borderOrange" @click="Updata" v-show="AUTHFLAG">
             <i class="icon setIcon"></i><span class="title">更新</span>
           </div>
@@ -166,9 +168,8 @@
           <el-table-column prop="zhpj" label="综合评价分数" sortable="custom" />
         </el-table>
         <pagination
-          v-show="total > 0"
-          class="pagination"
-          :total="total"
+          v-show="queryParams.total > 0"
+          :total="queryParams.total"
           :page.sync="queryParams.pageNum"
           :limit.sync="queryParams.pageSize"
           @pagination="getList"
@@ -267,9 +268,8 @@
 </template>
 <script>
 import CheckboxCom from "../../components/checkboxCom";
-import { lookDetail, getGzdw } from "@/api/politicalWork/assistantappoint";
+import { getGzdw } from "@/api/politicalWork/assistantappoint";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { getCollege } from "@/api/class/maintenanceClass";
 import { getGrade } from "@/api/assistantWork/listen";
 import {
   getFdycpZhcpSz,
@@ -369,6 +369,7 @@ export default {
       multipleSelection: [],
       multipleSelection2: [],
       queryParams: {
+        total: 0,
         pageNum: 1,
         pageSize: 10,
         orderZd: "",
@@ -395,7 +396,6 @@ export default {
         njs: [],
         pyccms: [],
       },
-
       expArr: [],
       list2: [],
       sfyx: "",
@@ -577,7 +577,7 @@ export default {
         .then((res) => {
           this.basicInfoList = res.data;
           // this.basicInfoList = response.data; // 根据状态码接收数据
-          // this.total = response.totalCount; //总条数
+          this.queryParams.total = res.totalCount; //总条数
         })
         .catch((err) => {
           // this.$message.error(err.errmsg);
@@ -692,167 +692,166 @@ export default {
 
 <style lang="scss" scoped>
 .basicInfo {
-  .mt15 {
-    margin-top: 15px;
-  }
-  .searchWrap {
-    background: #fff;
-    padding: 20px;
-    .search {
+  background: #fff;
+}
+.mt15 {
+  margin-top: 15px;
+}
+.searchWrap {
+  padding: 20px;
+  .search {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .elSelect {
+      width: 150px;
+    }
+    .inputSelect {
+      width: 50%;
+    }
+    .more {
+      flex: 0 0 100px;
+      margin-left: 20px;
       display: flex;
       flex-direction: row;
       align-items: center;
-      background: #fff;
-      .elSelect {
-        width: 150px;
+      color: #005657;
+      cursor: pointer;
+      .moreIcon {
+        display: block;
+        width: 20px;
+        height: 20px;
       }
-      .inputSelect {
-        width: 50%;
+      .chevronDown {
+        background: url("~@/assets/images/chevronDown.png") no-repeat;
       }
-      .more {
-        flex: 0 0 100px;
-        margin-left: 20px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        color: #005657;
+      .chevronUp {
+        background: url("~@/assets/images/chevronUp.png") no-repeat;
+      }
+    }
+  }
+  .moreSelect {
+    margin-top: 20px;
+    padding: 20px;
+    background: #fafafa;
+  }
+}
+.tableWrap {
+  background: #fff;
+  padding: 20px;
+  .headerTop {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    .headerLeft {
+      display: flex;
+      flex-direction: row;
+      .title {
+        font-weight: 600;
+        font-size: 20px;
+        color: #1f1f1f;
+        line-height: 28px;
+      }
+      // .Updataicon {
+      //   display: inline-block;
+      //   vertical-align: middle;
+      //   margin-left: 10px;
+      //   width: 20px;
+      //   height: 20px;
+      //   background: url("~@/assets/images/updata.png") no-repeat;
+      // }
+      .yearOption {
+        margin-left: 10px;
+      }
+    }
+    .headerRight {
+      display: flex;
+      align-items: center;
+      .borderBlue {
+        background: #fff;
+        border: 1px solid grey;
+      }
+      .borderOrange {
+        border: 1px solid grey;
+        background: #fff;
+      }
+      .borderLight {
+        border: 1px solid grey;
+        color: red;
+        background: #fff;
+      }
+      .borderGreen {
+        border: 1px solid grey;
+        background: #005657;
+      }
+      .btns {
+        margin-right: 15px;
+        padding: 0px 10px;
         cursor: pointer;
-        .moreIcon {
-          display: block;
+        border-radius: 4px;
+        .title {
+          font-size: 14px;
+          text-align: center;
+          line-height: 32px;
+          // vertical-align: middle;
+        }
+        .title1 {
+          font-size: 14px;
+          text-align: center;
+          line-height: 32px;
+          color: #fff;
+          // vertical-align: middle;
+        }
+        .icon {
+          display: inline-block;
           width: 20px;
           height: 20px;
+          vertical-align: top;
+          margin-right: 5px;
         }
-        .chevronDown {
-          background: url("~@/assets/images/chevronDown.png") no-repeat;
-        }
-        .chevronUp {
-          background: url("~@/assets/images/chevronUp.png") no-repeat;
-        }
-      }
-    }
-    .moreSelect {
-      margin-top: 20px;
-      padding: 20px;
-      background: #fafafa;
-    }
-  }
-  .tableWrap {
-    background: #fff;
-    padding: 20px;
-    .headerTop {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      .headerLeft {
-        display: flex;
-        flex-direction: row;
-        .title {
-          font-weight: 600;
-          font-size: 20px;
-          color: #1f1f1f;
-          line-height: 28px;
-        }
-        // .Updataicon {
-        //   display: inline-block;
-        //   vertical-align: middle;
-        //   margin-left: 10px;
-        //   width: 20px;
-        //   height: 20px;
-        //   background: url("~@/assets/images/updata.png") no-repeat;
-        // }
-        .yearOption {
-          margin-left: 10px;
-        }
-      }
-      .headerRight {
-        display: flex;
-        align-items: center;
-        .borderBlue {
-          background: #fff;
-          border: 1px solid grey;
-        }
-        .borderOrange {
-          border: 1px solid grey;
-          background: #fff;
-        }
-        .borderLight {
-          border: 1px solid grey;
-          color: red;
-          background: #fff;
-        }
-        .borderGreen {
-          border: 1px solid grey;
-          background: #005657;
-        }
-        .btns {
-          margin-right: 15px;
-          padding: 0px 10px;
-          cursor: pointer;
-          border-radius: 4px;
-          .title {
-            font-size: 14px;
-            text-align: center;
-            line-height: 32px;
-            // vertical-align: middle;
-          }
-          .title1 {
-            font-size: 14px;
-            text-align: center;
-            line-height: 32px;
-            color: #fff;
-            // vertical-align: middle;
-          }
-          .icon {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            vertical-align: top;
-            margin-right: 5px;
-          }
 
-          .lightIcon {
-            margin-top: 9px;
-            background: url("~@/assets/assistantPng/delete.png") no-repeat;
-          }
-          .addIcon {
-            margin-top: 10px;
-            background: url("~@/assets/assistantPng/add.png") no-repeat;
-          }
-          .setIcon {
-            margin-top: 10px;
-            background: url("~@/assets/images/set.png") no-repeat;
-          }
-          .outIcon {
-            margin-top: 10px;
-            background: url("~@/assets/assistantPng/out.png") no-repeat;
-          }
+        .lightIcon {
+          margin-top: 9px;
+          background: url("~@/assets/assistantPng/delete.png") no-repeat;
+        }
+        .addIcon {
+          margin-top: 10px;
+          background: url("~@/assets/assistantPng/add.png") no-repeat;
+        }
+        .setIcon {
+          margin-top: 10px;
+          background: url("~@/assets/images/set.png") no-repeat;
+        }
+        .outIcon {
+          margin-top: 10px;
+          background: url("~@/assets/assistantPng/out.png") no-repeat;
         }
       }
     }
-    .scopeIncon {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      vertical-align: middle;
-    }
-    .handleName {
-      font-weight: 400;
-      font-size: 14px;
-      color: #005657;
-      line-height: 28px;
-    }
-    .handledie {
-      background: url("~@/assets/images/details.png");
-    }
-    .handleEdit {
-      background: url("~@/assets/images/edit.png");
-    }
   }
-  .searchButton {
-    background: #005657;
-    color: white;
+  .scopeIncon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
   }
+  .handleName {
+    font-weight: 400;
+    font-size: 14px;
+    color: #005657;
+    line-height: 28px;
+  }
+  .handledie {
+    background: url("~@/assets/images/details.png");
+  }
+  .handleEdit {
+    background: url("~@/assets/images/edit.png");
+  }
+}
+.searchButton {
+  background: #005657;
+  color: white;
 }
 .closeButton {
   background: #005657;

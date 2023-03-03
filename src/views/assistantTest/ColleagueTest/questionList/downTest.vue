@@ -2,7 +2,7 @@
   <div class="basicInfo">
     <div class="searchWrap">
       <div class="headerTop1">
-        <span class="title">{{wjName}}</span>
+        <span class="title">{{ wjName }}</span>
       </div>
     </div>
 
@@ -29,14 +29,54 @@
         >
           <el-table-column type="selection" width="55" />
           <el-table-column type="index" label="序号" width="50" />
-          <el-table-column prop="xghBpcr" label="工号" min-width="100" sortable />
-          <el-table-column prop="xmBpcr" label="被测评人" min-width="100" sortable="custom" />
-          <el-table-column prop="lx" label="类型" width="80" sortable="custom" />
-          <el-table-column prop="dwmc" label="工作单位" min-width="100" sortable="custom" />
-          <el-table-column prop="realCount" label="已测评人数" width="110" sortable="custom" />
-          <el-table-column prop="planCount" label="应测评人数" width="110" sortable="custom" />
-          <el-table-column prop="ratio" label="测评率" width="85" sortable="custom" />
-          <el-table-column prop="avgScore" label="平均分" width="85" sortable="custom" />
+          <el-table-column
+            prop="xghBpcr"
+            label="工号"
+            min-width="100"
+            sortable
+          />
+          <el-table-column
+            prop="xmBpcr"
+            label="被测评人"
+            min-width="100"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="lx"
+            label="类型"
+            width="80"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="dwmc"
+            label="工作单位"
+            min-width="100"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="realCount"
+            label="已测评人数"
+            width="110"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="planCount"
+            label="应测评人数"
+            width="110"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="ratio"
+            label="测评率"
+            width="85"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="avgScore"
+            label="平均分"
+            width="85"
+            sortable="custom"
+          />
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
               <el-button
@@ -67,11 +107,20 @@
       width="80%"
     >
       <div class="headerDilog">
-        <div><span class="title">{{wjName}}</span></div>
+        <div>
+          <span class="title">{{ wjName }}</span>
+        </div>
         <div class="tableTop">
-          <div class="tableLeft"><span class="title">{{form.xmBpcr}}</span></div>
-          <div class="tableRight"><span class="title">题数：{{wjCount}}
-            <span v-html="'\u3000'"></span> 总分：{{wjFz}}分</span></div>
+          <div class="tableLeft">
+            <span class="title">{{ form.xmBpcr }}</span>
+          </div>
+          <div class="tableRight">
+            <span class="title"
+              >题数：{{ wjCount }} <span v-html="'\u3000'"></span> 总分：{{
+                wjFz
+              }}分</span
+            >
+          </div>
         </div>
         <el-table :data="tableDetails">
           <el-table-column
@@ -86,23 +135,26 @@
           <el-table-column prop="avgFz" label="分值" />
           <el-table-column prop="tmFz" label="单题原始平均分" />
         </el-table>
-        <div class="zhu"><span class="title2">
-          注：有效测评分是按照去掉头部和尾部相应百分比的人次计算所得平均分</span></div>
+        <div class="zhu">
+          <span class="title2">
+            注：有效测评分是按照去掉头部和尾部相应百分比的人次计算所得平均分</span
+          >
+        </div>
       </div>
       <pagination
-          v-show="total > 0"
-          class="pagination2"
-          :total="totalMx"
-          :page.sync="queryParams.pageNum"
-          :limit.sync="queryParams.pageSize"
-          @pagination="hadleDetail"
-        />
+        v-show="total > 0"
+        class="pagination2"
+        :total="totalMx"
+        :page.sync="queryParams2.pageNum"
+        :limit.sync="queryParams2.pageSize"
+        @pagination="hadleDetail"
+      />
       <span slot="footer" class="dialog-footer">
-          <el-button @click="detailExport">导 出</el-button>
-          <el-button type="primary" class="confirm" @click="detailConfirm"
-            >确 定</el-button
-          >
-        </span>
+        <el-button @click="detailExport">导 出</el-button>
+        <el-button type="primary" class="confirm" @click="detailConfirm"
+          >确 定</el-button
+        >
+      </span>
     </el-dialog>
     <!-- 导出确认对话框 -->
     <el-dialog :title="title" :visible.sync="showExport" width="30%">
@@ -143,7 +195,7 @@ export default {
       title: "",
       // // 总条数
       total: 0,
-      totalMx:0,
+      totalMx: 0,
       // 批量删除确定框弹出
       showDelete: false,
       // 详情框显示
@@ -165,14 +217,21 @@ export default {
         orderZd: "",
         orderPx: "",
       },
+      queryParams2: {
+        pageNum: 1,
+        pageSize: 10,
+        wjId: this.$route.query.id,
+        orderZd: "",
+        orderPx: "",
+      },
       wjName: this.$route.query.wjName,
       wjFz: this.$route.query.wjFz,
       wjCount: this.$route.query.wjCount,
       expArr: [],
-      tableDetails:[],
+      tableDetails: [],
       detailModal: false,
       form: {
-        xmBpcr:"",
+        xmBpcr: "",
       },
     };
   },
@@ -181,7 +240,7 @@ export default {
   created() {},
   mounted() {
     this.authConfirm(this.$route.path.split("/")[2]);
-    this.AUTHFLAG = this.$store.getters.AUTHFLAG; 
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getList(this.queryParams);
   },
 
@@ -207,13 +266,12 @@ export default {
     handleSelectionChange(val) {
       // console.log("val", val);
       this.multipleSelection = val;
-      console.log("row",val);
+      console.log("row", val);
       this.expArr = this.multipleSelection.map((item) => item.xghBpcr);
     },
     // 打开导出弹窗
     handleExport() {
       this.showExport = true;
-      this.title = "导出";
     },
     // 导出取消
     handleCancel() {
@@ -234,12 +292,11 @@ export default {
       exportCpResList(data)
         .then((res) => {
           this.downloadFn(res, "同行互评分析&下载列表导出", "xlsx");
-          if(this.$store.getters.excelcount > 0){
+          if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
             );
           }
-          
         })
         .catch((err) => {});
     },
@@ -248,14 +305,14 @@ export default {
       this.detailModal = true;
       this.form.xmBpcr = row.xmBpcr;
       let data = {
-        xghBpcr: row.xghBpcr,
+        xghBpcr: this.form.xmBpcr,
         // xghDtr: 1,
 
         wjId: this.$route.query.id,
-        pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
+        pageNum: this.queryParams2.pageNum,
+        pageSize: this.queryParams2.pageSize,
+        orderZd: this.queryParams2.orderZd,
+        orderPx: this.queryParams2.orderPx,
       };
       queryPjmxList(data)
         .then((res) => {
@@ -266,13 +323,12 @@ export default {
           // this.$message.error(err.errmsg);
         });
     },
-    detailConfirm(){
+    detailConfirm() {
       this.detailModal = false;
     },
     //评价明细导出
     detailExport() {
       this.showMxExport = true;
-      
     },
     // 导出取消
     handleMxCancel() {
@@ -293,12 +349,11 @@ export default {
       exportPjmxlList(data)
         .then((res) => {
           this.downloadFn(res, "同行互评评价明细列表导出", "xlsx");
-          if(this.$store.getters.excelcount > 0){
+          if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
             );
           }
-          
         })
         .catch((err) => {});
     },
@@ -312,7 +367,7 @@ export default {
         },
       });
     },
-    searchClick(){
+    searchClick() {
       this.queryParams.pageNum = 1;
       this.getList(this.queryParams);
     },
@@ -331,33 +386,33 @@ export default {
   .mt15 {
     margin-top: 15px;
   }
-  .headerDilog{
+  .headerDilog {
     background: #fff;
     padding: 0 20px 0;
-    .title{
-        font-weight: 600;
-        font-size: 18px;
-        color: #1f1f1f;
-        line-height: 28px;
+    .title {
+      font-weight: 600;
+      font-size: 18px;
+      color: #1f1f1f;
+      line-height: 28px;
     }
-    .tableTop{
+    .tableTop {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      .tableLeft{
+      .tableLeft {
         display: flex;
-        margin-bottom:15px;
+        margin-bottom: 15px;
       }
-      .tableRight{
+      .tableRight {
         display: flex;
       }
     }
-    
-    .zhu{
+
+    .zhu {
       margin-top: 15px;
     }
-    .title2{
+    .title2 {
       font-weight: 500;
       font-size: 14px;
       color: #1f1f1f;
@@ -371,15 +426,15 @@ export default {
       display: flex;
       padding-top: 30px;
       flex-direction: row;
-      justify-content:center;
+      justify-content: center;
       align-items: center;
       background: #fff;
       .title {
-          font-weight: 600;
-          font-size: 20px;
-          color: #1f1f1f;
-          line-height: 28px;
-        }
+        font-weight: 600;
+        font-size: 20px;
+        color: #1f1f1f;
+        line-height: 28px;
+      }
     }
   }
   .tableWrap {

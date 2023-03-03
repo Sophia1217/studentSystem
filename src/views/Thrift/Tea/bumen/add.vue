@@ -313,6 +313,7 @@ export default {
       xmOptions: [],
       sfkgg: "", //1是2否
       xnOptions: [],
+      ymLy: "",//1为岗位维护新增
       rules: {
         gwMainMc: [
           { required: true, message: "岗位名称不能为空", trigger: "blur" },
@@ -365,6 +366,7 @@ export default {
     };
   },
   mounted() {
+    this.ymLy = this.$route.query.ymLy;
     this.getCode("dmsplcm"); //状态
     this.getCode("dmqgzxgwxz");
     this.getSchoolYears();
@@ -456,6 +458,7 @@ export default {
         return;
       } else {
         let data = {
+          ymLy: this.ymLy,
           detailList: this.formAdd.detailList,
           gwEndDate: this.formAdd.gwTime[1] || "",
           gwMainMc: this.formAdd.gwMainMc,

@@ -3,7 +3,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">勤工助学</span>
+          <span class="title">酬金发放列表</span>
           <el-select
             v-model="xn"
             @change="changeXn"
@@ -22,9 +22,9 @@
           <div class="btns borderLight" @click="showDel" v-show="AUTHFLAG">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
-          <div class="btns borderLight" @click="copy" v-show="AUTHFLAG">
+          <!-- <div class="btns borderLight" @click="copy" v-show="AUTHFLAG">
             <i class="icon copyIcon"></i><span class="title2">复制</span>
-          </div>
+          </div> -->
           <div class="btns borderLight" @click="chModal" v-show="AUTHFLAG">
             <i class="icon chIcon"></i><span class="title2">撤回</span>
           </div>
@@ -52,68 +52,24 @@
             width="50"
           ></el-table-column>
           <el-table-column
-            prop="gwMainMc"
-            label="岗位名称"
+            prop="dwhmc"
+            label="用人部门"
             sortable="custom"
             :show-overflow-tooltip="true"
           />
-          <el-table-column
-            prop="gwDetailMc"
-            label="岗位"
-            sortable="custom"
-            :show-overflow-tooltip="true"
-          >
+          <el-table-column prop="ffny" label="发放年月" sortable="custom">
           </el-table-column>
-          <el-table-column prop="gwGzdd" label="工作地点" sortable="custom">
+          <el-table-column prop="planRs" label="应发放人数" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="realRs" label="已发放人数" sortable="custom">
           </el-table-column>
           <el-table-column
-            prop="gwYgzl"
-            label="月工作量(小时)"
+            prop="money"
+            label="实发金额（元）"
             sortable="custom"
           >
           </el-table-column>
-          <el-table-column
-            prop="gwYgzsx"
-            label="月工资上限(元)"
-            sortable="custom"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="gwNjyxc"
-            label="年建议薪酬(元)"
-            sortable="custom"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="gwNzxsrs"
-            label="拟招学生人数"
-            sortable="custom"
-          >
-          </el-table-column>
-          <el-table-column prop="gwKnss" label="困难生数" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="gwZdls" label="指导老师" sortable="custom">
-          </el-table-column>
-          <el-table-column
-            fixed="right"
-            prop="status"
-            label="审核状态"
-            sortable="custom"
-          >
-            <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.status"
-                placeholder="请选择"
-                :disabled="true"
-              >
-                <el-option
-                  v-for="(item, index) in ztStatus"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select>
-            </template>
+          <el-table-column prop="statusName" label="状态" sortable="custom">
           </el-table-column>
           <!-- <el-table-column
             prop="jg"
@@ -185,38 +141,19 @@
         <el-button type="primary" class="confirm" @click="tj">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog
-      title="复制"
-      :visible.sync="copyModal"
-      width="50%"
-      @close="empty()"
-    >
+    <el-dialog title="复制" :visible.sync="copyModal" width="30%">
       <template>
-        <el-form :model="fzform" ref="fzform" size="small" :rules="rules">
-          <div>
-            <span>已选择{{ len }}条记录</span>
-            <el-form-item prop="fzxn" label="复制后应用学年">
-              <el-select
-                v-model="fzform.fzxn"
-                style="width: 130px; margin: 0 15px 0"
-              >
-                <el-option
-                  v-for="(item, index) in xnOptions"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.mc"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="岗位起止时间" prop="gwTime" label-width="120px"
-              ><el-date-picker
-                type="daterange"
-                v-model="fzform.gwTime"
-                value-format="yyyy-MM-dd"
-              />
-            </el-form-item>
-          </div>
-        </el-form>
+        <div>
+          <span>已选择{{ len }}条记录，复制后应用学年</span>
+          <el-select v-model="fzxn" style="width: 130px; margin: 0 15px 0">
+            <el-option
+              v-for="(item, index) in xnOptions"
+              :key="index"
+              :label="item.mc"
+              :value="item.mc"
+            ></el-option>
+          </el-select>
+        </div>
       </template>
       <span slot="footer" class="dialog-footer">
         <el-button @click="copyCancel">取 消</el-button>
@@ -233,17 +170,15 @@
   </div>
 </template>
 <script>
-import { queryList, tj, back, del } from "@/api/dailyBehavior/xnxjStu";
-import lctCom from "../../../components/lct";
+import lctCom from "../../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import {
-  queryQgzxGwList,
-  deleteQgzxGw,
-  copyQgzxGw,
+  queryDwList,
   tjById,
   cxById,
-} from "@/api/dailyBehavior/thriftbumen";
+  deleteDwList,
+} from "@/api/thrift/paymentApply";
 export default {
   components: { lctCom },
   data() {
@@ -268,18 +203,7 @@ export default {
       chehuiModal: false,
       basicInfo: {},
       xnOptions: [],
-      fzform: {
-        fzxn: "",
-        gwTime: [],
-      },
-      rules: {
-        gwTime: [
-          { required: true, message: "起止时间不能为空", trigger: "blur" },
-        ],
-        fzxn: [
-          { required: true, message: "复制学年不能为空", trigger: "blur" },
-        ],
-      },
+      fzxn: "",
       xn: "",
     };
   },
@@ -287,15 +211,10 @@ export default {
     this.authConfirm(this.$route.path.split("/")[2]);
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getSchoolYears();
-    this.getCode("dmsplcm"); //状态
+    // this.getCode("dmsplcm"); //状态
   },
 
   methods: {
-    empty() {
-      this.$nextTick(() => {
-        this.$refs.fzform.resetFields();
-      });
-    },
     getSchoolYears() {
       queryXn()
         .then((res) => {
@@ -306,10 +225,19 @@ export default {
         .catch((err) => {});
     },
     showDetail(row) {
-      this.$router.push({
-        path: "/Thrift/post/postApplyDetail",
-        query: { id: row.id, status: row.status },
-      });
+      console.log(row),
+        this.$router.push({
+          path: "/Thrift/payment/paymentApplyDetail",
+          query: {
+            id: row.id,
+            status: row.status,
+            gwYrbm: row.dwh,
+            ffny: row.ffny,
+            xn: row.xn,
+            statusName: row.statusName,
+            gwYrbmMc: row.dwhmc,
+          },
+        });
     },
     copy() {
       if (this.multipleSelection.length > 0) {
@@ -326,11 +254,10 @@ export default {
       var falg = 1;
       //判断是否是草稿数据
       for (var i = 0; i < this.val.length; i++) {
-        if (this.val[i].status !== "01") falg = 2;
+        if (this.val[i].statusName !== "草稿") falg = 2;
       }
-
       if (falg == 1) {
-        if (this.tjArr && this.tjArr.length > 0) {
+        if (this.val && this.val.length > 0) {
           this.submitModal = true;
         } else {
           this.$message.error("请先勾选数据");
@@ -340,6 +267,9 @@ export default {
       }
     },
     tj() {
+      for (let i = 0; i < this.val.length; i++) {
+        this.val[i].gwYrbm = this.val[i].dwh;
+      }
       var data = this.val;
       tjById(data).then((res) => {
         if (res.errcode == "00") {
@@ -358,7 +288,7 @@ export default {
     checkFormAdd() {
       // 1.校验必填项
       let validForm = false;
-      this.$refs.fzform.validate((valid) => {
+      this.$refs.formAdd.validate((valid) => {
         validForm = valid;
       });
       if (!validForm) {
@@ -386,7 +316,6 @@ export default {
       if (!validForm) {
         return false;
       }
-
       return true;
     },
     getCode(val) {
@@ -403,7 +332,11 @@ export default {
       this.chehuiModal = false;
     },
     ch() {
-      cxById(this.val).then((res) => {
+      for (let i = 0; i < this.val.length; i++) {
+        this.val[i].gwYrbm = this.val[i].dwh;
+      }
+      var data = this.val;
+      cxById(data).then((res) => {
         this.$message.success("撤回成功");
         this.query();
         this.chehuiModal = false;
@@ -412,10 +345,10 @@ export default {
     chModal() {
       var falg = 1;
       for (var i = 0; i < this.val.length; i++) {
-        if (this.val[i].status !== "02") falg = 2;
+        if (this.val[i].statusName !== "待审核") falg = 2;
       }
       if (falg == 1) {
-        if (this.delArr && this.delArr.length > 0) {
+        if (this.val && this.val.length > 0) {
           this.chehuiModal = true;
         } else {
           this.$message.error("请先勾选数据");
@@ -427,10 +360,10 @@ export default {
     showDel() {
       var falg = 1;
       for (var i = 0; i < this.val.length; i++) {
-        if (this.val[i].status !== "01") falg = 2;
+        if (this.val[i].statusName !== "草稿") falg = 2;
       }
       if (falg == 1) {
-        if (this.delArr && this.delArr.length > 0) {
+        if (this.val && this.val.length > 0) {
           this.delModal = true;
         } else {
           this.$message.error("请先勾选数据");
@@ -440,7 +373,11 @@ export default {
       }
     },
     del() {
-      deleteQgzxGw({ ids: this.delArr, ymLy: "" }).then((res) => {
+      for (let i = 0; i < this.val.length; i++) {
+        this.val[i].gwYrbm = this.val[i].dwh;
+      }
+      var data = this.val;
+      deleteDwList(data).then((res) => {
         this.query();
         this.delModal = false;
         this.$message.success("删除成功");
@@ -457,32 +394,13 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       this.val = val;
-      this.delArr = val.map((item) => item.id);
-      this.tjArr = val.map((item) => item.id);
+      // this.delArr = val.map((item) => item.id);
+      // this.tjArr = val.map((item) => item.id);
     },
     copyCancel() {
       this.copyModal = false;
     },
-    copyConfirm() {
-      if (!this.checkFormAdd()) {
-        this.$message.error("请完善表单相关信息！");
-        return;
-      } else {
-        let data = {
-          ymLy: "",
-          ids: this.delArr,
-          xn: this.fzform.fzxn,
-          gwStartDate: this.fzform.gwTime[0] || "",
-          gwEndDate: this.fzform.gwTime[1] || "",
-        };
-        console.log(this.delArr);
-        copyQgzxGw(data).then((res) => {
-          this.$message.success("复制成功！");
-          this.query();
-          this.copyModal = false;
-        });
-      }
-    },
+    copyConfirm() {},
 
     query() {
       var data = {
@@ -491,8 +409,9 @@ export default {
         orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",
         orderPx: this.queryParams.orderPx ? this.queryParams.orderPx : "",
         xn: this.xn,
+        loginId: this.$store.getters.userId,
       };
-      queryQgzxGwList(data).then((res) => {
+      queryDwList(data).then((res) => {
         this.tableDate = res.data;
         this.queryParams.totalCount = res.totalCount;
       });
@@ -500,10 +419,7 @@ export default {
 
     xinzeng() {
       this.$router.push({
-        path: "/Thrift/post/postApplyAdd",
-        query: {
-          ymLy: "", //岗位申请新增
-        },
+        path: "/Thrift/payment/paymentApplyAdd",
       });
     },
   },
@@ -606,7 +522,7 @@ export default {
         margin-left: 10px;
         width: 20px;
         height: 20px;
-        background: url("../../../../assets/images/updata.png") no-repeat;
+        background: url("../../../../../assets/images/updata.png") no-repeat;
       }
     }
     .headerRight {

@@ -325,20 +325,33 @@
           <div>研究生三助协议书</div>
         </div>
         <div class="tableStyle">
-          <el-upload
+          <!-- <el-upload
             action="#"
             multiple
             class="el-upload"
             :auto-upload="false"
             ref="upload"
-            :file-list="detailInfoData.files"
+            :file-list="SHfileList"
+            :show-file-list="true"
             :on-change="fileChange"
             accept=".pdf,.jpg"
             :before-remove="beforeRemove"
-            :disabled="isEdit == 2"
+            disabled
           >
             <el-button size="small" type="primary">点击上传</el-button>
-          </el-upload>
+          </el-upload> -->
+          <div v-for="(item, index) in SHfileList" :key="index">
+            <el-button type="text" size="small" @click="xzWj(item)">
+              <span class="handleName">{{ item.fileName }}</span>
+            </el-button>
+          </div>
+          <div style="padding: 30px">
+            <el-checkbox
+              v-model="checked"
+              label="我已知晓以上所有内容并同意"
+              :disabled="isEdit == 2"
+            />
+          </div>
         </div>
       </div>
       <div v-if="isEdit == 2" class="editBottom">
@@ -366,6 +379,8 @@ import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryQgzxGwYjsById } from "@/api/thrift/qgzxgwYjs";
 import { getbascic } from "@/api/dailyBehavior/xnxjStu";
 import { insertQgzxXssq, getQgzxXssqDetail } from "@/api/thrift/applyYjs";
+import { delFile, downloadFile, queryFile } from "@/api/common/file";
+import { queryDNew } from "@/api/gwsz/gwsz";
 export default {
   components: { lctCom, topTitle },
   data() {
@@ -427,9 +442,10 @@ export default {
       tableData: {},
       basicInfo: {},
       formEdit: {},
-
+      checked: false,
       fileList: [],
       fileListAdd: [],
+      SHfileList: [],
     };
   },
   created() {},
@@ -493,6 +509,11 @@ export default {
           console.log(this.detailInfoData.xskysjList);
         });
       }
+      queryDNew().then((res) => {
+        queryFile({ businesId: res.data.id }).then((res) => {
+          this.SHfileList = res.data;
+        });
+      });
       //
     },
     handleBack() {},
@@ -505,6 +526,8 @@ export default {
         this.$message.error("请填写申请理由!");
       } else if (!this.detailInfoData.sgsj) {
         this.$message.error("请填写上岗时间!");
+      } else if (!this.checked) {
+        this.$message.error("请勾选同意书!");
       } else {
         let data = {
           gwId: this.formEdit.detailList[0].id,
@@ -524,28 +547,34 @@ export default {
       }
       //}
     },
-    beforeRemove(file, fileList) {
-      let uid = file.uid;
-      let idx = fileList.findIndex((item) => item.uid === uid);
-      fileList.splice(idx, 0);
-      this.fileList = fileList;
-      if (file.id) {
-        //如果是后端返回的文件就走删除接口，不然前端自我删除
-        delwj({ id: file.id.toString() }).then();
-      }
+    xzWj(item) {
+      downloadFile({ id: item.id }).then((res) => {
+        this.url = window.URL.createObjectURL(res);
+        this.downloadFn(res, item.fileName);
+      });
     },
-    fileChange(file, fileList) {
-      if (Number(file.size / 1024 / 1024) > 2) {
-        let uid = file.uid;
-        let idx = fileList.findIndex((item) => item.uid === uid);
-        fileList.splice(idx, 1);
-        this.$message.error("单个文件大小不得超过2M");
-      } else if (file.status == "ready") {
-        this.fileListAdd = [];
-        this.fileListAdd.push(file); //修改编辑的文件参数
-      }
-      this.fileList = fileList;
-    },
+    // beforeRemove(file, fileList) {
+    //   let uid = file.uid;
+    //   let idx = fileList.findIndex((item) => item.uid === uid);
+    //   fileList.splice(idx, 0);
+    //   this.fileList = fileList;
+    //   if (file.id) {
+    //     //如果是后端返回的文件就走删除接口，不然前端自我删除
+    //     delwj({ id: file.id.toString() }).then();
+    //   }
+    // },
+    // fileChange(file, fileList) {
+    //   if (Number(file.size / 1024 / 1024) > 2) {
+    //     let uid = file.uid;
+    //     let idx = fileList.findIndex((item) => item.uid === uid);
+    //     fileList.splice(idx, 1);
+    //     this.$message.error("单个文件大小不得超过2M");
+    //   } else if (file.status == "ready") {
+    //     this.fileListAdd = [];
+    //     this.fileListAdd.push(file); //修改编辑的文件参数
+    //   }
+    //   this.fileList = fileList;
+    // },
   },
 };
 </script>

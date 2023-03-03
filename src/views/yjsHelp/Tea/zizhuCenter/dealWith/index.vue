@@ -95,6 +95,13 @@
           >
           </el-table-column>
           <el-table-column
+            prop="gwTypeMc"
+            label="岗位性质"
+            min-width="100"
+            sortable
+          >
+          </el-table-column>
+          <el-table-column
             prop="gwGzdd"
             label="工作地点"
             min-width="100"

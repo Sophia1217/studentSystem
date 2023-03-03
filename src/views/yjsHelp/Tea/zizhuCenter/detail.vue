@@ -70,17 +70,12 @@
             <el-table-column prop="gwGzdd" label="工作地点" :min-width="200">
             </el-table-column>
             <el-table-column
-              prop="gwYgzl"
-              label="月工作量(小时)"
+              prop="gwYcjbz"
+              label="月酬金标准(元)"
               :min-width="230"
             >
             </el-table-column>
-            <el-table-column
-              prop="gwYgzsx"
-              label="月工资上限(元)"
-              :min-width="230"
-            >
-            </el-table-column>
+
             <el-table-column
               prop="gwNjyxc"
               label="年建议薪酬(元)"
@@ -189,8 +184,9 @@ import {
   jjFlow,
   backFlow,
   thFinal,
-  queryQgzxGwshById,
-} from "@/api/thrift/gwAudit";
+  queryQgzxGwYjsById,
+} from "@/api/thrift/gwAuditYjs";
+
 export default {
   data() {
     return {
@@ -358,7 +354,7 @@ export default {
       });
     },
     getDetail() {
-      queryQgzxGwshById({ id: this.$route.query.businesId }).then((res) => {
+      queryQgzxGwYjsById({ id: this.$route.query.businesId }).then((res) => {
         // console.log(res);
         this.detailList = res.data.detailList;
         this.formEdit = res.data;

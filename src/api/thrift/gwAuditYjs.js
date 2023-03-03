@@ -69,9 +69,9 @@ export function exportYsh(query) {
   })
 }
 //勤工助学岗位审核_详情查询
-export function queryQgzxGwshById(query) {
+export function queryQgzxGwYjsById(query) {
   return request({
-    url: '/qgzxGwYjssh/queryQgzxGwshById',
+    url: '/qgzxGwYjs/queryQgzxGwYjsById',
     method: 'get',
     params: query
   })

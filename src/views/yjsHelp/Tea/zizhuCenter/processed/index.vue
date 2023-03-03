@@ -68,7 +68,8 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">勤工助学岗位列表</span> <i class="Updataicon"></i>
+          <span class="title">研究生三助岗位列表</span>
+          <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
           <div class="btns borderOrange" @click="expor">
@@ -115,12 +116,20 @@
           >
           </el-table-column>
           <el-table-column
+            prop="gwTypeMc"
+            label="岗位性质"
+            min-width="100"
+            sortable
+          >
+          </el-table-column>
+          <el-table-column
             prop="gwGzdd"
             label="工作地点"
             min-width="100"
             sortable
           >
           </el-table-column>
+
           <el-table-column
             prop="gwYrdw"
             label="用人部门"
@@ -128,7 +137,6 @@
             sortable
           >
           </el-table-column>
-
           <el-table-column
             prop="gwYcjbz"
             label="月酬金标准"
@@ -195,7 +203,7 @@
                 @click="hadleDetail(scope.row)"
               >
                 <i class="scopeIncon handledie"></i>
-                <span class="handleName">申报详情</span>
+                <span class="handleName">详情</span>
               </el-button>
             </template>
           </el-table-column>
@@ -523,7 +531,7 @@ export default {
     hadleDetail(row) {
       console.log("row", row);
       this.$router.push({
-        path: "/Thrift/postAuditDetail",
+        path: "/YjsHelp/gwMaintain/postAuditDetail",
         query: {
           businesId: row.businesId,
           processId: row.processid,

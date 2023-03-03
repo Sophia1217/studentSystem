@@ -171,6 +171,13 @@
           >
           </el-table-column>
           <el-table-column
+            prop="thsj"
+            label="谈话时间"
+            min-width="100"
+            sortable="custom"
+          >
+          </el-table-column>
+          <el-table-column
             prop="thzttype"
             label="谈话标签"
             min-width="100"

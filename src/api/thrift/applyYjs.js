@@ -4,7 +4,7 @@ import request from '@/utils/request'
 //勤工助学学生已申请岗位查询
 export function YsqgwList(data){
   return request({
-    url: '/qgzxXssq/queryQgzxXsYsqgwList',
+    url: '/qgzxXssqYjssz/queryYjsszYsqgwList',
     method: 'post',
     data: data
   })
@@ -14,7 +14,7 @@ export function YsqgwList(data){
 //勤工助学学生可申请岗位查询
 export function KsqgwList(data){
     return request({
-      url: '/qgzxXssq/queryQgzxXsKsqgwList',
+      url: '/qgzxXssqYjssz/queryYjsszKsqgwList',
       method: 'post',
       data: data
     })
@@ -23,7 +23,7 @@ export function KsqgwList(data){
   //勤工助学学生申请
 export function insertQgzxXssq(data){
     return request({
-      url: '/qgzxXssq/insertQgzxXssq',
+      url: '/qgzxXssqYjssz/insertQgzxXssqYjssz',
       method: 'post',
       data: data
     })
@@ -33,7 +33,7 @@ export function insertQgzxXssq(data){
 //勤工助学学生申请详情
 export function getQgzxXssqDetail(data){
   return request({
-    url: '/qgzxXssq/getQgzxXssqDetail',
+    url: '/qgzxXssqYjssz/getQgzxXssqYjsszDetail',
     method: 'get',
     params: data
   })
@@ -41,7 +41,7 @@ export function getQgzxXssqDetail(data){
 //勤工助学学生申请提交
 export function tjById(data){
   return request({
-    url: '/qgzxXssq/tjById',
+    url: '/qgzxXssqYjssz/tjById',
     method: 'post',
     data: data
   })
@@ -50,7 +50,7 @@ export function tjById(data){
 //勤工助学学生申请审核撤销
 export function cxById(data){
   return request({
-    url: '/qgzxXssq/cxById',
+    url: '/qgzxXssqYjssz/cxById',
     method: 'post',
     data: data
   })
@@ -59,33 +59,36 @@ export function cxById(data){
 //勤工助学学生申请删除
 export function deleteQgzxXssq(data){
   return request({
-    url: '/qgzxXssq/deleteQgzxXssq',
+    url: '/qgzxXssqYjssz/deleteQgzxXssqYjssz',
     method: 'post',
     data: data
   })
 }
+//
+
 //教师端-退回操作
 export function htFlow(data){
     return request({
-      url: '/qgzxXssq/htFlow',
+      url: '/qgzxXssqYjssz/htFlow',
       method: 'post',
       data: data
     })
   }
  
 //教师端-待审核列表导出
-export function excelExportTodo(data){
+export function excelExportRcswJzsqFlow(data){
     return request({
-      url: '/qgzxXssq/excelExportTodo',
+      url: '/qgzxXssqYjssz/excelExportRcswJzsqFlow',
       method: 'post',
       data: data,
       responseType:'blob'
+
     })
   }
   //教师端-已处理列表导出
-export function excelExportDone(data){
+export function excelExportRcswJzsqFlowed(data){
     return request({
-      url: '/qgzxXssq/excelExportDone',
+      url: '/qgzxXssqYjssz/excelExportRcswJzsqFlowed',
       method: 'post',
       data: data,
       responseType:'blob'
@@ -96,24 +99,24 @@ export function excelExportDone(data){
 //教师端-拒绝操作
 export function jjFlow(data){
     return request({
-      url: '/qgzxXssq/jjFlow',
+      url: '/qgzxXssqYjssz/jjFlow',
       method: 'post',
       data: data
     })
   }
  
 //教师端-已处理列表查询
-export function queryQgzxGwsqYclList(data){
+export function queryJzsqFlowedList(data){
     return request({
-      url: '/qgzxXssq/queryQgzxGwsqYclList',
+      url: '/qgzxXssqYjssz/queryJzsqFlowedList',
       method: 'post',
       data: data
     })
   }
   //教师端-待审核列表查询
-export function queryQgzxGwsqDshList(data){
+export function queryJzsqFlowList(data){
     return request({
-      url: '/qgzxXssq/queryQgzxGwsqDshList',
+      url: '/qgzxXssqYjssz/queryJzsqFlowList',
       method: 'post',
       data: data
     })
@@ -121,7 +124,7 @@ export function queryQgzxGwsqDshList(data){
   //教师端-同意操作
 export function tyFlow(data){
     return request({
-      url: '/qgzxXssq/tyFlow',
+      url: '/qgzxXssqYjssz/tyFlow',
       method: 'post',
       data: data
     })

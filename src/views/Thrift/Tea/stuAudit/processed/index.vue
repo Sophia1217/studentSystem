@@ -135,18 +135,12 @@
             sortable="custom"
           >
           </el-table-column>
-          <el-table-column prop="gwKnss" label="困难生数" sortable="custom">
-          </el-table-column>
+
           <el-table-column prop="gwZdls" label="指导老师" sortable="custom">
           </el-table-column>
-          <el-table-column prop="" label="审核状态" min-width="100">
+          <el-table-column prop="status" label="审核状态" min-width="100">
             <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.stataus"
-                multiple
-                placeholder="请选择"
-                collapse-tags
-              >
+              <el-select v-model="scope.row.status" disabled>
                 <el-option
                   v-for="(item, index) in ztStatus"
                   :key="index"
@@ -179,8 +173,8 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog title="同意提示" :visible.sync="directModal" width="30%">
-        <span>确认直接批量通过？</span>
+      <el-dialog title="通过提示" :visible.sync="directModal" width="30%">
+        <span>确认通过？</span>
         <span slot="footer" class="dialog-footer">
           <el-button @click="directCancel">取 消</el-button>
           <el-button type="primary" class="confirm" @click="directConfirm"
@@ -278,9 +272,6 @@ import {
   exportDsh,
   queryDshList,
   queryDshDetail,
-  tyFlow,
-  tyBatchFlow,
-  jjFlow,
   thFinal,
 } from "@/api/familyDifficulties/difficultTea";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
@@ -290,6 +281,15 @@ import lctCom from "../../../../components/lct";
 import { lctTable } from "@/api/stuDangan/detailList/xiaoneiwai";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getGzdw } from "@/api/politicalWork/assistantappoint";
+import {
+  jjFlow,
+  htFlow,
+  excelExportTodo,
+  excelExportDone,
+  queryQgzxGwsqYclList,
+  queryQgzxGwsqDshList,
+  tyFlow,
+} from "@/api/thrift/apply";
 export default {
   name: "manStudent",
   components: { CheckboxCom, lctCom },
@@ -319,6 +319,8 @@ export default {
         pageNum: 1,
         pageSize: 10,
         total: 0,
+        orderZd: "",
+        orderPx: "",
       },
 
       multipleSelection: [],
@@ -370,10 +372,10 @@ export default {
       }
       this.exportParams.pageNum = 0;
       this.exportParams.pageSize = 0;
-      this.$set(this.exportParams, "idList", idList);
-      exportDsh(this.exportParams)
+      this.$set(this.exportParams, "ids", idList);
+      excelExportTodo(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "困难认定待审核列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "勤工助学待审核列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -388,12 +390,12 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        gwMc: this.select == "1" ? this.searchVal : null,
-        gw: this.select == "2" ? this.searchVal : null,
-        gzdd: this.select == "3" ? this.searchVal : null,
-        zdjs: this.select == "4" ? this.searchVal : null,
-        lxdh: this.select == "5" ? this.searchVal : null,
-        dwhList: this.moreIform.dwhList,
+        gwMainMc: this.select == "1" ? this.searchVal : null,
+        gwDetailMc: this.select == "2" ? this.searchVal : null,
+        gwGzdd: this.select == "3" ? this.searchVal : null,
+        gwZdls: this.select == "4" ? this.searchVal : null,
+        gwLxfs: this.select == "5" ? this.searchVal : null,
+        gwYrbmList: this.moreIform.dwhList,
 
         xn: this.moreIform.xn,
 
@@ -419,9 +421,6 @@ export default {
     thTableConfirm() {
       if (!!this.tempRadio || this.tempRadio === 0) {
         this.thTableModal = false;
-        if (this.detailModal == false) {
-          this.thModal = true;
-        }
       } else {
         this.$message.error("请先勾选退回的节点");
       }
@@ -448,72 +447,17 @@ export default {
         })
         .catch((err) => {});
     },
-    hadleDetail(row) {},
-    editClick() {
-      if (!this.editDetails.shjg) {
-        this.$message.error("审核结果不能为空");
-      } else {
-        if (this.editDetails.shjg == "01") {
-          if (!this.editDetails.tjdj) {
-            this.$message.error("推荐档次不能为空");
-          } else {
-            var data = {
-              businesId: this.editparams.id,
-              processId: this.editparams.processid,
-              status: this.editparams.status,
-              taskId: this.editparams.taskId,
-              xh: this.editparams.xh,
-              opMsg: this.editDetails.shyj ? this.editDetails.shyj : "已通过",
-              tjly: this.editDetails.shyj ? this.editDetails.shyj : "",
-              tjdj: this.editDetails.tjdj,
-              sqdj: this.editparams.sqdj, //申请等级
-            };
-            //通过
-            tyFlow([data]).then((res) => {
-              if (res.errcode == "00") {
-                this.$message.success("审核已通过");
-                this.detailModal = false;
-                this.handleSearch();
-              }
-            });
-          }
-        } else if (this.editDetails.shjg == "02") {
-          var data = {
-            businesId: this.editparams.id,
-            processId: this.editparams.processid,
-            status: this.editparams.status,
-            taskId: this.editparams.taskId,
-            xh: this.editparams.xh,
-            opMsg: this.editDetails.shyj ? this.editDetails.shyj : "已拒绝",
-          };
-          //拒绝
-          jjFlow([data]).then((res) => {
-            if (res.errcode == "00") {
-              this.$message.success("已拒绝");
-              this.detailModal = false;
-              this.handleSearch();
-            }
-          });
-        } else {
-          var data = {
-            businesId: this.editparams.id,
-            processId: this.editparams.processid,
-            status: this.editparams.status,
-            taskId: this.editparams.taskId,
-            xh: this.editparams.xh,
-            opMsg: this.editDetails.shyj ? this.editDetails.shyj : "已退回",
-            actId: this.multipleSelection1.actId,
-            actName: this.multipleSelection1.actName,
-          };
-          thFinal([data]).then((res) => {
-            if (res.errcode == "00") {
-              this.detailModal = false;
-              this.$message.success("退回成功");
-              this.handleSearch();
-            }
-          });
-        }
-      }
+    hadleDetail(row) {
+      this.$router.push({
+        path: "/Thrift/stuAuditDetail",
+        query: {
+          id: row.id,
+          isEdit: 4,
+          gwid: row.gwId,
+          taskId: row.taskId,
+          xh: row.xh,
+        },
+      });
     },
 
     changeSelect() {
@@ -524,12 +468,12 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        gwMc: this.select == "1" ? this.searchVal : null,
-        gw: this.select == "2" ? this.searchVal : null,
-        gzdd: this.select == "3" ? this.searchVal : null,
-        zdjs: this.select == "4" ? this.searchVal : null,
-        lxdh: this.select == "5" ? this.searchVal : null,
-        dwhList: this.moreIform.dwhList,
+        gwMainMc: this.select == "1" ? this.searchVal : null,
+        gwDetailMc: this.select == "2" ? this.searchVal : null,
+        gwGzdd: this.select == "3" ? this.searchVal : null,
+        gwZdls: this.select == "4" ? this.searchVal : null,
+        gwLxfs: this.select == "5" ? this.searchVal : null,
+        gwYrbmList: this.moreIform.dwhList,
 
         xn: this.moreIform.xn,
 
@@ -541,7 +485,7 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryDshList(data)
+      queryQgzxGwsqDshList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
@@ -583,8 +527,8 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       this.commonParams = this.multipleSelection.map((v) => ({
-        businesId: v.businesId,
-        processId: v.processId,
+        businesId: v.id,
+        processId: v.processid,
         status: v.status,
         taskId: v.taskId,
         xh: v.xh,
@@ -596,17 +540,7 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
     },
-    changeJG(val) {
-      console.log("taskId", this.editparams.taskId);
-      if (val && val == "03") {
-        console.log("this.editDetails.shjg", this.editDetails.shjg);
-        var processId = { processId: this.editparams.taskId };
-        backFlow(processId).then((res) => {
-          this.tableInner = res.data;
-        });
-        this.thTableModal = true;
-      }
-    },
+
     getRow(index, row) {
       this.multipleSelection1 = row;
     },
@@ -701,7 +635,7 @@ export default {
       //   czdaFlowNodeRes: this.multipleSelection1,
       //   czdaFlowOpReqList: data,
       // };
-      thFinal(data).then((res) => {
+      htFlow(data).then((res) => {
         if (res.errcode == "00") {
           this.detailModal = false;
           this.$message.success("退回成功");

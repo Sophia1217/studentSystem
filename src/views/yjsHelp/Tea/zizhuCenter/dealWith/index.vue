@@ -56,7 +56,8 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">勤工助学岗位列表</span> <i class="Updataicon"></i>
+          <span class="title">研究生三助岗位列表</span>
+          <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
           <div class="btns borderOrange" @click="expor">
@@ -107,16 +108,10 @@
             sortable
           >
           </el-table-column>
+
           <el-table-column
-            prop="gwYgzl"
-            label="月工作量"
-            min-width="100"
-            sortable
-          >
-          </el-table-column>
-          <el-table-column
-            prop="gwYgzsx"
-            label="月工资上限"
+            prop="gwYcjbz"
+            label="月酬金标准"
             min-width="110"
             sortable
           >
@@ -213,7 +208,7 @@
 
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
-import { queryYshList, exportYsh } from "@/api/thrift/gwAudit";
+import { queryYshList, exportYsh } from "@/api/thrift/gwAuditYjs";
 import lctCom from "../../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {

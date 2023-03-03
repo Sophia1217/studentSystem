@@ -128,16 +128,10 @@
             sortable
           >
           </el-table-column>
+
           <el-table-column
-            prop="gwYgzl"
-            label="月工作量"
-            min-width="100"
-            sortable
-          >
-          </el-table-column>
-          <el-table-column
-            prop="gwYgzsx"
-            label="月工资上限"
+            prop="gwYcjbz"
+            label="月酬金标准"
             min-width="110"
             sortable
           >
@@ -308,7 +302,7 @@ import {
   backFlow,
   thFinal,
   exportDsh,
-} from "@/api/thrift/gwAudit";
+} from "@/api/thrift/gwAuditYjs";
 import lctCom from "../../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
@@ -447,7 +441,7 @@ export default {
             this.$message.success("审核已通过");
             this.detailModal = false;
             this.handleSearch();
-          } 
+          }
         });
       } else {
         this.$message.error("请先选择一条数据");

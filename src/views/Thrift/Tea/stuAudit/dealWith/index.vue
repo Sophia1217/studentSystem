@@ -118,51 +118,44 @@
           </el-table-column>
           <el-table-column prop="xm" label="姓名" width="85" sortable>
           </el-table-column>
-          <el-table-column prop="xbmmc" label="性别" width="85" sortable>
-          </el-table-column>
           <el-table-column
-            prop="pyccmmc"
-            label="培养层次"
-            min-width="100"
-            sortable
+            prop="gwMainMc"
+            label="岗位名称"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          />
+          <el-table-column
+            prop="gwDetailMc"
+            label="岗位"
+            sortable="custom"
+            :show-overflow-tooltip="true"
           >
           </el-table-column>
-          <el-table-column
-            prop="dwhmc"
-            label="培养单位"
-            min-width="100"
-            sortable
-          >
+          <el-table-column prop="gwGzdd" label="工作地点" sortable="custom">
           </el-table-column>
-          <el-table-column prop="ssnj" label="年级" min-width="100" sortable>
+
+          <el-table-column prop="gwYrbm" label="用人部门" sortable="custom">
           </el-table-column>
           <el-table-column
-            prop="sqdjmc"
-            label="申请档次"
-            min-width="100"
-            sortable
+            prop="gwNzxsrs"
+            label="拟招学生人数"
+            sortable="custom"
           >
           </el-table-column>
-          <el-table-column
-            prop="tjdjmc"
-            label="推荐档次"
-            min-width="100"
-            sortable
-          >
+
+          <el-table-column prop="gwZdls" label="指导老师" sortable="custom">
           </el-table-column>
-          <el-table-column
-            prop="sqsj"
-            label="申请时间"
-            min-width="100"
-            sortable
-          >
-          </el-table-column>
-          <el-table-column
-            prop="statusChinese"
-            label="审核状态"
-            min-width="100"
-            sortable
-          >
+          <el-table-column prop="status" label="审核状态" min-width="100">
+            <template slot-scope="scope">
+              <el-select v-model="scope.row.status" disabled>
+                <el-option
+                  v-for="(item, index) in ztStatus"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </template>
           </el-table-column>
           <el-table-column prop="createDwhMc" label="审核进度">
             <template slot-scope="scope">
@@ -187,15 +180,6 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog title="删除" :visible.sync="showDelete" width="30%">
-        <span>确认删除？</span>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="delCancel">取 消</el-button>
-          <el-button type="primary" class="confirm" @click="rmRecord"
-            >确 定</el-button
-          >
-        </span>
-      </el-dialog>
 
       <pagination
         v-show="queryParams.total > 0"
@@ -225,14 +209,14 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import {
-  exportYsh,
-  queryYshList,
-  queryDshDetail,
-  mbDown,
-  jtknAdd,
-  del,
-  queryStuList,
-} from "@/api/familyDifficulties/difficultTea";
+  jjFlow,
+  htFlow,
+  excelExportTodo,
+  excelExportDone,
+  queryQgzxGwsqYclList,
+  queryQgzxGwsqDshList,
+  tyFlow,
+} from "@/api/thrift/apply";
 import { queryKnssqxsjbxx } from "@/api/familyDifficulties/stu";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { sqszDetail } from "@/api/familyDifficulties/setting";
@@ -285,6 +269,8 @@ export default {
         pageNum: 1,
         pageSize: 10,
         total: 0,
+        orderZd: "",
+        orderPx: "",
       },
 
       multipleSelection: [],
@@ -334,10 +320,10 @@ export default {
       }
       this.exportParams.pageNum = 0;
       this.exportParams.pageSize = 0;
-      this.$set(this.exportParams, "idList", idList);
-      exportYsh(this.exportParams)
+      this.$set(this.exportParams, "ids", idList);
+      excelExportDone(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "困难申请待审核列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "勤工助学已审核列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -352,12 +338,12 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        gwMc: this.select == "1" ? this.searchVal : null,
-        gw: this.select == "2" ? this.searchVal : null,
-        gzdd: this.select == "3" ? this.searchVal : null,
-        zdjs: this.select == "4" ? this.searchVal : null,
-        lxdh: this.select == "5" ? this.searchVal : null,
-        dwhList: this.moreIform.dwhList,
+        gwMainMc: this.select == "1" ? this.searchVal : null,
+        gwDetailMc: this.select == "2" ? this.searchVal : null,
+        gwGzdd: this.select == "3" ? this.searchVal : null,
+        gwZdls: this.select == "4" ? this.searchVal : null,
+        gwLxfs: this.select == "5" ? this.searchVal : null,
+        gwYrbmList: this.moreIform.dwhList,
 
         xn: this.moreIform.xn,
 
@@ -396,7 +382,18 @@ export default {
         })
         .catch((err) => {});
     },
-    hadleDetail(row) {},
+    hadleDetail(row) {
+      this.$router.push({
+        path: "/Thrift/stuAuditDetail",
+        query: {
+          id: row.id,
+          isEdit: 5,
+          gwid: row.gwId,
+          taskId: row.taskId,
+          xh: row.xh,
+        },
+      });
+    },
 
     changeSelect() {
       this.searchVal = "";
@@ -406,12 +403,12 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        gwMc: this.select == "1" ? this.searchVal : null,
-        gw: this.select == "2" ? this.searchVal : null,
-        gzdd: this.select == "3" ? this.searchVal : null,
-        zdjs: this.select == "4" ? this.searchVal : null,
-        lxdh: this.select == "5" ? this.searchVal : null,
-        dwhList: this.moreIform.dwhList,
+        gwMainMc: this.select == "1" ? this.searchVal : null,
+        gwDetailMc: this.select == "2" ? this.searchVal : null,
+        gwGzdd: this.select == "3" ? this.searchVal : null,
+        gwZdls: this.select == "4" ? this.searchVal : null,
+        gwLxfs: this.select == "5" ? this.searchVal : null,
+        gwYrbmList: this.moreIform.dwhList,
 
         xn: this.moreIform.xn,
 
@@ -423,7 +420,7 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryYshList(data)
+      queryQgzxGwsqYclList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
@@ -493,28 +490,6 @@ export default {
         this.fileListAdd.push(file); //修改编辑的文件参数
       }
       this.fileList = fileList;
-    },
-    //删除
-    handleDelete() {
-      if (this.delArr && this.delArr.length > 0) {
-        this.showDelete = true;
-      } else {
-        this.$message.error("请先勾选数据");
-      }
-    },
-    delCancel() {
-      this.showDelete = false;
-    },
-    //批量删除
-    rmRecord() {
-      this.showDelete = false;
-      var arr = this.delArr;
-      del(arr)
-        .then((res) => {
-          this.$message.success("删除成功");
-          this.handleSearch();
-        })
-        .catch((err) => {});
     },
   },
 };

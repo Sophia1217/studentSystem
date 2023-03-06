@@ -66,6 +66,7 @@
           <el-table-column
             prop="money"
             label="实发金额（元）"
+            min-width="120px"
             sortable="custom"
           >
           </el-table-column>

@@ -137,4 +137,25 @@ export function importStuUpdate(query) {
     responseType: 'blob'
   })
 }
+//勤工助学酬金发放-单位列表数据导出-待确认
+export function exportDsh(query) {
+  return request({
+    url: '/qgzxCjff/excelExportDwTodo',
+    method: 'post',
+    responseType: "blob",
+    data: query
+  })
+}
+//勤工助学酬金发放-单位列表数据导出-已确认
+export function exportYsh(query) {
+  return request({
+    url: '/qgzxCjff/excelExportDwDone',
+    method: 'post',
+    responseType: "blob",
+    data: query
+  })
+}
+
+
+
 

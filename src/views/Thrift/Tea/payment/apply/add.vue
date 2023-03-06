@@ -13,7 +13,7 @@
             ref="multipleTable"
             style="width: 100%"
           >
-            <el-table-column prop="xn" label="学年" :min-width="200">
+            <el-table-column prop="xn" label="学年" :min-width="110">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'detailList.' + scope.$index + '.xn'"
@@ -30,18 +30,19 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column prop="gwYrbmMc" label="用人部门" :min-width="200">
-              <!-- <template slot-scope="scope">
-                {{ scope.row.gwYrbmMc }}
-              </template> -->
+            <el-table-column prop="gwYrbmMc" label="用人部门" :min-width="130">
             </el-table-column>
-            <el-table-column prop="zgzt" label="在岗状态" :min-width="230">
+            <el-table-column prop="zgzt" label="在岗状态" :min-width="110">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'detailList.' + scope.$index + '.zgzt'"
                   :rules="rules.zgzt"
                 >
-                  <el-select v-model="scope.row.zgzt" placeholder="请选择" disabled>
+                  <el-select
+                    v-model="scope.row.zgzt"
+                    placeholder="请选择"
+                    disabled
+                  >
                     <el-option
                       v-for="(item, index) in zgztOps"
                       :key="index"
@@ -52,7 +53,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column prop="ffny" label="发放年月" :min-width="230">
+            <el-table-column prop="ffny" label="发放年月" :min-width="110">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'detailList.' + scope.$index + '.ffny'"
@@ -70,7 +71,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column prop="gwId" label="岗位" :min-width="230">
+            <el-table-column prop="gwId" label="岗位" :min-width="120">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'detailList.' + scope.$index + '.gwId'"
@@ -92,10 +93,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column prop="cjbz" label="酬金标准" :min-width="200">
-              <!-- <template slot-scope="scope">
-                {{ scope.row.cjbz }}
-              </template> -->
+            <el-table-column prop="cjbz" label="酬金标准" :min-width="100">
             </el-table-column>
           </el-table>
         </div>
@@ -104,12 +102,17 @@
             <span class="title">学生列表</span>
           </div>
           <div class="headerRight">
+            <div class="btns borderBlue" @click="mbDown">
+              <i class="icon downIcon"></i
+              ><span class="btutitle">模板下载</span>
+            </div>
             <div class="btns borderBlue">
               <el-upload
                 accept=".xlsx,.xls"
                 :auto-upload="true"
                 :action="uploadUrl"
                 :show-file-list="false"
+                :data="fileData"
                 :headers="fileHeader"
                 :on-success="upLoadSuccess"
                 :on-error="upLoadError"
@@ -117,9 +120,9 @@
                 <i class="icon blueIcon"></i><span class="btutitle">导入</span>
               </el-upload>
             </div>
-            <div class="btns borderOrange" @click="expor">
+            <!-- <div class="btns borderOrange" @click="expor">
               <i class="icon orangeIcon"></i><span class="btutitle">导出</span>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="table">
@@ -143,7 +146,7 @@
             </el-table-column>
             <el-table-column prop="cjsx" label="岗位薪酬上限" min-width="110">
             </el-table-column>
-            <el-table-column prop="zgzt" label="在岗状态" min-width="110">
+            <el-table-column prop="zgName" label="在岗状态" min-width="110">
             </el-table-column>
             <el-table-column prop="sgsj	" label="上岗时间" min-width="110">
             </el-table-column>
@@ -210,9 +213,7 @@ import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getXmXgh } from "@/api/assistantWork/homeSchool";
 import { queryD } from "@/api/gwsz/gwsz";
-import {
-  queryZgJbxxDwh,
-} from "@/api/dailyBehavior/thriftbumen";
+import { queryZgJbxxDwh } from "@/api/dailyBehavior/thriftbumen";
 import {
   queryStuDffList,
   insertXscj,
@@ -224,6 +225,17 @@ import {
 import { getToken } from "@/utils/auth";
 export default {
   computed: {
+    fileData: {
+      get() {
+        return {
+          xn: this.formAdd.detailList[0].xn,
+          ffny: this.formAdd.detailList[0].ffny,
+          gwYrbm: this.formAdd.detailList[0].gwYrbm,
+          gwId: this.formAdd.detailList[0].gwId || "",
+          zgzt: this.formAdd.detailList[0].zgzt || "1",
+        };
+      },
+    },
     fileHeader: {
       get() {
         return {
@@ -236,7 +248,8 @@ export default {
   },
   data() {
     return {
-      uploadUrl: process.env.VUE_APP_BASE_API + "/qgzxCjff/importStuCjffForInsert",
+      uploadUrl:
+        process.env.VUE_APP_BASE_API + "/qgzxCjff/importStuCjffForInsert",
       formAdd: {
         gssx: "",
         detailList: [
@@ -260,8 +273,8 @@ export default {
         pageNum: 1,
         pageSize: 10,
         totalCount: 0,
-        orderZd:"",
-        orderPx:"",
+        orderZd: "",
+        orderPx: "",
       },
       gwOps: [],
       showExport: false,
@@ -280,6 +293,7 @@ export default {
   },
   mounted() {
     // this.getCode("dmsplcm"); //状态
+    // this.formAdd.detailList[0] = { ffny: this.formatDate(new Date()) };
     this.getSchoolYears();
     this.gwList();
     // this.getYrbm();
@@ -316,16 +330,15 @@ export default {
             this.formAdd.stuList[i].gs = undefined;
           }
           queryZgJbxxDwh()
-          .then((res) => {
-            this.formAdd.detailList[0].gwYrbmMc = res.data.mc;
-            this.formAdd.detailList[0].gwYrbm = res.data.dm || "";
-            this.queryStuList();
-            
-          })
-          .catch((err) => {});
+            .then((res) => {
+              this.formAdd.detailList[0].gwYrbmMc = res.data.mc;
+              this.formAdd.detailList[0].gwYrbm = res.data.dm || "";
+              this.queryStuList();
+            })
+            .catch((err) => {});
         })
         .catch((err) => {});
-      
+
       queryD().then((res) => {
         this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
         this.formAdd.gssx = res.data.cjbzcjffSzsxNum || "9999"; //工时上限
@@ -385,15 +398,15 @@ export default {
         .then((res) => {
           this.formAdd.stuList = res.data;
           for (let i = 0; i < this.formAdd.stuList.length; i++) {
-              this.formAdd.stuList[i].gs = undefined;
-              this.formAdd.stuList[i].je = undefined;
-            }
+            this.formAdd.stuList[i].gs = undefined;
+            this.formAdd.stuList[i].je = undefined;
+          }
         })
         .catch((err) => {});
     },
     addClick() {
-      if (!this.checkFormAdd()) {
-        this.$message.error("请完善表单相关信息！");
+      if (!this.formAdd.detailList[0].ffny) {
+        this.$message.error("请选择发放年月！");
         return;
       } else {
         let data = {
@@ -441,7 +454,7 @@ export default {
     //模板下载
     mbDown() {
       mbDown().then((res) => {
-        this.downloadFn(res, "学生列表模板下载", "xlsx");
+        this.downloadFn(res, "酬金发放模板下载", "xlsx");
         this.$message.success("操作成功");
       });
     },
@@ -581,6 +594,10 @@ export default {
         .lightIcon {
           margin-top: 9px;
           background: url("~@/assets/assistantPng/delete.png") no-repeat;
+        }
+        .downIcon {
+          margin-top: 10px;
+          background: url("~@/assets/images/down.png") no-repeat;
         }
       }
     }

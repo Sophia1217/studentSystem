@@ -13,7 +13,7 @@
             ref="multipleTable"
             style="width: 100%"
           >
-            <el-table-column prop="xn" label="学年" :min-width="200">
+            <el-table-column prop="xn" label="学年" :min-width="110">
               <!-- <template slot-scope="scope">
                 <el-form-item
                   :prop="'detailList.' + scope.$index + '.xn'"
@@ -30,9 +30,9 @@
                 </el-form-item>
               </template> -->
             </el-table-column>
-            <el-table-column prop="gwYrbmMc" label="用人部门" :min-width="200">
+            <el-table-column prop="gwYrbmMc" label="用人部门" :min-width="130">
             </el-table-column>
-            <el-table-column prop="status" label="在岗状态" :min-width="230">
+            <el-table-column prop="status" label="在岗状态" :min-width="110">
               <!-- <template slot-scope="scope">
                 <el-form-item
                   :prop="'detailList.' + scope.$index + '.status'"
@@ -49,7 +49,7 @@
                 </el-form-item>
               </template> -->
             </el-table-column>
-            <el-table-column prop="ffny" label="发放年月" :min-width="230">
+            <el-table-column prop="ffny" label="发放年月" :min-width="110">
               <!-- <template slot-scope="scope">
                 <el-form-item
                   :prop="'detailList.' + scope.$index + '.ffny'"
@@ -67,7 +67,7 @@
                 </el-form-item>
               </template> -->
             </el-table-column>
-            <el-table-column prop="gwId" label="岗位" :min-width="230">
+            <el-table-column prop="gwId" label="岗位" :min-width="120">
               <!-- <template slot-scope="scope">
                 <el-form-item
                   :prop="'detailList.' + scope.$index + '.gwId'"
@@ -89,7 +89,7 @@
                 </el-form-item>
               </template> -->
             </el-table-column>
-            <el-table-column prop="cjbz" label="酬金标准" :min-width="200">
+            <el-table-column prop="cjbz" label="酬金标准" :min-width="100">
               <!-- <template slot-scope="scope">
                 {{ scope.row.cjbz }}
               </template> -->
@@ -101,12 +101,17 @@
             <span class="title">学生列表</span>
           </div>
           <div class="headerRight">
+            <div class="btns borderBlue" @click="mbDown">
+              <i class="icon downIcon"></i
+              ><span class="btutitle">模板下载</span>
+            </div>
             <div class="btns borderBlue">
               <el-upload
                 accept=".xlsx,.xls"
                 :auto-upload="true"
                 :action="uploadUrl"
                 :show-file-list="false"
+                :data="fileData"
                 :headers="fileHeader"
                 :on-success="upLoadSuccess"
                 :on-error="upLoadError"
@@ -140,7 +145,7 @@
             </el-table-column>
             <el-table-column prop="cjsx" label="岗位薪酬上限" min-width="110">
             </el-table-column>
-            <el-table-column prop="zgzt" label="在岗状态" min-width="110">
+            <el-table-column prop="zgName" label="在岗状态" min-width="110">
             </el-table-column>
             <el-table-column prop="sgsj	" label="上岗时间" min-width="110">
             </el-table-column>
@@ -236,6 +241,17 @@ import {
 import { getToken } from "@/utils/auth";
 export default {
   computed: {
+    fileData: {
+      get() {
+        return {
+          xn: this.formAdd.detailList[0].xn,
+          ffny: this.formAdd.detailList[0].ffny,
+          gwYrbm: this.formAdd.detailList[0].gwYrbm,
+          gwId: this.formAdd.detailList[0].gwId || "",
+          zgzt: this.formAdd.detailList[0].zgzt || "1",
+        };
+      },
+    },
     fileHeader: {
       get() {
         return {
@@ -248,7 +264,8 @@ export default {
   },
   data() {
     return {
-      uploadUrl: process.env.VUE_APP_BASE_API + "/qgzxCjff/importStuCjffForUpdate",
+      uploadUrl:
+        process.env.VUE_APP_BASE_API + "/qgzxCjff/importStuCjffForUpdate",
       formAdd: {
         gssx: "",
         detailList: [
@@ -556,6 +573,10 @@ export default {
         .lightIcon {
           margin-top: 9px;
           background: url("~@/assets/assistantPng/delete.png") no-repeat;
+        }
+        .downIcon {
+          margin-top: 10px;
+          background: url("~@/assets/images/down.png") no-repeat;
         }
       }
     }

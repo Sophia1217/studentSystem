@@ -23,13 +23,13 @@
                   ><div>{{ formEdit.gwTypeMc }}</div>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="8">
                 <el-form-item
                   label="用人部门"
-                  prop="gwYrbm"
+                  prop="gwYrbmc"
                   label-width="100px"
                 >
-                  {{ formEdit.gwYrbm }}
+                  {{ formEdit.gwYrbmc }}
                 </el-form-item>
               </el-col>
             </el-row>
@@ -40,12 +40,12 @@
                   prop="gwTime"
                   label-width="120px"
                   ><div>
-                    {{ formEdit.gwStartDate }}至{{ formEdit.gwEndDate }}
+                    {{ formEdit.gwStartDate }} 至 {{ formEdit.gwEndDate }}
                   </div>
                 </el-form-item>
               </el-col>
-              <el-col :span="6">
-                <el-form-item label="学年" prop="xn" label-width="120px">
+              <el-col :span="8">
+                <el-form-item label="学年" prop="xn" label-width="100px">
                   <div>{{ formEdit.xn }}</div>
                 </el-form-item>
               </el-col>
@@ -165,12 +165,10 @@
     <div class="talk">
       <el-tabs v-model="activeName" class="tabs" @tab-click="handleClick">
         <el-tab-pane label="在岗学生信息" name="first">
-          <span slot="label"><i class="icon tabsicon_ke"></i>在岗学生信息</span>
+          <span slot="label">在岗学生信息</span>
         </el-tab-pane>
         <el-tab-pane label="退岗学生信息" name="second">
-          <span slot="label"
-            ><i class="icon tabsicon_quan"></i>退岗学生信息</span
-          >
+          <span slot="label">退岗学生信息</span>
         </el-tab-pane>
       </el-tabs>
       <zgstu v-if="activeName == 'first'"></zgstu>
@@ -185,17 +183,6 @@
         >
       </span>
     </el-dialog>
-    <!-- <div class="editBottom" v-show="isEdit != 1">
-      <div class="btn cancel" @click="handleCancle">取消</div>
-      <div class="btn confirm" @click="editClick">保存</div>
-    </div>
-    <div
-      class="editBottom"
-      v-show="isEdit == 1 && (status == '08' || status == '01')"
-    >
-      <div class="btn confirm" @click="bianji">编辑</div>
-      <div class="btn cancel" @click="back">返回</div>
-    </div> -->
   </div>
 </template>
 <script>
@@ -203,13 +190,7 @@ import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getXmXgh } from "@/api/assistantWork/homeSchool";
 import { saveD, queryD } from "@/api/gwsz/gwsz";
-import {
-  countYN,
-  insertQgzxGw,
-  queryZgJbxxDwh,
-  queryQgzxGwById,
-  updateQgzxGw,
-} from "@/api/dailyBehavior/thriftbumen";
+import { queryQgzxGwById } from "@/api/dailyBehavior/thriftbumen";
 import tgstu from "./tgstu/index.vue";
 import zgstu from "./zgstu/index.vue";
 export default {
@@ -218,13 +199,12 @@ export default {
     return {
       activeName: "first",
       status: this.$route.query.status,
-      isEdit: 1,
       formEdit: {},
       gwxzOptions: [],
       xmOptions: [],
       detailList: [],
       xnOptions: [],
-      sfkgg: "", //1是2否
+      gwId: "",
       rules: {
         gwMainMc: [
           { required: true, message: "岗位名称不能为空", trigger: "blur" },
@@ -235,55 +215,19 @@ export default {
         gwType: [
           { required: true, message: "岗位性质不能为空", trigger: "change" },
         ],
-        gwRyyq: [
-          { required: true, message: "岗位人员要求不能为空", trigger: "blur" },
-        ],
-
-        xn: [{ required: true, message: "学年不能为空", trigger: "blur" }],
-        gwTime: [
-          {
-            required: true,
-            message: "岗位起止时间不能为空",
-            trigger: "change",
-          },
-        ],
-        gwDetailMc: [
-          { required: true, message: "岗位不能为空", trigger: "blur" },
-        ],
-        gwGzdd: [
-          { required: true, message: "工作地点不能为空", trigger: "blur" },
-        ],
-        gwYgzl: [
-          { required: true, message: "月工作量不能为空", trigger: "change" },
-        ],
-
-        gwNzxsrs: [
-          { required: true, message: "拟招人数不能为空", trigger: "change" },
-        ],
-        gwKnss: [
-          { required: true, message: "困难生数不能为空", trigger: "change" },
-        ],
-        gwZdls: [
-          { required: true, message: "指导老师不能为空", trigger: "blur" },
-        ],
-        gwLxfs: [
-          { required: true, message: "联系方式不能为空", trigger: "blur" },
-        ],
-        gwYgzsx: [
-          { required: true, message: "月工资上限不能为空", trigger: "change" },
-        ],
       },
       delModal: false,
     };
   },
   mounted() {
-    this.getCode("dmsplcm"); //状态
-    this.getCode("dmqgzxgwxz");
+    this.gwId = this.$route.query.gwId;
     this.getSchoolYears();
-    this.getYrbm();
     this.getDetail();
+    this.$bus.$emit("index", this.$route.query.gwId);
   },
-
+  // destroyed() {
+  //   this.$bus.$off("index"); //重复调用bus问题  ***
+  // },
   methods: {
     handleClick(tab, event) {
       this.activeName = tab.name;
@@ -294,16 +238,6 @@ export default {
           this.xnOptions = res.data;
         })
         .catch((err) => {});
-      queryD().then((res) => {
-        this.sfkgg = res.data.yrdwGggwcjsx;
-      });
-    },
-    getYrbm() {
-      queryZgJbxxDwh()
-        .then((res) => {
-          this.formEdit.gwYrbm = res.data.mc;
-        })
-        .catch((err) => {});
     },
     getCode(val) {
       const data = { codeTableEnglish: val };
@@ -312,21 +246,12 @@ export default {
           case "dmsplcm": //审批结果
             this.ztStatus = res.data;
             break;
-          case "dmqgzxgwxz": //审批结果
-            this.gwxzOptions = res.data;
-            break;
         }
       });
     },
-    bianji() {
-      this.isEdit = 2;
-    },
-    back() {
-      this.$router.go(-1);
-    },
     getDetail() {
       queryQgzxGwById({ id: this.$route.query.id }).then((res) => {
-        console.log(res);
+        // console.log(res);
         // this.detailList = res.data.detailList;
         this.formEdit = res.data;
         this.$set(this.formEdit, "gwTime", [
@@ -351,20 +276,6 @@ export default {
       this.delArr = val.map((item) => item.id);
       this.tjArr = val.map((item) => item.id);
     },
-    handleCancle() {
-      this.isEdit = 1;
-      this.$refs.formEdit.clearValidate();
-    },
-    count(row) {
-      console.log(row.gwYgzl);
-      countYN({ ygzl: row.gwYgzl || "0" }).then((res) => {
-        this.$set(row, "gwNjyxc", res.data.gwNjyxc);
-        this.$set(row, "gwYgzsx", res.data.gwYgzsx);
-      });
-    },
-    countNXC(row) {
-      this.$set(row, "gwNjyxc", row.gwYgzsx * 10);
-    },
     checkFormEdit() {
       // 1.校验必填项
       let validForm = false;
@@ -374,68 +285,7 @@ export default {
       if (!validForm) {
         return false;
       }
-
       return true;
-    },
-    editClick() {
-      if (!this.checkFormEdit()) {
-        this.$message.error("请完善表单相关信息！");
-        return;
-      } else {
-        let data = {
-          detailList: this.formEdit.detailList,
-          gwEndDate: this.formEdit.gwTime[1] || "",
-          gwMainMc: this.formEdit.gwMainMc,
-          gwMs: this.formEdit.gwMs,
-          gwRemark: this.formEdit.gwRemark,
-          gwRyyq: this.formEdit.gwRyyq,
-          gwStartDate: this.formEdit.gwTime[0] || "",
-          gwType: this.formEdit.gwType,
-          gwYrbm: this.formEdit.gwYrbm,
-          xn: this.formEdit.xn,
-        };
-        updateQgzxGw(data).then((res) => {
-          if (res.errcode == "00") {
-            this.$message.success("编辑成功");
-            this.isEdit = 1;
-          } else {
-            this.$message.error("编辑失败");
-          }
-        });
-      }
-    },
-    //共同参与人
-    querySearchPart(queryString, cb) {
-      if (queryString != "") {
-        let callBackArr = [];
-        var Xm = { xm: queryString };
-        var result = [];
-        var resultNew = [];
-        getXmXgh(Xm).then((res) => {
-          // console.log("res",res.data);
-          result = res.data.length > 0 ? res.data : [];
-          resultNew = result.map((ele) => {
-            //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
-            //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
-            //此处找后台约定好
-            return {
-              value: `${ele.xm}(${ele.gh})`,
-              gh: ele.gh,
-              xm: ele.xm,
-            };
-          });
-          resultNew.forEach((item) => {
-            if (item.value.indexOf(queryString) > -1) {
-              callBackArr.push(item);
-            }
-          });
-          if (callBackArr.length == 0) {
-            cb([{ value: "暂无数据", price: "暂无数据" }]);
-          } else {
-            cb(callBackArr);
-          }
-        });
-      }
     },
   },
 };
@@ -550,7 +400,7 @@ export default {
   }
 }
 .talk {
-  padding: 20px 0;
+  padding: 0 20px;
   background: #fff;
   .tabs {
     background: #fff;

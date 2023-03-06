@@ -142,7 +142,7 @@
         </div>
       </div>
       <pagination
-        v-show="total > 0"
+        v-show="totalMx > 0"
         class="pagination2"
         :total="totalMx"
         :page.sync="queryParams2.pageNum"

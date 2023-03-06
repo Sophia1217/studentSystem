@@ -134,6 +134,16 @@
           <el-table-column prop="gwType" label="岗位性质" sortable="custom">
           </el-table-column>
           <el-table-column prop="gwNzxsrs" label="需求人数" sortable="custom">
+            <template slot-scope="scope">
+              <el-input
+                v-model="scope.row.gwNzxsrs"
+                maxlength="9"
+                oninput="this.value=this.value.replace(/[^\d]/g,'')"
+                placeholder="请输入数字"
+                controls-position="right"
+                @change="changeRS(scope.row)"
+              />
+            </template>
           </el-table-column>
           <el-table-column prop="zgrs" label="在岗人数" sortable="custom">
           </el-table-column>
@@ -225,7 +235,7 @@ import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { deleteQgzxGw, copyQgzxGw } from "@/api/dailyBehavior/thriftbumen";
-import { queryQgzxGwList } from "@/api/thrift/gwMaintain";
+import { queryQgzxGwList, updateNzxsrs } from "@/api/thrift/gwMaintain";
 export default {
   components: { lctCom },
   data() {
@@ -291,7 +301,7 @@ export default {
     showDetail(row) {
       this.$router.push({
         path: "/Thrift/post/postMaintainDetail",
-        query: { id: row.id, status: row.status },
+        query: { id: row.id, status: row.status, gwId: row.id },
       });
     },
     copy() {
@@ -417,6 +427,11 @@ export default {
         query: {
           ymLy: "1", //岗位维护新增
         },
+      });
+    },
+    changeRS(row) {
+      updateNzxsrs({ id: row.id, gwNzxsrs: row.gwNzxsrs }).then((res) => {
+        this.$message.success("操作成功");
       });
     },
   },

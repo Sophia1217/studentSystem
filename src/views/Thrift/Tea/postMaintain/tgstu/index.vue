@@ -7,7 +7,7 @@
     </div>
     <div class="mt15">
       <el-table
-        :data="tableData"
+        :data="tableData2"
         ref="multipleTable"
         style="width: 100%"
         :default-sort="{ prop: 'date', order: 'descending' }"
@@ -38,7 +38,7 @@
   </div>
 </template>
 <script>
-import { queryDshList, exportDsh } from "@/api/thrift/gwAudit";
+import { queryTgxsList } from "@/api/thrift/gwMaintain";
 export default {
   data() {
     return {
@@ -47,7 +47,8 @@ export default {
       moreIform: {
         status: [], // 学院下拉框
       },
-      tableData: [],
+      tableData2: [],
+      gwId: "",
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -58,22 +59,30 @@ export default {
     };
   },
   mounted() {
-    this.handleSearch();
+    this.$bus.$off("index");
+    this.$bus.$on("index", (value) => {
+      this.gwId = value;
+      this.handleSearch();
+    });
+    // this.handleSearch();
+  },
+  created() {
+    
   },
   methods: {
     // 查询
     handleSearch() {
       let data = {
-        status: this.moreIform.status,
+        gwId: this.gwId,
 
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryDshList(data)
+      queryTgxsList(data)
         .then((res) => {
-          this.tableData = res.data;
+          this.tableData2 = res.data;
           this.queryParams.total = res.totalCount;
         })
         .catch((err) => {});

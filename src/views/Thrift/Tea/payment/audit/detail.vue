@@ -13,86 +13,17 @@
             ref="multipleTable"
             style="width: 100%"
           >
-            <el-table-column prop="xn" label="学年" :min-width="200">
-              <!-- <template slot-scope="scope">
-                <el-form-item
-                  :prop="'detailList.' + scope.$index + '.xn'"
-                  :rules="rules.xn"
-                >
-                  <el-select v-model="scope.row.xn" placeholder="请选择">
-                    <el-option
-                      v-for="(item, index) in xnOptions"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.mc"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </template> -->
+            <el-table-column prop="xn" label="学年" :min-width="110">
             </el-table-column>
-            <el-table-column prop="gwYrbmMc" label="用人部门" :min-width="200">
+            <el-table-column prop="gwYrbmMc" label="用人部门" :min-width="130">
             </el-table-column>
-            <el-table-column prop="status" label="在岗状态" :min-width="230">
-              <!-- <template slot-scope="scope">
-                <el-form-item
-                  :prop="'detailList.' + scope.$index + '.status'"
-                  :rules="rules.status"
-                >
-                  <el-select v-model="scope.row.status" placeholder="请选择">
-                    <el-option
-                      v-for="(item, index) in zgztOps"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.dm"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </template> -->
+            <el-table-column prop="status" label="在岗状态" :min-width="110">
             </el-table-column>
-            <el-table-column prop="ffny" label="发放年月" :min-width="230">
-              <!-- <template slot-scope="scope">
-                <el-form-item
-                  :prop="'detailList.' + scope.$index + '.ffny'"
-                  :rules="rules.ffny"
-                >
-                  <el-date-picker
-                    v-model="scope.row.ffny"
-                    @change="changeGW"
-                    type="month"
-                    format="yyyy 年 MM 月"
-                    value-format="yyyyMM"
-                    placeholder="选择年月"
-                  >
-                  </el-date-picker>
-                </el-form-item>
-              </template> -->
+            <el-table-column prop="ffny" label="发放年月" :min-width="110">
             </el-table-column>
-            <el-table-column prop="gwId" label="岗位" :min-width="230">
-              <!-- <template slot-scope="scope">
-                <el-form-item
-                  :prop="'detailList.' + scope.$index + '.gwId'"
-                  :rules="rules.gwId"
-                >
-                  <el-select
-                    v-model="scope.row.gwId"
-                    placeholder="请选择"
-                    @change="changeGW"
-                    clearable
-                  >
-                    <el-option
-                      v-for="(item, index) in gwOps"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.dm"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </template> -->
+            <el-table-column prop="gwId" label="岗位" :min-width="120">
             </el-table-column>
-            <el-table-column prop="cjbz" label="酬金标准" :min-width="200">
-              <!-- <template slot-scope="scope">
-                {{ scope.row.cjbz }}
-              </template> -->
+            <el-table-column prop="cjbz" label="酬金标准" :min-width="100">
             </el-table-column>
           </el-table>
         </div>
@@ -101,15 +32,12 @@
             <span class="title">学生列表</span>
           </div>
           <div class="headerRight">
-            <!-- <div class="btns borderOrange" @click="xinzeng">
-              <i class="icon blueIcon"></i><span class="btutitle">导入</span>
-            </div> -->
-            <div>
-              <el-input v-model="xsxm"> </el-input>
+            <div style="margin-right: 15px">
+              <el-input v-model="xsxm" placeholder="请输入学生姓名" clearable>
+              </el-input>
             </div>
-            <div class="btns" @click="queryStuList">
-              <!-- <i class="icon orangeIcon"></i> -->
-              <span class="btutitle">查询</span>
+            <div class="btns borderBlue" @click="queryStuList">
+              <span class="btutitle1">查询</span>
             </div>
           </div>
         </div>
@@ -134,71 +62,27 @@
             </el-table-column>
             <el-table-column prop="cjsx" label="岗位薪酬上限" min-width="110">
             </el-table-column>
-            <el-table-column prop="zgzt" label="在岗状态" min-width="110">
+            <el-table-column prop="zgName" label="在岗状态" min-width="110">
             </el-table-column>
             <el-table-column prop="sgsj	" label="上岗时间" min-width="110">
             </el-table-column>
             <el-table-column prop="gs" label="工时" min-width="150">
-              <template slot-scope="scope">
-                <el-form-item
-                  :prop="'detailList.' + scope.$index + '.gs'"
-                  :rules="rules.gs"
-                >
-                  <el-input-number
-                    v-model="scope.row.gs"
-                    v-if="isEdit == 2"
-                    :min="0"
-                    :max="9999"
-                    controls-position="right"
-                    @change="count(scope.row)"
-                  />
-                  <div v-else>
-                    {{ scope.row.gs }}
-                  </div>
-                </el-form-item>
-              </template>
             </el-table-column>
             <el-table-column prop="je" label="金额（元）" min-width="150">
-              <template slot-scope="scope">
-                <el-form-item
-                  :prop="'detailList.' + scope.$index + '.je'"
-                  :rules="rules.je"
-                >
-                  <el-input-number
-                    v-model="scope.row.je"
-                    v-if="isEdit == 2"
-                    :min="0"
-                    :max="99999"
-                    controls-position="right"
-                  />
-                  <div v-else>
-                    {{ scope.row.je }}
-                  </div>
-                </el-form-item>
-              </template>
             </el-table-column>
             <el-table-column prop="bz" label="备注" min-width="200">
-              <template slot-scope="scope">
-                <el-form-item
-                  :prop="'detailList.' + scope.$index + '.bz'"
-                  :rules="rules.bz"
-                >
-                  <el-input
-                    v-if="isEdit == 2"
-                    v-model="scope.row.bz"
-                    maxlength="500"
-                  />
-                  <div v-else>
-                    {{ scope.row.je }}
-                  </div>
-                </el-form-item>
-              </template>
             </el-table-column>
           </el-table>
         </div>
       </el-form>
     </div>
-
+    <pagination
+      v-show="queryParams.total > 0"
+      :total="queryParams.total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="queryBasicList"
+    />
     <!-- <div class="editBottom" v-show="isEdit == 2">
       <div class="btn cancel" @click="handleCancle">取消</div>
       <div class="btn confirm" @click="editClick">保存</div>
@@ -217,7 +101,6 @@ export default {
   data() {
     return {
       formAdd: {
-        gssx: "",
         detailList: [
           {
             xn: "",
@@ -268,11 +151,9 @@ export default {
       this.formAdd.detailList[0].xn = this.$route.query.xn;
       this.formAdd.detailList[0].gwYrbmMc = this.$route.query.gwYrbmMc;
 
-      // this.formAdd.detailList[0].status = this.$route.query.status;
       this.queryStuList();
       queryD().then((res) => {
         this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
-        this.formAdd.gssx = res.data.cjbzcjffSzsxNum || "9999"; //工时上限
       });
     },
     // 表单校验
@@ -337,7 +218,7 @@ export default {
         ffny: this.$route.query.ffny || "",
         gwYrbm: this.$route.query.gwYrbm || "",
         gwId: this.$route.query.gwId || "",
-        status: this.$route.query.status || "1",
+        status: this.$route.query.status,
         xn: this.$route.query.xn,
       };
       queryStuList(data)
@@ -411,13 +292,14 @@ export default {
       line-height: 28px;
     }
     .headerLeft {
-      width: 70%;
+      width: 50%;
     }
     .headerRight {
       display: flex;
       align-items: center;
       .borderBlue {
-        background: #fff;
+        color: #fff;
+        background: #005657;
         border: 1px solid grey;
       }
       .borderOrange {
@@ -434,8 +316,9 @@ export default {
         background: #005657;
       }
       .btns {
-        margin-right: 15px;
-        padding: 0px 10px;
+        width: 60px;
+        margin-right: 20px;
+        padding: 0px 12px;
         cursor: pointer;
         border-radius: 4px;
         .btutitle {

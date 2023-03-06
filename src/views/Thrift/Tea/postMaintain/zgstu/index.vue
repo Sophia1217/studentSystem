@@ -8,7 +8,7 @@
         <div class="btns borderOrange" @click="showDel">
           <i class="icon lightIcon"></i><span class="title">删除</span>
         </div>
-        <div class="btns borderRed" @click="expor">
+        <div class="btns borderRed" @click="showBack">
           <i class="icon backIcon"></i><span class="title">退岗</span>
         </div>
         <div class="btns fullGreen" @click="xinzeng">
@@ -26,17 +26,28 @@
       >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="gwMainMc" label="学号" min-width="100">
+        <el-table-column prop="xh" label="学号" min-width="100">
         </el-table-column>
-        <el-table-column prop="gwDetailMc" label="姓名" min-width="100">
+        <el-table-column prop="xm" label="姓名" min-width="100">
         </el-table-column>
-        <el-table-column prop="gwGzdd" label="班级" min-width="100">
+        <el-table-column prop="bjmc" label="班级" min-width="100">
         </el-table-column>
-        <el-table-column prop="gwYrdw" label="是否困难生" min-width="100">
+        <el-table-column prop="sfkns" label="是否困难生" min-width="100">
         </el-table-column>
-        <el-table-column prop="gwYgzl" label="是否在校" min-width="100">
+        <el-table-column prop="sfzx" label="是否在校" min-width="100">
         </el-table-column>
-        <el-table-column prop="gwYgzsx" label="上岗日期" min-width="110">
+        <el-table-column prop="sgsj" label="上岗日期" min-width="120">
+          <template slot-scope="scope">
+            <el-date-picker
+              v-model="scope.row.sgsj"
+              type="date"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="yyyy-MM-dd"
+              placeholder="选择日期"
+              @change="changeSJ(scope.row)"
+            >
+            </el-date-picker>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -47,8 +58,8 @@
       :limit.sync="queryParams.pageSize"
       @pagination="handleSearch"
     />
-    <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
-      <span>确认导出？</span>
+    <el-dialog title="退岗提示" :visible.sync="backModal" width="30%">
+      <span>确认退岗？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="handleConfirm"
@@ -65,11 +76,19 @@
         >
       </span>
     </el-dialog>
-    <el-dialog title="新增" :visible.sync="addModal" width="50%">
+    <el-dialog title="新增" :visible.sync="addModal" width="60%">
       <template>
+        <div class="search">
+          <div style="margin: 0px 15px">
+            <el-input v-model="xm" placeholder="请输入学生姓名" clearable />
+          </div>
+          <div class="btns borderBlue" @click="queryAllXs">
+            <span class="title1">查询</span>
+          </div>
+        </div>
         <div class="mt15">
           <el-table
-            :data="tableData"
+            :data="addData"
             ref="multipleTable"
             style="width: 100%"
             :default-sort="{ prop: 'date', order: 'descending' }"
@@ -82,25 +101,28 @@
               width="50"
               fixed="left"
             ></el-table-column>
-            <el-table-column prop="statusMc" label="学号" sortable>
+            <el-table-column prop="xh" label="学号" sortable> </el-table-column>
+            <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
+            <el-table-column prop="xb" label="性别" sortable> </el-table-column>
+            <el-table-column prop="nj" label="年级" sortable> </el-table-column>
+            <el-table-column prop="dwmc" label="学院" sortable>
             </el-table-column>
-            <el-table-column prop="statusMc" label="姓名" sortable>
+            <el-table-column prop="zymc" label="专业" sortable>
             </el-table-column>
-            <el-table-column prop="statusMc" label="学号" sortable>
+            <el-table-column prop="bjmc" label="班级" sortable>
             </el-table-column>
-            <el-table-column prop="statusMc" label="年级" sortable>
-            </el-table-column>
-            <el-table-column prop="statusMc" label="学院" sortable>
-            </el-table-column>
-            <el-table-column prop="statusMc" label="专业" sortable>
-            </el-table-column>
-            <el-table-column prop="statusMc" label="班级" sortable>
-            </el-table-column>
-            <el-table-column prop="statusMc" label="是否困难生" sortable>
+            <el-table-column prop="sfkns" label="是否困难生" sortable>
             </el-table-column>
           </el-table>
         </div>
       </template>
+      <pagination
+        v-show="queryParams2.totalAdd > 0"
+        :total="queryParams2.totalAdd"
+        :page.sync="queryParams2.pageNum"
+        :limit.sync="queryParams2.pageSize"
+        @pagination="queryAllXs"
+      />
       <span slot="footer" class="dialog-footer">
         <el-button @click="addCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="addConfirm"
@@ -112,17 +134,17 @@
 </template>
 <script>
 import {
-  queryDshList,
-  tyFlow,
-  jjFlow,
-  backFlow,
-  thFinal,
-  exportDsh,
-} from "@/api/thrift/gwAudit";
+  queryZgxsList,
+  deleteZgxs,
+  insertZgxs,
+  backZgxs,
+  queryAllXs,
+  updateSgsj,
+} from "@/api/thrift/gwMaintain";
 export default {
   data() {
     return {
-      showExport: false,
+      backModal: false,
       delModal: false,
       ztStatus: [],
       zdOps: [],
@@ -136,6 +158,7 @@ export default {
       },
       exportParams: {},
       tableData: [],
+      addData: [],
       commonParams: [],
       queryParams: {
         pageNum: 1,
@@ -144,72 +167,68 @@ export default {
         orderZd: "",
         orderPx: "",
       },
+      queryParams2: {
+        pageNum: 1,
+        pageSize: 10,
+        totalAdd: 0,
+        orderZd: "",
+        orderPx: "",
+      },
       multipleSelection: [],
       multipleSelection2: [],
       addModal: false,
+      gwId: "",
+      addArr: [],
+      delArr: [],
+      xm: "", //新增查询姓名
     };
   },
   mounted() {
-    this.handleSearch();
+    this.getId();
   },
+
   methods: {
-    // 导出取消
-    handleCancel() {
-      this.showExport = false;
+    getId() {
+      this.$bus.$off("index");
+      this.$bus.$on("index", (value) => {
+        this.gwId = value;
+        this.handleSearch();
+      });
+      // await this.handleSearch();
+      // console.log("this.gwId", this.gwId);
     },
-    // 导出确认
+    // 退岗取消
+    handleCancel() {
+      this.backModal = false;
+    },
+    // 退岗确认
     handleConfirm() {
-      let ids = [];
-      for (let item_row of this.multipleSelection) {
-        ids.push(item_row.businesId);
-      }
-      this.exportParams.pageNum = 0;
-      this.exportParams.pageSize = 0;
-      this.$set(this.exportParams, "ids", ids);
-      exportDsh(this.exportParams)
+      backZgxs({ ids: this.delArr, gwId: this.gwId })
         .then((res) => {
-          this.downloadFn(res, "勤工助学岗位审核列表导出.xlsx", "xlsx");
-          if (this.$store.getters.excelcount > 0) {
-            this.$message.success(
-              `已成功导出${this.$store.getters.excelcount}条数据`
-            );
-          }
+          this.$message.success("退岗成功");
+          this.backModal = false;
+          this.handleSearch();
         })
         .catch((err) => {});
-
-      this.showExport = false;
     },
-    async expor() {
-      let data = {
-        gwMainMc: this.select == "gwMainMc" ? this.searchVal : null,
-        gwDetailMc: this.select == "gwDetailMc" ? this.searchVal : null,
-        gwGzdd: this.select == "gwGzdd" ? this.searchVal : null,
-        gwZdls: this.select == "gwZdls" ? this.searchVal : null,
-        status: this.moreIform.status,
-
-        pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
-      }; //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
-      this.exportParams = data;
-      this.showExport = true;
+    showBack() {
+      if (this.delArr && this.delArr.length > 0) {
+        this.backModal = true;
+      } else {
+        this.$message.error("请先勾选数据");
+      }
     },
     // 查询
     handleSearch() {
       let data = {
-        gwMainMc: this.select == "gwMainMc" ? this.searchVal : null,
-        gwDetailMc: this.select == "gwDetailMc" ? this.searchVal : null,
-        gwGzdd: this.select == "gwGzdd" ? this.searchVal : null,
-        gwZdls: this.select == "gwZdls" ? this.searchVal : null,
-        status: this.moreIform.status,
+        gwId: this.gwId,
 
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryDshList(data)
+      queryZgxsList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
@@ -224,7 +243,7 @@ export default {
       }
     },
     del() {
-      exportDsh({ ids: this.delArr, ymLy: "1" }).then((res) => {
+      deleteZgxs({ ids: this.delArr }).then((res) => {
         this.handleSearch();
         this.delModal = false;
         this.$message.success("删除成功");
@@ -233,28 +252,52 @@ export default {
     delCancel() {
       this.delModal = false;
     },
-    xinzeng() {},
+    //新增查询所有学生
+    queryAllXs() {
+      let data = {
+        ly: "1",
+        xm: this.xm,
+        pageNum: this.queryParams2.pageNum,
+        pageSize: this.queryParams2.pageSize,
+        orderZd: this.queryParams2.orderZd,
+        orderPx: this.queryParams2.orderPx,
+      };
+      queryAllXs(data)
+        .then((res) => {
+          this.addData = res.data;
+          this.queryParams2.totalAdd = res.totalCount;
+        })
+        .catch((err) => {});
+    },
+    xinzeng() {
+      this.addModal = true;
+      this.queryAllXs();
+    },
     addCancel() {
       this.addModal = false;
     },
     addConfirm() {
-      if (this.multipleSelection.length > 0) {
-        var params = this.multipleSelection.map((item) => ({
-          ...item,
-          jzsqId: this.formAdd.zzxmId,
-          pjxn: this.formAdd.pjxn,
-          pjxqm: this.formAdd.pjxqm,
-        }));
-        exportDsh(params)
+      if (this.multipleSelection2.length > 0) {
+        let xhs = [];
+        for (let item_row of this.multipleSelection2) {
+          xhs.push(item_row.xh);
+        }
+        let data = {
+          xhs: xhs,
+          gwId: this.gwId,
+          ly: "1",
+          xm: this.xm,
+        };
+        insertZgxs(data)
           .then((res) => {
             this.$message.success("新增成功");
             //查询
             this.addModal = false;
-            this.queryTcbxList();
+            this.queryZgxsList();
           })
           .catch((err) => {});
       } else {
-        this.$message.warning("请勾选数据！");
+        this.$message.error("请勾选数据！");
       }
     },
     // 多选
@@ -265,7 +308,17 @@ export default {
     //新增多选
     handleSelectionChange2(val) {
       this.multipleSelection2 = val;
-      this.delArr = val.map((item) => item.id);
+      this.addArr = val.map((item) => item.id);
+    },
+    changeSJ(row) {
+      let data = {
+        id: row.id,
+        sgsj: row.sgsj,
+        gwId: this.gwId,
+      };
+      updateSgsj(data).then((res) => {
+        this.$message.success("操作成功");
+      });
     },
   },
 };
@@ -366,6 +419,37 @@ export default {
           background: url("~@/assets/assistantPng/delete.png") no-repeat;
         }
       }
+    }
+  }
+}
+.search {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  .borderBlue {
+    color: #fff;
+    background: #005657;
+    border: 1px solid grey;
+  }
+  .btns {
+    width: 60px;
+    margin-right: 20px;
+    padding: 0px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    .title {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      // vertical-align: middle;
+    }
+    .title1 {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      color: #fff;
+      // vertical-align: middle;
     }
   }
 }

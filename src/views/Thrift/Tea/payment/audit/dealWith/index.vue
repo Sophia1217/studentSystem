@@ -2,47 +2,40 @@
   <div class="talkRec">
     <div class="searchWrap">
       <div class="search">
-        <el-row class="mt15">
-          <el-col :span="10">
-            <span>用人部门：</span>
-            <el-select
-              v-model="moreIform.gwYrbm"
-              multiple
-              clearable
-              collapse-tags
-              placeholder="请选择"
-              size="small"
-            >
-              <el-option
-                v-for="item in allDwh"
-                :key="item.dm"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="12">
-            <span>发放年月：</span>
-            <el-date-picker
-              type="monthrange"
-              placeholder="选择年月"
-              v-model="datePicker"
-              format="yyyy 年 MM 月"
-              value-format="yyyy-MM"
-              range-separator="至"
-              start-placeholder="开始年月"
-              end-placeholder="结束年月"
-            ></el-date-picker>
-          </el-col>
-          <el-col :span="3">
-            <div class="btns fullGreen" @click="handleSearch">
-              <span class="title1">查询</span>
-            </div>
-            <!-- <el-button slot="append" icon="el-icon-search" @click="handleSearch"
-              >查询</el-button
-            > -->
-          </el-col>
-        </el-row>
+        <el-col :span="7">
+          <span>用人部门：</span>
+          <el-select
+            v-model="moreIform.gwYrbmList"
+            multiple
+            clearable
+            collapse-tags
+            placeholder="请选择"
+            size="small"
+          >
+            <el-option
+              v-for="item in allDwh"
+              :key="item.dm"
+              :label="item.mc"
+              :value="item.dm"
+            ></el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="9">
+          <span>发放年月：</span>
+          <el-date-picker
+            type="monthrange"
+            placeholder="选择年月"
+            v-model="datePicker"
+            format="yyyy 年 MM 月"
+            value-format="yyyy-MM"
+            range-separator="至"
+            start-placeholder="开始年月"
+            end-placeholder="结束年月"
+          ></el-date-picker>
+        </el-col>
+        <div class="btns borderBlue" @click="handleSearch">
+          <span class="title1">查询</span>
+        </div>
       </div>
     </div>
     <!-- table -->
@@ -68,7 +61,6 @@
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-
         </div>
       </div>
       <div class="mt15">
@@ -174,13 +166,13 @@ export default {
       select: "",
       isMore: false,
       moreIform: {
-        gwYrbm: [],
+        gwYrbmList: [],
         xn: "",
       },
       allDwh: [], // 学院下拉框
       exportParams: {},
       tableData: [],
-      commonParams: [],
+      delArr: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -188,26 +180,7 @@ export default {
         orderZd: "",
         orderPx: "",
       },
-      training: {
-        // 培养层次
-        checkAll: false,
-        choose: [],
-        checkBox: [],
-        isIndeterminate: true,
-      },
       multipleSelection: [],
-      multipleSelection1: "",
-      jjModal: false,
-      jjly: "",
-      tableInner: [],
-      thTableModal: false,
-      thModal: false,
-      thly: "",
-      tempRadio: false,
-      detailModal: false,
-      tableDetails: [],
-      formDetails: {},
-      editDetails: [],
       datePicker: [],
       xnOptions: [],
       rules: {
@@ -251,16 +224,13 @@ export default {
     },
     // 导出确认
     handleConfirm() {
-      let ids = [];
-      for (let item_row of this.multipleSelection) {
-        ids.push(item_row.businesId);
-      }
+      this.$set(this.exportParams, "idList", this.delArr);
       this.exportParams.pageNum = 0;
       this.exportParams.pageSize = 0;
-      this.$set(this.exportParams, "ids", ids);
-      exportDsh(this.exportParams)
+      this.$set(this.exportParams, "idList", ids);
+      exportYsh(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "勤工助学岗位审核列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "酬金发放已确认列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -272,12 +242,17 @@ export default {
       this.showExport = false;
     },
     async expor() {
+      let rqs,
+        rqe = "";
+      if (this.datePicker && this.datePicker.length > 0) {
+        rqs = this.datePicker[0];
+        rqe = this.datePicker[1];
+      }
       let data = {
-        gwMainMc: this.select == "gwMainMc" ? this.searchVal : null,
-        gwDetailMc: this.select == "gwDetailMc" ? this.searchVal : null,
-        gwGzdd: this.select == "gwGzdd" ? this.searchVal : null,
-        gwZdls: this.select == "gwZdls" ? this.searchVal : null,
-        status: this.moreIform.status,
+        gwYrbmList: this.moreIform.gwYrbmList,
+        ffnyStart: rqs || "",
+        ffnyEnd: rqe || "",
+        xn: this.moreIform.xn,
 
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
@@ -304,17 +279,14 @@ export default {
           path: "/Thrift/payment/paymentAuditDetail",
           query: {
             id: row.id,
-            status: row.status,
             gwYrbm: row.dwh,
             ffny: row.ffny,
             xn: row.xn,
             statusName: row.statusName,
+            status: "10",
             gwYrbmMc: row.dwhmc,
           },
         });
-    },
-    changeSelect() {
-      this.searchVal = "";
     },
     // 查询
     handleSearch() {
@@ -325,7 +297,7 @@ export default {
         rqe = this.datePicker[1];
       }
       let data = {
-        gwYrbm: this.moreIform.gwYrbmList,
+        gwYrbmList: this.moreIform.gwYrbmList,
         ffnyStart: rqs || "",
         ffnyEnd: rqe || "",
         xn: this.moreIform.xn,
@@ -355,44 +327,10 @@ export default {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");
       }
     },
-    //获取培养层次
-    getCode(data) {
-      this.getCodeInfoByEnglish(data);
-    },
-    getCodeInfoByEnglish(paramsData) {
-      let data = { codeTableEnglish: paramsData };
-      getCodeInfoByEnglish(data)
-        .then((res) => {
-          switch (paramsData) {
-            case "dmpyccm":
-              this.$set(this.training, "checkBox", res.data);
-              break;
-          }
-        })
-        .catch((err) => {});
-    },
-    // 培养层次全选
-    handleCheckAllChangeTraining(val) {
-      let allCheck = [];
-      for (let i in this.training.checkBox) {
-        allCheck.push(this.training.checkBox[i].dm);
-      }
-      this.training.choose = val ? allCheck : [];
-      this.training.isIndeterminate = false;
-    },
-    // 培养层次单选
-    handleCheckedCitiesChangeTraining(value) {
-      let checkedCount = value.length;
-      this.training.checkAll = checkedCount === this.training.checkBox.length;
-      this.training.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.training.checkBox.length;
-    },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      this.commonParams = this.multipleSelection.map((v) => ({
-        gwYrbm: v.dwh,
-      }));
+      this.delArr = val.map((item) => item.id);
     },
     changeXn() {
       this.handleSearch();
@@ -435,31 +373,20 @@ export default {
     padding-left: 20px;
     .search {
       display: flex;
-      // flex-direction: row;
+      flex-direction: row;
       justify-content: flex-start;
       align-items: center;
-      .elSelect {
-        width: 150px;
-      }
-      .inputSelect {
-        width: 50%;
-      }
-      .fullGreen {
-        // border:1px solid #005657;
+      .borderBlue {
         color: #fff;
         background: #005657;
+        border: 1px solid grey;
       }
       .btns {
-        margin-right: 15px;
-        padding: 0px 10px;
+        width: 60px;
+        margin-right: 20px;
+        padding: 0px 12px;
         cursor: pointer;
         border-radius: 4px;
-        .title {
-          font-size: 14px;
-          text-align: center;
-          line-height: 32px;
-          // vertical-align: middle;
-        }
         .title1 {
           font-size: 14px;
           text-align: center;
@@ -468,31 +395,6 @@ export default {
           // vertical-align: middle;
         }
       }
-      .more {
-        flex: 0 0 100px;
-        margin-left: 20px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        color: #005657;
-        cursor: pointer;
-        .moreIcon {
-          display: block;
-          width: 20px;
-          height: 20px;
-        }
-        .chevronDown {
-          background: url("~@/assets/images/chevronDown.png") no-repeat;
-        }
-        .chevronUp {
-          background: url("~@/assets/images/chevronUp.png") no-repeat;
-        }
-      }
-    }
-    .moreSelect {
-      margin-top: 20px;
-      padding: 20px;
-      background: #fafafa;
     }
   }
   .tableWrap {

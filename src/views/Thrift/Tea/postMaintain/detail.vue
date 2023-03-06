@@ -187,9 +187,6 @@
 </template>
 <script>
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
-import { queryXn } from "@/api/dailyBehavior/yearSum";
-import { getXmXgh } from "@/api/assistantWork/homeSchool";
-import { saveD, queryD } from "@/api/gwsz/gwsz";
 import { queryQgzxGwById } from "@/api/dailyBehavior/thriftbumen";
 import tgstu from "./tgstu/index.vue";
 import zgstu from "./zgstu/index.vue";
@@ -200,17 +197,11 @@ export default {
       activeName: "first",
       status: this.$route.query.status,
       formEdit: {},
-      gwxzOptions: [],
-      xmOptions: [],
       detailList: [],
-      xnOptions: [],
       gwId: "",
       rules: {
         gwMainMc: [
           { required: true, message: "岗位名称不能为空", trigger: "blur" },
-        ],
-        gwMs: [
-          { required: true, message: "岗位描述不能为空", trigger: "blur" },
         ],
         gwType: [
           { required: true, message: "岗位性质不能为空", trigger: "change" },
@@ -221,7 +212,6 @@ export default {
   },
   mounted() {
     this.gwId = this.$route.query.gwId;
-    this.getSchoolYears();
     this.getDetail();
     this.$bus.$emit("index", this.$route.query.gwId);
   },
@@ -231,13 +221,6 @@ export default {
   methods: {
     handleClick(tab, event) {
       this.activeName = tab.name;
-    },
-    getSchoolYears() {
-      queryXn()
-        .then((res) => {
-          this.xnOptions = res.data;
-        })
-        .catch((err) => {});
     },
     getCode(val) {
       const data = { codeTableEnglish: val };

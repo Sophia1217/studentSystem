@@ -32,7 +32,7 @@
       </div>
       <!-- 更多选择 -->
       <div class="moreSelect" v-if="isMore">
-        <el-row :gutter="20" class="mt15">
+        <!-- <el-row :gutter="20" class="mt15">
           <el-col :span="20">
             <span>审核状态：</span>
             <el-select
@@ -49,25 +49,13 @@
               ></el-option>
             </el-select>
           </el-col>
-        </el-row>
-        <!-- <el-row :gutter="20" class="mt15">
-          <el-col :span="3">培养层次：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :objProp="training"
-                @training="handleCheckAllChangeTraining"
-                @checkedTraining="handleCheckedCitiesChangeTraining"
-              ></checkboxCom>
-            </div>
-          </el-col>
         </el-row> -->
       </div>
     </div>
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">勤工助学</span>
+          <span class="title">勤工助学岗位列表</span>
           <el-select
             v-model="xn"
             @change="changeXn"
@@ -413,7 +401,7 @@ export default {
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",
         orderPx: this.queryParams.orderPx ? this.queryParams.orderPx : "",
-        status: this.moreIform.status,
+        // status: this.moreIform.status,
         xn: this.xn,
       };
       queryQgzxGwList(data).then((res) => {

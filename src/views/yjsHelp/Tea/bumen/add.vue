@@ -314,6 +314,7 @@ export default {
       xmOptions: [],
       sfkgg: "", //1是2否
       xnOptions: [],
+      ymLy: "", //1为岗位维护新增
       je: 0,
 
       rules: {
@@ -371,6 +372,7 @@ export default {
     };
   },
   mounted() {
+    this.ymLy = this.$route.query.ymLy;
     this.getCode("dmsplcm"); //状态
 
     this.getSchoolYears();
@@ -483,6 +485,7 @@ export default {
         return;
       } else {
         let data = {
+          ymLy: this.ymLy,
           detailList: this.formAdd.detailList,
           gwEndDate: this.formAdd.gwTime[1] || "",
           gwMainMc: this.formAdd.gwMainMc,

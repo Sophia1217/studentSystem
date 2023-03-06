@@ -431,7 +431,7 @@ export default {
       }
     },
     del() {
-      deleteQgzxGwYjs({ ids: this.delArr }).then((res) => {
+      deleteQgzxGwYjs({ ids: this.delArr, ymLy: "" }).then((res) => {
         this.query();
         this.delModal = false;
         this.$message.success("删除成功");
@@ -460,6 +460,7 @@ export default {
         return;
       } else {
         let data = {
+          ymLy: "",
           ids: this.delArr,
           xn: this.fzform.fzxn,
           gwStartDate: this.fzform.gwTime[0] || "",
@@ -491,6 +492,9 @@ export default {
     xinzeng() {
       this.$router.push({
         path: "/yjsHelp/gwMaintain/postApplyAdd",
+        query: {
+          ymLy: "", //岗位申请新增
+        },
       });
     },
   },

@@ -151,15 +151,18 @@
               :min-width="230"
             >
               <template slot-scope="scope">
-                <el-form-item :prop="'detailList.' + scope.$index + '.gwYcjbz'">
-                  <div>{{ scope.row.gwYcjbz }}</div>
-                  <!-- <el-input-number
-                    v-model="scope.row.gwYgzsx"
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwYcjbz'"
+                  :rules="rules.gwYcjbz"
+                >
+                  <div v-if="sfkgg == 2">{{ scope.row.gwYcjbz }}</div>
+                  <el-input-number
+                    v-model="scope.row.gwYcjbz"
                     :min="0"
                     controls-position="right"
                     @change="countNXC(scope.row)"
                     v-else
-                  /> -->
+                  />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -296,7 +299,8 @@
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getXmXgh } from "@/api/assistantWork/homeSchool";
-import { saveD, queryD } from "@/api/gwsz/gwsz";
+
+import { queryDNew } from "@/api/gwsz/gwsz";
 import {
   queryYsjGwszType,
   insertQgzxGwYjs,
@@ -358,6 +362,9 @@ export default {
         gwLxfs: [
           { required: true, message: "联系方式不能为空", trigger: "blur" },
         ],
+        gwYcjbz: [
+          { required: true, message: "月酬金标准不能为空", trigger: "change" },
+        ],
       },
       delModal: false,
       yrbmdm: "",
@@ -404,7 +411,7 @@ export default {
           this.xnOptions = res.data;
         })
         .catch((err) => {});
-      queryD().then((res) => {
+      queryDNew().then((res) => {
         this.sfkgg = res.data.yrdwGggwcjsx;
       });
       queryYsjGwszType().then((res) => {
@@ -468,7 +475,7 @@ export default {
       });
     },
     countNXC(row) {
-      this.$set(row, "gwNjyxc", row.gwYgzsx * 10);
+      this.$set(row, "gwNjyxc", row.gwYcjbz * 10);
     },
     addClick() {
       if (!this.checkFormAdd()) {

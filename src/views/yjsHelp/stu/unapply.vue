@@ -215,7 +215,7 @@ export default {
     apply(row) {
       this.$router.push({
         path: "/yjsHelpDetail",
-        query: { gwid: row.gwId, isEdit: 1 },
+        query: { gwid: row.gwId, isEdit: 1, isApply: true },
       });
     },
   },

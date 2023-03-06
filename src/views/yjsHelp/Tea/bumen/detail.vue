@@ -196,8 +196,21 @@
               :min-width="230"
             >
               <template slot-scope="scope">
-                <el-form-item :prop="'detailList.' + scope.$index + '.gwYcjbz'">
-                  <div>{{ scope.row.gwYcjbz }}</div>
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwYcjbz'"
+                  :rules="rules.gwYcjbz"
+                >
+                  <div v-if="sfkgg == 2 || isEdit == 1">
+                    {{ scope.row.gwYcjbz }}
+                  </div>
+                  <el-input-number
+                    v-model="scope.row.gwYcjbz"
+                    :min="0"
+                    :max="9999999"
+                    controls-position="right"
+                    @change="countNXC(scope.row)"
+                    v-else
+                  />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -351,7 +364,7 @@
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getXmXgh } from "@/api/assistantWork/homeSchool";
-import { saveD, queryD } from "@/api/gwsz/gwsz";
+import { saveD, queryDNew } from "@/api/gwsz/gwsz";
 import {
   queryYsjGwszType,
   insertQgzxGwYjs,
@@ -418,6 +431,9 @@ export default {
         gwYgzsx: [
           { required: true, message: "月工资上限不能为空", trigger: "change" },
         ],
+        gwYcjbz: [
+          { required: true, message: "月酬金标准不能为空", trigger: "change" },
+        ],
       },
       delModal: false,
       yrbmdm: "",
@@ -438,7 +454,7 @@ export default {
           this.xnOptions = res.data;
         })
         .catch((err) => {});
-      queryD().then((res) => {
+      queryDNew().then((res) => {
         this.sfkgg = res.data.yrdwGggwcjsx;
       });
       queryYsjGwszType().then((res) => {
@@ -522,7 +538,7 @@ export default {
       });
     },
     countNXC(row) {
-      this.$set(row, "gwNjyxc", row.gwYgzsx * 10);
+      this.$set(row, "gwNjyxc", row.gwYcjbz * 10);
     },
     checkFormEdit() {
       // 1.校验必填项

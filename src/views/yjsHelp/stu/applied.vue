@@ -231,7 +231,7 @@ export default {
     showDetail(row) {
       this.$router.push({
         path: "/yjsHelpDetail",
-        query: { id: row.id, isEdit: 2, gwid: row.gwId },
+        query: { id: row.id, isEdit: 2, gwid: row.gwId, isApply: false },
       });
     },
 

@@ -355,6 +355,7 @@
         </div>
       </div>
       <div v-if="isEdit == 2" class="editBottom">
+        <div class="btn cancel" @click="handleBack">返回</div>
         <div class="btn cancel" @click="lctClick">审核记录</div>
         <div class="btn editIcon" @click="editButtonClick">编辑</div>
       </div>
@@ -516,9 +517,13 @@ export default {
       });
       //
     },
-    handleBack() {},
+    handleBack() {
+      this.$router.go(-1);
+    },
     handleCancle() {
-      this.isEdit = 2;
+      if (this.$route.query.isApply) {
+        this.$router.go(-1);
+      } else this.isEdit = 2;
     },
 
     handlUpdata() {

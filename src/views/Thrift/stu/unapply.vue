@@ -211,7 +211,7 @@ export default {
     apply(row) {
       this.$router.push({
         path: "/qgzxDetail",
-        query: { gwid: row.gwId, isEdit: 1 },
+        query: { gwid: row.gwId, isEdit: 1, isApply: true },
       });
     },
   },

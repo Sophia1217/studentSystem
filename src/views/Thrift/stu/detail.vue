@@ -364,6 +364,7 @@
         </div>
       </div>
       <div v-if="isEdit == 2" class="editBottom">
+        <div class="btn cancel" @click="handleBack">返回</div>
         <div class="btn cancel" @click="lctClick">审核记录</div>
         <div class="btn editIcon" @click="editButtonClick">编辑</div>
       </div>
@@ -509,13 +510,13 @@ export default {
         this.basicInfo = res.data;
       });
       if (this.isEdit == 2) {
+        this.checked = true;
         getQgzxXssqDetail({ id: this.$route.query.id }).then((res) => {
           this.$set(this.detailInfoData, "sqly", res.data.sqly);
           this.$set(this.detailInfoData, "sgsj", res.data.sgsj);
           this.$set(this.detailInfoData, "id", res.data.id);
           this.$set(this.detailInfoData, "processid", res.data.processid);
           this.$set(this.detailInfoData, "xskysjList", res.data.xskysjListRes);
-          console.log(this.detailInfoData.xskysjList);
         });
       }
       queryD().then((res) => {
@@ -523,11 +524,14 @@ export default {
           this.SHfileList = res.data;
         });
       });
-      //
     },
-    handleBack() {},
+    handleBack() {
+      this.$router.go(-1);
+    },
     handleCancle() {
-      this.isEdit = 2;
+      if (this.$route.query.isApply) {
+        this.$router.go(-1);
+      } else this.isEdit = 2;
     },
 
     handlUpdata() {

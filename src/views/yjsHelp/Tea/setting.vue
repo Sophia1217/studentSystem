@@ -72,7 +72,7 @@
                 v-model="formAdd.xsgwKhdgws"
                 controls-position="right"
                 :min="0"
-                :max="100"
+                :max="10"
                 :precision="0"
                 style="width: 25%"
                 @keyup.native="checkInt"
@@ -92,7 +92,7 @@
                 v-model="formAdd.xsgwKsqgws"
                 controls-position="right"
                 :min="0"
-                :max="100"
+                :max="10"
                 :precision="0"
                 @keyup.native="checkInt"
                 style="width: 25%"
@@ -207,7 +207,7 @@
                     v-model="formAdd.cjffCjbzZg"
                     controls-position="right"
                     :min="0"
-                    :max="1000"
+                    :max="100000"
                     style="width: 70%"
                   ></el-input-number>
                 </div>
@@ -223,7 +223,7 @@
                     v-model="formAdd.cjffCjbzZy"
                     controls-position="right"
                     :min="0"
-                    :max="1000"
+                    :max="100000"
                     style="width: 70%"
                   ></el-input-number>
                 </div>
@@ -240,7 +240,7 @@
                     v-model="formAdd.cjffCjbzZj"
                     controls-position="right"
                     :min="0"
-                    :max="1000"
+                    :max="100000"
                     style="width: 70%"
                   ></el-input-number>
                   元

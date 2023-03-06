@@ -135,7 +135,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item
-                label="贷款总金额"
+                label="贷款总金额（元）"
                 prop="dkzje"
                 :rules="rules.common"
                 class="grayBg"
@@ -144,6 +144,8 @@
                 <div class="sqList">
                   <el-input-number
                     style="width: 216px"
+                    :min="0"
+                    :max="9999999"
                     controls-position="right"
                     v-model="formAdd.dkzje"
                     placeholder="请输入内容"
@@ -163,6 +165,8 @@
               >
                 <div class="sqList">
                   <el-input-number
+                    :min="0"
+                    :max="9999999"
                     style="width: 216px"
                     controls-position="right"
                     v-model="formAdd.zsfys"
@@ -181,6 +185,8 @@
               >
                 <div class="sqList">
                   <el-input-number
+                    :min="0"
+                    :max="9999999"
                     style="width: 216px"
                     controls-position="right"
                     v-model="formAdd.xfys"
@@ -244,6 +250,8 @@
               >
                 <div class="sqList">
                   <el-input
+                    :minlength="0"
+                    :maxlength="50"
                     v-model="formAdd.htbh"
                     placeholder="请输入内容"
                   ></el-input>
@@ -279,10 +287,14 @@
                 label-width="41%"
               >
                 <div class="sqList">
-                  <el-input
+                  <el-input-number
+                    :min="0"
+                    :max="100"
+                    style="width: 216px"
+                    controls-position="right"
                     v-model="formAdd.dkqx"
                     placeholder="请输入内容"
-                  ></el-input>
+                  ></el-input-number>
                 </div>
               </el-form-item>
             </el-col>
@@ -296,6 +308,8 @@
               >
                 <div class="sqList">
                   <el-input
+                    :minlength="0"
+                    :maxlength="50"
                     v-model="formAdd.hzjym"
                     placeholder="请输入内容"
                   ></el-input>
@@ -326,9 +340,8 @@
                     class="el-upload"
                     :auto-upload="false"
                     ref="upload"
-                    :file-list="formAdd.files"
+                    :file-list="fileList"
                     :on-change="fileChange"
-                    accept=".pdf,.jpg"
                     :before-remove="beforeRemove"
                   >
                     <el-button size="small" type="primary">附件上传</el-button>
@@ -370,7 +383,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item
-                label="贷款总金额"
+                label="贷款总金额（元）"
                 prop="dkzje"
                 :rules="rules.common"
                 class="grayBg"
@@ -380,6 +393,8 @@
                   <div v-if="editFlag == 2">{{ formEdit.dkzje }}</div>
 
                   <el-input-number
+                    :min="0"
+                    :max="9999999"
                     v-else="editFlag == 3"
                     style="width: 216px"
                     controls-position="right"
@@ -402,6 +417,8 @@
                 <div class="sqList">
                   <div v-if="editFlag == 2">{{ formEdit.xfys }}</div>
                   <el-input-number
+                    :min="0"
+                    :max="9999999"
                     v-else="editFlag == 3"
                     style="width: 216px"
                     controls-position="right"
@@ -422,6 +439,8 @@
                 <div class="sqList">
                   <div v-if="editFlag == 2">{{ formEdit.xfys }}</div>
                   <el-input-number
+                    :min="0"
+                    :max="9999999"
                     v-else="editFlag == 3"
                     style="width: 216px"
                     controls-position="right"
@@ -497,6 +516,8 @@
                 <div class="sqList">
                   <div v-if="editFlag == 2">{{ formEdit.htbh }}</div>
                   <el-input
+                    :minlength="0"
+                    :maxlength="50"
                     v-else="editFlag == 3"
                     v-model="formEdit.htbh"
                     placeholder="请输入内容"
@@ -536,11 +557,15 @@
               >
                 <div class="sqList">
                   <div v-if="editFlag == 2">{{ formEdit.dkqx }}</div>
-                  <el-input
+                  <el-input-number
                     v-else="editFlag == 3"
-                    v-model="formEdit.dkqx"
+                    :min="0"
+                    :max="100"
+                    style="width: 216px"
+                    controls-position="right"
+                    v-model="formAdd.dkqx"
                     placeholder="请输入内容"
-                  ></el-input>
+                  ></el-input-number>
                 </div>
               </el-form-item>
             </el-col>
@@ -556,6 +581,8 @@
                   <div v-if="editFlag == 2">{{ formEdit.hzjym }}</div>
                   <el-input
                     v-else="editFlag == 3"
+                    :minlength="0"
+                    :maxlength="50"
                     v-model="formEdit.hzjym"
                     placeholder="请输入内容"
                   ></el-input>
@@ -600,7 +627,6 @@
                   ref="upload"
                   :file-list="formEdit.fileList"
                   :on-change="fileChangeEdit"
-                  accept=".pdf,.jpg"
                   :before-remove="beforeRemoveEdit"
                 >
                   <el-button size="small" type="primary">点击上传</el-button>
@@ -837,24 +863,8 @@ export default {
         id: row.id,
       }).then((res) => {
         this.formEdit = res.data;
-      });
-      this.querywj(row.id);
-    },
-    querywj(data) {
-      console.log(
-        "  this.formEdit.fileList = []",
-        (this.formEdit.fileList = [])
-      );
-      if (this.formEdit.fileList && this.formEdit.fileList.length > 0) {
-        this.formEdit.fileList = [];
-      }
-      //用于文件查询
-      querywj({ businesId: data }).then((res) => {
-        // this.formEdit.fileList = res.data;
-        // console.log("res.data", res.data);
-        // console.log("this.formEdit.fileList", this.formEdit.fileList);
-        if (res.data && res.data.length > 0) {
-          this.formEdit.fileList = res.data.map((ele) => {
+        if (res.data.fileList && res.data.fileList.length > 0) {
+          this.formEdit.fileList = res.data.fileList.map((ele) => {
             return {
               name: ele.fileName,
               ...ele,
@@ -863,7 +873,25 @@ export default {
         }
         this.editModal = true;
       });
+      // this.querywj(row.id);
     },
+    // querywj(data) {
+    //   if (this.formEdit.fileList && this.formEdit.fileList.length > 0) {
+    //     this.formEdit.fileList = [];
+    //   }
+    //   //用于文件查询
+    //   querywj({ businesId: data }).then((res) => {
+    //     if (res.data && res.data.length > 0) {
+    //       this.formEdit.fileList = res.data.map((ele) => {
+    //         return {
+    //           name: ele.fileName,
+    //           ...ele,
+    //         };
+    //       });
+    //     }
+    //     this.editModal = true;
+    //   });
+    // },
     chCancel() {
       this.chehuiModal = false;
     },
@@ -936,37 +964,32 @@ export default {
     },
     beforeRemoveEdit(file, fileList) {
       let uid = file.uid;
-      let idx = fileList.findIndex((item) => item.uid === uid);
-      fileList.splice(idx, 0);
-      this.fileList = fileList;
+      let idx = this.fileListAdd.findIndex((item) => item.uid === uid);
+      this.fileListAdd.splice(idx, 1);
       if (file.id) {
         //如果是后端返回的文件就走删除接口，不然前端自我删除
         delwj({ id: file.id.toString() }).then();
       }
     },
     fileChange(file, fileList) {
-      if (Number(file.size / 1024 / 1024) > 1) {
+      if (Number(file.size / 1024 / 1024) > 10) {
         let uid = file.uid;
         let idx = fileList.findIndex((item) => item.uid === uid);
         fileList.splice(idx, 1);
-        this.$message.error("单个文件大小不得超过2M");
-      } else if (file.status == "ready") {
-        this.fileListAdd = [];
-        this.fileListAdd.push(file); //修改编辑的文件参数
+        this.$message.error("单个文件大小不得超过10M");
       }
-      this.fileList = fileList;
     },
     fileChangeEdit(file, fileList) {
-      if (Number(file.size / 1024 / 1024) > 1) {
+      console.log("file", file);
+      console.log("fileList", fileList);
+      if (Number(file.size / 1024 / 1024) > 10) {
         let uid = file.uid;
         let idx = fileList.findIndex((item) => item.uid === uid);
         fileList.splice(idx, 1);
-        this.$message.error("单个文件大小不得超过2M");
+        this.$message.error("单个文件大小不得超过10M");
       } else if (file.status == "ready") {
-        this.fileListAdd = [];
         this.fileListAdd.push(file); //修改编辑的文件参数
       }
-      this.fileList = fileList;
     },
     bianji() {
       this.editFlag = 3;
@@ -985,6 +1008,7 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
+        console.log("this.fileListAdd", this.fileListAdd);
         var data = this.formEdit;
         let formData = new FormData();
         formData.append("dkxn", data.dkxn);

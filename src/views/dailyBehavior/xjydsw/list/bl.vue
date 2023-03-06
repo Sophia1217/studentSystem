@@ -891,7 +891,6 @@ export default {
         fileList.splice(idx, 1);
         this.$message.error("单个文件大小不得超过2M");
       } else if (file.status == "ready") {
-        this.fileListAdd = [];
         this.fileListAdd.push(file); //修改编辑的文件参数
       }
       this.fileList = fileList;
@@ -903,7 +902,6 @@ export default {
         fileList.splice(idx, 1);
         this.$message.error("单个文件大小不得超过2M");
       } else if (file.status == "ready") {
-        this.fileListAdd = [];
         this.fileListAdd.push(file); //修改编辑的文件参数
       }
       this.fileList = fileList;

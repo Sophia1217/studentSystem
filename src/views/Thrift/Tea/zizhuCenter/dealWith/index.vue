@@ -56,7 +56,22 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">勤工助学岗位列表</span> <i class="Updataicon"></i>
+          <span class="title">勤工助学岗位列表</span>
+          <el-select
+            v-model="moreIform.xn"
+            collapse-tags
+            @change="changeXn"
+            placeholder="请选择"
+            style="width: 130px; margin: 0 15px 0"
+          >
+            <el-option
+              v-for="(item, index) in allXn"
+              :key="index"
+              :label="item.mc"
+              :value="item.mc"
+            ></el-option>
+          </el-select>
+          <span>学年</span>
         </div>
         <div class="headerRight">
           <div class="btns borderOrange" @click="expor">
@@ -214,6 +229,7 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import { queryYshList, exportYsh } from "@/api/thrift/gwAudit";
+import { queryXn } from "@/api/dailyBehavior/yearSum";
 import lctCom from "../../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
@@ -231,7 +247,9 @@ export default {
       isMore: false,
       moreIform: {
         status: [], // 审核状态下拉框
+        xn: "",
       },
+      allXn: [],
       exportParams: {},
       tableData: [],
       commonParams: [],
@@ -255,11 +273,24 @@ export default {
   },
 
   mounted() {
-    this.handleSearch();
     this.getCode1("dmsplcm"); // 培养层次
+    this.getSchoolYears();
   },
 
   methods: {
+    async getSchoolYears() {
+      await queryXn()
+        .then((res) => {
+          this.allXn = res.data;
+          this.$set(this.moreIform, "xn", res.data[0].mc);
+        })
+        .catch((err) => {});
+
+      this.handleSearch();
+    },
+    changeXn() {
+      this.handleSearch();
+    },
     // 导出取消
     handleCancel() {
       this.showExport = false;
@@ -293,7 +324,7 @@ export default {
         gwGzdd: this.select == "gwGzdd" ? this.searchVal : null,
         gwZdls: this.select == "gwZdls" ? this.searchVal : null,
         status: this.moreIform.status,
-
+        xn: this.moreIform.xn,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
@@ -334,7 +365,7 @@ export default {
         gwGzdd: this.select == "gwGzdd" ? this.searchVal : null,
         gwZdls: this.select == "gwZdls" ? this.searchVal : null,
         status: this.moreIform.status,
-
+        xn: this.moreIform.xn,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,

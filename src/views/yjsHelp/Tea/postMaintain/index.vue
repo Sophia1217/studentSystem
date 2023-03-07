@@ -71,7 +71,7 @@
           <span>学年</span>
         </div>
         <div class="headerRight">
-          <div class="btns borderOrange" @click="copy">
+          <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
           <!-- <div class="btns borderOrange" @click="copy" v-show="AUTHFLAG">
@@ -216,6 +216,15 @@
         >
       </span>
     </el-dialog>
+    <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
+      <span>确认导出？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="handleConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -224,6 +233,7 @@ import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { deleteQgzxGw, copyQgzxGw } from "@/api/dailyBehavior/thriftbumen";
 import { queryYjsGwList, updateNzxsrs } from "@/api/thrift/gwMaintainYjs";
+import { exportGwwhYjsList } from "@/api/thrift/gwMaintain";
 export default {
   components: { lctCom },
   data() {
@@ -237,6 +247,8 @@ export default {
         pageNum: 1,
         pageSize: 10,
         totalCount: 0,
+        orderZd: "",
+        orderPx: "",
       },
       delArr: [],
       tjArr: [],
@@ -253,6 +265,7 @@ export default {
       moreIform: {
         status: [], // 学院下拉框
       },
+      showExport: false,
       rules: {
         gwTime: [
           { required: true, message: "起止时间不能为空", trigger: "blur" },
@@ -380,7 +393,7 @@ export default {
           gwStartDate: this.fzform.gwTime[0] || "",
           gwEndDate: this.fzform.gwTime[1] || "",
         };
-        console.log(this.delArr);
+        // console.log(this.delArr);
         copyQgzxGw(data).then((res) => {
           this.$message.success("复制成功！");
           this.query();
@@ -420,7 +433,38 @@ export default {
     changeRS(row) {
       updateNzxsrs({ id: row.id, gwNzxsrs: row.gwNzxsrs }).then((res) => {
         this.$message.success("操作成功");
+        this.query();
       });
+    },
+    expor() {
+      this.showExport = true;
+    },
+    // 导出取消
+    handleCancel() {
+      this.showExport = false;
+    },
+    // 导出确认
+    handleConfirm() {
+      let data = {
+        xn: this.xn,
+        ids: this.delArr,
+
+        pageNum: 0,
+        pageSize: 0,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+      };
+      exportGwwhYjsList(data)
+        .then((res) => {
+          this.downloadFn(res, "研究生三助岗位维护列表导出.xlsx", "xlsx");
+          if (this.$store.getters.excelcount > 0) {
+            this.$message.success(
+              `已成功导出${this.$store.getters.excelcount}条数据`
+            );
+          }
+          this.showExport = false;
+        })
+        .catch((err) => {});
     },
   },
 };

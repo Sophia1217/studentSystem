@@ -142,6 +142,12 @@ import {
   updateSgsj,
 } from "@/api/thrift/gwMaintain";
 export default {
+  props: {
+    test: {
+      type: String,
+      default: "",
+    },
+  },
   data() {
     return {
       backModal: false,
@@ -177,33 +183,24 @@ export default {
       multipleSelection: [],
       multipleSelection2: [],
       addModal: false,
-      gwId: "",
+      gwId: this.test,
       addArr: [],
       delArr: [],
       xm: "", //新增查询姓名
     };
   },
   mounted() {
-    this.getId();
+    this.handleSearch();
   },
 
   methods: {
-    getId() {
-      this.$bus.$off("index");
-      this.$bus.$on("index", (value) => {
-        this.gwId = value;
-        this.handleSearch();
-      });
-      // await this.handleSearch();
-      // console.log("this.gwId", this.gwId);
-    },
     // 退岗取消
     handleCancel() {
       this.backModal = false;
     },
     // 退岗确认
     handleConfirm() {
-      backZgxs({ ids: this.delArr, gwId: this.gwId })
+      backZgxs({ ids: this.delArr, gwId: this.gwId, ly: "2" })
         .then((res) => {
           this.$message.success("退岗成功");
           this.backModal = false;
@@ -276,7 +273,7 @@ export default {
     addCancel() {
       this.addModal = false;
     },
-    addConfirm() {
+    async addConfirm() {
       if (this.multipleSelection2.length > 0) {
         let xhs = [];
         for (let item_row of this.multipleSelection2) {
@@ -288,12 +285,12 @@ export default {
           ly: "2",
           xm: this.xm,
         };
-        insertZgxs(data)
+        await insertZgxs(data)
           .then((res) => {
             this.$message.success("新增成功");
             //查询
             this.addModal = false;
-            this.queryZgxsList();
+            this.handleSearch();
           })
           .catch((err) => {});
       } else {
@@ -315,9 +312,11 @@ export default {
         id: row.id,
         sgsj: row.sgsj,
         gwId: this.gwId,
+        ly: "2",
       };
       updateSgsj(data).then((res) => {
         this.$message.success("操作成功");
+        this.handleSearch();
       });
     },
   },

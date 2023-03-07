@@ -41,7 +41,6 @@
                   <el-select
                     v-model="scope.row.zgzt"
                     placeholder="请选择"
-                    disabled
                   >
                     <el-option
                       v-for="(item, index) in zgztOps"

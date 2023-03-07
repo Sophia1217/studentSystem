@@ -171,8 +171,8 @@
           <span slot="label">退岗学生信息</span>
         </el-tab-pane>
       </el-tabs>
-      <zgstu v-if="activeName == 'first'"></zgstu>
-      <tgstu v-if="activeName == 'second'"></tgstu>
+      <zgstu v-if="activeName == 'first'" :test="gwId"></zgstu>
+      <tgstu v-if="activeName == 'second'" :test="gwId"></tgstu>
     </div>
     <el-dialog title="删除" :visible.sync="delModal" width="20%">
       <span>确认删除？</span>
@@ -210,14 +210,12 @@ export default {
       delModal: false,
     };
   },
-  mounted() {
+  created() {
     this.gwId = this.$route.query.gwId;
-    this.getDetail();
-    this.$bus.$emit("index", this.$route.query.gwId);
   },
-  // destroyed() {
-  //   this.$bus.$off("index"); //重复调用bus问题  ***
-  // },
+  mounted() {
+    this.getDetail();
+  },
   methods: {
     handleClick(tab, event) {
       this.activeName = tab.name;

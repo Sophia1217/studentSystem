@@ -14,17 +14,17 @@
       >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="gwMainMc" label="学号" min-width="100">
+        <el-table-column prop="xh" label="学号" min-width="100">
         </el-table-column>
-        <el-table-column prop="gwDetailMc" label="姓名" min-width="100">
+        <el-table-column prop="xm" label="姓名" min-width="100">
         </el-table-column>
-        <el-table-column prop="gwGzdd" label="班级" min-width="100">
+        <el-table-column prop="bjmc" label="班级" min-width="100">
         </el-table-column>
-        <el-table-column prop="gwYrdw" label="是否困难生" min-width="100">
+        <el-table-column prop="sfkns" label="是否困难生" min-width="100">
         </el-table-column>
-        <el-table-column prop="gwYgzl" label="是否在校" min-width="100">
+        <el-table-column prop="sfzx" label="是否在校" min-width="100">
         </el-table-column>
-        <el-table-column prop="gwYgzsx" label="上岗日期" min-width="110">
+        <el-table-column prop="sgsj" label="上岗日期" min-width="110">
         </el-table-column>
       </el-table>
     </div>
@@ -40,6 +40,12 @@
 <script>
 import { queryTgxsList } from "@/api/thrift/gwMaintain";
 export default {
+  props: {
+    test: {
+      type: String,
+      default: "",
+    },
+  },
   data() {
     return {
       showExport: false,
@@ -48,7 +54,7 @@ export default {
         status: [], // 学院下拉框
       },
       tableData2: [],
-      gwId: "",
+      gwId: this.test,
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -59,16 +65,9 @@ export default {
     };
   },
   mounted() {
-    this.$bus.$off("index");
-    this.$bus.$on("index", (value) => {
-      this.gwId = value;
-      this.handleSearch();
-    });
-    // this.handleSearch();
+    this.handleSearch();
   },
-  created() {
-    
-  },
+  created() {},
   methods: {
     // 查询
     handleSearch() {

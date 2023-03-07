@@ -558,7 +558,9 @@ export default {
         },
       });
     },
-
+    changeXn() {
+      this.handleSearch();
+    },
     editClick() {
       if (!this.editDetails.shjg) {
         this.$message.error("审核结果不能为空");

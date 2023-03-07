@@ -61,7 +61,7 @@
           <el-select
             v-model="moreIform.xn"
             collapse-tags
-            @change="changeXn"
+            @change="changeXn()"
             placeholder="请选择"
             style="width: 130px; margin: 0 15px 0"
           >

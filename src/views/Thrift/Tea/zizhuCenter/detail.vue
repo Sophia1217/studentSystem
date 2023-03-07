@@ -29,7 +29,7 @@
                   prop="gwYrbm"
                   label-width="100px"
                 >
-                  {{ formEdit.gwYrbm }}
+                  {{ formEdit.gwYrbmc }}
                 </el-form-item>
               </el-col>
             </el-row>

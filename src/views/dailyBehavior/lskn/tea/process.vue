@@ -41,6 +41,12 @@
           <div class="btns borderOrange" @click="handleExport">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
+          <div class="btns borderLight" @click="handleDelete" v-show="AUTHFLAG">
+            <i class="icon lightIcon" /><span class="title">删除</span>
+          </div>
+          <div class="btns fullGreen" @click="handleNew" v-show="AUTHFLAG">
+            <i class="icon greenIcon" /><span class="title1">新增</span>
+          </div>
         </div>
       </div>
       <div class="mt15">
@@ -50,6 +56,7 @@
           @selection-change="handleSelectionChange"
           style="width: 100%"
           @sort-change="changeTableSort"
+          show-summary
         >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
@@ -131,13 +138,14 @@
           </el-table-column>
         </el-table>
       </div>
-      <pagination
+
+      <!-- <pagination
         v-show="queryParams.total > 0"
         :total="queryParams.total"
         :page.sync="queryParams.pageNum"
         :limit.sync="queryParams.pageSize"
         @pagination="handleSearch"
-      />
+      /> -->
     </div>
 
     <el-dialog title="导出确认" :visible.sync="showExport" width="30%">
@@ -149,28 +157,133 @@
         >
       </span>
     </el-dialog>
+    <el-dialog title="新增" :visible.sync="showAdd" width="60%">
+      <el-form
+        ref="formAdd"
+        :model="formAdd"
+        :rules="rules"
+        label-width="120px"
+      >
+        <el-table :data="formAdd.addList">
+          <el-table-column
+            label="培养单位"
+            width="250"
+            align="center"
+            prop="dwh"
+          >
+            <template slot-scope="scope">
+              <el-form-item
+                label-width="0"
+                style="margin-bottom: 15px"
+                :prop="`addList.${scope.$index}.dwh`"
+                :rules="rules.dwh"
+              >
+                <el-select
+                  v-model="scope.row.dwh"
+                  placeholder="请选择"
+                  size="small"
+                >
+                  <el-option
+                    v-for="item in allDwh"
+                    :key="item.dm"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="本科生计划额度（元）"
+            align="center"
+            prop="bksjhed"
+          >
+            <template slot-scope="scope">
+              <el-form-item
+                label-width="0"
+                style="margin-bottom: 15px"
+                :prop="`addList.${scope.$index}.bksjhed`"
+                :rules="rules.bksjhed"
+              >
+                <el-input-number
+                  :min="0"
+                  v-model="scope.row.bksjhed"
+                  placeholder="请输入"
+                ></el-input-number>
+              </el-form-item>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="研究生计划额度（元）"
+            align="center"
+            prop="yjsjhed"
+          >
+            <template slot-scope="scope">
+              <el-form-item
+                label-width="0"
+                style="margin-bottom: 15px"
+                :prop="`addList.${scope.$index}.yjsjhed`"
+                :rules="rules.xxFz"
+              >
+                <el-input-number
+                  :min="0"
+                  v-model="scope.row.yjsjhed"
+                  placeholder="请输入"
+                ></el-input-number>
+              </el-form-item>
+            </template>
+          </el-table-column>
+          <el-table-column label="年度" align="center" prop="nd">
+            <template slot-scope="scope">
+              {{ nd }}
+            </template>
+          </el-table-column>
+          <el-table-column label="添加选项" align="center">
+            <template slot-scope="scope">
+              <div style="margin-bottom: 20px">
+                <i class="icon jia" @click="jia(scope.row, scope.$index)"></i>
+                <i class="icon jian" @click="jian(scope.row, scope.$index)"></i>
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancelAdd">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="addConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <el-dialog title="删除" :visible.sync="showDelete" width="30%">
+      <div>
+        <span>确认删除</span>
+      </div>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="rmRecord"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import {
-  querySelect,
-  add,
-  expor,
-  mbDown,
-  del,
-  queryList,
-} from "@/api/assistantWork/sizheng";
 import {
   downLoadMb,
   zxjdExp,
   zxjdImport,
   queryZxjdList,
   updateLsknEd,
+  deleteList,
+  insert,
+  queryAnalyze,
 } from "@/api/dailyBehavior/lskn";
 import { getToken } from "@/utils/auth";
 import { getXmXgh } from "@/api/assistantWork/sizheng";
-import { getGrade } from "@/api/class/maintenanceClass"; //待定
+import { getGrade, getCollege } from "@/api/class/maintenanceClass"; //待定
 export default {
   name: "jindu",
   components: {},
@@ -188,18 +301,9 @@ export default {
   data() {
     return {
       showExport: false,
-      form: {
-        rs: "",
-        xm: "",
-        gh: "20040710",
-        kcmc: "",
-        kxxq: "",
-        kxxn: "",
-        xs: "",
-      },
-
+      showDelete: false,
       uploadUrl: process.env.VUE_APP_BASE_API + "/rcswLsknEd/import",
-      dialogFormVisible: false,
+      showAdd: false,
       ndOptions: [],
       nd: "",
       tableData: [],
@@ -212,6 +316,31 @@ export default {
       },
       multipleSelection: [],
       addParams: {},
+      allDwh: [],
+      formAdd: { addList: [] },
+      rules: {
+        dwh: [
+          {
+            required: true,
+            message: "培养单位不能为空",
+            trigger: "blur",
+          },
+        ],
+        bksjhed: [
+          {
+            required: true,
+            message: "计划额度不能为空",
+            trigger: "blur",
+          },
+        ],
+        yjsjhed: [
+          {
+            required: true,
+            message: "计划额度不能为空",
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
 
@@ -225,6 +354,70 @@ export default {
   },
 
   methods: {
+    jia(row, index) {
+      var obj = { dwh: "", bksjhed: "", yjsjhed: "", nd: this.nd };
+      this.formAdd.addList.push(obj);
+    },
+    jian(row, index) {
+      if (this.formAdd.addList.length > 1) {
+        this.formAdd.addList.splice(index, 1);
+      } else {
+        this.$message.error("至少保留一个题目");
+      }
+    },
+    checkFormAdd() {
+      // 1.校验必填项
+      let validForm = false;
+      let validForm1 = false;
+      this.$refs.formAdd.validate((valid) => {
+        validForm = valid;
+      });
+
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
+    handleDelete() {
+      this.showDelete = true;
+    },
+    dialogCancel() {
+      this.showDelete = false;
+    },
+    rmRecord() {
+      this.showDelete = false;
+      let ids = [];
+      for (let item_row of this.multipleSelection) {
+        ids.push(item_row.id);
+      }
+      deleteList(ids)
+        .then((res) => {
+          this.$message({
+            message: res.errmsg,
+            type: "success",
+          });
+          this.handleSearch();
+        })
+        .catch((err) => {});
+    },
+    handleNew() {
+      this.showAdd = true;
+      var obj = { dwh: "", bksjhed: "", yjsjhed: "", nd: this.nd };
+      this.formAdd.addList.push(obj);
+    },
+    addConfirm() {
+      if (!this.checkFormAdd) {
+        this.$message.error("请完善表单信息！");
+      } else {
+        insert(this.formAdd.addList).then((res) => {
+          this.formAdd = false;
+          this.handleSearch();
+        });
+      }
+    },
+    cancelAdd() {
+      this.showAdd = false;
+    },
     //更新
     handleUpdata(row) {
       let data = {
@@ -247,6 +440,11 @@ export default {
           this.ndOptions = res.data.rows;
           this.nd = res.data.rows[0];
           this.handleSearch();
+        })
+        .catch((err) => {});
+      getCollege()
+        .then((res) => {
+          this.allDwh = res.data.rows;
         })
         .catch((err) => {});
     },
@@ -308,38 +506,6 @@ export default {
           message: res.errmsg,
         });
       }
-    },
-    querySearch(queryString, cb) {
-      if (queryString != "") {
-        let callBackArr = [];
-        var XmXgh = { xm: queryString };
-        var result = [];
-        var resultNew = [];
-        getXmXgh(XmXgh).then((res) => {
-          result = res.data;
-          resultNew = result.map((ele) => {
-            return {
-              value: `${ele.xm}(${ele.gh})`,
-              label: ele.xm,
-              xm: ele.gh,
-            };
-          });
-          resultNew.forEach((item) => {
-            if (item.value.indexOf(queryString) > -1) {
-              callBackArr.push(item);
-            }
-          });
-          if (callBackArr.length == 0) {
-            cb([{ value: "暂无数据", price: "暂无数据" }]);
-          } else {
-            cb(callBackArr);
-          }
-        });
-      }
-    },
-    cancelModal(form) {
-      this.dialogFormVisible = false;
-      this.form = {};
     },
 
     // 查询
@@ -442,6 +608,11 @@ export default {
           border: 1px solid grey;
           background: #005657;
         }
+        .fullGreen {
+          // border:1px solid #005657;
+          color: #fff;
+          background: #005657;
+        }
         .btns {
           margin-right: 15px;
           padding: 0px 10px;
@@ -487,9 +658,35 @@ export default {
             margin-top: 10px;
             background: url("~@/assets/images/down.png") no-repeat;
           }
+          .jia {
+            margin-top: 9px;
+            background: url("~@/assets/images/jia.png") no-repeat;
+          }
+
+          .jian {
+            margin-top: 9px;
+            background: url("~@/assets/images/jian.png") no-repeat;
+          }
         }
       }
     }
+  }
+  .icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: top;
+    margin-right: 5px;
+  }
+
+  .jia {
+    margin-top: 9px;
+    background: url("~@/assets/images/jia.png") no-repeat;
+  }
+
+  .jian {
+    margin-top: 9px;
+    background: url("~@/assets/images/jian.png") no-repeat;
   }
 }
 </style>

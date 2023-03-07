@@ -8,19 +8,24 @@
       <el-tab-pane label="已申请岗位" name="second">
         <span slot="label"><i class="icon tabsicon_quan"></i>已申请岗位</span>
       </el-tab-pane>
+      <el-tab-pane label="酬金发放结果" name="third">
+        <span slot="label"><i class="icon tabsicon_quan"></i>酬金发放结果</span>
+      </el-tab-pane>
     </el-tabs>
     <processed v-if="activeName == 'first'"></processed>
     <dealWith v-if="activeName == 'second'"></dealWith>
+    <result v-if="activeName == 'third'"></result>
   </div>
 </template>
 
 <script>
 import dealWith from "./applied.vue";
 import processed from "./unapply.vue";
+import result from "./result.vue";
 import topTitle from "../../components/topTitle";
 export default {
   name: "insurance",
-  components: { processed, dealWith, topTitle },
+  components: { processed, dealWith, topTitle, result },
   data() {
     return {
       activeName: "first",

@@ -191,6 +191,32 @@ export function updateLsknEd(query) {
   })
 }
 
+//临时困难经费执行进度删除
+export function deleteList(query) {
+  return request({
+      url: '/rcswLsknEd/delete',
+      method: 'post',
+      data: query
+  })
+}
+
+//临时困难经费执行进度新增
+export function insert(query) {
+  return request({
+      url: '/rcswLsknEd/insert',
+      method: 'post',
+      data: query
+  })
+}
+
+
+export function queryAnalyze(query) {
+  return request({
+      url: '/rcswLsknEd/queryAnalyze',
+      method: 'post',
+      data: query
+  })
+}
 
 
 

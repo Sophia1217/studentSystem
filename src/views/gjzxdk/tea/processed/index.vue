@@ -172,6 +172,20 @@
           </el-table-column>
           <el-table-column prop="dkqx" label="贷款期限（月）"> </el-table-column
           ><el-table-column prop="sqsj" label="申请时间"> </el-table-column>
+          <el-table-column
+            prop="jg"
+            label="审核进度"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+            fixed="right"
+          >
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="lctClick(scope.row)">
+                <i class="scopeIncon lct"></i>
+                <span>流程记录</span>
+              </el-button>
+            </template>
+          </el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
               <el-button
@@ -492,9 +506,7 @@
             v-if="upDownIndex > 0"
             >上一条</el-button
           >
-          <el-button type="primary" class="confirm" @click="downDate"
-            >下一条</el-button
-          >
+          <el-button type="primary" class="confirm" @click="">下一条</el-button>
           <el-button @click="detailCancel">关 闭</el-button>
         </span>
       </el-dialog>
@@ -506,6 +518,11 @@
         @pagination="handleSearch"
       />
     </div>
+    <lctCom
+      ref="child"
+      :lctModal="lctModal"
+      @handleCloseLct="handleCloseLct"
+    ></lctCom>
     <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
@@ -524,10 +541,13 @@ import { getCollege } from "@/api/class/maintenanceClass";
 import { backFlow } from "@/api/dailyBehavior/dormTea";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getBJ } from "@/api/student/index";
+import lctCom from "../../../components/lct";
 export default {
+  components: { lctCom },
   name: "dksh",
   data() {
     return {
+      lctModal: false,
       showExport: false,
       ztStatus: [],
       searchVal: "",
@@ -690,6 +710,17 @@ export default {
             break;
         }
       });
+    },
+    handleCloseLct() {
+      this.lctModal = false;
+    },
+    lctClick(row) {
+      if (!!row.processid) {
+        this.$refs.child.inner(row.processid);
+        this.lctModal = true;
+      } else {
+        this.$message.warning("此项经历为管理员新增，暂无流程数据");
+      }
     },
     getRow(index, row) {
       this.multipleSelection1 = row;
@@ -897,15 +928,25 @@ export default {
 
 <style lang="scss" scoped>
 .talkRec {
+  .lct {
+    background: url("~@/assets/dangan/lct.png");
+  }
   .scopeIncon {
     display: inline-block;
     width: 20px;
     height: 20px;
     vertical-align: middle;
   }
-  // .handledie {
-  //   background: url("~@/assets/images/details.png");
-  // }
+  .el-button--text {
+    border-color: transparent;
+    color: #005657;
+    background: transparent;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .handledie {
+    background: url("~@/assets/images/details.png");
+  }
   .handleName {
     font-weight: 400;
     font-size: 14px;
@@ -942,10 +983,10 @@ export default {
           height: 20px;
         }
         .chevronDown {
-          background: url("../../../../assets/images/chevronDown.png") no-repeat;
+          background: url("~@/assets/images/chevronDown.png") no-repeat;
         }
         .chevronUp {
-          background: url("../../../../assets/images/chevronUp.png") no-repeat;
+          background: url("~@/assets/images/chevronUp.png") no-repeat;
         }
       }
     }
@@ -976,7 +1017,7 @@ export default {
           margin-left: 10px;
           width: 20px;
           height: 20px;
-          background: url("../../../../assets/images/updata.png") no-repeat;
+          background: url("~@/assets/images/updata.png") no-repeat;
         }
       }
       .headerRight {
@@ -1016,7 +1057,6 @@ export default {
             text-align: center;
             line-height: 32px;
             color: #fff;
-            // vertical-align: middle;
           }
           .icon {
             display: inline-block;

@@ -200,6 +200,20 @@
               </el-select>
             </template>
           </el-table-column>
+          <el-table-column
+            prop="jg"
+            label="审核进度"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+            fixed="right"
+          >
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="lctClick(scope.row)">
+                <i class="scopeIncon lct"></i>
+                <span>流程记录</span>
+              </el-button>
+            </template>
+          </el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
               <el-button
@@ -520,9 +534,7 @@
             v-if="upDownIndex > 0"
             >上一条</el-button
           >
-          <el-button type="primary" class="confirm" @click="downDate"
-            >下一条</el-button
-          >
+          <el-button type="primary" class="confirm" @click="">下一条</el-button>
           <el-button @click="detailCancel">关 闭</el-button>
         </span>
       </el-dialog>
@@ -542,6 +554,11 @@
         >
       </span>
     </el-dialog>
+    <lctCom
+      ref="child"
+      :lctModal="lctModal"
+      @handleCloseLct="handleCloseLct"
+    ></lctCom>
   </div>
 </template>
 
@@ -552,9 +569,13 @@ import { getCollege } from "@/api/class/maintenanceClass";
 import { backFlow } from "@/api/dailyBehavior/dormTea";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getBJ } from "@/api/student/index";
+import lctCom from "../../../components/lct";
 export default {
+  components: { lctCom },
   data() {
     return {
+      lctModal: false,
+
       showExport: false,
       ztStatus: [],
       searchVal: "",
@@ -616,6 +637,17 @@ export default {
   },
 
   methods: {
+    handleCloseLct() {
+      this.lctModal = false;
+    },
+    lctClick(row) {
+      if (!!row.processid) {
+        this.$refs.child.inner(row.processid);
+        this.lctModal = true;
+      } else {
+        this.$message.warning("此项经历为管理员新增，暂无流程数据");
+      }
+    },
     async upDate() {
       var tarIndex = this.upDownIndex - 1;
       var tar = this.updownDate[tarIndex];
@@ -927,15 +959,25 @@ export default {
 
 <style lang="scss" scoped>
 .talkRec {
+  .lct {
+    background: url("~@/assets/dangan/lct.png");
+  }
+  .el-button--text {
+    border-color: transparent;
+    color: #005657;
+    background: transparent;
+    padding-left: 0;
+    padding-right: 0;
+  }
   .scopeIncon {
     display: inline-block;
     width: 20px;
     height: 20px;
     vertical-align: middle;
   }
-  // .handledie {
-  //   background: url("~@/assets/images/details.png");
-  // }
+  .handledie {
+    background: url("~@/assets/images/details.png");
+  }
   .handleName {
     font-weight: 400;
     font-size: 14px;
@@ -972,10 +1014,10 @@ export default {
           height: 20px;
         }
         .chevronDown {
-          background: url("../../../../assets/images/chevronDown.png") no-repeat;
+          background: url("~@/assets/images/chevronDown.png") no-repeat;
         }
         .chevronUp {
-          background: url("../../../../assets/images/chevronUp.png") no-repeat;
+          background: url("~@/assets/images/chevronUp.png") no-repeat;
         }
       }
     }
@@ -1006,29 +1048,16 @@ export default {
           margin-left: 10px;
           width: 20px;
           height: 20px;
-          background: url("../../../../assets/images/updata.png") no-repeat;
+          background: url("~@/assets/images/updata.png") no-repeat;
         }
       }
       .headerRight {
         display: flex;
         align-items: center;
-        .borderBlue {
-          background: #fff;
-          border: 1px solid grey;
-        }
+
         .borderOrange {
           border: 1px solid grey;
           background: #fff;
-        }
-        .borderRed {
-          border: 1px solid grey;
-          color: red;
-          background: #fff;
-        }
-        .fullGreen {
-          // border:1px solid #005657;
-          color: #fff;
-          background: #005657;
         }
         .btns {
           margin-right: 15px;
@@ -1046,7 +1075,6 @@ export default {
             text-align: center;
             line-height: 32px;
             color: #fff;
-            // vertical-align: middle;
           }
           .icon {
             display: inline-block;
@@ -1055,101 +1083,83 @@ export default {
             vertical-align: top;
             margin-right: 5px;
           }
-          .deteIcon {
-            background: url("~@/assets/images/yes.png") no-repeat;
-          }
-          .blueIcon {
-            margin-top: 10px;
-            background: url("~@/assets/assistantPng/in.png") no-repeat;
-          }
-          .orangeIcon {
-            margin-top: 10px;
-            background: url("~@/assets/assistantPng/out.png") no-repeat;
-          }
-          .passIcon {
-            margin-top: 10px;
-            background: url("~@/assets/images/passWhite.png") no-repeat;
-          }
-          .refuseIcon {
-            margin-top: 10px;
-            background: url("~@/assets/images/refuse.png") no-repeat;
-          }
-          .backIcon {
-            margin-top: 10px;
-            background: url("~@/assets/images/back.png") no-repeat;
-          }
+
+          background: url("~@/assets/assistantPng/in.png") no-repeat;
+        }
+        .orangeIcon {
+          margin-top: 10px;
         }
       }
     }
   }
-  .backDetail {
-    margin-top: 15px;
+}
+.backDetail {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #cccccc;
+  .formLeft {
+    width: 15%;
+    background: #fff;
     display: flex;
-    flex-direction: row;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #cccccc;
-    .formLeft {
-      width: 15%;
-      background: #fff;
+    align-items: center;
+    .title {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  .formRight {
+    width: 85%;
+    .rowStyle {
+      padding: 0 !important;
+      margin: 0;
+      border-bottom: 1px solid #cccccc;
+    }
+    .wrap {
       display: flex;
       align-items: center;
       .title {
-        width: 100%;
-        text-align: center;
+        flex: 0 0 160px;
+        line-height: 48px;
+        background: #e0e0e0;
+        text-align: right;
+        padding-right: 5px;
+        margin: 0 !important;
+      }
+      .content {
+        font-weight: 400;
+        font-size: 14px;
+        color: #1f1f1f;
+        line-height: 22px;
+        margin-left: 16px;
       }
     }
-    .formRight {
-      width: 85%;
-      .rowStyle {
-        padding: 0 !important;
-        margin: 0;
-        border-bottom: 1px solid #cccccc;
-      }
-      .wrap {
-        display: flex;
-        align-items: center;
-        .title {
-          flex: 0 0 160px;
-          line-height: 48px;
-          background: #e0e0e0;
-          text-align: right;
-          padding-right: 5px;
-          margin: 0 !important;
-        }
-        .content {
-          font-weight: 400;
-          font-size: 14px;
-          color: #1f1f1f;
-          line-height: 22px;
-          margin-left: 16px;
-        }
-      }
 
-      .GreenButton {
-        //border: 1px solid grey;
-        height: 49px;
-        border-radius: 2px;
-        background: #005657;
-      }
-      .title1 {
-        font-size: 16px;
-        text-align: center;
-        line-height: 48px;
-        color: #fff;
-        // vertical-align: middle;
-      }
-      .icon {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        vertical-align: top;
-        margin-right: 5px;
-      }
-      .greenIcon {
-        margin: 15px;
-        background: url("~@/assets/assistantPng/add.png") no-repeat;
-      }
+    .GreenButton {
+      //border: 1px solid grey;
+      height: 49px;
+      border-radius: 2px;
+      background: #005657;
+    }
+    .title1 {
+      font-size: 16px;
+      text-align: center;
+      line-height: 48px;
+      color: #fff;
+      // vertical-align: middle;
+    }
+    .icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      vertical-align: top;
+      margin-right: 5px;
+    }
+    .greenIcon {
+      margin: 15px;
+      background: url("~@/assets/assistantPng/add.png") no-repeat;
     }
   }
 }

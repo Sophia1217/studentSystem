@@ -1011,7 +1011,7 @@ export default {
         console.log("this.fileListAdd", this.fileListAdd);
         var data = this.formEdit;
         let formData = new FormData();
-        formData.append("dkxn", data.dkxn);
+        formData.append("dkxn", this.dkxn);
         formData.append("bz", data.bz);
         formData.append("zsfys", data.zsfys);
         formData.append("xfys", data.xfys);
@@ -1048,7 +1048,7 @@ export default {
       } else {
         var data = this.formAdd;
         let formData = new FormData();
-        formData.append("dkxn", data.dkxn);
+        formData.append("dkxn", this.dkxn);
         formData.append("bz", data.bz);
         formData.append("zsfys", data.zsfys);
         formData.append("xfys", data.xfys);

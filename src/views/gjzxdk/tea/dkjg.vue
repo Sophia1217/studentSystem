@@ -69,7 +69,7 @@
         </el-row>
         <el-row :gutter="20" class="mt15">
           <el-col :span="1.5" style="display: inline-block; line-height: 37px"
-            >贷款总金额（区间）</el-col
+            >贷款总金额（区间）：</el-col
           >
           <el-col :span="1.5">
             <el-input-number
@@ -131,7 +131,6 @@
         </el-row>
       </div>
     </div>
-    <!-- table -->
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
@@ -299,7 +298,6 @@ export default {
         isIndeterminate: true,
       },
       multipleSelection: [],
-      tableDetails: [{ gzgw: "", fwnr: "" }],
     };
   },
 
@@ -359,8 +357,7 @@ export default {
     //模板下载
     mbDown1() {
       mbDown().then((res) => {
-        this.downloadFn(res, "贷款结果模板下载", "xlsx"),
-          this.$message.success("操作成功");
+        this.downloadFn(res, "贷款结果模板下载", "xlsx");
       });
     },
     // 导出确认
@@ -610,11 +607,7 @@ export default {
           color: red;
           background: #fff;
         }
-        .fullGreen {
-          // border:1px solid #005657;
-          color: #fff;
-          background: #005657;
-        }
+
         .btns {
           margin-right: 15px;
           padding: 0px 10px;
@@ -624,14 +617,12 @@ export default {
             font-size: 14px;
             text-align: center;
             line-height: 32px;
-            // vertical-align: middle;
           }
           .title1 {
             font-size: 14px;
             text-align: center;
             line-height: 32px;
             color: #fff;
-            // vertical-align: middle;
           }
           .icon {
             display: inline-block;
@@ -640,9 +631,7 @@ export default {
             vertical-align: top;
             margin-right: 5px;
           }
-          .deteIcon {
-            background: url("~@/assets/images/yes.png") no-repeat;
-          }
+
           .blueIcon {
             margin-top: 10px;
             background: url("~@/assets/assistantPng/in.png") no-repeat;
@@ -656,76 +645,6 @@ export default {
             background: url("~@/assets/images/down.png") no-repeat;
           }
         }
-      }
-    }
-  }
-  .backDetail {
-    margin-top: 15px;
-    display: flex;
-    flex-direction: row;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #cccccc;
-    .formLeft {
-      width: 15%;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      .title {
-        width: 100%;
-        text-align: center;
-      }
-    }
-    .formRight {
-      width: 85%;
-      .rowStyle {
-        padding: 0 !important;
-        margin: 0;
-        border-bottom: 1px solid #cccccc;
-      }
-      .wrap {
-        display: flex;
-        align-items: center;
-        .title {
-          flex: 0 0 160px;
-          line-height: 48px;
-          background: #e0e0e0;
-          text-align: right;
-          padding-right: 5px;
-          margin: 0 !important;
-        }
-        .content {
-          font-weight: 400;
-          font-size: 14px;
-          color: #1f1f1f;
-          line-height: 22px;
-          margin-left: 16px;
-        }
-      }
-
-      .GreenButton {
-        //border: 1px solid grey;
-        height: 49px;
-        border-radius: 2px;
-        background: #005657;
-      }
-      .title1 {
-        font-size: 16px;
-        text-align: center;
-        line-height: 48px;
-        color: #fff;
-        // vertical-align: middle;
-      }
-      .icon {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        vertical-align: top;
-        margin-right: 5px;
-      }
-      .greenIcon {
-        margin: 15px;
-        background: url("~@/assets/assistantPng/add.png") no-repeat;
       }
     }
   }

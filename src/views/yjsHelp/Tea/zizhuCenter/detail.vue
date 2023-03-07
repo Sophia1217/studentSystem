@@ -111,10 +111,10 @@
         </div>
       </el-form>
     </div>
-    <div class="editBottom">
-      <div class="btn borderRed" v-if="editFlag == 2" @click="back">退回</div>
-      <div class="btn borderRed" v-if="editFlag == 2" @click="refuse">拒绝</div>
-      <div class="btn confirm" v-if="editFlag == 2" @click="pass">通过</div>
+    <div class="editBottom" v-if="editFlag == 2">
+      <div class="btn borderRed" @click="back">退回</div>
+      <div class="btn borderRed" @click="refuse">拒绝</div>
+      <div class="btn confirm" @click="pass">通过</div>
     </div>
     <el-dialog title="拒绝理由" :visible.sync="jjModal" width="30%">
       <template>

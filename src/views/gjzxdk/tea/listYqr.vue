@@ -89,27 +89,6 @@
             ></el-input-number>
           </el-col>
         </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="1.5" style="display: inline-block; line-height: 37px"
-            >是否违约：</el-col
-          >
-          <el-col :span="9">
-            <el-select
-              v-model="moreIform.sf"
-              collapse-tags
-              multiple
-              placeholder="请选择"
-              style="width: 130px; margin: 0 15px 0"
-            >
-              <el-option
-                v-for="(item, index) in sfList"
-                :key="index"
-                :label="item.mc"
-                :value="item.mc"
-              ></el-option>
-            </el-select>
-          </el-col>
-        </el-row>
 
         <el-row :gutter="20" class="mt15">
           <el-col :span="1.5" style="display: inline-block; line-height: 37px"
@@ -134,7 +113,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">贷款结果列表</span> <i class="Updataicon"></i>
+          <span class="title">待确认列表</span> <i class="Updataicon"></i>
           <el-select
             v-model="moreIform.xn"
             collapse-tags
@@ -155,9 +134,6 @@
           <div class="btns borderBlue" @click="mbDown1">
             <i class="icon downIcon"></i><span class="title">模板下载</span>
           </div>
-          <div class="btns borderRed" @click="del">
-            <i class="icon lightIcon"></i><span class="title">删除</span>
-          </div>
           <div class="btns borderBlue">
             <el-upload
               accept=".xlsx,.xls"
@@ -171,9 +147,11 @@
               <i class="icon blueIcon"></i><span class="title">导入</span>
             </el-upload>
           </div>
-
-          <div class="btns borderOrange" @click="expor">
-            <i class="icon orangeIcon"></i><span class="title">导出</span>
+          <div class="btns borderRed" @click="del">
+            <i class="icon lightIcon"></i><span class="title">删除</span>
+          </div>
+          <div class="btns borderOrange" @click="queren">
+            <i class="icon orangeIcon"></i><span class="title1">确认</span>
           </div>
         </div>
       </div>
@@ -202,10 +180,6 @@
             min-width="100"
           >
           </el-table-column>
-          <el-table-column prop="fkze" label="放款总额（元）">
-          </el-table-column>
-          <el-table-column prop="xdcs" label="续贷次数"> </el-table-column>
-          <el-table-column prop="sfwy" label="是否违约"> </el-table-column>
           <el-table-column prop="dkqx" label="贷款期限（月）"> </el-table-column
           ><el-table-column prop="dkkssj" label="贷款开始时间">
           </el-table-column>
@@ -219,10 +193,44 @@
         @pagination="handleSearch"
       />
     </div>
-    <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
+    <!-- <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="handleConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog> -->
+    <el-dialog title="确认提示" :visible.sync="qrExport" width="30%">
+      <template>
+        <div
+          style="
+            margin-left: 80px;
+            font-family: 'PingFang SC';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+          "
+        >
+          <span>确认：</span>
+          <el-select
+            v-model="status"
+            collapse-tags
+            placeholder="请选择"
+            size="small"
+          >
+            <el-option
+              v-for="item in dmgbyqrztm"
+              :key="item.dm"
+              :label="item.mc"
+              :value="item.dm"
+            ></el-option>
+          </el-select>
+        </div>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancelB">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="handleConfirmB"
           >确 定</el-button
         >
       </span>
@@ -232,7 +240,7 @@
 
 <script>
 import { queryXn } from "@/api/dailyBehavior/yearSum";
-import { dkjgList, dkjgExp, delDkjg, mbDown } from "@/api/gzzxdk/gjzxdk";
+import { byqrDqr, dkjgExp, delByqr, mbDown2, lsqr } from "@/api/gzzxdk/gjzxdk";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getBJ } from "@/api/student/index";
@@ -251,25 +259,18 @@ export default {
   },
   data() {
     return {
-      uploadUrl: process.env.VUE_APP_BASE_API + "/rcswGjzxdk/importExcelDkjg",
+      status: "",
+      uploadUrl:
+        process.env.VUE_APP_BASE_API + "/rcswByqr/importExcelGraduation",
+      qrExport: false,
       showExport: false,
       searchVal: "",
       select: "",
       isMore: false,
-      sfList: [
-        {
-          dm: "是",
-          mc: "是",
-        },
-        {
-          dm: "否",
-          mc: "否",
-        },
-      ],
+
       moreIform: {
         dwh: [], // 学院下拉框
         bjm: [],
-        sf: [],
         xn: "",
       },
       exportParams: {},
@@ -291,6 +292,7 @@ export default {
         orderZd: "",
         orderPx: "",
       },
+      dmgbyqrztm: [],
       training: {
         // 培养层次
         checkAll: false,
@@ -305,13 +307,14 @@ export default {
   mounted() {
     this.getAllCollege();
     this.getCode("dmpyccm"); // 培养层次
+    this.getCode("dmgbyqrztm"); // 培养层次
     this.getSchoolYears();
   },
 
   methods: {
     del() {
       if (this.delArr.length > 0) {
-        delDkjg({ ids: this.delArr }).then((res) => {
+        delByqr({ ids: this.delArr }).then((res) => {
           this.handleSearch();
         });
       } else {
@@ -355,10 +358,31 @@ export default {
     handleCancel() {
       this.showExport = false;
     },
+    handleCancelB() {
+      this.qrExport = false;
+    },
+    // 导出确认
+    handleConfirmB() {
+      if (this.status != "") {
+        var data = {};
+        data = this.multipleSelection.map((item) => ({
+          id: item.id,
+          status: this.status,
+        }));
+        lsqr(data)
+          .then((res) => {
+            this.$message.success("确认成功");
+            this.qrExport = false;
+          })
+          .catch((err) => {});
+      } else {
+        this.$message.error("请先选择确认类型");
+      }
+    },
     //模板下载
     mbDown1() {
-      mbDown().then((res) => {
-        this.downloadFn(res, "贷款结果模板下载", "xlsx");
+      mbDown2().then((res) => {
+        this.downloadFn(res, "毕业确认模板下载", "xlsx");
       });
     },
     // 导出确认
@@ -380,6 +404,14 @@ export default {
         .catch((err) => {});
       this.showExport = false;
     },
+    queren() {
+      if (this.multipleSelection.length > 0) {
+        this.status = "";
+        this.qrExport = true;
+      } else {
+        this.$message.error("请先勾选数据");
+      }
+    },
     expor() {
       var data = {};
       data = {
@@ -398,7 +430,6 @@ export default {
         bjdm: this.moreIform.bjm,
         ssdwdm: this.moreIform.dwh,
         xn: this.moreIform.xn,
-        sfwy: this.moreIform.sf,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         pageNum: 0,
@@ -469,12 +500,10 @@ export default {
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
-        sfwy: this.moreIform.sf,
       };
-      dkjgList(data)
+      byqrDqr(data)
         .then((res) => {
           this.tableData = res.data;
-          this.updownDate = res.data;
           this.queryParams.total = res.totalCount;
         })
         .catch((err) => {});
@@ -494,6 +523,9 @@ export default {
           switch (paramsData) {
             case "dmpyccm":
               this.$set(this.training, "checkBox", res.data);
+              break;
+            case "dmgbyqrztm":
+              this.dmgbyqrztm = res.data;
               break;
           }
         })
@@ -602,7 +634,14 @@ export default {
         }
         .borderOrange {
           border: 1px solid grey;
-          background: #fff;
+          background: #005657;
+          .title1 {
+            font-size: 14px;
+            text-align: center;
+            line-height: 32px;
+            color: #fff;
+            // vertical-align: middle;
+          }
         }
         .borderRed {
           border: 1px solid grey;
@@ -640,7 +679,7 @@ export default {
           }
           .orangeIcon {
             margin-top: 10px;
-            background: url("~@/assets/assistantPng/out.png") no-repeat;
+            background: url("~@/assets/images/passWhite.png") no-repeat;
           }
           .downIcon {
             margin-top: 10px;

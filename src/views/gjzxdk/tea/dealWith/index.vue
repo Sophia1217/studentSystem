@@ -1070,21 +1070,15 @@ export default {
             line-height: 32px;
             // vertical-align: middle;
           }
-          .title1 {
-            font-size: 14px;
-            text-align: center;
-            line-height: 32px;
-            color: #fff;
-          }
           .icon {
             display: inline-block;
             width: 20px;
             height: 20px;
             vertical-align: top;
             margin-right: 5px;
+            margin-top: 10px;
+            background: url("~@/assets/assistantPng/in.png") no-repeat;
           }
-
-          background: url("~@/assets/assistantPng/in.png") no-repeat;
         }
         .orangeIcon {
           margin-top: 10px;
@@ -1137,13 +1131,7 @@ export default {
       }
     }
 
-    .GreenButton {
-      //border: 1px solid grey;
-      height: 49px;
-      border-radius: 2px;
-      background: #005657;
-    }
-    .title1 {
+    .title {
       font-size: 16px;
       text-align: center;
       line-height: 48px;
@@ -1156,10 +1144,6 @@ export default {
       height: 20px;
       vertical-align: top;
       margin-right: 5px;
-    }
-    .greenIcon {
-      margin: 15px;
-      background: url("~@/assets/assistantPng/add.png") no-repeat;
     }
   }
 }

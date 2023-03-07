@@ -138,7 +138,15 @@ export function mbDown(query) {
     responseType:"blob",
   })
 }
-
+// 模板下载
+export function mbDown2(query) {
+  return request({
+    url: '/rcswByqr/downLoad',
+    method: 'post',
+    data: query,
+    responseType:"blob",
+  })
+}
 
 export function dkjgExp(query) {
   return request({
@@ -158,6 +166,37 @@ export function delDkjg(query) {
     responseType:"blob",
   })
 }
+
+export function delByqr(query) {
+  return request({
+    url: '/rcswByqr/deleteByqrDqr',
+    method: 'post',
+    data: query,
+    responseType:"blob",
+  })
+}
+
+
+
+//  教师端-毕业确认待确认列表查询
+export function byqrDqr(query) {
+  return request({
+    url: '/rcswByqr/queryByqrDqrList',
+    method: 'post',
+    data: query
+  })
+}
+
+//  学生端-毕业确认老师确认
+export function lsqr(query) {
+  return request({
+    url: '/rcswByqr/byqrXsQrls',
+    method: 'post',
+    data: query
+  })
+}
+
+
 
 
 

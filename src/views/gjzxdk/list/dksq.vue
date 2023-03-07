@@ -978,6 +978,7 @@ export default {
         fileList.splice(idx, 1);
         this.$message.error("单个文件大小不得超过10M");
       }
+      this.fileList = fileList;
     },
     fileChangeEdit(file, fileList) {
       console.log("file", file);
@@ -1008,7 +1009,6 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        console.log("this.fileListAdd", this.fileListAdd);
         var data = this.formEdit;
         let formData = new FormData();
         formData.append("dkxn", this.dkxn);
@@ -1046,6 +1046,7 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
+        console.log("this.fileList", this.fileList);
         var data = this.formAdd;
         let formData = new FormData();
         formData.append("dkxn", this.dkxn);
@@ -1065,15 +1066,15 @@ export default {
             formData.append("files", file.raw);
           });
         }
-        edit(formData).then((res) => {
-          if (res.errcode == "00") {
-            this.$message.success("新增成功");
-            this.query();
-          } else {
-            this.$message.error("新增失败");
-          }
-        });
-        this.addModal = false;
+        // edit(formData).then((res) => {
+        //   if (res.errcode == "00") {
+        //     this.$message.success("新增成功");
+        //     this.query();
+        //   } else {
+        //     this.$message.error("新增失败");
+        //   }
+        // });
+        // this.addModal = false;
       }
     },
     query() {

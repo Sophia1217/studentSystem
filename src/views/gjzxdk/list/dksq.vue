@@ -1046,7 +1046,6 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        console.log("this.fileList", this.fileList);
         var data = this.formAdd;
         let formData = new FormData();
         formData.append("dkxn", this.dkxn);
@@ -1066,15 +1065,15 @@ export default {
             formData.append("files", file.raw);
           });
         }
-        // edit(formData).then((res) => {
-        //   if (res.errcode == "00") {
-        //     this.$message.success("新增成功");
-        //     this.query();
-        //   } else {
-        //     this.$message.error("新增失败");
-        //   }
-        // });
-        // this.addModal = false;
+        edit(formData).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("新增成功");
+            this.query();
+          } else {
+            this.$message.error("新增失败");
+          }
+        });
+        this.addModal = false;
       }
     },
     query() {

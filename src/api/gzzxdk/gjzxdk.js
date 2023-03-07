@@ -187,10 +187,28 @@ export function byqrDqr(query) {
   })
 }
 
+//  教师端-毕业确认已确认列表查询
+export function byqrYqr(query) {
+  return request({
+    url: '/rcswByqr/queryByqrYqrList',
+    method: 'post',
+    data: query
+  })
+}
+
 //  学生端-毕业确认老师确认
 export function lsqr(query) {
   return request({
     url: '/rcswByqr/byqrXsQrls',
+    method: 'post',
+    data: query
+  })
+}
+
+//  学生端-毕业确认老师确认
+export function ztxg(query) {
+  return request({
+    url: '/rcswByqr/deleteByqrYqrZtxg',
     method: 'post',
     data: query
   })

@@ -17,6 +17,7 @@
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
+            <el-option label="确认人" value="shrxm"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
             >查询</el-button
@@ -108,12 +109,33 @@
             ></el-date-picker>
           </el-col>
         </el-row>
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="1.5">状态：</el-col>
+          <el-col :span="8">
+            <div class="checkbox">
+              <el-select
+                v-model="moreIform.ztStatus"
+                multiple
+                collapse-tags
+                placeholder="请选择状态"
+                size="small"
+              >
+                <el-option
+                  v-for="(item, index) in dmgbyqrztm"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </div>
+          </el-col>
+        </el-row>
       </div>
     </div>
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">待确认列表</span> <i class="Updataicon"></i>
+          <span class="title">已确认列表</span> <i class="Updataicon"></i>
           <el-select
             v-model="moreIform.xn"
             collapse-tags
@@ -131,28 +153,12 @@
           <span>学年</span>
         </div>
         <div class="headerRight">
-          <div class="btns borderBlue" @click="mbDown1">
-            <i class="icon downIcon"></i><span class="title">模板下载</span>
+          <div class="btns borderBlue" @click="queren">
+            <i class="icon downIcon"></i><span class="title">状态修改</span>
           </div>
-          <div class="btns borderBlue">
-            <el-upload
-              accept=".xlsx,.xls"
-              :auto-upload="true"
-              :action="uploadUrl"
-              :show-file-list="false"
-              :headers="fileHeader"
-              :on-success="upLoadSuccess"
-              :on-error="upLoadError"
-            >
-              <i class="icon blueIcon"></i><span class="title">导入</span>
-            </el-upload>
-          </div>
-          <div class="btns borderRed" @click="del">
-            <i class="icon lightIcon"></i><span class="title">删除</span>
-          </div>
-          <div class="btns borderOrange" @click="queren">
+          <!-- <div class="btns borderOrange" @click="queren">
             <i class="icon orangeIcon"></i><span class="title1">确认</span>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="mt15">
@@ -183,6 +189,28 @@
           <el-table-column prop="dkqx" label="贷款期限（月）"> </el-table-column
           ><el-table-column prop="dkkssj" label="贷款开始时间">
           </el-table-column>
+          <el-table-column
+            prop="status"
+            label="状态"
+            sortable="custom"
+            fixed="right"
+          >
+            <template slot-scope="scope">
+              <el-select
+                v-model="scope.row.status"
+                placeholder="请选择"
+                :disabled="true"
+              >
+                <el-option
+                  v-for="(item, index) in dmgbyqrztm"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </template>
+          </el-table-column>
+          <el-table-column prop="shrxm" label="确认人"> </el-table-column>
         </el-table>
       </div>
       <pagination
@@ -193,14 +221,6 @@
         @pagination="handleSearch"
       />
     </div>
-    <!-- <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="handleConfirm"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog> -->
     <el-dialog title="确认提示" :visible.sync="qrExport" width="30%">
       <template>
         <div
@@ -240,7 +260,7 @@
 
 <script>
 import { queryXn } from "@/api/dailyBehavior/yearSum";
-import { byqrDqr, dkjgExp, delByqr, mbDown2, lsqr } from "@/api/gzzxdk/gjzxdk";
+import { byqrYqr, dkjgExp, delByqr, mbDown2, ztxg } from "@/api/gzzxdk/gjzxdk";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getBJ } from "@/api/student/index";
@@ -272,6 +292,7 @@ export default {
         dwh: [], // 学院下拉框
         bjm: [],
         xn: "",
+        ztStatus: [],
       },
       exportParams: {},
       leng: 0,
@@ -287,8 +308,8 @@ export default {
         total: 0,
         dksjArr: [],
         // 金额
-        dkzjeEnd: "",
-        dkzjeStart: "",
+        dkzjeEnd: 99999,
+        dkzjeStart: 1,
         orderZd: "",
         orderPx: "",
       },
@@ -307,7 +328,7 @@ export default {
   mounted() {
     this.getAllCollege();
     this.getCode("dmpyccm"); // 培养层次
-    this.getCode("dmgbyqrztm"); // 培养层次
+    this.getCode("dmgbyqrztm"); //
     this.getSchoolYears();
   },
 
@@ -369,10 +390,11 @@ export default {
           id: item.id,
           status: this.status,
         }));
-        lsqr(data)
+        ztxg(data)
           .then((res) => {
-            this.$message.success("确认成功");
+            this.$message.success("状态修改成功");
             this.qrExport = false;
+            this.handleSearch();
           })
           .catch((err) => {});
       } else {
@@ -425,6 +447,7 @@ export default {
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
             ? this.queryParams.dksjArr[1]
             : "",
+        shrxm: this.select == "shrxm" ? this.searchVal : null,
         dkzjeEnd: this.queryParams.dkzjeEnd,
         dkzjeStart: this.queryParams.dkzjeStart,
         bjdm: this.moreIform.bjm,
@@ -432,6 +455,7 @@ export default {
         xn: this.moreIform.xn,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
+        statusList: this.moreIform.ztStatus,
         pageNum: 0,
         pageSize: 0,
         orderZd: this.queryParams.orderZd,
@@ -439,16 +463,6 @@ export default {
       }; //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
       this.exportParams = data;
       this.showExport = true;
-    },
-    getCode1(val) {
-      const data = { codeTableEnglish: val };
-      getCodeInfoByEnglish(data).then((res) => {
-        switch (val) {
-          case "dmsplcm": //审批结果
-            this.ztStatus = res.data;
-            break;
-        }
-      });
     },
     getAllCollege() {
       getCollege()
@@ -483,6 +497,7 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
+        shrxm: this.select == "shrxm" ? this.searchVal : null,
         xn: this.moreIform.xn,
         dkkssjEnd:
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
@@ -492,6 +507,7 @@ export default {
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
             ? this.queryParams.dksjArr[1]
             : "",
+        statusList: this.moreIform.ztStatus,
         dkzjeEnd: this.queryParams.dkzjeEnd,
         dkzjeStart: this.queryParams.dkzjeStart,
         bjdm: this.moreIform.bjm,
@@ -501,7 +517,7 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      byqrDqr(data)
+      byqrYqr(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
@@ -525,7 +541,12 @@ export default {
               this.$set(this.training, "checkBox", res.data);
               break;
             case "dmgbyqrztm":
-              this.dmgbyqrztm = res.data;
+              this.dmgbyqrztm = res.data.filter((item) => {
+                return item.dm !== "05";
+              });
+              break;
+            case "dmsplcm": //审批结果
+              this.ztStatus = res.data;
               break;
           }
         })

@@ -600,8 +600,8 @@ export default {
         total: 0,
         dksjArr: [],
         // 金额
-        dkzjeEnd: "",
-        dkzjeStart: "",
+        dkzjeEnd: 99999,
+        dkzjeStart: 1,
         orderZd: "",
         orderPx: "",
       },

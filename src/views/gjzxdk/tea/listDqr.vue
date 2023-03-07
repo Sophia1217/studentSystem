@@ -287,8 +287,8 @@ export default {
         total: 0,
         dksjArr: [],
         // 金额
-        dkzjeEnd: "",
-        dkzjeStart: "",
+        dkzjeEnd: 99999,
+        dkzjeStart: 1,
         orderZd: "",
         orderPx: "",
       },
@@ -372,6 +372,7 @@ export default {
         lsqr(data)
           .then((res) => {
             this.$message.success("确认成功");
+            this.handleSearch();
             this.qrExport = false;
           })
           .catch((err) => {});
@@ -525,7 +526,13 @@ export default {
               this.$set(this.training, "checkBox", res.data);
               break;
             case "dmgbyqrztm":
-              this.dmgbyqrztm = res.data;
+              //去掉待确认类型
+              this.dmgbyqrztm = res.data.map((item) => {
+                return item.dm !== "05";
+              });
+              // this.dmgbyqrztm = res.data.filter((item) => {
+              //   return item.dm !== "05";
+              // });
               break;
           }
         })

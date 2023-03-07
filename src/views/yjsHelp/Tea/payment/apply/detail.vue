@@ -149,26 +149,6 @@
             </el-table-column>
             <el-table-column prop="sgsj	" label="上岗时间" min-width="110">
             </el-table-column>
-            <el-table-column prop="gs" label="工时" min-width="150">
-              <template slot-scope="scope">
-                <el-form-item
-                  :prop="'stuList.' + scope.$index + '.gs'"
-                  :rules="rules.gs"
-                >
-                  <el-input-number
-                    v-model="scope.row.gs"
-                    v-if="isEdit == 2"
-                    :min="0"
-                    :max="9999"
-                    controls-position="right"
-                    @change="count(scope.row)"
-                  />
-                  <div v-else>
-                    {{ scope.row.gs }}
-                  </div>
-                </el-form-item>
-              </template>
-            </el-table-column>
             <el-table-column prop="je" label="金额（元）" min-width="150">
               <template slot-scope="scope">
                 <el-form-item
@@ -230,14 +210,14 @@
 </template>
 <script>
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
-import { queryD } from "@/api/gwsz/gwsz";
+import { queryDNew } from "@/api/gwsz/gwsz";
 import {
   queryStuList,
   updateXscj,
   exportStu,
   importStuUpdate,
   mbDown,
-} from "@/api/thrift/paymentApply";
+} from "@/api/thrift/paymentApplyYjs";
 import { getToken } from "@/utils/auth";
 export default {
   computed: {
@@ -319,9 +299,10 @@ export default {
 
       // this.formAdd.detailList[0].status = this.$route.query.status;
       this.queryStuList();
-      queryD().then((res) => {
+      queryDNew().then((res) => {
         this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
         this.formAdd.gssx = res.data.cjbzcjffSzsxNum || "9999"; //工时上限
+        // this.updateJe = res.data.cjffTzcjje; //是否允许调整酬金金额,1是2否
       });
     },
     // 表单校验
@@ -359,10 +340,6 @@ export default {
     handleCancle() {
       this.$refs.formAdd.clearValidate();
       this.$router.go(-1);
-    },
-    count(row) {
-      var arr = row.gs * this.formAdd.detailList[0].cjbz;
-      this.$set(row, "je", arr);
     },
 
     queryStuList() {

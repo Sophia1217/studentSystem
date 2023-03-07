@@ -14,85 +14,16 @@
             style="width: 100%"
           >
             <el-table-column prop="xn" label="学年" :min-width="110">
-              <!-- <template slot-scope="scope">
-                <el-form-item
-                  :prop="'detailList.' + scope.$index + '.xn'"
-                  :rules="rules.xn"
-                >
-                  <el-select v-model="scope.row.xn" placeholder="请选择">
-                    <el-option
-                      v-for="(item, index) in xnOptions"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.mc"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </template> -->
             </el-table-column>
             <el-table-column prop="gwYrbmMc" label="用人部门" :min-width="130">
             </el-table-column>
             <el-table-column prop="status" label="在岗状态" :min-width="110">
-              <!-- <template slot-scope="scope">
-                <el-form-item
-                  :prop="'detailList.' + scope.$index + '.status'"
-                  :rules="rules.status"
-                >
-                  <el-select v-model="scope.row.status" placeholder="请选择">
-                    <el-option
-                      v-for="(item, index) in zgztOps"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.dm"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </template> -->
             </el-table-column>
             <el-table-column prop="ffny" label="发放年月" :min-width="110">
-              <!-- <template slot-scope="scope">
-                <el-form-item
-                  :prop="'detailList.' + scope.$index + '.ffny'"
-                  :rules="rules.ffny"
-                >
-                  <el-date-picker
-                    v-model="scope.row.ffny"
-                    @change="changeGW"
-                    type="month"
-                    format="yyyy 年 MM 月"
-                    value-format="yyyyMM"
-                    placeholder="选择年月"
-                  >
-                  </el-date-picker>
-                </el-form-item>
-              </template> -->
             </el-table-column>
             <el-table-column prop="gwId" label="岗位" :min-width="120">
-              <!-- <template slot-scope="scope">
-                <el-form-item
-                  :prop="'detailList.' + scope.$index + '.gwId'"
-                  :rules="rules.gwId"
-                >
-                  <el-select
-                    v-model="scope.row.gwId"
-                    placeholder="请选择"
-                    @change="changeGW"
-                    clearable
-                  >
-                    <el-option
-                      v-for="(item, index) in gwOps"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.dm"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </template> -->
             </el-table-column>
             <el-table-column prop="cjbz" label="酬金标准" :min-width="100">
-              <!-- <template slot-scope="scope">
-                {{ scope.row.cjbz }}
-              </template> -->
             </el-table-column>
           </el-table>
         </div>
@@ -101,26 +32,12 @@
             <span class="title">学生列表</span>
           </div>
           <div class="headerRight">
-            <div class="btns borderBlue" @click="mbDown">
-              <i class="icon downIcon"></i
-              ><span class="btutitle">模板下载</span>
+            <div style="margin-right: 15px">
+              <el-input v-model="xsxm" placeholder="请输入学生姓名" clearable>
+              </el-input>
             </div>
-            <div class="btns borderBlue">
-              <el-upload
-                accept=".xlsx,.xls"
-                :auto-upload="true"
-                :action="uploadUrl"
-                :show-file-list="false"
-                :data="fileData"
-                :headers="fileHeader"
-                :on-success="upLoadSuccess"
-                :on-error="upLoadError"
-              >
-                <i class="icon blueIcon"></i><span class="btutitle">导入</span>
-              </el-upload>
-            </div>
-            <div class="btns borderOrange" @click="expor">
-              <i class="icon orangeIcon"></i><span class="btutitle">导出</span>
+            <div class="btns borderBlue" @click="queryStuList">
+              <span class="btutitle1">查询</span>
             </div>
           </div>
         </div>
@@ -149,125 +66,39 @@
             </el-table-column>
             <el-table-column prop="sgsj	" label="上岗时间" min-width="110">
             </el-table-column>
-            <el-table-column prop="gs" label="工时" min-width="150">
-              <template slot-scope="scope">
-                <el-form-item
-                  :prop="'stuList.' + scope.$index + '.gs'"
-                  :rules="rules.gs"
-                >
-                  <el-input-number
-                    v-model="scope.row.gs"
-                    v-if="isEdit == 2"
-                    :min="0"
-                    :max="9999"
-                    controls-position="right"
-                    @change="count(scope.row)"
-                  />
-                  <div v-else>
-                    {{ scope.row.gs }}
-                  </div>
-                </el-form-item>
-              </template>
-            </el-table-column>
             <el-table-column prop="je" label="金额（元）" min-width="150">
-              <template slot-scope="scope">
-                <el-form-item
-                  :prop="'stuList.' + scope.$index + '.je'"
-                  :rules="rules.je"
-                >
-                  <el-input-number
-                    v-model="scope.row.je"
-                    v-if="isEdit == 2"
-                    :min="0"
-                    :max="99999"
-                    controls-position="right"
-                  />
-                  <div v-else>
-                    {{ scope.row.je }}
-                  </div>
-                </el-form-item>
-              </template>
             </el-table-column>
             <el-table-column prop="bz" label="备注" min-width="200">
-              <template slot-scope="scope">
-                <el-form-item
-                  :prop="'stuList.' + scope.$index + '.bz'"
-                  :rules="rules.bz"
-                >
-                  <el-input
-                    v-if="isEdit == 2"
-                    v-model="scope.row.bz"
-                    maxlength="500"
-                  />
-                  <div v-else>
-                    {{ scope.row.je }}
-                  </div>
-                </el-form-item>
-              </template>
             </el-table-column>
           </el-table>
         </div>
       </el-form>
     </div>
-    <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
-      <span>确认导出数据？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="handleConfirm"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
-    <div class="editBottom" v-show="isEdit == 2">
+    <pagination
+      v-show="queryParams.total > 0"
+      :total="queryParams.total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="queryBasicList"
+    />
+    <!-- <div class="editBottom" v-show="isEdit == 2">
       <div class="btn cancel" @click="handleCancle">取消</div>
       <div class="btn confirm" @click="editClick">保存</div>
-    </div>
-    <div class="editBottom" v-show="isEdit == 1 && statusName == '草稿'">
+    </div> -->
+    <!-- <div class="editBottom" v-show="isEdit == 1 && statusName == '草稿'">
       <div class="btn confirm" @click="bianji">编辑</div>
       <div class="btn cancel" @click="back">返回</div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryD } from "@/api/gwsz/gwsz";
-import {
-  queryStuList,
-  updateXscj,
-  exportStu,
-  importStuUpdate,
-  mbDown,
-} from "@/api/thrift/paymentApply";
-import { getToken } from "@/utils/auth";
+import { queryStuList, updateXscj } from "@/api/thrift/paymentApplyYjs";
 export default {
-  computed: {
-    fileData: {
-      get() {
-        return {
-          xn: this.formAdd.detailList[0].xn,
-          ffny: this.formAdd.detailList[0].ffny,
-          gwYrbm: this.formAdd.detailList[0].gwYrbm,
-          gwId: this.formAdd.detailList[0].gwId || "",
-          zgzt: this.formAdd.detailList[0].zgzt || "1",
-        };
-      },
-    },
-    fileHeader: {
-      get() {
-        return {
-          accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
-          uuid: new Date().getTime(),
-          clientId: "111",
-        };
-      },
-    },
-  },
   data() {
     return {
-      uploadUrl:
-        process.env.VUE_APP_BASE_API + "/qgzxCjff/importStuCjffForUpdate",
       formAdd: {
-        gssx: "",
         detailList: [
           {
             xn: "",
@@ -291,7 +122,7 @@ export default {
       gwOps: [],
       statusName: "",
       isEdit: 1,
-      showExport: false,
+      xsxm: "",
       zgztOps: [
         { dm: "1", mc: "在岗" },
         { dm: "2", mc: "全部" },
@@ -303,6 +134,7 @@ export default {
 
         xn: [{ required: true, message: "学年不能为空", trigger: "change" }],
       },
+      delModal: false,
     };
   },
   mounted() {
@@ -317,11 +149,9 @@ export default {
       this.formAdd.detailList[0].xn = this.$route.query.xn;
       this.formAdd.detailList[0].gwYrbmMc = this.$route.query.gwYrbmMc;
 
-      // this.formAdd.detailList[0].status = this.$route.query.status;
       this.queryStuList();
       queryD().then((res) => {
         this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
-        this.formAdd.gssx = res.data.cjbzcjffSzsxNum || "9999"; //工时上限
       });
     },
     // 表单校验
@@ -346,6 +176,14 @@ export default {
         }
       });
     },
+
+    delCancel() {
+      this.delModal = false;
+    },
+    deleteWorkBrifeData(row, index) {
+      this.formAdd.detailList.splice(index, 1);
+    },
+    xmChange() {},
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
@@ -356,22 +194,21 @@ export default {
       this.delArr = val.map((item) => item.id);
       this.tjArr = val.map((item) => item.id);
     },
+    xinzeng() {
+      this.formAdd.detailList.push({});
+    },
     handleCancle() {
       this.$refs.formAdd.clearValidate();
       this.$router.go(-1);
     },
-    count(row) {
-      var arr = row.gs * this.formAdd.detailList[0].cjbz;
-      this.$set(row, "je", arr);
-    },
 
     queryStuList() {
       let data = {
-        xsxm: "",
+        xsxm: this.xsxm || "",
         ffny: this.$route.query.ffny || "",
         gwYrbm: this.$route.query.gwYrbm || "",
         gwId: this.$route.query.gwId || "",
-        zgzt: this.$route.query.zgzt || "1",
+        status: this.$route.query.status,
         xn: this.$route.query.xn,
       };
       queryStuList(data)
@@ -403,72 +240,6 @@ export default {
     },
     back() {
       this.$router.go(-1);
-    },
-    //导入失败
-    upLoadError(err, file, fileList) {
-      this.$message({
-        type: "error",
-        message: "上传失败",
-      });
-    },
-    upLoadSuccess(res, file, fileList) {
-      if (res.errcode == "00") {
-        this.handleSearch();
-        this.$message({
-          type: "success",
-          message: res.errmsg,
-        });
-      } else {
-        this.$message({
-          type: "error",
-          message: res.errmsg,
-        });
-      }
-    },
-    //模板下载
-    mbDown() {
-      mbDown().then((res) => {
-        this.downloadFn(res, "学生列表模板下载", "xlsx");
-        this.$message.success("操作成功");
-      });
-    },
-    // 导出取消
-    handleCancel() {
-      this.showExport = false;
-    },
-    // 导出确认
-    handleConfirm() {
-      this.exportParams.pageNum = 0;
-      this.exportParams.pageSize = 0;
-      exportStu(this.exportParams)
-        .then((res) => {
-          this.downloadFn(res, "学生列表导出.xlsx", "xlsx");
-          if (this.$store.getters.excelcount > 0) {
-            this.$message.success(
-              `已成功导出${this.$store.getters.excelcount}条数据`
-            );
-          }
-        })
-        .catch((err) => {});
-
-      this.showExport = false;
-    },
-    async expor() {
-      let data = {
-        xsxm: "",
-        ffny: this.formAdd.detailList[0].ffny || "",
-        gwYrbm: this.formAdd.detailList[0].gwYrbm || "",
-        gwId: this.formAdd.detailList[0].gwId || "",
-        zgzt: "1",
-        xn: this.formAdd.detailList[0].xn,
-
-        pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
-      }; //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
-      this.exportParams = data;
-      this.showExport = true;
     },
   },
 };
@@ -511,13 +282,14 @@ export default {
       line-height: 28px;
     }
     .headerLeft {
-      width: 70%;
+      width: 50%;
     }
     .headerRight {
       display: flex;
       align-items: center;
       .borderBlue {
-        background: #fff;
+        color: #fff;
+        background: #005657;
         border: 1px solid grey;
       }
       .borderOrange {
@@ -534,14 +306,21 @@ export default {
         background: #005657;
       }
       .btns {
-        margin-right: 15px;
-        padding: 0px 10px;
+        width: 60px;
+        margin-right: 20px;
+        padding: 0px 12px;
         cursor: pointer;
         border-radius: 4px;
         .btutitle {
-          font-size: 14px;
+          width: 84px;
+          height: 26px;
+          line-height: 26px;
           text-align: center;
-          line-height: 32px;
+          cursor: pointer;
+          border: 1px solid #005657;
+          border-radius: 2px;
+          margin-right: 20px;
+          font-size: 14px;
           // vertical-align: middle;
         }
         .btutitle1 {
@@ -569,10 +348,6 @@ export default {
         .lightIcon {
           margin-top: 9px;
           background: url("~@/assets/assistantPng/delete.png") no-repeat;
-        }
-        .downIcon {
-          margin-top: 10px;
-          background: url("~@/assets/images/down.png") no-repeat;
         }
       }
     }

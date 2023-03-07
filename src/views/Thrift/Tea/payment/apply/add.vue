@@ -19,7 +19,11 @@
                   :prop="'detailList.' + scope.$index + '.xn'"
                   :rules="rules.xn"
                 >
-                  <el-select v-model="scope.row.xn" placeholder="请选择">
+                  <el-select
+                    v-model="scope.row.xn"
+                    placeholder="请选择"
+                    @change="changeXn"
+                  >
                     <el-option
                       v-for="(item, index) in xnOptions"
                       :key="index"
@@ -41,6 +45,7 @@
                   <el-select
                     v-model="scope.row.zgzt"
                     placeholder="请选择"
+                    @change="changeGW"
                   >
                     <el-option
                       v-for="(item, index) in zgztOps"
@@ -294,14 +299,13 @@ export default {
     // this.getCode("dmsplcm"); //状态
     // this.formAdd.detailList[0] = { ffny: this.formatDate(new Date()) };
     this.getSchoolYears();
-    this.gwList();
     // this.getYrbm();
   },
 
   methods: {
     //岗位下拉
     gwList() {
-      gwList()
+      gwList({ xn: this.formAdd.detailList[0].xn })
         .then((res) => {
           this.gwOps = res.data;
         })
@@ -328,6 +332,7 @@ export default {
           for (let i = 0; i < this.formAdd.stuList.length; i++) {
             this.formAdd.stuList[i].gs = undefined;
           }
+          this.gwList();
           queryZgJbxxDwh()
             .then((res) => {
               this.formAdd.detailList[0].gwYrbmMc = res.data.mc;
@@ -379,10 +384,6 @@ export default {
     count(row) {
       var arr = row.gs * this.formAdd.detailList[0].cjbz;
       this.$set(row, "je", arr);
-      // countYN({ ygzl: row.gwYgzl || "0" }).then((res) => {
-      //   this.$set(row, "gwNjyxc", res.data.gwNjyxc);
-      //   this.$set(row, "gwYgzsx", res.data.gwYgzsx);
-      // });
     },
 
     queryStuList() {
@@ -427,6 +428,12 @@ export default {
       }
     },
     changeGW(val) {
+      this.queryStuList();
+    },
+    changeXn() {
+      this.gwOps = [];
+      this.$set(this.formAdd.detailList[0], "gwId", "");
+      this.gwList();
       this.queryStuList();
     },
     //导入失败

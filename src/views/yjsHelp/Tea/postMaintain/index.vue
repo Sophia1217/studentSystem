@@ -119,7 +119,7 @@
             :show-overflow-tooltip="true"
           >
           </el-table-column>
-          <el-table-column prop="gwType" label="岗位性质" sortable="custom">
+          <el-table-column prop="gwTypeMc" label="岗位性质" sortable="custom">
           </el-table-column>
           <el-table-column prop="gwNzxsrs" label="需求人数" sortable="custom">
             <template slot-scope="scope">

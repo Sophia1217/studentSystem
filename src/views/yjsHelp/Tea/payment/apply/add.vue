@@ -14,12 +14,16 @@
             style="width: 100%"
           >
             <el-table-column prop="xn" label="学年" :min-width="110">
-              <!-- <template slot-scope="scope">
+              <template slot-scope="scope">
                 <el-form-item
                   :prop="'detailList.' + scope.$index + '.xn'"
                   :rules="rules.xn"
                 >
-                  <el-select v-model="scope.row.xn" placeholder="请选择">
+                  <el-select
+                    v-model="scope.row.xn"
+                    placeholder="请选择"
+                    @change="changeXn"
+                  >
                     <el-option
                       v-for="(item, index) in xnOptions"
                       :key="index"
@@ -28,17 +32,21 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-              </template> -->
+              </template>
             </el-table-column>
             <el-table-column prop="gwYrbmMc" label="用人部门" :min-width="130">
             </el-table-column>
-            <el-table-column prop="status" label="在岗状态" :min-width="110">
-              <!-- <template slot-scope="scope">
+            <el-table-column prop="zgzt" label="在岗状态" :min-width="110">
+              <template slot-scope="scope">
                 <el-form-item
-                  :prop="'detailList.' + scope.$index + '.status'"
-                  :rules="rules.status"
+                  :prop="'detailList.' + scope.$index + '.zgzt'"
+                  :rules="rules.zgzt"
                 >
-                  <el-select v-model="scope.row.status" placeholder="请选择">
+                  <el-select
+                    v-model="scope.row.zgzt"
+                    placeholder="请选择"
+                    @change="changeGW"
+                  >
                     <el-option
                       v-for="(item, index) in zgztOps"
                       :key="index"
@@ -47,10 +55,10 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-              </template> -->
+              </template>
             </el-table-column>
             <el-table-column prop="ffny" label="发放年月" :min-width="110">
-              <!-- <template slot-scope="scope">
+              <template slot-scope="scope">
                 <el-form-item
                   :prop="'detailList.' + scope.$index + '.ffny'"
                   :rules="rules.ffny"
@@ -60,15 +68,36 @@
                     @change="changeGW"
                     type="month"
                     format="yyyy 年 MM 月"
-                    value-format="yyyyMM"
+                    value-format="yyyy-MM"
                     placeholder="选择年月"
                   >
                   </el-date-picker>
                 </el-form-item>
-              </template> -->
+              </template>
+            </el-table-column>
+            <el-table-column prop="gwType" label="岗位性质" :min-width="110">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'detailList.' + scope.$index + '.gwType'"
+                  :rules="rules.gwType"
+                >
+                  <el-select
+                    v-model="scope.row.gwType"
+                    @change="changeXZ"
+                    placeholder="请选择"
+                  >
+                    <el-option
+                      v-for="(item, index) in gwxzOptions"
+                      :key="index"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </template>
             </el-table-column>
             <el-table-column prop="gwId" label="岗位" :min-width="120">
-              <!-- <template slot-scope="scope">
+              <template slot-scope="scope">
                 <el-form-item
                   :prop="'detailList.' + scope.$index + '.gwId'"
                   :rules="rules.gwId"
@@ -87,12 +116,9 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-              </template> -->
+              </template>
             </el-table-column>
-            <el-table-column prop="cjbz" label="酬金标准" :min-width="100">
-              <!-- <template slot-scope="scope">
-                {{ scope.row.cjbz }}
-              </template> -->
+            <el-table-column prop="cjbz" label="酬金标准" :min-width="80">
             </el-table-column>
           </el-table>
         </div>
@@ -119,9 +145,9 @@
                 <i class="icon blueIcon"></i><span class="btutitle">导入</span>
               </el-upload>
             </div>
-            <div class="btns borderOrange" @click="expor">
+            <!-- <div class="btns borderOrange" @click="expor">
               <i class="icon orangeIcon"></i><span class="btutitle">导出</span>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="table">
@@ -149,7 +175,7 @@
             </el-table-column>
             <el-table-column prop="sgsj	" label="上岗时间" min-width="110">
             </el-table-column>
-            <el-table-column prop="gs" label="工时" min-width="150">
+            <!-- <el-table-column prop="gs" label="工时" min-width="150">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'stuList.' + scope.$index + '.gs'"
@@ -157,18 +183,13 @@
                 >
                   <el-input-number
                     v-model="scope.row.gs"
-                    v-if="isEdit == 2"
-                    :min="0"
                     :max="9999"
                     controls-position="right"
                     @change="count(scope.row)"
                   />
-                  <div v-else>
-                    {{ scope.row.gs }}
-                  </div>
                 </el-form-item>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column prop="je" label="金额（元）" min-width="150">
               <template slot-scope="scope">
                 <el-form-item
@@ -177,14 +198,10 @@
                 >
                   <el-input-number
                     v-model="scope.row.je"
-                    v-if="isEdit == 2"
-                    :min="0"
                     :max="99999"
                     controls-position="right"
+                    :readonly="updateJe == '2'"
                   />
-                  <div v-else>
-                    {{ scope.row.je }}
-                  </div>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -194,14 +211,7 @@
                   :prop="'stuList.' + scope.$index + '.bz'"
                   :rules="rules.bz"
                 >
-                  <el-input
-                    v-if="isEdit == 2"
-                    v-model="scope.row.bz"
-                    maxlength="500"
-                  />
-                  <div v-else>
-                    {{ scope.row.je }}
-                  </div>
+                  <el-input v-model="scope.row.bz" maxlength="500" />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -218,26 +228,27 @@
         >
       </span>
     </el-dialog>
-    <div class="editBottom" v-show="isEdit == 2">
+    <div class="editBottom">
       <div class="btn cancel" @click="handleCancle">取消</div>
-      <div class="btn confirm" @click="editClick">保存</div>
-    </div>
-    <div class="editBottom" v-show="isEdit == 1 && statusName == '草稿'">
-      <div class="btn confirm" @click="bianji">编辑</div>
-      <div class="btn cancel" @click="back">返回</div>
+      <div class="btn confirm" @click="addClick">保存</div>
     </div>
   </div>
 </template>
 <script>
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
-import { queryD } from "@/api/gwsz/gwsz";
+import { queryXn } from "@/api/dailyBehavior/yearSum";
+import { getXmXgh } from "@/api/assistantWork/homeSchool";
+import { queryDNew } from "@/api/gwsz/gwsz";
+import { queryZgJbxxDwh } from "@/api/dailyBehavior/thriftbumen";
 import {
-  queryStuList,
-  updateXscj,
+  queryStuDffList,
+  insertXscj,
+  gwList,
   exportStu,
-  importStuUpdate,
+  importStuInsert,
   mbDown,
-} from "@/api/thrift/paymentApply";
+} from "@/api/thrift/paymentApplyYjs";
+import { queryYsjGwszType,queryQgzxGwYjsById } from "@/api/thrift/qgzxgwYjs";
 import { getToken } from "@/utils/auth";
 export default {
   computed: {
@@ -265,37 +276,41 @@ export default {
   data() {
     return {
       uploadUrl:
-        process.env.VUE_APP_BASE_API + "/qgzxCjff/importStuCjffForUpdate",
+        process.env.VUE_APP_BASE_API + "/qgzxCjff/importStuCjffForInsert",
       formAdd: {
         gssx: "",
         detailList: [
           {
             xn: "",
-            status: "在岗",
+            zgzt: "1",
             ffny: "",
             gwYrbmMc: "",
             gwYrbm: "",
             gwId: "",
             cjbz: "",
+            gwType: "",
           },
         ],
-        stuList: [],
+        stuList: [{ je: undefined }],
       },
+      gwxzOptions: [],
+      xmOptions: [],
       sfkgg: "", //1是2否
       xnOptions: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
         totalCount: 0,
+        orderZd: "",
+        orderPx: "",
       },
       gwOps: [],
-      statusName: "",
-      isEdit: 1,
       showExport: false,
       zgztOps: [
         { dm: "1", mc: "在岗" },
         { dm: "2", mc: "全部" },
       ],
+      updateJe: "1",
       rules: {
         ffny: [
           { required: true, message: "发放年月不能为空", trigger: "blur" },
@@ -306,23 +321,20 @@ export default {
     };
   },
   mounted() {
-    this.queryBasicList();
-    this.statusName = this.$route.query.statusName;
+    // this.getCode("dmsplcm"); //状态
+    // this.formAdd.detailList[0] = { ffny: this.formatDate(new Date()) };
+    this.getSchoolYears();
+    // this.getYrbm();
   },
 
   methods: {
-    queryBasicList() {
-      this.formAdd.detailList[0].ffny = this.$route.query.ffny;
-      this.formAdd.detailList[0].gwYrbm = this.$route.query.gwYrbm;
-      this.formAdd.detailList[0].xn = this.$route.query.xn;
-      this.formAdd.detailList[0].gwYrbmMc = this.$route.query.gwYrbmMc;
-
-      // this.formAdd.detailList[0].status = this.$route.query.status;
-      this.queryStuList();
-      queryD().then((res) => {
-        this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
-        this.formAdd.gssx = res.data.cjbzcjffSzsxNum || "9999"; //工时上限
-      });
+    //岗位下拉
+    gwList() {
+      gwList({ xn: this.formAdd.detailList[0].xn })
+        .then((res) => {
+          this.gwOps = res.data;
+        })
+        .catch((err) => {});
     },
     // 表单校验
     checkFormAdd() {
@@ -335,6 +347,34 @@ export default {
         return false;
       }
       return true;
+    },
+
+    getSchoolYears() {
+      queryXn()
+        .then((res) => {
+          this.xnOptions = res.data;
+          this.formAdd.detailList[0].xn = res.data[0].mc;
+          for (let i = 0; i < this.formAdd.stuList.length; i++) {
+            this.formAdd.stuList[i].je = undefined;
+          }
+          this.gwList();
+          queryZgJbxxDwh()
+            .then((res) => {
+              this.formAdd.detailList[0].gwYrbmMc = res.data.mc;
+              this.formAdd.detailList[0].gwYrbm = res.data.dm || "";
+              this.queryStuList();
+            })
+            .catch((err) => {});
+        })
+        .catch((err) => {});
+      queryDNew().then((res) => {
+        // this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
+        this.formAdd.gssx = res.data.cjbzcjffSzsxNum || "9999"; //工时上限
+        // this.updateJe = res.data.cjffTzcjje; //是否允许调整酬金金额,1是2否
+      });
+      queryYsjGwszType().then((res) => {
+        this.gwxzOptions = res.data;
+      });
     },
     getCode(val) {
       const data = { codeTableEnglish: val };
@@ -360,49 +400,74 @@ export default {
       this.$refs.formAdd.clearValidate();
       this.$router.go(-1);
     },
-    count(row) {
-      var arr = row.gs * this.formAdd.detailList[0].cjbz;
-      this.$set(row, "je", arr);
-    },
+    // count(row) {
+    //   var arr = row.gs * this.formAdd.detailList[0].cjbz;
+    //   this.$set(row, "je", arr);
+    // },
 
     queryStuList() {
       let data = {
-        xsxm: "",
-        ffny: this.$route.query.ffny || "",
-        gwYrbm: this.$route.query.gwYrbm || "",
-        gwId: this.$route.query.gwId || "",
-        zgzt: this.$route.query.zgzt || "1",
-        xn: this.$route.query.xn,
+        ffny: this.formAdd.detailList[0].ffny || "",
+        gwYrbm: this.formAdd.detailList[0].gwYrbm || "",
+        gwId: this.formAdd.detailList[0].gwId || "",
+        zgzt: this.formAdd.detailList[0].zgzt || "1",
+        xn: this.formAdd.detailList[0].xn,
+        gwType:this.formAdd.detailList[0].gwType,
       };
-      queryStuList(data)
+      queryStuDffList(data)
         .then((res) => {
           this.formAdd.stuList = res.data;
+          for (let i = 0; i < this.formAdd.stuList.length; i++) {
+            this.formAdd.stuList[i].je = undefined;
+          }
         })
         .catch((err) => {});
     },
-    editClick() {
-      if (!this.checkFormAdd()) {
-        this.$message.error("请完善表单相关信息！");
+    addClick() {
+      if (!this.formAdd.detailList[0].ffny) {
+        this.$message.error("请选择发放年月！");
         return;
       } else {
-        updateXscj(this.formAdd.stuList || []).then((res) => {
+        let data = {
+          ffny: this.formAdd.detailList[0].ffny || "",
+          gwYrbm: this.formAdd.detailList[0].gwYrbm || "",
+          gwId: this.formAdd.detailList[0].gwId || "",
+          // status: this.formAdd.detailList[0].zgzt || "",
+          xn: this.formAdd.detailList[0].xn,
+          qgzxCjffYjsszBaseReqList: this.formAdd.stuList || [],
+        };
+        insertXscj(data).then((res) => {
           if (res.errcode == "00") {
-            this.$message.success("编辑成功");
+            this.$message.success("新增成功");
             this.$router.go(-1);
           } else {
-            this.$message.error("编辑失败");
+            this.$message.error("新增失败");
           }
         });
       }
     },
+    getGwDetail(val){//暂时未用
+      //岗位基本信息
+      queryQgzxGwYjsById({ id: val }).then((res) => {
+        console.log(res);
+        this.formAdd.detailList[0].cjbz = res.data.gwYcjbz;
+      });
+    },
     changeGW(val) {
       this.queryStuList();
     },
-    bianji() {
-      this.isEdit = 2;
+    changeXn() {
+      this.gwOps = [];
+      this.$set(this.formAdd.detailList[0], "gwId", "");
+      this.gwList();
+      this.queryStuList();
     },
-    back() {
-      this.$router.go(-1);
+    changeXZ(val) {
+      this.formAdd.detailList[0].gwType = val;
+      // for (let i = 0; i < this.formAdd.stuList.length; i++) {
+      //   this.formAdd.stuList[i].je = this.formAdd.detailList[0].cjbz;
+      // };
+      this.queryStuList();
     },
     //导入失败
     upLoadError(err, file, fileList) {
@@ -428,7 +493,7 @@ export default {
     //模板下载
     mbDown() {
       mbDown().then((res) => {
-        this.downloadFn(res, "学生列表模板下载", "xlsx");
+        this.downloadFn(res, "酬金发放模板下载", "xlsx");
         this.$message.success("操作成功");
       });
     },
@@ -455,11 +520,10 @@ export default {
     },
     async expor() {
       let data = {
-        xsxm: "",
         ffny: this.formAdd.detailList[0].ffny || "",
         gwYrbm: this.formAdd.detailList[0].gwYrbm || "",
         gwId: this.formAdd.detailList[0].gwId || "",
-        zgzt: "1",
+        zgzt: this.formAdd.detailList[0].zgzt || "1",
         xn: this.formAdd.detailList[0].xn,
 
         pageNum: this.queryParams.pageNum,

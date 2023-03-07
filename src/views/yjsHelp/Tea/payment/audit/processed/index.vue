@@ -152,7 +152,7 @@
 import CheckboxCom from "../../../../../components/checkboxCom";
 import { getXy } from "@/api/assistantWork/themeEdu";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
-import { queryDshList, agree, exportDsh } from "@/api/thrift/paymentApply";
+import { queryDshList, agree, exportDsh } from "@/api/thrift/paymentApplyYjs";
 import lctCom from "../../../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
@@ -300,7 +300,7 @@ export default {
     hadleDetail(row) {
       console.log(row),
         this.$router.push({
-          path: "/Thrift/payment/paymentAuditDetail",
+          path: "/yjsHelp/payment/paymentAuditDetail",
           query: {
             id: row.id,
             gwYrbm: row.dwh,

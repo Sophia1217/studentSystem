@@ -61,9 +61,6 @@
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns fullGreen" @click="pass">
-            <i class="icon passIcon"></i><span class="title1">确认</span>
-          </div>
         </div>
       </div>
       <div class="mt15">
@@ -152,7 +149,7 @@
 import CheckboxCom from "../../../../../components/checkboxCom";
 import { getXy } from "@/api/assistantWork/themeEdu";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
-import { queryDshList, agree, exportDsh } from "@/api/thrift/paymentApply";
+import { queryYshList, exportYsh } from "@/api/thrift/paymentApplyYjs";
 import lctCom from "../../../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
@@ -163,6 +160,8 @@ export default {
       showExport: false,
       lctModal: false,
       ztStatus: [],
+      zdOps: [],
+      status: [],
       searchVal: "",
       select: "",
       isMore: false,
@@ -181,15 +180,7 @@ export default {
         orderZd: "",
         orderPx: "",
       },
-      training: {
-        // 培养层次
-        checkAll: false,
-        choose: [],
-        checkBox: [],
-        isIndeterminate: true,
-      },
       multipleSelection: [],
-      multipleSelection1: "",
       datePicker: [],
       xnOptions: [],
       rules: {
@@ -233,12 +224,13 @@ export default {
     },
     // 导出确认
     handleConfirm() {
+      this.$set(this.exportParams, "idList", this.delArr);
       this.exportParams.pageNum = 0;
       this.exportParams.pageSize = 0;
-      this.$set(this.exportParams, "idList", this.delArr);
-      exportDsh(this.exportParams)
+      this.$set(this.exportParams, "idList", ids);
+      exportYsh(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "酬金发放待确认列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "酬金发放已确认列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -280,40 +272,21 @@ export default {
         }
       });
     },
-    //确认
-    pass() {
-      if (this.multipleSelection.length > 0) {
-        for (let i = 0; i < this.multipleSelection.length; i++) {
-          this.multipleSelection[i].gwYrbm = this.multipleSelection[i].dwh;
-        }
-        var data = this.multipleSelection;
-        agree(data).then((res) => {
-          if (res.errcode == "00") {
-            this.$message.success("已确认");
-            this.handleSearch();
-          }
-        });
-      } else {
-        this.$message.error("请先选择一条数据");
-      }
-    },
+
     hadleDetail(row) {
       console.log(row),
         this.$router.push({
-          path: "/Thrift/payment/paymentAuditDetail",
+          path: "/yjsHelp/payment/paymentAuditDetail",
           query: {
             id: row.id,
             gwYrbm: row.dwh,
             ffny: row.ffny,
             xn: row.xn,
             statusName: row.statusName,
-            status: "02",
+            status: "10",
             gwYrbmMc: row.dwhmc,
           },
         });
-    },
-    changeSelect() {
-      this.searchVal = "";
     },
     // 查询
     handleSearch() {
@@ -334,17 +307,14 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryDshList(data)
+      queryYshList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
         })
         .catch((err) => {});
     },
-    // 点击更多
-    handleMore() {
-      this.isMore = !this.isMore;
-    },
+
     handleCloseLct() {
       this.lctModal = false;
     },
@@ -356,38 +326,6 @@ export default {
       } else {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");
       }
-    },
-    //获取培养层次
-    getCode(data) {
-      this.getCodeInfoByEnglish(data);
-    },
-    getCodeInfoByEnglish(paramsData) {
-      let data = { codeTableEnglish: paramsData };
-      getCodeInfoByEnglish(data)
-        .then((res) => {
-          switch (paramsData) {
-            case "dmpyccm":
-              this.$set(this.training, "checkBox", res.data);
-              break;
-          }
-        })
-        .catch((err) => {});
-    },
-    // 培养层次全选
-    handleCheckAllChangeTraining(val) {
-      let allCheck = [];
-      for (let i in this.training.checkBox) {
-        allCheck.push(this.training.checkBox[i].dm);
-      }
-      this.training.choose = val ? allCheck : [];
-      this.training.isIndeterminate = false;
-    },
-    // 培养层次单选
-    handleCheckedCitiesChangeTraining(value) {
-      let checkedCount = value.length;
-      this.training.checkAll = checkedCount === this.training.checkBox.length;
-      this.training.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.training.checkBox.length;
     },
     // 多选
     handleSelectionChange(val) {
@@ -449,12 +387,6 @@ export default {
         padding: 0px 12px;
         cursor: pointer;
         border-radius: 4px;
-        .title {
-          font-size: 14px;
-          text-align: center;
-          line-height: 32px;
-          // vertical-align: middle;
-        }
         .title1 {
           font-size: 14px;
           text-align: center;

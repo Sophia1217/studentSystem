@@ -1,61 +1,9 @@
 <template>
   <div>
-    <div class="searchWrap">
-      <div class="search">
-        <el-input
-          placeholder="请输入"
-          v-model.trim="searchVal"
-          class="inputSelect"
-          clearable
-        >
-          <el-select
-            v-model="select"
-            @change="changeSelect"
-            class="elSelect"
-            slot="prepend"
-            placeholder="请选择查询条件"
-          >
-            <!-- <el-option label="岗位名称" value="gwMainMc"></el-option>
-            <el-option label="岗位" value="gwDetailMc"></el-option>
-            <el-option label="工作地点" value="gwGzdd"></el-option>
-            <el-option label="指导教师" value="gwZdls"></el-option> -->
-          </el-select>
-          <el-button slot="append" icon="el-icon-search" @click="query"
-            >查询</el-button
-          >
-        </el-input>
-        <div class="more" @click="handleMore">
-          <span>{{ !isMore ? "更多分类" : "收起分类" }}</span>
-          <i v-if="!isMore" class="moreIcon chevronDown"></i>
-          <i v-else class="moreIcon chevronUp"></i>
-        </div>
-      </div>
-      <!-- 更多选择 -->
-      <div class="moreSelect" v-if="isMore">
-        <!-- <el-row :gutter="20" class="mt15">
-          <el-col :span="20">
-            <span>审核状态：</span>
-            <el-select
-              v-model="moreIform.status"
-              multiple
-              placeholder="请选择"
-              collapse-tags
-            >
-              <el-option
-                v-for="(item, index) in ztStatus"
-                :key="index"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
-          </el-col>
-        </el-row> -->
-      </div>
-    </div>
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">勤工助学岗位列表</span>
+          <span class="title">酬金发放列表</span>
           <el-select
             v-model="xn"
             @change="changeXn"
@@ -71,17 +19,20 @@
           <span>学年</span>
         </div>
         <div class="headerRight">
-          <div class="btns borderOrange" @click="expor">
-            <i class="icon orangeIcon"></i><span class="title">导出</span>
-          </div>
-          <div class="btns borderOrange" @click="copy" v-show="AUTHFLAG">
-            <i class="icon copyIcon"></i><span class="title2">复制岗位</span>
-          </div>
           <div class="btns borderLight" @click="showDel" v-show="AUTHFLAG">
-            <i class="icon lightIcon"></i><span class="title">删除岗位</span>
+            <i class="icon lightIcon"></i><span class="title">删除</span>
+          </div>
+          <!-- <div class="btns borderLight" @click="copy" v-show="AUTHFLAG">
+            <i class="icon copyIcon"></i><span class="title2">复制</span>
+          </div> -->
+          <div class="btns borderLight" @click="chModal" v-show="AUTHFLAG">
+            <i class="icon chIcon"></i><span class="title2">撤回</span>
+          </div>
+          <div class="btns borderLight" @click="tjModal" v-show="AUTHFLAG">
+            <i class="icon tjIcon"></i><span class="title2">提交</span>
           </div>
           <div class="btns borderGreen" @click="xinzeng" v-show="AUTHFLAG">
-            <i class="icon greenIcon"></i><span class="title1">新增岗位</span>
+            <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div>
         </div>
       </div>
@@ -101,44 +52,39 @@
             width="50"
           ></el-table-column>
           <el-table-column
-            prop="gwYrbmc"
+            prop="dwhmc"
             label="用人部门"
             sortable="custom"
             :show-overflow-tooltip="true"
-          ></el-table-column>
-          <el-table-column
-            prop="gwMainMc"
-            label="岗位名称"
-            sortable="custom"
-            :show-overflow-tooltip="true"
           />
+          <el-table-column prop="ffny" label="发放年月" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="planRs" label="应发放人数" sortable="custom">
+          </el-table-column>
+          <el-table-column prop="realRs" label="已发放人数" sortable="custom">
+          </el-table-column>
           <el-table-column
-            prop="gwDetailMc"
-            label="岗位"
+            prop="money"
+            label="实发金额（元）"
+            min-width="120px"
+            sortable="custom"
+          >
+          </el-table-column>
+          <el-table-column prop="statusName" label="状态" sortable="custom">
+          </el-table-column>
+          <!-- <el-table-column
+            prop="jg"
+            label="审核进度"
             sortable="custom"
             :show-overflow-tooltip="true"
           >
-          </el-table-column>
-          <el-table-column prop="gwTypeMc" label="岗位性质" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="gwNzxsrs" label="需求人数" sortable="custom">
             <template slot-scope="scope">
-              <el-input
-                v-model="scope.row.gwNzxsrs"
-                maxlength="9"
-                oninput="this.value=this.value.replace(/[^\d]/g,'')"
-                placeholder="请输入数字"
-                controls-position="right"
-                @change="changeRS(scope.row)"
-              />
+              <el-button type="text" size="small" @click="lctClick(scope.row)">
+                <i class="scopeIncon lct"></i>
+                <span>流程图</span>
+              </el-button>
             </template>
-          </el-table-column>
-          <el-table-column prop="zgrs" label="在岗人数" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="tgrs" label="退岗人数" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="qzsj" label="岗位起止时间" sortable="custom">
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
             fixed="right"
             label="操作"
@@ -176,38 +122,39 @@
         >
       </span>
     </el-dialog>
-    <el-dialog
-      title="复制"
-      :visible.sync="copyModal"
-      width="30%"
-      @close="empty()"
-    >
+    <el-dialog title="撤回" :visible.sync="chehuiModal" width="20%">
+      <span>确认撤回？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="chCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="ch()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <el-dialog title="提交" :visible.sync="submitModal" width="30%">
       <template>
-        <el-form :model="fzform" ref="fzform" size="small" :rules="rules">
-          <div>
-            <span>已选择{{ len }}条记录</span>
-            <el-form-item prop="fzxn" label="复制后应用学年">
-              <el-select
-                v-model="fzform.fzxn"
-                style="width: 130px; margin: 0 15px 0"
-              >
-                <el-option
-                  v-for="(item, index) in xnOptions"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.mc"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="岗位起止时间" prop="gwTime" label-width="120px"
-              ><el-date-picker
-                type="daterange"
-                v-model="fzform.gwTime"
-                value-format="yyyy-MM-dd"
-              />
-            </el-form-item>
-          </div>
-        </el-form>
+        <div>
+          <span>确认提交？</span>
+        </div>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="subCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="tj">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog title="复制" :visible.sync="copyModal" width="30%">
+      <template>
+        <div>
+          <span>已选择{{ len }}条记录，复制后应用学年</span>
+          <el-select v-model="fzxn" style="width: 130px; margin: 0 15px 0">
+            <el-option
+              v-for="(item, index) in xnOptions"
+              :key="index"
+              :label="item.mc"
+              :value="item.mc"
+            ></el-option>
+          </el-select>
+        </div>
       </template>
       <span slot="footer" class="dialog-footer">
         <el-button @click="copyCancel">取 消</el-button>
@@ -216,33 +163,32 @@
         >
       </span>
     </el-dialog>
-    <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
-      <span>确认导出？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="handleCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="handleConfirm"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
+    <lctCom
+      ref="child"
+      :lctModal="lctModal"
+      @handleCloseLct="handleCloseLct"
+    ></lctCom>
   </div>
 </template>
 <script>
-import lctCom from "../../../components/lct";
+import lctCom from "../../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
-import { deleteQgzxGw, copyQgzxGw } from "@/api/dailyBehavior/thriftbumen";
 import {
-  queryQgzxGwList,
-  updateNzxsrs,
-  exportGwwhList,
-} from "@/api/thrift/gwMaintain";
+  queryDwList,
+  tjById,
+  cxById,
+  deleteDwList,
+} from "@/api/thrift/paymentApplyYjs";
 export default {
   components: { lctCom },
   data() {
     return {
       AUTHFLAG: false,
       len: 0,
+      xnxjModal: false,
+      submitModal: false,
+      lctModal: false,
       delModal: false,
       copyModal: false,
       tableDate: [],
@@ -250,33 +196,15 @@ export default {
         pageNum: 1,
         pageSize: 10,
         totalCount: 0,
-        orderZd: "",
-        orderPx: "",
       },
       delArr: [],
       tjArr: [],
       ztStatus: [],
       val: [],
+      chehuiModal: false,
+      basicInfo: {},
       xnOptions: [],
-      fzform: {
-        fzxn: "",
-        gwTime: [],
-      },
-      searchVal: "",
-      select: "",
-      isMore: false,
-      moreIform: {
-        status: [], // 学院下拉框
-      },
-      showExport: false,
-      rules: {
-        gwTime: [
-          { required: true, message: "起止时间不能为空", trigger: "blur" },
-        ],
-        fzxn: [
-          { required: true, message: "复制学年不能为空", trigger: "blur" },
-        ],
-      },
+      fzxn: "",
       xn: "",
     };
   },
@@ -284,15 +212,10 @@ export default {
     this.authConfirm(this.$route.path.split("/")[2]);
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getSchoolYears();
-    this.getCode("dmsplcm"); //状态
+    // this.getCode("dmsplcm"); //状态
   },
 
   methods: {
-    empty() {
-      this.$nextTick(() => {
-        this.$refs.fzform.resetFields();
-      });
-    },
     getSchoolYears() {
       queryXn()
         .then((res) => {
@@ -303,14 +226,23 @@ export default {
         .catch((err) => {});
     },
     showDetail(row) {
-      this.$router.push({
-        path: "/Thrift/post/postMaintainDetail",
-        query: { id: row.id, status: row.status, gwId: row.id },
-      });
+      console.log(row),
+        this.$router.push({
+          path: "/yjsHelp/payment/paymentApplyDetail",
+          query: {
+            id: row.id,
+            status: row.status,
+            gwYrbm: row.dwh,
+            ffny: row.ffny,
+            xn: row.xn,
+            statusName: row.statusName,
+            gwYrbmMc: row.dwhmc,
+          },
+        });
     },
     copy() {
       if (this.multipleSelection.length > 0) {
-        this.len = this.multipleSelection.length || "";
+        this.len = this.multipleSelection.length;
         this.copyModal = true;
       } else {
         this.$message.error("请先勾选数据！");
@@ -319,17 +251,62 @@ export default {
     changeXn() {
       this.query();
     },
+    tjModal() {
+      var falg = 1;
+      //判断是否是草稿数据
+      for (var i = 0; i < this.val.length; i++) {
+        if (this.val[i].statusName !== "草稿") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.val && this.val.length > 0) {
+          this.submitModal = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("不是草稿状态数据，不可以提交");
+      }
+    },
+    tj() {
+      for (let i = 0; i < this.val.length; i++) {
+        this.val[i].gwYrbm = this.val[i].dwh;
+      }
+      var data = this.val;
+      tjById(data).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("提交成功");
+          this.query();
+          this.submitModal = false;
+        } else {
+          this.$message.error("提交失败");
+        }
+      });
+    },
+    subCancel() {
+      this.submitModal = false;
+    },
     // 表单校验
     checkFormAdd() {
       // 1.校验必填项
       let validForm = false;
-      this.$refs.fzform.validate((valid) => {
+      this.$refs.formAdd.validate((valid) => {
         validForm = valid;
       });
       if (!validForm) {
         return false;
       }
       return true;
+    },
+    handleCloseLct() {
+      this.lctModal = false;
+    },
+    lctClick(row) {
+      if (!!row.processid) {
+        this.$refs.child.inner(row.processid);
+        this.lctModal = true;
+      } else {
+        this.$message.warning("此项经历为管理员新增，暂无流程数据");
+      }
     },
     checkFormEdit() {
       // 1.校验必填项
@@ -340,7 +317,6 @@ export default {
       if (!validForm) {
         return false;
       }
-
       return true;
     },
     getCode(val) {
@@ -353,15 +329,56 @@ export default {
         }
       });
     },
-    showDel() {
-      if (this.delArr && this.delArr.length > 0) {
-        this.delModal = true;
+    chCancel() {
+      this.chehuiModal = false;
+    },
+    ch() {
+      for (let i = 0; i < this.val.length; i++) {
+        this.val[i].gwYrbm = this.val[i].dwh;
+      }
+      var data = this.val;
+      cxById(data).then((res) => {
+        this.$message.success("撤回成功");
+        this.query();
+        this.chehuiModal = false;
+      });
+    },
+    chModal() {
+      var falg = 1;
+      for (var i = 0; i < this.val.length; i++) {
+        if (this.val[i].statusName !== "待审核") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.val && this.val.length > 0) {
+          this.chehuiModal = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
       } else {
-        this.$message.error("请先勾选数据");
+        this.$message.error("存在非待审核状态数据，不可以撤回");
+      }
+    },
+    showDel() {
+      var falg = 1;
+      for (var i = 0; i < this.val.length; i++) {
+        if (this.val[i].statusName !== "草稿") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.val && this.val.length > 0) {
+          this.delModal = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("存在非草稿状态数据，不可以删除");
       }
     },
     del() {
-      deleteQgzxGw({ ids: this.delArr, ymLy: "1" }).then((res) => {
+      for (let i = 0; i < this.val.length; i++) {
+        this.val[i].gwYrbm = this.val[i].dwh;
+      }
+      var data = this.val;
+      deleteDwList(data).then((res) => {
         this.query();
         this.delModal = false;
         this.$message.success("删除成功");
@@ -378,96 +395,33 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       this.val = val;
-      this.delArr = val.map((item) => item.id);
-      this.tjArr = val.map((item) => item.id);
+      // this.delArr = val.map((item) => item.id);
+      // this.tjArr = val.map((item) => item.id);
     },
     copyCancel() {
       this.copyModal = false;
     },
-    copyConfirm() {
-      if (!this.checkFormAdd()) {
-        this.$message.error("请完善表单相关信息！");
-        return;
-      } else {
-        let data = {
-          ymLy: "1",
-          ids: this.delArr,
-          xn: this.fzform.fzxn,
-          gwStartDate: this.fzform.gwTime[0] || "",
-          gwEndDate: this.fzform.gwTime[1] || "",
-        };
-        console.log(this.delArr);
-        copyQgzxGw(data).then((res) => {
-          this.$message.success("复制成功！");
-          this.query();
-          this.copyModal = false;
-        });
-      }
-    },
-    changeSelect() {
-      this.searchVal = "";
-    },
-    // 点击更多
-    handleMore() {
-      this.isMore = !this.isMore;
-    },
+    copyConfirm() {},
+
     query() {
       var data = {
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",
         orderPx: this.queryParams.orderPx ? this.queryParams.orderPx : "",
-        // status: this.moreIform.status,
         xn: this.xn,
+        loginId: this.$store.getters.userId,
       };
-      queryQgzxGwList(data).then((res) => {
+      queryDwList(data).then((res) => {
         this.tableDate = res.data;
         this.queryParams.totalCount = res.totalCount;
       });
     },
+
     xinzeng() {
       this.$router.push({
-        path: "/Thrift/post/postApplyAdd",
-        query: {
-          ymLy: "1", //岗位维护新增
-        },
+        path: "/yjsHelp/payment/paymentApplyAdd",
       });
-    },
-    changeRS(row) {
-      updateNzxsrs({ id: row.id, gwNzxsrs: row.gwNzxsrs }).then((res) => {
-        this.$message.success("操作成功");
-        this.query();
-      });
-    },
-    expor() {
-      this.showExport = true;
-    },
-    // 导出取消
-    handleCancel() {
-      this.showExport = false;
-    },
-    // 导出确认
-    handleConfirm() {
-      let data = {
-        xn: this.xn,
-        ids: this.delArr,
-
-        pageNum: 0,
-        pageSize: 0,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
-      };
-      exportGwwhList(data)
-        .then((res) => {
-          this.downloadFn(res, "勤工助学岗位维护列表导出.xlsx", "xlsx");
-          if (this.$store.getters.excelcount > 0) {
-            this.$message.success(
-              `已成功导出${this.$store.getters.excelcount}条数据`
-            );
-          }
-          this.showExport = false;
-        })
-        .catch((err) => {});
     },
   },
 };
@@ -548,46 +502,6 @@ export default {
 .mt15 {
   margin-top: 15px;
 }
-.searchWrap {
-  background: #fff;
-  padding: 20px;
-  .search {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    .elSelect {
-      width: 150px;
-    }
-    .inputSelect {
-      width: 50%;
-    }
-    .more {
-      flex: 0 0 100px;
-      margin-left: 20px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      color: #005657;
-      cursor: pointer;
-      .moreIcon {
-        display: block;
-        width: 20px;
-        height: 20px;
-      }
-      .chevronDown {
-        background: url("~@/assets/images/chevronDown.png") no-repeat;
-      }
-      .chevronUp {
-        background: url("~@/assets/images/chevronUp.png") no-repeat;
-      }
-    }
-  }
-  .moreSelect {
-    margin-top: 20px;
-    padding: 20px;
-    background: #fafafa;
-  }
-}
 .tableWrap {
   background: #fff;
   padding: 20px;
@@ -609,7 +523,7 @@ export default {
         margin-left: 10px;
         width: 20px;
         height: 20px;
-        background: url("../../../../assets/images/updata.png") no-repeat;
+        background: url("../../../../../assets/images/updata.png") no-repeat;
       }
     }
     .headerRight {

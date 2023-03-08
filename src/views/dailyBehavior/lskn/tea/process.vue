@@ -55,6 +55,7 @@
           ref="multipleTable"
           @selection-change="handleSelectionChange"
           style="width: 100%"
+          max-height="800"
           @sort-change="changeTableSort"
           show-summary
         >
@@ -157,7 +158,12 @@
         >
       </span>
     </el-dialog>
-    <el-dialog title="新增" :visible.sync="showAdd" width="60%">
+    <el-dialog
+      title="新增"
+      :visible.sync="showAdd"
+      width="60%"
+      @close="closeAdd"
+    >
       <el-form
         ref="formAdd"
         :model="formAdd"
@@ -197,6 +203,7 @@
             label="本科生计划额度（元）"
             align="center"
             prop="bksjhed"
+            :min-width="200"
           >
             <template slot-scope="scope">
               <el-form-item
@@ -217,6 +224,7 @@
             label="研究生计划额度（元）"
             align="center"
             prop="yjsjhed"
+            :min-width="200"
           >
             <template slot-scope="scope">
               <el-form-item
@@ -308,8 +316,8 @@ export default {
       nd: "",
       tableData: [],
       queryParams: {
-        pageNum: 1,
-        pageSize: 10,
+        pageNum: 0,
+        pageSize: 999,
         orderZd: "",
         orderPx: "",
         total: 0,
@@ -317,7 +325,9 @@ export default {
       multipleSelection: [],
       addParams: {},
       allDwh: [],
-      formAdd: { addList: [] },
+      formAdd: {
+        addList: [],
+      },
       rules: {
         dwh: [
           {
@@ -348,6 +358,7 @@ export default {
     // this.handleSearch();
     this.getAllGrade();
   },
+
   created() {
     this.authConfirm(this.$route.path.split("/")[2]);
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
@@ -368,7 +379,6 @@ export default {
     checkFormAdd() {
       // 1.校验必填项
       let validForm = false;
-      let validForm1 = false;
       this.$refs.formAdd.validate((valid) => {
         validForm = valid;
       });
@@ -380,6 +390,11 @@ export default {
     },
     handleDelete() {
       this.showDelete = true;
+    },
+    closeAdd() {
+      this.$set(this.formAdd, "addList", [
+        { dwh: "", bksjhed: "", yjsjhed: "", nd: this.nd },
+      ]);
     },
     dialogCancel() {
       this.showDelete = false;
@@ -402,15 +417,16 @@ export default {
     },
     handleNew() {
       this.showAdd = true;
-      var obj = { dwh: "", bksjhed: "", yjsjhed: "", nd: this.nd };
-      this.formAdd.addList.push(obj);
+      // var obj = { dwh: "", bksjhed: "", yjsjhed: "", nd: this.nd };
+      // this.formAdd.addList.push(obj);
     },
     addConfirm() {
-      if (!this.checkFormAdd) {
+      if (!this.checkFormAdd()) {
         this.$message.error("请完善表单信息！");
       } else {
+        console.log(this.checkFormAdd);
         insert(this.formAdd.addList).then((res) => {
-          this.formAdd = false;
+          this.showAdd = false;
           this.handleSearch();
         });
       }
@@ -439,6 +455,9 @@ export default {
         .then((res) => {
           this.ndOptions = res.data.rows;
           this.nd = res.data.rows[0];
+          this.$set(this.formAdd, "addList", [
+            { dwh: "", bksjhed: "", yjsjhed: "", nd: this.nd },
+          ]);
           this.handleSearch();
         })
         .catch((err) => {});
@@ -524,6 +543,12 @@ export default {
         })
         .catch((err) => {});
     },
+    querySum() {
+      queryAnalyze(this.nd).then((res) => {
+        // console.log(res);
+      });
+    },
+
     // 点击更多
     handleMore() {
       this.isMore = !this.isMore;

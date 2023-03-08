@@ -120,11 +120,13 @@
 
 <script>
 import { xsqrList, xsqr } from "@/api/gzzxdk/gjzxdk";
+import { delwj } from "@/api/assistantWork/classEvent";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
   data() {
     return {
       fileList: [],
+      fileListAdd: [],
       status: "",
       qrExport: false,
       showExport: false,
@@ -157,22 +159,22 @@ export default {
         let idx = fileList.findIndex((item) => item.uid === uid);
         fileList.splice(idx, 1);
         this.$message.error("单个文件大小不得超过10M");
+      } else if (file.status == "ready") {
+        this.fileListAdd.push(file); //修改编辑的文件参数
       }
-      this.fileList = fileList;
     },
     beforeRemove(file, fileList) {
       let uid = file.uid;
-      let idx = fileList.findIndex((item) => item.uid === uid);
-      fileList.splice(idx, 0);
-      this.fileList = fileList;
+      let idx = this.fileListAdd.findIndex((item) => item.uid === uid);
+      this.fileListAdd.splice(idx, 1);
       if (file.id) {
         //如果是后端返回的文件就走删除接口，不然前端自我删除
         delwj({ id: file.id.toString() }).then();
       }
     },
     handleCancelB() {
+      this.fileListAdd = []; //关闭之后把新增的文件清空，免得反复累加
       this.status = "";
-      this.fileList = [];
       this.qrExport = false;
     },
     // 导出确认
@@ -181,8 +183,8 @@ export default {
         let formData = new FormData();
         formData.append("status", this.status);
         formData.append("id", this.id);
-        if (this.fileList.length > 0) {
-          this.fileList.map((file) => {
+        if (this.fileListAdd.length > 0) {
+          this.fileListAdd.map((file) => {
             formData.append("files", file.raw);
           });
         }
@@ -197,8 +199,15 @@ export default {
         this.$message.error("请先选择确认类型");
       }
     },
-
     queren(row) {
+      if (row.fileList && row.fileList.length > 0) {
+        this.fileList = row.fileList.map((ele) => {
+          return {
+            name: ele.fileName,
+            ...ele,
+          };
+        });
+      }
       this.id = row.id;
       this.qrExport = true;
     },

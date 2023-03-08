@@ -874,7 +874,6 @@ export default {
           return;
         } else {
           var data = this.formEdit;
-          console.log("data", data);
           let formData = new FormData();
           formData.append("dkxn", data.xn);
           formData.append("bz", data.bz);

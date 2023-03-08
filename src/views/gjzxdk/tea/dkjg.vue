@@ -310,7 +310,7 @@ export default {
 
   methods: {
     del() {
-      if (this.delArr.length > 0) {
+      if (this.delArr && this.delArr.length > 0) {
         delDkjg({ ids: this.delArr }).then((res) => {
           this.handleSearch();
         });

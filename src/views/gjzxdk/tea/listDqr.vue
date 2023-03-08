@@ -113,7 +113,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">待确认列表</span> <i class="Updataicon"></i>
+          <span class="title">待确认列表</span>
           <el-select
             v-model="moreIform.xn"
             collapse-tags
@@ -201,7 +201,13 @@
         >
       </span>
     </el-dialog> -->
-    <el-dialog title="确认提示" :visible.sync="qrExport" width="30%">
+    <el-dialog
+      title="确认提示"
+      :visible.sync="qrExport"
+      width="30%"
+      @close="handleCancelB"
+      :close-on-click-modal="false"
+    >
       <template>
         <div
           style="
@@ -336,7 +342,6 @@ export default {
         });
       }
     },
-
     upLoadError(err, file, fileList) {
       this.$message({
         type: "error",

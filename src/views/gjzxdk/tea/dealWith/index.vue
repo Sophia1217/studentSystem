@@ -304,12 +304,7 @@
         :close-on-click-modal="false"
       >
         <template>
-          <el-form
-            ref="formEdit"
-            :model="formEdit"
-            :rules="rules"
-            :inline-message="true"
-          >
+          <el-form ref="formEdit" :model="formEdit" :inline-message="true">
             <el-row>
               <h3>学生信息</h3>
               <el-col :span="12">
@@ -413,20 +408,11 @@
               <el-col :span="12">
                 <el-form-item
                   label="贷款总金额（元）"
-                  prop="dkzje"
-                  :rules="rules.common"
                   class="grayBg"
                   label-width="42%"
                 >
                   <div class="sqList">
-                    <el-input-number
-                      :min="0"
-                      :max="9999999"
-                      style="width: 216px"
-                      controls-position="right"
-                      v-model="formEdit.dkzje"
-                      placeholder="请输入内容"
-                    ></el-input-number>
+                    <span> {{ formEdit.dkzje }}</span>
                   </div>
                 </el-form-item>
               </el-col>
@@ -435,121 +421,58 @@
               <el-col :span="12">
                 <el-form-item
                   label="住宿费应收数（元）"
-                  prop="zsfys"
-                  :rules="rules.common"
                   class="grayBg"
                   label-width="42%"
                 >
                   <div class="sqList">
-                    <el-input-number
-                      :min="0"
-                      :max="9999999"
-                      style="width: 216px"
-                      controls-position="right"
-                      v-model="formEdit.zsfys"
-                      placeholder="请输入内容"
-                    ></el-input-number>
+                    <span> {{ formEdit.zsfys }}</span>
                   </div>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item
                   label="学费应收数（元）"
-                  prop="xfys"
-                  :rules="rules.common"
                   class="grayBg"
                   label-width="42%"
                 >
                   <div class="sqList">
-                    <el-input-number
-                      :min="0"
-                      :max="9999999"
-                      style="width: 216px"
-                      controls-position="right"
-                      v-model="formEdit.xfys"
-                      placeholder="请输入内容"
-                    ></el-input-number>
+                    <span> {{ formEdit.xfys }}</span>
                   </div>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item
-                  label="贷款类型"
-                  prop="dklx"
-                  :rules="rules.common"
-                  class="grayBg"
-                  label-width="42%"
-                >
+                <el-form-item label="贷款类型" class="grayBg" label-width="42%">
                   <div class="sqList">
-                    <el-select v-model="formEdit.dklx" placeholder="请选择">
-                      <el-option
-                        v-for="(item, index) in dglxList"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      ></el-option>
-                    </el-select>
+                    <span> {{ formEdit.dklxmc }}</span>
                   </div>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item
-                  label="贷款银行"
-                  prop="dkyh"
-                  :rules="rules.common"
-                  class="grayBg"
-                  label-width="42%"
-                >
+                <el-form-item label="贷款银行" class="grayBg" label-width="42%">
                   <div class="sqList">
-                    <el-select v-model="formEdit.dkyh" placeholder="请选择">
-                      <el-option
-                        v-for="(item, index) in dgyhList"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      ></el-option>
-                    </el-select>
+                    <span> {{ formEdit.dkyhmc }}</span>
                   </div>
                 </el-form-item>
               </el-col>
             </el-row>
-
             <el-row>
               <el-col :span="12">
-                <el-form-item
-                  label="合同编号"
-                  prop="htbh"
-                  :rules="rules.common"
-                  class="grayBg"
-                  label-width="42%"
-                >
+                <el-form-item label="合同编号" class="grayBg" label-width="42%">
                   <div class="sqList">
-                    <el-input
-                      :minlength="0"
-                      :maxlength="50"
-                      v-model="formEdit.htbh"
-                      placeholder="请输入内容"
-                    ></el-input>
+                    <span> {{ formEdit.htbh }}</span>
                   </div>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item
                   label="贷款开始时间"
-                  prop="dkkssj"
-                  :rules="rules.common"
                   class="grayBg"
                   label-width="42%"
                 >
                   <div class="sqList">
-                    <el-date-picker
-                      type="date"
-                      placeholder="选择日期"
-                      value-format="yyyy-MM-dd "
-                      v-model="formEdit.dkkssj"
-                    ></el-date-picker>
+                    <span> {{ formEdit.dkkssj }}</span>
                   </div>
                 </el-form-item>
               </el-col>
@@ -558,52 +481,30 @@
               <el-col :span="12">
                 <el-form-item
                   label="贷款期限（月）"
-                  prop="dkqx"
-                  :rules="rules.common"
                   class="grayBg"
                   label-width="42%"
                 >
                   <div class="sqList">
-                    <el-input-number
-                      :min="0"
-                      :max="100"
-                      style="width: 216px"
-                      controls-position="right"
-                      v-model="formEdit.dkqx"
-                      placeholder="请输入内容"
-                    ></el-input-number>
+                    <span> {{ formEdit.dkqx }}</span>
                   </div>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item
                   label="回执检验码"
-                  prop="hzjym"
-                  :rules="rules.common"
                   class="grayBg"
                   label-width="42%"
                 >
                   <div class="sqList">
-                    <el-input
-                      :minlength="0"
-                      :maxlength="50"
-                      v-model="formEdit.hzjym"
-                      placeholder="请输入内容"
-                    ></el-input>
+                    <span> {{ formEdit.hzjym }}</span>
                   </div>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :span="23">
-                <el-form-item label="备注" prop="bz" :rules="rules.common">
-                  <el-input
-                    v-model="formEdit.bz"
-                    type="textarea"
-                    :autosize="{ minRows: 6, maxRows: 6 }"
-                    placeholder="请输入内容"
-                    maxlength="500"
-                  ></el-input>
+                <el-form-item label="备注" prop="bz">
+                  <span> {{ formEdit.bz }}</span>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -682,15 +583,6 @@ export default {
       dglxList: [],
       dgyhList: [],
       editModal: false,
-      rules: {
-        common: [
-          {
-            required: true,
-            message: "请完善对应表单内容",
-            trigger: "blur",
-          },
-        ],
-      },
       formEdit: {},
       fileListAdd: [],
       showExport: false,

@@ -166,7 +166,6 @@
           :data="tableData"
           ref="multipleTable"
           style="width: 100%"
-          :default-sort="{ prop: 'date', order: 'descending' }"
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55"></el-table-column>
@@ -189,12 +188,7 @@
           <el-table-column prop="dkqx" label="贷款期限（月）"> </el-table-column
           ><el-table-column prop="dkkssj" label="贷款开始时间">
           </el-table-column>
-          <el-table-column
-            prop="status"
-            label="状态"
-            sortable="custom"
-            fixed="right"
-          >
+          <el-table-column prop="status" label="状态" sortable="custom">
             <template slot-scope="scope">
               <el-select
                 v-model="scope.row.status"
@@ -210,6 +204,25 @@
               </el-select>
             </template>
           </el-table-column>
+          <el-table-column
+            prop="fileList"
+            label="结业证书"
+            align="center"
+            width="300"
+            :show-overflow-tooltip="true"
+          >
+            <template slot-scope="scope">
+              <el-upload
+                action="#"
+                class="el-upload"
+                :auto-upload="false"
+                ref="upload"
+                :disabled="true"
+                :file-list="scope.row.fileList"
+              >
+              </el-upload>
+            </template>
+          </el-table-column>
           <el-table-column prop="shrxm" label="确认人"> </el-table-column>
         </el-table>
       </div>
@@ -221,7 +234,13 @@
         @pagination="handleSearch"
       />
     </div>
-    <el-dialog title="确认提示" :visible.sync="qrExport" width="30%">
+    <el-dialog
+      title="确认提示"
+      :visible.sync="qrExport"
+      width="30%"
+      @close="handleCancelB"
+      :close-on-click-modal="false"
+    >
       <template>
         <div
           style="
@@ -521,6 +540,17 @@ export default {
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
+          for (var i = 0; i < this.tableData.length; i++) {
+            if (
+              this.tableData[i].fileList &&
+              this.tableData[i].fileList.length > 0
+            ) {
+              for (var j = 0; j < this.tableData[i].fileList.length; j++) {
+                this.tableData[i].fileList[j].name =
+                  this.tableData[i].fileList[j].fileName;
+              }
+            }
+          }
         })
         .catch((err) => {});
     },

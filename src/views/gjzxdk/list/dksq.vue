@@ -3,7 +3,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">申请列表</span> <i class="Updataicon"></i>
+          <span class="title">申请列表</span>
         </div>
         <div class="headerRight">
           <div class="btns borderLight" @click="showDel">

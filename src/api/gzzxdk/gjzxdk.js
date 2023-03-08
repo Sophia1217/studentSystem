@@ -214,6 +214,26 @@ export function ztxg(query) {
   })
 }
 
+//  教师端-毕业确认已确认列表查询
+export function xsqrList(query) {
+  return request({
+    url: '/rcswByqr/queryByqrXsList',
+    method: 'post',
+    data: query
+  })
+}
+
+// 学生端确认
+export function xsqr(query) {
+  return request({
+    url: '/rcswByqr/importbyqrXsQr',
+    method: 'post',
+    data: query
+  })
+}
+
+
+
 
 
 

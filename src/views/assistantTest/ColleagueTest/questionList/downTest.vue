@@ -53,24 +53,9 @@
             min-width="100"
             sortable="custom"
           />
-          <el-table-column
-            prop="realCount"
-            label="已测评人数"
-            width="110"
-            sortable="custom"
-          />
-          <el-table-column
-            prop="planCount"
-            label="应测评人数"
-            width="110"
-            sortable="custom"
-          />
-          <el-table-column
-            prop="ratio"
-            label="测评率"
-            width="85"
-            sortable="custom"
-          />
+          <el-table-column prop="realCount" label="已测评人数" width="110" />
+          <el-table-column prop="planCount" label="应测评人数" width="110" />
+          <el-table-column prop="ratio" label="测评率" width="85" />
           <el-table-column
             prop="avgScore"
             label="平均分"
@@ -305,7 +290,7 @@ export default {
       this.detailModal = true;
       this.form.xmBpcr = row.xmBpcr;
       let data = {
-        xghBpcr: this.form.xmBpcr,
+        xghBpcr: row.xghBpcr,
         // xghDtr: 1,
 
         wjId: this.$route.query.id,

@@ -704,7 +704,7 @@ export default {
           }
           .downIcon {
             margin-top: 10px;
-            background: url("~@/assets/images/down.png") no-repeat;
+            background: url("~@/assets/images/chehui.png") no-repeat;
           }
         }
       }

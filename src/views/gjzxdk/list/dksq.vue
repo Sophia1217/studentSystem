@@ -318,7 +318,7 @@
             </el-col>
           </el-row>
           <el-row :gutter="20">
-            <el-col :span="20">
+            <el-col :span="23">
               <el-form-item label="备注" prop="bz" :rules="rules.common">
                 <el-input
                   v-model="formAdd.bz"
@@ -591,7 +591,7 @@
             </el-col>
           </el-row>
           <el-row :gutter="20">
-            <el-col :span="20">
+            <el-col :span="23">
               <el-form-item label="备注" prop="bz" :rules="rules.common">
                 <div v-if="editFlag == 2">{{ formEdit.bz }}</div>
                 <el-input
@@ -981,8 +981,6 @@ export default {
       this.fileList = fileList;
     },
     fileChangeEdit(file, fileList) {
-      console.log("file", file);
-      console.log("fileList", fileList);
       if (Number(file.size / 1024 / 1024) > 10) {
         let uid = file.uid;
         let idx = fileList.findIndex((item) => item.uid === uid);
@@ -1011,7 +1009,7 @@ export default {
       } else {
         var data = this.formEdit;
         let formData = new FormData();
-        formData.append("dkxn", this.dkxn);
+        formData.append("dkxn", data.xn);
         formData.append("bz", data.bz);
         formData.append("zsfys", data.zsfys);
         formData.append("xfys", data.xfys);
@@ -1023,8 +1021,8 @@ export default {
         formData.append("dkqx", data.dkqx);
         formData.append("hzjym", data.hzjym);
         formData.append("xh", this.$store.getters.userId);
+        formData.append("shrgh", "");
         formData.append("id", data.id);
-        formData.append("xh", this.$store.getters.userId);
         if (this.fileListAdd.length > 0) {
           this.fileListAdd.map((file) => {
             formData.append("files", file.raw);
@@ -1060,6 +1058,8 @@ export default {
         formData.append("dkqx", data.dkqx);
         formData.append("hzjym", data.hzjym);
         formData.append("xh", this.$store.getters.userId);
+        formData.append("shrgh", "");
+        formData.append("id", "");
         if (this.fileList.length > 0) {
           this.fileList.map((file) => {
             formData.append("files", file.raw);

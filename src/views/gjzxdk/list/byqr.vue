@@ -33,8 +33,8 @@
           <el-table-column prop="dkqx" label="贷款期限（月）"> </el-table-column
           ><el-table-column prop="dkkssj" label="贷款开始时间">
           </el-table-column>
-          <el-table-column prop="status" label="状态" sortable="custom">
-            <template slot-scope="scope">
+          <el-table-column prop="statusChinese" label="状态" sortable="custom">
+            <!-- <template slot-scope="scope">
               <el-select
                 v-model="scope.row.status"
                 placeholder="请选择"
@@ -47,14 +47,20 @@
                   :value="item.dm"
                 ></el-option>
               </el-select>
-            </template>
+            </template> -->
           </el-table-column>
           <el-table-column prop="status" label="操作" sortable="custom">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="queren(scope.row)">
+              <el-button
+                type="text"
+                size="small"
+                @click="queren(scope.row)"
+                v-if="scope.row.status == '05'"
+              >
                 <i class="scopeIncon handledie"></i>
                 <span class="handleName">确认</span>
               </el-button>
+              <span v-else> 已确认</span>
             </template>
           </el-table-column>
         </el-table>

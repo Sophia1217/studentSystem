@@ -188,21 +188,7 @@
           <el-table-column prop="dkqx" label="贷款期限（月）"> </el-table-column
           ><el-table-column prop="dkkssj" label="贷款开始时间">
           </el-table-column>
-          <el-table-column prop="status" label="状态" sortable="custom">
-            <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.status"
-                placeholder="请选择"
-                :disabled="true"
-              >
-                <el-option
-                  v-for="(item, index) in dmgbyqrztm"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select>
-            </template>
+          <el-table-column prop="statusChinese" label="状态" sortable="custom">
           </el-table-column>
           <el-table-column
             prop="fileList"
@@ -354,12 +340,26 @@ export default {
   methods: {
     del() {
       if (this.delArr.length > 0) {
-        delByqr({ ids: this.delArr }).then((res) => {
-          this.handleSearch();
+        this.$confirm("删除提示1", "删除提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          closeOnClickModal: false,
+        }).then(() => {
+          // delByqr({ ids: this.delArr }).then((res) => {
+          //   this.handleSearch();
+          // });
         });
       } else {
         this.$message.error("请先勾选数据");
       }
+
+      // if (this.delArr.length > 0) {
+      //   delByqr({ ids: this.delArr }).then((res) => {
+      //     this.handleSearch();
+      //   });
+      // } else {
+      //   this.$message.error("请先勾选数据");
+      // }
     },
     ///上传
     upLoadSuccess(res, file, fileList) {

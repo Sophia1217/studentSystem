@@ -320,8 +320,14 @@ export default {
   methods: {
     del() {
       if (this.delArr.length > 0) {
-        delByqr({ ids: this.delArr }).then((res) => {
-          this.handleSearch();
+        this.$confirm("是否确认删除数据", "删除提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          closeOnClickModal: false,
+        }).then(() => {
+          delByqr({ ids: this.delArr }).then((res) => {
+            this.handleSearch();
+          });
         });
       } else {
         this.$message.error("请先勾选数据");
@@ -532,12 +538,13 @@ export default {
               break;
             case "dmgbyqrztm":
               //去掉待确认类型
-              this.dmgbyqrztm = res.data.map((item) => {
-                return item.dm !== "05";
-              });
-              // this.dmgbyqrztm = res.data.filter((item) => {
+              // this.dmgbyqrztm = res.data.map((item) => {
               //   return item.dm !== "05";
               // });
+              this.dmgbyqrztm = res.data.filter((item) => {
+                return item.dm !== "05";
+              });
+              console.log(" this.dmgbyqrztm", this.dmgbyqrztm);
               break;
           }
         })

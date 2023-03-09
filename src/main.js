@@ -19,6 +19,7 @@ import "./assets/icons"; // icon
 import "./permission"; // permission control
 import { getDicts } from "@/api/system/dict/data";
 import { getConfigKey } from "@/api/system/config";
+import 'default-passive-events'
 import {
   parseTime,
   resetForm,

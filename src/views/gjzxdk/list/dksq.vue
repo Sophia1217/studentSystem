@@ -858,10 +858,11 @@ export default {
       });
     },
     async showDetail(row) {
-      this.formEdit = row;
-      await getDetails({
+      let res = await getDetails({
         id: row.id,
-      }).then((res) => {
+      });
+      // async await的正确用法是await返回值，而不是直接.then之后获取值
+      if (res.errcode == "00") {
         this.formEdit = res.data;
         if (res.data.fileList && res.data.fileList.length > 0) {
           this.formEdit.fileList = res.data.fileList.map((ele) => {
@@ -872,8 +873,25 @@ export default {
           });
         }
         this.editModal = true;
-      });
-      // this.querywj(row.id);
+      }
+      // await this.querywj(row.id);
+      // this.formEdit = row;
+      // await getDetails({
+      //   id: row.id,
+      // }).then((res) => {
+      //   console.log("limian");
+      //   this.formEdit = res.data;
+      //   if (res.data.fileList && res.data.fileList.length > 0) {
+      //     this.formEdit.fileList = res.data.fileList.map((ele) => {
+      //       return {
+      //         name: ele.fileName,
+      //         ...ele,
+      //       };
+      //     });
+      //   }
+      //   this.editModal = true;
+      // });
+      // console.log("waimian");
     },
     // querywj(data) {
     //   if (this.formEdit.fileList && this.formEdit.fileList.length > 0) {

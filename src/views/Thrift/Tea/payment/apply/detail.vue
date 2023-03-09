@@ -100,7 +100,7 @@
           <div class="headerLeft">
             <span class="title">学生列表</span>
           </div>
-          <div class="headerRight">
+          <div class="headerRight" v-show="isEdit == 2">
             <div class="btns borderBlue" @click="mbDown">
               <i class="icon downIcon"></i
               ><span class="btutitle">模板下载</span>
@@ -147,7 +147,7 @@
             </el-table-column>
             <el-table-column prop="zgName" label="在岗状态" min-width="110">
             </el-table-column>
-            <el-table-column prop="sgsj	" label="上岗时间" min-width="110">
+            <el-table-column prop="sgsj" label="上岗时间" min-width="110">
             </el-table-column>
             <el-table-column prop="gs" label="工时" min-width="150">
               <template slot-scope="scope">
@@ -367,7 +367,7 @@ export default {
 
     queryStuList() {
       let data = {
-        xsxm: "",
+        xm: "",
         ffny: this.$route.query.ffny || "",
         gwYrbm: this.$route.query.gwYrbm || "",
         gwId: this.$route.query.gwId || "",
@@ -413,7 +413,7 @@ export default {
     },
     upLoadSuccess(res, file, fileList) {
       if (res.errcode == "00") {
-        this.handleSearch();
+        this.queryBasicList();
         this.$message({
           type: "success",
           message: res.errmsg,
@@ -455,7 +455,7 @@ export default {
     },
     async expor() {
       let data = {
-        xsxm: "",
+        xm: "",
         ffny: this.formAdd.detailList[0].ffny || "",
         gwYrbm: this.formAdd.detailList[0].gwYrbm || "",
         gwId: this.formAdd.detailList[0].gwId || "",

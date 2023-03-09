@@ -26,6 +26,8 @@
         </el-table-column>
         <el-table-column prop="sgsj" label="上岗日期" min-width="110">
         </el-table-column>
+        <el-table-column prop="tgsj" label="退岗日期" min-width="110">
+        </el-table-column>
       </el-table>
     </div>
     <pagination

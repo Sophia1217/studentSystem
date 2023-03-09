@@ -249,7 +249,7 @@ export default {
 
       this.showExport = false;
     },
-    async expor() {
+    expor() {
       let rqs,
         rqe = "";
       if (this.datePicker && this.datePicker.length > 0) {
@@ -274,7 +274,7 @@ export default {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
         switch (val) {
-          case "dmsplcm": //审批结果
+          case "dmsplcm": //审批结果 
             this.ztStatus = res.data;
             break;
         }

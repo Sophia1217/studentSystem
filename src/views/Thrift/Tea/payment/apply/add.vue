@@ -305,7 +305,10 @@ export default {
   methods: {
     //岗位下拉
     gwList() {
-      gwList({ xn: this.formAdd.detailList[0].xn })
+      gwList({
+        xn: this.formAdd.detailList[0].xn,
+        gwYrbm: this.formAdd.detailList[0].gwYrbm,
+      })
         .then((res) => {
           this.gwOps = res.data;
         })
@@ -332,12 +335,12 @@ export default {
           for (let i = 0; i < this.formAdd.stuList.length; i++) {
             this.formAdd.stuList[i].gs = undefined;
           }
-          this.gwList();
           queryZgJbxxDwh()
             .then((res) => {
               this.formAdd.detailList[0].gwYrbmMc = res.data.mc;
               this.formAdd.detailList[0].gwYrbm = res.data.dm || "";
               this.queryStuList();
+              this.gwList();
             })
             .catch((err) => {});
         })
@@ -445,7 +448,7 @@ export default {
     },
     upLoadSuccess(res, file, fileList) {
       if (res.errcode == "00") {
-        this.handleSearch();
+        this.queryStuList();
         this.$message({
           type: "success",
           message: res.errmsg,

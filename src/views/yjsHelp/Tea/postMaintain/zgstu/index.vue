@@ -268,6 +268,7 @@ export default {
     },
     xinzeng() {
       this.addModal = true;
+      this.xm = "";
       this.queryAllXs();
     },
     addCancel() {

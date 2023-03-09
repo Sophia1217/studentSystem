@@ -33,7 +33,7 @@
           </div>
           <div class="headerRight">
             <div style="margin-right: 15px">
-              <el-input v-model="xsxm" placeholder="请输入学生姓名" clearable>
+              <el-input v-model="xm" placeholder="请输入学生姓名" clearable>
               </el-input>
             </div>
             <div class="btns borderBlue" @click="queryStuList">
@@ -124,7 +124,7 @@ export default {
       gwOps: [],
       statusName: "",
       isEdit: 1,
-      xsxm: "",
+      xm: "",
       zgztOps: [
         { dm: "1", mc: "在岗" },
         { dm: "2", mc: "全部" },
@@ -214,7 +214,7 @@ export default {
 
     queryStuList() {
       let data = {
-        xsxm: this.xsxm || "",
+        xm: this.xm || "",
         ffny: this.$route.query.ffny || "",
         gwYrbm: this.$route.query.gwYrbm || "",
         gwId: this.$route.query.gwId || "",

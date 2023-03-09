@@ -86,7 +86,8 @@
                   oninput="this.value=this.value.replace(/[^\d]/g,'')"
                   placeholder="请输入数字"
                   style="width: 100px"
-                  @keyup.enter.native="handleUpdata(scope.row)"
+                  @keyup.enter.native="handleUpdata($event, scope.row, 1)"
+                  @blur="handleUpdata($event, scope.row, 1)"
                 />
               </template>
             </el-table-column>
@@ -118,7 +119,8 @@
                   oninput="this.value=this.value.replace(/[^\d]/g,'')"
                   placeholder="请输入数字"
                   style="width: 100px"
-                  @keyup.enter.native="handleUpdata(scope.row)"
+                  @keyup.enter.native="handleUpdata($event, scope.row, 2)"
+                  @blur="handleUpdata($event, scope.row, 2)"
                 />
               </template>
             </el-table-column>
@@ -275,6 +277,15 @@
         >
       </span>
     </el-dialog>
+    <el-dialog title="修改班级确认提示" :visible.sync="sureModal" width="30%">
+      <span>是否修改计划额度为{{ rowEdit }}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="sureCancel">取消</el-button>
+        <el-button type="primary" @click="sureConfirm" class="confirm"
+          >确定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -310,6 +321,7 @@ export default {
     return {
       showExport: false,
       showDelete: false,
+      sureModal: false,
       uploadUrl: process.env.VUE_APP_BASE_API + "/rcswLsknEd/import",
       showAdd: false,
       ndOptions: [],
@@ -328,6 +340,8 @@ export default {
       formAdd: {
         addList: [],
       },
+      row: {},
+      rowEdit: "",
       rules: {
         dwh: [
           {
@@ -391,11 +405,7 @@ export default {
     handleDelete() {
       this.showDelete = true;
     },
-    closeAdd() {
-      this.$set(this.formAdd, "addList", [
-        { dwh: "", bksjhed: "", yjsjhed: "", nd: this.nd },
-      ]);
-    },
+    closeAdd() {},
     dialogCancel() {
       this.showDelete = false;
     },
@@ -417,8 +427,33 @@ export default {
     },
     handleNew() {
       this.showAdd = true;
-      // var obj = { dwh: "", bksjhed: "", yjsjhed: "", nd: this.nd };
-      // this.formAdd.addList.push(obj);
+      this.$set(this.formAdd, "addList", [
+        { dwh: "", bksjhed: "", yjsjhed: "", nd: this.nd },
+      ]);
+    },
+    sureCancel() {
+      this.sureModal = false;
+      this.handleSearch();
+    },
+    sureConfirm() {
+      if (this.rowEdit == "") {
+        this.$message.error("计划额度不能为空");
+      } else {
+        let data = {
+          nd: this.nd,
+          bksjhed: this.row.bksjhed,
+          bkssyed: this.row.bkssyed,
+          dwh: this.row.dwh,
+          id: this.row.id,
+          yjsjhed: this.row.yjsjhed,
+          yjssyed: this.row.yjssyed,
+        };
+        updateLsknEd(data).then((res) => {
+          this.$message.success("更新成功");
+        });
+      }
+      this.handleSearch();
+      this.sureModal = false;
     },
     addConfirm() {
       if (!this.checkFormAdd()) {
@@ -435,19 +470,26 @@ export default {
       this.showAdd = false;
     },
     //更新
-    handleUpdata(row) {
-      let data = {
-        nd: this.nd,
-        bksjhed: row.bksjhed,
-        bkssyed: row.bkssyed,
-        dwh: row.dwh,
-        id: row.id,
-        yjsjhed: row.yjsjhed,
-        yjssyed: row.yjssyed,
-      };
-      updateLsknEd(data).then((res) => {
-        this.$message.success("更新成功");
-      });
+    handleUpdata(e, row, num) {
+      this.sureModal = true;
+      this.row = row;
+      if (num == 1) {
+        this.rowEdit = row.bksjhed;
+      } else if (num == 2) {
+        this.rowEdit = row.yjsjhed;
+      }
+      // let data = {
+      //   nd: this.nd,
+      //   bksjhed: row.bksjhed,
+      //   bkssyed: row.bkssyed,
+      //   dwh: row.dwh,
+      //   id: row.id,
+      //   yjsjhed: row.yjsjhed,
+      //   yjssyed: row.yjssyed,
+      // };
+      // updateLsknEd(data).then((res) => {
+      //   this.$message.success("更新成功");
+      // });
     },
     //获取年级
     getAllGrade() {
@@ -479,6 +521,7 @@ export default {
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
+        nd: this.nd,
       };
       if (this.multipleSelection.length > 0) {
         zxjdExp({ idList: idList }).then((res) => {

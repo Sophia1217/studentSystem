@@ -67,7 +67,7 @@
                 </el-form-item>
               </template> -->
             </el-table-column>
-            <el-table-column prop="gwId" label="岗位" :min-width="120">
+            <el-table-column prop="gw" label="岗位" :min-width="120">
               <!-- <template slot-scope="scope">
                 <el-form-item
                   :prop="'detailList.' + scope.$index + '.gwId'"
@@ -89,10 +89,10 @@
                 </el-form-item>
               </template> -->
             </el-table-column>
-            <el-table-column prop="cjbz" label="酬金标准" :min-width="100">
-              <!-- <template slot-scope="scope">
-                {{ scope.row.cjbz }}
-              </template> -->
+            <el-table-column label="酬金标准" :min-width="100">
+              <div v-for="(item, index) in gwxzOptions" :key="index">
+                {{ item.mc }}:{{ item.je }}元
+              </div>
             </el-table-column>
           </el-table>
         </div>
@@ -100,7 +100,7 @@
           <div class="headerLeft">
             <span class="title">学生列表</span>
           </div>
-          <div class="headerRight">
+          <div class="headerRight" v-show="isEdit == 2">
             <div class="btns borderBlue" @click="mbDown">
               <i class="icon downIcon"></i
               ><span class="btutitle">模板下载</span>
@@ -147,7 +147,7 @@
             </el-table-column>
             <el-table-column prop="zgName" label="在岗状态" min-width="110">
             </el-table-column>
-            <el-table-column prop="sgsj	" label="上岗时间" min-width="110">
+            <el-table-column prop="sgsj" label="上岗时间" min-width="110">
             </el-table-column>
             <el-table-column prop="je" label="金额（元）" min-width="150">
               <template slot-scope="scope">
@@ -180,7 +180,7 @@
                     maxlength="500"
                   />
                   <div v-else>
-                    {{ scope.row.je }}
+                    {{ scope.row.bz }}
                   </div>
                 </el-form-item>
               </template>
@@ -218,6 +218,7 @@ import {
   importStuUpdate,
   mbDown,
 } from "@/api/thrift/paymentApplyYjs";
+import { queryYsjGwszType, queryQgzxGwYjsById } from "@/api/thrift/qgzxgwYjs";
 import { getToken } from "@/utils/auth";
 export default {
   computed: {
@@ -269,6 +270,7 @@ export default {
         totalCount: 0,
       },
       gwOps: [],
+      gwxzOptions: [],
       statusName: "",
       isEdit: 1,
       showExport: false,
@@ -296,13 +298,16 @@ export default {
       this.formAdd.detailList[0].gwYrbm = this.$route.query.gwYrbm;
       this.formAdd.detailList[0].xn = this.$route.query.xn;
       this.formAdd.detailList[0].gwYrbmMc = this.$route.query.gwYrbmMc;
-
+      this.formAdd.detailList[0].gw = this.$route.query.gw;
       // this.formAdd.detailList[0].status = this.$route.query.status;
       this.queryStuList();
-      queryDNew().then((res) => {
-        this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
-        this.formAdd.gssx = res.data.cjbzcjffSzsxNum || "9999"; //工时上限
-        // this.updateJe = res.data.cjffTzcjje; //是否允许调整酬金金额,1是2否
+      // queryDNew().then((res) => {
+      //   //this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
+      //   this.formAdd.gssx = res.data.cjbzcjffSzsxNum || "9999"; //工时上限
+      //   // this.updateJe = res.data.cjffTzcjje; //是否允许调整酬金金额,1是2否
+      // });
+      queryYsjGwszType().then((res) => {
+        this.gwxzOptions = res.data;
       });
     },
     // 表单校验

@@ -21,10 +21,10 @@
             </el-table-column>
             <el-table-column prop="ffny" label="发放年月" :min-width="110">
             </el-table-column>
-            <el-table-column prop="gwId" label="岗位" :min-width="120">
+            <el-table-column prop="gw" label="岗位" :min-width="120">
             </el-table-column>
-            <el-table-column prop="cjbz" label="酬金标准" :min-width="100">
-            </el-table-column>
+            <!-- <el-table-column prop="cjbz" label="酬金标准" :min-width="100">
+            </el-table-column> -->
           </el-table>
         </div>
         <div class="headerTop">
@@ -64,7 +64,7 @@
             </el-table-column>
             <el-table-column prop="zgName" label="在岗状态" min-width="110">
             </el-table-column>
-            <el-table-column prop="sgsj	" label="上岗时间" min-width="110">
+            <el-table-column prop="sgsj" label="上岗时间" min-width="110">
             </el-table-column>
             <el-table-column prop="je" label="金额（元）" min-width="150">
             </el-table-column>
@@ -117,7 +117,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        totalCount: 0,
+        total: 0,
       },
       gwOps: [],
       statusName: "",
@@ -148,7 +148,7 @@ export default {
       this.formAdd.detailList[0].gwYrbm = this.$route.query.gwYrbm;
       this.formAdd.detailList[0].xn = this.$route.query.xn;
       this.formAdd.detailList[0].gwYrbmMc = this.$route.query.gwYrbmMc;
-
+      this.formAdd.detailList[0].gw = this.$route.query.gw;
       this.queryStuList();
       queryD().then((res) => {
         this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
@@ -214,6 +214,7 @@ export default {
       queryStuList(data)
         .then((res) => {
           this.formAdd.stuList = res.data;
+          this.queryParams.total = res.totalCount;
         })
         .catch((err) => {});
     },

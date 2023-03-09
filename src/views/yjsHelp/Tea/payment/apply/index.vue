@@ -237,6 +237,7 @@ export default {
             xn: row.xn,
             statusName: row.statusName,
             gwYrbmMc: row.dwhmc,
+            gw: row.gw,
           },
         });
     },

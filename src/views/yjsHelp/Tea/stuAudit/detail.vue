@@ -19,7 +19,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="用人部门" prop="gwYrbm" label-width="100px">
-                {{ formEdit.gwYrbm }}
+                {{ formEdit.gwYrbmc }}
               </el-form-item>
             </el-col>
           </el-row>

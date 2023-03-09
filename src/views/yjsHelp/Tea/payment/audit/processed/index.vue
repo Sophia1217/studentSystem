@@ -309,6 +309,7 @@ export default {
             statusName: row.statusName,
             status: "02",
             gwYrbmMc: row.dwhmc,
+            gw: row.gw,
           },
         });
     },

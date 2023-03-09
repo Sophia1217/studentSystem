@@ -34,7 +34,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column prop="gwYrbmMc" label="用人部门" :min-width="130">
+            <el-table-column prop="gwYrbmMc" label="用人部门" :min-width="100">
             </el-table-column>
             <el-table-column prop="zgzt" label="在岗状态" :min-width="110">
               <template slot-scope="scope">
@@ -75,7 +75,7 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column prop="gwType" label="岗位性质" :min-width="110">
+            <!-- <el-table-column prop="gwType" label="岗位性质" :min-width="110">
               <template slot-scope="scope">
                 <el-form-item
                   :prop="'detailList.' + scope.$index + '.gwType'"
@@ -95,7 +95,7 @@
                   </el-select>
                 </el-form-item>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column prop="gwId" label="岗位" :min-width="120">
               <template slot-scope="scope">
                 <el-form-item
@@ -118,7 +118,10 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column prop="cjbz" label="酬金标准" :min-width="80">
+            <el-table-column label="酬金标准" :min-width="100">
+              <div v-for="(item, index) in gwxzOptions" :key="index">
+                {{ item.mc }}:{{ item.je }}元
+              </div>
             </el-table-column>
           </el-table>
         </div>
@@ -173,7 +176,7 @@
             </el-table-column>
             <el-table-column prop="zgName" label="在岗状态" min-width="110">
             </el-table-column>
-            <el-table-column prop="sgsj	" label="上岗时间" min-width="110">
+            <el-table-column prop="sgsj" label="上岗时间" min-width="110">
             </el-table-column>
             <!-- <el-table-column prop="gs" label="工时" min-width="150">
               <template slot-scope="scope">
@@ -198,7 +201,7 @@
                 >
                   <el-input-number
                     v-model="scope.row.je"
-                    :max="99999"
+                    :max="Number(scope.row.cjsx)"
                     controls-position="right"
                     :readonly="updateJe == '2'"
                   />
@@ -248,7 +251,7 @@ import {
   importStuInsert,
   mbDown,
 } from "@/api/thrift/paymentApplyYjs";
-import { queryYsjGwszType,queryQgzxGwYjsById } from "@/api/thrift/qgzxgwYjs";
+import { queryYsjGwszType, queryQgzxGwYjsById } from "@/api/thrift/qgzxgwYjs";
 import { getToken } from "@/utils/auth";
 export default {
   computed: {
@@ -287,8 +290,8 @@ export default {
             gwYrbmMc: "",
             gwYrbm: "",
             gwId: "",
-            cjbz: "",
-            gwType: "",
+            //cjbz: "",
+            //gwType: "",
           },
         ],
         stuList: [{ je: undefined }],
@@ -330,7 +333,10 @@ export default {
   methods: {
     //岗位下拉
     gwList() {
-      gwList({ xn: this.formAdd.detailList[0].xn })
+      gwList({
+        xn: this.formAdd.detailList[0].xn,
+        gwYrbm: this.formAdd.detailList[0].gwYrbm,
+      })
         .then((res) => {
           this.gwOps = res.data;
         })
@@ -357,12 +363,13 @@ export default {
           for (let i = 0; i < this.formAdd.stuList.length; i++) {
             this.formAdd.stuList[i].je = undefined;
           }
-          this.gwList();
+
           queryZgJbxxDwh()
             .then((res) => {
               this.formAdd.detailList[0].gwYrbmMc = res.data.mc;
               this.formAdd.detailList[0].gwYrbm = res.data.dm || "";
               this.queryStuList();
+              this.gwList();
             })
             .catch((err) => {});
         })
@@ -412,7 +419,7 @@ export default {
         gwId: this.formAdd.detailList[0].gwId || "",
         zgzt: this.formAdd.detailList[0].zgzt || "1",
         xn: this.formAdd.detailList[0].xn,
-        gwType:this.formAdd.detailList[0].gwType,
+        gwType: "",
       };
       queryStuDffList(data)
         .then((res) => {
@@ -446,7 +453,8 @@ export default {
         });
       }
     },
-    getGwDetail(val){//暂时未用
+    getGwDetail(val) {
+      //暂时未用
       //岗位基本信息
       queryQgzxGwYjsById({ id: val }).then((res) => {
         console.log(res);

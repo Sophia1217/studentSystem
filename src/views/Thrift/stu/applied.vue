@@ -48,7 +48,8 @@
           </el-table-column>
           <el-table-column prop="gwGzdd" label="工作地点" sortable="custom">
           </el-table-column>
-
+          <el-table-column prop="sfzg" label="在岗状态" sortable="custom">
+          </el-table-column>
           <el-table-column
             prop="gwYgzsx"
             label="月工资上限(元)"

@@ -201,10 +201,10 @@
                   <el-input
                     v-if="isEdit == 2"
                     v-model="scope.row.bz"
-                    maxlength="500"
+                    maxlength="200"
                   />
                   <div v-else>
-                    {{ scope.row.je }}
+                    {{ scope.row.bz }}
                   </div>
                 </el-form-item>
               </template>

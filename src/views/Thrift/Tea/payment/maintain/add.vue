@@ -173,6 +173,10 @@
                     v-model="scope.row.gs"
                     @change="count(scope.row)"
                     type="number"
+                    @input="
+                      if (scope.row.gs > Number(formAdd.gssx))
+                        scope.row.gs = Number(formAdd.gssx);
+                    "
                   />
                 </el-form-item>
               </template>
@@ -187,6 +191,10 @@
                     v-model="scope.row.je"
                     :readonly="updateJe == '2'"
                     type="number"
+                    @input="
+                      if (scope.row.je > Number(scope.row.cjsx))
+                        scope.row.je = Number(scope.row.cjsx);
+                    "
                   />
                 </el-form-item>
               </template>
@@ -351,9 +359,10 @@ export default {
       if (
         !this.formAdd.detailList[0].ffny ||
         !this.formAdd.detailList[0].gwYrbm ||
+        !this.formAdd.detailList[0].gwId ||
         !this.formAdd.xh
       ) {
-        this.$message.error("学生、发放年月、用人部门必填！");
+        this.$message.error("学生、用人部门、岗位、发放年月必填！");
         return;
       } else {
         let data = {
@@ -385,13 +394,21 @@ export default {
       if (this.formAdd.detailList[0].gwYrbm !== "") {
         this.gwOps = [];
         this.$set(this.formAdd.detailList[0], "gwId", "");
-        this.gwList();
+        if (!this.formAdd.xh) {
+          this.$message.error("请输入学生姓名或学号!");
+        } else {
+          this.gwList();
+        }
       }
     },
     changeYrbm() {
       this.gwOps = [];
       this.$set(this.formAdd.detailList[0], "gwId", "");
-      this.gwList();
+      if (!this.formAdd.xh) {
+        this.$message.error("请输入学生姓名或学号!");
+      } else {
+        this.gwList();
+      }
     },
     //学院部门，权限
     getAllXy() {

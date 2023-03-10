@@ -212,7 +212,7 @@
               v-model="formAdd.bz"
               :rows="5"
               show-word-limit
-              maxlength="200"
+              maxlength="500"
             />
           </el-form-item>
         </div>

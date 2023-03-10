@@ -177,6 +177,7 @@
                 >
                   <el-input-number
                     v-model="scope.row.je"
+                    :min="0"
                     :max="Number(scope.row.cjsx) || 99999"
                     controls-position="right"
                     :readonly="updateJe == '2'"

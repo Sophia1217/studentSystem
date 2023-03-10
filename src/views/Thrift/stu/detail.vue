@@ -179,7 +179,7 @@
                 <div class="wrap">
                   <div class="title">性别</div>
                   <div class="content">
-                    {{ basicInfo.xbmmc }}
+                    {{ basicInfo.xbmc }}
                   </div>
                 </div>
               </el-col>

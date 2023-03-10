@@ -165,6 +165,10 @@
                     v-show="isEdit == 2"
                     v-model="scope.row.gs"
                     type="number"
+                    @input="
+                      if (scope.row.gs > Number(formAdd.gssx))
+                        scope.row.gs = Number(formAdd.gssx);
+                    "
                     @change="count(scope.row)"
                   />
                   <div v-show="isEdit == 1">{{ scope.row.gs }}</div>
@@ -181,8 +185,14 @@
                     v-show="isEdit == 2 && updateJe == '1'"
                     v-model="scope.row.je"
                     type="number"
+                    @input="
+                      if (scope.row.je > Number(scope.row.cjsx))
+                        scope.row.je = Number(scope.row.cjsx);
+                    "
                   />
-                  <div v-show="isEdit == 1">{{ scope.row.je }}</div>
+                  <div v-show="isEdit == 1 || (isEdit == 2 && updateJe == '2')">
+                    {{ scope.row.je }}
+                  </div>
                 </el-form-item>
               </template>
             </el-table-column>
@@ -212,7 +222,7 @@
       <div class="btn cancel" @click="handleCancle">取消</div>
       <div class="btn confirm" @click="editClick">保存</div>
     </div>
-    <div class="editBottom" v-show="isEdit == 1">
+    <div class="editBottom" v-show="isEdit == 1 && AUTHFLAG">
       <div class="btn confirm" @click="bianji">编辑</div>
       <div class="btn cancel" @click="back">返回</div>
     </div>
@@ -229,6 +239,7 @@ export default {
   computed: {},
   data() {
     return {
+      AUTHFLAG: false,
       updateJe: "1",
       isEdit: 1, //1详情，2编辑
       basicInfo: {},
@@ -273,6 +284,8 @@ export default {
     };
   },
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getDetail();
     // this.getAllXy();
   },

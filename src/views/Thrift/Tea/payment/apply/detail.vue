@@ -159,6 +159,10 @@
                     v-model="scope.row.gs"
                     v-if="isEdit == 2"
                     type="number"
+                    @input="
+                      if (scope.row.gs > Number(formAdd.gssx))
+                        scope.row.gs = Number(formAdd.gssx);
+                    "
                     @change="count(scope.row)"
                   />
                   <div v-else>
@@ -173,14 +177,16 @@
                   :prop="'stuList.' + scope.$index + '.je'"
                   :rules="rules.je"
                 >
-                  <el-input-number
+                  <el-input
                     v-model="scope.row.je"
-                    v-if="isEdit == 2 && updateJe == '1'"
-                    :min="0"
-                    :max="99999"
-                    controls-position="right"
+                    type="number"
+                    v-show="isEdit == 2 && updateJe == '1'"
+                    @input="
+                      if (scope.row.je > Number(scope.row.cjsx))
+                        scope.row.je = Number(scope.row.cjsx);
+                    "
                   />
-                  <div v-else>
+                  <div v-show="isEdit == 1 || (isEdit == 2 && updateJe == '2')">
                     {{ scope.row.je }}
                   </div>
                 </el-form-item>

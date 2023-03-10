@@ -67,18 +67,25 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="20">
-            <span>金额：</span>
-            <el-date-picker
-              type="monthrange"
-              placeholder="选择年月"
-              v-model="datePicker"
-              format="yyyy 年 MM 月"
-              value-format="yyyy-MM"
-              range-separator="至"
-              start-placeholder="开始年月"
-              end-placeholder="结束年月"
-            ></el-date-picker>
+          <el-col :span="1.5" style="display: inline-block; line-height: 37px"
+            >金额（区间）:</el-col
+          >
+          <el-col :span="1.5">
+            <el-input-number
+              v-model="moreIform.moneyStart"
+              :controls="false"
+              style="width: 70%"
+            ></el-input-number>
+          </el-col>
+          <el-col :span="0.5" style="margin-top: 7px; margin-left: -52px">
+            ——
+          </el-col>
+          <el-col :span="1.5">
+            <el-input-number
+              v-model="moreIform.moneyEnd"
+              :controls="false"
+              style="width: 70%"
+            ></el-input-number>
           </el-col>
         </el-row>
       </div>
@@ -276,8 +283,8 @@ export default {
       select: "",
       isMore: false,
       moreIform: {
-        moneyStart: "",
-        moneyEnd: "",
+        moneyStart: 1,
+        moneyEnd: 999999,
         gwYrbmList: [], // 学院下拉框
       },
       allDwh: [], // 学院下拉框
@@ -401,8 +408,8 @@ export default {
         gw: this.select == "gw" ? this.searchVal : null,
         xn: this.xn,
         gwYrbmList: this.moreIform.gwYrbmList,
-        moneyStart: this.moreIform.moneyStart,
-        moneyEnd: this.moreIform.moneyEnd,
+        moneyStart: String(this.moreIform.moneyStart),
+        moneyEnd: String(this.moreIform.moneyEnd),
         ffnyStart: rqs || "",
         ffnyEnd: rqe || "",
 

@@ -115,11 +115,17 @@
                   :rules="rules.je"
                 >
                   <el-input
-                    v-show="isEdit == 2 && updateJe == '2'"
+                    v-show="isEdit == 2 && updateJe == '1'"
                     v-model="scope.row.je"
                     type="number"
+                    @input="
+                      if (scope.row.je > Number(scope.row.cjsx))
+                        scope.row.je = Number(scope.row.cjsx);
+                    "
                   />
-                  <div v-show="isEdit == 1">{{ scope.row.je }}</div>
+                  <div v-show="isEdit == 1 || (isEdit == 2 && updateJe == '2')">
+                    {{ scope.row.je }}
+                  </div>
                 </el-form-item>
               </template>
             </el-table-column>

@@ -227,7 +227,6 @@ export default {
       this.$set(this.exportParams, "idList", this.delArr);
       this.exportParams.pageNum = 0;
       this.exportParams.pageSize = 0;
-      this.$set(this.exportParams, "idList", ids);
       exportYsh(this.exportParams)
         .then((res) => {
           this.downloadFn(res, "酬金发放已确认列表导出.xlsx", "xlsx");

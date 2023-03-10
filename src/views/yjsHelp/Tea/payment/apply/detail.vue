@@ -157,10 +157,14 @@
                 >
                   <el-input
                     v-model="scope.row.je"
-                    v-if="isEdit == 2 && updateJe == '2'"
+                    v-show="isEdit == 2 && updateJe == '1'"
+                    @input="
+                      if (scope.row.je > Number(scope.row.cjsx))
+                        scope.row.je = Number(scope.row.cjsx);
+                    "
                     type="number"
                   />
-                  <div v-else>
+                  <div v-show="isEdit == 1 || (isEdit == 2 && updateJe == '2')">
                     {{ scope.row.je }}
                   </div>
                 </el-form-item>

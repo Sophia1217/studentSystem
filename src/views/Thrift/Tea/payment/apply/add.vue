@@ -105,7 +105,7 @@
           <div class="headerLeft">
             <span class="title">学生列表</span>
           </div>
-          <div class="headerRight">
+          <div class="headerRight" v-show="formAdd.detailList[0].ffny !== ''">
             <div class="btns borderBlue" @click="mbDown">
               <i class="icon downIcon"></i
               ><span class="btutitle">模板下载</span>
@@ -162,7 +162,7 @@
                 >
                   <el-input-number
                     v-model="scope.row.gs"
-                    :max="9999"
+                    :max="Number(formAdd.gssx) || 9999"
                     controls-position="right"
                     @change="count(scope.row)"
                   />
@@ -177,7 +177,7 @@
                 >
                   <el-input-number
                     v-model="scope.row.je"
-                    :max="99999"
+                    :max="Number(scope.row.cjsx) || 99999"
                     controls-position="right"
                     :readonly="updateJe == '2'"
                   />

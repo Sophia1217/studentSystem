@@ -244,7 +244,7 @@ export default {
   data() {
     return {
       uploadUrl:
-        process.env.VUE_APP_BASE_API + "/qgzxCjff/importStuCjffForUpdate",
+        process.env.VUE_APP_BASE_API + "/qgzxCjffYjssz/importStuCjffForUpdate",
       formAdd: {
         gssx: "",
         detailList: [

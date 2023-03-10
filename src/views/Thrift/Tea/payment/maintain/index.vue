@@ -369,6 +369,7 @@ export default {
             gs: row.gs,
             je: row.je,
             bz: row.bz,
+            cjsx: row.cjsx,
           },
         });
     },

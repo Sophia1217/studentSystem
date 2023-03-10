@@ -252,7 +252,7 @@ export default {
   data() {
     return {
       uploadUrl:
-        process.env.VUE_APP_BASE_API + "/qgzxCjff/importStuCjffBySchool",
+        process.env.VUE_APP_BASE_API + "/qgzxCjffYjssz/importStuCjffBySchool",
       AUTHFLAG: false,
       len: 0,
       xnxjModal: false,
@@ -319,6 +319,7 @@ export default {
             gs: row.gs,
             je: row.je,
             bz: row.bz,
+            cjsx: row.cjsx,
           },
         });
     },
@@ -508,7 +509,7 @@ export default {
     //模板下载
     mbDownSchool() {
       mbDownSchool().then((res) => {
-        this.downloadFn(res, "研究生三助酬金发放导入学生模板下载", "xlsx");
+        this.downloadFn(res, "研究生三助酬金发放模板下载", "xlsx");
         this.$message.success("操作成功");
       });
     },

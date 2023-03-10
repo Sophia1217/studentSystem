@@ -45,7 +45,7 @@
                   <el-select
                     v-model="scope.row.zgzt"
                     placeholder="请选择"
-                    readonly
+                    disabled
                   >
                     <el-option
                       v-for="(item, index) in zgztOps"
@@ -129,7 +129,7 @@
           <div class="headerLeft">
             <span class="title">学生列表</span>
           </div>
-          <div class="headerRight">
+          <div class="headerRight" v-show="formAdd.detailList[0].ffny !== ''">
             <div class="btns borderBlue" @click="mbDown">
               <i class="icon downIcon"></i
               ><span class="btutitle">模板下载</span>
@@ -279,7 +279,7 @@ export default {
   data() {
     return {
       uploadUrl:
-        process.env.VUE_APP_BASE_API + "/qgzxCjff/importStuCjffForInsert",
+        process.env.VUE_APP_BASE_API + "/qgzxCjffYjssz/importStuCjffForInsert",
       formAdd: {
         gssx: "",
         detailList: [
@@ -377,7 +377,7 @@ export default {
       queryDNew().then((res) => {
         // this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
         this.formAdd.gssx = res.data.cjbzcjffSzsxNum || "9999"; //工时上限
-        // this.updateJe = res.data.cjffTzcjje; //是否允许调整酬金金额,1是2否
+        this.updateJe = res.data.cjffTzcjje; //是否允许调整酬金金额,1是2否
       });
       queryYsjGwszType().then((res) => {
         this.gwxzOptions = res.data;
@@ -485,12 +485,12 @@ export default {
       });
     },
     upLoadSuccess(res, file, fileList) {
+      this.router.go(-1);
       if (res.errcode == "00") {
         this.$message({
           type: "success",
           message: res.errmsg,
         });
-        this.router.go(-1);
       } else {
         this.$message({
           type: "error",

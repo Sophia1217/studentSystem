@@ -62,7 +62,7 @@
         <el-col :span="6" class="rowStyle">
           <div class="wrap">
             <div class="title">政治面貌</div>
-            <div class="content">{{ basicInfo.bjmc }}</div>
+            <div class="content">{{ basicInfo.mzmc }}</div>
           </div>
         </el-col>
       </el-row>
@@ -170,11 +170,10 @@
                   :prop="'detailList.' + scope.$index + '.gs'"
                   :rules="rules.gs"
                 >
-                  <el-input-number
+                  <el-input
                     v-model="scope.row.gs"
-                    :max="9999"
-                    controls-position="right"
                     @change="count(scope.row)"
+                    type="number"
                   />
                 </el-form-item>
               </template>
@@ -185,16 +184,12 @@
                   :prop="'detailList.' + scope.$index + '.je'"
                   :rules="rules.je"
                 >
-                  <el-input-number
-                    v-model="scope.row.je"
-                    :max="99999"
-                    controls-position="right"
-                  />
+                  <el-input v-model="scope.row.je" type="number" />
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column
-              prop="cjbz"
+              prop="cjsx"
               label="酬金上限（元）"
               :min-width="100"
             >
@@ -249,6 +244,7 @@ export default {
             cjbz: "",
             gs: "",
             je: "",
+            cjsx: "",
           },
         ],
       },
@@ -314,6 +310,7 @@ export default {
       queryD().then((res) => {
         this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
         this.formAdd.gssx = res.data.cjbzcjffSzsxNum || "9999"; //工时上限
+        this.formAdd.detailList[0].cjsx = res.data.cjffGwzgcjsx;
       });
     },
     getCode(val) {

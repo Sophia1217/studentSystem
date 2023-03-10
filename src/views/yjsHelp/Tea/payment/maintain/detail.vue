@@ -49,7 +49,7 @@
         <el-col :span="6" class="rowStyle">
           <div class="wrap">
             <div class="title">政治面貌</div>
-            <div class="content">{{ basicInfo.bjmc }}</div>
+            <div class="content">{{ basicInfo.mzmc }}</div>
           </div>
         </el-col>
       </el-row>
@@ -114,18 +114,18 @@
                   :prop="'detailList.' + scope.$index + '.je'"
                   :rules="rules.je"
                 >
-                  <el-input-number
+                  <el-input
                     v-show="isEdit == 2"
                     v-model="scope.row.je"
-                    :max="99999"
-                    controls-position="right"
+                    v-if="isEdit == 2"
+                    type="number"
                   />
                   <div v-show="isEdit == 1">{{ scope.row.je }}</div>
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column
-              prop="cjbz"
+              prop="cjsx"
               label="酬金上限（元）"
               :min-width="100"
             >
@@ -159,7 +159,7 @@
 <script>
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
-import { queryD } from "@/api/gwsz/gwsz";
+import { queryDNew } from "@/api/gwsz/gwsz";
 import { getGzdw } from "@/api/politicalWork/assistantappoint";
 import { gwList, updateXscj } from "@/api/thrift/paymentApplyYjs";
 import { queryKnssqxsjbxx } from "@/api/familyDifficulties/stu";
@@ -184,6 +184,7 @@ export default {
             // gs: "",
             je: "",
             bz: "",
+            cjsx: "",
           },
         ],
       },
@@ -226,6 +227,7 @@ export default {
       // this.formAdd.detailList[0].gs = this.$route.query.gs;
       this.formAdd.detailList[0].je = this.$route.query.je;
       this.formAdd.bz = this.$route.query.bz;
+      this.formAdd.detailList[0].cjsx = this.$route.query.cjsx;
 
       queryKnssqxsjbxx({ xh: this.$route.query.xh }).then((res) => {
         this.basicInfo = res.data;
@@ -263,7 +265,7 @@ export default {
         })
         .catch((err) => {});
 
-      queryD().then((res) => {
+      queryDNew().then((res) => {
         this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
         this.formAdd.gssx = res.data.cjbzcjffSzsxNum || "9999"; //工时上限
       });

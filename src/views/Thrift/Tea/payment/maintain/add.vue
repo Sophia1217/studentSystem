@@ -154,7 +154,6 @@
                 >
                   <el-date-picker
                     v-model="scope.row.ffny"
-                    @change="changeGW"
                     type="month"
                     format="yyyy 年 MM 月"
                     value-format="yyyy-MM"
@@ -184,7 +183,11 @@
                   :prop="'detailList.' + scope.$index + '.je'"
                   :rules="rules.je"
                 >
-                  <el-input v-model="scope.row.je" type="number" />
+                  <el-input
+                    v-model="scope.row.je"
+                    :readonly="updateJe == '2'"
+                    type="number"
+                  />
                 </el-form-item>
               </template>
             </el-table-column>
@@ -225,10 +228,12 @@ import { insertXscjBySchool, gwList } from "@/api/thrift/paymentApply";
 import { getToken } from "@/utils/auth";
 import { queryStuList } from "@/api/familyDifficulties/difficultTea";
 import { queryKnssqxsjbxx } from "@/api/familyDifficulties/stu";
+import { queryQgzxGwById } from "@/api/dailyBehavior/thriftbumen";
 export default {
   computed: {},
   data() {
     return {
+      updateJe: "1",
       basicInfo: {},
       formAdd: {
         xh: "",
@@ -278,6 +283,7 @@ export default {
     //岗位下拉
     gwList() {
       gwList({
+        xh: this.formAdd.xh,
         xn: this.formAdd.detailList[0].xn,
         gwYrbm: this.formAdd.detailList[0].gwYrbm,
       })
@@ -310,7 +316,7 @@ export default {
       queryD().then((res) => {
         this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
         this.formAdd.gssx = res.data.cjbzcjffSzsxNum || "9999"; //工时上限
-        this.formAdd.detailList[0].cjsx = res.data.cjffGwzgcjsx;
+        this.updateJe = res.data.cjffTzcjje; //是否允许调整酬金金额,1是2否
       });
     },
     getCode(val) {
@@ -344,9 +350,10 @@ export default {
     addClick() {
       if (
         !this.formAdd.detailList[0].ffny ||
-        !this.formAdd.detailList[0].gwYrbm
+        !this.formAdd.detailList[0].gwYrbm ||
+        !this.formAdd.xh
       ) {
-        this.$message.error("发放年月、用人部门必填！");
+        this.$message.error("学生、发放年月、用人部门必填！");
         return;
       } else {
         let data = {
@@ -369,7 +376,11 @@ export default {
         });
       }
     },
-    changeGW(val) {},
+    changeGW(val) {
+      queryQgzxGwById({ id: val }).then((res) => {
+        this.formAdd.detailList[0].cjsx = res.data.detailList[0].gwYgzsx;
+      });
+    },
     changeXn() {
       if (this.formAdd.detailList[0].gwYrbm !== "") {
         this.gwOps = [];

@@ -157,7 +157,7 @@
                 >
                   <el-input
                     v-model="scope.row.je"
-                    v-if="isEdit == 2"
+                    v-if="isEdit == 2 && updateJe == '2'"
                     type="number"
                   />
                   <div v-else>
@@ -299,11 +299,11 @@ export default {
       this.formAdd.detailList[0].gw = this.$route.query.gw;
       // this.formAdd.detailList[0].status = this.$route.query.status;
       this.queryStuList();
-      // queryDNew().then((res) => {
-      //   //this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
-      //   this.formAdd.gssx = res.data.cjbzcjffSzsxNum || "9999"; //工时上限
-      //   // this.updateJe = res.data.cjffTzcjje; //是否允许调整酬金金额,1是2否
-      // });
+      queryDNew().then((res) => {
+        //this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
+        // this.formAdd.gssx = res.data.cjbzcjffSzsxNum || "9999"; //工时上限
+        this.updateJe = res.data.cjffTzcjje; //是否允许调整酬金金额,1是2否
+      });
       queryYsjGwszType().then((res) => {
         this.gwxzOptions = res.data;
       });

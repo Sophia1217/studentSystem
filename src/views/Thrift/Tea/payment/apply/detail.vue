@@ -175,7 +175,7 @@
                 >
                   <el-input-number
                     v-model="scope.row.je"
-                    v-if="isEdit == 2"
+                    v-if="isEdit == 2 && updateJe == '1'"
                     :min="0"
                     :max="99999"
                     controls-position="right"
@@ -262,6 +262,7 @@ export default {
   },
   data() {
     return {
+      updateJe: "1",
       uploadUrl:
         process.env.VUE_APP_BASE_API + "/qgzxCjff/importStuCjffForUpdate",
       formAdd: {
@@ -320,6 +321,7 @@ export default {
       queryD().then((res) => {
         this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
         this.formAdd.gssx = res.data.cjbzcjffSzsxNum || "9999"; //工时上限
+        this.updateJe = res.data.cjffTzcjje; //是否允许调整酬金金额,1是2否
       });
     },
     // 表单校验

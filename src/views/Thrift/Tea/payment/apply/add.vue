@@ -179,6 +179,7 @@
                     v-model="scope.row.je"
                     :max="99999"
                     controls-position="right"
+                    :readonly="updateJe == '2'"
                   />
                 </el-form-item>
               </template>
@@ -252,6 +253,7 @@ export default {
   },
   data() {
     return {
+      updateJe: "1",
       uploadUrl:
         process.env.VUE_APP_BASE_API + "/qgzxCjff/importStuCjffForInsert",
       formAdd: {
@@ -349,6 +351,7 @@ export default {
       queryD().then((res) => {
         this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
         this.formAdd.gssx = res.data.cjbzcjffSzsxNum || "9999"; //工时上限
+        this.updateJe = res.data.cjffTzcjje; //是否允许调整酬金金额,1是2否
       });
     },
     getYrbm() {
@@ -421,6 +424,7 @@ export default {
           qgzxCjffBaseReqList: this.formAdd.stuList || [],
         };
         insertXscj(data).then((res) => {
+          this.$router.go(-1);
           if (res.errcode == "00") {
             this.$message.success("新增成功");
             this.$router.go(-1);

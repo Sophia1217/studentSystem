@@ -178,9 +178,8 @@
                   :rules="rules.je"
                 >
                   <el-input
-                    v-show="isEdit == 2"
+                    v-show="isEdit == 2 && updateJe == '1'"
                     v-model="scope.row.je"
-                    v-if="isEdit == 2"
                     type="number"
                   />
                   <div v-show="isEdit == 1">{{ scope.row.je }}</div>
@@ -230,6 +229,7 @@ export default {
   computed: {},
   data() {
     return {
+      updateJe: "1",
       isEdit: 1, //1详情，2编辑
       basicInfo: {},
       formAdd: {
@@ -247,7 +247,7 @@ export default {
             gs: "",
             je: "",
             bz: "",
-            cjbz:"",
+            cjbz: "",
           },
         ],
       },
@@ -298,6 +298,7 @@ export default {
       queryD().then((res) => {
         this.formAdd.detailList[0].cjbz = res.data.cjffCjbz; //酬金标准
         this.formAdd.gssx = res.data.cjbzcjffSzsxNum || "9999"; //工时上限
+        this.updateJe = res.data.cjffTzcjje; //是否允许调整酬金金额,1是2否
       });
     },
     //岗位下拉

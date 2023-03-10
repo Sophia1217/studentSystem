@@ -155,12 +155,10 @@
                   :prop="'stuList.' + scope.$index + '.gs'"
                   :rules="rules.gs"
                 >
-                  <el-input-number
+                  <el-input
                     v-model="scope.row.gs"
                     v-if="isEdit == 2"
-                    :min="0"
-                    :max="9999"
-                    controls-position="right"
+                    type="number"
                     @change="count(scope.row)"
                   />
                   <div v-else>

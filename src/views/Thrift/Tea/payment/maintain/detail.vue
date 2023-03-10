@@ -162,11 +162,11 @@
                   :rules="rules.gs"
                 >
                   <el-input-number
+                    v-show="isEdit == 2"
                     v-model="scope.row.gs"
                     :max="9999"
                     controls-position="right"
                     @change="count(scope.row)"
-                    :readonly="isEdit == 1"
                   />
                 </el-form-item>
               </template>
@@ -178,10 +178,10 @@
                   :rules="rules.je"
                 >
                   <el-input-number
+                    v-show="isEdit == 2"
                     v-model="scope.row.je"
                     :max="99999"
                     controls-position="right"
-                    :readonly="isEdit == 1"
                   />
                 </el-form-item>
               </template>
@@ -202,7 +202,7 @@
               v-model="formAdd.bz"
               :rows="5"
               show-word-limit
-              maxlength="500"
+              maxlength="200"
             />
           </el-form-item>
         </div>
@@ -221,16 +221,9 @@
 <script>
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
-import { getXmXgh } from "@/api/assistantWork/homeSchool";
 import { queryD } from "@/api/gwsz/gwsz";
 import { getGzdw } from "@/api/politicalWork/assistantappoint";
-import {
-  insertXscjBySchool,
-  gwList,
-  updateXscj,
-} from "@/api/thrift/paymentApply";
-import { getToken } from "@/utils/auth";
-import { queryStuList } from "@/api/familyDifficulties/difficultTea";
+import { gwList, updateXscj } from "@/api/thrift/paymentApply";
 import { queryKnssqxsjbxx } from "@/api/familyDifficulties/stu";
 export default {
   computed: {},

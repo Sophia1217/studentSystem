@@ -498,8 +498,7 @@ export default {
       }
     },
     del() {
-      var data = this.val;
-      deleteBySchool({ idList: this.delArr }).then((res) => {
+      deleteBySchool(this.delArr).then((res) => {
         this.query();
         this.delModal = false;
         this.$message.success("删除成功");

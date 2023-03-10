@@ -45,7 +45,7 @@
                   <el-select
                     v-model="scope.row.zgzt"
                     placeholder="请选择"
-                    @change="changeGW"
+                    readonly
                   >
                     <el-option
                       v-for="(item, index) in zgztOps"
@@ -214,7 +214,7 @@
                   :prop="'stuList.' + scope.$index + '.bz'"
                   :rules="rules.bz"
                 >
-                  <el-input v-model="scope.row.bz" maxlength="500" />
+                  <el-input v-model="scope.row.bz" maxlength="200" />
                 </el-form-item>
               </template>
             </el-table-column>

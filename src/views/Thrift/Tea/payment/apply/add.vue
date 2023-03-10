@@ -45,7 +45,7 @@
                   <el-select
                     v-model="scope.row.zgzt"
                     placeholder="请选择"
-                    @change="changeGW"
+                    disabled
                   >
                     <el-option
                       v-for="(item, index) in zgztOps"
@@ -152,7 +152,7 @@
             </el-table-column>
             <el-table-column prop="zgName" label="在岗状态" min-width="110">
             </el-table-column>
-            <el-table-column prop="sgsj	" label="上岗时间" min-width="110">
+            <el-table-column prop="sgsj" label="上岗时间" min-width="110">
             </el-table-column>
             <el-table-column prop="gs" label="工时" min-width="150">
               <template slot-scope="scope">
@@ -189,7 +189,7 @@
                   :prop="'stuList.' + scope.$index + '.bz'"
                   :rules="rules.bz"
                 >
-                  <el-input v-model="scope.row.bz" maxlength="500" />
+                  <el-input v-model="scope.row.bz" maxlength="200" />
                 </el-form-item>
               </template>
             </el-table-column>

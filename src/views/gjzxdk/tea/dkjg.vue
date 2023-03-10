@@ -155,7 +155,7 @@
           <div class="btns borderBlue" @click="mbDown1">
             <i class="icon downIcon"></i><span class="title">模板下载</span>
           </div>
-          <div class="btns borderRed" @click="del"  v-show="AUTHFLAG">
+          <div class="btns borderRed" @click="del" v-show="AUTHFLAG">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
           <div class="btns borderBlue">
@@ -390,11 +390,11 @@ export default {
         xh: this.select == "xh" ? this.searchVal : null,
         dkkssjEnd:
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[0]
+            ? this.queryParams.dksjArr[1]
             : "",
         dkkssjStart:
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[1]
+            ? this.queryParams.dksjArr[0]
             : "",
         dkzjeEnd: this.queryParams.dkzjeEnd,
         dkzjeStart: this.queryParams.dkzjeStart,
@@ -458,11 +458,11 @@ export default {
         xn: this.moreIform.xn,
         dkkssjEnd:
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[0]
+            ? this.queryParams.dksjArr[1]
             : "",
         dkkssjStart:
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[1]
+            ? this.queryParams.dksjArr[0]
             : "",
         dkzjeEnd: this.queryParams.dkzjeEnd,
         dkzjeStart: this.queryParams.dkzjeStart,

@@ -804,11 +804,11 @@ export default {
         xn: this.moreIform.xn,
         dkkssjEnd:
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[0]
+            ? this.queryParams.dksjArr[1]
             : "",
         dkkssjStart:
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[1]
+            ? this.queryParams.dksjArr[0]
             : "",
         dkzjeEnd: this.queryParams.dkzjeEnd,
         dkzjeStart: this.queryParams.dkzjeStart,
@@ -1057,11 +1057,11 @@ export default {
         xn: this.moreIform.xn,
         dkkssjEnd:
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[0]
+            ? this.queryParams.dksjArr[1]
             : "",
         dkkssjStart:
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[1]
+            ? this.queryParams.dksjArr[0]
             : "",
         dkzjeEnd: this.queryParams.dkzjeEnd,
         dkzjeStart: this.queryParams.dkzjeStart,

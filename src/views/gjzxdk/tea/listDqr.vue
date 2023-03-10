@@ -134,7 +134,7 @@
           <div class="btns borderBlue" @click="mbDown1">
             <i class="icon downIcon"></i><span class="title">模板下载</span>
           </div>
-          <div class="btns borderBlue">
+          <div class="btns borderBlue" v-show="AUTHFLAG">
             <el-upload
               accept=".xlsx,.xls"
               :auto-upload="true"
@@ -144,15 +144,13 @@
               :on-success="upLoadSuccess"
               :on-error="upLoadError"
             >
-              <i class="icon blueIcon"></i
-              ><span class="title" v-show="AUTHFLAG">导入</span>
+              <i class="icon blueIcon"></i><span class="title">导入</span>
             </el-upload>
           </div>
-          <div class="btns borderRed" @click="del">
-            <i class="icon lightIcon"></i
-            ><span class="title" v-show="AUTHFLAG">删除</span>
+          <div class="btns borderRed" @click="del" v-show="AUTHFLAG">
+            <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
-          <div class="btns borderOrange" @click="queren">
+          <div class="btns borderOrange" @click="queren" v-show="AUTHFLAG">
             <i class="icon orangeIcon"></i
             ><span class="title1" v-show="AUTHFLAG">确认</span>
           </div>
@@ -438,11 +436,11 @@ export default {
         xh: this.select == "xh" ? this.searchVal : null,
         dkkssjEnd:
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[0]
+            ? this.queryParams.dksjArr[1]
             : "",
         dkkssjStart:
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[1]
+            ? this.queryParams.dksjArr[0]
             : "",
         dkzjeEnd: this.queryParams.dkzjeEnd,
         dkzjeStart: this.queryParams.dkzjeStart,
@@ -505,11 +503,11 @@ export default {
         xn: this.moreIform.xn,
         dkkssjEnd:
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[0]
+            ? this.queryParams.dksjArr[1]
             : "",
         dkkssjStart:
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[1]
+            ? this.queryParams.dksjArr[0]
             : "",
         dkzjeEnd: this.queryParams.dkzjeEnd,
         dkzjeStart: this.queryParams.dkzjeStart,

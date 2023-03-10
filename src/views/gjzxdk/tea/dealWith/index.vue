@@ -749,11 +749,11 @@ export default {
         xh: this.select == "xh" ? this.searchVal : null,
         dkkssjEnd:
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[0]
+            ? this.queryParams.dksjArr[1]
             : "",
         dkkssjStart:
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[1]
+            ? this.queryParams.dksjArr[0]
             : "",
         statusList: this.moreIform.ztStatus,
         dkzjeEnd: this.queryParams.dkzjeEnd,
@@ -992,11 +992,11 @@ export default {
         xn: this.moreIform.xn,
         dkkssjEnd:
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[0]
+            ? this.queryParams.dksjArr[1]
             : "",
         dkkssjStart:
           this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[1]
+            ? this.queryParams.dksjArr[0]
             : "",
         statusList: this.moreIform.ztStatus,
         dkzjeEnd: this.queryParams.dkzjeEnd,

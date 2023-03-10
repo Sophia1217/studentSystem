@@ -25,5 +25,22 @@ export function tjExp(query) {
 }
 
  
+//勤工助学学生端酬金发放
+export function getList1(query) {
+  return request({
+    url: '/qgzxCjff/queryStuListForShool',
+    method: 'post',
+    data: query
+  })
+}
+
+export function getList2(query) {
+  return request({
+    url: '/qgzxCjffYjssz/queryStuListForShool',
+    method: 'post',
+    data: query
+  })
+}
+
 
   

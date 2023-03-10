@@ -155,7 +155,7 @@
           <div class="btns borderBlue" @click="mbDown1">
             <i class="icon downIcon"></i><span class="title">模板下载</span>
           </div>
-          <div class="btns borderRed" @click="del">
+          <div class="btns borderRed" @click="del"  v-show="AUTHFLAG">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
           <div class="btns borderBlue">
@@ -299,10 +299,13 @@ export default {
         isIndeterminate: true,
       },
       multipleSelection: [],
+      AUTHFLAG: false,
     };
   },
 
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getAllCollege();
     this.getCode("dmpyccm"); // 培养层次
     this.getSchoolYears();

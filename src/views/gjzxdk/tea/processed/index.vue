@@ -134,13 +134,13 @@
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns borderRed" @click="back">
+          <div class="btns borderRed" @click="back" v-show="AUTHFLAG">
             <i class="icon backIcon"></i><span class="title">退回</span>
           </div>
-          <div class="btns borderRed" @click="refuse">
+          <div class="btns borderRed" @click="refuse" v-show="AUTHFLAG">
             <i class="icon refuseIcon"></i><span class="title">拒绝</span>
           </div>
-          <div class="btns fullGreen" @click="pass(1)">
+          <div class="btns fullGreen" @click="pass(1)" v-show="AUTHFLAG">
             <i class="icon passIcon"></i><span class="title1">通过</span>
           </div>
         </div>
@@ -725,10 +725,13 @@ export default {
       whatType: "",
       tableDetails: [{ gzgw: "", fwnr: "" }],
       upDownIndex: 0,
+      AUTHFLAG: false,
     };
   },
 
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getAllCollege();
     this.getCode("dmpyccm"); // 培养层次
     this.getSchoolYears();

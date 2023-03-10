@@ -153,7 +153,7 @@
           <span>学年</span>
         </div>
         <div class="headerRight">
-          <div class="btns borderBlue" @click="queren">
+          <div class="btns borderBlue" @click="queren" v-show="AUTHFLAG">
             <i class="icon downIcon"></i><span class="title">状态修改</span>
           </div>
           <!-- <div class="btns borderOrange" @click="queren">
@@ -284,6 +284,8 @@ export default {
   },
   data() {
     return {
+      AUTHFLAG: false,
+
       status: "",
       uploadUrl:
         process.env.VUE_APP_BASE_API + "/rcswByqr/importExcelGraduation",
@@ -331,6 +333,8 @@ export default {
   },
 
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getAllCollege();
     this.getCode("dmpyccm"); // 培养层次
     this.getCode("dmgbyqrztm"); //

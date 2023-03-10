@@ -144,14 +144,17 @@
               :on-success="upLoadSuccess"
               :on-error="upLoadError"
             >
-              <i class="icon blueIcon"></i><span class="title">导入</span>
+              <i class="icon blueIcon"></i
+              ><span class="title" v-show="AUTHFLAG">导入</span>
             </el-upload>
           </div>
           <div class="btns borderRed" @click="del">
-            <i class="icon lightIcon"></i><span class="title">删除</span>
+            <i class="icon lightIcon"></i
+            ><span class="title" v-show="AUTHFLAG">删除</span>
           </div>
           <div class="btns borderOrange" @click="queren">
-            <i class="icon orangeIcon"></i><span class="title1">确认</span>
+            <i class="icon orangeIcon"></i
+            ><span class="title1" v-show="AUTHFLAG">确认</span>
           </div>
         </div>
       </div>
@@ -265,6 +268,8 @@ export default {
   },
   data() {
     return {
+      AUTHFLAG: false,
+
       status: "",
       uploadUrl:
         process.env.VUE_APP_BASE_API + "/rcswByqr/importExcelGraduation",
@@ -311,6 +316,8 @@ export default {
   },
 
   mounted() {
+    this.authConfirm(this.$route.path.split("/")[2]);
+    this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getAllCollege();
     this.getCode("dmpyccm"); // 培养层次
     this.getCode("dmgbyqrztm"); // 培养层次

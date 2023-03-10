@@ -293,7 +293,7 @@ export default {
         total: 0,
         dksjArr: [],
         // 金额
-        dkzjeEnd: 99999,
+        dkzjeEnd: 9999999,
         dkzjeStart: 1,
         orderZd: "",
         orderPx: "",
@@ -544,7 +544,6 @@ export default {
               this.dmgbyqrztm = res.data.filter((item) => {
                 return item.dm !== "05";
               });
-              console.log(" this.dmgbyqrztm", this.dmgbyqrztm);
               break;
           }
         })

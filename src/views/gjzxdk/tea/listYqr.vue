@@ -313,7 +313,7 @@ export default {
         total: 0,
         dksjArr: [],
         // 金额
-        dkzjeEnd: 99999,
+        dkzjeEnd: 9999999,
         dkzjeStart: 1,
         orderZd: "",
         orderPx: "",

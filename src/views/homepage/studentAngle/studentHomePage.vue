@@ -311,8 +311,8 @@
             </div>
           </div>
         </div>
-        <div class="item stuInfoClick" @click="qgzxClick">
-          <div style="display: flex" v-show="benkeShow">
+        <div class="item stuInfoClick">
+          <div style="display: flex" v-show="benkeShow" @click="qgzxClick">
             <div class="medalImage">
               <img src="~@/assets/images/medal.png" alt="" />
             </div>
@@ -325,7 +325,7 @@
               </div>
             </div>
           </div>
-          <div style="display: flex" v-show="!benkeShow">
+          <div style="display: flex" v-show="!benkeShow" @click="yjsszClick">
             <div class="medalImage">
               <img src="~@/assets/images/medal.png" alt="" />
             </div>

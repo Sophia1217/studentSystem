@@ -39,12 +39,7 @@
           <el-table-column prop="xm" label="学生" sortable> </el-table-column>
           <el-table-column prop="gwYrbmc" label="用人单位" sortable>
           </el-table-column>
-          <el-table-column
-            prop="zgName"
-            label="岗位名称"
-            min-width="100"
-            sortable
-          >
+          <el-table-column prop="gw" label="岗位名称" min-width="100" sortable>
           </el-table-column>
           <el-table-column
             prop="ffny"

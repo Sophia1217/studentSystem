@@ -312,31 +312,34 @@
           </div>
         </div>
         <div class="item stuInfoClick" @click="qgzxClick">
-          <div class="medalImage">
-            <img src="~@/assets/images/medal.png" alt="" />
-          </div>
-          <div class="content">
-            <div class="title1">
-              <span class="stuinfoTitle">勤工助学</span>
+          <div style="display: flex" v-show="benkeShow">
+            <div class="medalImage">
+              <img src="~@/assets/images/medal.png" alt="" />
             </div>
-            <div class="title2">
-              <span class="baseInfo">勤奋刻苦</span>
+            <div class="content">
+              <div class="title1">
+                <span class="stuinfoTitle">勤工助学</span>
+              </div>
+              <div class="title2">
+                <span class="baseInfo">勤奋刻苦</span>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex" v-show="!benkeShow">
+            <div class="medalImage">
+              <img src="~@/assets/images/medal.png" alt="" />
+            </div>
+            <div class="content">
+              <div class="title1">
+                <span class="stuinfoTitle">研究生三助</span>
+              </div>
+              <div class="title2">
+                <span class="baseInfo">研究生版勤工助学</span>
+              </div>
             </div>
           </div>
         </div>
-        <div class="item stuInfoClick" @click="yjsszClick">
-          <div class="medalImage">
-            <img src="~@/assets/images/medal.png" alt="" />
-          </div>
-          <div class="content">
-            <div class="title1">
-              <span class="stuinfoTitle">研究生三助</span>
-            </div>
-            <div class="title2">
-              <span class="baseInfo">研究生版勤工助学</span>
-            </div>
-          </div>
-        </div>
+        <div class="item stuInfoClick"></div>
       </div>
     </el-row>
   </div>
@@ -345,16 +348,30 @@
 <script>
 import TopTitle from "@/components/TopTitle/index.vue";
 import { queryXjydAuth } from "@/api/common/liucheng";
+import { xhQuery } from "@/api/dailyBehavior/lskn";
 export default {
   name: "studentHomePage", // 学生视角首页内容
   components: {
     TopTitle,
   },
   data() {
-    return {};
+    return {
+      benkeShow: false,
+    };
   },
-
+  mounted() {
+    this.query();
+  },
   methods: {
+    query() {
+      xhQuery({ xh: this.$store.getters.userId }).then((res) => {
+        if (["1", "2"].includes(res.data.pyccm)) {
+          this.benkeShow = false;
+        } else {
+          this.benkeShow = true;
+        }
+      });
+    },
     xnxj() {
       this.$router.push({
         path: "/yearSumStuList",

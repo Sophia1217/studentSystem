@@ -571,6 +571,24 @@ export default {
               this.$set(this.training, "checkBox", res.data);
               break;
             case "dmgbyqrztm":
+              //map和foreach的最大区别是foreach没返回值，map有，他们两个方法本来是不会改变数组，但是如果是针对对象数组的话，会改变（因为如果是纯数组，里面是几本数据类型，类似字符串和数组之类，但是对象是引用类型）
+              // res.data.forEach((ele) => {
+              //   if (ele.dm == "05") {
+              //     ele.disabled = true;
+              //   } else {
+              //     ele.disabled = false;
+              //   }
+              // });
+              // this.dmgbyqrztm = res.data;
+              // this.dmgbyqrztm = res.data.map((item) => {
+              //   return {
+              //     ...item,
+              //     Map1: "test",
+              //     disabled: (item.dm = "05"
+              //       ? (item.disabled = true)
+              //       : (item.disabled = false)),
+              //   };
+              // });
               this.dmgbyqrztm = res.data.filter((item) => {
                 return item.dm !== "05";
               });

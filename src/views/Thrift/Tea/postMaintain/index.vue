@@ -30,11 +30,11 @@
       </div>
       <!-- 更多选择 -->
       <div class="moreSelect" v-if="isMore">
-        <!-- <el-row :gutter="20" class="mt15">
+        <el-row :gutter="20" class="mt15">
           <el-col :span="20">
-            <span>审核状态：</span>
+            <span>岗位性质：</span>
             <el-select
-              v-model="moreIform.status"
+              v-model="moreIform.gwTypeList"
               multiple
               placeholder="请选择"
               collapse-tags
@@ -47,7 +47,41 @@
               ></el-option>
             </el-select>
           </el-col>
-        </el-row> -->
+        </el-row>
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="20">
+            <span>用人部门：</span>
+            <el-select
+              v-model="moreIform.gwYrbmList"
+              multiple
+              placeholder="请选择"
+              collapse-tags
+            >
+              <el-option
+                v-for="item in allDwh"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="20">
+            <span>申请时间：</span>
+            <el-date-picker
+              type="daterange"
+              placeholder="选择日期"
+              v-model="moreIform.sjArr"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              style="width= 60px;"
+            ></el-date-picker>
+          </el-col>
+        </el-row>
       </div>
     </div>
     <div class="tableWrap mt15">
@@ -230,6 +264,7 @@ import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { deleteQgzxGw, copyQgzxGw } from "@/api/dailyBehavior/thriftbumen";
+import { getCollege } from "@/api/class/maintenanceClass";
 import {
   queryQgzxGwList,
   updateNzxsrs,
@@ -237,8 +272,23 @@ import {
 } from "@/api/thrift/gwMaintain";
 export default {
   components: { lctCom },
+  watch: {
+    "moreIform.sjArr": function (newV) {
+      if (newV) {
+        this.gwStartDate = newV[0];
+        this.gwEndDate = newV[1];
+      } else {
+        //清空时间
+        this.gwStartDate = "";
+        this.gwEndDate = "";
+      }
+    },
+  },
   data() {
     return {
+      gwEndDate: "",
+      gwStartDate: "",
+      allDwh: [],
       AUTHFLAG: false,
       len: 0,
       delModal: false,
@@ -264,7 +314,9 @@ export default {
       select: "",
       isMore: false,
       moreIform: {
-        status: [], // 学院下拉框
+        gwTypeList: [],
+        gwYrbmList: [],
+        sjArr: [],
       },
       showExport: false,
       rules: {
@@ -282,10 +334,18 @@ export default {
     this.authConfirm(this.$route.path.split("/")[2]);
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getSchoolYears();
-    this.getCode("dmsplcm"); //状态
+    this.getAllCollege();
+    this.getCode("dmqgzxgwxz"); //状态
   },
 
   methods: {
+    getAllCollege() {
+      getCollege()
+        .then((res) => {
+          this.allDwh = res.data.rows;
+        })
+        .catch((err) => {});
+    },
     empty() {
       this.$nextTick(() => {
         this.$refs.fzform.resetFields();
@@ -345,7 +405,7 @@ export default {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
         switch (val) {
-          case "dmsplcm": //审批结果
+          case "dmqgzxgwxz": //审批结果
             this.ztStatus = res.data;
             break;
         }
@@ -415,7 +475,10 @@ export default {
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",
         orderPx: this.queryParams.orderPx ? this.queryParams.orderPx : "",
-        // status: this.moreIform.status,
+        gwEndDate: this.gwEndDate,
+        gwStartDate: this.gwStartDate,
+        gwTypeList: this.moreIform.gwTypeList,
+        gwYrbmList: this.moreIform.gwYrbmList,
         xn: this.xn,
         gwMainMc: this.select == "gwMainMc" ? this.searchVal : null,
         gwDetailMc: this.select == "gwDetailMc" ? this.searchVal : null,
@@ -449,13 +512,17 @@ export default {
     // 导出确认
     handleConfirm() {
       let data = {
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",
+        orderPx: this.queryParams.orderPx ? this.queryParams.orderPx : "",
+        gwEndDate: this.gwEndDate,
+        gwStartDate: this.gwStartDate,
+        gwTypeList: this.moreIform.gwTypeList,
+        gwYrbmList: this.moreIform.gwYrbmList,
         xn: this.xn,
-        ids: this.delArr,
-
-        pageNum: 0,
-        pageSize: 0,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
+        gwMainMc: this.select == "gwMainMc" ? this.searchVal : null,
+        gwDetailMc: this.select == "gwDetailMc" ? this.searchVal : null,
       };
       exportGwwhList(data)
         .then((res) => {

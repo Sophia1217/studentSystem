@@ -188,6 +188,17 @@ export function queryCjwhList(query) {
     data: query
   })
 }
+//勤工助学酬金维护-导入模板下载
+export function mbDownSchool(query) {
+  return request({
+    url: '/qgzxCjff/downLoadSchool',
+    method: 'post',
+    data: query,
+    responseType: 'blob'
+  })
+}
+
+
 
 
 

@@ -147,7 +147,7 @@
 
 <script>
 import CheckboxCom from "../../../../../components/checkboxCom";
-import { getXy } from "@/api/assistantWork/themeEdu";
+import { getGzdw } from "@/api/politicalWork/assistantappoint";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { queryYshList, exportYsh } from "@/api/thrift/paymentApply";
 import lctCom from "../../../../../components/lct";
@@ -212,9 +212,9 @@ export default {
     },
     //学院部门，权限
     getAllXy() {
-      getXy()
+      getGzdw()
         .then((res) => {
-          this.allDwh = res.data;
+          this.allDwh = res.data.rows;
         })
         .catch((err) => {});
     },

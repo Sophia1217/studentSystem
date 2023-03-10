@@ -102,11 +102,22 @@
           <span>学年</span>
         </div>
         <div class="headerRight">
-          <div class="btns borderLight" @click="mbDown">
+          <div class="btns borderLight" @click="mbDownSchool">
             <i class="icon downIcon"></i><span class="title2">模板下载</span>
           </div>
-          <div class="btns borderLight" @click="tjModal" v-show="AUTHFLAG">
-            <i class="icon tjIcon"></i><span class="title2">导入</span>
+          <div class="btns borderBlue">
+            <el-upload
+              accept=".xlsx,.xls"
+              :auto-upload="true"
+              :action="uploadUrl"
+              :show-file-list="false"
+              :data="fileData"
+              :headers="fileHeader"
+              :on-success="upLoadSuccess"
+              :on-error="upLoadError"
+            >
+              <i class="icon blueIcon"></i><span class="title2">导入</span>
+            </el-upload>
           </div>
           <div class="btns borderLight" @click="expor" v-show="AUTHFLAG">
             <i class="icon orangeIcon"></i><span class="title2">导出</span>
@@ -255,19 +266,40 @@
 import lctCom from "../../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
-import { getXy } from "@/api/assistantWork/themeEdu";
+import { getGzdw } from "@/api/politicalWork/assistantappoint";
+import { getToken } from "@/utils/auth";
 import {
   queryCjwhList,
   tjById,
   cxById,
   deleteBySchool,
   exportStuBySchool,
-  mbDown,
+  mbDownSchool,
 } from "@/api/thrift/paymentApply";
 export default {
   components: { lctCom },
+  computed: {
+    fileData: {
+      get() {
+        return {
+          xn: this.xn,
+        };
+      },
+    },
+    fileHeader: {
+      get() {
+        return {
+          accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
+          uuid: new Date().getTime(),
+          clientId: "111",
+        };
+      },
+    },
+  },
   data() {
     return {
+      uploadUrl:
+        process.env.VUE_APP_BASE_API + "/qgzxCjff/importStuCjffBySchool",
       AUTHFLAG: false,
       len: 0,
       xnxjModal: false,
@@ -324,15 +356,19 @@ export default {
     showDetail(row) {
       console.log(row),
         this.$router.push({
-          path: "/Thrift/payment/paymentApplyDetail",
+          path: "/Thrift/payment/paymentMaintainDetail",
           query: {
             id: row.id,
-            status: row.status,
-            gwYrbm: row.dwh,
+            xh: row.xh,
+            gwYrbm: row.gwYrbm,
+            gwYrbmc: row.gwYrbmc,
             ffny: row.ffny,
             xn: row.xn,
-            statusName: row.statusName,
-            gwYrbmMc: row.dwhmc,
+            gwId: row.gwId,
+            gw: row.gw,
+            gs: row.gs,
+            je: row.je,
+            bz: row.bz,
           },
         });
     },
@@ -519,7 +555,7 @@ export default {
 
     xinzeng() {
       this.$router.push({
-        path: "/Thrift/payment/paymentApplyAdd",
+        path: "/Thrift/payment/paymentMaintainAdd",
       });
     },
     changeSelect() {
@@ -531,9 +567,9 @@ export default {
     },
     //学院部门，权限
     getAllXy() {
-      getXy()
+      getGzdw()
         .then((res) => {
-          this.allDwh = res.data;
+          this.allDwh = res.data.rows;
         })
         .catch((err) => {});
     },
@@ -585,10 +621,31 @@ export default {
       this.exportParams = data;
       this.showExport = true;
     },
+    //导入失败
+    upLoadError(err, file, fileList) {
+      this.$message({
+        type: "error",
+        message: "上传失败",
+      });
+    },
+    upLoadSuccess(res, file, fileList) {
+      if (res.errcode == "00") {
+        this.$message({
+          type: "success",
+          message: res.errmsg,
+        });
+        this.query();
+      } else {
+        this.$message({
+          type: "error",
+          message: res.errmsg,
+        });
+      }
+    },
     //模板下载
-    mbDown() {
-      mbDown().then((res) => {
-        this.downloadFn(res, "酬金发放导入学生模板下载", "xlsx");
+    mbDownSchool() {
+      mbDownSchool().then((res) => {
+        this.downloadFn(res, "酬金维护导入学生模板下载", "xlsx");
         this.$message.success("操作成功");
       });
     },
@@ -798,6 +855,10 @@ export default {
           margin-top: 10px;
           background: url("~@/assets/assistantPng/out.png") no-repeat;
         }
+        .blueIcon {
+          margin-top: 10px;
+          background: url("~@/assets/assistantPng/in.png") no-repeat;
+        }
         .lightIcon {
           margin-top: 9px;
           background: url("~@/assets/assistantPng/delete.png") no-repeat;
@@ -809,10 +870,6 @@ export default {
         .tjIcon {
           margin-top: 10px;
           background: url("~@/assets/assistantPng/out.png") no-repeat;
-        }
-        .copyIcon {
-          margin-top: 10px;
-          background: url("~@/assets/images/copy.png") no-repeat;
         }
         .downIcon {
           margin-top: 10px;

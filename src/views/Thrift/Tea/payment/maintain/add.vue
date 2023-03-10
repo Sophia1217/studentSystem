@@ -1,5 +1,72 @@
 <template>
   <div>
+    <div class="tableStyle">
+      <el-row :gutter="20">
+        <el-col :span="6" class="rowStyle">
+          <div class="wrap">
+            <div class="title">学号</div>
+            <el-autocomplete
+              v-model="formAdd.xh"
+              :fetch-suggestions="querySearchByXh"
+              placeholder="请输入学生学号"
+              :trigger-on-focus="false"
+              @select="handleSelectXh"
+            ></el-autocomplete>
+          </div>
+        </el-col>
+        <el-col :span="6" class="rowStyle">
+          <div class="wrap">
+            <div class="title">姓名</div>
+            <!-- <div class="content">{{ formDetails.xm }}</div> -->
+            <el-autocomplete
+              v-model="formAdd.xm"
+              :fetch-suggestions="querySearch"
+              placeholder="请输入学生姓名"
+              :trigger-on-focus="false"
+              @select="handleSelect"
+            ></el-autocomplete>
+          </div>
+        </el-col>
+        <el-col :span="6" class="rowStyle">
+          <div class="wrap">
+            <div class="title">性别</div>
+            <div class="content">{{ basicInfo.xbmmc }}</div>
+          </div>
+        </el-col>
+        <el-col :span="6" class="rowStyle">
+          <div class="wrap">
+            <div class="title">年级</div>
+            <div class="content">{{ basicInfo.ssnj }}</div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="6" class="rowStyle">
+          <div class="wrap">
+            <div class="title">学院</div>
+            <div class="content">{{ basicInfo.ssdwdmmc }}</div>
+          </div>
+        </el-col>
+        <el-col :span="6" class="rowStyle">
+          <div class="wrap">
+            <div class="title">专业</div>
+            <div class="content">{{ basicInfo.zydmmc }}</div>
+          </div>
+        </el-col>
+        <el-col :span="6" class="rowStyle">
+          <div class="wrap">
+            <div class="title">班级</div>
+            <div class="content">{{ basicInfo.bjmc }}</div>
+          </div>
+        </el-col>
+        <el-col :span="6" class="rowStyle">
+          <div class="wrap">
+            <div class="title">政治面貌</div>
+            <div class="content">{{ basicInfo.bjmc }}</div>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
     <div class="tableWrap mt15">
       <el-form :model="formAdd" ref="formAdd" size="small" :rules="rules">
         <div class="headerTop">
@@ -134,6 +201,17 @@
             </el-table-column>
           </el-table>
         </div>
+        <div class="table">
+          <el-form-item label="备注" prop="bz">
+            <el-input
+              type="textarea"
+              v-model="formAdd.bz"
+              :rows="5"
+              show-word-limit
+              maxlength="500"
+            />
+          </el-form-item>
+        </div>
       </el-form>
     </div>
     <div class="editBottom">
@@ -147,53 +225,30 @@ import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getXmXgh } from "@/api/assistantWork/homeSchool";
 import { queryD } from "@/api/gwsz/gwsz";
-import { getXy } from "@/api/assistantWork/themeEdu";
-import { queryZgJbxxDwh } from "@/api/dailyBehavior/thriftbumen";
-import {
-  queryStuDffList,
-  insertXscj,
-  gwList,
-  exportStu,
-  importStuInsert,
-  mbDown,
-} from "@/api/thrift/paymentApply";
+import { getGzdw } from "@/api/politicalWork/assistantappoint";
+import { insertXscjBySchool, gwList } from "@/api/thrift/paymentApply";
 import { getToken } from "@/utils/auth";
+import { queryStuList } from "@/api/familyDifficulties/difficultTea";
+import { queryKnssqxsjbxx } from "@/api/familyDifficulties/stu";
 export default {
-  computed: {
-    fileData: {
-      get() {
-        return {
-          xn: this.formAdd.detailList[0].xn,
-          ffny: this.formAdd.detailList[0].ffny,
-          gwYrbm: this.formAdd.detailList[0].gwYrbm,
-          gwId: this.formAdd.detailList[0].gwId || "",
-          zgzt: this.formAdd.detailList[0].zgzt || "1",
-        };
-      },
-    },
-    fileHeader: {
-      get() {
-        return {
-          accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
-          uuid: new Date().getTime(),
-          clientId: "111",
-        };
-      },
-    },
-  },
+  computed: {},
   data() {
     return {
+      basicInfo: {},
       formAdd: {
+        xh: "",
+        xm: "",
         gssx: "",
+        bz: "",
         detailList: [
           {
             xn: "",
-            zgzt: "1",
             ffny: "",
-            gwYrbmMc: "",
             gwYrbm: "",
             gwId: "",
             cjbz: "",
+            gs: "",
+            je: "",
           },
         ],
       },
@@ -208,10 +263,12 @@ export default {
       gwOps: [],
       allDwh: [], // 学院下拉框
       rules: {
+        gwYrbm: [
+          { required: true, message: "用人部门不能为空", trigger: "change" },
+        ],
         ffny: [
           { required: true, message: "发放年月不能为空", trigger: "blur" },
         ],
-
         xn: [{ required: true, message: "学年不能为空", trigger: "change" }],
       },
     };
@@ -288,19 +345,24 @@ export default {
       this.$set(row, "je", arr);
     },
     addClick() {
-      if (!this.formAdd.detailList[0].ffny) {
-        this.$message.error("请选择发放年月！");
+      if (
+        !this.formAdd.detailList[0].ffny ||
+        !this.formAdd.detailList[0].gwYrbm
+      ) {
+        this.$message.error("发放年月、用人部门必填！");
         return;
       } else {
         let data = {
           ffny: this.formAdd.detailList[0].ffny || "",
           gwYrbm: this.formAdd.detailList[0].gwYrbm || "",
           gwId: this.formAdd.detailList[0].gwId || "",
-          // status: this.formAdd.detailList[0].zgzt || "",
           xn: this.formAdd.detailList[0].xn,
-          qgzxCjffBaseReqList: this.formAdd.stuList || [],
+          gs: this.formAdd.detailList[0].gs,
+          je: this.formAdd.detailList[0].je,
+          xh: this.formAdd.xh,
+          xm: this.formAdd.xm,
         };
-        insertXscj(data).then((res) => {
+        insertXscjBySchool(data).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("新增成功");
             this.$router.go(-1);
@@ -325,11 +387,89 @@ export default {
     },
     //学院部门，权限
     getAllXy() {
-      getXy()
+      getGzdw()
         .then((res) => {
-          this.allDwh = res.data;
+          this.allDwh = res.data.rows;
         })
         .catch((err) => {});
+    },
+    //学生
+    querySearch(queryString, cb) {
+      if (queryString != "") {
+        let callBackArr = [];
+        var Xm = { xm: queryString };
+        var result = [];
+        var resultNew = [];
+        queryStuList(Xm).then((res) => {
+          result = res.data.length > 0 ? res.data : [];
+          resultNew = result.map((ele) => {
+            //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
+            //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
+            //此处找后台约定好
+            return {
+              value: `${ele.xm}(${ele.gh})`,
+              gh: ele.gh,
+              xm: ele.xm,
+            };
+          });
+          resultNew.forEach((item) => {
+            if (item.value.indexOf(queryString) > -1) {
+              callBackArr.push(item);
+            }
+          });
+          if (callBackArr.length == 0) {
+            cb([{ value: "暂无数据", price: "暂无数据" }]);
+          } else {
+            cb(callBackArr);
+          }
+        });
+      }
+    },
+    handleSelect(item) {
+      this.formAdd.xh = item.gh;
+      this.formAdd.xm = item.xm;
+      queryKnssqxsjbxx({ xh: this.formAdd.xh }).then((res) => {
+        this.basicInfo = res.data;
+      });
+    },
+    //通过学号查姓名信息
+    querySearchByXh(queryString, cb) {
+      if (queryString != "") {
+        let callBackArr = [];
+        var Xh = { xh: queryString };
+        var result = [];
+        var resultNew = [];
+        queryStuList(Xh).then((res) => {
+          result = res.data.length > 0 ? res.data : [];
+          resultNew = result.map((ele) => {
+            //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
+            //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
+            //此处找后台约定好
+            return {
+              value: `${ele.xm}(${ele.gh})`,
+              gh: ele.gh,
+              xm: ele.xm,
+            };
+          });
+          resultNew.forEach((item) => {
+            if (item.value.indexOf(queryString) > -1) {
+              callBackArr.push(item);
+            }
+          });
+          if (callBackArr.length == 0) {
+            cb([{ value: "暂无数据", price: "暂无数据" }]);
+          } else {
+            cb(callBackArr);
+          }
+        });
+      }
+    },
+    handleSelectXh(item) {
+      this.formAdd.xh = item.gh;
+      this.formAdd.xm = item.xm;
+      queryKnssqxsjbxx({ xh: this.formAdd.xh }).then((res) => {
+        this.basicInfo = res.data;
+      });
     },
   },
 };
@@ -472,6 +612,36 @@ export default {
     background: #005657;
     color: #fff;
     // background: url('~@/assets/images/icon_edit_white.png');
+  }
+}
+.tableStyle {
+  padding: 0 20px;
+  .rowStyle {
+    padding: 0 !important;
+    margin: 0;
+    border-bottom: 1px solid #cccccc;
+  }
+  .wrap {
+    display: flex;
+    align-items: center;
+    .title {
+      flex: 0 0 160px;
+      line-height: 48px;
+      background: #e0e0e0;
+      text-align: right;
+      padding-right: 5px;
+      margin: 0 !important;
+    }
+    .content {
+      font-weight: 400;
+      font-size: 14px;
+      color: #1f1f1f;
+      line-height: 22px;
+      margin-left: 16px;
+      ::v-deep .el-input {
+        width: 200px;
+      }
+    }
   }
 }
 .icon {

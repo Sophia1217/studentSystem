@@ -15,10 +15,8 @@
             slot="prepend"
             placeholder="请选择查询条件"
           >
-            <!-- <el-option label="岗位名称" value="gwMainMc"></el-option>
+            <el-option label="岗位名称" value="gwMainMc"></el-option>
             <el-option label="岗位" value="gwDetailMc"></el-option>
-            <el-option label="工作地点" value="gwGzdd"></el-option>
-            <el-option label="指导教师" value="gwZdls"></el-option> -->
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="query"
             >查询</el-button
@@ -416,6 +414,8 @@ export default {
         orderPx: this.queryParams.orderPx ? this.queryParams.orderPx : "",
         // status: this.moreIform.status,
         xn: this.xn,
+        gwMainMc: this.select == "gwMainMc" ? this.searchVal : null,
+        gwDetailMc: this.select == "gwDetailMc" ? this.searchVal : null,
       };
       queryYjsGwList(data).then((res) => {
         this.tableDate = res.data;

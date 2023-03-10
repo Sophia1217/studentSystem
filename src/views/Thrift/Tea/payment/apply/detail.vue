@@ -413,11 +413,11 @@ export default {
     },
     upLoadSuccess(res, file, fileList) {
       if (res.errcode == "00") {
-        this.queryBasicList();
         this.$message({
           type: "success",
           message: res.errmsg,
         });
+        this.router.go(-1);
       } else {
         this.$message({
           type: "error",

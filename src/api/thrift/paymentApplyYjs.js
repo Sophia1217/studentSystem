@@ -155,6 +155,48 @@ export function exportYsh(query) {
     data: query
   })
 }
+//勤工助学酬金发放_学生资助中心_酬金维护删除
+export function deleteBySchool(query) {
+  return request({
+    url: '/qgzxCjffYjssz/deleteBySchool',
+    method: 'post',
+    data: query
+  })
+}
+//勤工助学酬金发放-酬金维护-学生列表数据导出
+export function exportStuBySchool(query) {
+  return request({
+    url: '/qgzxCjffYjssz/excelExportStuBySchool',
+    method: 'post',
+    responseType: "blob",
+    data: query
+  })
+}
+//勤工助学酬金发放_学生资助中心_酬金维护新增
+export function insertXscjBySchool(query) {
+  return request({
+    url: '/qgzxCjffYjssz/insertXscjBySchool',
+    method: 'post',
+    data: query
+  })
+}
+//勤工助学酬金发放_用人单位_待发放酬金学生列表查询
+export function queryCjwhList(query) {
+  return request({
+    url: '/qgzxCjffYjssz/queryStuListForShool',
+    method: 'post',
+    data: query
+  })
+}
+//勤工助学酬金维护-导入模板下载
+export function mbDownSchool(query) {
+  return request({
+    url: '/qgzxCjffYjssz/downLoadSchool',
+    method: 'post',
+    data: query,
+    responseType: 'blob'
+  })
+}
 
 
 

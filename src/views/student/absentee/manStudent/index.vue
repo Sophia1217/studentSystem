@@ -693,7 +693,7 @@ export default {
     this.getCode("dmxz"); // 学 制
     this.getCode("dmxbm"); // 性别码
     this.handleSearch();
-    this.authConfirm(this.$route.path.split("/")[2]);
+    this.authConfirm(this.$route.path.split("/"));
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   activated() {

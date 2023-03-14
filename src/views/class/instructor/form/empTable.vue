@@ -112,7 +112,7 @@ export default {
   name: "empTable", //辅导员任职记录
   dicts: [], // ['sys_notice_status', 'sys_notice_type']
   created() {
-    this.authConfirm(this.$route.path.split("/")[2]);
+    this.authConfirm(this.$route.path.split("/"));
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   data() {

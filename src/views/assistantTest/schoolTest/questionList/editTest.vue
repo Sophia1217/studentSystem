@@ -292,7 +292,7 @@ export default {
     this.routeId = this.$route.query.id;
     this.listDetail1();
     this.getAllGrade(); //年级
-    this.authConfirm(this.$route.path.split("/")[2]);
+    this.authConfirm(this.$route.path.split("/"));
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
 

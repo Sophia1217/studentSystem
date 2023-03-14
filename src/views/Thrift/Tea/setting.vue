@@ -546,7 +546,7 @@ export default {
     };
   },
   mounted() {
-    this.authConfirm(this.$route.path.split("/")[2]);
+    this.authConfirm(this.$route.path.split("/"));
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getCode("dmpyccm"); //培养层次1
     this.getDetail();

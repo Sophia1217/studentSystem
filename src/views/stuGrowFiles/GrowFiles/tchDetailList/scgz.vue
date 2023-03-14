@@ -837,7 +837,7 @@ export default {
     this.getCode("dmxgjljbm"); //级别
   },
   created() {
-    this.authConfirm(this.$route.path.split("/")[2]);
+    this.authConfirm(this.$route.path.split("/"));
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
 

@@ -603,7 +603,7 @@ export default {
     this.getOptions(); // 获取生源地、专业、性别筛选框数据
   },
   created() {
-    this.authConfirm(this.$route.path.split("/")[2]);
+    this.authConfirm(this.$route.path.split("/"));
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   activated() {},

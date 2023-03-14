@@ -314,7 +314,7 @@ export default {
   mounted() {
     this.mkQuery1();
     this.getAllGrade(); //年级
-    this.authConfirm(this.$route.path.split("/")[2]);
+    this.authConfirm(this.$route.path.split("/"));
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
 

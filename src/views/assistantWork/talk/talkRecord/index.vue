@@ -239,8 +239,10 @@
 import CheckboxCom from "../../../components/checkboxCom";
 import { talkTable, delTalk, expTalk } from "@/api/assistantWork/talk";
 import { getGzdw } from "@/api/politicalWork/assistantappoint";
+import myMixins from "@/components/mixins/myMinixn";
 export default {
   components: { CheckboxCom },
+  mixins: [myMixins],
   data() {
     return {
       delArr: [],
@@ -288,11 +290,13 @@ export default {
   },
 
   mounted() {
+    this.hello();
+    console.log("this.num", this.num);
     this.handleSearch();
     this.getAllCollege();
   },
   created() {
-    this.authConfirm(this.$route.path.split("/")[2]);
+    this.authConfirm(this.$route.path.split("/"));
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   activated() {

@@ -82,12 +82,21 @@ const permission = {
             }
             const sidebarRoutes = filterAsyncRouter(sdata)
             var arr =Adata&& Adata.map(e => e.children);
-            var arr1 =arr&& arr.flat();
-            var tar =arr1&&arr1.map((item,index)=>{
+            var mainMenu =arr&& arr.flat();
+            var childrenMenu=[]
+            for(var k= 0 ;k<mainMenu.length;k++){
+              if(mainMenu[k].children.length>0){
+                for(var x= 0 ;x<mainMenu[k].children.length;x++){
+                         childrenMenu.push(mainMenu[k].children[x])
+                }
+              }
+            }
+            var resultMenu =mainMenu.concat(childrenMenu)
+            var tar =resultMenu&&resultMenu.map((item,index)=>{
                     return Object.assign({},{"auth":item.auth?item.auth:"","name":item.path?item.path:""})
             })
-        
-            commit('SET_SJAUTH', arr1)
+          //  console.log("tar",tar);
+            commit('SET_SJAUTH', mainMenu)
             commit('SET_AUTH', tar)
             const rewriteRoutes = filterAsyncRouter(rdata, false, true)
             rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true })

@@ -314,7 +314,7 @@ export default {
     this.getCode("dmmzm"); // 民 族
     this.getCode("dmzzmmm"); // 政治面貌
     this.handleSearch();
-    this.authConfirm(this.$route.path.split("/")[2]);
+    this.authConfirm(this.$route.path.split("/"));
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   activated() {

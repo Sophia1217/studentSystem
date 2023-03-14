@@ -1,3 +1,11 @@
+/*
+ * @Author: luosheng
+ * @Date: 2023-02-09 09:46:10
+ * @LastEditTime: 2023-03-14 08:34:07
+ * @LastEditors: ***
+ * @Description: 
+ * @FilePath: \studentsystem\src\utils\index.js
+ */
 import { parseTime } from './ruoyi'
 import { blobValidate } from "@/utils/ruoyi";
 import errorCode from '@/utils/errorCode'
@@ -444,7 +452,9 @@ export function isNumberStr(str) {
 }
 
 //按钮鉴权，只读和可编辑 0只读 1可写  可读只有查询权限 可写有所有的功能
-export function authConfirm(data){
+export function authConfirm(param){
+ //  兼容之前的权限代码 直接将整个数组传进来，然后默认取路由最后一项，然后再去比对
+  var data =param && param[param.length -1]
   var flag ='1'
   var all =this.$store.getters.AUTH
   all.some((item)=> {return item.name ==data && item.auth=="1"}) ? flag=1:flag=2

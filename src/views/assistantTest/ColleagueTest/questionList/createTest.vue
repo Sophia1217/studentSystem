@@ -561,7 +561,7 @@ export default {
     this.getCode("dmpyccm");
     this.getCode("dmsfbzm"); //是否
     this.handleSearch();
-    this.authConfirm(this.$route.path.split("/")[2]);
+    this.authConfirm(this.$route.path.split("/"));
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   activated() {

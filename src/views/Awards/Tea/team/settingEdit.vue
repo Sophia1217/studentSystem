@@ -551,7 +551,7 @@ export default {
     };
   },
   mounted() {
-    this.authConfirm(this.$route.path.split("/")[2]);
+    this.authConfirm(this.$route.path.split("/"));
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.lgnSn = this.$route.query.id; //逻辑主键
     this.auth = this.$route.query.au; //逻辑主键

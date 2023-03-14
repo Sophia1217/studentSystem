@@ -754,7 +754,7 @@ export default {
     this.getCode("dmlsknsqlb"); //申请原因类别
     this.getCode("dmxqm"); //学期
     this.handleSearch();
-    this.authConfirm(this.$route.path.split("/")[2]);
+    this.authConfirm(this.$route.path.split("/"));
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
   },
   activated() {

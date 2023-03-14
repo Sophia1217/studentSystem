@@ -161,7 +161,7 @@ export default {
     };
   },
   created() {
-    this.authConfirm(this.$route.path.split("/")[2]);
+    this.authConfirm(this.$route.path.split("/"));
     this.AUTHFLAG = this.$store.getters.AUTHFLAG; // true是拥有所有按钮权限  false是只有查询和详情权限
   },
   activated() {

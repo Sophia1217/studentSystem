@@ -16,3 +16,13 @@ export function updateNzxsrs(data) {
     data: data
   })
 }
+
+// 岗位维护研究生三助_列表导出
+export function exportGwwhYjsList(query) {
+  return request({
+    url: '/qgzxGwwh/excelExportQgzxGwYjsList',
+    method: 'post',
+    responseType: "blob",
+    data: query
+  })
+}

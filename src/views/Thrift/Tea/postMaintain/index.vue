@@ -521,6 +521,7 @@ export default {
         gwTypeList: this.moreIform.gwTypeList,
         gwYrbmList: this.moreIform.gwYrbmList,
         xn: this.xn,
+        ids: this.delArr,
         gwMainMc: this.select == "gwMainMc" ? this.searchVal : null,
         gwDetailMc: this.select == "gwDetailMc" ? this.searchVal : null,
       };

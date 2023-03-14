@@ -106,9 +106,9 @@
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <!-- <div class="btns borderOrange" @click="copy" v-show="AUTHFLAG">
+          <div class="btns borderOrange" @click="copy" v-show="AUTHFLAG">
             <i class="icon copyIcon"></i><span class="title2">复制岗位</span>
-          </div> -->
+          </div>
           <div class="btns borderLight" @click="showDel" v-show="AUTHFLAG">
             <i class="icon lightIcon"></i><span class="title">删除岗位</span>
           </div>
@@ -263,9 +263,12 @@
 import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { queryXn } from "@/api/dailyBehavior/yearSum";
-import { deleteQgzxGw, copyQgzxGw } from "@/api/dailyBehavior/thriftbumen";
-import { queryYjsGwList, updateNzxsrs } from "@/api/thrift/gwMaintainYjs";
-import { exportGwwhYjsList } from "@/api/thrift/gwMaintain";
+import { deleteQgzxGwYjs, copyQgzxGwYjs } from "@/api/thrift/qgzxgwYjs";
+import {
+  queryYjsGwList,
+  updateNzxsrs,
+  exportGwwhYjsList,
+} from "@/api/thrift/gwMaintainYjs";
 import { getCollege } from "@/api/class/maintenanceClass";
 export default {
   components: { lctCom },
@@ -408,7 +411,7 @@ export default {
       }
     },
     del() {
-      deleteQgzxGw({ ids: this.delArr, ymLy: "1" }).then((res) => {
+      deleteQgzxGwYjs({ ids: this.delArr, ymLy: "1" }).then((res) => {
         this.query();
         this.delModal = false;
         this.$message.success("删除成功");
@@ -444,7 +447,7 @@ export default {
           gwEndDate: this.fzform.gwTime[1] || "",
         };
         // console.log(this.delArr);
-        copyQgzxGw(data).then((res) => {
+        copyQgzxGwYjs(data).then((res) => {
           this.$message.success("复制成功！");
           this.query();
           this.copyModal = false;
@@ -510,6 +513,7 @@ export default {
         gwTypeList: this.moreIform.gwTypeList,
         gwYrbmList: this.moreIform.gwYrbmList,
         xn: this.xn,
+        ids: this.delArr,
         gwMainMc: this.select == "gwMainMc" ? this.searchVal : null,
         gwDetailMc: this.select == "gwDetailMc" ? this.searchVal : null,
       };

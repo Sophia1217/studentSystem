@@ -1131,6 +1131,62 @@ export const stuRoutes = [
   "childrenId":null,
   "auth":"1"
  },
+ {
+  "id":0,
+  "modId":"5126",
+  "name":"jcjyadd",
+  "path":"/jcjyadd",
+  "title":"基层就业代偿申请表新增",    
+  "component":"gjzxdk/list/jcjy/add.vue",
+  "icon":"",
+  "modPid":"-1",
+  "isChild":"2",
+  "sortId":26,
+  "modStatus":"1",
+  "hidden":true,
+  "alwaysShow":true,
+  "rem":"",
+  "roleIds":null,
+  "isChecked":null,
+  "vueChecked":false,
+  "meta":{
+      "icon":"",
+      "title":"基层就业代偿申请表新增"
+  },
+  "children":[
+
+  ],
+  "childrenId":null,
+  "auth":"1"
+ },
+ {
+  "id":0,
+  "modId":"5127",
+  "name":"jcjyedit",
+  "path":"/jcjyedit",
+  "title":"基层就业代偿申请表详情",
+  "component":"gjzxdk/list/jcjy/edit",
+  "icon":"",
+  "modPid":"-1",
+  "isChild":"2",
+  "sortId":27,
+  "modStatus":"1",
+  "hidden":true,
+  "alwaysShow":true,
+  "rem":"",
+  "roleIds":null,
+  "isChecked":null,
+  "vueChecked":false,
+  "meta":{
+      "icon":"",
+      "title":"基层就业代偿申请表详情"
+  },
+  "children":[
+
+  ],
+  "childrenId":null,
+  "auth":"1"
+ },
     ];
 
 // 动态路由，基于用户权限动态去加载

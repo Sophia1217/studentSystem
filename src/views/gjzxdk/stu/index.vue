@@ -34,7 +34,7 @@
 <script>
 import dksq from "../list/dksq.vue";
 import byqr from "../list/byqr.vue";
-import jcjy from "../list/jcjy.vue";
+import jcjy from "../list/jcjy/index.vue";
 import dbjz from "../list/dbjz.vue";
 import zbrw from "../list/zbrw.vue";
 import topTitle from "../../components/topTitle";
@@ -55,6 +55,9 @@ export default {
   },
   mounted() {
     this.routeTitle = this.$route.meta.title;
+    if (this.$route.query.state && this.$route.query.state == "1") {
+      this.activeName = "2";
+    }
   },
 };
 </script>

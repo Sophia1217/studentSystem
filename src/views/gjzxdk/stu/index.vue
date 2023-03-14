@@ -8,6 +8,9 @@
         <el-tabs v-model="activeName" class="tab_left" tab-position="left">
           <el-tab-pane label="贷款申请" name="0"> </el-tab-pane>
           <el-tab-pane label="毕业确认" name="1"> </el-tab-pane>
+          <el-tab-pane label="基层就业" name="2"> </el-tab-pane>
+          <el-tab-pane label="大病救助" name="3"> </el-tab-pane>
+          <el-tab-pane label="征兵退役代偿申请" name="4"> </el-tab-pane>
         </el-tabs>
       </div>
       <div class="detail_right" v-if="activeName == '0'">
@@ -16,17 +19,32 @@
       <div class="detail_right" v-if="activeName == '1'">
         <byqr></byqr>
       </div>
+      <div class="detail_right" v-if="activeName == '2'">
+        <jcjy></jcjy>
+      </div>
+      <div class="detail_right" v-if="activeName == '3'">
+        <dbjz></dbjz>
+      </div>
+      <div class="detail_right" v-if="activeName == '4'">
+        <zbrw></zbrw>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import dksq from "../list/dksq.vue";
 import byqr from "../list/byqr.vue";
+import jcjy from "../list/jcjy.vue";
+import dbjz from "../list/dbjz.vue";
+import zbrw from "../list/zbrw.vue";
 import topTitle from "../../components/topTitle";
 export default {
   components: {
     dksq,
     byqr,
+    jcjy,
+    dbjz,
+    zbrw,
     topTitle,
   },
   data() {

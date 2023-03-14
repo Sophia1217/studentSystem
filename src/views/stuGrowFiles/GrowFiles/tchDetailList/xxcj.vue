@@ -80,7 +80,7 @@ export default {
   methods: {
     query() {
       var data = {
-        xh: this.$store.getters.userId,
+        xh: this.$route.query.xh,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",

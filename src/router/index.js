@@ -1047,6 +1047,90 @@ export const stuRoutes = [
   "childrenId":null,
   "auth":"1"
  },
+ {
+  "id":0,
+  "modId":"5123",
+  "name":"friendTutor",
+  "path":"/friendTutor",
+  "title":"朋辈辅导",
+  "component":"friendTutor/stu/index",
+  "icon":"",
+  "modPid":"-1",
+  "isChild":"2",
+  "sortId":22,
+  "modStatus":"1",
+  "hidden":true,
+  "alwaysShow":true,
+  "rem":"",
+  "roleIds":null,
+  "isChecked":null,
+  "vueChecked":false,
+  "meta":{
+      "icon":"",
+      "title":"朋辈辅导"
+  },
+  "children":[
+
+  ],
+  "childrenId":null,
+  "auth":"1"
+ },
+ {
+  "id":0,
+  "modId":"5124",
+  "name":"tutorDetail",
+  "path":"/tutorDetail",
+  "title":"朋辈导师资料",
+  "component":"friendTutor/stu/table",
+  "icon":"",
+  "modPid":"-1",
+  "isChild":"2",
+  "sortId":22,
+  "modStatus":"1",
+  "hidden":true,
+  "alwaysShow":true,
+  "rem":"",
+  "roleIds":null,
+  "isChecked":null,
+  "vueChecked":false,
+  "meta":{
+      "icon":"",
+      "title":"朋辈导师资料"
+  },
+  "children":[
+
+  ],
+  "childrenId":null,
+  "auth":"1"
+ },
+ {
+  "id":0,
+  "modId":"5125",
+  "name":"zbrwbc",
+  "path":"/zbrwbc",
+  "title":"征兵入伍补偿",
+  "component":"zbrwbc/stu/table",
+  "icon":"",
+  "modPid":"-1",
+  "isChild":"2",
+  "sortId":22,
+  "modStatus":"1",
+  "hidden":true,
+  "alwaysShow":true,
+  "rem":"",
+  "roleIds":null,
+  "isChecked":null,
+  "vueChecked":false,
+  "meta":{
+      "icon":"",
+      "title":"征兵入伍补偿"
+  },
+  "children":[
+
+  ],
+  "childrenId":null,
+  "auth":"1"
+ },
     ];
 
 // 动态路由，基于用户权限动态去加载

@@ -114,7 +114,21 @@
           </div>
         </div>
       </div>
-      <div class="item stuInfoClick"></div>
+      <div class="item stuInfoClick">
+        <div class="item stuInfoClick" @click="pbfdClick">
+          <div class="medalImage">
+            <img src="~@/assets/images/medal.png" alt="" />
+          </div>
+          <div class="content1">
+            <div class="title1">
+              <span class="stuinfoTitle">朋辈辅导</span>
+            </div>
+            <div class="title2">
+              <span class="baseInfo">学生之间辅导</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="item stuInfoClick"></div>
     </div>
     <div class="headline">
@@ -467,6 +481,11 @@ export default {
     yjsszClick() {
       this.$router.push({
         path: "/yjsHelpApply",
+      });
+    },
+    pbfdClick() {
+      this.$router.push({
+        path: "/friendTutor",
       });
     },
   },

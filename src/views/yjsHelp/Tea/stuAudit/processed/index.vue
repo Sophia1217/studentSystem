@@ -345,7 +345,6 @@ export default {
   },
 
   mounted() {
-    // this.handleSearch();
     this.getAllCollege();
     this.getSchoolYears();
 

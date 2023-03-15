@@ -52,7 +52,7 @@
                 <div class="sqList">
                   <el-select v-model="formAdd.xn" placeholder="请选择">
                     <el-option
-                      v-for="(item, index) in dglxList"
+                      v-for="(item, index) in zzmmList"
                       :key="index"
                       :label="item.mc"
                       :value="item.dm"
@@ -225,9 +225,13 @@
             <el-col :span="12">
               <el-form-item label="省" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <el-select v-model="formAdd.xn" placeholder="请选择">
+                  <el-select
+                    v-model="formAdd.xn"
+                    placeholder="请选择"
+                    @change="change1"
+                  >
                     <el-option
-                      v-for="(item, index) in dglxList"
+                      v-for="(item, index) in provinceList"
                       :key="index"
                       :label="item.mc"
                       :value="item.dm"
@@ -239,9 +243,13 @@
             <el-col :span="12">
               <el-form-item label="市" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <el-select v-model="formAdd.xn" placeholder="请选择">
+                  <el-select
+                    v-model="formAdd.xj"
+                    placeholder="请选择"
+                    @change="change2"
+                  >
                     <el-option
-                      v-for="(item, index) in dglxList"
+                      v-for="(item, index) in cityList"
                       :key="index"
                       :label="item.mc"
                       :value="item.dm"
@@ -255,9 +263,9 @@
             <el-col :span="12">
               <el-form-item label="县（区）" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <el-select v-model="formAdd.xn" placeholder="请选择">
+                  <el-select v-model="formAdd.xfys" placeholder="请选择">
                     <el-option
-                      v-for="(item, index) in dglxList"
+                      v-for="(item, index) in zonetList"
                       :key="index"
                       :label="item.mc"
                       :value="item.dm"
@@ -271,7 +279,7 @@
                 <div class="sqList">
                   <el-select v-model="formAdd.xn" placeholder="请选择">
                     <el-option
-                      v-for="(item, index) in dglxList"
+                      v-for="(item, index) in dkTypeList"
                       :key="index"
                       :label="item.mc"
                       :value="item.dm"
@@ -309,7 +317,7 @@
                 <div class="sqList">
                   <el-select v-model="formAdd.xn" placeholder="请选择">
                     <el-option
-                      v-for="(item, index) in dglxList"
+                      v-for="(item, index) in hyTypeList"
                       :key="index"
                       :label="item.mc"
                       :value="item.dm"
@@ -408,7 +416,7 @@
                 <div class="sqList">
                   <el-select v-model="formAdd.xn" placeholder="请选择">
                     <el-option
-                      v-for="(item, index) in dglxList"
+                      v-for="(item, index) in yhmcList"
                       :key="index"
                       :label="item.mc"
                       :value="item.dm"
@@ -506,7 +514,7 @@
                 <div class="sqList">
                   <el-select v-model="formAdd.dklx" placeholder="请选择">
                     <el-option
-                      v-for="(item, index) in dglxList"
+                      v-for="(item, index) in dkTypeList"
                       :key="index"
                       :label="item.mc"
                       :value="item.dm"
@@ -526,7 +534,7 @@
                 <div class="sqList">
                   <el-select v-model="formAdd.dkyh" placeholder="请选择">
                     <el-option
-                      v-for="(item, index) in dgyhList"
+                      v-for="(item, index) in yhmcList"
                       :key="index"
                       :label="item.mc"
                       :value="item.dm"
@@ -643,17 +651,10 @@
 <script>
 import topTitle from "@/components/topTitleStu";
 import lctCom from "@/components/lct";
-import {
-  nowYear,
-  edit,
-  query,
-  del,
-  back,
-  tj,
-  getDetails,
-} from "@/api/gzzxdk/gjzxdk";
-import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+import { edit, getDetails } from "@/api/gzzxdk/gjzxdk";
+import myMixins from "./myMixins";
 export default {
+  mixins: [myMixins],
   components: {
     topTitle,
     lctCom,
@@ -661,34 +662,7 @@ export default {
   data() {
     return {
       routeTitle: "",
-      dglxList: [],
-      dgyhList: [],
-      //草稿状态和退回状态有编辑功能  01 || 08
-      submitModal: false,
-      lctModal: false,
-      addModal: false,
-      editModal: false,
-      delModal: false,
       formAdd: {},
-      formEdit: {},
-      tableDate: [],
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        totalCount: 0,
-        orderZd: "",
-        orderPx: "",
-      },
-      editFlag: 2,
-      fileList: [],
-      delArr: [],
-      tjArr: [],
-      fileListAdd: [],
-      ztStatus: [],
-      val: [],
-      czlx: [],
-      dmsfbzm: [],
-      chehuiModal: false,
       rules: {
         common: [
           {
@@ -702,48 +676,21 @@ export default {
   },
   mounted() {
     this.routeTitle = this.$route.meta.title;
-    this.query();
-    this.getCode("dmsplcm"); //状态
     this.getCode("dmgjzxdk"); //国家助学贷款码
     this.getCode("dmzudkyhm"); //国家助学贷款银行码
-    this.getYear();
+    this.getCode("dmzzmmm"); // 政治面貌
+    this.getCode("dmhylxm"); // 行业类别
+    this.getCity();
   },
 
   methods: {
-    getYear() {
-      nowYear().then((res) => {
-        this.dkxn = res.errmsg;
-      });
+    change1(val) {
+      this.getCity1(val);
+      //把市区置空
     },
-    tjModal() {
-      var falg = 1;
-      for (var i = 0; i < this.val.length; i++) {
-        if (this.val[i].status !== "01") falg = 2;
-      }
-      if (falg == 1) {
-        if (this.tjArr && this.tjArr.length > 0) {
-          this.submitModal = true;
-        } else {
-          this.$message.error("请先勾选数据");
-        }
-      } else {
-        this.$message.error("不是草稿状态数据，不可以提交");
-      }
-    },
-    tj() {
-      var data = this.val;
-      tj(data).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("提交成功");
-          this.query();
-          this.submitModal = false;
-        } else {
-          this.$message.error("提交失败");
-        }
-      });
-    },
-    subCancel() {
-      this.submitModal = false;
+    change2(val) {
+      this.getCity2(val);
+      //把区置空
     },
     // 表单校验
     checkFormAdd() {
@@ -756,44 +703,6 @@ export default {
         return false;
       }
       return true;
-    },
-    handleCloseLct() {
-      this.lctModal = false;
-    },
-    lctClick(row) {
-      if (!!row.processid) {
-        this.$refs.child.inner(row.processid);
-        this.lctModal = true;
-      } else {
-        this.$message.warning("此项经历为管理员新增，暂无流程数据");
-      }
-    },
-    checkFormEdit() {
-      // 1.校验必填项
-      let validForm = false;
-      this.$refs.formEdit.validate((valid) => {
-        validForm = valid;
-      });
-      if (!validForm) {
-        return false;
-      }
-      return true;
-    },
-    getCode(val) {
-      const data = { codeTableEnglish: val };
-      getCodeInfoByEnglish(data).then((res) => {
-        switch (val) {
-          case "dmsplcm": //审批结果
-            this.ztStatus = res.data;
-            break;
-          case "dmgjzxdk":
-            this.dglxList = res.data; //贷款类型
-            break;
-          case "dmzudkyhm":
-            this.dgyhList = res.data; //银行
-            break;
-        }
-      });
     },
     async showDetail(row) {
       let res = await getDetails({
@@ -810,74 +719,12 @@ export default {
             };
           });
         }
-        this.editModal = true;
       }
     },
     chCancel() {
       this.chehuiModal = false;
     },
-    ch() {
-      back({ ids: this.delArr }).then((res) => {
-        this.$message.success("撤回成功");
-        this.query();
-        this.chehuiModal = false;
-      });
-    },
-    chModal() {
-      var falg = 1;
-      for (var i = 0; i < this.val.length; i++) {
-        if (this.val[i].status !== "02") falg = 2;
-      }
-      if (falg == 1) {
-        if (this.delArr && this.delArr.length > 0) {
-          this.chehuiModal = true;
-        } else {
-          this.$message.error("请先勾选数据");
-        }
-      } else {
-        this.$message.error("存在非待审核状态数据，不可以撤回");
-      }
-    },
-    showDel() {
-      var falg = 1;
-      for (var i = 0; i < this.val.length; i++) {
-        if (this.val[i].status !== "01") falg = 2;
-      }
-      if (falg == 1) {
-        if (this.delArr && this.delArr.length > 0) {
-          this.delModal = true;
-        } else {
-          this.$message.error("请先勾选数据");
-        }
-      } else {
-        this.$message.error("存在非草稿状态数据，不可以删除");
-      }
-    },
-    del() {
-      del({ ids: this.delArr }).then((res) => {
-        this.query();
-        this.delModal = false;
-        this.$message.success("删除成功");
-      });
-    },
-    delCancel() {
-      this.delModal = false;
-    },
-    changeTableSort(column) {
-      this.queryParams.orderZd = column.prop;
-      this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
-      this.query();
-    },
-    handleSelectionChange(val) {
-      this.val = val;
-      this.delArr = val.map((item) => item.id);
-      this.tjArr = val.map((item) => item.id);
-    },
-    editCance() {
-      this.editModal = false;
-      this.editFlag = 2;
-      this.$refs.formEdit.resetFields();
-    },
+
     addClick() {
       if (!this.checkFormAdd()) {
         this.$message.error("请完善表单相关信息！");
@@ -914,40 +761,6 @@ export default {
         });
         this.addModal = false;
       }
-    },
-    query() {
-      var data = {
-        xh: this.$store.getters.userId,
-        pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
-      };
-      query(data).then((res) => {
-        this.tableDate = res.data;
-        this.queryParams.totalCount = res.totalCount;
-      });
-    },
-    xinzeng() {
-      this.formAdd = {
-        xn: this.dkxn, //贷款学年
-        bz: "", //备注
-        zsfys: "", //
-        xfys: "", //
-        dkzje: "",
-        dklx: "",
-        dkyh: "",
-        htbh: "",
-        dkkssj: "",
-        dkqx: "",
-        hzjym: "",
-      }; // 每次打开弹框先将弹框的table数组置空
-      this.fileList = [];
-      this.addModal = true;
-    },
-    addCance() {
-      this.addModal = false;
-      this.$refs.formAdd.resetFields();
     },
   },
 };

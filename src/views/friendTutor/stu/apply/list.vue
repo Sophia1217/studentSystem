@@ -35,24 +35,24 @@
             width="50"
           ></el-table-column>
           <el-table-column
-            prop="xn"
+            prop="xh"
             label="学号"
             sortable="custom"
             :show-overflow-tooltip="true"
           >
           </el-table-column>
           <el-table-column
-            prop="dklxmc"
+            prop="xm"
             label="姓名"
             sortable="custom"
             :show-overflow-tooltip="true"
           >
           </el-table-column>
-          <el-table-column prop="pydw" label="培养单位"> </el-table-column>
-          <el-table-column prop="zy" label="专业"> </el-table-column>
-          <el-table-column prop="dkqx" label="服务方向"> </el-table-column>
-          <el-table-column prop="htbh" label="类别"> </el-table-column>
-          <el-table-column prop="dkkssj" label="申请时间"> </el-table-column>
+          <el-table-column prop="dwhmc" label="培养单位"> </el-table-column>
+          <el-table-column prop="zydmmc" label="专业"> </el-table-column>
+          <el-table-column prop="fwfxMc" label="服务方向"> </el-table-column>
+          <el-table-column prop="lb" label="类别"> </el-table-column>
+          <el-table-column prop="sqsj" label="申请时间"> </el-table-column>
 
           <el-table-column
             prop="status"
@@ -121,7 +121,7 @@
       <span>确认删除？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="delCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="del()"
+        <el-button type="primary" class="confirm" @click="deletepbsq()"
           >确 定</el-button
         >
       </span>
@@ -143,7 +143,9 @@
       </template>
       <span slot="footer" class="dialog-footer">
         <el-button @click="subCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="tj">确 定</el-button>
+        <el-button type="primary" class="confirm" @click="tjbyid"
+          >确 定</el-button
+        >
       </span>
     </el-dialog>
     <lctCom
@@ -154,17 +156,14 @@
   </div>
 </template>
 <script>
-import { querywj, delwj } from "@/api/assistantWork/classEvent";
-import lctCom from "../../../components/lct";
 import {
-  nowYear,
-  edit,
-  query,
-  del,
-  back,
-  tj,
-  getDetails,
-} from "@/api/gzzxdk/gjzxdk";
+  queryPbsqList,
+  cxById,
+  tjById,
+  deletePbsq,
+} from "@/api/friendTutor/apply";
+import lctCom from "../../../components/lct";
+
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
   components: { lctCom },
@@ -212,17 +211,9 @@ export default {
   mounted() {
     this.query();
     this.getCode("dmsplcm"); //状态
-    this.getCode("dmgjzxdk"); //国家助学贷款码
-    this.getCode("dmzudkyhm"); //国家助学贷款银行码
-    this.getYear();
   },
 
   methods: {
-    getYear() {
-      nowYear().then((res) => {
-        this.dkxn = res.errmsg;
-      });
-    },
     tjModal() {
       var falg = 1;
       for (var i = 0; i < this.val.length; i++) {
@@ -238,9 +229,9 @@ export default {
         this.$message.error("不是草稿状态数据，不可以提交");
       }
     },
-    tj() {
+    tjbyid() {
       var data = this.val;
-      tj(data).then((res) => {
+      tjById(data).then((res) => {
         if (res.errcode == "00") {
           this.$message.success("提交成功");
           this.query();
@@ -253,18 +244,7 @@ export default {
     subCancel() {
       this.submitModal = false;
     },
-    // 表单校验
-    checkFormAdd() {
-      // 1.校验必填项
-      let validForm = false;
-      this.$refs.formAdd.validate((valid) => {
-        validForm = valid;
-      });
-      if (!validForm) {
-        return false;
-      }
-      return true;
-    },
+
     handleCloseLct() {
       this.lctModal = false;
     },
@@ -276,29 +256,13 @@ export default {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");
       }
     },
-    checkFormEdit() {
-      // 1.校验必填项
-      let validForm = false;
-      this.$refs.formEdit.validate((valid) => {
-        validForm = valid;
-      });
-      if (!validForm) {
-        return false;
-      }
-      return true;
-    },
+
     getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
         switch (val) {
           case "dmsplcm": //审批结果
             this.ztStatus = res.data;
-            break;
-          case "dmgjzxdk":
-            this.dglxList = res.data; //贷款类型
-            break;
-          case "dmzudkyhm":
-            this.dgyhList = res.data; //银行
             break;
         }
       });
@@ -308,7 +272,8 @@ export default {
       this.chehuiModal = false;
     },
     ch() {
-      back({ ids: this.delArr }).then((res) => {
+      var data = this.val;
+      cxById(data).then((res) => {
         this.$message.success("撤回成功");
         this.query();
         this.chehuiModal = false;
@@ -344,8 +309,8 @@ export default {
         this.$message.error("存在非草稿状态数据，不可以删除");
       }
     },
-    del() {
-      del({ ids: this.delArr }).then((res) => {
+    deletepbsq() {
+      deletePbsq({ idList: this.delArr }).then((res) => {
         this.query();
         this.delModal = false;
         this.$message.success("删除成功");
@@ -365,101 +330,8 @@ export default {
       this.tjArr = val.map((item) => item.id);
     },
 
-    bianji() {
-      this.editFlag = 3;
-    },
-    bianji1() {
-      this.editFlag = 2;
-      this.$refs.formEdit.resetFields();
-    },
-    editCance() {
-      this.editModal = false;
-      this.editFlag = 2;
-      this.$refs.formEdit.resetFields();
-    },
-    editClick() {
-      if (!this.checkFormEdit()) {
-        this.$message.error("请完善表单相关信息！");
-        return;
-      } else {
-        var data = this.formEdit;
-        let formData = new FormData();
-        formData.append("dkxn", data.xn);
-        formData.append("bz", data.bz);
-        formData.append("zsfys", data.zsfys);
-        formData.append("xfys", data.xfys);
-        formData.append("dkzje", data.dkzje);
-        formData.append("dklx", data.dklx);
-        formData.append("dkyh", data.dkyh);
-        formData.append("htbh", data.htbh);
-        formData.append("dkkssj", data.dkkssj);
-        formData.append("dkqx", data.dkqx);
-        formData.append("hzjym", data.hzjym);
-        formData.append("xh", this.$store.getters.userId);
-        formData.append("shrgh", "");
-        formData.append("id", data.id);
-        if (this.fileListAdd.length > 0) {
-          this.fileListAdd.map((file) => {
-            formData.append("files", file.raw);
-          });
-        }
-        edit(formData).then((res) => {
-          if (res.errcode == "00") {
-            this.$message.success("编辑成功");
-            this.query();
-          } else {
-            this.$message.error("编辑失败");
-          }
-        });
-        this.editModal = false;
-      }
-    },
-    addClick() {
-      if (!this.checkFormAdd()) {
-        this.$message.error("请完善表单相关信息！");
-        return;
-      } else {
-        var data = this.formAdd;
-        let formData = new FormData();
-        formData.append("dkxn", this.dkxn);
-        formData.append("bz", data.bz);
-        formData.append("zsfys", data.zsfys);
-        formData.append("xfys", data.xfys);
-        formData.append("dkzje", data.dkzje);
-        formData.append("dklx", data.dklx);
-        formData.append("dkyh", data.dkyh);
-        formData.append("htbh", data.htbh);
-        formData.append("dkkssj", data.dkkssj);
-        formData.append("dkqx", data.dkqx);
-        formData.append("hzjym", data.hzjym);
-        formData.append("xh", this.$store.getters.userId);
-        formData.append("shrgh", "");
-        formData.append("id", "");
-        if (this.fileList.length > 0) {
-          this.fileList.map((file) => {
-            formData.append("files", file.raw);
-          });
-        }
-        edit(formData).then((res) => {
-          if (res.errcode == "00") {
-            this.$message.success("新增成功");
-            this.query();
-          } else {
-            this.$message.error("新增失败");
-          }
-        });
-        this.addModal = false;
-      }
-    },
     query() {
-      var data = {
-        xh: this.$store.getters.userId,
-        pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
-      };
-      query(data).then((res) => {
+      queryPbsqList({ xh: this.$store.getters.userId }).then((res) => {
         this.tableDate = res.data;
         this.queryParams.totalCount = res.totalCount;
       });
@@ -467,6 +339,13 @@ export default {
     xinzeng() {
       this.$router.push({
         path: "/tutorDetail",
+        query: { isEdit: 2 },
+      });
+    },
+    showDetail(row) {
+      this.$router.push({
+        path: "/tutorDetail",
+        query: { isEdit: 1, id: row.id, processid: row.processid },
       });
     },
     addCance() {

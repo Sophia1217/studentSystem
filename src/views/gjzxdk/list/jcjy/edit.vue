@@ -52,7 +52,12 @@
                 label-width="42%"
               >
                 <div class="sqList">
-                  <el-select v-model="formAdd.zzmmm" placeholder="请选择">
+                  <span v-if="bjzt == 1"> {{ formAdd.zzmmmc }}</span>
+                  <el-select
+                    v-model="formAdd.zzmmm"
+                    placeholder="请选择"
+                    v-else
+                  >
                     <el-option
                       v-for="(item, index) in zzmmList"
                       :key="index"
@@ -90,7 +95,9 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1"> {{ formAdd.bysj }}</span>
                   <el-date-picker
+                    v-else
                     type="date"
                     placeholder="选择日期"
                     value-format="yyyy-MM-dd "
@@ -124,7 +131,9 @@
                 label-width="42%"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1"> {{ formAdd.jtzz }}</span>
                   <el-input
+                    v-else
                     style="width: 216px"
                     v-model="formAdd.jtzz"
                     placeholder="请输入内容"
@@ -143,7 +152,10 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1"> {{ formAdd.lxdh }}</span>
+
                   <el-input
+                    v-else
                     style="width: 216px"
                     v-model="formAdd.lxdh"
                     placeholder="请输入内容"
@@ -160,7 +172,10 @@
                 label-width="42%"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1"> {{ formAdd.qq }}</span>
+
                   <el-input
+                    v-else
                     style="width: 216px"
                     v-model="formAdd.qq"
                     placeholder="请输入内容"
@@ -179,7 +194,9 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1"> {{ formAdd.email }}</span>
                   <el-input
+                    v-else
                     style="width: 216px"
                     v-model="formAdd.email"
                     placeholder="请输入内容"
@@ -202,7 +219,9 @@
                 label-width="42%"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1"> {{ formAdd.jydwmc }}</span>
                   <el-input
+                    v-else
                     style="width: 216px"
                     v-model="formAdd.jydwmc"
                     placeholder="请输入内容"
@@ -219,7 +238,10 @@
                 label-width="42%"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1"> {{ formAdd.rsbmlxdh }}</span>
+
                   <el-input
+                    v-else
                     style="width: 216px"
                     v-model="formAdd.rsbmlxdh"
                     placeholder="请输入内容"
@@ -238,7 +260,9 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1"> {{ formAdd.shengdmmc }}</span>
                   <el-select
+                    v-else
                     v-model="formAdd.shengdm"
                     placeholder="请选择"
                     @change="change1"
@@ -262,7 +286,9 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1"> {{ formAdd.shidmmc }}</span>
                   <el-select
+                    v-else
                     v-model="formAdd.shidm"
                     placeholder="请选择"
                     @change="change2"
@@ -288,7 +314,9 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1"> {{ formAdd.xiandmmc }}</span>
                   <el-select
+                    v-else
                     v-model="formAdd.xiandm"
                     placeholder="请选择"
                     @change="change3"
@@ -306,7 +334,12 @@
             <el-col :span="12">
               <el-form-item label="乡（街道）" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <el-select v-model="formAdd.xiangdm" placeholder="请选择">
+                  <span v-if="bjzt == 1"> {{ formAdd.xiangdmmc }}</span>
+                  <el-select
+                    v-else
+                    v-model="formAdd.xiangdm"
+                    placeholder="请选择"
+                  >
                     <el-option
                       v-for="(item, index) in streetList"
                       :key="index"
@@ -328,8 +361,21 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-radio v-model="formAdd.sfxzfszd" label="1">是</el-radio>
-                  <el-radio v-model="formAdd.sfxzfszd" label="2">否</el-radio>
+                  <span v-if="bjzt == 1">
+                    {{ formAdd.sfxzfszd == "1" ? "是" : "否" }}</span
+                  >
+                  <el-radio
+                    v-model="formAdd.sfxzfszd"
+                    label="1"
+                    v-if="bjzt == 2"
+                    >是</el-radio
+                  >
+                  <el-radio
+                    v-model="formAdd.sfxzfszd"
+                    label="2"
+                    v-if="bjzt == 2"
+                    >否</el-radio
+                  >
                 </div>
               </el-form-item>
             </el-col>
@@ -344,7 +390,9 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-select v-model="formAdd.hylb" placeholder="请选择">
+                  <!-- hylbmc -->
+                  <span v-if="bjzt == 1"> {{ formAdd.hylbmc }}</span>
+                  <el-select v-model="formAdd.hylb" placeholder="请选择" v-else>
                     <el-option
                       v-for="(item, index) in hyTypeList"
                       :key="index"
@@ -364,7 +412,9 @@
                 label-width="42%"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1"> {{ formAdd.yqdfwnx }}</span>
                   <el-input-number
+                    v-else
                     style="width: 216px"
                     :min="0"
                     :max="9999999"
@@ -389,7 +439,10 @@
                 label-width="42%"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1"> {{ formAdd.yjnxfje }}</span>
+
                   <el-input-number
+                    v-else
                     style="width: 216px"
                     :min="0"
                     :max="9999999"
@@ -409,7 +462,10 @@
                 label-width="42%"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1"> {{ formAdd.sjjnxfje }}</span>
+
                   <el-input-number
+                    v-else
                     style="width: 216px"
                     :min="0"
                     :max="9999999"
@@ -431,7 +487,9 @@
                 label-width="42%"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1"> {{ formAdd.dkbjje }}</span>
                   <el-input-number
+                    v-else
                     style="width: 216px"
                     :min="0"
                     :max="9999999"
@@ -451,7 +509,12 @@
                 label-width="42%"
               >
                 <div class="sqList">
-                  <el-select v-model="formAdd.jbyhdm" placeholder="请选择">
+                  <span v-if="bjzt == 1"> {{ formAdd.jbyhdmmc }}</span>
+                  <el-select
+                    v-model="formAdd.jbyhdm"
+                    placeholder="请选择"
+                    v-else
+                  >
                     <el-option
                       v-for="(item, index) in yhmcList"
                       :key="index"
@@ -473,7 +536,10 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1"> {{ formAdd.dkhtbh }}</span>
+
                   <el-input
+                    v-else
                     style="width: 216px"
                     v-model="formAdd.dkhtbh"
                     placeholder="请输入内容"
@@ -492,7 +558,11 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1">
+                    {{ formAdd.dkkssj }}至 {{ formAdd.dkjssj }}</span
+                  >
                   <el-date-picker
+                    v-else
                     type="daterange"
                     placeholder="选择日期"
                     v-model="formAdd.dksjArr"
@@ -526,14 +596,6 @@
               >
                 <div class="sqList">
                   <span> {{ ele.dkzje }}</span>
-                  <!-- <el-input-number
-                    style="width: 216px"
-                    :min="0"
-                    :max="9999999"
-                    :controls="false"
-                    v-model="formAdd.dkzje"
-                    placeholder="请输入内容"
-                  ></el-input-number> -->
                 </div>
               </el-form-item>
             </el-col>
@@ -550,14 +612,6 @@
               <el-form-item label="贷款银行" class="grayBg" label-width="42%">
                 <div class="sqList">
                   <span> {{ ele.dkyhmc }}</span>
-                  <!-- <el-select v-model="formAdd.dkyh" placeholder="请选择">
-                    <el-option
-                      v-for="(item, index) in yhmcList"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.dm"
-                    ></el-option>
-                  </el-select> -->
                 </div>
               </el-form-item>
             </el-col>
@@ -567,12 +621,6 @@
               <el-form-item label="合同编号" class="grayBg" label-width="42%">
                 <div class="sqList">
                   <span> {{ ele.htbh }}</span>
-                  <!-- <el-input
-                    :minlength="0"
-                    :maxlength="50"
-                    v-model="formAdd.htbh"
-                    placeholder="请输入内容"
-                  ></el-input> -->
                 </div>
               </el-form-item>
             </el-col>
@@ -584,12 +632,6 @@
               >
                 <div class="sqList">
                   <span> {{ ele.dkkssj }}</span>
-                  <!-- <el-date-picker
-                    type="date"
-                    placeholder="选择日期"
-                    value-format="yyyy-MM-dd "
-                    v-model="formAdd.dkkssj"
-                  ></el-date-picker> -->
                 </div>
               </el-form-item>
             </el-col>
@@ -607,7 +649,9 @@
                 label-width="42%"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1"> {{ formAdd.sqbcje }}</span>
                   <el-input-number
+                    v-else
                     style="width: 216px"
                     :min="0"
                     :max="9999999"
@@ -627,7 +671,9 @@
                 label-width="42%"
               >
                 <div class="sqList">
+                  <span v-if="bjzt == 1"> {{ formAdd.yhkh }}</span>
                   <el-input-number
+                    v-else
                     style="width: 216px"
                     :min="0"
                     :max="9999999"
@@ -643,7 +689,9 @@
         <div class="mkHeader">备注</div>
         <el-row :gutter="20">
           <el-col :span="23">
+            <span v-if="bjzt == 1"> {{ formAdd.bz }}</span>
             <el-input
+              v-else
               v-model="formAdd.bz"
               type="textarea"
               :autosize="{ minRows: 6, maxRows: 6 }"
@@ -657,15 +705,16 @@
       <div style="height: 80px"></div>
     </div>
     <div class="editBottom">
-      <div class="btn confirm">取消</div>
-      <div class="btn cancel" @click="addClick">保存</div>
+      <div class="btn confirm" @click="binaji" v-if="bjzt == 1">编辑</div>
+      <div class="btn confirm" @click="binaji1" v-if="bjzt == 2">取消</div>
+      <div class="btn cancel" @click="addClick" v-if="bjzt == 2">保存</div>
     </div>
   </div>
 </template>
 <script>
 import topTitle from "@/components/topTitleStu";
 import lctCom from "@/components/lct";
-import { edit, getAddDetails } from "@/api/jccy/index";
+import { edit, getEditdDetails } from "@/api/jccy/index";
 import myMixins from "./myMixins";
 export default {
   mixins: [myMixins],
@@ -684,17 +733,8 @@ export default {
   data() {
     return {
       routeTitle: "",
-      dkInfo: [
-        //贷款信息
-        //  {   xn: "",
-        //   dkzje: "",
-        //   dklx: "",
-        //   dklxmc: "",
-        //   dkyh: "",
-        //   dkyhmc: "",
-        //   htbh: "",
-        //   dkkssj: "",}
-      ], //贷款信息
+      bjzt: 1,
+      dkInfo: [], //贷款信息
       formAdd: {
         //基本信息
         xh: "",
@@ -735,6 +775,7 @@ export default {
         yhkh: "",
         bz: "",
       },
+      lgnsn: "",
       rules: {
         common: [
           {
@@ -748,6 +789,7 @@ export default {
   },
   mounted() {
     this.routeTitle = this.$route.meta.title;
+    this.lgnsn = this.$route.query.state;
     this.showDetail();
     this.getCode("dmgjzxdk"); //国家助学贷款码
     this.getCode("dmzudkyhm"); //国家助学贷款银行码
@@ -757,6 +799,12 @@ export default {
   },
 
   methods: {
+    binaji() {
+      this.bjzt = 2;
+    },
+    binaji1() {
+      this.bjzt = 1;
+    },
     change1(val) {
       this.getCity1(val);
       //把市区置空
@@ -782,14 +830,15 @@ export default {
       return true;
     },
     showDetail() {
-      getAddDetails({
-        xh: this.$store.getters.userId,
+      getEditdDetails({
+        id: this.lgnsn,
       }).then((res) => {
         this.dkInfo = res.data.rcswLsdkjlRes;
-        this.formAdd = res.data.rcswjbxxRes;
+        this.formAdd = { ...res.data, ...res.data.rcswjbxxRes };
         this.formAdd.xlxz = this.formAdd.xz
           ? `${this.formAdd.xz}年${this.formAdd.pyccmc}`
           : `${this.formAdd.xz}${this.formAdd.pyccmc}`;
+        this.formAdd.dksjArr = [this.formAdd.dkkssj, this.formAdd.dkjssj];
       });
     },
     addClick() {
@@ -797,10 +846,10 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        var data = this.formAdd;
+        var data = { ...this.formAdd, id: this.lgnsn };
         edit(data).then((res) => {
           if (res.errcode == "00") {
-            this.$message.success("新增成功");
+            this.$message.success("编辑成功");
             this.$router.push({
               path: "/gjzxdk",
               query: {
@@ -808,7 +857,7 @@ export default {
               },
             });
           } else {
-            this.$message.error("新增失败");
+            this.$message.error("编辑失败");
           }
         });
       }

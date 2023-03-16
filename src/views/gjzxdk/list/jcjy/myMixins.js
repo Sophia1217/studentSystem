@@ -1,12 +1,13 @@
 /*
  * @Author: luosheng
  * @Date: 2023-03-14 16:37:11
- * @LastEditTime: 2023-03-14 17:22:17
+ * @LastEditTime: 2023-03-15 17:04:32
  * @LastEditors: ***
  * @Description: 
  * @FilePath: \studentsystem\src\views\gjzxdk\list\jcjy\myMixins.js
  */
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+import { getStreet } from "@/api/jccy/index";
 import {
     getCityList,
   } from "@/api/assistantWork/homeSchool";
@@ -43,11 +44,17 @@ export default {
                 this.zonetList = res.data;
               });
         },
+        getCity3(val){
+          let data = { dm: val };
+          getStreet(data).then((res) => {
+              this.streetList = res.data;
+            });
+      },
         getCode(val) {
             const data = { codeTableEnglish: val };
             getCodeInfoByEnglish(data).then((res) => {
               switch (val) {
-                case "dmhylxm":
+                case "dmhylbm":
                   this.hyTypeList = res.data; //行业类别
                   break;
                 case "dmgjzxdk":

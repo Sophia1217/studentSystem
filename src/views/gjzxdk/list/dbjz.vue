@@ -3,9 +3,18 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">大病救助申请</span>
+          <div><span class="title">大病救助申请</span></div>
+          <div class="btns borderBlue" @click="jmApply">
+            <span class="title1">减免申请</span>
+          </div>
+          <div class="btns borderBlue" @click="hkApply">
+            <span class="title1">提交还款</span>
+          </div>
         </div>
         <div class="headerRight">
+          <div class="btns borderLight" @click="mbDown">
+            <i class="icon downIcon"></i><span class="title2">协议下载</span>
+          </div>
           <div class="btns borderLight" @click="showDel">
             <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
@@ -25,24 +34,51 @@
           :data="tableDate"
           ref="multipleTable"
           style="width: 100%"
-          @selection-change="handleSelectionChange"
-          @sort-change="changeTableSort"
+          highlight-current-row
+          @current-change="handleCurrentChange"
         >
-          <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
             type="index"
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xn" label="申请金额（元）"> </el-table-column>
-          <el-table-column prop="dklxmc" label="申请附件" width="140">
+          <el-table-column property="sqJe" label="申请金额（元）">
           </el-table-column>
-          <el-table-column prop="dkzje" label="协议附件"  width="140"> </el-table-column>
-          <el-table-column prop="dkyhmc" label="申请时间"> </el-table-column>
-          <el-table-column prop="dkqx" label="审核状态">
+          <el-table-column property="fjName" label="申请附件" width="140">
+            <template slot-scope="scope">
+              <div class="moban">
+                <div class="content">
+                  <el-button
+                    type="text"
+                    size="small"
+                    @click="xzWj(scope.row, 1)"
+                  >
+                    <span class="handleName">{{ scope.row.fjName }}</span>
+                  </el-button>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column property="xyFjName" label="协议附件" width="140">
+            <template slot-scope="scope">
+              <div class="moban">
+                <div class="content">
+                  <el-button
+                    type="text"
+                    size="small"
+                    @click="xzWj(scope.row, 2)"
+                  >
+                    <span class="handleName">{{ scope.row.xyFjName }}</span>
+                  </el-button>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column property="sqsj" label="申请时间"> </el-table-column>
+          <el-table-column property="statusMc" label="审核状态">
           </el-table-column>
           <el-table-column
-            prop="jg"
+            property="jg"
             label="审核进度"
             sortable="custom"
             fixed="right"
@@ -50,7 +86,7 @@
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
-                <span>流程图</span>
+                <span>流转记录</span>
               </el-button>
             </template>
           </el-table-column>
@@ -73,245 +109,177 @@
           </el-table-column>
         </el-table>
       </div>
+      <div class="headerTop">
+        <div class="headerLeft">
+          <span class="title">减免申请</span>
+        </div>
+        <div class="headerRight">
+          <div class="btns borderLight" @click="showDelJm">
+            <i class="icon lightIcon"></i><span class="title">删除</span>
+          </div>
+          <div class="btns borderLight" @click="chModalJm">
+            <i class="icon chIcon"></i><span class="title2">撤回</span>
+          </div>
+          <div class="btns borderLight" @click="tjModalJm">
+            <i class="icon tjIcon"></i><span class="title2">提交</span>
+          </div>
+        </div>
+      </div>
+      <div class="mt15">
+        <el-table
+          :data="tableDateJm"
+          ref="multipleTable"
+          style="width: 100%"
+          @selection-change="handleSelectionChangeJm"
+        >
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            width="50"
+          ></el-table-column>
+          <el-table-column prop="dbjzsqSqje" label="申请金额（元）">
+          </el-table-column>
+          <el-table-column prop="jmJe" label="减免金额（元）" width="140">
+          </el-table-column>
+          <el-table-column prop="sqsj" label="申请时间"> </el-table-column>
+          <el-table-column prop="fjName" label="附件" width="140">
+          </el-table-column>
+          <el-table-column prop="statusMc" label="审核状态"> </el-table-column>
+          <el-table-column
+            prop="jg"
+            label="审核进度"
+            sortable="custom"
+            fixed="right"
+          >
+            <template slot-scope="scope">
+              <el-button
+                type="text"
+                size="small"
+                @click="lctClickJm(scope.row)"
+              >
+                <i class="scopeIncon lct"></i>
+                <span>流转记录</span>
+              </el-button>
+            </template>
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="操作"
+            align="center"
+            width="240"
+          >
+            <template slot-scope="scope">
+              <el-button
+                type="text"
+                size="small"
+                @click="showDetailJm(scope.row)"
+              >
+                <i class="scopeIncon handledie"></i>
+                <span style="margin-left: 5px">详情</span>
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class="headerTop">
+        <div class="headerLeft">
+          <span class="title">还款记录</span>
+        </div>
+        <div class="headerRight">
+          <div class="btns borderLight" @click="showDelHk">
+            <i class="icon lightIcon"></i><span class="title">删除</span>
+          </div>
+        </div>
+      </div>
+      <div class="mt15">
+        <el-table
+          :data="tableDateHk"
+          ref="multipleTable"
+          style="width: 100%"
+          @selection-change="handleSelectionChangeHk"
+        >
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            width="50"
+          ></el-table-column>
+          <el-table-column prop="dhJe" label="待还金额（元）">
+          </el-table-column>
+          <el-table-column prop="yhJe" label="已还金额（元）">
+          </el-table-column>
+          <el-table-column prop="hkSj" label="还款时间"> </el-table-column>
+          <el-table-column prop="fjName" label="还款凭证" width="140">
+          </el-table-column>
+        </el-table>
+      </div>
       <el-dialog
         title="新增申请"
         :visible.sync="addModal"
-        width="50%"
+        width="40%"
         @close="addCance"
         :close-on-click-modal="false"
       >
-        <el-form
-          ref="formAdd"
-          :model="formAdd"
-          :rules="rules"
-          :inline-message="true"
-        >
-          <el-row>
-            <h3>贷款信息</h3>
-            <el-col :span="12">
-              <el-form-item label="贷款学年" class="grayBg" label-width="41%">
-                <div class="sqList">
-                  <span> {{ formAdd.xn }}</span>
-                </div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item
-                label="贷款总金额（元）"
-                prop="dkzje"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
+        <el-form ref="formAdd" :model="formAdd" :rules="rules">
+          <div style="padding: 15px">
+            <el-row :gutter="20">
+              <el-col :span="15">
+                <el-form-item
+                  label="申请金额"
+                  prop="sqJe"
+                  :rules="rules.common"
+                >
                   <el-input-number
-                    style="width: 216px"
+                    v-model="formAdd.sqJe"
                     :min="0"
                     :max="9999999"
-                    controls-position="right"
-                    v-model="formAdd.dkzje"
-                    placeholder="请输入内容"
+                    :controls="false"
                   ></el-input-number>
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item
-                label="住宿费应收数（元）"
-                prop="zsfys"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
-                  <el-input-number
-                    :min="0"
-                    :max="9999999"
-                    style="width: 216px"
-                    controls-position="right"
-                    v-model="formAdd.zsfys"
-                    placeholder="请输入内容"
-                  ></el-input-number>
-                </div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item
-                label="学费应收数（元）"
-                prop="xfys"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
-                  <el-input-number
-                    :min="0"
-                    :max="9999999"
-                    style="width: 216px"
-                    controls-position="right"
-                    v-model="formAdd.xfys"
-                    placeholder="请输入内容"
-                  ></el-input-number>
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item
-                label="贷款类型"
-                prop="dklx"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
-                  <el-select v-model="formAdd.dklx" placeholder="请选择">
-                    <el-option
-                      v-for="(item, index) in dglxList"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.dm"
-                    ></el-option>
-                  </el-select>
-                </div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item
-                label="贷款银行"
-                prop="dkyh"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
-                  <el-select v-model="formAdd.dkyh" placeholder="请选择">
-                    <el-option
-                      v-for="(item, index) in dgyhList"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.dm"
-                    ></el-option>
-                  </el-select>
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-col :span="12">
-              <el-form-item
-                label="合同编号"
-                prop="htbh"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
+                  元
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="20">
+                <el-form-item
+                  label="申请理由"
+                  prop="sqLy"
+                  :rules="rules.common"
+                >
                   <el-input
-                    :minlength="0"
-                    :maxlength="50"
-                    v-model="formAdd.htbh"
+                    v-model="formAdd.sqLy"
+                    type="textarea"
+                    :autosize="{ minRows: 5, maxRows: 5 }"
                     placeholder="请输入内容"
+                    maxlength="500"
+                    show-word-limit
                   ></el-input>
-                </div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item
-                label="贷款开始时间"
-                prop="dkkssj"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
-                  <el-date-picker
-                    type="date"
-                    placeholder="选择日期"
-                    value-format="yyyy-MM-dd "
-                    v-model="formAdd.dkkssj"
-                  ></el-date-picker>
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item
-                label="贷款期限（月）"
-                prop="dkqx"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
-                  <el-input-number
-                    :min="0"
-                    :max="100"
-                    style="width: 216px"
-                    controls-position="right"
-                    v-model="formAdd.dkqx"
-                    placeholder="请输入内容"
-                  ></el-input-number>
-                </div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item
-                label="回执检验码"
-                prop="hzjym"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
-                  <el-input
-                    :minlength="0"
-                    :maxlength="50"
-                    v-model="formAdd.hzjym"
-                    placeholder="请输入内容"
-                  ></el-input>
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="23">
-              <el-form-item label="备注" prop="bz" :rules="rules.common">
-                <el-input
-                  v-model="formAdd.bz"
-                  type="textarea"
-                  :autosize="{ minRows: 6, maxRows: 6 }"
-                  placeholder="请输入内容"
-                  maxlength="500"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="20">
-              <el-form-item label="附件">
-                <template slot-scope="scope">
-                  <el-upload
-                    action="#"
-                    multiple
-                    class="el-upload"
-                    :auto-upload="false"
-                    ref="upload"
-                    :file-list="fileList"
-                    :on-change="fileChange"
-                    :before-remove="beforeRemove"
-                  >
-                    <el-button size="small" type="primary">附件上传</el-button>
-                  </el-upload>
-                </template>
-              </el-form-item>
-            </el-col>
-          </el-row>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="20">
+                <el-form-item label="申请附件">
+                  <template>
+                    <el-upload
+                      action="#"
+                      class="el-upload"
+                      :auto-upload="false"
+                      ref="upload"
+                      :file-list="fileList"
+                      :on-change="fileChange"
+                      :before-remove="beforeRemove"
+                    >
+                      <el-button size="small" type="primary"
+                        >附件上传</el-button
+                      >
+                    </el-upload>
+                  </template>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </div>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="addCance">取 消</el-button>
@@ -320,318 +288,246 @@
           >
         </span>
       </el-dialog>
-
       <el-dialog
-        title="详情"
-        :visible.sync="editModal"
-        @close="editCance"
+        title="减免申请"
+        :visible.sync="addModalJm"
         width="50%"
+        @close="addCanceJm"
         :close-on-click-modal="false"
       >
-        <el-form
-          ref="formEdit"
-          :model="formEdit"
-          :rules="rules"
-          :inline-message="true"
-        >
-          <el-row>
-            <h3>贷款信息</h3>
-            <el-col :span="12">
-              <el-form-item label="贷款学年" class="grayBg" label-width="41%">
-                <div class="sqList">
-                  <span> {{ formEdit.xn }}</span>
-                </div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item
-                label="贷款总金额（元）"
-                prop="dkzje"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
-                  <div v-if="editFlag == 2">{{ formEdit.dkzje }}</div>
-
-                  <el-input-number
-                    :min="0"
-                    :max="9999999"
-                    v-else="editFlag == 3"
-                    style="width: 216px"
-                    controls-position="right"
-                    v-model="formEdit.dkzje"
-                    placeholder="请输入内容"
-                  ></el-input-number>
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item
-                label="住宿费应收数（元）"
-                prop="zsfys"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
-                  <div v-if="editFlag == 2">{{ formEdit.xfys }}</div>
-                  <el-input-number
-                    :min="0"
-                    :max="9999999"
-                    v-else="editFlag == 3"
-                    style="width: 216px"
-                    controls-position="right"
-                    v-model="formEdit.zsfys"
-                    placeholder="请输入内容"
-                  ></el-input-number>
-                </div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item
-                label="学费应收数（元）"
-                prop="xfys"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
-                  <div v-if="editFlag == 2">{{ formEdit.xfys }}</div>
-                  <el-input-number
-                    :min="0"
-                    :max="9999999"
-                    v-else="editFlag == 3"
-                    style="width: 216px"
-                    controls-position="right"
-                    v-model="formEdit.xfys"
-                    placeholder="请输入内容"
-                  ></el-input-number>
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item
-                label="贷款类型"
-                prop="dklx"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
-                  <div v-if="editFlag == 2">{{ formEdit.dklxmc }}</div>
-                  <el-select
-                    v-model="formEdit.dklx"
-                    placeholder="请选择"
-                    v-else="editFlag == 3"
-                  >
-                    <el-option
-                      v-for="(item, index) in dglxList"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.dm"
-                    ></el-option>
-                  </el-select>
-                </div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item
-                label="贷款银行"
-                prop="dkyh"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
-                  <div v-if="editFlag == 2">{{ formEdit.dkyhmc }}</div>
-                  <el-select
-                    v-model="formEdit.dkyh"
-                    placeholder="请选择"
-                    v-else="editFlag == 3"
-                  >
-                    <el-option
-                      v-for="(item, index) in dgyhList"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.dm"
-                    ></el-option>
-                  </el-select>
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-col :span="12">
-              <el-form-item
-                label="合同编号"
-                prop="htbh"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
-                  <div v-if="editFlag == 2">{{ formEdit.htbh }}</div>
-                  <el-input
-                    :minlength="0"
-                    :maxlength="50"
-                    v-else="editFlag == 3"
-                    v-model="formEdit.htbh"
-                    placeholder="请输入内容"
-                  ></el-input>
-                </div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item
-                label="贷款开始时间"
-                prop="dkkssj"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
-                  <div v-if="editFlag == 2">{{ formEdit.dkkssj }}</div>
-                  <el-date-picker
-                    v-else="editFlag == 3"
-                    type="date"
-                    placeholder="选择日期"
-                    value-format="yyyy-MM-dd "
-                    v-model="formEdit.dkkssj"
-                  ></el-date-picker>
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item
-                label="贷款期限（月）"
-                prop="dkqx"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
-                  <div v-if="editFlag == 2">{{ formEdit.dkqx }}</div>
-                  <el-input-number
-                    v-else="editFlag == 3"
-                    :min="0"
-                    :max="100"
-                    style="width: 216px"
-                    controls-position="right"
-                    v-model="formAdd.dkqx"
-                    placeholder="请输入内容"
-                  ></el-input-number>
-                </div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item
-                label="回执检验码"
-                prop="hzjym"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="41%"
-              >
-                <div class="sqList">
-                  <div v-if="editFlag == 2">{{ formEdit.hzjym }}</div>
-                  <el-input
-                    v-else="editFlag == 3"
-                    :minlength="0"
-                    :maxlength="50"
-                    v-model="formEdit.hzjym"
-                    placeholder="请输入内容"
-                  ></el-input>
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="23">
-              <el-form-item label="备注" prop="bz" :rules="rules.common">
-                <div v-if="editFlag == 2">{{ formEdit.bz }}</div>
-                <el-input
-                  v-else="editFlag == 3"
-                  v-model="formEdit.bz"
-                  type="textarea"
-                  :autosize="{ minRows: 6, maxRows: 6 }"
-                  placeholder="请输入内容"
-                  maxlength="500"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="20">
-              <el-form-item label="申请材料">
-                <el-upload
-                  v-if="editFlag == 2"
-                  action="#"
-                  multiple
-                  :file-list="formEdit.fileList"
-                  :auto-upload="false"
-                  class="el-upload"
-                  :disabled="editFlag == 2 ? true : false"
+        <el-form ref="formAddJm" :model="formAddJm" :rules="rules">
+          <div style="padding: 15px">
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-form-item
+                  label="申请金额"
+                  prop="dbjzsqSqje"
+                  :rules="rules.common"
                 >
-                </el-upload>
+                  <el-input-number
+                    v-model="formAddJm.dbjzsqSqje"
+                    :min="0"
+                    :max="9999999"
+                    :controls="false"
+                  ></el-input-number>
+                  元
+                </el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <el-form-item
+                  label="减免金额"
+                  prop="jmJe"
+                  :rules="rules.common"
+                >
+                  <el-input-number
+                    v-model="formAddJm.jmJe"
+                    :min="0"
+                    :max="9999999"
+                    :controls="false"
+                  ></el-input-number>
+                  元
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="20">
+                <el-form-item
+                  label="申请理由"
+                  prop="jmLy"
+                  :rules="rules.common"
+                >
+                  <el-input
+                    v-model="formAddJm.jmLy"
+                    type="textarea"
+                    :autosize="{ minRows: 5, maxRows: 5 }"
+                    placeholder="请输入内容"
+                    maxlength="500"
+                    show-word-limit
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="20">
+                <el-form-item label="申请附件">
+                  <template>
+                    <el-upload
+                      action="#"
+                      class="el-upload"
+                      :auto-upload="false"
+                      ref="upload"
+                      :file-list="fileListJm"
+                      :on-change="fileChangeJm"
+                      :before-remove="beforeRemoveJm"
+                    >
+                      <el-button size="small" type="primary"
+                        >附件上传</el-button
+                      >
+                    </el-upload>
+                  </template>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </div>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="addCanceJm">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="addClickJm"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
+      <el-dialog
+        title="还款记录"
+        :visible.sync="addModalHk"
+        width="60%"
+        @close="addCanceHk"
+        :close-on-click-modal="false"
+      >
+        <el-form ref="formAddHk" :model="formAddHk" :rules="rules">
+          <el-table :data="formAddHk.addData">
+            <el-table-column
+              label="待还金额（元）"
+              align="center"
+              :render-header="addRedStar"
+            >
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.rymc'"
+                  :rules="rules.rymc"
+                >
+                  <el-input maxlength="200" v-model="scope.row.rymc" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="还款金额（元）"
+              width="150px"
+              align="center"
+              :render-header="addRedStar"
+            >
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.bzdw'"
+                  :rules="rules.bzdw"
+                >
+                  <el-input maxlength="200" v-model="scope.row.bzdw" />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="还款时间"
+              width="150px"
+              align="center"
+              :render-header="addRedStar"
+            >
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'addData.' + scope.$index + '.hjsj'"
+                  :rules="rules.hjsj"
+                >
+                  <el-date-picker
+                    v-model="scope.row.hjsj"
+                    type="date"
+                    format="yyyy 年 MM 月 dd 日"
+                    value-format="yyyy-MM-dd"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="还款凭证" width="200px">
+              <template slot-scope="scope">
                 <el-upload
-                  v-if="editFlag == 3"
                   action="#"
                   multiple
                   class="el-upload"
                   :auto-upload="false"
                   ref="upload"
-                  :file-list="formEdit.fileList"
-                  :on-change="fileChangeEdit"
-                  :before-remove="beforeRemoveEdit"
+                  :file-list="scope.row.files"
+                  :on-change="fileChangeHk"
+                  accept=".pdf,.jpg"
+                  :before-remove="beforeRemoveHk"
                 >
-                  <el-button size="small" type="primary">点击上传</el-button>
+                  <el-button size="small" type="primary">上传附件</el-button>
                 </el-upload>
-              </el-form-item>
-            </el-col>
-          </el-row>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div style="padding: 15px">
+            <el-row :gutter="20">
+              <el-col :span="15">
+                <el-form-item
+                  label="申请金额"
+                  prop="sqJe"
+                  :rules="rules.common"
+                >
+                  <el-input-number
+                    v-model="formAddHk.sqJe"
+                    :min="0"
+                    :max="9999999"
+                    :controls="false"
+                  ></el-input-number>
+                  元
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="20">
+                <el-form-item
+                  label="申请理由"
+                  prop="sqLy"
+                  :rules="rules.common"
+                >
+                  <el-input
+                    v-model="formAddHk.sqLy"
+                    type="textarea"
+                    :autosize="{ minRows: 5, maxRows: 5 }"
+                    placeholder="请输入内容"
+                    maxlength="500"
+                    show-word-limit
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="20">
+                <el-form-item label="申请附件">
+                  <template>
+                    <el-upload
+                      action="#"
+                      class="el-upload"
+                      :auto-upload="false"
+                      ref="upload"
+                      :file-list="fileList"
+                      :on-change="fileChange"
+                      :before-remove="beforeRemove"
+                    >
+                      <el-button size="small" type="primary"
+                        >附件上传</el-button
+                      >
+                    </el-upload>
+                  </template>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </div>
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button v-if="editFlag == 2" @click="editCance">关 闭</el-button>
-          <el-button
-            type="primary"
-            v-if="
-              editFlag == 2 &&
-              (formEdit.status == '08' || formEdit.status == '01')
-            "
-            class="confirm"
-            @click="bianji"
-            >编 辑</el-button
-          >
-          <el-button
-            v-if="editFlag == 3"
-            type="primary"
-            class="confirm"
-            @click="bianji1"
-            >取 消</el-button
-          >
-          <el-button
-            v-if="editFlag == 3"
-            type="primary"
-            class="confirm"
-            @click="editClick"
-            >保 存</el-button
+          <el-button @click="addCanceHk">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="addClickHk"
+            >确 定</el-button
           >
         </span>
       </el-dialog>
-      <pagination
+      <!-- <pagination
         v-show="queryParams.totalCount > 0"
         :total="queryParams.totalCount"
         :page.sync="queryParams.pageNum"
         :limit.sync="queryParams.pageSize"
         @pagination="query"
-      />
+      /> -->
     </div>
     <el-dialog title="删除" :visible.sync="delModal" width="20%">
       <span>确认删除？</span>
@@ -642,11 +538,38 @@
         >
       </span>
     </el-dialog>
+    <el-dialog title="删除" :visible.sync="delModalJm" width="20%">
+      <span>确认删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delCancelJm">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="delJm()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <el-dialog title="删除" :visible.sync="delModalHk" width="20%">
+      <span>确认删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delCancelHk">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="delHk()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
     <el-dialog title="撤回" :visible.sync="chehuiModal" width="20%">
       <span>确认撤回？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="chCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="ch()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <el-dialog title="撤回" :visible.sync="chehuiModalJm" width="20%">
+      <span>确认撤回？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="chCancelJm">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="chJm()"
           >确 定</el-button
         >
       </span>
@@ -662,25 +585,50 @@
         <el-button type="primary" class="confirm" @click="tj">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="提交" :visible.sync="submitModalJm" width="30%">
+      <template>
+        <div>
+          <span>确认提交？</span>
+        </div>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="subCancelJm">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="tjJm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
     <lctCom
       ref="child"
       :lctModal="lctModal"
       @handleCloseLct="handleCloseLct"
     ></lctCom>
+    <lctCom
+      ref="childJm"
+      :lctModal="lctModalJm"
+      @handleCloseLct="handleCloseLctJm"
+    ></lctCom>
   </div>
 </template>
 <script>
-import { querywj, delwj } from "@/api/assistantWork/classEvent";
+import { querywj, delwj, Exportwj } from "@/api/assistantWork/classEvent";
 import lctCom from "../../components/lct";
+import { nowYear, getDetails } from "@/api/gzzxdk/gjzxdk";
 import {
-  nowYear,
-  edit,
-  query,
-  del,
-  back,
-  tj,
-  getDetails,
-} from "@/api/gzzxdk/gjzxdk";
+  queryJzsqList,
+  queryJmsqList,
+  queryHkjlList,
+  deleteHkjl,
+  deleteJmsq,
+  deleteJzsq,
+  importHkjl,
+  importJmsq,
+  importJzsq,
+  tjJmsq,
+  tjJzsq,
+  cxByIdJmsq,
+  cxByIdJzsq,
+} from "@/api/dailyBehavior/illnessHelpStu";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
   components: { lctCom },
@@ -690,13 +638,48 @@ export default {
       dgyhList: [],
       //草稿状态和退回状态有编辑功能  01 || 08
       submitModal: false,
+      submitModalJm: false,
       lctModal: false,
+      lctModalJm: false,
       addModal: false,
+      addModalJm: false,
+      addModalHk: false,
       editModal: false,
+      editModalJm: false,
       delModal: false,
-      formAdd: {},
+      delModalJm: false,
+      delModalHk: false,
+      formAdd: {
+        id: "",
+        sqJe: "",
+        sqLy: "",
+        files: [],
+      },
+      formAddJm: {
+        id: "",
+        dbjzsqId: "",
+        dbjzsqSqje: "",
+        jmJe: "",
+        jmLy: "",
+        files: "",
+      },
+      formAddHk: {
+        addData: [
+          {
+            id: "",
+            dbjzsqId: "",
+            dbjzsqSqje: "",
+            dhJe: "",
+            hkSj: "",
+            yhJe: "",
+            files: "",
+          },
+        ],
+      },
       formEdit: {},
       tableDate: [],
+      tableDateJm: [],
+      tableDateHk: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -706,14 +689,22 @@ export default {
       },
       editFlag: 2,
       fileList: [],
+      fileListJm: [],
+      fileListHk: [],
       delArr: [],
+      delArrJm: [],
+      delArrHk: [],
       tjArr: [],
       fileListAdd: [],
       ztStatus: [],
       val: [],
+      valJm: [],
+      valHk: [],
       czlx: [],
       dmsfbzm: [],
       chehuiModal: false,
+      chehuiModalJm: false,
+      currentRow: { id: "" },
       rules: {
         common: [
           {
@@ -726,11 +717,13 @@ export default {
     };
   },
   mounted() {
-    this.query();
+    this.queryJz();
+    // this.queryJm();
+    // this.queryHk();
     this.getCode("dmsplcm"); //状态
-    this.getCode("dmgjzxdk"); //国家助学贷款码
-    this.getCode("dmzudkyhm"); //国家助学贷款银行码
-    this.getYear();
+    // this.getCode("dmgjzxdk"); //国家助学贷款码
+    // this.getCode("dmzudkyhm"); //国家助学贷款银行码
+    // this.getYear();
   },
 
   methods: {
@@ -738,6 +731,25 @@ export default {
       nowYear().then((res) => {
         this.dkxn = res.errmsg;
       });
+    },
+    //下载附件
+    xzWj(row, index) {
+      if (index == 1) {
+        Exportwj({ id: row.fjId.toString() }).then((res) => {
+          this.url = window.URL.createObjectURL(res);
+          this.downloadFn(res, row.fjName);
+        });
+      } else if (index == 2) {
+        Exportwj({ id: row.xyFjId.toString() }).then((res) => {
+          this.url = window.URL.createObjectURL(res);
+          this.downloadFn(res, row.xyFjName);
+        });
+      } else {
+        // Exportwj({ id: row.xyFjId.toString() }).then((res) => {
+        //   this.url = window.URL.createObjectURL(res);
+        //   this.downloadFn(res, row.xyFjName);
+        // });
+      }
     },
     tjModal() {
       var falg = 1;
@@ -756,10 +768,10 @@ export default {
     },
     tj() {
       var data = this.val;
-      tj(data).then((res) => {
+      tjJzsq(data).then((res) => {
         if (res.errcode == "00") {
           this.$message.success("提交成功");
-          this.query();
+          this.queryJz();
           this.submitModal = false;
         } else {
           this.$message.error("提交失败");
@@ -819,6 +831,32 @@ export default {
         }
       });
     },
+    jmApply() {
+      if (!this.currentRow) {
+        this.$message.error("请选择大病救助申请！");
+      } else {
+        this.$set(this.formAddJm, "dbjzsqId", this.currentRow.id || "");
+        this.$set(this.formAddJm, "dbjzsqSqje", this.currentRow.sqJe || "");
+        this.addModalJm = true;
+        console.log("this.formAddJm.dbjzsqSqje", this.currentRow.sqJe);
+      }
+    },
+    hkApply() {
+      if (!this.currentRow) {
+        this.$message.error("请选择大病救助申请！");
+      } else {
+        var JMJE,
+          brr = 0;
+        for (let i = 0; i < this.tableDateJm.length; i++) {
+          JMJE = brr + Number(this.tableDateJm[i].jmJe);
+        }
+        this.$set(this.formAddHk, "dbjzsqId", this.currentRow.id || "");
+        this.$set(this.formAddHk, "dbjzsqSqje", this.currentRow.sqJe || "");
+        var jmje2 = Number(this.currentRow.sqJe) - (JMJE || 0); //申请金额-减免金额
+        this.$set(this.formAddHk, "dhJe", String(jmje2) || "");
+        this.addModalHk = true;
+      }
+    },
     async showDetail(row) {
       let res = await getDetails({
         id: row.id,
@@ -876,9 +914,9 @@ export default {
       this.chehuiModal = false;
     },
     ch() {
-      back({ ids: this.delArr }).then((res) => {
+      cxByIdJzsq({ ids: this.delArr }).then((res) => {
         this.$message.success("撤回成功");
-        this.query();
+        this.queryJz();
         this.chehuiModal = false;
       });
     },
@@ -913,8 +951,10 @@ export default {
       }
     },
     del() {
-      del({ ids: this.delArr }).then((res) => {
-        this.query();
+      deleteJzsq({ ids: this.delArr }).then((res) => {
+        this.queryJz();
+        this.queryJm();
+        this.queryHk();
         this.delModal = false;
         this.$message.success("删除成功");
       });
@@ -925,12 +965,16 @@ export default {
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
-      this.query();
+      this.queryJz();
     },
-    handleSelectionChange(val) {
-      this.val = val;
-      this.delArr = val.map((item) => item.id);
-      this.tjArr = val.map((item) => item.id);
+    handleCurrentChange(val) {
+      this.val = [val];
+      this.delArr = [val.id];
+      this.tjArr = [val.id];
+      this.currentRow = val;
+      console.log("this.currentRow", this.currentRow);
+      this.queryJm();
+      this.queryHk();
     },
     beforeRemove(file, fileList) {
       let uid = file.uid;
@@ -1008,10 +1052,10 @@ export default {
             formData.append("files", file.raw);
           });
         }
-        edit(formData).then((res) => {
+        importJzsq(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("编辑成功");
-            this.query();
+            this.queryJz();
           } else {
             this.$message.error("编辑失败");
           }
@@ -1026,29 +1070,19 @@ export default {
       } else {
         var data = this.formAdd;
         let formData = new FormData();
-        formData.append("dkxn", this.dkxn);
-        formData.append("bz", data.bz);
-        formData.append("zsfys", data.zsfys);
-        formData.append("xfys", data.xfys);
-        formData.append("dkzje", data.dkzje);
-        formData.append("dklx", data.dklx);
-        formData.append("dkyh", data.dkyh);
-        formData.append("htbh", data.htbh);
-        formData.append("dkkssj", data.dkkssj);
-        formData.append("dkqx", data.dkqx);
-        formData.append("hzjym", data.hzjym);
-        formData.append("xh", this.$store.getters.userId);
-        formData.append("shrgh", "");
+        formData.append("sqJe", data.sqJe);
+        formData.append("sqLy", data.sqLy);
         formData.append("id", "");
+        // formData.append("xh", this.$store.getters.userId);
         if (this.fileList.length > 0) {
           this.fileList.map((file) => {
             formData.append("files", file.raw);
           });
         }
-        edit(formData).then((res) => {
+        importJzsq(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("新增成功");
-            this.query();
+            this.queryJz();
           } else {
             this.$message.error("新增失败");
           }
@@ -1056,7 +1090,7 @@ export default {
         this.addModal = false;
       }
     },
-    query() {
+    queryJz() {
       var data = {
         xh: this.$store.getters.userId,
         pageNum: this.queryParams.pageNum,
@@ -1064,7 +1098,7 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      query(data).then((res) => {
+      queryJzsqList(data).then((res) => {
         this.tableDate = res.data;
         this.queryParams.totalCount = res.totalCount;
       });
@@ -1089,6 +1123,374 @@ export default {
     addCance() {
       this.addModal = false;
       this.$refs.formAdd.resetFields();
+    },
+    //下载
+    mbDown() {
+      mbDownSchool().then((res) => {
+        this.downloadFn(res, "酬金维护导入学生模板下载", "xlsx");
+        this.$message.success("操作成功");
+      });
+    },
+
+    //################# 减免申请###################
+    tjModalJm() {
+      var falg = 1;
+      for (var i = 0; i < this.valJm.length; i++) {
+        if (this.valJm[i].status !== "01") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.delArrJm && this.delArrJm.length > 0) {
+          this.submitModalJm = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("不是草稿状态数据，不可以提交");
+      }
+    },
+    tjJm() {
+      var data = this.valJm;
+      tjJmsq(data).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("提交成功");
+          this.queryJm();
+          this.submitModalJm = false;
+        } else {
+          this.$message.error("提交失败");
+        }
+      });
+    },
+    subCancelJm() {
+      this.submitModalJm = false;
+    },
+    // 表单校验
+    checkFormAddJm() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formAddJm.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
+    handleCloseLctJm() {
+      this.lctModalJm = false;
+    },
+    lctClickJm(row) {
+      if (!!row.processid) {
+        this.$refs.child.inner(row.processid);
+        this.lctModalJm = true;
+      } else {
+        this.$message.warning("此项经历为管理员新增，暂无流程数据");
+      }
+    },
+    async showDetailJm(row) {
+      let res = await getDetails({
+        id: row.id,
+      });
+      // async await的正确用法是await返回值，而不是直接.then之后获取值
+      if (res.errcode == "00") {
+        this.formEdit = res.data;
+        if (res.data.fileList && res.data.fileList.length > 0) {
+          this.formEdit.fileList = res.data.fileList.map((ele) => {
+            return {
+              name: ele.fileName,
+              ...ele,
+            };
+          });
+        }
+        this.editModalJm = true;
+      }
+    },
+    chCancelJm() {
+      this.chehuiModalJm = false;
+    },
+    chJm() {
+      cxByIdJmsq({ ids: this.delArrJm }).then((res) => {
+        this.$message.success("撤回成功");
+        this.queryJm();
+        this.chehuiModalJm = false;
+      });
+    },
+    chModalJm() {
+      var falg = 1;
+      for (var i = 0; i < this.valJm.length; i++) {
+        if (this.valJm[i].status !== "02") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.delArrJm && this.delArrJm.length > 0) {
+          this.chehuiModalJm = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("存在非待审核状态数据，不可以撤回");
+      }
+    },
+    showDelJm() {
+      var falg = 1;
+      for (var i = 0; i < this.valJm.length; i++) {
+        if (this.valJm[i].status !== "01") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.delArrJm && this.delArrJm.length > 0) {
+          this.delModalJm = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("存在非草稿状态数据，不可以删除");
+      }
+    },
+    delJm() {
+      deleteJmsq({ ids: this.delArrJm }).then((res) => {
+        this.queryJm();
+        this.delModalJm = false;
+        this.$message.success("删除成功");
+      });
+    },
+    delCancelJm() {
+      this.delModalJm = false;
+    },
+    handleSelectionChangeJm(val) {
+      this.valJm = val;
+      this.delArrJm = val.map((item) => item.id);
+    },
+    bianjiJm() {
+      this.editFlag = 3;
+    },
+    editClickJm() {
+      if (!this.checkFormEdit()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        var data = this.formEdit;
+        let formData = new FormData();
+        formData.append("dkxn", data.xn);
+        formData.append("bz", data.bz);
+        formData.append("zsfys", data.zsfys);
+        formData.append("xfys", data.xfys);
+        formData.append("dkzje", data.dkzje);
+        formData.append("dklx", data.dklx);
+        formData.append("dkyh", data.dkyh);
+        formData.append("htbh", data.htbh);
+        formData.append("dkkssj", data.dkkssj);
+        formData.append("dkqx", data.dkqx);
+        formData.append("hzjym", data.hzjym);
+        formData.append("xh", this.$store.getters.userId);
+        formData.append("shrgh", "");
+        formData.append("id", data.id);
+        if (this.fileListAdd.length > 0) {
+          this.fileListAdd.map((file) => {
+            formData.append("files", file.raw);
+          });
+        }
+        importJmsq(formData).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("编辑成功");
+            this.queryJm();
+          } else {
+            this.$message.error("编辑失败");
+          }
+        });
+        this.editModalJm = false;
+      }
+    },
+    addClickJm() {
+      if (!this.checkFormAddJm()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        var data = this.formAddJm;
+        let formData = new FormData();
+        formData.append("dbjzsqId", data.dbjzsqId);
+        formData.append("dbjzsqSqje", data.dbjzsqSqje);
+        formData.append("jmJe", data.jmJe);
+        formData.append("jmLy", data.jmLy);
+        formData.append("id", "");
+        // formData.append("xh", this.$store.getters.userId);
+        if (this.fileListJm.length > 0) {
+          this.fileListJm.map((file) => {
+            formData.append("files", file.raw);
+          });
+        }
+        importJmsq(formData).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("新增减免申请成功");
+            this.queryJm();
+          } else {
+            this.$message.error("新增减免申请失败");
+          }
+        });
+        this.addModalJm = false;
+      }
+    },
+    addCanceJm() {
+      this.addModalJm = false;
+      this.$refs.formAddJm.resetFields();
+    },
+    queryJm() {
+      var data = {
+        dbjzsqId: this.currentRow.id || "",
+        // xh: this.$store.getters.userId,
+        // pageNum: this.queryParams.pageNum,
+        // pageSize: this.queryParams.pageSize,
+        // orderZd: this.queryParams.orderZd,
+        // orderPx: this.queryParams.orderPx,
+      };
+      queryJmsqList(data).then((res) => {
+        this.tableDateJm = res.data;
+        // this.queryParams.totalCount = res.totalCount;
+      });
+    },
+    beforeRemoveJm(file, fileList) {
+      let uid = file.uid;
+      let idx = fileList.findIndex((item) => item.uid === uid);
+      fileList.splice(idx, 0);
+      this.fileListJm = fileList;
+      if (file.id) {
+        //如果是后端返回的文件就走删除接口，不然前端自我删除
+        delwj({ id: file.id.toString() }).then();
+      }
+    },
+    beforeRemoveEditJm(file, fileList) {
+      let uid = file.uid;
+      let idx = this.fileListAdd.findIndex((item) => item.uid === uid);
+      this.fileListAdd.splice(idx, 1);
+      if (file.id) {
+        //如果是后端返回的文件就走删除接口，不然前端自我删除
+        delwj({ id: file.id.toString() }).then();
+      }
+    },
+    fileChangeJm(file, fileList) {
+      if (Number(file.size / 1024 / 1024) > 10) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
+        this.$message.error("单个文件大小不得超过10M");
+      }
+      this.fileListJm = fileList;
+    },
+    fileChangeEditJm(file, fileList) {
+      if (Number(file.size / 1024 / 1024) > 10) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
+        this.$message.error("单个文件大小不得超过10M");
+      } else if (file.status == "ready") {
+        this.fileListAdd.push(file); //修改编辑的文件参数
+      }
+    },
+    //############# 还款记录 ##########################
+    queryHk() {
+      var data = {
+        dbjzsqId: this.currentRow.id || "",
+        // xh: this.$store.getters.userId,
+        // pageNum: this.queryParams.pageNum,
+        // pageSize: this.queryParams.pageSize,
+        // orderZd: this.queryParams.orderZd,
+        // orderPx: this.queryParams.orderPx,
+      };
+      queryHkjlList(data).then((res) => {
+        this.tableDateHk = res.data;
+        // this.queryParams.totalCount = res.totalCount;
+      });
+    },
+    addCanceHk() {
+      this.addModalHk = false;
+      this.$refs.formAddHk.resetFields();
+    },
+    addClickHk() {
+      if (!this.checkFormAddHk()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        var data = this.formAddHk;
+        let formData = new FormData();
+        formData.append("dbjzsqId", data.dbjzsqId);
+        formData.append("dbjzsqSqje", data.dbjzsqSqje);
+        formData.append("dhJe", data.dhJe);
+        formData.append("hkSj", data.hkSj);
+        formData.append("yhJe", data.yhJe);
+        formData.append("id", "");
+        // formData.append("xh", this.$store.getters.userId);
+        if (this.fileListHk.length > 0) {
+          this.fileListHk.map((file) => {
+            formData.append("files", file.raw);
+          });
+        }
+        importHkjl(formData).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("新增成功");
+            this.queryHk();
+          } else {
+            this.$message.error("新增失败");
+          }
+        });
+        this.addModalHk = false;
+      }
+    },
+    showDelHk() {
+      var falg = 1;
+      for (var i = 0; i < this.valHk.length; i++) {
+        if (this.valHk[i].status !== "01") falg = 2;
+      }
+      if (falg == 1) {
+        if (this.delArrHk && this.delArrHk.length > 0) {
+          this.delModalHk = true;
+        } else {
+          this.$message.error("请先勾选数据");
+        }
+      } else {
+        this.$message.error("存在非草稿状态数据，不可以删除");
+      }
+    },
+    // 表单校验
+    checkFormAddHk() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formAddHk.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
+    delHk() {
+      deleteHkjl({ ids: this.delArrHk }).then((res) => {
+        this.queryHk();
+        this.delModalHk = false;
+        this.$message.success("删除成功");
+      });
+    },
+    delCancelHk() {
+      this.delModalHk = false;
+    },
+    handleSelectionChangeHk(val) {
+      this.valHk = val;
+      this.delArrHk = val.map((item) => item.id);
+    },
+    fileChangeHk(file, fileList) {
+      if (Number(file.size / 1024 / 1024) > 10) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
+        this.$message.error("单个文件大小不得超过10M");
+      }
+      this.fileListHk = fileList;
+    },
+    beforeRemoveHk(file, fileList) {
+      let uid = file.uid;
+      let idx = fileList.findIndex((item) => item.uid === uid);
+      fileList.splice(idx, 0);
+      this.fileListHk = fileList;
+      if (file.id) {
+        //如果是后端返回的文件就走删除接口，不然前端自我删除
+        delwj({ id: file.id.toString() }).then();
+      }
     },
   },
 };
@@ -1155,6 +1557,8 @@ export default {
     justify-content: space-between;
     align-items: center;
     .headerLeft {
+      display: flex;
+      align-items: center;
       .title {
         font-weight: 600;
         font-size: 20px;
@@ -1168,6 +1572,25 @@ export default {
         width: 20px;
         height: 20px;
         background: url("~@/assets/images/updata.png") no-repeat;
+      }
+      .borderBlue {
+        color: #fff;
+        background: #005657;
+        border: 1px solid grey;
+      }
+      .btns {
+        width: 90px;
+        margin-left: 15px;
+        padding: 0px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+        .title1 {
+          font-size: 14px;
+          text-align: center;
+          line-height: 32px;
+          color: #fff;
+          // vertical-align: middle;
+        }
       }
     }
     .headerRight {
@@ -1237,6 +1660,10 @@ export default {
           margin-top: 9px;
           background: url("~@/assets/assistantPng/delete.png") no-repeat;
         }
+        .downIcon {
+          margin-top: 10px;
+          background: url("~@/assets/images/down.png") no-repeat;
+        }
         .greenIcon {
           margin-top: 10px;
           background: url("~@/assets/assistantPng/add.png") no-repeat;
@@ -1247,6 +1674,20 @@ export default {
         }
       }
     }
+  }
+  .moban {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .inline-block {
+      display: inline-block;
+    }
+  }
+  .handleName {
+    font-weight: 400;
+    font-size: 14px;
+    color: #005657;
+    line-height: 28px;
   }
 }
 </style>

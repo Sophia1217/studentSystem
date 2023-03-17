@@ -75,6 +75,39 @@
               >
                 <span class="handleName">培养层次设置</span>
               </el-button>
+              <div v-show="scope.row.businessName == '大病救助'">
+                <el-upload
+                  :auto-upload="true"
+                  :action="uploadUrl"
+                  :show-file-list="false"
+                  :headers="fileHeader"
+                  :data="fileData"
+                  :on-success="upLoadSuccess"
+                  :on-error="upLoadError"
+                  :before-upload="
+                    (item) => {
+                      beforeUpload(item, scope.row);
+                    }
+                  "
+                >
+                  <el-button
+                    type="text"
+                    size="small"
+                    style="margin-left: 10px"
+                    @click="thmb(scope.row)"
+                  >
+                    <span class="handleName">上传协议附件</span>
+                  </el-button>
+                </el-upload>
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="dbjzDownClick(scope.row)"
+                  style="margin-left: 10px"
+                >
+                  <span class="handleName">下载协议附件</span>
+                </el-button>
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -195,12 +228,36 @@ import {
 } from "@/api/dailyBehavior/applySetting";
 import { readXml } from "@/api/flowable/definition";
 import flow from "@/views/flowable/task/record/flow";
+import { querywj, delwj, Exportwj } from "@/api/assistantWork/classEvent";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
+import { getToken } from "@/utils/auth";
 export default {
   name: "BasicInfo",
   components: { flow },
+  computed: {
+    fileData: {
+      get() {
+        return {
+          pageType: "dbjzsq",
+          roleType: "rcsw",
+          businesId: this.businesId,
+        };
+      },
+    },
+    fileHeader: {
+      get() {
+        return {
+          accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
+          uuid: new Date().getTime(),
+          clientId: "111",
+        };
+      },
+    },
+  },
   data() {
     return {
+      businesId: "",
+      uploadUrl: process.env.VUE_APP_BASE_API + "/fileCommon/uploadFileCommon",
       basicInfoList: [],
       sqkfsj: [],
       lctModal: false,
@@ -223,6 +280,8 @@ export default {
         { dm: "0", mc: "是" },
         { dm: "1", mc: "否" },
       ],
+      fileListJm: [],
+      dbjzUpModal: false,
       rules: {
         je: [{ required: true, message: "金额上限不能为空", trigger: "blur" }],
         bkssfsx: [{ required: true, message: "设置不能为空", trigger: "blur" }],
@@ -230,8 +289,6 @@ export default {
       },
     };
   },
-
-  computed: {},
   watch: {},
   created() {},
   mounted() {
@@ -415,6 +472,77 @@ export default {
           }
         })
         .catch((err) => {});
+    },
+    dbjzDownClick(row) {
+      Exportwj({ id: "大病救助" }).then((res) => {
+        this.url = window.URL.createObjectURL(res);
+        this.downloadFn(res, row.fjName);
+      });
+    },
+    dbjzCancel() {
+      this.dbjzUpModal = false;
+    },
+    //附件上传保存
+    dbjzConfirm() {
+      let formData = new FormData();
+      formData.append("businesId", "大病救助");
+      formData.append("pageType", "dbjzsq");
+      formData.append("roleType", "rcsw");
+      if (this.fileListJm.length > 0) {
+        this.fileListJm.map((file) => {
+          formData.append("file", file.raw);
+        });
+      }
+    },
+    //附件
+    beforeRemoveJm(file, fileList) {
+      let uid = file.uid;
+      let idx = fileList.findIndex((item) => item.uid === uid);
+      fileList.splice(idx, 0);
+      this.fileListJm = fileList;
+      if (file.id) {
+        //如果是后端返回的文件就走删除接口，不然前端自我删除
+        delwj({ id: file.id.toString() }).then();
+      }
+    },
+    fileChangeJm(file, fileList) {
+      if (Number(file.size / 1024 / 1024) > 10) {
+        let uid = file.uid;
+        let idx = fileList.findIndex((item) => item.uid === uid);
+        fileList.splice(idx, 1);
+        this.$message.error("单个文件大小不得超过10M");
+      }
+      this.fileListJm = fileList;
+    },
+
+    upLoadSuccess(res, file, fileList) {
+      if (res.errcode == "00") {
+        this.$message({
+          type: "success",
+          message: res.errmsg,
+        });
+        this.getList();
+      } else {
+        this.$message({
+          type: "error",
+          message: res.errmsg,
+        });
+      }
+    },
+    upLoadError(err, file, fileList) {
+      this.$message({
+        type: "error",
+        message: "更新失败",
+      });
+    },
+    beforeUpload(file, row, index) {
+      console.log("row.businesId", row.businesId);
+      if (row.businesId == "大病救助") {
+        delwj({ businesId: row.businesId }).then((res) => {});
+      }
+    },
+    thmb(row) {
+      this.businesId = "大病救助";
     },
   },
 };

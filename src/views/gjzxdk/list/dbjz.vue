@@ -4,10 +4,18 @@
       <div class="headerTop">
         <div class="headerLeft">
           <div><span class="title">大病救助申请</span></div>
-          <div class="btns borderBlue" @click="jmApply">
+          <div
+            class="btns borderBlue"
+            @click="jmApply"
+            v-show="currentRow.id !== '' && currentRow.status == '10'"
+          >
             <span class="title1">减免申请</span>
           </div>
-          <div class="btns borderBlue" @click="hkApply">
+          <div
+            class="btns borderBlue"
+            @click="hkApply"
+            v-show="currentRow.id !== '' && currentRow.status == '10'"
+          >
             <span class="title1">提交还款</span>
           </div>
         </div>
@@ -144,6 +152,19 @@
           </el-table-column>
           <el-table-column prop="sqsj" label="申请时间"> </el-table-column>
           <el-table-column prop="fjName" label="附件" width="140">
+            <template slot-scope="scope">
+              <div class="moban">
+                <div class="content">
+                  <el-button
+                    type="text"
+                    size="small"
+                    @click="xzWj(scope.row, 1)"
+                  >
+                    <span class="handleName">{{ scope.row.fjName }}</span>
+                  </el-button>
+                </div>
+              </div>
+            </template>
           </el-table-column>
           <el-table-column prop="statusMc" label="审核状态"> </el-table-column>
           <el-table-column
@@ -211,11 +232,24 @@
           </el-table-column>
           <el-table-column prop="hkSj" label="还款时间"> </el-table-column>
           <el-table-column prop="fjName" label="还款凭证" width="140">
+            <template slot-scope="scope">
+              <div class="moban">
+                <div class="content">
+                  <el-button
+                    type="text"
+                    size="small"
+                    @click="xzWj(scope.row, 1)"
+                  >
+                    <span class="handleName">{{ scope.row.fjName }}</span>
+                  </el-button>
+                </div>
+              </div>
+            </template>
           </el-table-column>
         </el-table>
       </div>
       <el-dialog
-        title="新增申请"
+        :title="titleJz"
         :visible.sync="addModal"
         width="40%"
         @close="addCance"
@@ -232,11 +266,13 @@
                 >
                   <el-input-number
                     v-model="formAdd.sqJe"
+                    v-if="editFlag == 2"
                     :min="0"
                     :max="9999999"
                     :controls="false"
                   ></el-input-number>
-                  元
+                  <div v-else>{{ formAdd.sqJe }} 元</div>
+                  <span v-show="editFlag == 2"> 元</span>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -249,12 +285,14 @@
                 >
                   <el-input
                     v-model="formAdd.sqLy"
+                    v-if="editFlag == 2"
                     type="textarea"
                     :autosize="{ minRows: 5, maxRows: 5 }"
                     placeholder="请输入内容"
                     maxlength="500"
                     show-word-limit
                   ></el-input>
+                  <div v-else>{{ formAdd.sqLy }}</div>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -262,26 +300,47 @@
               <el-col :span="20">
                 <el-form-item label="申请附件">
                   <template>
-                    <el-upload
-                      action="#"
-                      class="el-upload"
-                      :auto-upload="false"
-                      ref="upload"
-                      :file-list="fileList"
-                      :on-change="fileChange"
-                      :before-remove="beforeRemove"
+                    <div
+                      v-if="editFlag == 1"
+                      style="display: flex; justify-content: space-between"
                     >
-                      <el-button size="small" type="primary"
-                        >附件上传</el-button
+                      <a>
+                        {{ formAdd.fjName }}
+                      </a>
+                    </div>
+                    <div v-else>
+                      <el-upload
+                        action="#"
+                        class="el-upload"
+                        :auto-upload="false"
+                        ref="upload"
+                        :file-list="fileList"
+                        :on-change="fileChange"
+                        :before-remove="beforeRemove"
                       >
-                    </el-upload>
+                        <el-button size="small" type="primary"
+                          >附件上传</el-button
+                        >
+                      </el-upload>
+                    </div>
                   </template>
                 </el-form-item>
               </el-col>
             </el-row>
           </div>
         </el-form>
-        <span slot="footer" class="dialog-footer">
+        <span
+          slot="footer"
+          class="dialog-footer"
+          v-show="
+            (formAdd.status == '01' || formAdd.status == '08') && editFlag == 1
+          "
+        >
+          <el-button type="primary" class="confirm" @click="EditStatus"
+            >编 辑</el-button
+          >
+        </span>
+        <span slot="footer" class="dialog-footer" v-show="editFlag == 2">
           <el-button @click="addCance">取 消</el-button>
           <el-button type="primary" class="confirm" @click="addClick"
             >确 定</el-button
@@ -289,7 +348,7 @@
         </span>
       </el-dialog>
       <el-dialog
-        title="减免申请"
+        :title="titleJm"
         :visible.sync="addModalJm"
         width="50%"
         @close="addCanceJm"
@@ -298,19 +357,19 @@
         <el-form ref="formAddJm" :model="formAddJm" :rules="rules">
           <div style="padding: 15px">
             <el-row :gutter="20">
-              <el-col :span="10">
+              <el-col :span="8">
                 <el-form-item
                   label="申请金额"
                   prop="dbjzsqSqje"
                   :rules="rules.common"
                 >
-                  <el-input-number
+                  <!-- <el-input-number
                     v-model="formAddJm.dbjzsqSqje"
                     :min="0"
                     :max="9999999"
                     :controls="false"
-                  ></el-input-number>
-                  元
+                  ></el-input-number> -->
+                  <span>{{ formAddJm.dbjzsqSqje }} 元</span>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
@@ -321,11 +380,13 @@
                 >
                   <el-input-number
                     v-model="formAddJm.jmJe"
+                    v-if="editFlagJm == 2"
                     :min="0"
                     :max="9999999"
                     :controls="false"
                   ></el-input-number>
-                  元
+                  <div v-else>{{ formAddJm.jmJe }} 元</div>
+                  <span v-show="editFlagJm == 2"> 元</span>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -338,12 +399,14 @@
                 >
                   <el-input
                     v-model="formAddJm.jmLy"
+                    v-if="editFlagJm == 2"
                     type="textarea"
                     :autosize="{ minRows: 5, maxRows: 5 }"
                     placeholder="请输入内容"
                     maxlength="500"
                     show-word-limit
                   ></el-input>
+                  <div v-else>{{ formAddJm.jmLy }}</div>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -351,26 +414,48 @@
               <el-col :span="20">
                 <el-form-item label="申请附件">
                   <template>
-                    <el-upload
-                      action="#"
-                      class="el-upload"
-                      :auto-upload="false"
-                      ref="upload"
-                      :file-list="fileListJm"
-                      :on-change="fileChangeJm"
-                      :before-remove="beforeRemoveJm"
+                    <div
+                      v-if="editFlagJm == 1"
+                      style="display: flex; justify-content: space-between"
                     >
-                      <el-button size="small" type="primary"
-                        >附件上传</el-button
+                      <a>
+                        {{ formAddJm.fjName }}
+                      </a>
+                    </div>
+                    <div v-else>
+                      <el-upload
+                        action="#"
+                        class="el-upload"
+                        :auto-upload="false"
+                        ref="upload"
+                        :file-list="fileListJm"
+                        :on-change="fileChangeJm"
+                        :before-remove="beforeRemoveJm"
                       >
-                    </el-upload>
+                        <el-button size="small" type="primary"
+                          >附件上传</el-button
+                        >
+                      </el-upload>
+                    </div>
                   </template>
                 </el-form-item>
               </el-col>
             </el-row>
           </div>
         </el-form>
-        <span slot="footer" class="dialog-footer">
+        <span
+          slot="footer"
+          class="dialog-footer"
+          v-show="
+            (formAddJm.status == '01' || formAddJm.status == '08') &&
+            editFlagJm == 1
+          "
+        >
+          <el-button type="primary" class="confirm" @click="EditStatusJm"
+            >编 辑</el-button
+          >
+        </span>
+        <span slot="footer" class="dialog-footer" v-show="editFlagJm == 2">
           <el-button @click="addCanceJm">取 消</el-button>
           <el-button type="primary" class="confirm" @click="addClickJm"
             >确 定</el-button
@@ -388,46 +473,52 @@
           <el-table :data="formAddHk.addData">
             <el-table-column
               label="待还金额（元）"
+              min-width="180px"
               align="center"
               :render-header="addRedStar"
             >
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'addData.' + scope.$index + '.rymc'"
-                  :rules="rules.rymc"
+                  :prop="'addData.' + scope.$index + '.dhJe'"
+                  :rules="rules.dhJe"
                 >
-                  <el-input maxlength="200" v-model="scope.row.rymc" />
+                  <el-input maxlength="200" v-model="scope.row.dhJe" />
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column
               label="还款金额（元）"
-              width="150px"
+              min-width="180px"
               align="center"
               :render-header="addRedStar"
             >
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'addData.' + scope.$index + '.bzdw'"
-                  :rules="rules.bzdw"
+                  :prop="'addData.' + scope.$index + '.yhJe'"
+                  :rules="rules.yhJe"
                 >
-                  <el-input maxlength="200" v-model="scope.row.bzdw" />
+                  <el-input-number
+                    v-model="scope.row.yhJe"
+                    :min="0"
+                    :max="9999999"
+                    :controls="false"
+                  ></el-input-number>
                 </el-form-item>
               </template>
             </el-table-column>
             <el-table-column
               label="还款时间"
-              width="150px"
+              min-width="200px"
               align="center"
               :render-header="addRedStar"
             >
               <template slot-scope="scope">
                 <el-form-item
-                  :prop="'addData.' + scope.$index + '.hjsj'"
-                  :rules="rules.hjsj"
+                  :prop="'addData.' + scope.$index + '.hkSj'"
+                  :rules="rules.common"
                 >
                   <el-date-picker
-                    v-model="scope.row.hjsj"
+                    v-model="scope.row.hkSj"
                     type="date"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
@@ -437,82 +528,26 @@
                 </el-form-item>
               </template>
             </el-table-column>
-            <el-table-column label="还款凭证" width="200px">
+            <el-table-column label="还款凭证" min-width="200px">
               <template slot-scope="scope">
-                <el-upload
-                  action="#"
-                  multiple
-                  class="el-upload"
-                  :auto-upload="false"
-                  ref="upload"
-                  :file-list="scope.row.files"
-                  :on-change="fileChangeHk"
-                  accept=".pdf,.jpg"
-                  :before-remove="beforeRemoveHk"
-                >
-                  <el-button size="small" type="primary">上传附件</el-button>
-                </el-upload>
+                <el-form-item :prop="'addData.' + scope.$index + '.fileListHk'">
+                  <el-upload
+                    action="#"
+                    multiple
+                    class="el-upload"
+                    :auto-upload="false"
+                    ref="upload"
+                    :file-list="scope.row.fileListHk"
+                    :on-change="fileChangeHk"
+                    accept=".pdf,.jpg"
+                    :before-remove="beforeRemoveHk"
+                  >
+                    <el-button size="small" type="primary">上传附件</el-button>
+                  </el-upload>
+                </el-form-item>
               </template>
             </el-table-column>
           </el-table>
-          <div style="padding: 15px">
-            <el-row :gutter="20">
-              <el-col :span="15">
-                <el-form-item
-                  label="申请金额"
-                  prop="sqJe"
-                  :rules="rules.common"
-                >
-                  <el-input-number
-                    v-model="formAddHk.sqJe"
-                    :min="0"
-                    :max="9999999"
-                    :controls="false"
-                  ></el-input-number>
-                  元
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="20">
-                <el-form-item
-                  label="申请理由"
-                  prop="sqLy"
-                  :rules="rules.common"
-                >
-                  <el-input
-                    v-model="formAddHk.sqLy"
-                    type="textarea"
-                    :autosize="{ minRows: 5, maxRows: 5 }"
-                    placeholder="请输入内容"
-                    maxlength="500"
-                    show-word-limit
-                  ></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="20">
-                <el-form-item label="申请附件">
-                  <template>
-                    <el-upload
-                      action="#"
-                      class="el-upload"
-                      :auto-upload="false"
-                      ref="upload"
-                      :file-list="fileList"
-                      :on-change="fileChange"
-                      :before-remove="beforeRemove"
-                    >
-                      <el-button size="small" type="primary"
-                        >附件上传</el-button
-                      >
-                    </el-upload>
-                  </template>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </div>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="addCanceHk">取 消</el-button>
@@ -653,7 +688,6 @@ export default {
         id: "",
         sqJe: "",
         sqLy: "",
-        files: [],
       },
       formAddJm: {
         id: "",
@@ -661,7 +695,6 @@ export default {
         dbjzsqSqje: "",
         jmJe: "",
         jmLy: "",
-        files: "",
       },
       formAddHk: {
         addData: [
@@ -672,7 +705,6 @@ export default {
             dhJe: "",
             hkSj: "",
             yhJe: "",
-            files: "",
           },
         ],
       },
@@ -687,14 +719,12 @@ export default {
         orderZd: "",
         orderPx: "",
       },
-      editFlag: 2,
       fileList: [],
       fileListJm: [],
       fileListHk: [],
       delArr: [],
       delArrJm: [],
       delArrHk: [],
-      tjArr: [],
       fileListAdd: [],
       ztStatus: [],
       val: [],
@@ -705,6 +735,12 @@ export default {
       chehuiModal: false,
       chehuiModalJm: false,
       currentRow: { id: "" },
+      titleJz: "",
+      titleJm: "",
+      addFlag: 1, //1新增，2详情
+      addFlagJm: 1, //1新增，2详情
+      editFlag: 1, //1只读，2编辑
+      editFlagJm: 1, //1只读，2编辑
       rules: {
         common: [
           {
@@ -744,12 +780,18 @@ export default {
           this.url = window.URL.createObjectURL(res);
           this.downloadFn(res, row.xyFjName);
         });
-      } else {
-        // Exportwj({ id: row.xyFjId.toString() }).then((res) => {
-        //   this.url = window.URL.createObjectURL(res);
-        //   this.downloadFn(res, row.xyFjName);
-        // });
       }
+      // else if (index == 3) {
+      //   Exportwj({ id: row.fjId.toString() }).then((res) => {
+      //     this.url = window.URL.createObjectURL(res);
+      //     this.downloadFn(res, row.fjName);
+      //   });
+      // } else {
+      //   // Exportwj({ id: row.xyFjId.toString() }).then((res) => {
+      //   //   this.url = window.URL.createObjectURL(res);
+      //   //   this.downloadFn(res, row.xyFjName);
+      //   // });
+      // }
     },
     tjModal() {
       var falg = 1;
@@ -757,7 +799,7 @@ export default {
         if (this.val[i].status !== "01") falg = 2;
       }
       if (falg == 1) {
-        if (this.tjArr && this.tjArr.length > 0) {
+        if (this.delArr && this.delArr.length > 0) {
           this.submitModal = true;
         } else {
           this.$message.error("请先勾选数据");
@@ -832,89 +874,88 @@ export default {
       });
     },
     jmApply() {
-      if (!this.currentRow) {
+      if (!this.currentRow.id) {
         this.$message.error("请选择大病救助申请！");
       } else {
+        this.titleJm = "新增减免申请";
+        this.addFlagJm = 1; //新增
+        this.editFlagJm = 2;
+        this.formAddJm = {
+          id: "",
+          // dbjzsqId: "",
+          // dbjzsqSqje: "",
+          jmJe: "",
+          jmLy: "",
+        }; // 每次打开弹框先将弹框的table数组置空
+        this.fileListJm = [];
+
         this.$set(this.formAddJm, "dbjzsqId", this.currentRow.id || "");
         this.$set(this.formAddJm, "dbjzsqSqje", this.currentRow.sqJe || "");
         this.addModalJm = true;
-        console.log("this.formAddJm.dbjzsqSqje", this.currentRow.sqJe);
+        // console.log("this.formAddJm.dbjzsqSqje", this.currentRow.sqJe);
       }
     },
     hkApply() {
-      if (!this.currentRow) {
+      if (!this.currentRow.id) {
         this.$message.error("请选择大病救助申请！");
       } else {
-        var JMJE,
-          brr = 0;
+        var jm = 0;
+        //减免
         for (let i = 0; i < this.tableDateJm.length; i++) {
-          JMJE = brr + Number(this.tableDateJm[i].jmJe);
+          //目前是所有状态相加
+          jm = jm + Number(this.tableDateJm[i].jmJe);
         }
-        this.$set(this.formAddHk, "dbjzsqId", this.currentRow.id || "");
-        this.$set(this.formAddHk, "dbjzsqSqje", this.currentRow.sqJe || "");
-        var jmje2 = Number(this.currentRow.sqJe) - (JMJE || 0); //申请金额-减免金额
-        this.$set(this.formAddHk, "dhJe", String(jmje2) || "");
+        //已还款
+        for (let j = 0; j < this.tableDateHk.length; j++) {
+          jm = jm + Number(this.tableDateHk[j].yhJe);
+        }
+        // console.log("jmje", jm);
+        this.$set(
+          this.formAddHk.addData[0],
+          "dbjzsqId",
+          this.currentRow.id || ""
+        );
+        this.$set(
+          this.formAddHk.addData[0],
+          "dbjzsqSqje",
+          this.currentRow.sqJe || ""
+        );
+        var jmje2 = Number(this.currentRow.sqJe) - (jm || 0); //申请金额-减免金额和已还金额
+        this.$set(this.formAddHk.addData[0], "dhJe", String(jmje2) || "");
         this.addModalHk = true;
       }
     },
-    async showDetail(row) {
-      let res = await getDetails({
-        id: row.id,
-      });
-      // async await的正确用法是await返回值，而不是直接.then之后获取值
-      if (res.errcode == "00") {
-        this.formEdit = res.data;
-        if (res.data.fileList && res.data.fileList.length > 0) {
-          this.formEdit.fileList = res.data.fileList.map((ele) => {
-            return {
-              name: ele.fileName,
-              ...ele,
-            };
-          });
-        }
-        this.editModal = true;
-      }
-      // await this.querywj(row.id);
-      // this.formEdit = row;
-      // await getDetails({
-      //   id: row.id,
-      // }).then((res) => {
-      //   console.log("limian");
-      //   this.formEdit = res.data;
-      //   if (res.data.fileList && res.data.fileList.length > 0) {
-      //     this.formEdit.fileList = res.data.fileList.map((ele) => {
-      //       return {
-      //         name: ele.fileName,
-      //         ...ele,
-      //       };
-      //     });
-      //   }
-      //   this.editModal = true;
-      // });
-      // console.log("waimian");
+    EditStatus() {
+      this.editFlag = 2;
     },
-    // querywj(data) {
-    //   if (this.formEdit.fileList && this.formEdit.fileList.length > 0) {
-    //     this.formEdit.fileList = [];
-    //   }
-    //   //用于文件查询
-    //   querywj({ businesId: data }).then((res) => {
-    //     if (res.data && res.data.length > 0) {
-    //       this.formEdit.fileList = res.data.map((ele) => {
-    //         return {
-    //           name: ele.fileName,
-    //           ...ele,
-    //         };
-    //       });
-    //     }
-    //     this.editModal = true;
-    //   });
-    // },
+    async showDetail(row) {
+      this.titleJz = "大病救助申请详情";
+      this.addFlag = 2; //详情
+      this.editFlag = 1; //不可编辑
+      this.formAdd = row;
+      this.fileList = [];
+
+      //用于文件查询
+      if (row.fjId !== "") {
+        querywj({ businesId: row.id }).then((res) => {
+          if (res.data && res.data.length > 0) {
+            this.fileList = res.data.map((ele) => {
+              return {
+                name: ele.fileName,
+                ...ele,
+              };
+            });
+          }
+        });
+      }
+      this.addModal = true;
+    },
     chCancel() {
       this.chehuiModal = false;
     },
     ch() {
-      cxByIdJzsq({ ids: this.delArr }).then((res) => {
+      var data = this.val;
+      cxByIdJzsq(data).then((res) => {
         this.$message.success("撤回成功");
         this.queryJz();
         this.chehuiModal = false;
@@ -968,13 +1009,16 @@ export default {
       this.queryJz();
     },
     handleCurrentChange(val) {
+      console.log("val", val);
       this.val = [val];
-      this.delArr = [val.id];
-      this.tjArr = [val.id];
-      this.currentRow = val;
-      console.log("this.currentRow", this.currentRow);
-      this.queryJm();
-      this.queryHk();
+      this.delArr = val == null ? [] : [val.id];
+      if (val !== null) {
+        this.currentRow = val;
+        this.queryJm();
+        this.queryHk();
+      } else {
+        this.currentRow = { id: "" };
+      }
     },
     beforeRemove(file, fileList) {
       let uid = file.uid;
@@ -1072,7 +1116,11 @@ export default {
         let formData = new FormData();
         formData.append("sqJe", data.sqJe);
         formData.append("sqLy", data.sqLy);
-        formData.append("id", "");
+        if (this.addFlag == 1) {
+          formData.append("id", "");
+        } else {
+          formData.append("id", data.id);
+        }
         // formData.append("xh", this.$store.getters.userId);
         if (this.fileList.length > 0) {
           this.fileList.map((file) => {
@@ -1083,14 +1131,15 @@ export default {
           if (res.errcode == "00") {
             this.$message.success("新增成功");
             this.queryJz();
+            this.addModal = false;
           } else {
             this.$message.error("新增失败");
           }
         });
-        this.addModal = false;
       }
     },
     queryJz() {
+      // this.currentRow.id = "";
       var data = {
         xh: this.$store.getters.userId,
         pageNum: this.queryParams.pageNum,
@@ -1104,18 +1153,13 @@ export default {
       });
     },
     xinzeng() {
+      this.titleJz = "新增申请";
+      this.addFlag = 1; //新增
+      this.editFlag = 2;
       this.formAdd = {
-        xn: this.dkxn, //贷款学年
-        bz: "", //备注
-        zsfys: "", //
-        xfys: "", //
-        dkzje: "",
-        dklx: "",
-        dkyh: "",
-        htbh: "",
-        dkkssj: "",
-        dkqx: "",
-        hzjym: "",
+        id: "",
+        sqJe: "",
+        sqLy: "",
       }; // 每次打开弹框先将弹框的table数组置空
       this.fileList = [];
       this.addModal = true;
@@ -1180,35 +1224,43 @@ export default {
     },
     lctClickJm(row) {
       if (!!row.processid) {
-        this.$refs.child.inner(row.processid);
+        this.$refs.childJm.inner(row.processid);
         this.lctModalJm = true;
       } else {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");
       }
     },
+    EditStatusJm() {
+      this.editFlagJm = 2;
+    },
     async showDetailJm(row) {
-      let res = await getDetails({
-        id: row.id,
-      });
-      // async await的正确用法是await返回值，而不是直接.then之后获取值
-      if (res.errcode == "00") {
-        this.formEdit = res.data;
-        if (res.data.fileList && res.data.fileList.length > 0) {
-          this.formEdit.fileList = res.data.fileList.map((ele) => {
-            return {
-              name: ele.fileName,
-              ...ele,
-            };
-          });
-        }
-        this.editModalJm = true;
+      this.titleJm = "减免申请详情";
+      this.addFlagJm = 2; //详情
+      this.editFlagJm = 1; //不可编辑
+      this.formAddJm = row;
+      this.fileListJm = [];
+
+      //用于文件查询
+      if (row.fjId !== "") {
+        querywj({ businesId: row.id }).then((res) => {
+          if (res.data && res.data.length > 0) {
+            this.fileListJm = res.data.map((ele) => {
+              return {
+                name: ele.fileName,
+                ...ele,
+              };
+            });
+          }
+        });
       }
+      this.addModalJm = true;
     },
     chCancelJm() {
       this.chehuiModalJm = false;
     },
     chJm() {
-      cxByIdJmsq({ ids: this.delArrJm }).then((res) => {
+      var data = this.valJm;
+      cxByIdJmsq(data).then((res) => {
         this.$message.success("撤回成功");
         this.queryJm();
         this.chehuiModalJm = false;
@@ -1309,7 +1361,11 @@ export default {
         formData.append("dbjzsqSqje", data.dbjzsqSqje);
         formData.append("jmJe", data.jmJe);
         formData.append("jmLy", data.jmLy);
-        formData.append("id", "");
+        if (this.addFlagJm == 1) {
+          formData.append("id", "");
+        } else {
+          formData.append("id", data.id);
+        }
         // formData.append("xh", this.$store.getters.userId);
         if (this.fileListJm.length > 0) {
           this.fileListJm.map((file) => {
@@ -1407,7 +1463,7 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        var data = this.formAddHk;
+        var data = this.formAddHk.addData[0];
         let formData = new FormData();
         formData.append("dbjzsqId", data.dbjzsqId);
         formData.append("dbjzsqSqje", data.dbjzsqSqje);
@@ -1423,28 +1479,20 @@ export default {
         }
         importHkjl(formData).then((res) => {
           if (res.errcode == "00") {
-            this.$message.success("新增成功");
+            this.$message.success("还款新增成功");
             this.queryHk();
           } else {
-            this.$message.error("新增失败");
+            this.$message.error("还款新增失败");
           }
         });
         this.addModalHk = false;
       }
     },
     showDelHk() {
-      var falg = 1;
-      for (var i = 0; i < this.valHk.length; i++) {
-        if (this.valHk[i].status !== "01") falg = 2;
-      }
-      if (falg == 1) {
-        if (this.delArrHk && this.delArrHk.length > 0) {
-          this.delModalHk = true;
-        } else {
-          this.$message.error("请先勾选数据");
-        }
+      if (this.delArrHk && this.delArrHk.length > 0) {
+        this.delModalHk = true;
       } else {
-        this.$message.error("存在非草稿状态数据，不可以删除");
+        this.$message.error("请先勾选数据");
       }
     },
     // 表单校验

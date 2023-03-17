@@ -61,3 +61,23 @@ export function exp(query) {
       responseType:'blob'
   })
 }
+  //测评进度院级视角
+  export function queryCpjdFdy(query) {
+    return request({
+        url: '/fdyAnalyze/queryCpjdFdy',
+        method: 'post',
+        data: query
+    })
+  }
+  //测评进度校级视角
+  export function queryCpjdXy(query) {
+    return request({
+        url: '/fdyAnalyze/queryCpjdXy',
+        method: 'post',
+        data: query
+    })
+  }
+  
+
+
+

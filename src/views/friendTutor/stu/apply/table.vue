@@ -329,8 +329,8 @@
   </div>
 </template>
 <script>
-import { getXsJbxx, queryPbsqDetail } from "@/api/dailyBehavior/vocationTea";
-import { insert } from "@/api/friendTutor/apply";
+import { getXsJbxx } from "@/api/dailyBehavior/vocationTea";
+import { insert, queryPbsqDetail } from "@/api/friendTutor/apply";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import lctCom from "../../../components/lct";
 export default {
@@ -448,16 +448,29 @@ export default {
       this.isEdit = 1;
     },
     getDetail() {
-      getXsJbxx({ xh: this.xh }).then((res) => {
-        this.detailInfoData = res.data;
-        this.$set(this.detailInfoData, "fwfxList", [{ dm: "", mc: "" }]);
-      });
+      if (this.$route.query.id) {
+        queryPbsqDetail({ id: this.$route.query.id }).then((res) => {
+          this.detailInfoData = res.data;
+          this.kfwsjdList = res.data.kfwsjdListRes;
+          if (res.data.qzsjStart && res.data.qzsjEnd) {
+            this.$set(this.detailInfoData, "time", [
+              res.data.qzsjStart,
+              res.data.qzsjEnd,
+            ]);
+          }
+        });
+      } else {
+        getXsJbxx({ xh: this.xh }).then((res) => {
+          this.detailInfoData = res.data;
+          this.$set(this.detailInfoData, "fwfxList", [{ dm: "", mc: "" }]);
+        });
+      }
     },
     handleBack() {
       this.$router.go(-1);
     },
     handleCancle() {
-      this.isEdit = 2;
+      this.$router.go(-1);
     },
     checkFormAdd() {
       // 1.校验必填项
@@ -473,6 +486,16 @@ export default {
     handlUpdata() {
       //this.$set(this.detailInfoData, "fwfxList", this.fwfxList);
       this.$set(this.detailInfoData, "kfwsjdList", this.kfwsjdList);
+      this.$set(
+        this.detailInfoData,
+        "qzsjStart",
+        this.detailInfoData.time[0] || ""
+      );
+      this.$set(
+        this.detailInfoData,
+        "qzsjEnd",
+        this.detailInfoData.time[1] || ""
+      );
       let data = this.detailInfoData;
       if (!this.checkFormAdd()) {
         this.$message.error("请完善表单信息!");

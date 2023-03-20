@@ -34,15 +34,15 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xn" label="学号"> </el-table-column>
-          <el-table-column prop="dklxmc" label="姓名" width="140">
+          <el-table-column prop="xh" label="学号"> </el-table-column>
+          <el-table-column prop="xm" label="姓名" width="140">
           </el-table-column>
-          <el-table-column prop="dkzje" label="培养单位" width="140">
+          <el-table-column prop="pydw" label="培养单位" width="140">
           </el-table-column>
-          <el-table-column prop="dkyhmc" label="申请类型"> </el-table-column>
-          <el-table-column prop="dkyhmc" label="申请减免总计（元）">
+          <el-table-column prop="sqlx" label="申请类型"> </el-table-column>
+          <el-table-column prop="sqjezj" label="申请减免总计（元）">
           </el-table-column>
-          <el-table-column prop="dkyhmc" label="申请时间"> </el-table-column>
+          <el-table-column prop="sqsj" label="申请时间"> </el-table-column>
           <!-- <el-table-column prop="dkyhmc" label="附件">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="xzWj(scope.row)">
@@ -50,10 +50,10 @@
               </el-button>
             </template>
           </el-table-column> -->
-          <el-table-column prop="dkyhmc" label="审批金额（元）">
+          <el-table-column prop="spje" label="审批金额（元）">
           </el-table-column>
-          <el-table-column prop="dkyhmc" label="审批人"> </el-table-column>
-          <el-table-column prop="dkqx" label="审核状态"> </el-table-column>
+          <el-table-column prop="shr" label="审批人"> </el-table-column>
+          <el-table-column prop="statusMc" label="审核状态"> </el-table-column>
           <el-table-column
             prop="jg"
             label="审核进度"
@@ -101,13 +101,13 @@
         >
           <el-form-item
             label="申请类型"
-            prop="dklx"
+            prop="sqlxm"
             :rules="rules.common"
             label-width="41%"
           >
-            <el-select v-model="formAdd.dklx" placeholder="请选择">
+            <el-select v-model="formAdd.sqlxm" placeholder="请选择">
               <el-option
-                v-for="(item, index) in dglxList"
+                v-for="(item, index) in sqlxOps"
                 :key="index"
                 :label="item.mc"
                 :value="item.dm"
@@ -179,6 +179,12 @@ import {
   tj,
   getDetails,
 } from "@/api/gzzxdk/gjzxdk";
+import {
+  cxById,
+  deleteZbrwXsList,
+  queryZbrwXsList,
+  tjById,
+} from "@/api/zbrw/zbrw";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
   components: { lctCom },
@@ -192,6 +198,10 @@ export default {
       addModal: false,
       editModal: false,
       delModal: false,
+      sqlxOps: [
+        { dm: "1", mc: "退役士兵学费补偿申请" },
+        { dm: "2", mc: "应征入伍学费补偿申请" },
+      ],
       formAdd: {},
       formEdit: {},
       tableDate: [],
@@ -226,9 +236,6 @@ export default {
   mounted() {
     this.query();
     this.getCode("dmsplcm"); //状态
-    this.getCode("dmgjzxdk"); //国家助学贷款码
-    this.getCode("dmzudkyhm"); //国家助学贷款银行码
-    this.getYear();
   },
 
   methods: {
@@ -254,7 +261,7 @@ export default {
     },
     tj() {
       var data = this.val;
-      tj(data).then((res) => {
+      tjById(data).then((res) => {
         if (res.errcode == "00") {
           this.$message.success("提交成功");
           this.query();
@@ -317,64 +324,19 @@ export default {
         }
       });
     },
-    async showDetail(row) {
-      let res = await getDetails({
-        id: row.id,
+    showDetail(row) {
+      this.$router.push({
+        path: "/zbrwbc",
+        query: { sqlxm: row.sqlxm, id: row.id, isEdit: 1 },
       });
-      // async await的正确用法是await返回值，而不是直接.then之后获取值
-      if (res.errcode == "00") {
-        this.formEdit = res.data;
-        if (res.data.fileList && res.data.fileList.length > 0) {
-          this.formEdit.fileList = res.data.fileList.map((ele) => {
-            return {
-              name: ele.fileName,
-              ...ele,
-            };
-          });
-        }
-        this.editModal = true;
-      }
-      // await this.querywj(row.id);
-      // this.formEdit = row;
-      // await getDetails({
-      //   id: row.id,
-      // }).then((res) => {
-      //   console.log("limian");
-      //   this.formEdit = res.data;
-      //   if (res.data.fileList && res.data.fileList.length > 0) {
-      //     this.formEdit.fileList = res.data.fileList.map((ele) => {
-      //       return {
-      //         name: ele.fileName,
-      //         ...ele,
-      //       };
-      //     });
-      //   }
-      //   this.editModal = true;
-      // });
-      // console.log("waimian");
     },
-    // querywj(data) {
-    //   if (this.formEdit.fileList && this.formEdit.fileList.length > 0) {
-    //     this.formEdit.fileList = [];
-    //   }
-    //   //用于文件查询
-    //   querywj({ businesId: data }).then((res) => {
-    //     if (res.data && res.data.length > 0) {
-    //       this.formEdit.fileList = res.data.map((ele) => {
-    //         return {
-    //           name: ele.fileName,
-    //           ...ele,
-    //         };
-    //       });
-    //     }
-    //     this.editModal = true;
-    //   });
-    // },
+
     chCancel() {
       this.chehuiModal = false;
     },
     ch() {
-      back({ ids: this.delArr }).then((res) => {
+      let data = this.val;
+      cxById(data).then((res) => {
         this.$message.success("撤回成功");
         this.query();
         this.chehuiModal = false;
@@ -411,7 +373,7 @@ export default {
       }
     },
     del() {
-      del({ ids: this.delArr }).then((res) => {
+      deleteZbrwXsList({ ids: this.delArr }).then((res) => {
         this.query();
         this.delModal = false;
         this.$message.success("删除成功");
@@ -430,132 +392,37 @@ export default {
       this.delArr = val.map((item) => item.id);
       this.tjArr = val.map((item) => item.id);
     },
-    beforeRemove(file, fileList) {
-      let uid = file.uid;
-      let idx = fileList.findIndex((item) => item.uid === uid);
-      fileList.splice(idx, 0);
-      this.fileList = fileList;
-      if (file.id) {
-        //如果是后端返回的文件就走删除接口，不然前端自我删除
-        delwj({ id: file.id.toString() }).then();
-      }
-    },
-    beforeRemoveEdit(file, fileList) {
-      let uid = file.uid;
-      let idx = this.fileListAdd.findIndex((item) => item.uid === uid);
-      this.fileListAdd.splice(idx, 1);
-      if (file.id) {
-        //如果是后端返回的文件就走删除接口，不然前端自我删除
-        delwj({ id: file.id.toString() }).then();
-      }
-    },
-    fileChange(file, fileList) {
-      if (Number(file.size / 1024 / 1024) > 10) {
-        let uid = file.uid;
-        let idx = fileList.findIndex((item) => item.uid === uid);
-        fileList.splice(idx, 1);
-        this.$message.error("单个文件大小不得超过10M");
-      }
-      this.fileList = fileList;
-    },
-    fileChangeEdit(file, fileList) {
-      if (Number(file.size / 1024 / 1024) > 10) {
-        let uid = file.uid;
-        let idx = fileList.findIndex((item) => item.uid === uid);
-        fileList.splice(idx, 1);
-        this.$message.error("单个文件大小不得超过10M");
-      } else if (file.status == "ready") {
-        this.fileListAdd.push(file); //修改编辑的文件参数
-      }
-    },
-    bianji() {
-      this.editFlag = 3;
-    },
-    bianji1() {
-      this.editFlag = 2;
-      this.$refs.formEdit.resetFields();
-    },
-    editCance() {
-      this.editModal = false;
-      this.editFlag = 2;
-      this.$refs.formEdit.resetFields();
-    },
-    editClick() {
-      if (!this.checkFormEdit()) {
+    // beforeRemove(file, fileList) {
+    //   let uid = file.uid;
+    //   let idx = fileList.findIndex((item) => item.uid === uid);
+    //   fileList.splice(idx, 0);
+    //   this.fileList = fileList;
+    //   if (file.id) {
+    //     //如果是后端返回的文件就走删除接口，不然前端自我删除
+    //     delwj({ id: file.id.toString() }).then();
+    //   }
+    // },
+
+    // fileChange(file, fileList) {
+    //   if (Number(file.size / 1024 / 1024) > 10) {
+    //     let uid = file.uid;
+    //     let idx = fileList.findIndex((item) => item.uid === uid);
+    //     fileList.splice(idx, 1);
+    //     this.$message.error("单个文件大小不得超过10M");
+    //   }
+    //   this.fileList = fileList;
+    // },
+
+    addClick() {
+      if (!this.checkFormAdd()) {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        var data = this.formEdit;
-        let formData = new FormData();
-        formData.append("dkxn", data.xn);
-        formData.append("bz", data.bz);
-        formData.append("zsfys", data.zsfys);
-        formData.append("xfys", data.xfys);
-        formData.append("dkzje", data.dkzje);
-        formData.append("dklx", data.dklx);
-        formData.append("dkyh", data.dkyh);
-        formData.append("htbh", data.htbh);
-        formData.append("dkkssj", data.dkkssj);
-        formData.append("dkqx", data.dkqx);
-        formData.append("hzjym", data.hzjym);
-        formData.append("xh", this.$store.getters.userId);
-        formData.append("shrgh", "");
-        formData.append("id", data.id);
-        if (this.fileListAdd.length > 0) {
-          this.fileListAdd.map((file) => {
-            formData.append("files", file.raw);
-          });
-        }
-        edit(formData).then((res) => {
-          if (res.errcode == "00") {
-            this.$message.success("编辑成功");
-            this.query();
-          } else {
-            this.$message.error("编辑失败");
-          }
+        this.$router.push({
+          path: "/zbrwbc",
+          query: { sqlxm: this.formAdd.sqlxm, isEdit: 2 },
         });
-        this.editModal = false;
       }
-    },
-    addClick() {
-      this.$router.push({
-        path: "/zbrwbc",
-      });
-      // if (!this.checkFormAdd()) {
-      //   this.$message.error("请完善表单相关信息！");
-      //   return;
-      // } else {
-      //   var data = this.formAdd;
-      //   let formData = new FormData();
-      //   formData.append("dkxn", this.dkxn);
-      //   formData.append("bz", data.bz);
-      //   formData.append("zsfys", data.zsfys);
-      //   formData.append("xfys", data.xfys);
-      //   formData.append("dkzje", data.dkzje);
-      //   formData.append("dklx", data.dklx);
-      //   formData.append("dkyh", data.dkyh);
-      //   formData.append("htbh", data.htbh);
-      //   formData.append("dkkssj", data.dkkssj);
-      //   formData.append("dkqx", data.dkqx);
-      //   formData.append("hzjym", data.hzjym);
-      //   formData.append("xh", this.$store.getters.userId);
-      //   formData.append("shrgh", "");
-      //   formData.append("id", "");
-      //   if (this.fileList.length > 0) {
-      //     this.fileList.map((file) => {
-      //       formData.append("files", file.raw);
-      //     });
-      //   }
-      //   edit(formData).then((res) => {
-      //     if (res.errcode == "00") {
-      //       this.$message.success("新增成功");
-      //       this.query();
-      //     } else {
-      //       this.$message.error("新增失败");
-      //     }
-      //   });
-      //   this.addModal = false;
-      // }
     },
     query() {
       var data = {
@@ -565,26 +432,12 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      query(data).then((res) => {
+      queryZbrwXsList(data).then((res) => {
         this.tableDate = res.data;
         this.queryParams.totalCount = res.totalCount;
       });
     },
     xinzeng() {
-      this.formAdd = {
-        xn: this.dkxn, //贷款学年
-        bz: "", //备注
-        zsfys: "", //
-        xfys: "", //
-        dkzje: "",
-        dklx: "",
-        dkyh: "",
-        htbh: "",
-        dkkssj: "",
-        dkqx: "",
-        hzjym: "",
-      }; // 每次打开弹框先将弹框的table数组置空
-      this.fileList = [];
       this.addModal = true;
     },
     addCance() {

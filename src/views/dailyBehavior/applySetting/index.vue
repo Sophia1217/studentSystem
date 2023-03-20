@@ -77,18 +77,19 @@
               </el-button>
               <div v-show="scope.row.businessName == '大病救助'">
                 <el-upload
+                  accept=".pdf"
                   :auto-upload="true"
                   :action="uploadUrl"
                   :show-file-list="false"
-                  :headers="fileHeader"
-                  :data="fileData"
-                  :on-success="upLoadSuccess"
-                  :on-error="upLoadError"
                   :before-upload="
                     (item) => {
                       beforeUpload(item, scope.row);
                     }
                   "
+                  :headers="fileHeader"
+                  :data="fileData"
+                  :on-success="upLoadSuccess"
+                  :on-error="upLoadError"
                 >
                   <el-button
                     type="text"
@@ -102,7 +103,7 @@
                 <el-button
                   type="text"
                   size="small"
-                  @click="dbjzDownClick(scope.row)"
+                  @click="dbjzDownClick"
                   style="margin-left: 10px"
                 >
                   <span class="handleName">下载协议附件</span>
@@ -228,7 +229,8 @@ import {
 } from "@/api/dailyBehavior/applySetting";
 import { readXml } from "@/api/flowable/definition";
 import flow from "@/views/flowable/task/record/flow";
-import { querywj, delwj, Exportwj } from "@/api/assistantWork/classEvent";
+import { querywj, Exportwj } from "@/api/assistantWork/classEvent";
+import { delwj } from "@/api/dailyBehavior/graduationIdt";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getToken } from "@/utils/auth";
 export default {
@@ -281,7 +283,6 @@ export default {
         { dm: "1", mc: "否" },
       ],
       fileListJm: [],
-      dbjzUpModal: false,
       rules: {
         je: [{ required: true, message: "金额上限不能为空", trigger: "blur" }],
         bkssfsx: [{ required: true, message: "设置不能为空", trigger: "blur" }],
@@ -473,48 +474,17 @@ export default {
         })
         .catch((err) => {});
     },
-    dbjzDownClick(row) {
-      Exportwj({ id: "大病救助" }).then((res) => {
-        this.url = window.URL.createObjectURL(res);
-        this.downloadFn(res, row.fjName);
+    dbjzDownClick() {
+      querywj({ businesId: "大病救助" }).then((res) => {
+        if (res.data && res.data.length > 0) {
+          var aid = res.data[0];
+          Exportwj({ id: aid.id }).then((res) => {
+            this.url = window.URL.createObjectURL(res);
+            this.downloadFn(res, aid.fileName);
+          });
+        }
       });
     },
-    dbjzCancel() {
-      this.dbjzUpModal = false;
-    },
-    //附件上传保存
-    dbjzConfirm() {
-      let formData = new FormData();
-      formData.append("businesId", "大病救助");
-      formData.append("pageType", "dbjzsq");
-      formData.append("roleType", "rcsw");
-      if (this.fileListJm.length > 0) {
-        this.fileListJm.map((file) => {
-          formData.append("file", file.raw);
-        });
-      }
-    },
-    //附件
-    beforeRemoveJm(file, fileList) {
-      let uid = file.uid;
-      let idx = fileList.findIndex((item) => item.uid === uid);
-      fileList.splice(idx, 0);
-      this.fileListJm = fileList;
-      if (file.id) {
-        //如果是后端返回的文件就走删除接口，不然前端自我删除
-        delwj({ id: file.id.toString() }).then();
-      }
-    },
-    fileChangeJm(file, fileList) {
-      if (Number(file.size / 1024 / 1024) > 10) {
-        let uid = file.uid;
-        let idx = fileList.findIndex((item) => item.uid === uid);
-        fileList.splice(idx, 1);
-        this.$message.error("单个文件大小不得超过10M");
-      }
-      this.fileListJm = fileList;
-    },
-
     upLoadSuccess(res, file, fileList) {
       if (res.errcode == "00") {
         this.$message({
@@ -536,9 +506,9 @@ export default {
       });
     },
     beforeUpload(file, row, index) {
-      console.log("row.businesId", row.businesId);
-      if (row.businesId == "大病救助") {
-        delwj({ businesId: row.businesId }).then((res) => {});
+      console.log("row.businessName", row.businessName);
+      if (row.businessName == "大病救助") {
+        delwj({ businesId: "大病救助" }).then((res) => {});
       }
     },
     thmb(row) {

@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="headerRight">
-          <div class="btns borderLight" @click="mbDown">
+          <div class="btns borderLight" @click="xyDown">
             <i class="icon downIcon"></i><span class="title2">协议下载</span>
           </div>
           <div class="btns borderLight" @click="showDel">
@@ -781,12 +781,13 @@ export default {
           this.downloadFn(res, row.xyFjName);
         });
       }
-      // else if (index == 3) {
-      //   Exportwj({ id: row.fjId.toString() }).then((res) => {
-      //     this.url = window.URL.createObjectURL(res);
-      //     this.downloadFn(res, row.fjName);
-      //   });
-      // } else {
+      else if (index == 3) {
+        Exportwj({ id: "大病救助" }).then((res) => {
+          this.url = window.URL.createObjectURL(res);
+          this.downloadFn(res, "大病救助协议附件", "xlsx");
+        });
+      } 
+      // else {
       //   // Exportwj({ id: row.xyFjId.toString() }).then((res) => {
       //   //   this.url = window.URL.createObjectURL(res);
       //   //   this.downloadFn(res, row.xyFjName);
@@ -1169,10 +1170,15 @@ export default {
       this.$refs.formAdd.resetFields();
     },
     //下载
-    mbDown() {
-      mbDownSchool().then((res) => {
-        this.downloadFn(res, "酬金维护导入学生模板下载", "xlsx");
-        this.$message.success("操作成功");
+    xyDown() {
+      querywj({ businesId: "大病救助" }).then((res) => {
+        if (res.data && res.data.length > 0) {
+          var aid = res.data[0];
+          Exportwj({ id: aid.id }).then((res) => {
+            this.url = window.URL.createObjectURL(res);
+            this.downloadFn(res, aid.fileName);
+          });
+        }
       });
     },
 

@@ -17,7 +17,6 @@
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
-            <el-option label="确认人" value="shrxm"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
             >查询</el-button
@@ -35,7 +34,7 @@
           <el-col :span="6">
             <span>培养单位：</span>
             <el-select
-              v-model="moreIform.dwh"
+              v-model="moreIform.pydwmList"
               multiple
               collapse-tags
               @change="changeXY"
@@ -44,6 +43,23 @@
             >
               <el-option
                 v-for="item in allDwh"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="6">
+            <span>专<span v-html="'\u3000\u3000'"></span>业：</span>
+            <el-select
+              v-model="moreIform.zydmList"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in zyOps"
                 :key="item.dm"
                 :label="item.mc"
                 :value="item.dm"
@@ -67,10 +83,27 @@
               ></el-option>
             </el-select>
           </el-col>
+          <el-col :span="6">
+            <span>年<span v-html="'\u3000\u3000'"></span>级：</span>
+            <el-select
+              v-model="moreIform.njList"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="(item, index) in njOps"
+                :key="index"
+                :label="item"
+                :value="item"
+              ></el-option>
+            </el-select>
+          </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
           <el-col :span="1.5" style="display: inline-block; line-height: 37px"
-            >贷款开始时间：</el-col
+            >毕业时间：</el-col
           >
           <el-col :span="20">
             <el-date-picker
@@ -87,23 +120,14 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="1.5">状态：</el-col>
-          <el-col :span="8">
+          <el-col :span="3">培养层次：</el-col>
+          <el-col :span="20">
             <div class="checkbox">
-              <el-select
-                v-model="moreIform.ztStatus"
-                multiple
-                collapse-tags
-                placeholder="请选择状态"
-                size="small"
-              >
-                <el-option
-                  v-for="(item, index) in dmgbyqrztm"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select>
+              <checkboxCom
+                :objProp="training"
+                @training="handleCheckAllChangeTraining"
+                @checkedTraining="handleCheckedCitiesChangeTraining"
+              ></checkboxCom>
             </div>
           </el-col>
         </el-row>
@@ -216,11 +240,12 @@
 <script>
 import { queryYqrList, exportBysYqr } from "@/api/student/graduateList";
 import { getYears } from "@/api/test/fdySelfTest";
-import { getCollege } from "@/api/class/maintenanceClass";
+import { getCollege, getGrade } from "@/api/class/maintenanceClass";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { getBJ } from "@/api/student/index";
-import { getToken } from "@/utils/auth";
+import { getZY, getBJ } from "@/api/student/index";
+import CheckboxCom from "../../../components/checkboxCom";
 export default {
+  components: { CheckboxCom },
   data() {
     return {
       AUTHFLAG: false,
@@ -232,8 +257,10 @@ export default {
       isMore: false,
 
       moreIform: {
-        dwh: [], // 学院下拉框
-        bjm: [],
+        pydwmList: [], // 学院下拉框
+        njList: [],
+        zydmList: [],
+        bjmList: [],
         nd: "",
         ztStatus: [],
       },
@@ -241,8 +268,10 @@ export default {
       leng: 0,
       tableData: [],
       allDwh: [],
+      zyOps: [], //专业下拉
       bjOps: [], // 班级下拉
       allNd: [], //年度下拉
+      njOps: [],
       commonParams: [],
       queryParams: {
         pageNum: 1,
@@ -284,6 +313,12 @@ export default {
           this.handleSearch();
         })
         .catch((err) => {});
+      //年级
+      getGrade()
+        .then((res) => {
+          this.njOps = res.data.rows;
+        })
+        .catch((err) => {});
     },
     // 导出取消
     handleCancel() {
@@ -309,17 +344,19 @@ export default {
       data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        // dkkssjEnd:
-        //   this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-        //     ? this.queryParams.dksjArr[1]
-        //     : "",
-        // dkkssjStart:
-        //   this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-        //     ? this.queryParams.dksjArr[0]
-        //     : "",
-        // shrxm: this.select == "shrxm" ? this.searchVal : null,
-        // bjdm: this.moreIform.bjm,
-        // ssdwdm: this.moreIform.dwh,
+        bysjEnd:
+          this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
+            ? this.queryParams.dksjArr[1]
+            : "",
+        bysjStart:
+          this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
+            ? this.queryParams.dksjArr[0]
+            : "",
+        bjmList: this.moreIform.bjmList,
+        pydwmList: this.moreIform.pydwmList,
+        pyccmList: this.training.choose || [],
+        njList: this.moreIform.njList,
+        zydmList: this.moreIform.zydmList,
         nd: this.moreIform.nd,
         // statusList: this.moreIform.ztStatus,
         pageNum: 0,
@@ -339,10 +376,22 @@ export default {
     },
     changeXY(val) {
       if (val && val.length == 0) {
-        this.moreIform.zydm = []; // 专业
-        this.moreIform.bjm = []; // 班级
+        this.moreIform.zydmList = []; // 专业
+        this.moreIform.bjmList = []; // 班级
       }
+      this.getZY(val);
       this.getBJ(val);
+    },
+    getZY(val) {
+      this.zyOps = [];
+      let data = { DWH: val };
+      if (Object.keys(val).length !== 0) {
+        getZY(data)
+          .then((res) => {
+            this.zyOps = res.data;
+          })
+          .catch((err) => {});
+      }
     },
     getBJ(val) {
       this.bjOps = [];
@@ -365,17 +414,20 @@ export default {
         xh: this.select == "xh" ? this.searchVal : null,
         // shrxm: this.select == "shrxm" ? this.searchVal : null,
         nd: this.moreIform.nd,
-        // dkkssjEnd:
-        //   this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-        //     ? this.queryParams.dksjArr[1]
-        //     : "",
-        // dkkssjStart:
-        //   this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-        //     ? this.queryParams.dksjArr[0]
-        //     : "",
-        // statusList: this.moreIform.ztStatus,
-        // bjdm: this.moreIform.bjm,
-        // ssdwdm: this.moreIform.dwh,
+        bysjEnd:
+          this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
+            ? this.queryParams.dksjArr[1]
+            : "",
+        bysjStart:
+          this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
+            ? this.queryParams.dksjArr[0]
+            : "",
+        bjmList: this.moreIform.bjmList,
+        pydwmList: this.moreIform.pydwmList,
+        pyccmList: this.training.choose || [],
+        njList: this.moreIform.njList,
+        zydmList: this.moreIform.zydmList,
+
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
@@ -424,6 +476,22 @@ export default {
           }
         })
         .catch((err) => {});
+    },
+    // 培养层次全选
+    handleCheckAllChangeTraining(val) {
+      let allCheck = [];
+      for (let i in this.training.checkBox) {
+        allCheck.push(this.training.checkBox[i].dm);
+      }
+      this.training.choose = val ? allCheck : [];
+      this.training.isIndeterminate = false;
+    },
+    // 培养层次单选
+    handleCheckedCitiesChangeTraining(value) {
+      let checkedCount = value.length;
+      this.training.checkAll = checkedCount === this.training.checkBox.length;
+      this.training.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.training.checkBox.length;
     },
     // 多选
     handleSelectionChange(val) {

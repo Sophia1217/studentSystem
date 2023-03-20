@@ -22,29 +22,63 @@
             >查询</el-button
           >
         </el-input>
-        <!-- <div class="more" @click="handleMore">
+        <div class="more" @click="handleMore">
           <span>{{ !isMore ? "更多分类" : "收起分类" }}</span>
           <i v-if="!isMore" class="moreIcon chevronDown"></i>
           <i v-else class="moreIcon chevronUp"></i>
-        </div> -->
+        </div>
       </div>
       <!-- 更多选择 -->
-      <!-- <div class="moreSelect" v-if="isMore">
+      <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20" class="mt15">
           <el-col :span="8">
-            <span>工作单位：</span>
+            <span>辅导员自评：</span>
             <el-select
-              v-model="moreIform.gzdwList"
+              v-model="moreIform.fdyzpList"
               multiple
               collapse-tags
               placeholder="请选择"
               size="small"
             >
               <el-option
-                v-for="item in allDwh"
-                :key="item.dm"
+                v-for="item in pfOps"
+                :key="item.mc"
                 :label="item.mc"
-                :value="item.dm"
+                :value="item.mc"
+              ></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="8">
+            <span>单位鉴定：</span>
+            <el-select
+              v-model="moreIform.dwjdList"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in pfOps"
+                :key="item.mc"
+                :label="item.mc"
+                :value="item.mc"
+              ></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="8">
+            <span>学校评价：</span>
+            <el-select
+              v-model="moreIform.xxpjList"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in pfOps"
+                :key="item.mc"
+                :label="item.mc"
+                :value="item.mc"
               ></el-option>
             </el-select>
           </el-col>
@@ -61,7 +95,7 @@
             </div>
           </el-col>
         </el-row>
-        <el-row :gutter="20" class="mt15">
+        <!-- <el-row :gutter="20" class="mt15">
           <el-col :span="3">培养层次：</el-col>
           <el-col :span="20">
             <div class="checkbox">
@@ -72,8 +106,8 @@
               ></checkboxCom>
             </div>
           </el-col>
-        </el-row>
-      </div> -->
+        </el-row> -->
+      </div>
     </div>
     <!-- table -->
     <div class="tableWrap mt15">
@@ -237,8 +271,10 @@ export default {
       select: "",
       isMore: false,
       moreIform: {
-        gzdwList: [], // 学院下拉框
         nd: "",
+        fdyzpList: [],
+        dwjdList: [],
+        xxpjList: [],
       },
       tableData: [],
       allDwh: [],
@@ -271,6 +307,7 @@ export default {
       multipleSelection: [],
       jdbModal: false,
       expArr: [],
+      pfOps: [{ mc: "已评分" }, { mc: "未评分" }],
       rules: {
         // shjg: [
         //   { required: true, message: "审核结果不能为空", trigger: "change" },
@@ -299,10 +336,11 @@ export default {
       let data = {
         bcpr: this.select == "bcpr" ? this.searchVal : null,
         gh: this.select == "gh" ? this.searchVal : null,
-        // gzdwList: this.moreIform.gzdwList,
-        // njList: this.moreIform.njList || [],
+        fdyzpList: this.moreIform.fdyzpList,
+        dwjdList: this.moreIform.dwjdList,
+        xxpjList: this.moreIform.xxpjList,
         nd: this.moreIform.nd,
-        // lxList: this.category.choose || [],
+        lxList: this.category.choose || [],
         // pyccList: this.training.choose || [],
 
         pageNum: this.queryParams.pageNum,
@@ -374,11 +412,12 @@ export default {
       let data = {
         bcpr: this.select == "bcpr" ? this.searchVal : null,
         gh: this.select == "gh" ? this.searchVal : null,
-        // gzdwList: this.moreIform.gzdwList,
-        // njList: this.moreIform.njList || [],
+        fdyzpList: this.moreIform.fdyzpList,
+        dwjdList: this.moreIform.dwjdList,
+        xxpjList: this.moreIform.xxpjList,
         nd: this.moreIform.nd,
         gzdwm: this.$route.query.gzdwm || "",
-        // lxList: this.category.choose || [],
+        lxList: this.category.choose || [],
         // pyccList: this.training.choose || [],
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,

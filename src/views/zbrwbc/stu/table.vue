@@ -153,7 +153,12 @@
 
         <div class="tableStyle" v-if="sqlxm == 1">
           <div class="inputArea" style="margin-bottom: 20px">
-            <el-form-item prop="sfdq" :rules="rules.wenzi" style="width: 300px">
+            <el-form-item
+              prop="sfdq"
+              :rules="rules.wenzi"
+              style="width: 300px"
+              :disabled="flag != 1"
+            >
               <el-radio-group v-model="detailInfoData.jtsqlxm">
                 <el-radio label="1" size="large">退役复学</el-radio>
                 <el-radio label="2" size="large">退役入学</el-radio>
@@ -172,6 +177,7 @@
               <el-radio-group
                 v-model="detailInfoData.jtsqlxm"
                 @change="changeSQLX"
+                :disabled="flag != 1"
               >
                 <el-radio label="1" size="large">学费补偿</el-radio>
                 <el-radio label="2" size="large">国家助学贷款代偿</el-radio>
@@ -183,13 +189,16 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="title">应缴纳学费金额总计（元）</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-input-number
                       v-model="detailInfoData.yjnxfjezj"
                       :min="0"
                       :max="99999999"
                       controls-position="right"
                     />
+                  </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.gxgjzxdkbj }}
                   </div>
                 </div>
               </el-col>
@@ -200,7 +209,7 @@
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="titlesmall">高校国家助学贷款本金（元）</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-input-number
                       v-model="detailInfoData.gxgjzxdkbj"
                       :min="0"
@@ -208,18 +217,24 @@
                       controls-position="right"
                     />
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.gxgjzxdkbj }}
+                  </div>
                 </div>
               </el-col>
               <el-col :span="12" class="rowStyle">
                 <div class="wrap">
                   <div class="titlesmall">生源地信用助学贷款本金（元）</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-input-number
                       v-model="detailInfoData.sydxyzxdkbj"
                       :min="0"
                       :max="99999999"
                       controls-position="right"
                     />
+                  </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.sydxyzxdkbj }}
                   </div>
                 </div>
               </el-col>
@@ -234,7 +249,7 @@
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">考入本校年月</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-form-item prop="krbxny" :rules="rules.common">
                       <el-date-picker
                         type="date"
@@ -243,12 +258,15 @@
                       />
                     </el-form-item>
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.krbxny }}
+                  </div>
                 </div>
               </el-col>
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">参加何种考试考入</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-form-item prop="cjhzkskrm" :rules="rules.common">
                       <el-select v-model="detailInfoData.cjhzkskrm">
                         <el-option
@@ -260,12 +278,15 @@
                       </el-select>
                     </el-form-item>
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.cjhzkskr }}
+                  </div>
                 </div>
               </el-col>
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">服役前最高学历</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-form-item prop="fyqzgxlm" :rules="rules.common">
                       <el-select v-model="detailInfoData.fyqzgxlm">
                         <el-option
@@ -277,6 +298,9 @@
                       </el-select>
                     </el-form-item>
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.fyqzgxl }}
+                  </div>
                 </div>
               </el-col>
             </el-row>
@@ -285,12 +309,15 @@
                 <div class="wrap">
                   <div class="title">入伍时间</div>
                   <el-form-item prop="rwsj" :rules="rules.common">
-                    <div class="content">
+                    <div class="content" v-if="flag == 1">
                       <el-date-picker
                         type="date"
                         v-model="detailInfoData.rwsj"
                         value-format="yyyy-MM-dd"
                       />
+                    </div>
+                    <div class="content" v-else>
+                      {{ detailInfoData.rwsj }}
                     </div>
                   </el-form-item>
                 </div>
@@ -298,7 +325,7 @@
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">退役时间</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-form-item prop="twsj" :rules="rules.common">
                       <el-date-picker
                         type="date"
@@ -307,12 +334,15 @@
                       />
                     </el-form-item>
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.twsj }}
+                  </div>
                 </div>
               </el-col>
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">复学时间</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-form-item prop="fxsj" :rules="rules.common">
                       <el-date-picker
                         type="date"
@@ -321,6 +351,9 @@
                       />
                     </el-form-item>
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.fxsj }}
+                  </div>
                 </div>
               </el-col>
             </el-row>
@@ -328,7 +361,7 @@
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">退役身份</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-form-item prop="tysf" :rules="rules.common">
                       <el-select v-model="detailInfoData.tysf">
                         <el-option
@@ -340,12 +373,15 @@
                       </el-select>
                     </el-form-item>
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.tysf }}
+                  </div>
                 </div>
               </el-col>
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">现阶段就读学历层次</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-form-item prop="xjdjdxlccm" :rules="rules.common">
                       <el-select v-model="detailInfoData.xjdjdxlccm">
                         <el-option
@@ -356,6 +392,9 @@
                         ></el-option>
                       </el-select>
                     </el-form-item>
+                  </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.xjdjdxlcc }}
                   </div>
                 </div>
               </el-col>
@@ -368,7 +407,10 @@
                       :rules="rules.wenzi"
                       style="width: 300px"
                     >
-                      <el-radio-group v-model="detailInfoData.sfzzjym">
+                      <el-radio-group
+                        v-model="detailInfoData.sfzzjym"
+                        :disable="flag != 1"
+                      >
                         <el-radio label="1" size="large">是</el-radio>
                         <el-radio label="2" size="large">否</el-radio>
                       </el-radio-group>
@@ -387,7 +429,10 @@
                       :rules="rules.wenzi"
                       style="width: 300px"
                     >
-                      <el-radio-group v-model="detailInfoData.sfxszzm">
+                      <el-radio-group
+                        v-model="detailInfoData.sfxszzm"
+                        :disable="flag != 1"
+                      >
                         <el-radio label="1" size="large">是</el-radio>
                         <el-radio label="2" size="large">否</el-radio>
                       </el-radio-group>
@@ -412,7 +457,7 @@
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">剩余就读年限</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-form-item prop="syjdnx" :rules="rules.common">
                       <el-input-number
                         v-model="detailInfoData.syjdnx"
@@ -421,6 +466,9 @@
                         controls-position="right"
                       />
                     </el-form-item>
+                  </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.syjdnx }}年
                   </div>
                 </div>
               </el-col>
@@ -436,7 +484,7 @@
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">第一学年</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <!-- <el-form-item prop="xnxfbzList[0].xn" :rules="rules.common"> -->
                     <el-select v-model="detailInfoData.xnxfbzList[0].xn">
                       <el-option
@@ -448,12 +496,15 @@
                     </el-select>
                     <!-- </el-form-item> -->
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.xnxfbzList[0].xn }}
+                  </div>
                 </div>
               </el-col>
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">学费（元）</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-input-number
                       v-model="detailInfoData.xnxfbzList[0].xf"
                       :min="0"
@@ -463,16 +514,22 @@
                       :disabled="!detailInfoData.xnxfbzList[0].xn"
                     />
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.xnxfbzList[0].xf }}
+                  </div>
                 </div>
               </el-col>
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">备注</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-input
                       v-model="detailInfoData.xnxfbzList[0].bz"
                       maxlength="100"
                     />
+                  </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.xnxfbzList[0].bz }}
                   </div>
                 </div>
               </el-col>
@@ -482,7 +539,7 @@
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">第二学年</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-select v-model="detailInfoData.xnxfbzList[1].xn">
                       <el-option
                         v-for="(item, index) in xnOptions"
@@ -492,12 +549,15 @@
                       ></el-option>
                     </el-select>
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.xnxfbzList[1].xn }}
+                  </div>
                 </div>
               </el-col>
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">学费（元）</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-input-number
                       v-model="detailInfoData.xnxfbzList[1].xf"
                       :min="0"
@@ -507,16 +567,22 @@
                       :disabled="!detailInfoData.xnxfbzList[1].xn"
                     />
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.xnxfbzList[1].xf }}
+                  </div>
                 </div>
               </el-col>
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">备注</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-input
                       v-model="detailInfoData.xnxfbzList[1].bz"
                       maxlength="100"
                     />
+                  </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.xnxfbzList[1].bz }}
                   </div>
                 </div>
               </el-col>
@@ -525,7 +591,7 @@
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">第三学年</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-select v-model="detailInfoData.xnxfbzList[2].xn">
                       <el-option
                         v-for="(item, index) in xnOptions"
@@ -535,12 +601,15 @@
                       ></el-option>
                     </el-select>
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.xnxfbzList[2].xn }}
+                  </div>
                 </div>
               </el-col>
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">学费（元）</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-input-number
                       v-model="detailInfoData.xnxfbzList[2].xf"
                       :min="0"
@@ -550,16 +619,22 @@
                       :disabled="!detailInfoData.xnxfbzList[2].xn"
                     />
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.xnxfbzList[2].xf }}
+                  </div>
                 </div>
               </el-col>
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">备注</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-input
                       v-model="detailInfoData.xnxfbzList[2].bz"
                       maxlength="100"
                     />
+                  </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.xnxfbzList[2].bz }}
                   </div>
                 </div>
               </el-col>
@@ -568,7 +643,7 @@
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">第四学年</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-select v-model="detailInfoData.xnxfbzList[3].xn">
                       <el-option
                         v-for="(item, index) in xnOptions"
@@ -578,12 +653,15 @@
                       ></el-option>
                     </el-select>
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.xnxfbzList[3].xn }}
+                  </div>
                 </div>
               </el-col>
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">学费（元）</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-input-number
                       v-model="detailInfoData.xnxfbzList[3].xf"
                       :min="0"
@@ -593,16 +671,22 @@
                       :disabled="!detailInfoData.xnxfbzList[3].xn"
                     />
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.xnxfbzList[3].xf }}
+                  </div>
                 </div>
               </el-col>
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">备注</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-input
                       v-model="detailInfoData.xnxfbzList[3].bz"
                       maxlength="100"
                     />
+                  </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.xnxfbzList[3].bz }}
                   </div>
                 </div>
               </el-col>
@@ -611,7 +695,7 @@
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">第五学年</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-select v-model="detailInfoData.xnxfbzList[4].xn">
                       <el-option
                         v-for="(item, index) in xnOptions"
@@ -621,12 +705,15 @@
                       ></el-option>
                     </el-select>
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.xnxfbzList[4].xn }}
+                  </div>
                 </div>
               </el-col>
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">学费（元）</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-input-number
                       v-model="detailInfoData.xnxfbzList[4].xf"
                       :min="0"
@@ -636,22 +723,29 @@
                       :disabled="!detailInfoData.xnxfbzList[4].xn"
                     />
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.xnxfbzList[4].zf }}
+                  </div>
                 </div>
               </el-col>
               <el-col :span="8" class="rowStyle">
                 <div class="wrap">
                   <div class="title">备注</div>
-                  <div class="content">
+                  <div class="content" v-if="flag == 1">
                     <el-input
                       v-model="detailInfoData.xnxfbzList[4].bz"
                       maxlength="100"
                     />
                   </div>
+                  <div class="content" v-else>
+                    {{ detailInfoData.xnxfbzList[4].bz }}
+                  </div>
                 </div>
               </el-col>
             </el-row>
-          </div></div
-      ></el-form>
+          </div>
+        </div></el-form
+      >
       <!-- 历史缴纳学费信息 -->
       <div class="headline" v-if="sqlxm == 2">历史缴纳学费信息</div>
       <div class="tableStyle" v-if="sqlxm == 2">
@@ -725,7 +819,7 @@
         审核记录
       </div>
       <div class="btn cancel" @click="handleCancle">返回</div>
-      <div class="btn confirm" @click="handlUpdata">保存</div>
+      <div class="btn confirm" v-if="flag == 1" @click="handlUpdata">保存</div>
     </div>
     <lctCom
       ref="child"
@@ -753,7 +847,12 @@ export default {
 
       xh: this.$store.getters.userId,
       lctModal: false,
-
+      flag:
+        this.$route.query.status == "01" ||
+        this.$route.query.status == "08" ||
+        !this.$route.query.status
+          ? 1
+          : 2,
       xsjbxx: {},
       detailInfoData: {
         xnxfbzList: [

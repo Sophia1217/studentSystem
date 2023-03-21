@@ -842,26 +842,26 @@ export default {
       });
     },
     addClick() {
-      if (!this.checkFormAdd()) {
-        this.$message.error("请完善表单相关信息！");
-        return;
-      } else {
-        var data = { ...this.formAdd, id: this.lgnsn };
-        edit(data).then((res) => {
-          if (res.errcode == "00") {
-            this.$message.success("编辑成功");
-            this.$router.push({
-              path: "/gjzxdk",
-              query: {
-                state: 1,
-              },
-            });
-          } else {
-            this.$message.error("编辑失败");
-          }
-        });
-      }
+      // if (!this.checkFormAdd()) {
+      //   this.$message.error("请完善表单相关信息！");
+      //   return;
+      // } else {
+      var data = { ...this.formAdd, id: this.lgnsn };
+      edit(data).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("编辑成功");
+          this.$router.push({
+            path: "/gjzxdk",
+            query: {
+              state: 1,
+            },
+          });
+        } else {
+          this.$message.error("编辑失败");
+        }
+      });
     },
+    // },
   },
 };
 </script>

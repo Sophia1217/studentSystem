@@ -103,6 +103,24 @@ export function query(query) {
     })
   }
 
+  export function getYears(query) {
+    return request({
+      url: '/jcjyDkbc/getAllYears',
+      method: 'post',
+      data: query,
+    })
+  }
+   // 全国列表导出
+   export function allExp(query) {
+    return request({
+      url: '/jcjyDkbc/excelExportQgzzzx',
+      method: 'post',
+      data: query,
+     responseType:"blob",
+    })
+  }
+
+
   // 待审核列表通过
   export function tyFlow(query) {
     return request({
@@ -139,10 +157,54 @@ export function yclList(query) {
   })
 }
 
+//全国资助列表通过
+export function allListTy(query) {
+  return request({
+    url: '/jcjyDkbc/ty',
+    method: 'post',
+    data: query
+  })
+}
+
+//全国资助列表拒绝
+export function allListJj(query) {
+  return request({
+    url: '/jcjyDkbc/jj',
+    method: 'post',
+    data: query
+  })
+}
+
+//全国资助列表查询
+export function qgList(query) {
+  return request({
+    url: '/jcjyDkbc/queryQgzzzxList',
+    method: 'post',
+    data: query
+  })
+}
+//基层就业已审核列表导入数据删除
+export function delYshList(query) {
+  return request({
+    url: '/jcjyDkbc/deleteJcjyDkbcYshDr',
+    method: 'post',
+    data: query
+  })
+}
+
+//全国资助列表删除
+export function delAllList(query) {
+  return request({
+    url: '/jcjyDkbc/deleteJcjyDkbcQgzzzxDr',
+    method: 'post',
+    data: query
+  })
+}
+
 // 模板下载
 export function mbDown(query) {
   return request({
-    url: '/rcswGjzxdk/downLoad',
+    url: '/jcjyDkbc/downLoad',
     method: 'post',
     data: query,
     responseType:"blob",
@@ -150,21 +212,107 @@ export function mbDown(query) {
 }
 
 
+//在岗确认
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+
+//待审核
+export function zgqrDsh(query) {
+  return request({
+    url: '/jcjyZgqr/queryZgqrDqrList',
+    method: 'post',
+    data: query
+  })
+}
+//模板
+export function mbDownZgqr(query) {
+  return request({
+    url: '/jcjyZgqr/downLoadZgqr',
+    method: 'post',
+    data: query,
+    responseType:"blob",
+  })
+}
+
+// 待审核导出
+export function zgqrDshExp(query) {
+  return request({
+    url: '/jcjyZgqr/excelExportJcjyZgqrDqr',
+    method: 'post',
+    data: query,
+    responseType:"blob",
+  })
+}
+
+//待审核删除
+export function zgqrDel(query) {
+  return request({
+    url: '/jcjyZgqr/deleteJcjyDkbcYshDr',
+    method: 'post',
+    data: query
+  })
+}
+
+//待审核新增
+export function addZgqr(query) {
+  return request({
+    url: '/jcjyZgqr/insertZgqrDqr',
+    method: 'post',
+    data: query
+  })
+}
 
 
+//待审核确认
+export function confirmZgqr(query) {
+  return request({
+    url: '/jcjyZgqr/importZgqrLsQr',
+    method: 'post',
+    data: query
+  })
+}
+
+//已审核
+export function zgqrYsh(query) {
+  return request({
+    url: '/jcjyZgqr/queryZgqrYqrList',
+    method: 'post',
+    data: query
+  })
+}
+
+export function stuZgqr(query) {
+  return request({
+    url: '/jcjyZgqr/queryZgqrXsList',
+    method: 'post',
+    data: query
+  })
+}
+
+export function stuZgqrQr(query) {
+  return request({
+    url: '/jcjyZgqr/importZgqrXsQr',
+    method: 'post',
+    data: query
+  })
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
+export function zgqrYshExp(query) {
+  return request({
+    url: '/jcjyZgqr/excelExportJcjyZgqrYqr',
+    method: 'post',
+    data: query,
+    responseType:"blob",
+  })
+}
 
   
 

@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div style="margin-top: 15px">
-      <topTitle :routeTitle="routeTitle"></topTitle>
-    </div>
     <div style="margin: 0 20% 0 20%">
       <div class="topHeader">
         <span>基层就业代偿申请表</span>
@@ -52,14 +49,19 @@
                 label-width="42%"
               >
                 <div class="sqList">
-                  <el-select v-model="formAdd.zzmmm" placeholder="请选择">
+                  <span> {{ formAdd.zzmmmc }}</span>
+                  <!-- <el-select
+                    v-model="formAdd.zzmmm"
+                    placeholder="请选择"
+                    v-if="bjzt == 2"
+                  >
                     <el-option
                       v-for="(item, index) in zzmmList"
                       :key="index"
                       :label="item.mc"
                       :value="item.dm"
                     ></el-option>
-                  </el-select>
+                  </el-select> -->
                 </div>
               </el-form-item>
             </el-col>
@@ -90,12 +92,7 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-date-picker
-                    type="date"
-                    placeholder="选择日期"
-                    value-format="yyyy-MM-dd "
-                    v-model="formAdd.bysj"
-                  ></el-date-picker>
+                  <span> {{ formAdd.bysj }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -124,11 +121,7 @@
                 label-width="42%"
               >
                 <div class="sqList">
-                  <el-input
-                    style="width: 216px"
-                    v-model="formAdd.jtzz"
-                    placeholder="请输入内容"
-                  ></el-input>
+                  <span> {{ formAdd.jtzz }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -143,11 +136,7 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-input
-                    style="width: 216px"
-                    v-model="formAdd.lxdh"
-                    placeholder="请输入内容"
-                  ></el-input>
+                  <span> {{ formAdd.lxdh }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -160,11 +149,7 @@
                 label-width="42%"
               >
                 <div class="sqList">
-                  <el-input
-                    style="width: 216px"
-                    v-model="formAdd.qq"
-                    placeholder="请输入内容"
-                  ></el-input>
+                  <span> {{ formAdd.qq }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -179,11 +164,7 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-input
-                    style="width: 216px"
-                    v-model="formAdd.email"
-                    placeholder="请输入内容"
-                  ></el-input>
+                  <span> {{ formAdd.email }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -202,11 +183,7 @@
                 label-width="42%"
               >
                 <div class="sqList">
-                  <el-input
-                    style="width: 216px"
-                    v-model="formAdd.jydwmc"
-                    placeholder="请输入内容"
-                  ></el-input>
+                  <span> {{ formAdd.jydwmc }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -219,11 +196,7 @@
                 label-width="42%"
               >
                 <div class="sqList">
-                  <el-input
-                    style="width: 216px"
-                    v-model="formAdd.rsbmlxdh"
-                    placeholder="请输入内容"
-                  ></el-input>
+                  <span> {{ formAdd.rsbmlxdh }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -238,18 +211,7 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-select
-                    v-model="formAdd.shengdm"
-                    placeholder="请选择"
-                    @change="change1"
-                  >
-                    <el-option
-                      v-for="(item, index) in provinceList"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.dm"
-                    ></el-option>
-                  </el-select>
+                  <span> {{ formAdd.shengdmmc }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -262,18 +224,7 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-select
-                    v-model="formAdd.shidm"
-                    placeholder="请选择"
-                    @change="change2"
-                  >
-                    <el-option
-                      v-for="(item, index) in cityList"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.dm"
-                    ></el-option>
-                  </el-select>
+                  <span> {{ formAdd.shidmmc }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -288,32 +239,14 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-select
-                    v-model="formAdd.xiandm"
-                    placeholder="请选择"
-                    @change="change3"
-                  >
-                    <el-option
-                      v-for="(item, index) in zonetList"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.dm"
-                    ></el-option>
-                  </el-select>
+                  <span> {{ formAdd.xiandmmc }}</span>
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="乡（街道）" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <el-select v-model="formAdd.xiangdm" placeholder="请选择">
-                    <el-option
-                      v-for="(item, index) in streetList"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.dm"
-                    ></el-option>
-                  </el-select>
+                  <span> {{ formAdd.xiangdmmc }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -328,8 +261,7 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-radio v-model="formAdd.sfxzfszd" label="1">是</el-radio>
-                  <el-radio v-model="formAdd.sfxzfszd" label="2">否</el-radio>
+                  <span> {{ formAdd.sfxzfszd == "1" ? "是" : "否" }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -344,14 +276,8 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-select v-model="formAdd.hylb" placeholder="请选择">
-                    <el-option
-                      v-for="(item, index) in hyTypeList"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.dm"
-                    ></el-option>
-                  </el-select>
+                  <!-- hylbmc -->
+                  <span> {{ formAdd.hylbmc }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -364,14 +290,7 @@
                 label-width="42%"
               >
                 <div class="sqList">
-                  <el-input-number
-                    style="width: 216px"
-                    :min="0"
-                    :max="9999999"
-                    controls-position="right"
-                    v-model="formAdd.yqdfwnx"
-                    placeholder="请输入内容"
-                  ></el-input-number>
+                  <span> {{ formAdd.yqdfwnx }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -389,14 +308,7 @@
                 label-width="42%"
               >
                 <div class="sqList">
-                  <el-input-number
-                    style="width: 216px"
-                    :min="0"
-                    :max="9999999"
-                    :controls="false"
-                    v-model="formAdd.yjnxfje"
-                    placeholder="请输入内容"
-                  ></el-input-number>
+                  <span> {{ formAdd.yjnxfje }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -409,14 +321,7 @@
                 label-width="42%"
               >
                 <div class="sqList">
-                  <el-input-number
-                    style="width: 216px"
-                    :min="0"
-                    :max="9999999"
-                    :controls="false"
-                    v-model="formAdd.sjjnxfje"
-                    placeholder="请输入内容"
-                  ></el-input-number>
+                  <span> {{ formAdd.sjjnxfje }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -431,14 +336,7 @@
                 label-width="42%"
               >
                 <div class="sqList">
-                  <el-input-number
-                    style="width: 216px"
-                    :min="0"
-                    :max="9999999"
-                    :controls="false"
-                    v-model="formAdd.dkbjje"
-                    placeholder="请输入内容"
-                  ></el-input-number>
+                  <span> {{ formAdd.dkbjje }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -451,14 +349,7 @@
                 label-width="42%"
               >
                 <div class="sqList">
-                  <el-select v-model="formAdd.jbyhdm" placeholder="请选择">
-                    <el-option
-                      v-for="(item, index) in yhmcList"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.dm"
-                    ></el-option>
-                  </el-select>
+                  <span> {{ formAdd.jbyhdmmc }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -473,11 +364,7 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-input
-                    style="width: 216px"
-                    v-model="formAdd.dkhtbh"
-                    placeholder="请输入内容"
-                  ></el-input>
+                  <span> {{ formAdd.dkhtbh }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -492,17 +379,7 @@
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-date-picker
-                    type="daterange"
-                    placeholder="选择日期"
-                    v-model="formAdd.dksjArr"
-                    format="yyyy 年 MM 月 dd 日"
-                    value-format="yyyy-MM-dd"
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                    style="width= 60px;"
-                  ></el-date-picker>
+                  <span> {{ formAdd.dkkssj }}至 {{ formAdd.dkjssj }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -526,14 +403,6 @@
               >
                 <div class="sqList">
                   <span> {{ ele.dkzje }}</span>
-                  <!-- <el-input-number
-                    style="width: 216px"
-                    :min="0"
-                    :max="9999999"
-                    :controls="false"
-                    v-model="formAdd.dkzje"
-                    placeholder="请输入内容"
-                  ></el-input-number> -->
                 </div>
               </el-form-item>
             </el-col>
@@ -550,14 +419,6 @@
               <el-form-item label="贷款银行" class="grayBg" label-width="42%">
                 <div class="sqList">
                   <span> {{ ele.dkyhmc }}</span>
-                  <!-- <el-select v-model="formAdd.dkyh" placeholder="请选择">
-                    <el-option
-                      v-for="(item, index) in yhmcList"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.dm"
-                    ></el-option>
-                  </el-select> -->
                 </div>
               </el-form-item>
             </el-col>
@@ -567,12 +428,6 @@
               <el-form-item label="合同编号" class="grayBg" label-width="42%">
                 <div class="sqList">
                   <span> {{ ele.htbh }}</span>
-                  <!-- <el-input
-                    :minlength="0"
-                    :maxlength="50"
-                    v-model="formAdd.htbh"
-                    placeholder="请输入内容"
-                  ></el-input> -->
                 </div>
               </el-form-item>
             </el-col>
@@ -584,12 +439,6 @@
               >
                 <div class="sqList">
                   <span> {{ ele.dkkssj }}</span>
-                  <!-- <el-date-picker
-                    type="date"
-                    placeholder="选择日期"
-                    value-format="yyyy-MM-dd "
-                    v-model="formAdd.dkkssj"
-                  ></el-date-picker> -->
                 </div>
               </el-form-item>
             </el-col>
@@ -607,14 +456,7 @@
                 label-width="42%"
               >
                 <div class="sqList">
-                  <el-input-number
-                    style="width: 216px"
-                    :min="0"
-                    :max="9999999"
-                    :controls="false"
-                    v-model="formAdd.sqbcje"
-                    placeholder="请输入内容"
-                  ></el-input-number>
+                  <span> {{ formAdd.sqbcje }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -627,14 +469,7 @@
                 label-width="42%"
               >
                 <div class="sqList">
-                  <el-input-number
-                    style="width: 216px"
-                    :min="0"
-                    :max="9999999"
-                    :controls="false"
-                    v-model="formAdd.yhkh"
-                    placeholder="请输入内容"
-                  ></el-input-number>
+                  <span> {{ formAdd.yhkh }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -643,58 +478,99 @@
         <div class="mkHeader">备注</div>
         <el-row :gutter="20">
           <el-col :span="23">
-            <el-input
-              v-model="formAdd.bz"
-              type="textarea"
-              :autosize="{ minRows: 6, maxRows: 6 }"
-              placeholder="请输入内容"
-              maxlength="500"
-            ></el-input>
+            <span> {{ formAdd.bz }}</span>
           </el-col>
         </el-row>
         <span class="redSpan">请务必加入基层就业QQ群，长期关注群消息</span>
       </el-form>
       <div style="height: 80px"></div>
     </div>
+    <el-dialog title="拒绝理由" :visible.sync="jjModal" width="30%">
+      <template>
+        <el-input placeholder="请输入拒绝理由" v-model="jjly"></el-input>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="jjCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="jjConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <el-dialog title="退回选择" :visible.sync="thTableModal" width="20%">
+      <template>
+        <el-table
+          :data="tableInner"
+          ref="multipleTable1"
+          style="width: 100%"
+          :default-sort="{ prop: 'date', order: 'descending' }"
+        >
+          <el-table-column width="55">
+            <template slot-scope="scope">
+              <el-radio
+                :label="scope.$index"
+                v-model="tempRadio"
+                @change.native="getRow(scope.$index, scope.row)"
+                >{{ "" }}</el-radio
+              >
+            </template>
+          </el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            width="50"
+          ></el-table-column>
+          <el-table-column prop="actName" label="节点名称" sortable="custom">
+          </el-table-column>
+        </el-table>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="thTableCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="thTableConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <el-dialog title="退回理由" :visible.sync="thModal" width="30%">
+      <template>
+        <el-input placeholder="请输入退回理由" v-model="thly"></el-input>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="thCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="thConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
     <div class="editBottom">
-      <div class="btn confirm">取消</div>
-      <div class="btn cancel" @click="addClick">保存</div>
+      <div class="btns borderRed" @click="back">
+        <i class="icon backIcon"></i><span class="title">退回</span>
+      </div>
+      <div class="btns borderRed" @click="refuse">
+        <i class="icon refuseIcon"></i><span class="title">拒绝</span>
+      </div>
+      <div class="btns fullGreen" @click="pass">
+        <i class="icon passIcon"></i><span class="title">确认</span>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import topTitle from "@/components/topTitleStu";
-import lctCom from "@/components/lct";
-import { edit, getAddDetails } from "@/api/jccy/index";
-import myMixins from "./myMixins";
+import { getEditdDetails, tyFlow, jjFlow, thFinal } from "@/api/jccy/index";
+import { backFlow } from "@/api/dailyBehavior/dormTea";
+import myMixins from "../../../../gjzxdk/list/jcjy/myMixins";
 export default {
   mixins: [myMixins],
-  components: {
-    topTitle,
-    lctCom,
-  },
-  watch: {
-    "formAdd.dksjArr": {
-      handler(newName, old) {
-        this.formAdd.dkkssj = newName ? newName[0] : "";
-        this.formAdd.dkjssj = newName ? newName[1] : "";
-      },
-    },
-  },
   data() {
     return {
-      routeTitle: "",
-      dkInfo: [
-        //贷款信息
-        //  {   xn: "",
-        //   dkzje: "",
-        //   dklx: "",
-        //   dklxmc: "",
-        //   dkyh: "",
-        //   dkyhmc: "",
-        //   htbh: "",
-        //   dkkssj: "",}
-      ], //贷款信息
+      bjzt: 2,
+      dkInfo: [], //贷款信息
+      jjModal: false,
+      jjly: "",
+      tableInner: [],
+      thTableModal: false,
+      thModal: false,
+      thly: "",
+      tempRadio: false,
       formAdd: {
         //基本信息
         xh: "",
@@ -735,6 +611,9 @@ export default {
         yhkh: "",
         bz: "",
       },
+      lgnsn: "",
+      commonParams: {},
+      multipleSelection1: {},
       rules: {
         common: [
           {
@@ -747,76 +626,123 @@ export default {
     };
   },
   mounted() {
-    this.routeTitle = this.$route.meta.title;
+    this.lgnsn = this.$route.query.state;
+    this.commonParams = this.$route.query.commonParams;
     this.showDetail();
-    this.getCode("dmgjzxdk"); //国家助学贷款码
-    this.getCode("dmzudkyhm"); //国家助学贷款银行码
     this.getCode("dmzzmmm"); // 政治面貌
-    this.getCode("dmhylbm"); // 行业类别
-    this.getCity();
   },
 
   methods: {
-    change1(val) {
-      this.getCity1(val);
-      //把市区置空
-    },
-    change2(val) {
-      this.getCity2(val);
-      //把区置空
-    },
-    change3(val) {
-      this.getCity3(val);
-      //把区置空
-    },
-    // 表单校验
-    checkFormAdd() {
-      // 1.校验必填项
-      let validForm = false;
-      this.$refs.formAdd.validate((valid) => {
-        validForm = valid;
-      });
-      if (!validForm) {
-        return false;
+    //确认
+    pass() {
+      if (this.commonParams.length > 0) {
+        var data = this.commonParams.map((item) => ({
+          ...item,
+          opMsg: "审核确认",
+        }));
+        tyFlow(data).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("审核已确认");
+            this.$router.push({
+              path: "/dailyBehavior/jcjy/jcjyTeaList",
+            });
+          }
+        });
       }
-      return true;
     },
-    showDetail() {
-      getAddDetails({
-        xh: this.$store.getters.userId,
-      }).then((res) => {
-        this.dkInfo = res.data.rcswLsdkjlRes;
-        this.formAdd = res.data.rcswjbxxRes;
-        this.formAdd.xlxz = this.formAdd.xz
-          ? `${this.formAdd.xz}年${this.formAdd.pyccmc}`
-          : `${this.formAdd.xz}${this.formAdd.pyccmc}`;
-      });
+    getRow(index, row) {
+      this.multipleSelection1 = row;
     },
-    addClick() {
-      // if (!this.checkFormAdd()) {
-      //   this.$message.error("请完善表单相关信息！");
-      //   return;
-      // } else {
-      var data = this.formAdd;
-      edit(data).then((res) => {
+    refuse() {
+      if (this.commonParams.length > 0) {
+        this.jjModal = true;
+        this.jjly = "";
+      } else {
+        this.$message.error("请先选择一条数据");
+      }
+    },
+    jjCancel() {
+      this.jjModal = false;
+    },
+    jjConfirm() {
+      var data = this.commonParams.map((item) => ({
+        ...item,
+        opMsg: this.jjly,
+      }));
+      jjFlow(data).then((res) => {
         if (res.errcode == "00") {
-          this.$message.success("新增成功");
+          this.$message.success("已拒绝");
           this.$router.push({
-            path: "/gjzxdk",
-            query: {
-              state: 1,
-            },
+            path: "/dailyBehavior/jcjy/jcjyTeaList",
           });
-        } else {
-          this.$message.error("新增失败");
+        }
+      });
+      this.jjModal = false;
+    },
+    async back() {
+      var processId = { processId: this.commonParams[0].taskId };
+      await backFlow(processId).then((res) => {
+        this.tableInner = res.data;
+      });
+      this.thTableModal = true;
+    },
+    thTableCancel() {
+      this.thTableModal = false;
+    },
+    thTableConfirm() {
+      if (!!this.tempRadio || this.tempRadio === 0) {
+        this.thTableModal = false;
+        this.thModal = true;
+      } else {
+        this.$message.error("请先勾选退回的节点");
+      }
+    },
+    thCancel() {
+      this.thModal = false;
+    },
+    thConfirm() {
+      this.thModal = false;
+      var data = this.commonParams.map((item) => ({
+        ...item,
+        opMsg: this.thly,
+        actId: this.multipleSelection1.actId,
+        actName: this.multipleSelection1.actName,
+      }));
+      thFinal(data).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("退回成功");
+          this.$router.push({
+            path: "/dailyBehavior/jcjy/jcjyTeaList",
+          });
         }
       });
     },
-    // },
+    showDetail() {
+      getEditdDetails({
+        id: this.lgnsn,
+      }).then((res) => {
+        this.dkInfo = res.data.rcswLsdkjlRes;
+        this.formAdd = { ...res.data, ...res.data.rcswjbxxRes };
+        this.formAdd.xlxz = this.formAdd.xz
+          ? `${this.formAdd.xz}年${this.formAdd.pyccmc}`
+          : `${this.formAdd.xz}${this.formAdd.pyccmc}`;
+        this.formAdd.dksjArr = [this.formAdd.dkkssj, this.formAdd.dkjssj];
+      });
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
+.borderRed {
+  border: 1px solid grey;
+  color: red;
+  background: #fff;
+}
+.fullGreen {
+  // border:1px solid #005657;
+  color: #fff;
+  background: #005657;
+}
 .topHeader {
   text-align: center;
   font-family: "PingFang SC";
@@ -904,22 +830,36 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  .btn {
-    width: 84px;
-    height: 36px;
-    line-height: 36px;
-    text-align: center;
+  .btns {
+    margin-right: 15px;
+    padding: 0px 10px;
     cursor: pointer;
-    border: 1px solid #005657;
-    border-radius: 2px;
-    margin-right: 20px;
-  }
-  .cancel {
-    color: #005657;
-  }
-  .confirm {
-    background: #005657;
-    color: #fff;
+    border-radius: 4px;
+    .title {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      // vertical-align: middle;
+    }
+    .icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      vertical-align: top;
+      margin-right: 5px;
+    }
+    .passIcon {
+      margin-top: 10px;
+      background: url("~@/assets/images/passWhite.png") no-repeat;
+    }
+    .refuseIcon {
+      margin-top: 10px;
+      background: url("~@/assets/images/refuse.png") no-repeat;
+    }
+    .backIcon {
+      margin-top: 10px;
+      background: url("~@/assets/images/back.png") no-repeat;
+    }
   }
 }
 </style>

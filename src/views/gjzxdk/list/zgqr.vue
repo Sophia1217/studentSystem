@@ -6,6 +6,7 @@
           <span class="title">在岗确认</span>
         </div>
       </div>
+
       <div class="mt15">
         <el-table
           :data="tableData"
@@ -14,40 +15,48 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55"></el-table-column>
+
           <el-table-column
             type="index"
             label="序号"
             width="50"
           ></el-table-column>
+
           <el-table-column prop="xh" label="学号" width="100">
           </el-table-column>
+
           <el-table-column prop="xm" label="姓名" width="85"> </el-table-column>
+
           <el-table-column prop="ssdwdmmc" label="培养单位"> </el-table-column>
+
           <el-table-column prop="bjdmmc" label="班级"> </el-table-column>
+
+          <el-table-column prop="pyccmc" label="培养层次" min-width="100">
+          </el-table-column>
+
+          <el-table-column prop="nd" label="年度"> </el-table-column>
+
+          <el-table-column prop="qrzt" label="确认状态" sortable="custom">
+          </el-table-column>
+
           <el-table-column
-            prop="dkzje"
-            label="贷款总金额（元）"
-            min-width="100"
+            prop="fileList"
+            label="附件"
+            align="center"
+            width="300"
+            :show-overflow-tooltip="true"
           >
-          </el-table-column>
-          <el-table-column prop="dkqx" label="贷款期限（月）"> </el-table-column
-          ><el-table-column prop="dkkssj" label="贷款开始时间">
-          </el-table-column>
-          <el-table-column prop="statusChinese" label="状态" sortable="custom">
-            <!-- <template slot-scope="scope">
-                <el-select
-                  v-model="scope.row.status"
-                  placeholder="请选择"
-                  :disabled="true"
-                >
-                  <el-option
-                    v-for="(item, index) in dmgbyqrztm"
-                    :key="index"
-                    :label="item.mc"
-                    :value="item.dm"
-                  ></el-option>
-                </el-select>
-              </template> -->
+            <template slot-scope="scope">
+              <el-upload
+                action="#"
+                class="el-upload"
+                :auto-upload="false"
+                ref="upload"
+                :disabled="true"
+                :file-list="scope.row.fileList"
+              >
+              </el-upload>
+            </template>
           </el-table-column>
           <el-table-column prop="status" label="操作" sortable="custom">
             <template slot-scope="scope">
@@ -55,11 +64,13 @@
                 type="text"
                 size="small"
                 @click="queren(scope.row)"
-                v-if="scope.row.status == '05'"
+                v-if="scope.row.qrzt == '待确认'"
               >
                 <i class="scopeIncon handledie"></i>
+
                 <span class="handleName">确认</span>
               </el-button>
+
               <span v-else> 已确认</span>
             </template>
           </el-table-column>
@@ -83,6 +94,7 @@
       <template>
         <div class="innerCommon">
           <span>附件:</span>
+
           <el-upload
             style="margin-left: 10px"
             action="#"
@@ -109,7 +121,7 @@
 </template>
 
 <script>
-import { xsqrList, xsqr } from "@/api/gzzxdk/gjzxdk";
+import { stuZgqr, stuZgqrQr } from "@/api/jccy/index";
 import { delwj } from "@/api/assistantWork/classEvent";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
@@ -169,25 +181,21 @@ export default {
     },
     // 导出确认
     handleConfirmB() {
-      if (this.status != "") {
-        let formData = new FormData();
-        formData.append("status", this.status);
-        formData.append("id", this.id);
-        if (this.fileListAdd.length > 0) {
-          this.fileListAdd.map((file) => {
-            formData.append("files", file.raw);
-          });
-        }
-        xsqr(formData)
-          .then((res) => {
-            this.$message.success("确认成功");
-            this.qrExport = false;
-            this.handleSearch();
-          })
-          .catch((err) => {});
-      } else {
-        this.$message.error("请先选择确认类型");
+      let formData = new FormData();
+      formData.append("id", this.id);
+      formData.append("qrrgh", this.$store.getters.userId);
+      if (this.fileListAdd.length > 0) {
+        this.fileListAdd.map((file) => {
+          formData.append("files", file.raw);
+        });
       }
+      stuZgqrQr(formData)
+        .then((res) => {
+          this.$message.success("确认成功");
+          this.qrExport = false;
+          this.handleSearch();
+        })
+        .catch((err) => {});
     },
     queren(row) {
       if (row.fileList && row.fileList.length > 0) {
@@ -210,10 +218,21 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      xsqrList(data)
+      stuZgqr(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
+          for (var i = 0; i < this.tableData.length; i++) {
+            if (
+              this.tableData[i].fileList &&
+              this.tableData[i].fileList.length > 0
+            ) {
+              for (var j = 0; j < this.tableData[i].fileList.length; j++) {
+                this.tableData[i].fileList[j].name =
+                  this.tableData[i].fileList[j].fileName;
+              }
+            }
+          }
         })
         .catch((err) => {});
     },
@@ -263,9 +282,11 @@ export default {
   font-weight: 600;
   font-size: 14px;
 }
+
 .handledie {
-  background: url("~@/assets/images/details.png");
+  background: url("~@/assets/images/edit.png");
 }
+
 .talkRec {
   .handleName {
     font-weight: 400;
@@ -324,8 +345,7 @@ export default {
             font-size: 14px;
             text-align: center;
             line-height: 32px;
-            color: #fff;
-            // vertical-align: middle;
+            color: #fff; // vertical-align: middle;
           }
         }
         .borderRed {
@@ -333,7 +353,6 @@ export default {
           color: red;
           background: #fff;
         }
-
         .btns {
           margin-right: 15px;
           padding: 0px 10px;
@@ -356,15 +375,6 @@ export default {
             height: 20px;
             vertical-align: top;
             margin-right: 5px;
-          }
-
-          .blueIcon {
-            margin-top: 10px;
-            background: url("~@/assets/assistantPng/in.png") no-repeat;
-          }
-          .orangeIcon {
-            margin-top: 10px;
-            background: url("~@/assets/images/passWhite.png") no-repeat;
           }
           .downIcon {
             margin-top: 10px;

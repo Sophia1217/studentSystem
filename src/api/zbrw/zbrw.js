@@ -49,7 +49,7 @@ export function htFlow(query) {
 //征兵入伍待审核查询
   export function queryZbrwFlowDshList(query) {
     return request({
-      url: ' /rcswZbrw/queryZbrwFlowDshList',
+      url: '/rcswZbrw/queryZbrwFlowDshList',
       method: 'post',
       data: query
     })
@@ -58,7 +58,7 @@ export function htFlow(query) {
 //征兵入伍已处理查询
   export function queryZbrwFlowYclList(query) {
     return request({
-      url: ' /rcswZbrw/queryZbrwFlowYclList',
+      url: '/rcswZbrw/queryZbrwFlowYclList',
       method: 'post',
       data: query
     })
@@ -94,7 +94,7 @@ export function htFlow(query) {
   }
 
   //教师端-同意
-  export function thFinal(query) {
+  export function tyFlow(query) {
     return request({
       url: '/rcswZbrw/tyFlow',
       method: 'post',

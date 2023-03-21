@@ -164,15 +164,16 @@
         </el-row>
       </div>
     </div>
+    <!-- table -->
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">申请列表</span> <i class="Updataicon"></i>
+          <span class="title">待审核列表</span> <i class="Updataicon"></i>
           <el-select
             v-model="moreIform.xn"
             collapse-tags
-            @change="handleSearch"
             placeholder="请选择"
+            @change="handleSearch"
             style="width: 130px; margin: 0 15px 0"
           >
             <el-option
@@ -185,8 +186,17 @@
           <span>学年</span>
         </div>
         <div class="headerRight">
-          <div class="btns borderBlue" @click="expor">
+          <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
+          </div>
+          <div class="btns borderRed" @click="back" v-show="AUTHFLAG">
+            <i class="icon backIcon"></i><span class="title">退回</span>
+          </div>
+          <div class="btns borderRed" @click="refuse" v-show="AUTHFLAG">
+            <i class="icon refuseIcon"></i><span class="title">拒绝</span>
+          </div>
+          <div class="btns fullGreen" @click="passDirect" v-show="AUTHFLAG">
+            <i class="icon passIcon"></i><span class="title1">通过</span>
           </div>
         </div>
       </div>
@@ -195,6 +205,7 @@
           :data="tableData"
           ref="multipleTable"
           style="width: 100%"
+          :default-sort="{ prop: 'date', order: 'descending' }"
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55"></el-table-column>
@@ -236,6 +247,14 @@
           >
           </el-table-column>
           <el-table-column
+            prop="bj"
+            label="班级"
+            sortable
+            show-overflow-tooltip
+            min-width="100"
+          >
+          </el-table-column>
+          <el-table-column
             prop="sqlx"
             label="申请类型"
             min-width="100"
@@ -245,7 +264,7 @@
           </el-table-column>
           <el-table-column
             prop="sqjezj"
-            label="申请减免总计（元）"
+            label="申请金额总计（元）"
             min-width="100"
             sortable
           >
@@ -257,29 +276,13 @@
             sortable
           >
           </el-table-column>
-          <el-table-column
-            prop="spje"
-            label="审批金额"
-            min-width="100"
-            sortable
-          >
-          </el-table-column>
-          <el-table-column
-            prop="shsj"
-            label="审批时间"
-            min-width="100"
-            sortable
-          >
-          </el-table-column>
-          <el-table-column prop="shr" label="审核人" min-width="100" sortable>
-          </el-table-column>
+
           <el-table-column
             prop="statusMc"
             label="申核状态"
             sortable="custom"
             min-width="100"
-          >
-          </el-table-column>
+          ></el-table-column>
           <el-table-column
             prop="jg"
             label="审核进度"
@@ -299,7 +302,7 @@
               <el-button
                 type="text"
                 size="small"
-                @click="handleDetail(scope.row)"
+                @click="hadleDetail(scope.row)"
               >
                 <i class="scopeIncon handledie"></i>
                 <span class="handleName">详情</span>
@@ -308,6 +311,72 @@
           </el-table-column>
         </el-table>
       </div>
+      <el-dialog title="拒绝理由" :visible.sync="jjModal" width="30%">
+        <template>
+          <el-input placeholder="请输入拒绝理由" v-model="jjly"></el-input>
+        </template>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="jjCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="jjConfirm"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
+      <el-dialog title="退回选择" :visible.sync="thTableModal" width="20%">
+        <template>
+          <el-table
+            :data="tableInner"
+            ref="multipleTable1"
+            style="width: 100%"
+            :default-sort="{ prop: 'date', order: 'descending' }"
+          >
+            <el-table-column width="55">
+              <template slot-scope="scope">
+                <el-radio
+                  :label="scope.$index"
+                  v-model="tempRadio"
+                  @change.native="getRow(scope.$index, scope.row)"
+                  >{{ "" }}</el-radio
+                >
+              </template>
+            </el-table-column>
+            <el-table-column
+              type="index"
+              label="序号"
+              width="50"
+            ></el-table-column>
+            <el-table-column prop="actName" label="节点名称" sortable="custom">
+            </el-table-column>
+          </el-table>
+        </template>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="thTableCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="thTableConfirm"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
+      <el-dialog title="退回理由" :visible.sync="thModal" width="30%">
+        <template>
+          <el-input placeholder="请输入退回理由" v-model="thly"></el-input>
+        </template>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="thCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="thConfirm"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
+      <el-dialog title="通过提示" :visible.sync="directModal" width="30%">
+        <span>确认通过？</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="directCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="directConfirm"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
+
       <pagination
         v-show="queryParams.total > 0"
         :total="queryParams.total"
@@ -315,51 +384,62 @@
         :limit.sync="queryParams.pageSize"
         @pagination="handleSearch"
       />
-      <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="handleCancel">取 消</el-button>
-          <el-button type="primary" class="confirm" @click="handleConfirm"
-            >确 定</el-button
-          >
-        </span>
-      </el-dialog>
-      <lctCom
-        ref="child"
-        :lctModal="lctModal"
-        @handleCloseLct="handleCloseLct"
-      ></lctCom>
     </div>
+    <lctCom
+      ref="child"
+      :lctModal="lctModal"
+      @handleCloseLct="handleCloseLct"
+    ></lctCom>
+    <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="handleConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { queryXn } from "@/api/dailyBehavior/yearSum";
-import { queryZbrwXyList } from "@/api/zbrw/zbrw";
+import { queryZbrwFlowDshList, jjFlow, tyFlow, htFlow } from "@/api/zbrw/zbrw";
+
 import { getCollege } from "@/api/class/maintenanceClass";
+import { backFlow } from "@/api/dailyBehavior/dormTea";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getBJ, getZY } from "@/api/student/index";
-import { getToken } from "@/utils/auth";
-import lctCom from "../../../components/lct";
+import lctCom from "../../../../components/lct";
 export default {
   components: { lctCom },
   data() {
     return {
-      AUTHFLAG: false,
-      status: "",
-      showExport: false,
       lctModal: false,
+      directModal: false,
+      showExport: false,
+      ztStatus: [],
       searchVal: "",
       select: "",
       isMore: false,
-
       moreIform: {
         dwh: [], // 学院下拉框
         bjm: [],
-        zydmList: [],
-        sqlxm: [],
         xn: "",
-        ztStatus: [],
       },
+      dglxList: [],
+      dgyhList: [],
+      editModal: false,
+      rules: {
+        common: [
+          {
+            required: true,
+            message: "请完善对应表单内容",
+            trigger: "blur",
+          },
+        ],
+      },
+      formEdit: {},
+      fileListAdd: [],
       exportParams: {},
       leng: 0,
       tableData: [],
@@ -368,8 +448,6 @@ export default {
       bjOps: [], // 班级下拉
       allXn: [], //学年下拉
       zyOps: [],
-
-      ztStatus: [],
       sqlxOps: [
         { dm: "1", mc: "退役士兵" },
         { dm: "2", mc: "应征入伍" },
@@ -384,7 +462,21 @@ export default {
         sqsj: [],
         shsj: [],
       },
+
       multipleSelection: [],
+      multipleSelection1: {},
+      jjModal: false,
+      jjly: "",
+      tableInner: [],
+      thTableModal: false,
+      thModal: false,
+      thly: "",
+      tempRadio: false,
+      defaultRes: {},
+      whatType: "",
+      tableDetails: [{ gzgw: "", fwnr: "" }],
+      upDownIndex: 0,
+      AUTHFLAG: false,
     };
   },
 
@@ -393,7 +485,6 @@ export default {
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getAllCollege();
     this.getCode("dmsplcm"); // 培养层次
-
     this.getSchoolYears();
   },
 
@@ -408,29 +499,7 @@ export default {
         })
         .catch((err) => {});
     },
-    handleCloseLct() {
-      this.lctModal = false;
-    },
-    lctClick(row) {
-      if (!!row.processid) {
-        this.$refs.child.inner(row.processid);
-        this.lctModal = true;
-      } else {
-        this.$message.warning("此项经历为管理员新增，暂无流程数据");
-      }
-    },
-    handleDetail(row) {
-      this.$router.push({
-        path: "/dailyBehavior/zbrwTea/rwdcDetail",
-        query: {
-          xh: row.xh,
-          isEdit: 2,
-          id: row.id,
-          processid: row.processid,
-          sqlxm: row.sqlxm,
-        },
-      });
-    },
+    // 导出取消
     handleCancel() {
       this.showExport = false;
     },
@@ -438,12 +507,12 @@ export default {
     handleConfirm() {
       let ids = [];
       for (let item_row of this.multipleSelection) {
-        ids.push(item_row.id);
+        ids.push(item_row.businesId);
       }
       this.$set(this.exportParams, "ids", ids);
-      // dkjgExp(this.exportParams)
+      // dshExp(this.exportParams)
       //   .then((res) => {
-      //     this.downloadFn(res, "贷款结果列表导出.xlsx", "xlsx");
+      //     this.downloadFn(res, "贷款待审核列表导出.xlsx", "xlsx");
       //     if (this.$store.getters.excelcount > 0) {
       //       this.$message.success(
       //         `已成功导出${this.$store.getters.excelcount}条数据`
@@ -453,13 +522,11 @@ export default {
       //   .catch((err) => {});
       this.showExport = false;
     },
-
     expor() {
-      var data = {};
-      data = {
+      let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        shr1: this.select == "shrxm" ? this.searchVal : null,
+        shr: this.select == "shrxm" ? this.searchVal : null,
         zydmList: this.moreIform.zydmList,
         sqlxmList: this.moreIform.sqlxm,
         xn: this.moreIform.xn,
@@ -486,9 +553,127 @@ export default {
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
-      }; //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
+      };
+      //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
       this.exportParams = data;
       this.showExport = true;
+    },
+
+    getCode(val) {
+      const data = { codeTableEnglish: val };
+      getCodeInfoByEnglish(data).then((res) => {
+        switch (val) {
+          case "dmsplcm": //审批结果
+            this.ztStatus = res.data;
+            break;
+        }
+      });
+    },
+    handleCloseLct() {
+      this.lctModal = false;
+    },
+    lctClick(row) {
+      if (!!row.processid) {
+        this.$refs.child.inner(row.processid);
+        this.lctModal = true;
+      } else {
+        this.$message.warning("此项经历为管理员新增，暂无流程数据");
+      }
+    },
+    getRow(index, row) {
+      this.multipleSelection1 = row;
+    },
+    //直接通过
+    passDirect() {
+      if (this.commonParams.length > 0) {
+        this.directModal = true;
+      } else {
+        this.$message.error("请先选择一条数据");
+      }
+    },
+    directCancel() {
+      this.directModal = false;
+    },
+    //直接通过确认
+    directConfirm() {
+      var data = this.commonParams.map((item) => ({
+        ...item,
+        opMsg: "审核通过",
+        tjly: "",
+      }));
+      tyFlow(data).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("审核已通过");
+          this.handleSearch();
+        }
+      });
+      this.directModal = false;
+    },
+    //拒绝
+    refuse() {
+      if (this.commonParams.length > 0) {
+        this.jjModal = true;
+        this.jjly = "";
+      } else {
+        this.$message.error("请先选择一条数据");
+      }
+    },
+    jjCancel() {
+      this.jjModal = false;
+    },
+    jjConfirm() {
+      var data = this.commonParams.map((item) => ({
+        ...item,
+        opMsg: this.jjly,
+      }));
+      jjFlow(data).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("已拒绝");
+
+          this.handleSearch();
+        }
+      });
+      this.jjModal = false;
+    },
+    async back() {
+      if (this.commonParams.length > 0) {
+        var processId = { processId: this.commonParams[0].taskId };
+        await backFlow(processId).then((res) => {
+          this.tableInner = res.data;
+        });
+        this.thTableModal = true;
+      } else {
+        this.$message.error("请先选择一条数据");
+      }
+    },
+    thTableCancel() {
+      this.thTableModal = false;
+    },
+    thTableConfirm() {
+      if (!!this.tempRadio || this.tempRadio === 0) {
+        this.thTableModal = false;
+        this.thModal = true;
+      } else {
+        this.$message.error("请先勾选退回的节点");
+      }
+    },
+    thCancel() {
+      this.thModal = false;
+    },
+    thConfirm() {
+      this.thModal = false;
+      var data = this.commonParams.map((item) => ({
+        ...item,
+        opMsg: this.thly,
+        actId: this.multipleSelection1.actId,
+        actName: this.multipleSelection1.actName,
+      }));
+      htFlow(data).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("退回成功");
+          this.handleSearch();
+        }
+      });
     },
     getAllCollege() {
       getCollege()
@@ -528,6 +713,18 @@ export default {
           .catch((err) => {});
       }
     },
+    hadleDetail(row) {
+      this.$router.push({
+        path: "/dailyBehavior/zbrwTea/rwdcDetail",
+        query: {
+          xh: row.xh,
+          isEdit: 1,
+          id: row.id,
+          processid: row.processid,
+          sqlxm: row.sqlxm,
+        },
+      });
+    },
     changeSelect() {
       this.searchVal = "";
     },
@@ -564,7 +761,7 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryZbrwXyList(data)
+      queryZbrwFlowDshList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
@@ -575,26 +772,17 @@ export default {
     handleMore() {
       this.isMore = !this.isMore;
     },
-    //获取培养层次
-    getCode(data) {
-      this.getCodeInfoByEnglish(data);
-    },
-    getCodeInfoByEnglish(paramsData) {
-      let data = { codeTableEnglish: paramsData };
-      getCodeInfoByEnglish(data)
-        .then((res) => {
-          switch (paramsData) {
-            case "dmsplcm": //审批结果
-              this.ztStatus = res.data;
-              break;
-          }
-        })
-        .catch((err) => {});
-    },
+
     // 多选
     handleSelectionChange(val) {
-      this.delArr = val.map((item) => item.id);
       this.multipleSelection = val;
+      this.commonParams = this.multipleSelection.map((v) => ({
+        businesId: v.businesId,
+        processId: v.processid,
+        status: v.status,
+        taskId: v.taskId,
+        xh: v.xh,
+      }));
     },
     //排序
     changeTableSort(column) {
@@ -607,7 +795,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.footerFlex {
+  display: flex;
+  justify-content: flex-end;
+}
 .talkRec {
+  ::v-deep .grayBg .el-form-item__label {
+    background-color: #f0f0f0;
+    padding: 5px 10px 5px 0px;
+  }
+  .grayBg {
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 0;
+  }
+  .sqList {
+    padding: 5px 0px 5px 10px;
+    width: 85%;
+  }
+  .lct {
+    background: url("~@/assets/dangan/lct.png");
+  }
   .scopeIncon {
     display: inline-block;
     width: 20px;
@@ -623,9 +830,6 @@ export default {
   }
   .handledie {
     background: url("~@/assets/images/details.png");
-  }
-  .lct {
-    background: url("~@/assets/dangan/lct.png");
   }
   .handleName {
     font-weight: 400;
@@ -707,27 +911,20 @@ export default {
           background: #fff;
           border: 1px solid grey;
         }
-        .lightIcon {
-          margin-top: 9px;
-          background: url("~@/assets/assistantPng/delete.png") no-repeat;
-        }
         .borderOrange {
           border: 1px solid grey;
-          background: #005657;
-          .title1 {
-            font-size: 14px;
-            text-align: center;
-            line-height: 32px;
-            color: #fff;
-            // vertical-align: middle;
-          }
+          background: #fff;
         }
         .borderRed {
           border: 1px solid grey;
           color: red;
           background: #fff;
         }
-
+        .fullGreen {
+          // border:1px solid #005657;
+          color: #fff;
+          background: #005657;
+        }
         .btns {
           margin-right: 15px;
           padding: 0px 10px;
@@ -737,6 +934,7 @@ export default {
             font-size: 14px;
             text-align: center;
             line-height: 32px;
+            // vertical-align: middle;
           }
           .title1 {
             font-size: 14px;
@@ -751,7 +949,9 @@ export default {
             vertical-align: top;
             margin-right: 5px;
           }
-
+          .deteIcon {
+            background: url("~@/assets/images/yes.png") no-repeat;
+          }
           .blueIcon {
             margin-top: 10px;
             background: url("~@/assets/assistantPng/in.png") no-repeat;
@@ -760,12 +960,67 @@ export default {
             margin-top: 10px;
             background: url("~@/assets/assistantPng/out.png") no-repeat;
           }
-          .downIcon {
+          .passIcon {
             margin-top: 10px;
-            background: url("~@/assets/images/chehui.png") no-repeat;
+            background: url("~@/assets/images/passWhite.png") no-repeat;
+          }
+          .refuseIcon {
+            margin-top: 10px;
+            background: url("~@/assets/images/refuse.png") no-repeat;
+          }
+          .backIcon {
+            margin-top: 10px;
+            background: url("~@/assets/images/back.png") no-repeat;
           }
         }
       }
+    }
+  }
+  .borderRed {
+    border: 1px solid #e8e8e8;
+    color: red;
+    background: #fff;
+  }
+  .fullGreen {
+    // border:1px solid #005657;
+    color: #fff;
+    background: #005657;
+  }
+  .btns {
+    margin-right: 15px;
+    padding: 0px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    .title {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      // vertical-align: middle;
+    }
+    .title1 {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      color: #fff;
+    }
+    .icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      vertical-align: top;
+      margin-right: 5px;
+    }
+    .passIcon {
+      margin-top: 10px;
+      background: url("~@/assets/images/passWhite.png") no-repeat;
+    }
+    .refuseIcon {
+      margin-top: 10px;
+      background: url("~@/assets/images/refuse.png") no-repeat;
+    }
+    .backIcon {
+      margin-top: 10px;
+      background: url("~@/assets/images/back.png") no-repeat;
     }
   }
 }

@@ -443,7 +443,7 @@
                         v-for="(item, index) in xnOptions"
                         :key="index"
                         :label="item.mc"
-                        :value="item.dm"
+                        :value="item.mc"
                       ></el-option>
                     </el-select>
                     <!-- </el-form-item> -->
@@ -488,7 +488,7 @@
                         v-for="(item, index) in xnOptions"
                         :key="index"
                         :label="item.mc"
-                        :value="item.dm"
+                        :value="item.mc"
                       ></el-option>
                     </el-select>
                   </div>
@@ -531,7 +531,7 @@
                         v-for="(item, index) in xnOptions"
                         :key="index"
                         :label="item.mc"
-                        :value="item.dm"
+                        :value="item.mc"
                       ></el-option>
                     </el-select>
                   </div>
@@ -574,7 +574,7 @@
                         v-for="(item, index) in xnOptions"
                         :key="index"
                         :label="item.mc"
-                        :value="item.dm"
+                        :value="item.mc"
                       ></el-option>
                     </el-select>
                   </div>
@@ -617,7 +617,7 @@
                         v-for="(item, index) in xnOptions"
                         :key="index"
                         :label="item.mc"
-                        :value="item.dm"
+                        :value="item.mc"
                       ></el-option>
                     </el-select>
                   </div>

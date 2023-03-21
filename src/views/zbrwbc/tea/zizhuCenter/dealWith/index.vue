@@ -334,12 +334,12 @@
 
 <script>
 import { queryXn } from "@/api/dailyBehavior/yearSum";
-import { queryZbrwXyList } from "@/api/zbrw/zbrw";
+import { queryZbrwFlowYclList } from "@/api/zbrw/zbrw";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getBJ, getZY } from "@/api/student/index";
 import { getToken } from "@/utils/auth";
-import lctCom from "../../../components/lct";
+import lctCom from "../../../../components/lct";
 export default {
   components: { lctCom },
   data() {
@@ -564,7 +564,7 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryZbrwXyList(data)
+      queryZbrwFlowYclList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
@@ -614,6 +614,9 @@ export default {
     height: 20px;
     vertical-align: middle;
   }
+  .handledie {
+    background: url("~@/assets/images/details.png");
+  }
   .el-button--text {
     border-color: transparent;
     color: #005657;
@@ -621,17 +624,14 @@ export default {
     padding-left: 0;
     padding-right: 0;
   }
-  .handledie {
-    background: url("~@/assets/images/details.png");
-  }
-  .lct {
-    background: url("~@/assets/dangan/lct.png");
-  }
   .handleName {
     font-weight: 400;
     font-size: 14px;
     color: #005657;
     line-height: 28px;
+  }
+  .lct {
+    background: url("~@/assets/dangan/lct.png");
   }
   .mt15 {
     margin-top: 15px;

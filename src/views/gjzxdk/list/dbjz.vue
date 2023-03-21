@@ -781,12 +781,6 @@ export default {
           this.downloadFn(res, row.xyFjName);
         });
       }
-      else if (index == 3) {
-        Exportwj({ id: "大病救助" }).then((res) => {
-          this.url = window.URL.createObjectURL(res);
-          this.downloadFn(res, "大病救助协议附件", "xlsx");
-        });
-      } 
       // else {
       //   // Exportwj({ id: row.xyFjId.toString() }).then((res) => {
       //   //   this.url = window.URL.createObjectURL(res);
@@ -1031,15 +1025,6 @@ export default {
         delwj({ id: file.id.toString() }).then();
       }
     },
-    beforeRemoveEdit(file, fileList) {
-      let uid = file.uid;
-      let idx = this.fileListAdd.findIndex((item) => item.uid === uid);
-      this.fileListAdd.splice(idx, 1);
-      if (file.id) {
-        //如果是后端返回的文件就走删除接口，不然前端自我删除
-        delwj({ id: file.id.toString() }).then();
-      }
-    },
     fileChange(file, fileList) {
       if (Number(file.size / 1024 / 1024) > 10) {
         let uid = file.uid;
@@ -1048,16 +1033,6 @@ export default {
         this.$message.error("单个文件大小不得超过10M");
       }
       this.fileList = fileList;
-    },
-    fileChangeEdit(file, fileList) {
-      if (Number(file.size / 1024 / 1024) > 10) {
-        let uid = file.uid;
-        let idx = fileList.findIndex((item) => item.uid === uid);
-        fileList.splice(idx, 1);
-        this.$message.error("单个文件大小不得超过10M");
-      } else if (file.status == "ready") {
-        this.fileListAdd.push(file); //修改编辑的文件参数
-      }
     },
     bianji() {
       this.editFlag = 3;
@@ -1070,43 +1045,6 @@ export default {
       this.editModal = false;
       this.editFlag = 2;
       this.$refs.formEdit.resetFields();
-    },
-    editClick() {
-      if (!this.checkFormEdit()) {
-        this.$message.error("请完善表单相关信息！");
-        return;
-      } else {
-        var data = this.formEdit;
-        let formData = new FormData();
-        formData.append("dkxn", data.xn);
-        formData.append("bz", data.bz);
-        formData.append("zsfys", data.zsfys);
-        formData.append("xfys", data.xfys);
-        formData.append("dkzje", data.dkzje);
-        formData.append("dklx", data.dklx);
-        formData.append("dkyh", data.dkyh);
-        formData.append("htbh", data.htbh);
-        formData.append("dkkssj", data.dkkssj);
-        formData.append("dkqx", data.dkqx);
-        formData.append("hzjym", data.hzjym);
-        formData.append("xh", this.$store.getters.userId);
-        formData.append("shrgh", "");
-        formData.append("id", data.id);
-        if (this.fileListAdd.length > 0) {
-          this.fileListAdd.map((file) => {
-            formData.append("files", file.raw);
-          });
-        }
-        importJzsq(formData).then((res) => {
-          if (res.errcode == "00") {
-            this.$message.success("编辑成功");
-            this.queryJz();
-          } else {
-            this.$message.error("编辑失败");
-          }
-        });
-        this.editModal = false;
-      }
     },
     addClick() {
       if (!this.checkFormAdd()) {
@@ -1178,6 +1116,8 @@ export default {
             this.url = window.URL.createObjectURL(res);
             this.downloadFn(res, aid.fileName);
           });
+        }else{
+          this.$message("附件待上传");
         }
       });
     },

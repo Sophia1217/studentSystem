@@ -482,6 +482,8 @@ export default {
             this.url = window.URL.createObjectURL(res);
             this.downloadFn(res, aid.fileName);
           });
+        } else{
+          this.$message("附件待上传");
         }
       });
     },

@@ -345,7 +345,12 @@ export default {
     showDetail(row) {
       this.$router.push({
         path: "/tutorDetail",
-        query: { isEdit: 1, id: row.id, processid: row.processid },
+        query: {
+          isEdit: 1,
+          id: row.id,
+          processid: row.processid,
+          status: row.status,
+        },
       });
     },
     addCance() {

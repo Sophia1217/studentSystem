@@ -722,6 +722,8 @@ export default {
           id: row.id,
           processid: row.processid,
           sqlxm: row.sqlxm,
+          taskId: row.taskId,
+          status: row.status,
         },
       });
     },

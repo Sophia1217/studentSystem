@@ -62,11 +62,14 @@
                   <div class="title">联系电话</div>
 
                   <el-form-item prop="yddh" :rules="rules.common">
-                    <div class="content">
+                    <div class="content" v-if="flag == 1">
                       <el-input
                         v-model="detailInfoData.yddh"
                         maxlength="100"
                       ></el-input>
+                    </div>
+                    <div class="content" v-else>
+                      {{ detailInfoData.yddh }}
                     </div>
                   </el-form-item>
                 </div>
@@ -75,11 +78,14 @@
                 <div class="wrap">
                   <div class="title">QQ</div>
                   <el-form-item prop="qqhm" :rules="rules.common">
-                    <div class="content">
+                    <div class="content" v-if="flag == 1">
                       <el-input
                         v-model="detailInfoData.qqhm"
                         maxlength="100"
                       ></el-input>
+                    </div>
+                    <div class="content" v-else>
+                      {{ detailInfoData.qqhm }}
                     </div>
                   </el-form-item>
                 </div>
@@ -95,7 +101,7 @@
                 <div class="wrap">
                   <div class="title">申请类别</div>
                   <el-form-item prop="lb" :rules="rules.common">
-                    <div class="content">
+                    <div class="content" v-if="flag == 1">
                       <el-select v-model="detailInfoData.lb">
                         <el-option
                           v-for="(item, index) in sqlbOps"
@@ -105,6 +111,9 @@
                         ></el-option>
                       </el-select>
                     </div>
+                    <div class="content" v-else>
+                      {{ detailInfoData.lb }}
+                    </div>
                   </el-form-item>
                 </div>
               </el-col>
@@ -112,12 +121,16 @@
                 <div class="wrap">
                   <div class="title">起止时间</div>
                   <el-form-item prop="time" :rules="rules.common">
-                    <div class="content">
+                    <div class="content" v-if="flag == 1">
                       <el-date-picker
                         type="daterange"
                         v-model="detailInfoData.time"
                         value-format="yyyy-MM-dd"
                       />
+                    </div>
+                    <div class="content" v-else>
+                      {{ detailInfoData.qzsjStart }}至
+                      {{ detailInfoData.qzsjEnd }}
                     </div>
                   </el-form-item>
                 </div>
@@ -128,7 +141,7 @@
                 <div class="wrap">
                   <div class="title">课程次数</div>
                   <el-form-item prop="kccs" :rules="rules.common">
-                    <div class="content">
+                    <div class="content" v-if="flag == 1">
                       <el-input-number
                         v-model="detailInfoData.kccs"
                         :min="0"
@@ -137,6 +150,9 @@
                         @change="countKs()"
                       ></el-input-number>
                     </div>
+                    <div class="content" v-else>
+                      {{ detailInfoData.kccs }}次
+                    </div>
                   </el-form-item>
                 </div>
               </el-col>
@@ -144,7 +160,7 @@
                 <div class="wrap">
                   <div class="title">课程时长</div>
                   <el-form-item prop="kcsc" :rules="rules.common">
-                    <div class="content">
+                    <div class="content" v-if="flag == 1">
                       <el-input-number
                         v-model="detailInfoData.kcsc"
                         :min="0"
@@ -153,6 +169,9 @@
                         @change="countKs()"
                       ></el-input-number>
                       <span>分钟</span>
+                    </div>
+                    <div class="content" v-else>
+                      {{ detailInfoData.kcsc }}分钟
                     </div>
                   </el-form-item>
                 </div>
@@ -169,11 +188,14 @@
                 <div class="wrap">
                   <div class="title">预备辅导地点</div>
                   <el-form-item prop="kcdd" :rules="rules.common">
-                    <div class="content">
+                    <div class="content" v-if="flag == 1">
                       <el-input
                         v-model="detailInfoData.kcdd"
                         maxlength="100"
                       ></el-input>
+                    </div>
+                    <div class="content" v-else>
+                      {{ detailInfoData.kcdd }}
                     </div>
                   </el-form-item>
                 </div>
@@ -192,7 +214,12 @@
                     :prop="'fwfxList.' + scope.$index + '.dm'"
                     :rules="rules.common"
                   >
-                    <el-select v-model="scope.row.dm" filterable allow-create>
+                    <el-select
+                      v-model="scope.row.dm"
+                      filterable
+                      allow-create
+                      :disabled="flag != 1"
+                    >
                       <el-option
                         v-for="(item, index) in fwfxOps"
                         :key="index"
@@ -214,13 +241,14 @@
                     <el-input-number
                       v-model="scope.row.mc"
                       :min="0"
+                      :disabled="flag != 1"
                       controls-position="right"
                     />
                   </el-form-item>
                 </template>
               </el-table-column>
 
-              <el-table-column label="添加选项" align="center">
+              <el-table-column label="添加选项" align="center" v-if="flag == 1">
                 <template slot-scope="scope">
                   <div style="margin-bottom: 20px">
                     <i
@@ -253,37 +281,65 @@
               </el-table-column>
               <el-table-column prop="Mon" label="星期一" width="180">
                 <template slot-scope="scope">
-                  <el-checkbox v-model="scope.row.Mon" size="large" />
+                  <el-checkbox
+                    v-model="scope.row.Mon"
+                    size="large"
+                    :disabled="flag != 1"
+                  />
                 </template>
               </el-table-column>
               <el-table-column prop="Tues" label="星期二" width="180">
                 <template slot-scope="scope">
-                  <el-checkbox v-model="scope.row.Tues" size="large" />
+                  <el-checkbox
+                    v-model="scope.row.Tues"
+                    size="large"
+                    :disabled="flag != 1"
+                  />
                 </template>
               </el-table-column>
               <el-table-column prop="Wed" label="星期三" width="180">
                 <template slot-scope="scope">
-                  <el-checkbox v-model="scope.row.Wed" size="large" />
+                  <el-checkbox
+                    v-model="scope.row.Wed"
+                    size="large"
+                    :disabled="flag != 1"
+                  />
                 </template>
               </el-table-column>
               <el-table-column prop="Thur" label="星期四" width="180">
                 <template slot-scope="scope">
-                  <el-checkbox v-model="scope.row.Thur" size="large" />
+                  <el-checkbox
+                    v-model="scope.row.Thur"
+                    size="large"
+                    :disabled="flag != 1"
+                  />
                 </template>
               </el-table-column>
               <el-table-column prop="Fri" label="星期五" width="180">
                 <template slot-scope="scope">
-                  <el-checkbox v-model="scope.row.Fri" size="large" />
+                  <el-checkbox
+                    v-model="scope.row.Fri"
+                    size="large"
+                    :disabled="flag != 1"
+                  />
                 </template>
               </el-table-column>
               <el-table-column prop="Sat" label="星期六" width="180">
                 <template slot-scope="scope">
-                  <el-checkbox v-model="scope.row.Sat" size="large" />
+                  <el-checkbox
+                    v-model="scope.row.Sat"
+                    size="large"
+                    :disabled="flag != 1"
+                  />
                 </template>
               </el-table-column>
               <el-table-column prop="Sun" label="星期日" width="180">
                 <template slot-scope="scope">
-                  <el-checkbox v-model="scope.row.Sun" size="large" />
+                  <el-checkbox
+                    v-model="scope.row.Sun"
+                    size="large"
+                    :disabled="flag != 1"
+                  />
                 </template>
               </el-table-column>
             </el-table>
@@ -319,7 +375,7 @@
         审核记录
       </div>
       <div class="btn cancel" @click="handleCancle">返回</div>
-      <div class="btn confirm" @click="handlUpdata">保存</div>
+      <div class="btn confirm" v-if="flag == 1" @click="handlUpdata">保存</div>
     </div>
     <lctCom
       ref="child"
@@ -338,6 +394,12 @@ export default {
   data() {
     return {
       isEdit: this.$route.query.isEdit,
+      flag:
+        this.$route.query.status == "01" ||
+        this.$route.query.status == "08" ||
+        !this.$route.query.status
+          ? 1
+          : 2,
       nd: "",
       xh: this.$store.getters.userId,
       activeName: "0",

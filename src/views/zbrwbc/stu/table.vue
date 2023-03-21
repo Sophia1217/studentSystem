@@ -154,7 +154,7 @@
         <div class="tableStyle" v-if="sqlxm == 1">
           <div class="inputArea" style="margin-bottom: 20px">
             <el-form-item prop="sfdq" :rules="rules.wenzi" style="width: 300px">
-              <el-radio-group v-model="detailInfoData.sfdq">
+              <el-radio-group v-model="detailInfoData.jtsqlxm">
                 <el-radio label="1" size="large">退役复学</el-radio>
                 <el-radio label="2" size="large">退役入学</el-radio>
               </el-radio-group></el-form-item

@@ -153,7 +153,7 @@
 
       <div class="tableStyle" v-if="sqlxm == 1">
         <div class="inputArea" style="margin-bottom: 20px">
-          <el-radio-group v-model="detailInfoData.sfdq" disabled>
+          <el-radio-group v-model="detailInfoData.jtsqlxm" disabled>
             <el-radio label="1" size="large">退役复学</el-radio>
             <el-radio label="2" size="large">退役入学</el-radio>
           </el-radio-group>
@@ -221,7 +221,7 @@
               <div class="wrap">
                 <div class="title">参加何种考试考入</div>
                 <div class="content">
-                  {{ detailInfoData.cjhzkskrm }}
+                  {{ detailInfoData.cjhzkskr }}
                 </div>
               </div>
             </el-col>
@@ -229,7 +229,7 @@
               <div class="wrap">
                 <div class="title">服役前最高学历</div>
                 <div class="content">
-                  {{ detailInfoData.fyqzgxlm }}
+                  {{ detailInfoData.fyqzgxl }}
                 </div>
               </div>
             </el-col>
@@ -274,7 +274,7 @@
               <div class="wrap">
                 <div class="title">现阶段就读学历层次</div>
                 <div class="content">
-                  {{ detailInfoData.xjdjdxlccm }}
+                  {{ detailInfoData.xjdjdxlcc }}
                 </div>
               </div>
             </el-col>
@@ -532,8 +532,8 @@
         </div>
         <div class="information" v-show="dkxxList.length == 0">暂无</div>
       </div>
-      <div class="headline">审核信息</div>
-      <div class="tableStyle" style="margin-bottom: 20px">
+      <div class="headline" v-if="isEdit == 1">审核信息</div>
+      <div class="tableStyle" style="margin-bottom: 20px" v-if="isEdit == 1">
         <el-form :model="editDetails" ref="editDetails">
           <div class="information" style="margin-bottom: 20px">
             <el-row :gutter="20">
@@ -767,28 +767,18 @@ export default {
     handleCancle() {
       this.$router.go(-1);
     },
-    checkFormAdd() {
-      // 1.校验必填项
-      let validForm = false;
-      this.$refs.formAdd.validate((valid) => {
-        validForm = valid;
-      });
-      if (!validForm) {
-        return false;
-      }
-      return true;
-    },
+
     handlUpdata() {
       if (!this.checkFormAdd()) {
         this.$message.error("请完善表单相关信息！");
       } else {
-        this.detailModal = true;
+        this.conformModal = true;
       }
     },
     changeJG(val) {
       if (val && val == "03") {
         this.jeFlag = "01";
-        var processid = { processId: this.tableDetail.taskId };
+        var processid = { processId: this.$route.query.taskId };
         this.conformType = "退回";
         this.conformText = "退回确认";
         backFlow(processid).then((res) => {
@@ -810,10 +800,11 @@ export default {
     },
     finalConfirm() {
       var data = {
-        businesId: this.tableDetail.id,
-        processId: this.tableDetail.processid,
-        taskId: this.tableDetail.taskId,
-        // xh: this.tableDetail.xh,
+        businesId: this.$route.query.id,
+        processId: this.$route.query.processid,
+        taskId: this.$route.query.taskId,
+        xh: this.$route.query.xh,
+        status: this.$route.query.status,
         opMsg: this.editDetails.shyj ? this.editDetails.shyj : "",
         // spje: this.formDetails1.spje ? this.formDetails1.spje : "",
         // actId: "",
@@ -822,29 +813,29 @@ export default {
       if (this.conformType == "退回") {
         data.actId = this.multipleSelection1.actId;
         data.actName = this.multipleSelection1.actName;
-        htFlow(data).then((res) => {
+        htFlow([data]).then((res) => {
           this.conformModal = false;
           this.$router.go(-1);
           this.$message.success("已退回");
         });
       } else if (this.conformType == "拒绝") {
-        jjFlow(data).then((res) => {
+        jjFlow([data]).then((res) => {
           this.conformModal = false;
           this.$router.go(-1);
           this.$message.success("已拒绝");
         });
       } else {
-        data.spje = this.formDetails1.spje ? this.formDetails1.spje : "";
+        data.spje = this.editDetails.spje ? this.editDetails.spje : "";
         data.opMsg = this.editDetails.shyj
-          ? `审批金额为${this.formDetails1.spje},审批意见：${this.editDetails.shyj}`
+          ? `审批金额为${this.editDetails.spje},审批意见：${this.editDetails.shyj}`
           : "";
-        tyFlow(data).then((res) => {
+        tyFlow([data]).then((res) => {
           this.conformModal = false;
           this.$router.go(-1);
           this.$message.success("已成功通过");
         });
       }
-      this.detailModal = false;
+      this.conformModal = false;
     },
   },
 };

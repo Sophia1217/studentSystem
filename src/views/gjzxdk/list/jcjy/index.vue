@@ -273,10 +273,15 @@ export default {
       });
     },
     showDetail(row) {
+      var flag = "";
+      if (row.status == "08" || row.status == "01") {
+        flag = "3";
+      }
       this.$router.push({
         path: "/jcjyedit",
         query: {
           state: row.id,
+          flag: flag,
         },
       });
     },

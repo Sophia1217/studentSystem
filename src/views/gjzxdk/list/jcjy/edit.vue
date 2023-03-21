@@ -290,7 +290,7 @@
                   <el-select
                     v-else
                     v-model="formAdd.shidm"
-                    placeholder="请选择"
+                    :placeholder="formAdd.shidmmc || ''"
                     @change="change2"
                   >
                     <el-option
@@ -318,7 +318,7 @@
                   <el-select
                     v-else
                     v-model="formAdd.xiandm"
-                    placeholder="请选择"
+                    :placeholder="formAdd.xiandmmc || ''"
                     @change="change3"
                   >
                     <el-option
@@ -338,7 +338,7 @@
                   <el-select
                     v-else
                     v-model="formAdd.xiangdm"
-                    placeholder="请选择"
+                    :placeholder="formAdd.xiangdmmc || ''"
                   >
                     <el-option
                       v-for="(item, index) in streetList"
@@ -705,7 +705,9 @@
       <div style="height: 80px"></div>
     </div>
     <div class="editBottom">
-      <div class="btn confirm" @click="binaji" v-if="bjzt == 1">编辑</div>
+      <div class="btn confirm" @click="binaji" v-if="bjzt == 1 && flag == '3'">
+        编辑
+      </div>
       <div class="btn confirm" @click="binaji1" v-if="bjzt == 2">取消</div>
       <div class="btn cancel" @click="addClick" v-if="bjzt == 2">保存</div>
     </div>
@@ -776,6 +778,7 @@ export default {
         bz: "",
       },
       lgnsn: "",
+      flag: "",
       rules: {
         common: [
           {
@@ -790,6 +793,7 @@ export default {
   mounted() {
     this.routeTitle = this.$route.meta.title;
     this.lgnsn = this.$route.query.state;
+    this.flag = this.$route.query.flag;
     this.showDetail();
     this.getCode("dmgjzxdk"); //国家助学贷款码
     this.getCode("dmzudkyhm"); //国家助学贷款银行码
@@ -801,6 +805,9 @@ export default {
   methods: {
     binaji() {
       this.bjzt = 2;
+      this.formAdd.shidm = "";
+      this.formAdd.xiandm = "";
+      this.formAdd.xiangdm = "";
     },
     binaji1() {
       this.bjzt = 1;
@@ -842,26 +849,26 @@ export default {
       });
     },
     addClick() {
-      // if (!this.checkFormAdd()) {
-      //   this.$message.error("请完善表单相关信息！");
-      //   return;
-      // } else {
-      var data = { ...this.formAdd, id: this.lgnsn };
-      edit(data).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("编辑成功");
-          this.$router.push({
-            path: "/gjzxdk",
-            query: {
-              state: 1,
-            },
-          });
-        } else {
-          this.$message.error("编辑失败");
-        }
-      });
+      if (!this.checkFormAdd()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        var data = { ...this.formAdd, id: this.lgnsn };
+        edit(data).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("编辑成功");
+            this.$router.push({
+              path: "/gjzxdk",
+              query: {
+                state: 1,
+              },
+            });
+          } else {
+            this.$message.error("编辑失败");
+          }
+        });
+      }
     },
-    // },
   },
 };
 </script>

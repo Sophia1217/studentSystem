@@ -52,7 +52,7 @@
           ></el-table-column>
           <el-table-column property="sqJe" label="申请金额（元）">
           </el-table-column>
-          <el-table-column property="fjName" label="申请附件" width="140">
+          <el-table-column property="fjName" label="申请附件" min-width="140">
             <template slot-scope="scope">
               <div class="moban">
                 <div class="content">
@@ -67,7 +67,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column property="xyFjName" label="协议附件" width="140">
+          <el-table-column property="xyFjName" label="协议附件" min-width="140">
             <template slot-scope="scope">
               <div class="moban">
                 <div class="content">
@@ -726,6 +726,7 @@ export default {
       delArrJm: [],
       delArrHk: [],
       fileListAdd: [],
+      fileListAddJm: [],
       ztStatus: [],
       val: [],
       valJm: [],
@@ -918,6 +919,7 @@ export default {
         var jmje2 = Number(this.currentRow.sqJe) - (jm || 0); //申请金额-减免金额和已还金额
         this.$set(this.formAddHk.addData[0], "dhJe", String(jmje2) || "");
         this.addModalHk = true;
+        this.fileListHk = [];
       }
     },
     EditStatus() {
@@ -1031,6 +1033,8 @@ export default {
         let idx = fileList.findIndex((item) => item.uid === uid);
         fileList.splice(idx, 1);
         this.$message.error("单个文件大小不得超过10M");
+      } else if (file.status == "ready") {
+        this.fileListAdd.push(file); //修改编辑的文件参数
       }
       this.fileList = fileList;
     },
@@ -1057,15 +1061,20 @@ export default {
         formData.append("sqLy", data.sqLy);
         if (this.addFlag == 1) {
           formData.append("id", "");
+          if (this.fileList.length > 0) {
+            this.fileList.map((file) => {
+              formData.append("files", file.raw);
+            });
+          }
         } else {
           formData.append("id", data.id);
+          if (this.fileListAdd.length > 0) {
+            this.fileListAdd.map((file) => {
+              formData.append("files", file.raw);
+            });
+          }
         }
         // formData.append("xh", this.$store.getters.userId);
-        if (this.fileList.length > 0) {
-          this.fileList.map((file) => {
-            formData.append("files", file.raw);
-          });
-        }
         importJzsq(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("新增成功");
@@ -1116,7 +1125,7 @@ export default {
             this.url = window.URL.createObjectURL(res);
             this.downloadFn(res, aid.fileName);
           });
-        }else{
+        } else {
           this.$message("附件待上传");
         }
       });
@@ -1309,15 +1318,20 @@ export default {
         formData.append("jmLy", data.jmLy);
         if (this.addFlagJm == 1) {
           formData.append("id", "");
-        } else {
-          formData.append("id", data.id);
-        }
-        // formData.append("xh", this.$store.getters.userId);
-        if (this.fileListJm.length > 0) {
+          if (this.fileListJm.length > 0) {
           this.fileListJm.map((file) => {
             formData.append("files", file.raw);
           });
         }
+        } else {
+          formData.append("id", data.id);
+          if (this.fileListAddJm.length > 0) {
+            this.fileListAddJm.map((file) => {
+              formData.append("files", file.raw);
+            });
+          }
+        }
+        // formData.append("xh", this.$store.getters.userId);
         importJmsq(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("新增减免申请成功");
@@ -1372,6 +1386,8 @@ export default {
         let idx = fileList.findIndex((item) => item.uid === uid);
         fileList.splice(idx, 1);
         this.$message.error("单个文件大小不得超过10M");
+      } else if (file.status == "ready") {
+        this.fileListAddJm.push(file); //修改编辑的文件参数
       }
       this.fileListJm = fileList;
     },

@@ -129,7 +129,7 @@
             <i class="icon refuseIcon"></i><span class="title">拒绝</span>
           </div> -->
           <div class="btns fullGreen" @click="xinzeng">
-            <i class="icon greenIcon"></i><span class="title1">新增</span>
+            <i class="icon greenIcon"></i><span class="title1">加入</span>
           </div>
         </div>
       </div>
@@ -365,149 +365,53 @@
         @pagination="handleSearch"
       />
     </div>
-    <el-dialog
-      title="新增"
-      :visible.sync="addModal"
-      width="50%"
-      @close="addCance"
-      :close-on-click-modal="false"
-    >
-      <el-form ref="formAdd" :model="formAdd" :rules="rules">
-        <div class="baseInfo">
-          <div class="formLeft"><span class="title">基本信息</span></div>
-          <div class="backDetail">
-            <div class="formRight">
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">学号</div>
-                    <template>
-                      <div class="content">
-                        <el-form-item prop="xsxh" :rules="rules.common">
-                          <el-autocomplete
-                            v-model="formAdd.xsxh"
-                            :fetch-suggestions="querySearchByXh"
-                            placeholder="请输入学生学号"
-                            :trigger-on-focus="false"
-                            @select="handleSelectXh"
-                          ></el-autocomplete>
-                        </el-form-item>
-                      </div>
-                    </template>
-
-                    <!-- <el-autocomplete
-                      v-model="formAdd.xsxh"
-                      :fetch-suggestions="querySearchByXh"
-                      placeholder="请输入学生学号"
-                      :trigger-on-focus="false"
-                      @select="handleSelectXh"
-                    ></el-autocomplete> -->
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">姓名</div>
-                    <div class="content">{{ basicInfo.xm }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">培养层次</div>
-                    <div class="content">{{ basicInfo.pyccmmc }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">培养单位</div>
-                    <div class="content">{{ basicInfo.dwhmc }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">专业</div>
-                    <div class="content">{{ basicInfo.zydmmc }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">年级</div>
-                    <div class="content">{{ basicInfo.nj }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">班级</div>
-                    <div class="content">{{ basicInfo.bjmmc }}</div>
-                  </div>
-                </el-col>
-                <el-col :span="12" class="rowStyle">
-                  <div class="wrap">
-                    <div class="title">困难等级</div>
-                    <div class="content">{{ basicInfo.kndjMc }}</div>
-                  </div>
-                </el-col>
-              </el-row>
-            </div>
+    <el-dialog title="新增" :visible.sync="addModal" width="60%">
+      <template>
+        <div class="search">
+          <div style="margin: 0px 15px">
+            <el-input v-model="xm" placeholder="请输入学生姓名" clearable />
+          </div>
+          <div class="btns borderBlue" @click="queryAllXs">
+            <span class="title1">查询</span>
           </div>
         </div>
-        <div style="padding: 15px">
-          <el-row :gutter="20">
-            <el-col :span="15">
-              <el-form-item label="申请金额" prop="sqJe" :rules="rules.common">
-                <el-input-number
-                  v-model="formAdd.sqJe"
-                  :min="0"
-                  :max="9999999"
-                  :controls="false"
-                ></el-input-number>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="20">
-              <el-form-item label="申请理由" prop="sqLy" :rules="rules.common">
-                <el-input
-                  v-model="formAdd.sqLy"
-                  type="textarea"
-                  :autosize="{ minRows: 5, maxRows: 5 }"
-                  placeholder="请输入内容"
-                  maxlength="500"
-                  show-word-limit
-                ></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="20">
-              <el-form-item label="申请附件">
-                <template>
-                  <div>
-                    <el-upload
-                      action="#"
-                      class="el-upload"
-                      :auto-upload="false"
-                      ref="upload"
-                      :file-list="fileList"
-                      :on-change="fileChange"
-                      :before-remove="beforeRemove"
-                    >
-                      <el-button size="small" type="primary"
-                        >附件上传</el-button
-                      >
-                    </el-upload>
-                  </div>
-                </template>
-              </el-form-item>
-            </el-col>
-          </el-row>
+        <div class="mt15">
+          <el-table
+            :data="addData"
+            ref="multipleTable"
+            style="width: 100%"
+            :default-sort="{ prop: 'date', order: 'descending' }"
+            @selection-change="handleSelectionChange2"
+          >
+            <el-table-column type="selection" width="55"></el-table-column>
+            <el-table-column
+              type="index"
+              label="序号"
+              width="50"
+              fixed="left"
+            ></el-table-column>
+            <el-table-column prop="xh" label="学号" sortable> </el-table-column>
+            <el-table-column prop="xm" label="姓名" sortable> </el-table-column>
+            <el-table-column prop="xb" label="性别" sortable> </el-table-column>
+            <el-table-column prop="nj" label="年级" sortable> </el-table-column>
+            <el-table-column prop="dwmc" label="学院" sortable>
+            </el-table-column>
+            <el-table-column prop="zymc" label="专业" sortable>
+            </el-table-column>
+            <el-table-column prop="bjmc" label="班级" sortable>
+            </el-table-column>
+            <el-table-column prop="sfkns" label="是否困难生" sortable>
+            </el-table-column>
+          </el-table>
         </div>
-      </el-form>
+      </template>
+      <pagination
+        v-show="queryParams2.totalAdd > 0"
+        :total="queryParams2.totalAdd"
+        :page.sync="queryParams2.pageNum"
+        :limit.sync="queryParams2.pageSize"
+        @pagination="queryAllXs"
+      />
       <span slot="footer" class="dialog-footer">
         <el-button @click="addCance">取 消</el-button>
         <el-button type="primary" class="confirm" @click="addClick"
@@ -533,7 +437,7 @@
 </template>
 
 <script>
-import CheckboxCom from "../../../../components/checkboxCom";
+import CheckboxCom from "../../components/checkboxCom";
 import { xhQuery } from "@/api/dailyBehavior/lskn";
 import {
   queryYshList,
@@ -543,7 +447,7 @@ import {
 import { queryStuList } from "@/api/familyDifficulties/difficultTea";
 import { querywj, delwj, Exportwj } from "@/api/assistantWork/classEvent";
 import { getCollege } from "@/api/class/maintenanceClass";
-import lctCom from "../../../../components/lct";
+import lctCom from "../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
   name: "manStudent",
@@ -581,6 +485,13 @@ export default {
         checkBox: [],
         isIndeterminate: true,
       },
+      queryParams2: {
+        pageNum: 1,
+        pageSize: 10,
+        totalAdd: 0,
+        orderZd: "",
+        orderPx: "",
+      },
       multipleSelection: [],
       tempRadio: false,
       detailModal: false,
@@ -596,6 +507,8 @@ export default {
       basicInfo: {},
       addModal: false,
       fileList: [],
+      addData: [],
+      xm: "",
       rules: {
         common: [
           {
@@ -803,6 +716,11 @@ export default {
         mk: v.sqlx,
       }));
     },
+    //新增多选
+    handleSelectionChange2(val) {
+      this.multipleSelection2 = val;
+      this.addArr = val.map((item) => item.id);
+    },
     //排序
     changeTableSort(column) {
       this.queryParams.orderZd = column.prop;
@@ -821,6 +739,22 @@ export default {
       }
       return true;
     },
+    //新增查询所有学生
+    queryAllXs() {
+      let data = {
+        xm: this.xm,
+        pageNum: this.queryParams2.pageNum,
+        pageSize: this.queryParams2.pageSize,
+        orderZd: this.queryParams2.orderZd,
+        orderPx: this.queryParams2.orderPx,
+      };
+      addFlow(data)
+        .then((res) => {
+          this.addData = res.data;
+          this.queryParams2.totalAdd = res.totalCount;
+        })
+        .catch((err) => {});
+    },
     //通过
     xinzeng() {
       this.addModal = true;
@@ -836,30 +770,27 @@ export default {
       this.addModal = false;
     },
     addClick() {
-      if (!this.checkFormAdd()) {
-        this.$message.error("请完善表单相关信息！");
-        return;
-      } else {
-        var data = this.formAdd;
-        let formData = new FormData();
-        formData.append("sqJe", data.sqJe);
-        formData.append("sqLy", data.sqLy);
-        formData.append("id", "");
-        formData.append("xh", this.formAdd.xsxh);
-        if (this.fileList.length > 0) {
-          this.fileList.map((file) => {
-            formData.append("files", file.raw);
-          });
+      if (this.multipleSelection2.length > 0) {
+        let xhs = [];
+        for (let item_row of this.multipleSelection2) {
+          xhs.push(item_row.xh);
         }
-        addFlow(formData).then((res) => {
-          if (res.errcode == "00") {
+        let data = {
+          // xhs: xhs,
+          // gwId: this.gwId,
+          // ly: "1",
+          xm: this.xm,
+        };
+        addFlow(data)
+          .then((res) => {
             this.$message.success("新增成功");
-            this.handleSearch();
+            //查询
             this.addModal = false;
-          } else {
-            this.$message.error("新增失败");
-          }
-        });
+            this.handleSearch();
+          })
+          .catch((err) => {});
+      } else {
+        this.$message.error("请勾选数据！");
       }
     },
     fileChange(file, fileList) {

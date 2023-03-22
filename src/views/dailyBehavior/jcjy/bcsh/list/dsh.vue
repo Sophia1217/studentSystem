@@ -286,11 +286,15 @@
 </template>
 
 <script>
-import { dshList, dshExp, tyFlow, jjFlow, thFinal,getYears } from "@/api/jccy/index";
 import {
-  getZY,
-  getBJ,
-} from "@/api/student/index";
+  dshList,
+  dshExp,
+  tyFlow,
+  jjFlow,
+  thFinal,
+  getYears,
+} from "@/api/jccy/index";
+import { getZY, getBJ } from "@/api/student/index";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { backFlow } from "@/api/dailyBehavior/dormTea";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
@@ -309,8 +313,8 @@ export default {
       moreIform: {
         dwh: [], // 学院下拉框
         bjm: [],
-        zyOps:"",
-       nd: "",
+        zyOps: "",
+        nd: "",
       },
       dglxList: [],
       dgyhList: [],
@@ -321,7 +325,7 @@ export default {
       tableData: [],
       allDwh: [],
       bjOps: [], // 班级下拉
-      allnd: [], //学年下拉
+      allnd: [], //年度下拉
       commonParams: [],
       queryParams: {
         pageNum: 1,
@@ -370,7 +374,7 @@ export default {
       this.$refs.formEdit.resetFields();
     },
 
-    //获取学年
+    //获取年度
     getSchoolYears() {
       getYears()
         .then((res) => {

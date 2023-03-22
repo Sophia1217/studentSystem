@@ -159,7 +159,7 @@
             ></el-option>
           </el-select>
 
-          <span>学年</span>
+          <span>年度</span>
         </div>
 
         <div class="headerRight">
@@ -265,7 +265,7 @@ export default {
       tableData: [],
       allDwh: [],
       bjOps: [], // 班级下拉
-      allnd: [], //学年下拉
+      allnd: [], //年度下拉
       commonParams: [],
       queryParams: {
         pageNum: 1,
@@ -297,7 +297,7 @@ export default {
   },
 
   methods: {
-    //获取学年
+    //获取年度
     getSchoolYears() {
       getYears()
         .then((res) => {
@@ -447,7 +447,7 @@ export default {
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
-           for (var i = 0; i < this.tableData.length; i++) {
+          for (var i = 0; i < this.tableData.length; i++) {
             if (
               this.tableData[i].fileList &&
               this.tableData[i].fileList.length > 0

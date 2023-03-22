@@ -137,7 +137,7 @@
               :value="item"
             ></el-option>
           </el-select>
-          <span>学年</span>
+          <span>年度</span>
         </div>
         <div class="headerRight">
           <div class="btns borderBlue" @click="mbDown">
@@ -317,7 +317,7 @@ export default {
       tableData: [],
       allDwh: [],
       bjOps: [], // 班级下拉
-      allnd: [], //学年下拉
+      allnd: [], //年度下拉
       commonParams: [],
       queryParams: {
         pageNum: 1,
@@ -462,7 +462,7 @@ export default {
         });
       }
     },
-    //获取学年
+    //获取年度
     getSchoolYears() {
       getYears()
         .then((res) => {

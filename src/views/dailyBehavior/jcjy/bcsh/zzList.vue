@@ -300,7 +300,7 @@ export default {
       updownDate: [],
       allDwh: [],
       bjOps: [], // 班级下拉
-      allnd: [], //学年下拉
+      allnd: [], //年度下拉
       commonParams: [],
       queryParams: {
         pageNum: 1,
@@ -349,7 +349,7 @@ export default {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");
       }
     },
-    //获取学年
+    //获取年度
     getSchoolYears() {
       getYears()
         .then((res) => {

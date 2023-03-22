@@ -115,13 +115,13 @@
             style="width: 130px; margin: 0 15px 0"
           >
             <el-option
-              v-for="(item, index) in allnd"
+              v-for="(item, index) in allXn"
               :key="index"
-              :label="item"
-              :value="item"
+              :label="item.mc"
+              :value="item.dm"
             ></el-option>
           </el-select>
-          <span>年度</span>
+          <span>学年</span>
         </div>
         <div class="headerRight">
           <div class="btns borderBlue" @click="mbDown">
@@ -228,6 +228,13 @@
           >
         </el-table>
       </div>
+      <pagination
+        v-show="queryParams.total > 0"
+        :total="queryParams.total"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="query"
+      />
     </div>
     <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
       <span slot="footer" class="dialog-footer">
@@ -295,7 +302,6 @@ export default {
       exportParams: {},
       tableData: [],
       allDwh: [],
-      bjOps: [], // 班级下拉
       allnd: [], //学年下拉
       commonParams: [],
       queryParams: {

@@ -17,7 +17,6 @@
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
-          
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
             >查询</el-button
@@ -248,6 +247,7 @@
             ref="upload"
             :file-list="fileList"
             :on-change="fileChange"
+            :on-preview="handlePreview"
             :before-remove="beforeRemove"
           >
             <el-button size="small" type="primary">附件上传</el-button>
@@ -280,6 +280,7 @@ import { getCollege } from "@/api/class/maintenanceClass";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getToken } from "@/utils/auth";
 import { getXmXgh } from "@/api/assistantWork/talk";
+import { Exportwj } from "@/api/assistantWork/classEvent";
 export default {
   components: { CheckboxCom },
   computed: {
@@ -296,7 +297,6 @@ export default {
   data() {
     return {
       fileList: [],
-      fileListAdd: [],
       name: "",
       addModal: false,
       qurenModal: false,
@@ -349,6 +349,12 @@ export default {
   },
 
   methods: {
+    handlePreview(file) {
+      //用于文件下载
+      Exportwj({ id: file.id.toString() }).then((res) => {
+        this.downloadFn(res, file.fileName, file.fileSuffix);
+      });
+    },
     fileChange(file, fileList) {
       if (Number(file.size / 1024 / 1024) > 10) {
         let uid = file.uid;
@@ -356,33 +362,37 @@ export default {
         fileList.splice(idx, 1);
         this.$message.error("单个文件大小不得超过10M");
       } else if (file.status == "ready") {
-        this.fileListAdd.push(file); //修改编辑的文件参数
+        this.fileList.push(file); //修改编辑的文件参数
       }
     },
     beforeRemove(file, fileList) {
       let uid = file.uid;
-      let idx = this.fileListAdd.findIndex((item) => item.uid === uid);
-      this.fileListAdd.splice(idx, 1);
+      let idx = this.fileList.findIndex((item) => item.uid === uid);
+      this.fileList.splice(idx, 1);
     },
     qurencancel() {
       this.qurenModal = fasle;
     },
     qurenCon() {
-      let formData = new FormData();
-      if (this.fileListAdd.length > 0) {
-        this.fileListAdd.map((file) => {
-          formData.append("files", file.raw);
-        });
-      }
-      formData.append("id", this.multipleSelection[0].id);
-      formData.append("qrrgh",  this.$store.getters.userId);
-      confirmZgqr(formData).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("确认成功");
-          this.handleSearch();
-          this.qurenModal = false;
+      if (this.fileList.length > 0) {
+        let formData = new FormData();
+        if (this.fileList.length > 0) {
+          this.fileList.map((file) => {
+            formData.append("files", file.raw);
+          });
         }
-      });
+        formData.append("id", this.multipleSelection[0].id);
+        formData.append("qrrgh", this.$store.getters.userId);
+        confirmZgqr(formData).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("确认成功");
+            this.handleSearch();
+            this.qurenModal = false;
+          }
+        });
+      } else {
+        this.$message.error("请先上传附件");
+      }
     },
     addCon() {
       var data = this.name.slice(
@@ -508,7 +518,7 @@ export default {
       data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-      
+
         nd: this.moreIform.nd,
         ssdwdm: this.moreIform.dwh,
         bjdm: this.moreIform.bjm,
@@ -524,6 +534,7 @@ export default {
     },
     //确认
     pass() {
+      this.fileList = [];
       this.qurenModal = true;
     },
     add() {
@@ -609,7 +620,7 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-      
+
         nd: this.moreIform.nd,
         ssdwdm: this.moreIform.dwh,
         bjdm: this.moreIform.bjm,

@@ -438,6 +438,7 @@ export default {
           type: "warning",
         })
           .then((res) => {
+            //  this.$set(this.multipleSelection, "nd", ids);
             allListJj(this. multipleSelection).then(() => {
               this.$message({
                 type: "success",

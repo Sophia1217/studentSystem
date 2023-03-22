@@ -1,7 +1,7 @@
 /*
  * @Author: qingtian
  * @Date: 2023-03-21 14:09:58
- * @LastEditTime: 2023-03-21 16:53:59
+ * @LastEditTime: 2023-03-22 10:52:58
  * @LastEditors: ***
  * @Description:
  * @FilePath: \studentsystem\src\api\kcpk\index.js
@@ -58,6 +58,32 @@ export function delList(query) {
 export function upList(query) {
   return request({
     url: "/rcswPbfdKcb/updateKc",
+    method: "post",
+    data: query,
+  });
+}
+
+export function tjList(query) {
+  return request({
+    url: "/rcswPbfdKcb/queryAnalyzeList",
+    method: "post",
+    data: query,
+  });
+}
+
+//课程排课导出
+export function tjExport(query) {
+  return request({
+    url: "/rcswPbfdKcb/excelExportForAnalyze",
+    method: "post",
+    data: query,
+    responseType: "blob",
+  });
+}
+
+export function scoreByAdmin(query) {
+  return request({
+    url: "/rcswPbfdKcb/scoreByAdmin",
     method: "post",
     data: query,
   });

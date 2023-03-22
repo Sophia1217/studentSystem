@@ -15,7 +15,6 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55"></el-table-column>
-
           <el-table-column
             type="index"
             label="序号"
@@ -36,8 +35,7 @@
 
           <el-table-column prop="nd" label="年度"> </el-table-column>
 
-          <el-table-column prop="qrzt" label="确认状态" sortable="custom">
-          </el-table-column>
+          <el-table-column prop="qrzt" label="确认状态"> </el-table-column>
 
           <el-table-column
             prop="fileList"
@@ -48,6 +46,7 @@
           >
             <template slot-scope="scope">
               <el-upload
+                :on-preview="handlePreview"
                 action="#"
                 class="el-upload"
                 :auto-upload="false"
@@ -76,13 +75,6 @@
           </el-table-column>
         </el-table>
       </div>
-      <pagination
-        v-show="queryParams.total > 0"
-        :total="queryParams.total"
-        :page.sync="queryParams.pageNum"
-        :limit.sync="queryParams.pageSize"
-        @pagination="handleSearch"
-      />
     </div>
     <el-dialog
       title="确认"
@@ -122,13 +114,12 @@
 
 <script>
 import { stuZgqr, stuZgqrQr } from "@/api/jccy/index";
-import { delwj } from "@/api/assistantWork/classEvent";
+import { delwj, Exportwj } from "@/api/assistantWork/classEvent";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
   data() {
     return {
       fileList: [],
-      fileListAdd: [],
       status: "",
       qrExport: false,
       showExport: false,
@@ -155,6 +146,12 @@ export default {
   },
 
   methods: {
+    handlePreview(file) {
+      //用于文件下载
+      Exportwj({ id: file.id.toString() }).then((res) => {
+        this.downloadFn(res, file.fileName, file.fileSuffix);
+      });
+    },
     fileChange(file, fileList) {
       if (Number(file.size / 1024 / 1024) > 10) {
         let uid = file.uid;
@@ -162,40 +159,42 @@ export default {
         fileList.splice(idx, 1);
         this.$message.error("单个文件大小不得超过10M");
       } else if (file.status == "ready") {
-        this.fileListAdd.push(file); //修改编辑的文件参数
+        this.fileList.push(file);
       }
     },
     beforeRemove(file, fileList) {
       let uid = file.uid;
-      let idx = this.fileListAdd.findIndex((item) => item.uid === uid);
-      this.fileListAdd.splice(idx, 1);
+      let idx = this.fileList.findIndex((item) => item.uid === uid);
+      this.fileList.splice(idx, 1);
       if (file.id) {
         //如果是后端返回的文件就走删除接口，不然前端自我删除
         delwj({ id: file.id.toString() }).then();
       }
     },
     handleCancelB() {
-      this.fileListAdd = []; //关闭之后把新增的文件清空，免得反复累加
-      this.status = "";
+      this.fileList = []; //关闭之后把新增的文件清空，免得反复累加
       this.qrExport = false;
     },
-    // 导出确认
     handleConfirmB() {
-      let formData = new FormData();
-      formData.append("id", this.id);
-      formData.append("qrrgh", this.$store.getters.userId);
-      if (this.fileListAdd.length > 0) {
-        this.fileListAdd.map((file) => {
-          formData.append("files", file.raw);
-        });
+      if (this.fileList.length > 0) {
+        let formData = new FormData();
+        formData.append("id", this.id);
+        formData.append("qrrgh", this.$store.getters.userId);
+        if (this.fileList.length > 0) {
+          this.fileList.map((file) => {
+            formData.append("files", file.raw);
+          });
+        }
+        stuZgqrQr(formData)
+          .then((res) => {
+            this.$message.success("确认成功");
+            this.qrExport = false;
+            this.handleSearch();
+          })
+          .catch((err) => {});
+      } else {
+        this.$message.error("请先上传附件");
       }
-      stuZgqrQr(formData)
-        .then((res) => {
-          this.$message.success("确认成功");
-          this.qrExport = false;
-          this.handleSearch();
-        })
-        .catch((err) => {});
     },
     queren(row) {
       if (row.fileList && row.fileList.length > 0) {

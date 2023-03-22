@@ -15,8 +15,10 @@
             slot="prepend"
             placeholder="请选择查询条件"
           >
-            <el-option label="学号" value="xh"></el-option>
-            <el-option label="姓名" value="xm"></el-option>
+            <el-option label="课程主题" value="kczt"></el-option>
+            <el-option label="朋辈导师学号" value="dsh"></el-option>
+            <el-option label="朋辈导师姓名" value="dsm"></el-option>
+            <el-option label="开课地点" value="kkdd"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
             >查询</el-button
@@ -30,7 +32,7 @@
       </div>
       <!-- 更多选择 -->
       <div class="moreSelect" v-if="isMore">
-        <el-row :gutter="20" class="mt15">
+        <!-- <el-row :gutter="20" class="mt15">
           <el-col :span="6">
             <span>培养单位：</span>
             <el-select
@@ -49,35 +51,20 @@
               ></el-option>
             </el-select>
           </el-col>
+        </el-row> -->
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="1.5" style="display: inline-block; line-height: 37px"
+            >类别:</el-col
+          >
           <el-col :span="6">
-            <span>专业：</span>
             <el-select
-              v-model="moreIform.zydm"
-              multiple
-              collapse-tags
-              @change="changeXY"
-              placeholder="请选择"
-              size="small"
-            >
-              <el-option
-                v-for="item in allDwh"
-                :key="item.dm"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="6">
-            <span>班<span v-html="'\u3000\u3000'"></span>级：</span>
-            <el-select
-              v-model="moreIform.bjm"
-              multiple
+              v-model="queryParams.lb"
               collapse-tags
               placeholder="请选择"
               size="small"
             >
               <el-option
-                v-for="item in bjOps"
+                v-for="item in moreIform.lbLsit"
                 :key="item.dm"
                 :label="item.mc"
                 :value="item.dm"
@@ -85,23 +72,31 @@
             </el-select>
           </el-col>
         </el-row>
-       
+
         <el-row :gutter="20" class="mt15">
           <el-col :span="1.5" style="display: inline-block; line-height: 37px"
-            >申请时间：</el-col
+            >课程次数:</el-col
           >
-          <el-col :span="20">
-            <el-date-picker
-              type="daterange"
-              placeholder="选择日期"
-              v-model="queryParams.dksjArr"
-              format="yyyy 年 MM 月 dd 日"
-              value-format="yyyy-MM-dd"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              style="width= 60px;"
-            ></el-date-picker>
+          <el-col :span="6">
+            <el-input-number
+              v-model="queryParams.kkcs"
+              :min="1"
+              :controls="false"
+              placeholder="请输入内容"
+            ></el-input-number>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="1.5" style="display: inline-block; line-height: 37px"
+            >可接纳人数:
+          </el-col>
+          <el-col :span="6">
+            <el-input-number
+              v-model="queryParams.kjnrs"
+              :min="1"
+              :controls="false"
+              placeholder="请输入内容"
+            ></el-input-number>
           </el-col>
         </el-row>
       </div>
@@ -110,10 +105,10 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">在岗确认待审核列表</span>
+          <span class="title">课程排课列表</span>
           <i class="Updataicon"></i>
           <el-select
-            v-model="moreIform.nd"
+            v-model="moreIform.xn"
             collapse-tags
             placeholder="请选择"
             @change="handleSearch"
@@ -126,7 +121,7 @@
               :value="item"
             ></el-option>
           </el-select>
-          <span>学年</span>
+          <span>年度</span>
         </div>
         <div class="headerRight">
           <div class="btns borderBlue" @click="mbDown">
@@ -139,20 +134,18 @@
               :action="uploadUrl"
               :show-file-list="false"
               :headers="fileHeader"
+              :data="fileData"
               :on-success="upLoadSuccess"
               :on-error="upLoadError"
             >
               <i class="icon blueIcon"></i><span class="title">导入</span>
             </el-upload>
           </div>
-          <div class="btns borderRed" @click="delList">
-            <i class="icon lightIcon"></i><span class="title">删除</span>
-          </div>
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns fullGreen" @click="pass">
-            <i class="icon passIcon"></i><span class="title1">确认</span>
+          <div class="btns borderRed" @click="delList">
+            <i class="icon lightIcon"></i><span class="title">删除</span>
           </div>
           <div class="btns fullGreen" @click="add">
             <i class="icon passIcon"></i><span class="title1">新增</span>
@@ -172,79 +165,74 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" width="100">
+          <el-table-column prop="kczt" label="课程主题" width="100">
           </el-table-column>
-          <el-table-column prop="xm" label="姓名" width="85"> </el-table-column>
-          <el-table-column prop="ssdwdmmc" label="学院"> </el-table-column>
-          <el-table-column prop="zydmmc" label="专业"> </el-table-column>
-          <el-table-column prop="bjdmmc" label="班级"> </el-table-column>
+          <el-table-column prop="lb" label="类别" width="85"> </el-table-column>
+          <el-table-column
+            prop="ds"
+            label="朋辈导师"
+            :show-overflow-tooltip="true"
           >
-          <el-table-column prop="pyccmc" label="培养层次"> </el-table-column>
+          </el-table-column>
+          <el-table-column
+            prop="kkrq"
+            label="开课日期"
+            :show-overflow-tooltip="true"
+          >
+          </el-table-column>
+          <el-table-column prop="kksj" label="开课时间"> </el-table-column>
+          >
+          <el-table-column prop="kkcs" label="次数"> </el-table-column>
+          >
+          <el-table-column prop="kksc" label="课程时长（分钟）">
+            <template slot-scope="scope">
+              <el-input-number
+                :min="1"
+                controls-position="right"
+                style="width: 120px"
+                v-model="scope.row.kksc"
+                @change="alterjxwh(scope.row)"
+              ></el-input-number>
+            </template>
+          </el-table-column>
+          >
+          <el-table-column prop="kjnrs" label="可接纳人数）"> </el-table-column>
+          >
+          <el-table-column prop="kkdd" label="开课地点"> </el-table-column>
+          >
+          <el-table-column prop="kkdd" label="课程开关" fixed="right">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.kckg"
+                active-color="#23AD6F"
+                inactive-color="#E0E0E0"
+                active-value="0"
+                inactive-value="1"
+                @change="alterjxwh(scope.row)"
+              ></el-switch>
+            </template>
+          </el-table-column>
+          >
+          <el-table-column label="操作" fixed="right">
+            <template slot-scope="scope">
+              <el-button
+                type="text"
+                size="small"
+                @click="hadleDetail2(scope.row)"
+              >
+                <i class="scopeIncon handledie"></i>
+                <span class="handleName">详情</span>
+              </el-button>
+            </template>
+          </el-table-column>
           >
         </el-table>
       </div>
     </div>
-    <!-- <el-dialog title="拒绝理由" :visible.sync="jjModal" width="30%">
-        <template>
-          <el-input placeholder="请输入拒绝理由" v-model="jjly"></el-input>
-        </template>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="jjCancel">取 消</el-button>
-          <el-button type="primary" class="confirm" @click="jjConfirm"
-            >确 定</el-button
-          >
-        </span>
-      </el-dialog> -->
     <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="handleConfirm"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
-    <el-dialog title="新增" :visible.sync="addModal" width="30%">
-      <template>
-        <div>
-          <span>姓名：</span>
-          <el-autocomplete
-            v-model="name"
-            :fetch-suggestions="querySearch"
-            placeholder="请输入姓名"
-            :trigger-on-focus="false"
-            size="small"
-          ></el-autocomplete>
-        </div>
-      </template>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="addCance">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="addCon"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
-    <el-dialog title="确认" :visible.sync="qurenModal" width="30%">
-      <template>
-        <div>
-          <span>附件:</span>
-          <el-upload
-            style="margin-left: 10px"
-            action="#"
-            multiple
-            class="el-upload"
-            :auto-upload="false"
-            ref="upload"
-            :file-list="fileList"
-            :on-change="fileChange"
-            :before-remove="beforeRemove"
-          >
-            <el-button size="small" type="primary">附件上传</el-button>
-          </el-upload>
-        </div>
-      </template>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="qurencancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="qurenCon"
           >确 定</el-button
         >
       </span>
@@ -254,19 +242,15 @@
 
 <script>
 import {
-  zgqrDsh,
-  zgqrDshExp,
-  getYears,
-  mbDownZgqr,
-  zgqrDel,
-  confirmZgqr,
-  addZgqr,
-} from "@/api/jccy/index";
-import { getZY, getBJ } from "@/api/student/index";
+  kcpkList,
+  kcpkMbDown,
+  kcpkExport,
+  delList,
+  upList,
+} from "@/api/kcpk/index";
+import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getCollege } from "@/api/class/maintenanceClass";
-import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getToken } from "@/utils/auth";
-import { getXmXgh } from "@/api/assistantWork/talk";
 export default {
   computed: {
     fileHeader: {
@@ -275,28 +259,37 @@ export default {
           accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
           uuid: new Date().getTime(),
           clientId: "111",
+          kkxn: this.moreIform.xn,
+        };
+      },
+    },
+    fileData: {
+      get() {
+        return {
+          kkxn: this.moreIform.xn,
         };
       },
     },
   },
   data() {
     return {
-      fileList: [],
-      fileListAdd: [],
-      name: "",
-      addModal: false,
-      qurenModal: false,
-      uploadUrl: process.env.VUE_APP_BASE_API + "/jcjyZgqr/importExcelJcjyZgqr",
+      uploadUrl: process.env.VUE_APP_BASE_API + "/rcswPbfdKcb/importPkjh",
       lctModal: false,
       showExport: false,
       searchVal: "",
       select: "",
       isMore: false,
-      zyOps: [],
       moreIform: {
+        lbLsit: [
+          {
+            dm: "0",
+            mc: "院级",
+          },
+          { dm: "1", mc: "校级" },
+        ],
         dwh: [], // 学院下拉框
         bjm: [],
-        nd: "",
+        xn: "",
         zydm: [],
       },
       exportParams: {},
@@ -306,13 +299,15 @@ export default {
       allnd: [], //学年下拉
       commonParams: [],
       queryParams: {
+        lb: "",
         pageNum: 1,
         pageSize: 10,
         total: 0,
-        dksjArr: [],
         // 金额
         orderZd: "",
         orderPx: "",
+        kjnrs: "",
+        kkcs: "",
       },
       training: {
         // 培养层次
@@ -330,58 +325,27 @@ export default {
     this.authConfirm(this.$route.path.split("/"));
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getAllCollege();
-    this.getCode("dmpyccm"); // 培养层次
     this.getSchoolYears();
   },
 
   methods: {
-    fileChange(file, fileList) {
-      if (Number(file.size / 1024 / 1024) > 10) {
-        let uid = file.uid;
-        let idx = fileList.findIndex((item) => item.uid === uid);
-        fileList.splice(idx, 1);
-        this.$message.error("单个文件大小不得超过10M");
-      } else if (file.status == "ready") {
-        this.fileListAdd.push(file); //修改编辑的文件参数
-      }
-    },
-    beforeRemove(file, fileList) {
-      let uid = file.uid;
-      let idx = this.fileListAdd.findIndex((item) => item.uid === uid);
-      this.fileListAdd.splice(idx, 1);
-    },
-    qurencancel() {
-      this.qurenModal = fasle;
-    },
-    qurenCon() {
-      console.log(" this.fileListAdd", this.fileListAdd);
-      let formData = new FormData();
-      if (this.fileListAdd.length > 0) {
-        this.fileListAdd.map((file) => {
-          formData.append("files", file.raw);
-        });
-      }
-      formData.append("id", this.multipleSelection[0].id);
-      confirmZgqr(formData).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("确认成功");
-          this.qurenModal = fasle;
-        }
+    hadleDetail2() {
+      this.$router.push({
+        path: "/friendTutor/kcpkDeatil",
       });
     },
-    addCon() {
-      var data = this.name.slice(
-        this.name.indexOf("(") + 1,
-        this.name.indexOf(")")
-      );
-      addZgqr({ xh: data }).then((res) => {
-        this.$message.success("新增成功");
-        this.addModal = fasle;
-        this.handleSearch();
+    alterjxwh(row) {
+      // kckg 课程开关 0打开，1关闭
+      // kksc
+      var data = {
+        id: row.id,
+        kckg: row.kckg,
+        kksc: row.kksc,
+      };
+      upList(data).then((res) => {
+        this.$message.success("更新成功");
       });
-    },
-    addCance() {
-      this.addModal = fasle;
+      this.handleSearch();
     },
     //拒绝
     delList() {
@@ -393,7 +357,7 @@ export default {
           type: "warning",
         })
           .then(() => {
-            zgqrDel({ ids: delArr }).then((res) => {
+            delList(delArr).then((res) => {
               this.$message({
                 type: "success",
                 message: "删除成功!",
@@ -412,8 +376,8 @@ export default {
       }
     },
     mbDown() {
-      mbDownZgqr().then((res) => {
-        this.downloadFn(res, "在岗确认模板下载", "xlsx");
+      kcpkMbDown().then((res) => {
+        this.downloadFn(res, "课程安排模板下载", "xlsx");
         this.$message.success("操作成功");
       });
     },
@@ -439,10 +403,11 @@ export default {
     },
     //获取学年
     getSchoolYears() {
-      getYears()
+      queryXn()
         .then((res) => {
-          this.allnd = res.data.rows;
-          this.moreIform.nd = res.data.rows[0];
+          console.log("res", res);
+          this.allXn = res.data;
+          this.moreIform.xn = res.data[0].mc;
           this.handleSearch();
         })
         .catch((err) => {});
@@ -451,34 +416,16 @@ export default {
     handleCancel() {
       this.showExport = false;
     },
-    querySearch(queryString, cb) {
-      if (queryString != "") {
-        var XmXgh = { xm: queryString };
-        var result = [];
-        var resultNew = [];
-        getXmXgh(XmXgh).then((res) => {
-          console.log("res", res);
-          result = res.data.stuList;
-          resultNew = result.map((ele) => {
-            return {
-              value: `${ele.mc}(${ele.dm})`,
-              label: ele.mc,
-            };
-          });
-          cb(resultNew);
-        });
-      }
-    },
     // 导出确认
     handleConfirm() {
-      let ids = [];
+      let idList = [];
       for (let item_row of this.multipleSelection) {
-        ids.push(item_row.id);
+        idList.push(item_row.id);
       }
-      this.$set(this.exportParams, "ids", ids);
-      zgqrDshExp(this.exportParams)
+      this.$set(this.exportParams, "idList", idList);
+      kcpkExport(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "在岗确认待审核列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "课程排课列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -491,50 +438,24 @@ export default {
     expor() {
       var data = {};
       data = {
-        xm: this.select == "xm" ? this.searchVal : null,
-        xh: this.select == "xh" ? this.searchVal : null,
-        nd: this.moreIform.nd,
-        ssdwdm: this.moreIform.dwh,
-        bjdm: this.moreIform.bjm,
-        pyccm: this.training.choose,
-        zydm: this.moreIform.zydm,
-        pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
+        kkxn: this.moreIform.xn,
+        kczt: this.select == "kczt" ? this.searchVal : null,
+        dsh: this.select == "dsh" ? this.searchVal : null,
+        dsm: this.select == "dsm" ? this.searchVal : null,
+        kkdd: this.select == "kkdd" ? this.searchVal : null,
+        ...this.queryParams,
       };
       this.exportParams = data;
       this.showExport = true;
     },
-    //确认
-    pass() {
-      this.qurenModal = true;
-    },
-      add() {
-        // ？？？？？？
-         this.$router.push({
+
+    add() {
+      this.$router.push({
         path: "/friendTutor/kcpkAdd",
+        query: {
+          xn: this.moreIform.xn,
+        },
       });
-    },
-    // 培养层次全选
-    handleCheckAllChangeTraining(val) {
-      let allCheck = [];
-      for (let i in this.training.checkBox) {
-        //遍历整个盒子
-        allCheck.push(this.training.checkBox[i].dm);
-      }
-      this.training.choose = val ? allCheck : [];
-
-      this.training.isIndeterminate = false;
-    },
-    // 培养层次单选
-    handleCheckedCitiesChangeTraining(value) {
-      this.training.choose = value;
-
-      let checkedCount = value.length;
-      this.training.checkAll = checkedCount === this.training.checkBox.length;
-      this.training.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.training.checkBox.length;
     },
     checkFormEdit() {
       // 1.校验必填项
@@ -554,55 +475,20 @@ export default {
         })
         .catch((err) => {});
     },
-    changeXY(val) {
-      if (val && val.length == 0) {
-        this.moreIform.zydm = []; // 专业
-        this.moreIform.bjm = []; // 班级
-      }
-      this.getZY(val);
-      this.getBJ(val);
-    },
-    getZY(val) {
-      this.zyOps = [];
-      let data = { DWH: val };
-      if (Object.keys(val).length !== 0) {
-        getZY(data)
-          .then((res) => {
-            this.zyOps = res.data;
-          })
-          .catch((err) => {});
-      }
-    },
-    getBJ(val) {
-      this.bjOps = [];
-      let data = { DWH: val };
-      if (Object.keys(val).length !== 0) {
-        getBJ(data)
-          .then((res) => {
-            this.bjOps = res.data;
-          })
-          .catch((err) => {});
-      }
-    },
     changeSelect() {
       this.searchVal = "";
     },
     // 查询
     handleSearch() {
       let data = {
-        xm: this.select == "xm" ? this.searchVal : null,
-        xh: this.select == "xh" ? this.searchVal : null,
-        nd: this.moreIform.nd,
-        ssdwdm: this.moreIform.dwh,
-        bjdm: this.moreIform.bjm,
-        pyccm: this.training.choose,
-        zydm: this.moreIform.zydm,
-        pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
+        kkxn: this.moreIform.xn,
+        kczt: this.select == "kczt" ? this.searchVal : null,
+        dsh: this.select == "dsh" ? this.searchVal : null,
+        dsm: this.select == "dsm" ? this.searchVal : null,
+        kkdd: this.select == "kkdd" ? this.searchVal : null,
+        ...this.queryParams,
       };
-      zgqrDsh(data)
+      kcpkList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
@@ -613,32 +499,9 @@ export default {
     handleMore() {
       this.isMore = !this.isMore;
     },
-    //获取培养层次
-    getCode(data) {
-      this.getCodeInfoByEnglish(data);
-    },
-    getCodeInfoByEnglish(paramsData) {
-      let data = { codeTableEnglish: paramsData };
-      getCodeInfoByEnglish(data)
-        .then((res) => {
-          switch (paramsData) {
-            case "dmpyccm":
-              this.$set(this.training, "checkBox", res.data);
-              break;
-          }
-        })
-        .catch((err) => {});
-    },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      this.commonParams = this.multipleSelection.map((v) => ({
-        businesId: v.id,
-        processId: v.processid,
-        status: v.status,
-        taskId: v.taskId,
-        xh: v.xh,
-      }));
     },
     //排序
     changeTableSort(column) {

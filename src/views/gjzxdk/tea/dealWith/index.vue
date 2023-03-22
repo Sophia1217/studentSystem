@@ -594,6 +594,7 @@ export default {
         dwh: [], // 学院下拉框
         bjm: [],
         ztStatus: [],
+        xn: "",
       },
       exportParams: {},
       leng: 0,

@@ -17,7 +17,7 @@
             <el-col :span="12">
               <el-form-item label="姓名" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <span>小王</span>
+                  <span>{{ formAdd.dsm }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -38,87 +38,59 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item
-                label="专业"
-                prop="zzmmm"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="42%"
-              >
+              <el-form-item label="专业" class="grayBg" label-width="42%">
                 <div class="sqList">
                   <span> 艺术设计专业</span>
-                  <!-- <el-select
-                    v-model="formAdd.zzmmm"
-                    placeholder="请选择"
-                    v-if="bjzt == 2"
-                  >
-                    <el-option
-                      v-for="(item, index) in zzmmList"
-                      :key="index"
-                      :label="item.mc"
-                      :value="item.dm"
-                    ></el-option>
-                  </el-select> -->
                 </div>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item
-                label="联系电话"
-                class="grayBg"
-                label-width="42%"
-                prop="lxdh"
-                :rules="rules.common"
-              >
+              <el-form-item label="联系电话" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <span> {{ formAdd.lxdh }}</span>
+                  <span> 16133132132</span>
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item
-                label="QQ"
-                prop="qq"
-                :rules="rules.common"
-                class="grayBg"
-                label-width="42%"
-              >
+              <el-form-item label="QQ" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <span> {{ formAdd.qq }}</span>
+                  <span> 32132132</span>
                 </div>
               </el-form-item>
             </el-col>
           </el-row>
         </div>
         <div class="mkHeader">课程信息</div>
-
         <div>
           <el-row>
             <el-col :span="12">
               <el-form-item
-                prop="jydwmc"
+                prop="kczt"
                 :rules="rules.common"
                 label="课程主题"
                 class="grayBg"
                 label-width="42%"
               >
                 <div class="sqList">
-                  <el-input v-model="input" placeholder="请输入内容"></el-input>
+                  <el-input
+                    v-model="formAdd.kczt"
+                    placeholder="请输入内容"
+                  ></el-input>
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item
                 label="类别"
-                prop="rsbmlxdh"
+                prop="lb"
                 :rules="rules.common"
                 class="grayBg"
                 label-width="42%"
               >
                 <div class="sqList">
-                  <span> {{ formAdd.rsbmlxdh }}</span>
+                  <span> {{ formAdd.lb }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -129,11 +101,14 @@
                 label="开课地点"
                 class="grayBg"
                 label-width="42%"
-                prop="shengdm"
+                prop="kkdd"
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-input v-model="input" placeholder="请输入内容"></el-input>
+                  <el-input
+                    v-model="formAdd.kkdd"
+                    placeholder="请输入内容"
+                  ></el-input>
                 </div>
               </el-form-item>
             </el-col>
@@ -142,11 +117,14 @@
                 label="可接纳人数"
                 class="grayBg"
                 label-width="42%"
-                prop="shidm"
+                prop="kjnrs"
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-input v-model="input" placeholder="请输入内容"></el-input>
+                  <el-input
+                    v-model="formAdd.kjnrs"
+                    placeholder="请输入内容"
+                  ></el-input>
                 </div>
               </el-form-item>
             </el-col>
@@ -157,28 +135,41 @@
                 label="起止时间"
                 class="grayBg"
                 label-width="42%"
-                prop="xiandm"
+                prop="qzsjArr"
                 :rules="rules.common"
               >
                 <div class="sqList">
                   <el-date-picker
                     type="daterange"
                     placeholder="选择日期"
-                    v-model="datePicker"
+                    v-model="formAdd.qzsjArr"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
                     range-separator="至"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
-                    style="width:100%;"
+                    style="width: 100%"
                   ></el-date-picker>
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="开课时间" class="grayBg" label-width="42%">
+              <el-form-item
+                label="开课时间"
+                class="grayBg"
+                label-width="42%"
+                prop="kksj"
+                :rules="rules.common"
+              >
                 <div class="sqList">
-                  <el-input v-model="input" placeholder="请输入内容"></el-input>
+                  <el-date-picker
+                    v-model="formAdd.kksj"
+                    type="date"
+                    placeholder="选择开课时间"
+                    format="yyyy 年 MM 月 dd 日"
+                    value-format="yyyy-MM-dd"
+                  >
+                  </el-date-picker>
                 </div>
               </el-form-item>
             </el-col>
@@ -189,11 +180,14 @@
                 label="课程次数"
                 class="grayBg"
                 label-width="42%"
-                prop="sfxzfszd"
+                prop="kkcs"
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-input v-model="input" placeholder="请输入内容"></el-input>
+                  <el-input
+                    v-model="formAdd.kkcs"
+                    placeholder="请输入内容"
+                  ></el-input>
                 </div>
               </el-form-item>
             </el-col>
@@ -202,13 +196,12 @@
                 label="课程时长"
                 class="grayBg"
                 label-width="42%"
-                prop="hylb"
+                prop="kksc"
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <!-- hylbmc -->
                   <el-input
-                    v-model="input"
+                    v-model="formAdd.kksc"
                     placeholder="请输入内容"
                     style="width: 70%"
                   ></el-input
@@ -225,7 +218,7 @@
               <el-input
                 type="textarea"
                 placeholder="请输入内容"
-                v-model="textarea"
+                v-model="formAdd.kcjh"
                 maxlength="1000"
                 show-word-limit
                 rows="12"
@@ -237,81 +230,21 @@
       </el-form>
       <div style="height: 80px"></div>
     </div>
-    <el-dialog title="拒绝理由" :visible.sync="jjModal" width="30%">
-      <template>
-        <el-input placeholder="请输入拒绝理由" v-model="jjly"></el-input>
-      </template>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="jjCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="jjConfirm"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
-    <el-dialog title="退回选择" :visible.sync="thTableModal" width="20%">
-      <template>
-        <el-table
-          :data="tableInner"
-          ref="multipleTable1"
-          style="width: 100%"
-          :default-sort="{ prop: 'date', order: 'descending' }"
-        >
-          <el-table-column width="55">
-            <template slot-scope="scope">
-              <el-radio
-                :label="scope.$index"
-                v-model="tempRadio"
-                @change.native="getRow(scope.$index, scope.row)"
-                >{{ "" }}</el-radio
-              >
-            </template>
-          </el-table-column>
-          <el-table-column
-            type="index"
-            label="序号"
-            width="50"
-          ></el-table-column>
-          <el-table-column prop="actName" label="节点名称" sortable="custom">
-          </el-table-column>
-        </el-table>
-      </template>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="thTableCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="thTableConfirm"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
-    <el-dialog title="退回理由" :visible.sync="thModal" width="30%">
-      <template>
-        <el-input placeholder="请输入退回理由" v-model="thly"></el-input>
-      </template>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="thCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="thConfirm"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
     <div class="editBottom">
-      <div class="btns borderRed" @click="back">
-        <i class="icon backIcon"></i><span class="title">退回</span>
+      <div class="btns borderRed" @click="cancel">
+        <span class="title">取消</span>
       </div>
-      <div class="btns borderRed" @click="refuse">
-        <i class="icon refuseIcon"></i><span class="title">拒绝</span>
-      </div>
-      <div class="btns fullGreen" @click="pass">
-        <i class="icon passIcon"></i><span class="title">确认</span>
+      <div class="btns fullGreen" @click="save">
+        <span class="title">保存</span>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { getEditdDetails, tyFlow, jjFlow, thFinal } from "@/api/jccy/index";
-import { backFlow } from "@/api/dailyBehavior/dormTea";
-// import myMixins from "../../../../gjzxdk/list/jcjy/myMixins";
+import { getEditdDetails } from "@/api/jccy/index";
+
+import { kcpkAdd } from "@/api/kcpk/index";
 export default {
-  //   mixins: [myMixins],
   data() {
     return {
       bjzt: 2,
@@ -324,44 +257,19 @@ export default {
       thly: "",
       tempRadio: false,
       formAdd: {
-        //基本信息
-        xh: "",
-        xm: "",
-        xbmc: "",
-        zzmmm: "",
-        zzmmmc: "",
-        mzmc: "",
-        sfzh: "",
-        bysj: "",
-        xlxz: "",
-        zydmc: "",
-        jtzz: "",
-        lxdh: "",
-        qq: "",
-        email: "",
-        //就业单位基本信息
-        jydwmc: "",
-        rsbmlxdh: "",
-        shengdm: "",
-        shidm: "",
-        xiandm: "",
-        xiangdm: "",
-        sfxzfszd: "",
-        hylb: "",
-        yqdfwnx: "",
-        //学费及贷款基本信息
-        yjnxfje: "",
-        sjjnxfje: "",
-        dkbjje: "",
-        jbyhdm: "",
-        dkhtbh: "",
-        dksjArr: [],
-        dkkssj: "",
-        dkjssj: "",
-        // 申请补偿金额
-        sqbcje: "",
-        yhkh: "",
-        bz: "",
+        dsm: "罗紫怡",
+        dsh: "2021210055",
+        kczt: "",
+        lb: "校级",
+        kkdd: "",
+        kjnrs: "",
+        qzsjArr: [],
+        kkrqks: "",
+        kkrqjs: "",
+        kksj: "",
+        kkcs: "",
+        kcjh: "",
+        xn: "",
       },
       lgnsn: "",
       commonParams: {},
@@ -377,97 +285,53 @@ export default {
       },
     };
   },
+  watch: {
+    "formAdd.qzsjArr": {
+      handler(newName, old) {
+        this.formAdd.kkrqks = newName ? newName[0] : "";
+        this.formAdd.kkrqjs = newName ? newName[1] : "";
+      },
+    },
+  },
   mounted() {
-    this.lgnsn = this.$route.query.state;
-    this.commonParams = this.$route.query.commonParams;
-    this.showDetail();
-    this.getCode("dmzzmmm"); // 政治面貌
+    // this.lgnsn = this.$route.query.state;
+    this.formAdd.kkxn = this.$route.query.xn;
+    // this.showDetail();
   },
 
   methods: {
-    //确认
-    pass() {
-      if (this.commonParams.length > 0) {
-        var data = this.commonParams.map((item) => ({
-          ...item,
-          opMsg: "审核确认",
-        }));
-        tyFlow(data).then((res) => {
-          if (res.errcode == "00") {
-            this.$message.success("审核已确认");
-            this.$router.push({
-              path: "/dailyBehavior/jcjy/jcjyTeaList",
-            });
-          }
+    checkFormAdd() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formAdd.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
+    cancel() {
+      this.$router.push({
+        path: "/friendTutor/kcpk",
+      });
+    },
+    save() {
+      if (!this.checkFormAdd()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        kcpkAdd(this.formAdd).then((res) => {
+          this.$message.success("新增成功");
+          this.$router.push({
+            path: "/friendTutor/kcpk",
+          });
         });
       }
     },
+    //确认
     getRow(index, row) {
       this.multipleSelection1 = row;
-    },
-    refuse() {
-      if (this.commonParams.length > 0) {
-        this.jjModal = true;
-        this.jjly = "";
-      } else {
-        this.$message.error("请先选择一条数据");
-      }
-    },
-    jjCancel() {
-      this.jjModal = false;
-    },
-    jjConfirm() {
-      var data = this.commonParams.map((item) => ({
-        ...item,
-        opMsg: this.jjly,
-      }));
-      jjFlow(data).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("已拒绝");
-          this.$router.push({
-            path: "/dailyBehavior/jcjy/jcjyTeaList",
-          });
-        }
-      });
-      this.jjModal = false;
-    },
-    async back() {
-      var processId = { processId: this.commonParams[0].taskId };
-      await backFlow(processId).then((res) => {
-        this.tableInner = res.data;
-      });
-      this.thTableModal = true;
-    },
-    thTableCancel() {
-      this.thTableModal = false;
-    },
-    thTableConfirm() {
-      if (!!this.tempRadio || this.tempRadio === 0) {
-        this.thTableModal = false;
-        this.thModal = true;
-      } else {
-        this.$message.error("请先勾选退回的节点");
-      }
-    },
-    thCancel() {
-      this.thModal = false;
-    },
-    thConfirm() {
-      this.thModal = false;
-      var data = this.commonParams.map((item) => ({
-        ...item,
-        opMsg: this.thly,
-        actId: this.multipleSelection1.actId,
-        actName: this.multipleSelection1.actName,
-      }));
-      thFinal(data).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("退回成功");
-          this.$router.push({
-            path: "/dailyBehavior/jcjy/jcjyTeaList",
-          });
-        }
-      });
     },
     showDetail() {
       getEditdDetails({
@@ -487,7 +351,6 @@ export default {
 <style lang="scss" scoped>
 .borderRed {
   border: 1px solid grey;
-  color: red;
   background: #fff;
 }
 .fullGreen {

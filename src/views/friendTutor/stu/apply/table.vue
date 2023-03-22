@@ -349,7 +349,6 @@
         <div class="headline">
           <div>课程计划及预期效果</div>
         </div>
-
         <div class="tableStyle">
           <div class="inputArea" style="margin-bottom: 20px">
             <el-form-item prop="kcjh" :rules="rules.common">

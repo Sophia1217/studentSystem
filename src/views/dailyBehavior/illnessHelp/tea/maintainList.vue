@@ -908,13 +908,13 @@
                       :file-list="scope.row.files"
                       :on-change="
                         (file, fileList) => {
-                          fileChangeList(file, fileList, scope.row);
+                          fileChangeList(file, fileList, scope.$index);
                         }
                       "
                       accept=".pdf,.jpg"
                       :before-remove="
                         (file, fileList) => {
-                          beforeRemoveList(file, fileList, scope.row);
+                          beforeRemoveList(file, fileList, scope.$index);
                         }
                       "
                     >
@@ -1456,7 +1456,7 @@ export default {
         return;
       } else {
         let formData = new FormData();
-        formData.append("xh", this.xh);
+        formData.append("xh", this.formAdd.xh);
         var aaa = this.formAdd.jzList[0];
         formData.append("sqPo.sqJe", aaa.sqJe);
         formData.append("sqPo.sqsj", aaa.sqsj);
@@ -1470,28 +1470,30 @@ export default {
             formData.append("sqPo.filesxy", file.raw);
           });
         }
-        debugger;
-        for (let i = 0, len = this.formAdd.jmList.length; i < len; i++) {
-          var location = this.formAdd.jmList[i];
-
-          formData.append("jmList[" + i + "].dbjzsqSqje", location.dbjzsqSqje);
-          formData.append("jmList[" + i + "].jmJe", location.jmJe);
-          formData.append("jmList[" + i + "].sqsj", location.sqsj);
+        if (this.formAdd.jmList.length > 0) {
+          for (let i = 0, len = this.formAdd.jmList.length; i < len; i++) {
+            var location = this.formAdd.jmList[i];
+            formData.append(
+              "jmList[" + i + "].dbjzsqSqje",
+              location.dbjzsqSqje
+            );
+            formData.append("jmList[" + i + "].jmJe", location.jmJe);
+            formData.append("jmList[" + i + "].sqsj", location.sqsj);
+          }
         }
-        // if (this.fileListJm.length > 0) {
-        //   this.fileListJm.map((file) => {
-        //     formData.append("jmList[0].files", file.raw);
-        //   });
-        // }
+        if (this.fileListJm.length > 0) {
+          this.fileListJm.map((file) => {
+            formData.append("jmList[0].files", file.raw);
+          });
+        }
 
-        for (let i = 0, len = this.formAdd.hkList.length; i < len; i++) {
-          var locationInfo = this.formAdd.hkList[i];
-
-          formData.append("hkList[" + i + "].yhJe", locationInfo.yhJe);
-          formData.append("hkList[" + i + "].hkSj", locationInfo.hkSj);
-          if (this.hkList[i].files.length > 0) {
-            this.hkList[i].files.map((ele) => {
-              formData.append("hkList[" + i + "].files", ele.raw);
+        for (let k = 0, len = this.formAdd.hkList.length; k < len; k++) {
+          var locationInfo = this.formAdd.hkList[k];
+          formData.append("hkList[" + k + "].yhJe", locationInfo.yhJe);
+          formData.append("hkList[" + k + "].hkSj", locationInfo.hkSj);
+          if (this.formAdd.hkList[k].files.length > 0) {
+            this.formAdd.hkList[k].files.map((ele) => {
+              formData.append("hkList[" + k + "].files", ele.raw);
             });
           }
         }

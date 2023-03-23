@@ -156,12 +156,12 @@
             <el-radio label="10" size="large">10分</el-radio>
           </el-radio-group></el-form-item
         >
-        <el-form-item label="评价" prop="kcjh" :rules="rules.common">
+        <el-form-item label="评价" prop="pfms" :rules="rules.common">
           <el-input
             type="textarea"
             :rows="5"
             maxlength="500"
-            v-model="formPj.kcjh"
+            v-model="formPj.pfms"
           />
         </el-form-item>
       </el-form>
@@ -304,7 +304,13 @@ export default {
       if (!this.checkFormAdd()) {
         this.$message.error("请完善表单信息！");
       } else {
-        comment(formPj).then((res) => {
+        let data = {
+          kcId: this.kcid,
+          score: this.formPj.score,
+          pfms: this.formPj.pfms,
+        };
+
+        comment(data).then((res) => {
           this.$message.success("评价成功");
           this.query();
           this.pjModal = false;
@@ -313,7 +319,7 @@ export default {
     },
     chModal(row) {
       this.pjModal = true;
-      this.kcid = row.kcid;
+      this.kcid = row.id;
     },
     showDel() {
       if (this.delArr && this.delArr.length > 0) {
@@ -366,8 +372,7 @@ export default {
         query: {
           isEdit: 1,
           id: row.id,
-          processid: row.processid,
-          status: row.status,
+          xh: row.xh,
         },
       });
     },

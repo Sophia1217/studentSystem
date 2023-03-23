@@ -215,6 +215,7 @@ export default {
         { dm: "0", mc: "院级" },
       ],
       detailInfoData: {},
+      xsjbxx: {},
       fwfxList: [{ dm: "", mc: "" }],
       kfwsjdList: [
         {
@@ -326,10 +327,12 @@ export default {
       //     this.$set(this.detailInfoData, "fwfxList", [{ dm: "", mc: "" }]);
       //   });
       // }
-      queryDetail({ id: this.$route.query.id }).then((res) => {
-        this.detailInfoData = res.data.rcswPbfdKcbRes;
-        this.xsjbxx = res.data.xsRes;
-      });
+      queryDetail({ id: this.$route.query.id, xh: this.$route.query.xh }).then(
+        (res) => {
+          this.detailInfoData = res.data.rcswPbfdKcbRes;
+          this.xsjbxx = res.data.xsRes;
+        }
+      );
     },
     handleBack() {
       this.$router.go(-1);

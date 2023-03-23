@@ -1187,6 +1187,34 @@ export const stuRoutes = [
   "childrenId":null,
   "auth":"1"
  },
+ {
+  "id":0,
+  "modId":"5128",
+  "name":"lessonDetail",
+  "path":"/lessonDetail",
+  "title":"朋辈辅导课程详情",
+  "component":"friendTutor/stu/classSet/detail",
+  "icon":"",
+  "modPid":"-1",
+  "isChild":"2",
+  "sortId":28,
+  "modStatus":"1",
+  "hidden":true,
+  "alwaysShow":true,
+  "rem":"",
+  "roleIds":null,
+  "isChecked":null,
+  "vueChecked":false,
+  "meta":{
+      "icon":"",
+      "title":"朋辈辅导课程详情"
+  },
+  "children":[
+
+  ],
+  "childrenId":null,
+  "auth":"1"
+ },
     ];
 
 // 动态路由，基于用户权限动态去加载

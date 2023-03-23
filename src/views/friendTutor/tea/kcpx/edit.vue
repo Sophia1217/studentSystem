@@ -17,14 +17,14 @@
             <el-col :span="12">
               <el-form-item label="姓名" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <span>{{ formAdd.dsm }}</span>
+                  <span>{{ formAdd.xm }}</span>
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="性别" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <span> 男</span>
+                  <span> {{ formAdd.xbmmc }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -33,14 +33,18 @@
             <el-col :span="12">
               <el-form-item label="培养单位" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <span> 艺术设计学院</span>
+                  <span>
+                    {{ formAdd.dwhmc }}
+                  </span>
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="专业" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <span> 艺术设计专业</span>
+                  <span>
+                    {{ formAdd.zydmmc }}
+                  </span>
                 </div>
               </el-form-item>
             </el-col>
@@ -49,14 +53,14 @@
             <el-col :span="12">
               <el-form-item label="联系电话" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <span> 16133132132</span>
+                  <span> {{ formAdd.yddh }}</span>
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="QQ" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <span> 32132132</span>
+                  <span> {{ formAdd.qqhm }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -67,24 +71,25 @@
           <el-row>
             <el-col :span="12">
               <el-form-item
-                prop="jydwmc"
+                prop="kczt"
                 :rules="rules.common"
                 label="课程主题"
                 class="grayBg"
                 label-width="42%"
               >
                 <div class="sqList">
-                  <el-input
+                  <span> {{ formAdd.kczt }}</span>
+                  <!-- <el-input
                     v-model="formAdd.kczt"
                     placeholder="请输入内容"
-                  ></el-input>
+                  ></el-input> -->
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item
                 label="类别"
-                prop="rsbmlxdh"
+                prop="lb"
                 :rules="rules.common"
                 class="grayBg"
                 label-width="42%"
@@ -101,14 +106,15 @@
                 label="开课地点"
                 class="grayBg"
                 label-width="42%"
-                prop="shengdm"
+                prop="kkdd"
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-input
+                  <span> {{ formAdd.kkdd }}</span>
+                  <!-- <el-input
                     v-model="formAdd.kkdd"
                     placeholder="请输入内容"
-                  ></el-input>
+                  ></el-input> -->
                 </div>
               </el-form-item>
             </el-col>
@@ -117,14 +123,15 @@
                 label="可接纳人数"
                 class="grayBg"
                 label-width="42%"
-                prop="shidm"
+                prop="kjnrs"
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-input
+                  <span> {{ formAdd.kjnrs }}</span>
+                  <!-- <el-input
                     v-model="formAdd.kjnrs"
                     placeholder="请输入内容"
-                  ></el-input>
+                  ></el-input> -->
                 </div>
               </el-form-item>
             </el-col>
@@ -135,11 +142,12 @@
                 label="起止时间"
                 class="grayBg"
                 label-width="42%"
-                prop="xiandm"
+                prop="qzsjArr"
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-date-picker
+                  <span> {{ formAdd.kkrq }} </span>
+                  <!-- <el-date-picker
                     type="daterange"
                     placeholder="选择日期"
                     v-model="formAdd.qzsjArr"
@@ -149,21 +157,28 @@
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
                     style="width: 100%"
-                  ></el-date-picker>
+                  ></el-date-picker> -->
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="开课时间" class="grayBg" label-width="42%">
+              <el-form-item
+                label="开课时间"
+                class="grayBg"
+                label-width="42%"
+                prop="kksj"
+                :rules="rules.common"
+              >
                 <div class="sqList">
-                  <el-date-picker
+                  <span> {{ formAdd.kksj }} </span>
+                  <!-- <el-date-picker
                     v-model="formAdd.kksj"
                     type="date"
                     placeholder="选择开课时间"
                     format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"
                   >
-                  </el-date-picker>
+                  </el-date-picker> -->
                 </div>
               </el-form-item>
             </el-col>
@@ -174,14 +189,15 @@
                 label="课程次数"
                 class="grayBg"
                 label-width="42%"
-                prop="sfxzfszd"
+                prop="kkcs"
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <el-input
+                  <span> {{ formAdd.kkcs }} </span>
+                  <!-- <el-input
                     v-model="formAdd.kkcs"
                     placeholder="请输入内容"
-                  ></el-input>
+                  ></el-input> -->
                 </div>
               </el-form-item>
             </el-col>
@@ -190,17 +206,17 @@
                 label="课程时长"
                 class="grayBg"
                 label-width="42%"
-                prop="hylb"
+                prop="kksc"
                 :rules="rules.common"
               >
                 <div class="sqList">
-                  <!-- hylbmc -->
-                  <el-input
+                  <span> {{ formAdd.kksc }} </span>
+                  <!-- <el-input
                     v-model="formAdd.kksc"
                     placeholder="请输入内容"
                     style="width: 70%"
-                  ></el-input
-                  ><span v-html="'\u3000'"></span>分钟
+                  ></el-input> -->
+                  <span v-html="'\u3000'"></span>分钟
                 </div>
               </el-form-item>
             </el-col>
@@ -210,7 +226,8 @@
         <div>
           <el-row>
             <el-col :span="24">
-              <el-input
+              <div>{{ formAdd.kcjh }}</div>
+              <!-- <el-input
                 type="textarea"
                 placeholder="请输入内容"
                 v-model="formAdd.kcjh"
@@ -218,7 +235,7 @@
                 show-word-limit
                 rows="12"
               >
-              </el-input>
+              </el-input> -->
             </el-col>
           </el-row>
         </div>
@@ -226,20 +243,14 @@
       <div style="height: 80px"></div>
     </div>
     <div class="editBottom">
-      <div class="btns borderRed">
-        <i class="icon backIcon"></i><span class="title">退回</span>
-      </div>
-      <div class="btns borderRed">
-        <i class="icon refuseIcon"></i><span class="title">拒绝</span>
-      </div>
-      <div class="btns fullGreen" @click="save">
-        <i class="icon passIcon"></i><span class="title">保存</span>
+      <div class="btns borderRed" @click="cancel">
+        <span class="title">关闭</span>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { getEditdDetails, tyFlow } from "@/api/jccy/index";
+import { queryDetail } from "@/api/kcpk/index";
 export default {
   data() {
     return {
@@ -253,21 +264,22 @@ export default {
       thly: "",
       tempRadio: false,
       formAdd: {
-        dsm: "20041642",
-        dsh: "高耶",
-        kczt: "",
-        lb: "校级",
-        kkdd: "",
-        kjnrs: "",
-        qzsjArr: [],
-        kkrqks: "",
-        kkrqjs: "",
-        kksj: "",
-        kkcs: "",
-        kksczx: "",
-        kcjh: "",
+        // dsm: "罗紫怡",
+        // dsh: "2021210055",
+        // kczt: "",
+        // lb: "校级",
+        // kkdd: "",
+        // kjnrs: "",
+        // qzsjArr: [],
+        // kkrqks: "",
+        // kkrqjs: "",
+        // kksj: "",
+        // kkcs: "",
+        // kcjh: "",
+        // kkxn: "",
       },
       lgnsn: "",
+      xh: "",
       commonParams: {},
       multipleSelection1: {},
       rules: {
@@ -291,44 +303,44 @@ export default {
   },
   mounted() {
     this.lgnsn = this.$route.query.state;
+    this.xh = this.$route.query.xh;
+    console.log("this.xh", this.xh);
+    this.formAdd.kkxn = this.$route.query.xn;
     this.showDetail();
   },
 
   methods: {
-    save() {
-      console.log(" this.formAdd", this.formAdd);
+    showDetail() {
+      var data = {
+        id: this.lgnsn,
+        xh: this.xh,
+      };
+      queryDetail(data).then((res) => {
+        this.formAdd = {
+          ...res.data.rcswPbfdKcbRes,
+          ...res.data.xsRes,
+        };
+      });
+    },
+    checkFormAdd() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formAdd.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
+    },
+    cancel() {
+      this.$router.push({
+        path: "/friendTutor/kcpk",
+      });
     },
     //确认
-    pass() {
-      if (this.commonParams.length > 0) {
-        var data = this.commonParams.map((item) => ({
-          ...item,
-          opMsg: "审核确认",
-        }));
-        tyFlow(data).then((res) => {
-          if (res.errcode == "00") {
-            this.$message.success("审核已确认");
-            this.$router.push({
-              path: "/dailyBehavior/jcjy/jcjyTeaList",
-            });
-          }
-        });
-      }
-    },
     getRow(index, row) {
       this.multipleSelection1 = row;
-    },
-    showDetail() {
-      getEditdDetails({
-        id: this.lgnsn,
-      }).then((res) => {
-        this.dkInfo = res.data.rcswLsdkjlRes;
-        this.formAdd = { ...res.data, ...res.data.rcswjbxxRes };
-        this.formAdd.xlxz = this.formAdd.xz
-          ? `${this.formAdd.xz}年${this.formAdd.pyccmc}`
-          : `${this.formAdd.xz}${this.formAdd.pyccmc}`;
-        this.formAdd.dksjArr = [this.formAdd.dkkssj, this.formAdd.dkjssj];
-      });
     },
   },
 };
@@ -336,7 +348,6 @@ export default {
 <style lang="scss" scoped>
 .borderRed {
   border: 1px solid grey;
-  color: red;
   background: #fff;
 }
 .fullGreen {

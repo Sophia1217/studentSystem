@@ -241,8 +241,6 @@
   </div>
 </template>
 <script>
-import { getEditdDetails } from "@/api/jccy/index";
-
 import { kcpkAdd } from "@/api/kcpk/index";
 export default {
   data() {
@@ -269,7 +267,7 @@ export default {
         kksj: "",
         kkcs: "",
         kcjh: "",
-        xn: "",
+        kkxn: "",
       },
       lgnsn: "",
       commonParams: {},
@@ -294,9 +292,7 @@ export default {
     },
   },
   mounted() {
-    // this.lgnsn = this.$route.query.state;
     this.formAdd.kkxn = this.$route.query.xn;
-    // this.showDetail();
   },
 
   methods: {
@@ -321,29 +317,17 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        kcpkAdd(this.formAdd).then((res) => {
-          this.$message.success("新增成功");
-          this.$router.push({
-            path: "/friendTutor/kcpk",
-          });
+      kcpkAdd(this.formAdd).then((res) => {
+        this.$message.success("新增成功");
+        this.$router.push({
+          path: "/friendTutor/kcpk",
         });
+      });
       }
     },
     //确认
     getRow(index, row) {
       this.multipleSelection1 = row;
-    },
-    showDetail() {
-      getEditdDetails({
-        id: this.lgnsn,
-      }).then((res) => {
-        this.dkInfo = res.data.rcswLsdkjlRes;
-        this.formAdd = { ...res.data, ...res.data.rcswjbxxRes };
-        this.formAdd.xlxz = this.formAdd.xz
-          ? `${this.formAdd.xz}年${this.formAdd.pyccmc}`
-          : `${this.formAdd.xz}${this.formAdd.pyccmc}`;
-        this.formAdd.dksjArr = [this.formAdd.dkkssj, this.formAdd.dkjssj];
-      });
     },
   },
 };

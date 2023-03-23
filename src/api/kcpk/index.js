@@ -46,6 +46,14 @@ export function kcpkExport(query) {
   });
 }
 
+// 详情
+export function queryDetail(query) {
+  return request({
+    url: "/rcswPbfdKcb/queryDetail",
+    method: "post",
+    data: query,
+  });
+}
 //列表
 export function delList(query) {
   return request({

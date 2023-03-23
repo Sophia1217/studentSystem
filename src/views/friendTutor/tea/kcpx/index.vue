@@ -233,7 +233,7 @@
         :total="queryParams.total"
         :page.sync="queryParams.pageNum"
         :limit.sync="queryParams.pageSize"
-        @pagination="query"
+        @pagination="handleSearch"
       />
     </div>
     <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
@@ -302,7 +302,7 @@ export default {
       exportParams: {},
       tableData: [],
       allDwh: [],
-      allnd: [], //学年下拉
+      allXn: [], //学年下拉
       commonParams: [],
       queryParams: {
         lb: "",
@@ -335,9 +335,13 @@ export default {
   },
 
   methods: {
-    hadleDetail2() {
+    hadleDetail2(row) {
       this.$router.push({
         path: "/friendTutor/kcpkDeatil",
+        query: {
+          state: row.id,
+          xh: row.xh,
+        },
       });
     },
     alterjxwh(row) {

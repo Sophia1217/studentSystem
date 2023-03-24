@@ -496,7 +496,7 @@ export default {
       }
     },
     addCance() {
-      this.addModal = fasle;
+      this.addModal = false;
       this.resetForm("formAdd");
       this.basicDate = {};
     },

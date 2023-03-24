@@ -382,7 +382,7 @@
                     v-model="formAddJm.jmJe"
                     v-if="editFlagJm == 2"
                     :min="0"
-                    :max="9999999"
+                    :max="maxJmje"
                     :controls="false"
                   ></el-input-number>
                   <div v-else>{{ formAddJm.jmJe }} 元</div>
@@ -500,7 +500,7 @@
                   <el-input-number
                     v-model="scope.row.yhJe"
                     :min="0"
-                    :max="9999999"
+                    :max="scope.row.dhJe"
                     :controls="false"
                   ></el-input-number>
                 </el-form-item>
@@ -667,6 +667,46 @@ import {
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
   components: { lctCom },
+  watch: {
+    // "formAddHk.addData.dhJe": function (newVal, oldVal) {
+    //   console.log("newVal", newVal);
+    //   console.log("oldVal", oldVal);
+    //   var result = this.tableDateJm.filter((item) => item.status == "10");
+    //   console.log("result", result);
+    //   return (
+    //     this.currentRow.sqJe -
+    //     (result.length > 0
+    //       ? result.reduce((pre, cur) => {
+    //           return pre + Number(cur.jmJe);
+    //         }, 0)
+    //       : 0) -
+    //     (this.tableDateHk.length > 0
+    //       ? this.tableDateHk.reduce((pre, cur) => {
+    //           return pre + Number(cur.yhJe);
+    //         }, 0)
+    //       : 0)
+    //   );
+    // },
+    // deep: true,
+    // immediate: true,
+  },
+  computed: {
+    // 计算最大值
+    maxJmje: {
+      get() {
+        var res = this.tableDateJm.filter((item) => item.status == "01");
+        return (
+          this.currentRow.sqJe -
+          (res.length > 0
+            ? res.reduce((pre, cur) => {
+                return pre + Number(cur.jmJe);
+              }, 0)
+            : 0)
+        );
+      },
+      set() {},
+    },
+  },
   data() {
     return {
       dglxList: [],
@@ -884,7 +924,7 @@ export default {
           jmLy: "",
         }; // 每次打开弹框先将弹框的table数组置空
         this.fileListJm = [];
-
+        // tableDateJm
         this.$set(this.formAddJm, "dbjzsqId", this.currentRow.id || "");
         this.$set(this.formAddJm, "dbjzsqSqje", this.currentRow.sqJe || "");
         this.addModalJm = true;
@@ -898,12 +938,14 @@ export default {
         var jm = 0;
         //减免
         for (let i = 0; i < this.tableDateJm.length; i++) {
-          //目前是所有状态相加
-          jm = jm + Number(this.tableDateJm[i].jmJe);
+          //目前是所有状态相加，给你改一下 status == "10"
+          if (this.tableDateJm[i].status == "10") {
+            jm += Number(this.tableDateJm[i].jmJe);
+          }
         }
         //已还款
         for (let j = 0; j < this.tableDateHk.length; j++) {
-          jm = jm + Number(this.tableDateHk[j].yhJe);
+          jm += Number(this.tableDateHk[j].yhJe);
         }
         // console.log("jmje", jm);
         this.$set(
@@ -1319,10 +1361,10 @@ export default {
         if (this.addFlagJm == 1) {
           formData.append("id", "");
           if (this.fileListJm.length > 0) {
-          this.fileListJm.map((file) => {
-            formData.append("files", file.raw);
-          });
-        }
+            this.fileListJm.map((file) => {
+              formData.append("files", file.raw);
+            });
+          }
         } else {
           formData.append("id", data.id);
           if (this.fileListAddJm.length > 0) {

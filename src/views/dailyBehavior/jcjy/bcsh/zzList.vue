@@ -372,7 +372,7 @@ export default {
       this.$set(this.exportParams, "ids", ids);
       allExp(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "贷款审核列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "全国资助中心贷款审核列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -439,7 +439,7 @@ export default {
         })
           .then((res) => {
             //  this.$set(this.multipleSelection, "nd", ids);
-            allListJj(this. multipleSelection).then(() => {
+            allListJj(this.multipleSelection).then(() => {
               this.$message({
                 type: "success",
                 message: "拒绝成功!",
@@ -463,17 +463,15 @@ export default {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning",
-        })
-          .then(() => {
-            allListTy(this. multipleSelection ).then((res) => {
-              this.$message({
-                type: "success",
-                message: "确认成功!",
-              });
-              this.handleSearch();
+        }).then(() => {
+          allListTy(this.multipleSelection).then((res) => {
+            this.$message({
+              type: "success",
+              message: "确认成功!",
             });
-          })
-         
+            this.handleSearch();
+          });
+        });
       } else {
         this.$message.error("请先选择一条数据");
       }

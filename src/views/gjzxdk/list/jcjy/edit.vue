@@ -675,7 +675,7 @@
                   <el-input-number
                     v-else
                     style="width: 216px"
-                    :min="0"
+                    :min="14"
                     :max="9999999"
                     :controls="false"
                     v-model="formAdd.yhkh"
@@ -774,7 +774,7 @@ export default {
         dkjssj: "",
         // 申请补偿金额
         sqbcje: "",
-        yhkh: "",
+        yhkh: undefined,
         bz: "",
       },
       lgnsn: "",

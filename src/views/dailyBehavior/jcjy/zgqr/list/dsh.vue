@@ -97,24 +97,6 @@
             </div>
           </el-col>
         </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="1.5" style="display: inline-block; line-height: 37px"
-            >申请时间：</el-col
-          >
-          <el-col :span="20">
-            <el-date-picker
-              type="daterange"
-              placeholder="选择日期"
-              v-model="queryParams.dksjArr"
-              format="yyyy 年 MM 月 dd 日"
-              value-format="yyyy-MM-dd"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              style="width= 60px;"
-            ></el-date-picker>
-          </el-col>
-        </el-row>
       </div>
     </div>
     <!-- table -->
@@ -323,7 +305,6 @@ export default {
         pageNum: 1,
         pageSize: 10,
         total: 0,
-        dksjArr: [],
         // 金额
         orderZd: "",
         orderPx: "",
@@ -371,7 +352,7 @@ export default {
       this.fileList.splice(idx, 1);
     },
     qurencancel() {
-      this.qurenModal = fasle;
+      this.qurenModal = false;
     },
     qurenCon() {
       if (this.fileList.length > 0) {
@@ -401,12 +382,12 @@ export default {
       );
       addZgqr({ xh: data }).then((res) => {
         this.$message.success("新增成功");
-        this.addModal = fasle;
+        this.addModal = false;
         this.handleSearch();
       });
     },
     addCance() {
-      this.addModal = fasle;
+      this.addModal = false;
     },
     //拒绝
     delList() {

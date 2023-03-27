@@ -992,7 +992,7 @@ import {
   importResult,
   queryDbjzDetail,
 } from "@/api/dailyBehavior/illnessHelpTea";
-import { importHkjl } from "@/api/dailyBehavior/illnessHelpStu";
+import { importHkjl,deleteHkjl } from "@/api/dailyBehavior/illnessHelpStu";
 import { getZY, getBJ } from "@/api/student/index";
 import { queryStuList } from "@/api/familyDifficulties/difficultTea";
 import { querywj, delwj, Exportwj } from "@/api/assistantWork/classEvent";
@@ -1207,7 +1207,7 @@ export default {
         importHkjl(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("还款新增成功");
-            this.queryHk();
+            // this.queryHk();
           } else {
             this.$message.error("还款新增失败");
           }

@@ -482,7 +482,7 @@
                   :prop="'addData.' + scope.$index + '.dhJe'"
                   :rules="rules.dhJe"
                 >
-                  <el-input maxlength="200" v-model="scope.row.dhJe" />
+                  <el-input maxlength="200" v-model="scope.row.dhJe" disabled/>
                 </el-form-item>
               </template>
             </el-table-column>

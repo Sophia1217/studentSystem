@@ -4,18 +4,18 @@ import request from '@/utils/request'
 
 
 //日常行为挂科预警列表查询导出
-export function excelExportGkyjList(query) {
+export function excelExportList(query) {
     return request({
-      url: '/rcxwyj/excelExportGkyjList',
+      url: '/rcxwyj/excelExportRcxwyjWangList',
       method: 'post',
       responseType:"blob",
       data: query
     })
   }
   //日常行为挂科预警列表查询
-  export function queryRcxwyjGkyjList(query) {
+  export function queryList(query) {
     return request({
-      url: '/rcxwyj/queryRcxwyjGkyjList',
+      url: '/rcxwyj/queryRcxwyjWangList',
       method: 'post',
       data: query
     })

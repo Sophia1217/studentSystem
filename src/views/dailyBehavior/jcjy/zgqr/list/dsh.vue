@@ -519,11 +519,7 @@ export default {
       this.qurenModal = true;
     },
     add() {
-      if (this.multipleSelection.length == 1) {
-        this.addModal = true;
-      } else {
-        this.$message.error("只能确认一条");
-      }
+      this.addModal = true;
     },
     // 培养层次全选
     handleCheckAllChangeTraining(val) {

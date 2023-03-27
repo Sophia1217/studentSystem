@@ -61,7 +61,6 @@
 
           <el-col :span="6">
             <span>专业：</span>
-
             <el-select
               v-model="moreIform.zydm"
               multiple
@@ -71,7 +70,7 @@
               size="small"
             >
               <el-option
-                v-for="item in allDwh"
+                v-for="item in zyOps"
                 :key="item.dm"
                 :label="item.mc"
                 :value="item.dm"

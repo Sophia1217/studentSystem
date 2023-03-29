@@ -17,6 +17,7 @@
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
+            <el-option label="审核人" value="shrxm"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
             >查询</el-button
@@ -66,29 +67,25 @@
               ></el-option>
             </el-select>
           </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="1.5" style="display: inline-block; line-height: 37px"
-            >贷款总金额（区间）</el-col
-          >
-          <el-col :span="1.5">
-            <el-input-number
-              v-model="queryParams.dkzjeStart"
-              :controls="false"
-              style="width: 70%"
-            ></el-input-number>
-          </el-col>
-          <el-col :span="0.5" style="margin-top: 7px; margin-left: -52px">
-            ——
-          </el-col>
-          <el-col :span="1.5">
-            <el-input-number
-              v-model="queryParams.dkzjeEnd"
-              :controls="false"
-              style="width: 70%"
-            ></el-input-number>
+          <el-col :span="6">
+            <span>专<span v-html="'\u3000\u3000'"></span>业：</span>
+            <el-select
+              v-model="moreIform.zydmList"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in zyOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
           </el-col>
         </el-row>
+
         <el-row :gutter="20" class="mt15">
           <el-col :span="1.5" style="display: inline-block; line-height: 37px"
             >申请时间：</el-col
@@ -97,7 +94,7 @@
             <el-date-picker
               type="daterange"
               placeholder="选择日期"
-              v-model="queryParams.dksjArr"
+              v-model="queryParams.sqsj"
               format="yyyy 年 MM 月 dd 日"
               value-format="yyyy-MM-dd"
               range-separator="至"
@@ -105,6 +102,64 @@
               end-placeholder="结束日期"
               style="width= 60px;"
             ></el-date-picker>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="1.5" style="display: inline-block; line-height: 37px"
+            >审核时间：</el-col
+          >
+          <el-col :span="20">
+            <el-date-picker
+              type="daterange"
+              placeholder="选择日期"
+              v-model="queryParams.shsj"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              style="width= 60px;"
+            ></el-date-picker>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="1.5">审核状态：</el-col>
+          <el-col :span="8">
+            <div class="checkbox">
+              <el-select
+                v-model="moreIform.ztStatus"
+                multiple
+                collapse-tags
+                placeholder="请选择"
+                size="small"
+              >
+                <el-option
+                  v-for="(item, index) in ztStatus"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </div>
+          </el-col>
+          <el-col :span="1.5">申请类别：</el-col>
+          <el-col :span="8">
+            <div class="checkbox">
+              <el-select
+                v-model="moreIform.sqlxm"
+                multiple
+                collapse-tags
+                placeholder="请选择"
+                size="small"
+              >
+                <el-option
+                  v-for="(item, index) in sqlxOps"
+                  :key="index"
+                  :label="item.mc"
+                  :value="item.dm"
+                ></el-option>
+              </el-select>
+            </div>
           </el-col>
         </el-row>
       </div>
@@ -134,15 +189,15 @@
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns borderRed" @click="back" v-show="AUTHFLAG">
+          <!-- <div class="btns borderRed" @click="back" v-show="AUTHFLAG">
             <i class="icon backIcon"></i><span class="title">退回</span>
           </div>
           <div class="btns borderRed" @click="refuse" v-show="AUTHFLAG">
             <i class="icon refuseIcon"></i><span class="title">拒绝</span>
           </div>
-          <div class="btns fullGreen" @click="pass(1)" v-show="AUTHFLAG">
+          <div class="btns fullGreen" @click="passDirect" v-show="AUTHFLAG">
             <i class="icon passIcon"></i><span class="title1">通过</span>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="mt15">
@@ -159,19 +214,75 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" width="100">
-          </el-table-column>
-          <el-table-column prop="xm" label="姓名" width="85"> </el-table-column>
-          <el-table-column prop="ssdwdmmc" label="培养单位"> </el-table-column>
-          <el-table-column prop="bjdmmc" label="班级"> </el-table-column>
           <el-table-column
-            prop="dkzje"
-            label="贷款总金额（元）"
+            prop="xh"
+            label="学号"
+            width="100"
+            sortable
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="xm"
+            label="姓名"
+            width="85"
+            sortable
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="pydw"
+            label="培养单位"
+            sortable
+            show-overflow-tooltip
             min-width="100"
           >
           </el-table-column>
-          <el-table-column prop="dkqx" label="贷款期限（月）"> </el-table-column
-          ><el-table-column prop="sqsj" label="申请时间"> </el-table-column>
+          <el-table-column
+            prop="zy"
+            label="专业"
+            sortable
+            show-overflow-tooltip
+            min-width="100"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="bj"
+            label="班级"
+            sortable
+            show-overflow-tooltip
+            min-width="100"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="sqlx"
+            label="申请类型"
+            min-width="100"
+            sortable
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="sqjezj"
+            label="申请金额总计（元）"
+            min-width="100"
+            sortable
+          >
+          </el-table-column
+          ><el-table-column
+            prop="sqsj"
+            label="申请时间"
+            min-width="100"
+            sortable
+          >
+          </el-table-column>
+
+          <el-table-column
+            prop="statusMc"
+            label="申核状态"
+            sortable="custom"
+            min-width="100"
+          ></el-table-column>
           <el-table-column
             prop="jg"
             label="审核进度"
@@ -194,7 +305,7 @@
                 @click="hadleDetail(scope.row)"
               >
                 <i class="scopeIncon handledie"></i>
-                <span class="handleName">申报详情</span>
+                <span class="handleName">详情</span>
               </el-button>
             </template>
           </el-table-column>
@@ -256,365 +367,16 @@
           >
         </span>
       </el-dialog>
-      <el-dialog title="退回理由" :visible.sync="thModal" width="30%">
-        <template>
-          <el-input placeholder="请输入退回理由" v-model="thly"></el-input>
-        </template>
+      <el-dialog title="通过提示" :visible.sync="directModal" width="30%">
+        <span>确认通过？</span>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="thCancel">取 消</el-button>
-          <el-button type="primary" class="confirm" @click="thConfirm"
+          <el-button @click="directCancel">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="directConfirm"
             >确 定</el-button
           >
         </span>
       </el-dialog>
-      <el-dialog
-        title="详情"
-        :visible.sync="editModal"
-        @close="editCance"
-        width="50%"
-        :close-on-click-modal="false"
-      >
-        <template>
-          <el-form
-            ref="formEdit"
-            :model="formEdit"
-            :rules="rules"
-            :inline-message="true"
-          >
-            <el-row>
-              <h3>学生信息</h3>
-              <el-col :span="12">
-                <el-form-item label="学号" class="grayBg" label-width="42%">
-                  <div class="sqList">
-                    <span> {{ formEdit.xh }}</span>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="姓名" class="grayBg" label-width="42%">
-                  <div class="sqList">
-                    <span> {{ formEdit.xm }}</span>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="性别" class="grayBg" label-width="42%">
-                  <div class="sqList">
-                    <span> {{ formEdit.xbmc }}</span>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="身份证号" class="grayBg" label-width="42%">
-                  <div class="sqList">
-                    <span> {{ formEdit.sfzh }}</span>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="学院" class="grayBg" label-width="42%">
-                  <div class="sqList">
-                    <span> {{ formEdit.ssdwdmmc }}</span>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="专业" class="grayBg" label-width="42%">
-                  <div class="sqList">
-                    <span> {{ formEdit.zydmmc }}</span>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
 
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="班级" class="grayBg" label-width="42%">
-                  <div class="sqList">
-                    <span> {{ formEdit.bjdmmc }}</span>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="学制" class="grayBg" label-width="42%">
-                  <div class="sqList">
-                    <span> {{ formEdit.xz }}</span>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="毕业日期" class="grayBg" label-width="42%">
-                  <div class="sqList">
-                    <span> {{ formEdit.byrq }}</span>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="联系电话" class="grayBg" label-width="42%">
-                  <div class="sqList">
-                    <span> {{ formEdit.lxdh }}</span>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="24">
-                <el-form-item label="家庭地址" class="grayBg" label-width="21%">
-                  <div class="sqList">
-                    <span> {{ formEdit.jtzz }}</span>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <h3>贷款信息</h3>
-              <el-col :span="12">
-                <el-form-item label="贷款学年" class="grayBg" label-width="42%">
-                  <div class="sqList">
-                    <span> {{ formEdit.xn }}</span>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item
-                  label="贷款总金额（元）"
-                  prop="dkzje"
-                  :rules="rules.common"
-                  class="grayBg"
-                  label-width="42%"
-                >
-                  <div class="sqList">
-                    <el-input-number
-                      :min="0"
-                      :max="9999999"
-                      style="width: 216px"
-                      controls-position="right"
-                      v-model="formEdit.dkzje"
-                      placeholder="请输入内容"
-                    ></el-input-number>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item
-                  label="住宿费应收数（元）"
-                  prop="zsfys"
-                  :rules="rules.common"
-                  class="grayBg"
-                  label-width="42%"
-                >
-                  <div class="sqList">
-                    <el-input-number
-                      :min="0"
-                      :max="9999999"
-                      style="width: 216px"
-                      controls-position="right"
-                      v-model="formEdit.zsfys"
-                      placeholder="请输入内容"
-                    ></el-input-number>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item
-                  label="学费应收数（元）"
-                  prop="xfys"
-                  :rules="rules.common"
-                  class="grayBg"
-                  label-width="42%"
-                >
-                  <div class="sqList">
-                    <el-input-number
-                      :min="0"
-                      :max="9999999"
-                      style="width: 216px"
-                      controls-position="right"
-                      v-model="formEdit.xfys"
-                      placeholder="请输入内容"
-                    ></el-input-number>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item
-                  label="贷款类型"
-                  prop="dklx"
-                  :rules="rules.common"
-                  class="grayBg"
-                  label-width="42%"
-                >
-                  <div class="sqList">
-                    <el-select v-model="formEdit.dklx" placeholder="请选择">
-                      <el-option
-                        v-for="(item, index) in dglxList"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      ></el-option>
-                    </el-select>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item
-                  label="贷款银行"
-                  prop="dkyh"
-                  :rules="rules.common"
-                  class="grayBg"
-                  label-width="42%"
-                >
-                  <div class="sqList">
-                    <el-select v-model="formEdit.dkyh" placeholder="请选择">
-                      <el-option
-                        v-for="(item, index) in dgyhList"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.dm"
-                      ></el-option>
-                    </el-select>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-
-            <el-row>
-              <el-col :span="12">
-                <el-form-item
-                  label="合同编号"
-                  prop="htbh"
-                  :rules="rules.common"
-                  class="grayBg"
-                  label-width="42%"
-                >
-                  <div class="sqList">
-                    <el-input
-                      :minlength="0"
-                      :maxlength="50"
-                      v-model="formEdit.htbh"
-                      placeholder="请输入内容"
-                    ></el-input>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item
-                  label="贷款开始时间"
-                  prop="dkkssj"
-                  :rules="rules.common"
-                  class="grayBg"
-                  label-width="42%"
-                >
-                  <div class="sqList">
-                    <el-date-picker
-                      type="date"
-                      placeholder="选择日期"
-                      value-format="yyyy-MM-dd "
-                      v-model="formEdit.dkkssj"
-                    ></el-date-picker>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item
-                  label="贷款期限（月）"
-                  prop="dkqx"
-                  :rules="rules.common"
-                  class="grayBg"
-                  label-width="42%"
-                >
-                  <div class="sqList">
-                    <el-input-number
-                      :min="0"
-                      :max="100"
-                      style="width: 216px"
-                      controls-position="right"
-                      v-model="formEdit.dkqx"
-                      placeholder="请输入内容"
-                    ></el-input-number>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item
-                  label="回执检验码"
-                  prop="hzjym"
-                  :rules="rules.common"
-                  class="grayBg"
-                  label-width="42%"
-                >
-                  <div class="sqList">
-                    <el-input
-                      :minlength="0"
-                      :maxlength="50"
-                      v-model="formEdit.hzjym"
-                      placeholder="请输入内容"
-                    ></el-input>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="23">
-                <el-form-item label="备注" prop="bz" :rules="rules.common">
-                  <el-input
-                    v-model="formEdit.bz"
-                    type="textarea"
-                    :autosize="{ minRows: 6, maxRows: 6 }"
-                    placeholder="请输入内容"
-                    maxlength="500"
-                  ></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="20">
-                <el-form-item label="申请材料">
-                  <el-upload
-                    action="#"
-                    multiple
-                    class="el-upload"
-                    :auto-upload="false"
-                    ref="upload"
-                    :file-list="formEdit.fileList"
-                    :on-change="fileChangeEdit"
-                    :before-remove="beforeRemoveEdit"
-                  >
-                    <el-button size="small" type="primary">点击上传</el-button>
-                  </el-upload>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-form>
-        </template>
-        <span slot="footer" class="dialog-footer footerFlex">
-          <el-button
-            @click="editCance"
-            style="margin-right: 12px; padding: 8px 20px"
-            >关 闭</el-button
-          >
-          <div class="btns borderRed" @click="back">
-            <i class="icon backIcon"></i><span class="title">退回</span>
-          </div>
-          <div class="btns borderRed" @click="refuse">
-            <i class="icon refuseIcon"></i><span class="title">拒绝</span>
-          </div>
-          <div class="btns fullGreen" @click="pass(2)">
-            <i class="icon passIcon"></i><span class="title1">通过</span>
-          </div>
-        </span>
-      </el-dialog>
       <pagination
         v-show="queryParams.total > 0"
         :total="queryParams.total"
@@ -641,27 +403,19 @@
 
 <script>
 import { queryXn } from "@/api/dailyBehavior/yearSum";
-import { delwj } from "@/api/assistantWork/classEvent";
-import {
-  dshList,
-  dshExp,
-  tyFlow,
-  jjFlow,
-  thFinal,
-  edit,
-  getDetails,
-} from "@/api/gzzxdk/gjzxdk";
+import { queryZbrwFlowDshList, jjFlow, tyFlow, htFlow } from "@/api/zbrw/zbrw";
+
 import { getCollege } from "@/api/class/maintenanceClass";
 import { backFlow } from "@/api/dailyBehavior/dormTea";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
-import { getBJ } from "@/api/student/index";
+import { getBJ, getZY } from "@/api/student/index";
 import lctCom from "../../../../components/lct";
 export default {
   components: { lctCom },
-  name: "dksh",
   data() {
     return {
       lctModal: false,
+      directModal: false,
       showExport: false,
       ztStatus: [],
       searchVal: "",
@@ -693,25 +447,22 @@ export default {
       allDwh: [],
       bjOps: [], // 班级下拉
       allXn: [], //学年下拉
+      zyOps: [],
+      sqlxOps: [
+        { dm: "1", mc: "退役士兵" },
+        { dm: "2", mc: "应征入伍" },
+      ],
       commonParams: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
         total: 0,
-        dksjArr: [],
-        // 金额
-        dkzjeEnd: 9999999,
-        dkzjeStart: 1,
         orderZd: "",
         orderPx: "",
+        sqsj: [],
+        shsj: [],
       },
-      training: {
-        // 培养层次
-        checkAll: false,
-        choose: [],
-        checkBox: [],
-        isIndeterminate: true,
-      },
+
       multipleSelection: [],
       multipleSelection1: {},
       jjModal: false,
@@ -733,36 +484,11 @@ export default {
     this.authConfirm(this.$route.path.split("/"));
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getAllCollege();
-    this.getCode("dmpyccm"); // 培养层次
+    this.getCode("dmsplcm"); // 培养层次
     this.getSchoolYears();
-    this.getCode("dmgjzxdk"); //国家助学贷款码
-    this.getCode("dmzudkyhm"); //国家助学贷款银行码
   },
 
   methods: {
-    fileChangeEdit(file, fileList) {
-      if (Number(file.size / 1024 / 1024) > 10) {
-        let uid = file.uid;
-        let idx = fileList.findIndex((item) => item.uid === uid);
-        fileList.splice(idx, 1);
-        this.$message.error("单个文件大小不得超过10M");
-      } else if (file.status == "ready") {
-        this.fileListAdd.push(file); //修改编辑的文件参数
-      }
-    },
-    editCance() {
-      this.editModal = false;
-      this.$refs.formEdit.resetFields();
-    },
-    beforeRemoveEdit(file, fileList) {
-      let uid = file.uid;
-      let idx = this.fileListAdd.findIndex((item) => item.uid === uid);
-      this.fileListAdd.splice(idx, 1);
-      if (file.id) {
-        //如果是后端返回的文件就走删除接口，不然前端自我删除
-        delwj({ id: file.id.toString() }).then();
-      }
-    },
     //获取学年
     getSchoolYears() {
       queryXn()
@@ -784,51 +510,56 @@ export default {
         ids.push(item_row.businesId);
       }
       this.$set(this.exportParams, "ids", ids);
-      dshExp(this.exportParams)
-        .then((res) => {
-          this.downloadFn(res, "贷款待审核列表导出.xlsx", "xlsx");
-          if (this.$store.getters.excelcount > 0) {
-            this.$message.success(
-              `已成功导出${this.$store.getters.excelcount}条数据`
-            );
-          }
-        })
-        .catch((err) => {});
+      // dshExp(this.exportParams)
+      //   .then((res) => {
+      //     this.downloadFn(res, "贷款待审核列表导出.xlsx", "xlsx");
+      //     if (this.$store.getters.excelcount > 0) {
+      //       this.$message.success(
+      //         `已成功导出${this.$store.getters.excelcount}条数据`
+      //       );
+      //     }
+      //   })
+      //   .catch((err) => {});
       this.showExport = false;
     },
     expor() {
-      var data = {};
-      data = {
+      let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
+        shr: this.select == "shrxm" ? this.searchVal : null,
+        zydmList: this.moreIform.zydmList,
+        sqlxmList: this.moreIform.sqlxm,
         xn: this.moreIform.xn,
-        dkkssjEnd:
-          this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[1]
+        sqsjEnd:
+          this.queryParams.sqsj && this.queryParams.sqsj.length > 0
+            ? this.queryParams.sqsj[1]
             : "",
-        dkkssjStart:
-          this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[0]
+        sqsjStart:
+          this.queryParams.sqsj && this.queryParams.sqsj.length > 0
+            ? this.queryParams.sqsj[0]
             : "",
-        dkzjeEnd: this.queryParams.dkzjeEnd,
-        dkzjeStart: this.queryParams.dkzjeStart,
-        bjdm: this.moreIform.bjm,
-        ssdwdm: this.moreIform.dwh,
+        statusList: this.moreIform.ztStatus,
+        shsjEnd:
+          this.queryParams.shsj && this.queryParams.shsj.length > 0
+            ? this.queryParams.shsj[1]
+            : "",
+        shsjStart:
+          this.queryParams.shsj && this.queryParams.shsj.length > 0
+            ? this.queryParams.shsj[0]
+            : "",
+        bjmList: this.moreIform.bjm,
+        pydwmLsit: this.moreIform.dwh,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
-        pageNum: 0,
-        pageSize: 0,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
-      }; //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
+      };
+      //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
       this.exportParams = data;
       this.showExport = true;
     },
-    detailCancel() {
-      this.editModal = false;
-      this.commonParams = [];
-    },
-    getCode1(val) {
+
+    getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
         switch (val) {
@@ -852,81 +583,31 @@ export default {
     getRow(index, row) {
       this.multipleSelection1 = row;
     },
-    //通过
-    pass(num) {
-      //如果是1，就代表是外层的通过，是2的话就是详情里面的通过，需要先提交表单参数
-      if (num == 1) {
-        if (this.commonParams.length > 0) {
-          var data = this.commonParams.map((item) => ({
-            ...item,
-            opMsg: "审核通过",
-          }));
-          tyFlow(data).then((res) => {
-            if (res.errcode == "00") {
-              this.$message.success("审核已通过");
-              this.editModal = false;
-              this.handleSearch();
-            }
-          });
-        } else {
-          this.$message.error("请先选择一条数据");
-        }
+    //直接通过
+    passDirect() {
+      if (this.commonParams.length > 0) {
+        this.directModal = true;
       } else {
-        if (!this.checkFormEdit()) {
-          this.$message.error("请完善表单相关信息！");
-          return;
-        } else {
-          var data = this.formEdit;
-          let formData = new FormData();
-          formData.append("dkxn", data.xn);
-          formData.append("bz", data.bz);
-          formData.append("zsfys", data.zsfys);
-          formData.append("xfys", data.xfys);
-          formData.append("dkzje", data.dkzje);
-          formData.append("dklx", data.dklx);
-          formData.append("dkyh", data.dkyh);
-          formData.append("htbh", data.htbh);
-          formData.append("dkkssj", data.dkkssj);
-          formData.append("dkqx", data.dkqx);
-          formData.append("hzjym", data.hzjym);
-          formData.append("shrgh", this.$store.getters.userId);
-          formData.append("xh", data.xh);
-          formData.append("id", data.id);
-          if (this.fileListAdd.length > 0) {
-            this.fileListAdd.map((file) => {
-              formData.append("files", file.raw);
-            });
-          }
-          edit(formData).then((res) => {
-            if (res.errcode == "00") {
-              var params = this.commonParams.map((item) => ({
-                ...item,
-                opMsg: "审核通过",
-              }));
-              tyFlow(params).then((res) => {
-                if (res.errcode == "00") {
-                  this.$message.success("审核已通过");
-                  this.editModal = false;
-                  this.handleSearch();
-                }
-              });
-            } else {
-              this.$message.error("编辑失败");
-            }
-          });
-        }
+        this.$message.error("请先选择一条数据");
       }
     },
-    checkFormEdit() {
-      // 1.校验必填项
-      let validForm = false;
-      this.$refs.formEdit.validate((valid) => {
-        validForm = valid;
+    directCancel() {
+      this.directModal = false;
+    },
+    //直接通过确认
+    directConfirm() {
+      var data = this.commonParams.map((item) => ({
+        ...item,
+        opMsg: "审核通过",
+        tjly: "",
+      }));
+      tyFlow(data).then((res) => {
+        if (res.errcode == "00") {
+          this.$message.success("审核已通过");
+          this.handleSearch();
+        }
       });
-      if (!validForm) {
-        return false;
-      }
-      return true;
+      this.directModal = false;
     },
     //拒绝
     refuse() {
@@ -948,7 +629,7 @@ export default {
       jjFlow(data).then((res) => {
         if (res.errcode == "00") {
           this.$message.success("已拒绝");
-          this.editModal = false;
+
           this.handleSearch();
         }
       });
@@ -987,9 +668,8 @@ export default {
         actId: this.multipleSelection1.actId,
         actName: this.multipleSelection1.actName,
       }));
-      thFinal(data).then((res) => {
+      htFlow(data).then((res) => {
         if (res.errcode == "00") {
-          this.editModal = false;
           this.$message.success("退回成功");
           this.handleSearch();
         }
@@ -1008,6 +688,19 @@ export default {
         this.moreIform.bjm = []; // 班级
       }
       this.getBJ(val);
+      this.getZY(val);
+    },
+    // 学院找专业
+    getZY(val) {
+      this.zyOps = [];
+      let data = { DWH: val };
+      if (Object.keys(val).length !== 0) {
+        getZY(data)
+          .then((res) => {
+            this.zyOps = res.data;
+          })
+          .catch((err) => {});
+      }
     },
     getBJ(val) {
       this.bjOps = [];
@@ -1020,30 +713,18 @@ export default {
           .catch((err) => {});
       }
     },
-    async hadleDetail(row) {
-      //单个退回通过拒绝的参数
-      this.commonParams = [
-        {
-          businesId: row.businesId,
-          processId: row.processid,
-          status: row.status,
-          taskId: row.taskId,
+    hadleDetail(row) {
+      this.$router.push({
+        path: "/dailyBehavior/zbrwTea/rwdcDetail",
+        query: {
           xh: row.xh,
+          isEdit: 1,
+          id: row.id,
+          processid: row.processid,
+          sqlxm: row.sqlxm,
+          taskId: row.taskId,
+          status: row.status,
         },
-      ];
-      await getDetails({
-        id: row.businesId,
-      }).then((res) => {
-        this.formEdit = res.data;
-        if (res.data.fileList && res.data.fileList.length > 0) {
-          this.formEdit.fileList = res.data.fileList.map((ele) => {
-            return {
-              name: ele.fileName,
-              ...ele,
-            };
-          });
-        }
-        this.editModal = true;
       });
     },
     changeSelect() {
@@ -1054,28 +735,37 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
+        shr1: this.select == "shrxm" ? this.searchVal : null,
+        zydmList: this.moreIform.zydmList,
+        sqlxmList: this.moreIform.sqlxm,
         xn: this.moreIform.xn,
-        dkkssjEnd:
-          this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[1]
+        sqsjEnd:
+          this.queryParams.sqsj && this.queryParams.sqsj.length > 0
+            ? this.queryParams.sqsj[1]
             : "",
-        dkkssjStart:
-          this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[0]
+        sqsjStart:
+          this.queryParams.sqsj && this.queryParams.sqsj.length > 0
+            ? this.queryParams.sqsj[0]
             : "",
-        dkzjeEnd: this.queryParams.dkzjeEnd,
-        dkzjeStart: this.queryParams.dkzjeStart,
-        bjdm: this.moreIform.bjm,
-        ssdwdm: this.moreIform.dwh,
+        statusList: this.moreIform.ztStatus,
+        shsjEnd:
+          this.queryParams.shsj && this.queryParams.shsj.length > 0
+            ? this.queryParams.shsj[1]
+            : "",
+        shsjStart:
+          this.queryParams.shsj && this.queryParams.shsj.length > 0
+            ? this.queryParams.shsj[0]
+            : "",
+        bjmList: this.moreIform.bjm,
+        pydwmLsit: this.moreIform.dwh,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      dshList(data)
+      queryZbrwFlowDshList(data)
         .then((res) => {
           this.tableData = res.data;
-          this.updownDate = res.data;
           this.queryParams.total = res.totalCount;
         })
         .catch((err) => {});
@@ -1084,28 +774,7 @@ export default {
     handleMore() {
       this.isMore = !this.isMore;
     },
-    //获取培养层次
-    getCode(data) {
-      this.getCodeInfoByEnglish(data);
-    },
-    getCodeInfoByEnglish(paramsData) {
-      let data = { codeTableEnglish: paramsData };
-      getCodeInfoByEnglish(data)
-        .then((res) => {
-          switch (paramsData) {
-            case "dmpyccm":
-              this.$set(this.training, "checkBox", res.data);
-              break;
-            case "dmgjzxdk":
-              this.dglxList = res.data; //贷款类型
-              break;
-            case "dmzudkyhm":
-              this.dgyhList = res.data; //银行
-              break;
-          }
-        })
-        .catch((err) => {});
-    },
+
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;

@@ -129,7 +129,21 @@
           </div>
         </div>
       </div>
-      <div class="item stuInfoClick"></div>
+      <div class="item stuInfoClick">
+        <div class="item stuInfoClick" @click="jsxwcClick">
+          <div class="medalImage">
+            <img src="~@/assets/images/medal.png" alt="" />
+          </div>
+          <div class="content1">
+            <div class="title1">
+              <span class="stuinfoTitle">教授下午茶</span>
+            </div>
+            <div class="title2">
+              <span class="baseInfo">参加教授组织活动</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="headline">
       <span class="tohead">奖惩管理</span>
@@ -486,6 +500,11 @@ export default {
     pbfdClick() {
       this.$router.push({
         path: "/friendTutor",
+      });
+    },
+    jsxwcClick() {
+      this.$router.push({
+        path: "/afterTea",
       });
     },
   },

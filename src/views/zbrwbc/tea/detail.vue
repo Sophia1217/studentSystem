@@ -248,7 +248,7 @@
               <div class="wrap">
                 <div class="title">退役时间</div>
                 <div class="content">
-                  {{ detailInfoData.twsj }}
+                  {{ detailInfoData.tysj }}
                 </div>
               </div>
             </el-col>

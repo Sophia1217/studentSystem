@@ -154,7 +154,7 @@
         <div class="tableStyle" v-if="sqlxm == 1">
           <div class="inputArea" style="margin-bottom: 20px">
             <el-form-item
-              prop="sfdq"
+              prop="jtsqlxm"
               :rules="rules.wenzi"
               style="width: 300px"
               :disabled="flag != 1"
@@ -326,16 +326,16 @@
                 <div class="wrap">
                   <div class="title">退役时间</div>
                   <div class="content" v-if="flag == 1">
-                    <el-form-item prop="twsj" :rules="rules.common">
+                    <el-form-item prop="tysj" :rules="rules.common">
                       <el-date-picker
                         type="date"
-                        v-model="detailInfoData.twsj"
+                        v-model="detailInfoData.tysj"
                         value-format="yyyy-MM-dd"
                       />
                     </el-form-item>
                   </div>
                   <div class="content" v-else>
-                    {{ detailInfoData.twsj }}
+                    {{ detailInfoData.tysj }}
                   </div>
                 </div>
               </el-col>
@@ -362,8 +362,8 @@
                 <div class="wrap">
                   <div class="title">退役身份</div>
                   <div class="content" v-if="flag == 1">
-                    <el-form-item prop="tysf" :rules="rules.common">
-                      <el-select v-model="detailInfoData.tysf">
+                    <el-form-item prop="tysfm" :rules="rules.common">
+                      <el-select v-model="detailInfoData.tysfm">
                         <el-option
                           v-for="(item, index) in tysfOps"
                           :key="index"

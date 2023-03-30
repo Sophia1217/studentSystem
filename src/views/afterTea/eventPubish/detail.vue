@@ -14,6 +14,7 @@
                   action="#"
                   :file-list="ele.fileList"
                   :show-file-list="false"
+                  :disabled="bjzt == '1' ? true : false"
                   :on-change="
                     (item, item1) => {
                       change(item, item1, ind);
@@ -29,8 +30,14 @@
               <div style="width: 1350px">
                 <el-row :gutter="20">
                   <el-col :span="7">
-                    <el-form-item label="姓名" :rules="rules.common">
+                    <el-form-item
+                      label="姓名"
+                      :rules="rules.common"
+                      :prop="'cyrList.' + ind + '.acceptVlaue'"
+                    >
+                      <span v-if="bjzt == '1'">{{ ele.acceptVlaue }}</span>
                       <el-autocomplete
+                        v-else
                         v-model="ele.acceptVlaue"
                         :fetch-suggestions="querySearch"
                         placeholder="请输入姓名"
@@ -47,7 +54,7 @@
                   <el-col :span="1.5" :offset="14">
                     <div
                       class="btns fullGreen"
-                      v-if="ind == 0"
+                      v-if="ind == 0 && bjzt == '2'"
                       @click="xinzeng"
                     >
                       <i class="icon passIcon"></i
@@ -55,7 +62,7 @@
                     </div>
                     <div
                       class="btns borderRed"
-                      v-if="ind > 0"
+                      v-if="ind > 0 && bjzt == '2'"
                       @click="shanchu(ind)"
                     >
                       <i class="icon lightIcon"></i
@@ -66,8 +73,11 @@
                 <el-row :gutter="20">
                   <el-col :span="23">
                     <el-form-item label="简介">
+                      <div v-if="bjzt == '1'">{{ ele.cyrJj }}</div>
                       <el-input
+                        v-else
                         type="textarea"
+                        :maxlength="500"
                         :rows="4"
                         v-model="ele.cyrJj"
                         placeholder="请输入"
@@ -87,7 +97,10 @@
           <el-row :gutter="20">
             <el-col :span="6">
               <el-form-item label="活动主题" prop="hdzt" :rules="rules.common">
+                <span v-if="bjzt == '1'">{{ form.hdzt }}</span>
                 <el-input
+                  :maxlength="50"
+                  v-else
                   style="width: 220px"
                   v-model="form.hdzt"
                   placeholder="请输入"
@@ -102,7 +115,10 @@
                 label-width="150px"
                 :rules="rules.common"
               >
+                <span v-if="bjzt == '1'">{{ form.dgjsktgrs }}</span>
                 <el-input-number
+                  :max="999"
+                  v-else
                   style="width: 150px"
                   v-model="form.dgjsktgrs"
                   placeholder="请输入人数"
@@ -113,10 +129,13 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="组织单位" prop="zzdw" :rules="rules.common">
+                <span v-if="bjzt == '1'">{{ form.zzdwmc }}</span>
                 <el-select
+                  v-else
                   v-model="form.zzdw"
                   collapse-tags
                   placeholder="请选择"
+                  :clearable="true"
                   size="small"
                 >
                   <el-option
@@ -130,9 +149,12 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="活动类别" prop="hdlb" :rules="rules.common">
+                <span v-if="bjzt == '1'">{{ form.hdlb }}</span>
                 <el-select
+                  v-else
                   v-model="form.hdlb"
                   collapse-tags
+                  :clearable="true"
                   placeholder="请选择"
                   size="small"
                 >
@@ -149,11 +171,13 @@
           <el-row :gutter="20">
             <el-col :span="6">
               <el-form-item label="活动时间" prop="hdsj" :rules="rules.common">
+                <span v-if="bjzt == '1'">{{ form.hdsj }}</span>
                 <el-date-picker
+                  v-else
                   v-model="form.hdsj"
                   type="date"
                   format="yyyy 年 MM 月 dd 日"
-                  :clearable="false"
+                  :clearable="true"
                   value-format="yyyy-MM-dd"
                   placeholder="选择日期"
                 >
@@ -166,10 +190,12 @@
                 prop="hdkssj"
                 :rules="rules.common"
               >
+                <span v-if="bjzt == '1'">{{ form.hdkssj }}</span>
                 <el-time-picker
+                  v-else
                   format="HH时mm分"
                   v-model="form.hdkssj"
-                  :clearable="false"
+                  :clearable="true"
                   value-format="HH:mm"
                   placeholder="选择开始时间"
                 >
@@ -182,10 +208,12 @@
                 prop="hdjssj"
                 :rules="rules.common"
               >
+                <span v-if="bjzt == '1'">{{ form.hdjssj }}</span>
                 <el-time-picker
+                  v-else
                   format="HH时mm分"
                   v-model="form.hdjssj"
-                  :clearable="false"
+                  :clearable="true"
                   value-format="HH:mm"
                   placeholder="选择结束时间"
                 >
@@ -194,7 +222,10 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="活动地点" prop="hddd" :rules="rules.common">
+                <span v-if="bjzt == '1'">{{ form.hddd }}</span>
                 <el-input
+                  v-else
+                  :maxlength="100"
                   style="width: 220px"
                   v-model="form.hddd"
                   placeholder="请输入"
@@ -207,7 +238,10 @@
           <el-row :gutter="20">
             <el-col :span="23">
               <el-form-item label="活动简介" prop="hdjj" :rules="rules.common">
+                <div v-if="bjzt == '1'">{{ form.hdjj }}</div>
                 <el-input
+                  v-else
+                  :maxlength="1000"
                   type="textarea"
                   :rows="7"
                   placeholder="请输入内容"
@@ -221,8 +255,10 @@
       </div>
     </el-form>
     <div class="editBottom">
-      <div class="btn confirm">取消</div>
-      <div class="btn cancel" @click="addClick">保存</div>
+      <div class="btn confirm" v-if="bjzt == '1'" @click="back">返回</div>
+      <div class="btn cancel" v-if="bjzt == '1'" @click="bjzt = '2'">编辑</div>
+      <div class="btn confirm" v-if="bjzt == '2'" @click="bjzt = '1'">取消</div>
+      <div class="btn cancel" @click="addClick" v-if="bjzt == '2'">保存</div>
     </div>
   </div>
 </template>
@@ -230,11 +266,13 @@
 <script>
 import myMixins from "./mixin";
 import { getXmXgh } from "@/api/assistantWork/talk";
-import { add } from "@/api/teacherTea/index";
+import { add, getDetail } from "@/api/teacherTea/index";
+import { Exportwj } from "@/api/assistantWork/classEvent";
 export default {
   mixins: [myMixins],
   data() {
     return {
+      bjzt: "1",
       form: {
         cyrList: [
           {
@@ -256,6 +294,8 @@ export default {
         hddd: "",
         hdjj: "",
       },
+      allInfo: {},
+      lgnSn: "",
       rules: {
         common: [
           {
@@ -270,76 +310,129 @@ export default {
 
   mounted() {
     this.getAllCollege();
+    this.lgnSn = this.$route.query.lgnSn; //逻辑主键
+    this.allInfo = this.$route.query.allInfo; //基本信息
+    console.log(" this.allInfo", this.allInfo);
+    this.form = Object.assign(this.form, this.allInfo);
+    this.getInfo();
   },
 
   methods: {
-    xinzeng() {
-      this.form.cyrList.push({
-        fileList: [], //文件
-        cyrJj: "", //简介
-        cyrMc: "", //名称
-        cyrGh: "", //工号
-        acceptVlaue: "",
-        imageUrl: "",
+    back() {
+      this.$router.push({
+        path: "/afterTea/eventPubish",
       });
+    },
+    async getInfo() {
+      await getDetail({ hdId: this.lgnSn }).then((res) => {
+        this.form.cyrList = res.data.map((ele) => {
+          return {
+            fileList: [],
+            ...ele,
+          };
+        });
+      });
+      for (var j = 0; j < this.form.cyrList.length; j++) {
+        var data;
+        if (this.form.cyrList[j].file) {
+          await Exportwj({ id: this.form.cyrList[j].id.toString() }).then(
+            (res) => {
+              data = new File([res], this.form.cyrList[j].file.fileName, {
+                type: "application/png",
+                lastModified: Date.now(),
+              });
+              this.form.cyrList[j].fileList.push(data);
+              // let binaryData = [];
+              // binaryData.push(res);
+              // this.form.cyrList[j].imageUrl = window.URL.createObjectURL(
+              //   new Blob(binaryData)
+              // );
+              // console.log(
+              //   "  this.form.cyrList[j].imageUrl",
+              //   this.form.cyrList[j].imageUrl
+              // );
+              this.form.cyrList[
+                j
+              ].imageUrl = `${window.location.origin}/sfile/${this.form.cyrList[j].file.proId}`;
+            }
+          );
+        }
+      }
+      console.log("form", this.form);
+    },
+    xinzeng() {
+      if (this.form.cyrList.length < 10) {
+        this.form.cyrList.push({
+          fileList: [], //文件
+          cyrJj: "", //简介
+          cyrMc: "", //名称
+          cyrGh: "", //工号
+          acceptVlaue: "",
+          imageUrl: "",
+        });
+      } else {
+        this.$message.error("最多新增十位参与人数据");
+      }
     },
     shanchu(num) {
       console.log("num", num);
       this.form.cyrList.splice(num, 1);
     },
     addClick() {
-      //   if (!this.checkForm()) {
-      //   this.$message.error("请完善表单相关信息！");
-      //   return;
-      // } else {
-      var data = this.form;
-      console.log("data", data);
-      let formData = new FormData();
-      formData.append("hdzt", data.hdzt);
-      formData.append("dgjsktgrs", data.dgjsktgrs);
-      formData.append("zzdw", data.zzdw);
-      formData.append("hdlb", data.hdlb);
-      formData.append("hdsj", data.hdsj);
-      formData.append("hdkssj", data.hdkssj);
-      formData.append("hdjssj", data.hdjssj);
-      formData.append("hddd", data.hddd);
-      formData.append("hdjj", data.hdjj);
-      if (this.form.cyrList.length > 0) {
-        for (let i = 0, len = data.cyrList.length; i < len; i++) {
-          var location = data.cyrList[i];
-          formData.append(
-            "cyrList[" + i + "].cyrGh",
-            location.cyrGh ? location.cyrGh : location.acceptVlaue
-          );
-          formData.append(
-            "cyrList[" + i + "].cyrMc",
-            location.cyrMc ? location.cyrMc : location.acceptVlaue
-          );
-          formData.append("cyrList[" + i + "].cyrJj", location.cyrJj || "");
-          if (location.fileList.length > 0) {
+      if (!this.checkForm()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        var data = this.form;
+        console.log("data", data);
+        let formData = new FormData();
+        formData.append("id", this.lgnSn);
+        formData.append("hdzt", data.hdzt);
+        formData.append("dgjsktgrs", data.dgjsktgrs);
+        formData.append("zzdw", data.zzdw);
+        formData.append("hdlb", data.hdlb);
+        formData.append("hdsj", data.hdsj);
+        formData.append("hdkssj", data.hdkssj);
+        formData.append("hdjssj", data.hdjssj);
+        formData.append("hddd", data.hddd);
+        formData.append("hdjj", data.hdjj);
+        if (this.form.cyrList.length > 0) {
+          for (let i = 0, len = data.cyrList.length; i < len; i++) {
+            var location = data.cyrList[i];
             formData.append(
-              "cyrList[" + i + "].file",
-              location.fileList && location.fileList[0].raw
-                ? location.fileList[0].raw
-                : ""
+              "cyrList[" + i + "].cyrGh",
+              location.cyrGh ? location.cyrGh : location.acceptVlaue
             );
+            formData.append(
+              "cyrList[" + i + "].cyrMc",
+              location.cyrMc ? location.cyrMc : location.acceptVlaue
+            );
+            formData.append("cyrList[" + i + "].cyrJj", location.cyrJj || "");
+            if (location.fileList.length > 0) {
+              formData.append(
+                "cyrList[" + i + "].file",
+                location.fileList && location.fileList[0].raw
+                  ? location.fileList[0].raw
+                  : location.fileList
+                  ? location.fileList[0]
+                  : ""
+              );
+            }
           }
         }
+        add(formData).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("编辑成功");
+            this.$router.push({
+              path: "/afterTea/eventPubish",
+            });
+          } else {
+            this.$message.error("编辑失败");
+          }
+        });
       }
-      add(formData).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("新增成功");
-          this.$router.push({
-            path: "/afterTea/eventPubish",
-          });
-        } else {
-          this.$message.error("新增失败");
-        }
-      });
-      // }
     },
     change(file, fileList, ind) {
-      //因为上传覆盖，直接置空
       this.form.cyrList[ind].fileList = [];
       const index = file.name.lastIndexOf(".");
       const ext = file.name.substr(index + 1);
@@ -353,14 +446,23 @@ export default {
         fileList.splice(idx, 1);
       } else {
         //让前端图片回显
+        console.log("huixian");
         let binaryData = [];
         binaryData.push(file.raw);
         this.form.cyrList[ind].imageUrl = window.URL.createObjectURL(
           new Blob(binaryData)
         );
+        console.log(
+          " this.form.cyrList[ind].imageUrl",
+          this.form.cyrList[ind].imageUrl
+        );
       }
       //取当前的file存入filelist
       this.form.cyrList[ind].fileList.push(file);
+      console.log(
+        "  this.form.cyrList[ind].fileList2222",
+        this.form.cyrList[ind].fileList
+      );
     },
     querySearch(queryString, cb) {
       if (queryString != "") {
@@ -394,7 +496,7 @@ export default {
     checkForm() {
       // 1.校验必填项
       let validForm = false;
-      this.$refs.queryForm.validate((valid) => {
+      this.$refs.form.validate((valid) => {
         validForm = valid;
       });
       if (!validForm) {
@@ -441,7 +543,7 @@ export default {
   .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
-    cursor: pointer;
+    cursor: default;
   }
   .avatar-uploader .el-upload:hover {
     border-color: #409eff;

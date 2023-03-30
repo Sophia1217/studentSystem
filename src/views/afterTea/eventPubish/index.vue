@@ -163,9 +163,24 @@
                 <i class="scopeIncon handledie"></i>
                 <span class="handleName">详情</span>
               </el-button>
-              <el-button type="text" size="small" @click="mx(scope.row)">
-                <span class="handleName" style="margin-left: 15px"
-                  >评价明细</span
+              <el-button
+                type="text"
+                size="small"
+                @click="mx(scope.row)"
+                v-if="scope.row.pjkg == '1'"
+              >
+                <span class="handleName" style="margin-left: 10px"
+                  >已评价明细</span
+                >
+              </el-button>
+              <el-button
+                type="text"
+                size="small"
+                @click="mx(scope.row)"
+                v-if="scope.row.pjkg == '2'"
+              >
+                <span class="handleName" style="margin-left: 10px"
+                  >未评价明细</span
                 >
               </el-button>
             </template>
@@ -248,6 +263,7 @@ import {
   sqkg,
   fqpj,
   pjmxList,
+  exp,
 } from "@/api/teacherTea/index";
 import myMixins from "./mixin";
 import { getToken } from "@/utils/auth";
@@ -401,8 +417,8 @@ export default {
       this.$router.push({
         path: "/afterTea/eventPubishDetail",
         query: {
-          state: row.id,
-          xh: row.xh,
+          allInfo: row,
+          lgnSn: row.id,
         },
       });
     },
@@ -418,7 +434,7 @@ export default {
         idList.push(item_row.id);
       }
       this.$set(this.exportParams, "idList", idList);
-      kcpkExport(this.exportParams)
+      exp(this.exportParams)
         .then((res) => {
           this.downloadFn(res, "活动列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {

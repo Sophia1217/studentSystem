@@ -1,7 +1,7 @@
 /*
  * @Author: qingtian
  * @Date: 2023-03-28 14:56:18
- * @LastEditTime: 2023-03-28 15:07:14
+ * @LastEditTime: 2023-03-30 14:36:30
  * @LastEditors: ***
  * @Description:
  * @FilePath: \studentsystem\src\api\teacherTea\index.js
@@ -14,7 +14,7 @@ export function queryList(query) {
     method: "post",
     data: query,
   });
-}          
+}
 
 //删除
 export function delList(query) {
@@ -25,7 +25,7 @@ export function delList(query) {
   });
 }
 
-//申请开关   
+//申请开关
 export function sqkg(query) {
   return request({
     url: "/rcswJsxwchd/updateSqKg",
@@ -34,7 +34,7 @@ export function sqkg(query) {
   });
 }
 
-//发起评价  
+//发起评价
 export function fqpj(query) {
   return request({
     url: "/rcswJsxwchd/updatePjKg",
@@ -43,7 +43,7 @@ export function fqpj(query) {
   });
 }
 
-//详情  
+//详情
 export function getDetail(query) {
   return request({
     url: "/rcswJsxwchd/queryJsxwchdcyrList",
@@ -52,7 +52,7 @@ export function getDetail(query) {
   });
 }
 
-//活动保存  
+//活动保存
 export function add(query) {
   return request({
     url: "/rcswJsxwchd/importJsxwchd",
@@ -61,7 +61,7 @@ export function add(query) {
   });
 }
 
-//查看评价明细列表  
+//查看评价明细列表
 export function pjmxList(query) {
   return request({
     url: "/rcswJsxwchd/queryJsxwcPjList",
@@ -70,9 +70,9 @@ export function pjmxList(query) {
   });
 }
 
-export function expTalk(query) {
+export function exp(query) {
   return request({
-    url: "/fdyTalk/excelTxth",
+    url: "/rcswJsxwchd/excelExporthdlb",
     method: "post",
     data: query,
     responseType: "blob",

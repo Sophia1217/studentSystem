@@ -29,7 +29,7 @@
               <div style="width: 1350px">
                 <el-row :gutter="20">
                   <el-col :span="7">
-                    <el-form-item label="姓名" :rules="rules.common">
+                    <el-form-item label="姓名" :rules="rules.common" :prop="'cyrList.'+ind+'.acceptVlaue'" >
                       <el-autocomplete
                         v-model="ele.acceptVlaue"
                         :fetch-suggestions="querySearch"
@@ -67,6 +67,7 @@
                   <el-col :span="23">
                     <el-form-item label="简介">
                       <el-input
+                        :maxlength="500"
                         type="textarea"
                         :rows="4"
                         v-model="ele.cyrJj"
@@ -88,6 +89,7 @@
             <el-col :span="6">
               <el-form-item label="活动主题" prop="hdzt" :rules="rules.common">
                 <el-input
+                  :maxlength="50"
                   style="width: 220px"
                   v-model="form.hdzt"
                   placeholder="请输入"
@@ -103,6 +105,7 @@
                 :rules="rules.common"
               >
                 <el-input-number
+                  :max="999"
                   style="width: 150px"
                   v-model="form.dgjsktgrs"
                   placeholder="请输入人数"
@@ -116,6 +119,7 @@
                 <el-select
                   v-model="form.zzdw"
                   collapse-tags
+                  :clearable="true"
                   placeholder="请选择"
                   size="small"
                 >
@@ -133,6 +137,7 @@
                 <el-select
                   v-model="form.hdlb"
                   collapse-tags
+                  :clearable="true"
                   placeholder="请选择"
                   size="small"
                 >
@@ -153,7 +158,7 @@
                   v-model="form.hdsj"
                   type="date"
                   format="yyyy 年 MM 月 dd 日"
-                  :clearable="false"
+                  :clearable="true"
                   value-format="yyyy-MM-dd"
                   placeholder="选择日期"
                 >
@@ -169,7 +174,7 @@
                 <el-time-picker
                   format="HH时mm分"
                   v-model="form.hdkssj"
-                  :clearable="false"
+                  :clearable="true"
                   value-format="HH:mm"
                   placeholder="选择开始时间"
                 >
@@ -185,7 +190,7 @@
                 <el-time-picker
                   format="HH时mm分"
                   v-model="form.hdjssj"
-                  :clearable="false"
+                  :clearable="true"
                   value-format="HH:mm"
                   placeholder="选择结束时间"
                 >
@@ -195,6 +200,7 @@
             <el-col :span="6">
               <el-form-item label="活动地点" prop="hddd" :rules="rules.common">
                 <el-input
+                  :maxlength="100"
                   style="width: 220px"
                   v-model="form.hddd"
                   placeholder="请输入"
@@ -208,6 +214,7 @@
             <el-col :span="23">
               <el-form-item label="活动简介" prop="hdjj" :rules="rules.common">
                 <el-input
+                  :maxlength="1000"
                   type="textarea"
                   :rows="7"
                   placeholder="请输入内容"
@@ -274,69 +281,73 @@ export default {
 
   methods: {
     xinzeng() {
-      this.form.cyrList.push({
-        fileList: [], //文件
-        cyrJj: "", //简介
-        cyrMc: "", //名称
-        cyrGh: "", //工号
-        acceptVlaue: "",
-        imageUrl: "",
-      });
+      if (this.form.cyrList.length < 10) {
+        this.form.cyrList.push({
+          fileList: [], //文件
+          cyrJj: "", //简介
+          cyrMc: "", //名称
+          cyrGh: "", //工号
+          acceptVlaue: "",
+          imageUrl: "",
+        });
+      } else {
+        this.$message.error("最多新增十位参与人数据");
+      }
     },
     shanchu(num) {
       console.log("num", num);
       this.form.cyrList.splice(num, 1);
     },
     addClick() {
-      //   if (!this.checkForm()) {
-      //   this.$message.error("请完善表单相关信息！");
-      //   return;
-      // } else {
-      var data = this.form;
-      console.log("data", data);
-      let formData = new FormData();
-      formData.append("hdzt", data.hdzt);
-      formData.append("dgjsktgrs", data.dgjsktgrs);
-      formData.append("zzdw", data.zzdw);
-      formData.append("hdlb", data.hdlb);
-      formData.append("hdsj", data.hdsj);
-      formData.append("hdkssj", data.hdkssj);
-      formData.append("hdjssj", data.hdjssj);
-      formData.append("hddd", data.hddd);
-      formData.append("hdjj", data.hdjj);
-      if (this.form.cyrList.length > 0) {
-        for (let i = 0, len = data.cyrList.length; i < len; i++) {
-          var location = data.cyrList[i];
-          formData.append(
-            "cyrList[" + i + "].cyrGh",
-            location.cyrGh ? location.cyrGh : location.acceptVlaue
-          );
-          formData.append(
-            "cyrList[" + i + "].cyrMc",
-            location.cyrMc ? location.cyrMc : location.acceptVlaue
-          );
-          formData.append("cyrList[" + i + "].cyrJj", location.cyrJj || "");
-          if (location.fileList.length > 0) {
+      if (!this.checkForm()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        var data = this.form;
+        console.log("data", data);
+        let formData = new FormData();
+        formData.append("hdzt", data.hdzt);
+        formData.append("dgjsktgrs", data.dgjsktgrs);
+        formData.append("zzdw", data.zzdw);
+        formData.append("hdlb", data.hdlb);
+        formData.append("hdsj", data.hdsj);
+        formData.append("hdkssj", data.hdkssj);
+        formData.append("hdjssj", data.hdjssj);
+        formData.append("hddd", data.hddd);
+        formData.append("hdjj", data.hdjj);
+        if (this.form.cyrList.length > 0) {
+          for (let i = 0, len = data.cyrList.length; i < len; i++) {
+            var location = data.cyrList[i];
             formData.append(
-              "cyrList[" + i + "].file",
-              location.fileList && location.fileList[0].raw
-                ? location.fileList[0].raw
-                : ""
+              "cyrList[" + i + "].cyrGh",
+              location.cyrGh ? location.cyrGh : location.acceptVlaue
             );
+            formData.append(
+              "cyrList[" + i + "].cyrMc",
+              location.cyrMc ? location.cyrMc : location.acceptVlaue
+            );
+            formData.append("cyrList[" + i + "].cyrJj", location.cyrJj || "");
+            if (location.fileList.length > 0) {
+              formData.append(
+                "cyrList[" + i + "].file",
+                location.fileList && location.fileList[0].raw
+                  ? location.fileList[0].raw
+                  : ""
+              );
+            }
           }
         }
+        add(formData).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("新增成功");
+            this.$router.push({
+              path: "/afterTea/eventPubish",
+            });
+          } else {
+            this.$message.error("新增失败");
+          }
+        });
       }
-      add(formData).then((res) => {
-        if (res.errcode == "00") {
-          this.$message.success("新增成功");
-          this.$router.push({
-            path: "/afterTea/eventPubish",
-          });
-        } else {
-          this.$message.error("新增失败");
-        }
-      });
-      // }
     },
     change(file, fileList, ind) {
       //因为上传覆盖，直接置空
@@ -394,7 +405,7 @@ export default {
     checkForm() {
       // 1.校验必填项
       let validForm = false;
-      this.$refs.queryForm.validate((valid) => {
+      this.$refs.form.validate((valid) => {
         validForm = valid;
       });
       if (!validForm) {

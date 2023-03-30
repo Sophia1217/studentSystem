@@ -825,15 +825,19 @@ export default {
           this.$message.success("已拒绝");
         });
       } else {
-        data.spje = this.editDetails.spje ? this.editDetails.spje : "";
-        data.opMsg = this.editDetails.shyj
-          ? `审批金额为${this.editDetails.spje},审批意见：${this.editDetails.shyj}`
-          : "";
-        tyFlow([data]).then((res) => {
-          this.conformModal = false;
-          this.$router.go(-1);
-          this.$message.success("已成功通过");
-        });
+        if (this.editDetails.spje) {
+          data.spje = this.editDetails.spje;
+          data.opMsg = this.editDetails.shyj
+            ? `审批金额为${this.editDetails.spje},审批意见：${this.editDetails.shyj}`
+            : "";
+          tyFlow([data]).then((res) => {
+            this.conformModal = false;
+            this.$router.go(-1);
+            this.$message.success("已成功通过");
+          });
+        } else {
+          this.$message.error("请输入审批金额！");
+        }
       }
       this.conformModal = false;
     },

@@ -779,7 +779,8 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       this.commonParams = this.multipleSelection.map((v) => ({
-        businesId: v.businesId,
+        spje: v.spje, 
+        businesId: v.id,
         processId: v.processid,
         status: v.status,
         taskId: v.taskId,

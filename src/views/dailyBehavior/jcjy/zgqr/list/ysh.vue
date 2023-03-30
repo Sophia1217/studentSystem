@@ -58,7 +58,6 @@
               ></el-option>
             </el-select>
           </el-col>
-
           <el-col :span="6">
             <span>专业：</span>
             <el-select
@@ -77,7 +76,6 @@
               ></el-option>
             </el-select>
           </el-col>
-
           <el-col :span="6">
             <span>班<span v-html="'\u3000\u3000'"></span>级：</span>
 

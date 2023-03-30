@@ -334,7 +334,7 @@
 
 <script>
 import { queryXn } from "@/api/dailyBehavior/yearSum";
-import { queryZbrwXyList } from "@/api/zbrw/zbrw";
+import { queryZbrwXyList, excelExportXYDone } from "@/api/zbrw/zbrw";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getBJ, getZY } from "@/api/student/index";
@@ -443,16 +443,16 @@ export default {
         ids.push(item_row.id);
       }
       this.$set(this.exportParams, "ids", ids);
-      // dkjgExp(this.exportParams)
-      //   .then((res) => {
-      //     this.downloadFn(res, "贷款结果列表导出.xlsx", "xlsx");
-      //     if (this.$store.getters.excelcount > 0) {
-      //       this.$message.success(
-      //         `已成功导出${this.$store.getters.excelcount}条数据`
-      //       );
-      //     }
-      //   })
-      //   .catch((err) => {});
+      excelExportXYDone(this.exportParams)
+        .then((res) => {
+          this.downloadFn(res, "征兵入伍列表导出.xlsx", "xlsx");
+          if (this.$store.getters.excelcount > 0) {
+            this.$message.success(
+              `已成功导出${this.$store.getters.excelcount}条数据`
+            );
+          }
+        })
+        .catch((err) => {});
       this.showExport = false;
     },
 

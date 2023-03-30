@@ -17,6 +17,8 @@
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
+            <el-option label="联系电话" value="yddh"></el-option>
+            <el-option label="审核人" value="shrxm"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
             >查询</el-button
@@ -66,10 +68,27 @@
               ></el-option>
             </el-select>
           </el-col>
+          <el-col :span="8">
+            <span>类<span v-html="'\u3000\u3000'"></span>别：</span>
+            <el-select
+              v-model="moreIform.lbList"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in sqlbOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
+          </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
           <el-col :span="20">
-            <span>申请时间：</span>
+            <span>审核时间：</span>
             <el-date-picker
               type="daterange"
               placeholder="选择日期"
@@ -84,15 +103,22 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="3">培养层次：</el-col>
-          <el-col :span="20">
-            <div class="checkbox">
-              <checkboxCom
-                :objProp="training"
-                @training="handleCheckAllChangeTraining"
-                @checkedTraining="handleCheckedCitiesChangeTraining"
-              ></checkboxCom>
-            </div>
+          <el-col :span="8">
+            <span>服务方向：</span>
+            <el-select
+              v-model="moreIform.fwfxDmList"
+              multiple
+              collapse-tags
+              placeholder="请选择"
+              size="small"
+            >
+              <el-option
+                v-for="item in fwfxOps"
+                :key="item.dm"
+                :label="item.mc"
+                :value="item.dm"
+              ></el-option>
+            </el-select>
           </el-col>
         </el-row>
       </div>
@@ -102,32 +128,16 @@
       <div class="headerTop">
         <div class="headerLeft">
           <span class="title">已处理列表</span>
-          <el-select
-            v-model="moreIform.xn"
-            collapse-tags
-            @change="changeXn"
-            placeholder="请选择"
-            style="width: 130px; margin: 0 15px 0"
-          >
-            <el-option
-              v-for="(item, index) in allXn"
-              :key="index"
-              :label="item.mc"
-              :value="item.mc"
-            ></el-option>
-          </el-select>
-          <span>学年</span>
+          <div class="yearOption">
+            <el-cascader
+              v-model="dqXnxq"
+              :options="options"
+              @change="handleChangeXnxq"
+              :props="XnxqProps"
+            ></el-cascader>
+          </div>
         </div>
         <div class="headerRight">
-          <div style="margin-right: 15px">
-            <el-dropdown split-button @command="Daochu">
-              <span class="el-dropdown-link"> 鉴定表导出</span>
-              <el-dropdown-menu slot="dropdown">
-                <!-- <el-dropdown-item command="1">PDF下载</el-dropdown-item> -->
-                <el-dropdown-item command="2">Word下载</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </div>
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
@@ -148,7 +158,7 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" min-width="100" sortable>
+          <el-table-column prop="xh" label="学号" width="100" sortable>
           </el-table-column>
           <el-table-column prop="xm" label="姓名" width="85" sortable>
           </el-table-column>
@@ -160,29 +170,27 @@
             sortable
           >
           </el-table-column>
-          <el-table-column prop="ssnj" label="专业" min-width="100" sortable>
+          <el-table-column prop="zydmmc" label="专业" min-width="100" sortable>
           </el-table-column>
           <el-table-column
-            prop="sqdjmc"
+            prop="fwfxMc"
             label="服务方向"
             min-width="100"
-            show-overflow-tooltip
+            :show-overflow-tooltip="true"
             sortable
           >
           </el-table-column>
-          <el-table-column prop="tjdjmc" label="类别" min-width="100" sortable>
-          </el-table-column>
-          <el-table-column prop="sqsj" label="课时" min-width="100" sortable>
+          <el-table-column prop="lb" label="类别" min-width="100" sortable>
           </el-table-column>
           <el-table-column
-            prop="sqsj"
-            label="开课地点"
+            prop="kcsc"
+            label="课程时长(分钟)"
             min-width="100"
             sortable
           >
           </el-table-column>
           <el-table-column
-            prop="sqsj"
+            prop="yddh"
             label="联系电话"
             min-width="100"
             sortable
@@ -243,19 +251,7 @@
         >
       </span>
     </el-dialog>
-    <el-dialog
-      title="导出确认"
-      :visible.sync="xnxjModal"
-      width="30%"
-      :close-on-click-modal="false"
-    >
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="xnxjModalCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="xnxjModaldaochu()"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
+
     <lctCom
       ref="child"
       :lctModal="lctModal"
@@ -267,13 +263,15 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import {
-  queryYshList,
-  queryDshDetail,
-  exportYsh,
-} from "@/api/dailyBehavior/yearSum";
-import { queryXn } from "@/api/dailyBehavior/yearSum";
+  excelExportPbsqFlow,
+  excelExportPbsqFlowed,
+  queryPbsqFlowedList,
+  queryPbsqFlowList,
+} from "@/api/friendTutor/audit";
+
 import { getCollege, getGrade } from "@/api/class/maintenanceClass";
 import { getZY } from "@/api/student/index";
+import { queryXnXq } from "@/api/dailyBehavior/vocationTea";
 import lctCom from "../../../../components/lct";
 import {
   queryByjdFlowedList,
@@ -295,7 +293,7 @@ export default {
       lctModal: false,
       xnxjModal: false,
       ztStatus: [],
-      zdOps: [],
+      options: [],
       status: [],
       datePicker: [],
       searchVal: "",
@@ -304,16 +302,20 @@ export default {
       moreIform: {
         dwhList: [], // 学院下拉框
         zydmList: [],
-        bjList: [],
         xn: "",
-        zslxmList: [],
+        lbList: [],
+        fwfxDmList: [],
       },
       exportParams: {},
       tableData: [],
       allDwh: [],
       zyOps: [], // 专业下拉
       allXn: [], //学年下拉
-
+      fwfxOps: [],
+      sqlbOps: [
+        { dm: "1", mc: "校级" },
+        { dm: "0", mc: "院级" },
+      ],
       commonParams: [],
       queryParams: {
         pageNum: 1,
@@ -321,17 +323,19 @@ export default {
         total: 0,
         orderZd: "",
         orderPx: "",
+        xn: "",
+        xqm: "",
       },
-      training: {
-        // 培养层次
-        checkAll: false,
-        choose: [],
-        checkBox: [],
-        isIndeterminate: true,
-      },
+
       multipleSelection: [],
       multipleSelection1: "",
-      pyccflag: 1, //1本科2硕博
+      dqXnxq: [],
+      XnxqProps: {
+        value: "dm", //匹配响应数据中的id
+        label: "mc", //匹配响应数据中的name
+        checkStrictly: true,
+        children: "dataCodeCascadingList", //匹配响应数据中的children }
+      },
     };
   },
 
@@ -340,16 +344,12 @@ export default {
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     // this.handleSearch();
     this.getAllCollege();
-    this.getSchoolYears();
-    this.getCode("dmpyccm"); // 培养层次dmxbm
-    this.getCode("dmxbm"); // 性别
-    this.getCode1("dmsplcm");
+    this.getXnxq();
+    this.getCode("dmfwfxm");
+    this.getCode("dmsplcm");
   },
 
   methods: {
-    changeXn() {
-      this.handleSearch();
-    },
     // 导出取消
     handleCancel() {
       this.showExport = false;
@@ -363,9 +363,9 @@ export default {
       this.exportParams.pageNum = 0;
       this.exportParams.pageSize = 0;
       this.$set(this.exportParams, "ids", idList);
-      excelExporYsht(this.exportParams)
+      excelExportPbsqFlowed(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "鉴定表已审核列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "朋辈辅导已审核列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -386,15 +386,19 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        ssdwdm: this.moreIform.dwhList,
-        zydm: this.moreIform.zydmList,
-        // bjList: this.moreIform.bjList,
-        xn: this.moreIform.xn,
-        // zslxmList: this.moreIform.zslxmList,
-        pyccm: this.training.choose || [],
+        yddh: this.select == "yddh" ? this.searchVal : null,
+        shrxm: this.select == "shrxm" ? this.searchVal : null,
+        dwhList: this.moreIform.dwhList,
+        zydmList: this.moreIform.zydmList,
+        lbList: this.moreIform.lbList,
+        fwfxDmList: this.moreIform.fwfxDmList,
+        kcscList: [],
+        xn: this.queryParams.xn,
+        xqm: this.queryParams.xqm,
+
         loginId: this.$store.getters.userId,
-        sqsjs: rqs || "",
-        sqsje: rqe || "",
+        shsjStart: rqs || "",
+        shsjEnd: rqe || "",
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
@@ -403,19 +407,18 @@ export default {
       this.exportParams = data;
       this.showExport = true;
     },
-    getCode1(val) {
+    getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
         switch (val) {
           case "dmsplcm": //审批结果
             this.ztStatus = res.data;
             break;
+          case "dmfwfxm":
+            this.fwfxOps = res.data;
+            break;
         }
       });
-    },
-    getRow(index, row) {
-      this.multipleSelection1 = row;
-      console.log(row);
     },
 
     getAllCollege() {
@@ -444,20 +447,45 @@ export default {
           .catch((err) => {});
       }
     },
-    //获取学年
-    getSchoolYears() {
-      queryXn()
-        .then((res) => {
-          this.allXn = res.data;
-          this.moreIform.xn = res.data[0].mc;
-          this.handleSearch();
-        })
-        .catch((err) => {});
+    //获取学年学期
+    getXnxq() {
+      queryXnXq().then((res) => {
+        this.options = res.data;
+        for (let item of res.data) {
+          for (let num of item.dataCodeCascadingList)
+            if (num.dataCodeCascadingList !== null) {
+              this.dqXnxq = [item.dm, num.dm];
+            }
+        }
+
+        this.queryParams.xn = this.dqXnxq[0];
+
+        this.queryParams.xqm = this.dqXnxq[1];
+        this.handleSearch();
+      });
+    },
+    handleChangeXnxq() {
+      this.queryParams.xn = " ";
+      this.queryParams.xqm = "";
+      if (this.dqXnxq[0]) {
+        this.queryParams.xn = this.dqXnxq[0];
+      }
+      if (this.dqXnxq[1]) {
+        this.queryParams.xqm = this.dqXnxq[1];
+      }
+      this.handleSearch();
     },
     hadleDetail(row) {
       this.$router.push({
-        path: "/dailyBehavior/graduateIdt/graDetail",
-        query: { xh: row.xh, taskId: row.taskId, isEdit: 3 },
+        path: "/friendTutor/friendTutorDetail",
+        query: {
+          xh: row.xh,
+          id: row.id,
+          isEdit: 2,
+          taskId: row.taskId,
+          processid: row.processid,
+          status: row.status,
+        },
       });
     },
     detailCancel() {
@@ -478,21 +506,25 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        ssdwdm: this.moreIform.dwhList,
-        zydm: this.moreIform.zydmList,
-        // bjList: this.moreIform.bjList,
-        xn: this.moreIform.xn,
-        // zslxmList: this.moreIform.zslxmList,
-        pyccm: this.training.choose || [],
+        yddh: this.select == "yddh" ? this.searchVal : null,
+        shrxm: this.select == "shrxm" ? this.searchVal : null,
+        dwhList: this.moreIform.dwhList,
+        zydmList: this.moreIform.zydmList,
+        lbList: this.moreIform.lbList,
+        fwfxDmList: this.moreIform.fwfxDmList,
+        kcscList: [],
+        xn: this.queryParams.xn,
+        xqm: this.queryParams.xqm,
+
         loginId: this.$store.getters.userId,
-        sqsjs: rqs || "",
-        sqsje: rqe || "",
+        shsjStart: rqs || "",
+        shsjEnd: rqe || "",
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryByjdFlowedList(data)
+      queryPbsqFlowedList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
@@ -515,41 +547,7 @@ export default {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");
       }
     },
-    //获取培养层次
-    getCode(data) {
-      this.getCodeInfoByEnglish(data);
-    },
-    getCodeInfoByEnglish(paramsData) {
-      let data = { codeTableEnglish: paramsData };
-      getCodeInfoByEnglish(data)
-        .then((res) => {
-          switch (paramsData) {
-            case "dmpyccm":
-              this.$set(this.training, "checkBox", res.data);
-              break;
-            // case "dmxbm":
-            //   this.$set(this.dmxbmOPs, "checkBox", res.data);
-            //   this.xbOps = res.data;
-          }
-        })
-        .catch((err) => {});
-    },
-    // 培养层次全选
-    handleCheckAllChangeTraining(val) {
-      let allCheck = [];
-      for (let i in this.training.checkBox) {
-        allCheck.push(this.training.checkBox[i].dm);
-      }
-      this.training.choose = val ? allCheck : [];
-      this.training.isIndeterminate = false;
-    },
-    // 培养层次单选
-    handleCheckedCitiesChangeTraining(value) {
-      let checkedCount = value.length;
-      this.training.checkAll = checkedCount === this.training.checkBox.length;
-      this.training.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.training.checkBox.length;
-    },
+
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -567,34 +565,6 @@ export default {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
-    },
-    Daochu(ins) {
-      this.Type = ins == "1" ? "pdf" : "docx";
-      if (this.multipleSelection.length > 0) {
-        this.xnxjModal = true;
-      } else {
-        this.$message.error("请先选择一条数据");
-      }
-    },
-    xnxjModalCancel() {
-      this.xnxjModal = false;
-    },
-    xnxjModaldaochu() {
-      var data = [];
-      for (var x = 0; x < this.multipleSelection.length; x++) {
-        data.push({
-          exType: this.Type,
-          id: this.multipleSelection[x].businesId,
-          processid: this.multipleSelection[x].processid,
-          sqlx: this.multipleSelection[x].pyccm,
-          xh: this.multipleSelection[x].xh,
-          xn: this.moreIform.xn,
-        });
-      }
-      exportByjd(data).then((res) => {
-        this.downloadFn(res, "毕业鉴定表导出下载", "zip");
-        this.xnxjModal = false;
-      });
     },
   },
 };
@@ -672,6 +642,8 @@ export default {
       justify-content: space-between;
       align-items: center;
       .headerLeft {
+        display: flex;
+        flex-direction: row;
         .title {
           font-weight: 600;
           font-size: 20px;
@@ -685,6 +657,9 @@ export default {
           width: 20px;
           height: 20px;
           background: url("~@/assets/images/updata.png") no-repeat;
+        }
+        .yearOption {
+          margin-left: 10px;
         }
       }
       .headerRight {

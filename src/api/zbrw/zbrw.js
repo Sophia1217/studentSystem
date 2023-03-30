@@ -141,7 +141,38 @@ export function getZbrwXsjbxx(query) {
       params: query
     })
   }
+  
+  //已处理数据导出
+export function excelExportDone(query) {
+    return request({
+      url: '/rcswZbrw/excelExportDone',
+      method: 'post',
+      data: query,
+      responseType:'blob'
+    })
+  }
+  
+//待审核数据导出
+  export function excelExportTodo(query) {
+    return request({
+      url: '/rcswZbrw/excelExportTodo',
+      method: 'post',
+      data: query,
+      responseType:'blob'
+    })
+  }
 
+   
+
+//学院列表数据导出
+export function excelExportXYDone(query) {
+  return request({
+    url: '/rcswZbrw/excelExportXYDone',
+    method: 'post',
+    data: query,
+    responseType:'blob'
+  })
+}
 
 
 

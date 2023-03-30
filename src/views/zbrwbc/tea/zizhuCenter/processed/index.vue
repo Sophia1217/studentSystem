@@ -510,23 +510,24 @@ export default {
         ids.push(item_row.businesId);
       }
       this.$set(this.exportParams, "ids", ids);
-      // dshExp(this.exportParams)
-      //   .then((res) => {
-      //     this.downloadFn(res, "贷款待审核列表导出.xlsx", "xlsx");
-      //     if (this.$store.getters.excelcount > 0) {
-      //       this.$message.success(
-      //         `已成功导出${this.$store.getters.excelcount}条数据`
-      //       );
-      //     }
-      //   })
-      //   .catch((err) => {});
+      excelExportTodo(this.exportParams)
+        .then((res) => {
+          this.downloadFn(res, "征兵入伍待审核列表导出.xlsx", "xlsx");
+          if (this.$store.getters.excelcount > 0) {
+            this.$message.success(
+              `已成功导出${this.$store.getters.excelcount}条数据`
+            );
+          }
+        })
+        .catch((err) => {});
+      1;
       this.showExport = false;
     },
     expor() {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        shr: this.select == "shrxm" ? this.searchVal : null,
+        shr1: this.select == "shrxm" ? this.searchVal : null,
         zydmList: this.moreIform.zydmList,
         sqlxmList: this.moreIform.sqlxm,
         xn: this.moreIform.xn,
@@ -779,7 +780,7 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       this.commonParams = this.multipleSelection.map((v) => ({
-        spje: v.spje, 
+        spje: v.spje,
         businesId: v.id,
         processId: v.processid,
         status: v.status,

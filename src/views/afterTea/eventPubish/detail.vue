@@ -81,7 +81,6 @@
                         :rows="4"
                         v-model="ele.cyrJj"
                         placeholder="请输入"
-                        maxlength="50"
                       ></el-input>
                     </el-form-item>
                   </el-col>

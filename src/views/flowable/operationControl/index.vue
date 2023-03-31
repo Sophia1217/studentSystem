@@ -167,11 +167,11 @@ export default {
     seletChange(val) {
       var obj = {};
       obj = this.resOptions.find(function (i) {
-        return i.deploymentId === val;
+        return i.deploymentId == val ? val : "";
       });
-      this.addParams.flowid = obj.deploymentId;
-      this.addParams.flowkey = obj.flowKey;
-      this.addParams.flowname = obj.name;
+      this.addParams.flowid = obj.deploymentId ? obj.deploymentId : "";
+      this.addParams.flowkey = obj.flowKey ? obj.flowKey : "";
+      this.addParams.flowname = obj.name ? obj.name : "";
     },
     // 查询
     handleSearch() {
@@ -197,11 +197,11 @@ export default {
       this.businessName = row.businessname;
       this.value = row.flowname;
       this.addParams.id = row.id;
+      this.showExport = true;
       //弹框时直接回调触发change事件
       if (!!row.flowid) {
         this.seletChange(row.flowid);
       }
-      this.showExport = true;
     },
     //排序
     changeTableSort(column) {

@@ -60,7 +60,7 @@
               size="small"
             >
               <el-option
-                v-for="item in allDwh"
+                v-for="item in zyOps"
                 :key="item.dm"
                 :label="item.mc"
                 :value="item.dm"
@@ -519,6 +519,7 @@ export default {
       this.qurenModal = true;
     },
     add() {
+      this.name = "";
       this.addModal = true;
     },
     // 培养层次全选

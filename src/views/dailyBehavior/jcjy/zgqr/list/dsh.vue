@@ -376,15 +376,19 @@ export default {
       }
     },
     addCon() {
-      var data = this.name.slice(
-        this.name.indexOf("(") + 1,
-        this.name.indexOf(")")
-      );
-      addZgqr({ xh: data }).then((res) => {
-        this.$message.success("新增成功");
-        this.addModal = false;
-        this.handleSearch();
-      });
+      if (!!this.name) {
+        var data = this.name.slice(
+          this.name.indexOf("(") + 1,
+          this.name.indexOf(")")
+        );
+        addZgqr({ xh: data }).then((res) => {
+          this.$message.success("新增成功");
+          this.addModal = false;
+          this.handleSearch();
+        });
+      } else {
+        this.$message.error("请先输入姓名");
+      }
     },
     addCance() {
       this.addModal = false;
@@ -471,7 +475,12 @@ export default {
               label: ele.mc,
             };
           });
-          cb(resultNew);
+          if (result.length == 0) {
+            this.$message.error("暂无相关数据");
+            this.name = "";
+          } else {
+            cb(resultNew);
+          }
         });
       }
     },
@@ -499,7 +508,6 @@ export default {
       data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-
         nd: this.moreIform.nd,
         ssdwdm: this.moreIform.dwh,
         bjdm: this.moreIform.bjm,
@@ -515,8 +523,12 @@ export default {
     },
     //确认
     pass() {
-      this.fileList = [];
-      this.qurenModal = true;
+      if (this.multipleSelection.length == 1) {
+        this.fileList = [];
+        this.qurenModal = true;
+      } else {
+        this.$message.error("只能勾选一条数据进行确认操作");
+      }
     },
     add() {
       this.name = "";

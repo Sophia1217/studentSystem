@@ -102,7 +102,7 @@
           </el-col>
         </el-row>
 
-        <el-row :gutter="20" class="mt15">
+        <!-- <el-row :gutter="20" class="mt15">
           <el-col :span="1.5" style="display: inline-block; line-height: 37px"
             >毕业时间：</el-col
           >
@@ -119,7 +119,7 @@
               style="width= 60px;"
             ></el-date-picker>
           </el-col>
-        </el-row>
+        </el-row> -->
         <el-row :gutter="20" class="mt15">
           <el-col :span="3">培养层次：</el-col>
           <el-col :span="20">
@@ -280,7 +280,7 @@ import {
   importBysDqrList,
   checkBys,
 } from "@/api/student/graduateList";
-import { getYears } from "@/api/test/fdySelfTest";
+import { getYears } from "@/api/jccy/index";
 import { getCollege, getGrade } from "@/api/class/maintenanceClass";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getZY, getBJ } from "@/api/student/index";
@@ -331,7 +331,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         total: 0,
-        dksjArr: [],
+        // dksjArr: [],
         // 金额
         dkzjeEnd: 9999999,
         dkzjeStart: 1,
@@ -461,14 +461,14 @@ export default {
       data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        bysjEnd:
-          this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[1]
-            : "",
-        bysjStart:
-          this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[0]
-            : "",
+        // bysjEnd:
+        //   this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
+        //     ? this.queryParams.dksjArr[1]
+        //     : "",
+        // bysjStart:
+        //   this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
+        //     ? this.queryParams.dksjArr[0]
+        //     : "",
         bjmList: this.moreIform.bjmList,
         pydwmList: this.moreIform.pydwmList,
         pyccmList: this.training.choose || [],
@@ -539,14 +539,14 @@ export default {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
         nd: this.moreIform.nd,
-        bysjEnd:
-          this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[1]
-            : "",
-        bysjStart:
-          this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
-            ? this.queryParams.dksjArr[0]
-            : "",
+        // bysjEnd:
+        //   this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
+        //     ? this.queryParams.dksjArr[1]
+        //     : "",
+        // bysjStart:
+        //   this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
+        //     ? this.queryParams.dksjArr[0]
+        //     : "",
         bjmList: this.moreIform.bjmList,
         pydwmList: this.moreIform.pydwmList,
         pyccmList: this.training.choose || [],

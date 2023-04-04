@@ -103,7 +103,7 @@
         </el-row>
         <el-row :gutter="20" class="mt15">
           <el-col :span="1.5" style="display: inline-block; line-height: 37px"
-            >毕业时间：</el-col
+            >确认毕业时间：</el-col
           >
           <el-col :span="20">
             <el-date-picker
@@ -239,7 +239,7 @@
 
 <script>
 import { queryYqrList, exportBysYqr } from "@/api/student/graduateList";
-import { getYears } from "@/api/test/fdySelfTest";
+import { getYears } from "@/api/jccy/index";
 import { getCollege, getGrade } from "@/api/class/maintenanceClass";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getZY, getBJ } from "@/api/student/index";

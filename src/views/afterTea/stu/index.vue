@@ -1,22 +1,22 @@
 <template>
-  <div>
-    <div style="margin-top: 15px">
-      <topTitle :routeTitle="routeTitle"></topTitle>
-    </div>
-    <div class="wrap">
-      <div class="detail_left">
-        <el-tabs v-model="activeName" class="tab_left" tab-position="left">
-          <el-tab-pane label="朋辈辅导申请" name="0"> </el-tab-pane>
-          <el-tab-pane label="课程安排" name="1"> </el-tab-pane>
-        </el-tabs>
-      </div>
-      <div class="detail_right" v-if="activeName == '0'">
-        <apply></apply>
-      </div>
-      <div class="detail_right" v-if="activeName == '1'">
-        <classSet></classSet>
-      </div>
-    </div>
+  <div class="talk">
+    <topTitle :routeTitle="routeTitle"></topTitle>
+    <el-tabs v-model="activeName" class="tabs">
+      <el-tab-pane label="活动申请" name="0">
+        <span slot="label"
+          ><i class="icon tabsicon_ke"></i>活动申请</span
+        ></el-tab-pane
+      >
+      <el-tab-pane label="活动确认" name="1">
+        <span slot="label"
+          ><i class="icon tabsicon_quan"></i>活动确认</span
+        ></el-tab-pane
+      >
+    </el-tabs>
+
+    <apply v-if="activeName == '0'"></apply>
+
+    <classSet v-if="activeName == '1'"></classSet>
   </div>
 </template>
 <script>
@@ -48,71 +48,29 @@ export default {
   background: url("~@/assets/images/sixsix.png") no-repeat center;
   vertical-align: middle;
 }
-.wrap {
-  display: flex;
-  flex-direction: row;
-
-  .detail_left {
-    flex: 0 0 120px;
-    margin-right: 24px;
+.talk {
+  padding: 20px 0;
+  background: #fff;
+  .tabs {
     background: #fff;
-    // height: calc(100vh - 170px);
-    padding: 20px;
-    box-sizing: border-box;
-
-    .tab-left {
-      padding: 0 40px;
+    padding-left: 20px;
+    .icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
     }
-  }
-  .detail_right {
-    flex: 1;
-    background: #fff;
-    .right_top {
-      .title {
-        text-align: center;
-        font-weight: 500;
-        font-size: 24px;
-        color: #005657;
-        line-height: 24px;
-      }
-      .timeWrap {
-        text-align: center;
-        font-weight: 400;
-        font-size: 16px;
-        color: #383838;
-        line-height: 28px;
-        .updataTime {
-          margin-left: 20px;
-        }
-      }
+    .tabsicon_ke {
+      background: url("~@/assets/images/icon_warning.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      vertical-align: middle;
     }
-    .headline {
-      padding-left: 20px;
-      box-sizing: border-box;
-      font-weight: 600;
-      font-size: 20px;
-      color: #1f1f1f;
-      line-height: 28px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      .editBtn {
-        padding: 4px 5px;
-        margin-right: 20px;
-        border: 1px solid #005657;
-        border-radius: 4px;
-        font-weight: 400;
-        font-size: 14px;
-        color: #005657;
-        cursor: pointer;
-        .addIcon {
-          display: inline-block;
-          width: 15px;
-          height: 15px;
-          background: url("~@/assets/images/addicon.png") no-repeat center;
-          vertical-align: middle;
-        }
-      }
+    .tabsicon_quan {
+      background: url("~@/assets/images/icon_confirm.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      vertical-align: middle;
     }
   }
 }

@@ -7,13 +7,13 @@
         </div>
         <div class="headerRight">
           <div class="btns borderLight" @click="showDel">
-            <i class="icon lightIcon"></i><span class="title">退课</span>
+            <i class="icon lightIcon"></i><span class="title">取消</span>
           </div>
           <!-- <div class="btns borderLight" @click="chModal">
             <i class="icon chIcon"></i><span class="title2">撤回</span>
           </div> -->
           <div class="btns borderLight" @click="tjModal">
-            <i class="icon tjIcon"></i><span class="title2">申请</span>
+            <i class="icon tjIcon"></i><span class="title2">确认</span>
           </div>
           <!-- <div class="btns borderGreen" @click="xinzeng">
             <i class="icon greenIcon"></i><span class="title1">新增</span>
@@ -35,50 +35,55 @@
             width="50"
           ></el-table-column>
           <el-table-column
-            prop="kczt"
-            label="课程主题"
+            prop="hdzt"
+            label="主题"
             sortable="custom"
-            :show-overflow-tooltip="true"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="kkrq"
-            label="起止时间"
-            sortable="custom"
-            :show-overflow-tooltip="true"
             :min-width="150"
+            :show-overflow-tooltip="true"
           >
           </el-table-column>
-          <el-table-column prop="kksj" label="开课时间"> </el-table-column>
-          <el-table-column prop="kkcs" label="次数"> </el-table-column>
-          <el-table-column prop="kksc" label="时长"> </el-table-column>
-          <el-table-column prop="kjnrs" label="可接纳人数"> </el-table-column>
-          <el-table-column prop="ykrs" label="约课人员"> </el-table-column>
-          <el-table-column prop="kkdd" label="开课地点"> </el-table-column>
-          <el-table-column prop="sqztmc" label="状态"> </el-table-column>
-          <!-- <el-table-column
-            prop="status"
-            label="审核状态"
-            sortable="custom"
-            fixed="right"
-          >
-            <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.status"
-                placeholder="请选择"
-                :disabled="true"
-              >
-                <el-option
-                  v-for="(item, index) in ztStatus"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select>
-            </template>
-          </el-table-column> -->
           <el-table-column
-            prop="sfpj"
+            prop="zzdwmc"
+            label="组织单位"
+            sortable="custom"
+            :min-width="100"
+            :show-overflow-tooltip="true"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="cyrmc"
+            label="参与人"
+            sortable="custom"
+            :min-width="120"
+            :show-overflow-tooltip="true"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="hdsjlbpj"
+            label="时间"
+            sortable="custom"
+            :min-width="150"
+            :show-overflow-tooltip="true"
+          >
+          </el-table-column>
+
+          <el-table-column
+            prop="hddd"
+            :min-width="100"
+            label="地点"
+            sortable="custom"
+          >
+          </el-table-column>
+          <el-table-column prop="hdlb" label="类别"> </el-table-column>
+          <el-table-column prop="qrzt" label="状态">
+            <!-- <template slot-scope="scope">
+              <div v-if="scope.row.qrzt == 0">未确认</div>
+              <div v-if="scope.row.qrzt == 1">已确认</div>
+            </template> -->
+          </el-table-column>
+
+          <el-table-column
+            prop="sfypj"
             label="评价"
             sortable="custom"
             :show-overflow-tooltip="true"
@@ -89,7 +94,7 @@
                 type="text"
                 size="small"
                 disabled
-                v-if="scope.row.sfpj == 1"
+                v-if="scope.row.sfypj != '未评价'"
               >
                 <span> 已评价 </span>
               </el-button>
@@ -97,9 +102,10 @@
                 type="text"
                 size="small"
                 @click="chModal(scope.row)"
+                :disabled="scope.row.qrzt == '未确认'"
                 v-else
               >
-                <span> 评价 </span>
+                <span> 未评价 </span>
               </el-button>
             </template>
           </el-table-column>
@@ -131,8 +137,8 @@
         @pagination="query"
       />
     </div>
-    <el-dialog title="退课" :visible.sync="delModal" width="20%">
-      <span>确认退课？</span>
+    <el-dialog title="取消" :visible.sync="delModal" width="20%">
+      <span>确认取消？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="delCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="deletepbsq()"
@@ -156,11 +162,11 @@
             <el-radio label="10" size="large">10分</el-radio>
           </el-radio-group></el-form-item
         >
-        <el-form-item label="评价" prop="pfms" :rules="rules.common">
+        <el-form-item label="评价意见" prop="pfms" :rules="rules.common">
           <el-input
             type="textarea"
             :rows="5"
-            maxlength="500"
+            maxlength="200"
             v-model="formPj.pfms"
           />
         </el-form-item>
@@ -175,7 +181,7 @@
     <el-dialog title="申请" :visible.sync="submitModal" width="30%">
       <template>
         <div>
-          <span>确认申请？</span>
+          <span>确认参加？</span>
         </div>
       </template>
       <span slot="footer" class="dialog-footer">
@@ -201,6 +207,12 @@ import {
 } from "@/api/friendTutor/classSet";
 import lctCom from "../../../components/lct";
 
+import {
+  queryJsxwcHdqrList,
+  jsxwcqrById,
+  jsxwcQxqrById,
+  jsxwcPjById,
+} from "@/api/afterTea/stu";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
   components: { lctCom },
@@ -215,7 +227,8 @@ export default {
       editModal: false,
       delModal: false,
       formPj: {},
-      kcid: "",
+      hdid: "",
+      rowid: "",
       formEdit: {},
       tableDate: [],
       queryParams: {
@@ -224,6 +237,7 @@ export default {
         totalCount: 0,
         orderZd: "",
         orderPx: "",
+        xh: this.$store.getters.userId,
       },
       editFlag: 2,
       fileList: [],
@@ -260,7 +274,7 @@ export default {
       }
     },
     tjbyid() {
-      apply(this.tjArr).then((res) => {
+      jsxwcqrById(this.val).then((res) => {
         if (res.errcode == "00") {
           this.$message.success("申请成功");
           this.query();
@@ -305,12 +319,13 @@ export default {
         this.$message.error("请完善表单信息！");
       } else {
         let data = {
-          kcId: this.kcid,
-          score: this.formPj.score,
-          pfms: this.formPj.pfms,
+          id: this.rowid,
+          hdid: this.hdid,
+          hdpf: this.formPj.score,
+          hdpjnr: this.formPj.pfms,
         };
 
-        comment(data).then((res) => {
+        jsxwcPjById(data).then((res) => {
           this.$message.success("评价成功");
           this.query();
           this.pjModal = false;
@@ -319,7 +334,8 @@ export default {
     },
     chModal(row) {
       this.pjModal = true;
-      this.kcid = row.id;
+      this.hdid = row.hdid;
+      this.rowid = row.id;
     },
     showDel() {
       if (this.delArr && this.delArr.length > 0) {
@@ -329,10 +345,10 @@ export default {
       }
     },
     deletepbsq() {
-      reject(this.delArr).then((res) => {
+      jsxwcQxqrById({ ids: this.delArr }).then((res) => {
         this.query();
         this.delModal = false;
-        this.$message.success("退课成功");
+        this.$message.success("取消成功");
       });
     },
     delCancel() {
@@ -350,7 +366,7 @@ export default {
     },
 
     query() {
-      queryKcList({ xh: this.$store.getters.userId }).then((res) => {
+      queryJsxwcHdqrList(this.queryParams).then((res) => {
         this.tableDate = res.data;
         this.queryParams.totalCount = res.totalCount;
       });
@@ -368,11 +384,11 @@ export default {
     },
     showDetail(row) {
       this.$router.push({
-        path: "/lessonDetail",
+        path: "/afterTeaDetail",
         query: {
-          isEdit: 1,
-          id: row.id,
-          xh: row.xh,
+          bjzt: "1",
+          id: row.hdid,
+          allInfo: row,
         },
       });
     },

@@ -327,7 +327,13 @@ export default {
     showDetail(row) {
       this.$router.push({
         path: "/zbrwbc",
-        query: { sqlxm: row.sqlxm, id: row.id, isEdit: 1, status: row.status },
+        query: {
+          sqlxm: row.sqlxm,
+          id: row.id,
+          isEdit: 1,
+          status: row.status,
+          processid: row.processid,
+        },
       });
     },
 

@@ -200,7 +200,7 @@
             sortable="custom"
           />
 
-          <el-table-column fixed="right" label="操作" width="180">
+          <!-- <el-table-column fixed="right" label="操作" width="180">
             <template slot-scope="scope">
               <el-button
                 type="text"
@@ -211,7 +211,7 @@
                 <span class="handleName">详情</span>
               </el-button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </el-table>
         <pagination
           v-show="total > 0"

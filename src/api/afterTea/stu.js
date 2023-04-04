@@ -60,3 +60,12 @@ export function queryJsxwcSqList(query) {
         data: query
     })
   }
+
+  //教授下午茶申请列表查询学生端
+export function queryJsList(query) {
+  return request({
+      url: '/rcswJsxwchd/queryJsxwchdcyrList',
+      method: 'get',
+      params: query
+  })
+}

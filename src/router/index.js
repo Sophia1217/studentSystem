@@ -1215,6 +1215,62 @@ export const stuRoutes = [
   "childrenId":null,
   "auth":"1"
  },
+ {
+  "id":0,
+  "modId":"5129",
+  "name":"afterTea",
+  "path":"/afterTea",
+  "title":"教授下午茶",
+  "component":"afterTea/stu/index",
+  "icon":"",
+  "modPid":"-1",
+  "isChild":"2",
+  "sortId":29,
+  "modStatus":"1",
+  "hidden":true,
+  "alwaysShow":true,
+  "rem":"",
+  "roleIds":null,
+  "isChecked":null,
+  "vueChecked":false,
+  "meta":{
+      "icon":"",
+      "title":"教授下午茶"
+  },
+  "children":[
+
+  ],
+  "childrenId":null,
+  "auth":"1"
+ },
+ {
+  "id":0,
+  "modId":"5130",
+  "name":"afterTeaDetail",
+  "path":"/afterTeaDetail",
+  "title":"教授下午茶活动详情",
+  "component":"afterTea/stu/apply/table",
+  "icon":"",
+  "modPid":"-1",
+  "isChild":"2",
+  "sortId":30,
+  "modStatus":"1",
+  "hidden":true,
+  "alwaysShow":true,
+  "rem":"",
+  "roleIds":null,
+  "isChecked":null,
+  "vueChecked":false,
+  "meta":{
+      "icon":"",
+      "title":"教授下午茶活动详情"
+  },
+  "children":[
+
+  ],
+  "childrenId":null,
+  "auth":"1"
+ },
     ];
 
 // 动态路由，基于用户权限动态去加载

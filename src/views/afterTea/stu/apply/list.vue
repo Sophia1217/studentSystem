@@ -6,18 +6,18 @@
           <span class="title">申请列表</span>
         </div>
         <div class="headerRight">
-          <div class="btns borderLight" @click="showDel">
+          <!-- <div class="btns borderLight" @click="showDel">
             <i class="icon lightIcon"></i><span class="title">删除</span>
-          </div>
+          </div> -->
           <div class="btns borderLight" @click="chModal">
             <i class="icon chIcon"></i><span class="title2">撤回</span>
           </div>
-          <div class="btns borderLight" @click="tjModal">
+          <!-- <div class="btns borderLight" @click="tjModal">
             <i class="icon tjIcon"></i><span class="title2">提交</span>
-          </div>
-          <div class="btns borderGreen" @click="xinzeng">
-            <i class="icon greenIcon"></i><span class="title1">新增</span>
-          </div>
+          </div> -->
+          <!-- <div class="btns borderGreen" @click="xinzeng">
+            <i class="icon greenIcon"></i><span class="title1">申请</span>
+          </div> -->
         </div>
       </div>
       <div class="mt15">
@@ -35,45 +35,55 @@
             width="50"
           ></el-table-column>
           <el-table-column
-            prop="xh"
-            label="学号"
+            prop="hdzt"
+            label="主题"
             sortable="custom"
+            :min-width="150"
             :show-overflow-tooltip="true"
           >
           </el-table-column>
           <el-table-column
-            prop="xm"
-            label="姓名"
+            prop="zzdwmc"
+            label="组织单位"
             sortable="custom"
+            :min-width="100"
             :show-overflow-tooltip="true"
           >
           </el-table-column>
-          <el-table-column prop="dwhmc" label="培养单位"> </el-table-column>
-          <el-table-column prop="zydmmc" label="专业"> </el-table-column>
-          <el-table-column prop="fwfxMc" label="服务方向"> </el-table-column>
-          <el-table-column prop="lb" label="类别"> </el-table-column>
-          <el-table-column prop="sqsj" label="申请时间"> </el-table-column>
+          <el-table-column
+            prop="cyrxm"
+            label="参与人"
+            sortable="custom"
+            :min-width="120"
+            :show-overflow-tooltip="true"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="hdsjlbpj"
+            label="时间"
+            sortable="custom"
+            :min-width="150"
+            :show-overflow-tooltip="true"
+          >
+          </el-table-column>
 
           <el-table-column
-            prop="status"
+            prop="hddd"
+            :min-width="100"
+            label="地点"
+            sortable="custom"
+          >
+          </el-table-column>
+          <el-table-column prop="hdlb" label="类别"> </el-table-column>
+          <el-table-column prop="dgjsktgrs" label="可通过人数">
+          </el-table-column>
+
+          <el-table-column
+            prop="statusChinese"
             label="审核状态"
             sortable="custom"
             fixed="right"
           >
-            <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.status"
-                placeholder="请选择"
-                :disabled="true"
-              >
-                <el-option
-                  v-for="(item, index) in ztStatus"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select>
-            </template>
           </el-table-column>
           <el-table-column
             prop="jg"
@@ -103,6 +113,19 @@
               >
                 <i class="scopeIncon handledie"></i>
                 <span style="margin-left: 5px">详情</span>
+              </el-button>
+              <el-button
+                type="text"
+                size="small"
+                @click="apply(scope.row)"
+                v-if="scope.row.id == null"
+              >
+                <i class="scopeIncon Edit"></i>
+                <span style="margin-left: 5px">申请</span>
+              </el-button>
+              <el-button type="text" size="small" disabled v-else>
+                <i class="scopeIncon EditDis"></i>
+                <span style="margin-left: 5px">申请</span>
               </el-button>
             </template>
           </el-table-column>
@@ -164,6 +187,7 @@ import {
 } from "@/api/friendTutor/apply";
 import lctCom from "../../../components/lct";
 
+import { queryJsxwcSqList, jsxwccxById } from "@/api/afterTea/stu";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
   components: { lctCom },
@@ -186,6 +210,7 @@ export default {
         totalCount: 0,
         orderZd: "",
         orderPx: "",
+        xh: this.$store.getters.userId,
       },
       editFlag: 2,
       fileList: [],
@@ -272,8 +297,7 @@ export default {
       this.chehuiModal = false;
     },
     ch() {
-      var data = this.val;
-      cxById(data).then((res) => {
+      jsxwccxById({ ids: this.delArr }).then((res) => {
         this.$message.success("撤回成功");
         this.query();
         this.chehuiModal = false;
@@ -331,25 +355,24 @@ export default {
     },
 
     query() {
-      queryPbsqList({ xh: this.$store.getters.userId }).then((res) => {
+      queryJsxwcSqList(this.queryParams).then((res) => {
         this.tableDate = res.data;
         this.queryParams.totalCount = res.totalCount;
       });
     },
-    xinzeng() {
+    apply(row) {
       this.$router.push({
-        path: "/tutorDetail",
-        query: { isEdit: 2 },
+        path: "/afterTeaDetail",
+        query: { bjzt: "2", id: row.hdid, allInfo: row },
       });
     },
     showDetail(row) {
       this.$router.push({
-        path: "/tutorDetail",
+        path: "/afterTeaDetail",
         query: {
-          isEdit: 1,
-          id: row.id,
-          processid: row.processid,
-          status: row.status,
+          bjzt: "1",
+          id: row.hdid,
+          allInfo: row,
         },
       });
     },

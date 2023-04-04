@@ -1,543 +1,385 @@
 <template>
-  <div class="wrap">
-    <!-- 基本情况 -->
-    <div class="detail_right">
-      <div class="right_top">
-        <p class="toptitle">朋辈导师资料</p>
-      </div>
-      <el-form ref="formAdd" :model="detailInfoData">
-        <!-- 学生本人基本情况 -->
-        <div class="headline">学生基本信息</div>
-        <div class="tableStyle">
-          <div class="information">
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">学号</div>
-                  <div class="content">
-                    {{ detailInfoData.xh }}
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">姓名</div>
-                  <div class="content">
-                    {{ detailInfoData.xm }}
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">性别</div>
-                  <div class="content">
-                    {{ detailInfoData.xbmmc }}
-                  </div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">培养单位</div>
-                  <div class="content">
-                    {{ detailInfoData.dwhmc }}
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="24" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">专业</div>
-                  <div class="content">
-                    {{ detailInfoData.zydmmc }}
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">联系电话</div>
-
-                  <el-form-item prop="yddh" :rules="rules.common">
-                    <div class="content" v-if="flag == 1">
-                      <el-input
-                        v-model="detailInfoData.yddh"
-                        maxlength="100"
-                      ></el-input>
-                    </div>
-                    <div class="content" v-else>
-                      {{ detailInfoData.yddh }}
-                    </div>
-                  </el-form-item>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">QQ</div>
-                  <el-form-item prop="qqhm" :rules="rules.common">
-                    <div class="content" v-if="flag == 1">
-                      <el-input
-                        v-model="detailInfoData.qqhm"
-                        maxlength="100"
-                      ></el-input>
-                    </div>
-                    <div class="content" v-else>
-                      {{ detailInfoData.qqhm }}
-                    </div>
-                  </el-form-item>
-                </div>
-              </el-col>
-            </el-row>
-          </div>
+  <div class="addHomeSchool">
+    <el-form ref="form" label-width="80px" :model="form" :rules="rules">
+      <div class="permissions">
+        <div>
+          <span class="title">参与人</span>
         </div>
-        <div class="headline">课程信息</div>
-        <div class="tableStyle">
-          <div class="information">
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">申请类别</div>
-                  <el-form-item prop="lb" :rules="rules.common">
-                    <div class="content" v-if="flag == 1">
-                      <el-select v-model="detailInfoData.lb">
-                        <el-option
-                          v-for="(item, index) in sqlbOps"
-                          :key="index"
-                          :label="item.mc"
-                          :value="item.dm"
-                        ></el-option>
-                      </el-select>
-                    </div>
-                    <div class="content" v-else>
-                      {{ detailInfoData.lb }}
-                    </div>
-                  </el-form-item>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">起止时间</div>
-                  <el-form-item prop="time" :rules="rules.common">
-                    <div class="content" v-if="flag == 1">
-                      <el-date-picker
-                        type="daterange"
-                        v-model="detailInfoData.time"
-                        value-format="yyyy-MM-dd"
-                      />
-                    </div>
-                    <div class="content" v-else>
-                      {{ detailInfoData.qzsjStart }}至
-                      {{ detailInfoData.qzsjEnd }}
-                    </div>
-                  </el-form-item>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">课程次数</div>
-                  <el-form-item prop="kccs" :rules="rules.common">
-                    <div class="content" v-if="flag == 1">
-                      <el-input-number
-                        v-model="detailInfoData.kccs"
-                        :min="0"
-                        :max="9999"
-                        controls-position="right"
-                        @change="countKs()"
-                      ></el-input-number>
-                    </div>
-                    <div class="content" v-else>
-                      {{ detailInfoData.kccs }}次
-                    </div>
-                  </el-form-item>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">课程时长</div>
-                  <el-form-item prop="kcsc" :rules="rules.common">
-                    <div class="content" v-if="flag == 1">
-                      <el-input-number
-                        v-model="detailInfoData.kcsc"
-                        :min="0"
-                        :max="9999"
-                        controls-position="right"
-                        @change="countKs()"
-                      ></el-input-number>
-                      <span>分钟</span>
-                    </div>
-                    <div class="content" v-else>
-                      {{ detailInfoData.kcsc }}分钟
-                    </div>
-                  </el-form-item>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">课程所需课时</div>
-                  <div class="content">{{ detailInfoData.kcks }}分钟</div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">预备辅导地点</div>
-                  <el-form-item prop="kcdd" :rules="rules.common">
-                    <div class="content" v-if="flag == 1">
-                      <el-input
-                        v-model="detailInfoData.kcdd"
-                        maxlength="100"
-                      ></el-input>
-                    </div>
-                    <div class="content" v-else>
-                      {{ detailInfoData.kcdd }}
-                    </div>
-                  </el-form-item>
-                </div>
-              </el-col>
-            </el-row>
-          </div>
-          <div style="margin-top: 20px">
-            <el-table
-              :data="detailInfoData.fwfxList"
-              ref="multipleTable"
-              style="width: 100%"
-            >
-              <el-table-column prop="dm" label="服务方向" :min-width="300">
-                <template slot-scope="scope">
-                  <el-form-item
-                    :prop="'fwfxList.' + scope.$index + '.dm'"
-                    :rules="rules.common"
-                  >
-                    <el-select
-                      v-model="scope.row.dm"
-                      filterable
-                      allow-create
-                      :disabled="flag != 1"
+        <div>
+          <div v-for="(ele, ind) in form.cyrList">
+            <div style="display: flex">
+              <div style="width: 200px">
+                <el-upload
+                  class="avatar-uploader"
+                  action="#"
+                  :file-list="ele.fileList"
+                  :show-file-list="false"
+                  :disabled="bjzt == '1' ? true : false"
+                  :on-change="
+                    (item, item1) => {
+                      change(item, item1, ind);
+                    }
+                  "
+                  :auto-upload="false"
+                  ref="upload"
+                >
+                  <img v-if="ele.imageUrl" :src="ele.imageUrl" class="avatar" />
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+              </div>
+              <div style="width: 1350px">
+                <el-row :gutter="20">
+                  <el-col :span="7">
+                    <el-form-item
+                      label="姓名"
+                      :rules="rules.common"
+                      :prop="'cyrList.' + ind + '.acceptVlaue'"
                     >
-                      <el-option
-                        v-for="(item, index) in fwfxOps"
-                        :key="index"
-                        :label="item.mc"
-                        :value="item.mc"
-                      ></el-option>
-                    </el-select>
-                  </el-form-item>
-                </template>
-              </el-table-column>
-
-              <el-table-column prop="mc" label="分数" :min-width="230">
-                <template slot-scope="scope">
-                  <el-form-item
-                    :prop="'fwfxList.' + scope.$index + '.mc'"
-                    :rules="rules.common"
-                  >
-                    <!-- <div v-if="isEdit == 2">{{ scope.row.mc }}</div> -->
-                    <el-input-number
-                      v-model="scope.row.mc"
-                      :min="0"
-                      :disabled="flag != 1"
-                      controls-position="right"
-                    />
-                  </el-form-item>
-                </template>
-              </el-table-column>
-
-              <el-table-column label="添加选项" align="center" v-if="flag == 1">
-                <template slot-scope="scope">
-                  <div style="margin-bottom: 20px">
-                    <i
-                      class="icon jia"
-                      @click="jia(scope.row, scope.$index)"
-                    ></i>
-                    <i
-                      class="icon jian"
-                      @click="jian(scope.row, scope.$index)"
-                      v-if="scope.$index > 0"
-                    ></i>
-                  </div>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-
-          <div style="margin-top: 10px">
-            <el-row>
-              <el-col :span="4">
-                <div class="label">可服务时间段</div>
-              </el-col>
-            </el-row>
-
-            <el-table :data="kfwsjdList" style="width: 100%" stripe>
-              <el-table-column fixed="left" width="100">
-                <template slot-scope="scope">
-                  {{ 2 * (scope.$index + 1) - 1 }}-{{ 2 * (scope.$index + 1) }}
-                </template>
-              </el-table-column>
-              <el-table-column prop="Mon" label="星期一" width="180">
-                <template slot-scope="scope">
-                  <el-checkbox
-                    v-model="scope.row.Mon"
-                    size="large"
-                    :disabled="flag != 1"
-                  />
-                </template>
-              </el-table-column>
-              <el-table-column prop="Tues" label="星期二" width="180">
-                <template slot-scope="scope">
-                  <el-checkbox
-                    v-model="scope.row.Tues"
-                    size="large"
-                    :disabled="flag != 1"
-                  />
-                </template>
-              </el-table-column>
-              <el-table-column prop="Wed" label="星期三" width="180">
-                <template slot-scope="scope">
-                  <el-checkbox
-                    v-model="scope.row.Wed"
-                    size="large"
-                    :disabled="flag != 1"
-                  />
-                </template>
-              </el-table-column>
-              <el-table-column prop="Thur" label="星期四" width="180">
-                <template slot-scope="scope">
-                  <el-checkbox
-                    v-model="scope.row.Thur"
-                    size="large"
-                    :disabled="flag != 1"
-                  />
-                </template>
-              </el-table-column>
-              <el-table-column prop="Fri" label="星期五" width="180">
-                <template slot-scope="scope">
-                  <el-checkbox
-                    v-model="scope.row.Fri"
-                    size="large"
-                    :disabled="flag != 1"
-                  />
-                </template>
-              </el-table-column>
-              <el-table-column prop="Sat" label="星期六" width="180">
-                <template slot-scope="scope">
-                  <el-checkbox
-                    v-model="scope.row.Sat"
-                    size="large"
-                    :disabled="flag != 1"
-                  />
-                </template>
-              </el-table-column>
-              <el-table-column prop="Sun" label="星期日" width="180">
-                <template slot-scope="scope">
-                  <el-checkbox
-                    v-model="scope.row.Sun"
-                    size="large"
-                    :disabled="flag != 1"
-                  />
-                </template>
-              </el-table-column>
-            </el-table>
+                      <span>{{ ele.acceptVlaue }}</span>
+                    </el-form-item>
+                  </el-col>
+                  <!-- <el-col :span="1.5" :offset="14">
+                    <div
+                      class="btns fullGreen"
+                      v-if="ind == 0 && bjzt == '2'"
+                      @click="xinzeng"
+                    >
+                      <i class="icon passIcon"></i
+                      ><span class="title1">新增</span>
+                    </div>
+                    <div
+                      class="btns borderRed"
+                      v-if="ind > 0 && bjzt == '2'"
+                      @click="shanchu(ind)"
+                    >
+                      <i class="icon lightIcon"></i
+                      ><span class="title1">删除</span>
+                    </div>
+                  </el-col> -->
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="23">
+                    <el-form-item label="简介">
+                      <div>{{ ele.cyrJj }}</div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
           </div>
         </div>
-        <!-- 课程计划及预期效果 -->
-        <div class="headline">
-          <div>课程计划及预期效果</div>
-        </div>
-        <div class="tableStyle">
-          <div class="inputArea" style="margin-bottom: 20px">
-            <el-form-item prop="kcjh" :rules="rules.common">
-              <el-input
-                type="textarea"
-                :rows="10"
-                maxlength="2000"
-                v-model="detailInfoData.kcjh"
-                :readonly="flag != 1"
-              />
-            </el-form-item>
+        <div>
+          <div>
+            <span class="title">活动详情</span>
           </div>
+          <el-row :gutter="20">
+            <el-col :span="6">
+              <el-form-item label="活动主题" prop="hdzt">
+                <span>{{ form.hdzt }}</span>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item
+                label="单个教授可通过人数"
+                prop="dgjsktgrs"
+                label-width="150px"
+              >
+                <span>{{ form.dgjsktgrs }}</span>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="组织单位" prop="zzdw">
+                <span>{{ form.zzdwmc }}</span>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="活动类别" prop="hdlb">
+                <span>{{ form.hdlb }}</span>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="6">
+              <el-form-item label="活动时间" prop="hdsj">
+                <span>{{ form.hdsj }}</span>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="开始时间" prop="hdkssj">
+                <span>{{ form.hdkssj }}</span>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="结束时间" prop="hdjssj">
+                <span>{{ form.hdjssj }}</span>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="活动地点" prop="hddd">
+                <span>{{ form.hddd }}</span>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="23">
+              <el-form-item label="活动简介" prop="hdjj">
+                <div>{{ form.hdjj }}</div>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="23">
+              <el-form-item label="所选教授" prop="xzjs" :rules="rules.common">
+                <span v-if="bjzt == '1'">{{ form.xzjs }}</span>
+                <el-select
+                  v-else
+                  v-model="form.xzjs"
+                  placeholder="请选择"
+                  :clearable="true"
+                  size="small"
+                >
+                  <el-option
+                    v-for="item in jsOps"
+                    :key="item.mc"
+                    :label="item.mc"
+                    :value="item"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="23">
+              <el-form-item
+                label="拟提问问题"
+                prop="ntwwt"
+                :rules="rules.common"
+                label-width="100"
+              >
+                <div v-if="bjzt == '1'">{{ form.ntwwt }}</div>
+                <el-input
+                  v-else
+                  type="textarea"
+                  :maxlength="500"
+                  :rows="4"
+                  v-model="form.ntwwt"
+                  placeholder="请输入"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </div>
-      </el-form>
-    </div>
-
-    <!-- <div v-if="isEdit != 1" class="editBottom">
-      <div class="btn cancel" @click="handleBack">返回</div>
-      <div class="btn editIcon" @click="editButtonClick">编辑</div>
-    </div> -->
-
-    <div class="editBottom">
-      <div class="btn cancel" v-if="isEdit == 1" @click="lctClick">
-        审核记录
       </div>
-      <div class="btn cancel" @click="handleCancle">返回</div>
-      <div class="btn confirm" v-if="flag == 1" @click="handlUpdata">保存</div>
+    </el-form>
+    <div class="editBottom">
+      <div class="btn cancel" @click="back">返回</div>
+      <div class="btn confirm" v-if="bjzt != '1'" @click="apply">申请</div>
     </div>
-    <lctCom
-      ref="child"
-      :lctModal="lctModal"
-      @handleCloseLct="handleCloseLct"
-    ></lctCom>
   </div>
 </template>
+
 <script>
-import { getXsJbxx } from "@/api/dailyBehavior/vocationTea";
-import { insert, queryPbsqDetail } from "@/api/friendTutor/apply";
-import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
-import lctCom from "../../../components/lct";
+import myMixins from "@/views/afterTea/eventPubish/mixin";
+import { getXmXgh } from "@/api/assistantWork/talk";
+import { add, getDetail } from "@/api/teacherTea/index";
+import { jsxwcSqTj, queryJsList } from "@/api/afterTea/stu";
+import { Exportwj } from "@/api/assistantWork/classEvent";
 export default {
-  components: { lctCom },
+  mixins: [myMixins],
   data() {
     return {
-      isEdit: this.$route.query.isEdit,
-      flag:
-        this.$route.query.status == "01" ||
-        this.$route.query.status == "08" ||
-        !this.$route.query.status
-          ? 1
-          : 2,
-      nd: "",
-      xh: this.$store.getters.userId,
-      activeName: "0",
-      sqlbOps: [
-        { dm: "1", mc: "校级" },
-        { dm: "0", mc: "院级" },
-      ],
-      detailInfoData: {},
-      fwfxList: [{ dm: "", mc: "" }],
-      kfwsjdList: [
-        {
-          Mon: false,
-          Tues: false,
-          Wed: false,
-          Thur: false,
-          Fri: false,
-          Sat: false,
-          Sun: false,
-        },
-        {
-          Mon: false,
-          Tues: false,
-          Wed: false,
-          Thur: false,
-          Fri: false,
-          Sat: false,
-          Sun: false,
-        },
-        {
-          Mon: false,
-          Tues: false,
-          Wed: false,
-          Thur: false,
-          Fri: false,
-          Sat: false,
-          Sun: false,
-        },
-        {
-          Mon: false,
-          Tues: false,
-          Wed: false,
-          Thur: false,
-          Fri: false,
-          Sat: false,
-          Sun: false,
-        },
-        {
-          Mon: false,
-          Tues: false,
-          Wed: false,
-          Thur: false,
-          Fri: false,
-          Sat: false,
-          Sun: false,
-        },
-      ],
-      lctModal: false,
-      njOptions: [],
-      fwfxOps: [],
+      bjzt: this.$route.query.bjzt,
+      jsOps: [],
+      form: {
+        cyrList: [
+          {
+            fileList: [], //文件
+            cyrJj: "", //简介
+            cyrMc: "", //名称
+            cyrGh: "", //工号
+            acceptVlaue: "",
+            imageUrl: "",
+          },
+        ],
+        hdzt: "",
+        dgjsktgrs: undefined,
+        zzdw: "",
+        hdlb: "",
+        hdsj: "",
+        hdkssj: "",
+        hdjssj: "",
+        hddd: "",
+        hdjj: "",
+        ntwwt: "",
+      },
+      allInfo: {},
+      lgnSn: "",
       rules: {
         common: [
           {
             required: true,
-            message: " ",
+            message: "请完善对应表单内容",
             trigger: "blur",
           },
         ],
       },
     };
   },
-  created() {},
+
   mounted() {
-    this.getCode("dmfwfxm");
-    this.getDetail();
+    this.id = this.$route.query.id; //逻辑主键
+    this.allInfo = this.$route.query.allInfo; //基本信息
+    this.form = Object.assign(this.form, this.allInfo);
+    this.getInfo();
   },
+
   methods: {
-    getCode(data) {
-      this.getCodeInfoByEnglish(data);
+    back() {
+      this.$router.go(-1);
     },
-    getCodeInfoByEnglish(paramsData) {
-      const data = { codeTableEnglish: paramsData };
-      getCodeInfoByEnglish(data).then((res) => {
-        switch (paramsData) {
-          case "dmfwfxm":
-            this.fwfxOps = res.data;
-            break;
-        }
+    async getInfo() {
+      await getDetail({ hdId: this.id }).then((res) => {
+        this.form.cyrList = res.data.map((ele) => {
+          return {
+            fileList: [],
+            ...ele,
+          };
+        });
       });
-    },
-    handleCloseLct() {
-      this.lctModal = false;
-    },
-    lctClick() {
-      if (!!this.$route.query.processid) {
-        this.$refs.child.inner(this.$route.query.processid);
-        this.lctModal = true;
-      } else {
-        this.$message.warning("此项经历为管理员新增，暂无流程数据");
-      }
-    },
-    countKs() {
-      this.detailInfoData.kcks =
-        this.detailInfoData.kccs * this.detailInfoData.kcsc
-          ? this.detailInfoData.kccs * this.detailInfoData.kcsc
-          : "";
-    },
-    editButtonClick() {
-      this.isEdit = 1;
-    },
-    getDetail() {
-      if (this.$route.query.id) {
-        queryPbsqDetail({ id: this.$route.query.id }).then((res) => {
-          this.detailInfoData = res.data;
-          this.kfwsjdList = res.data.kfwsjdListRes;
-          if (res.data.qzsjStart && res.data.qzsjEnd) {
-            this.$set(this.detailInfoData, "time", [
-              res.data.qzsjStart,
-              res.data.qzsjEnd,
-            ]);
-          }
-        });
-      } else {
-        getXsJbxx({ xh: this.xh }).then((res) => {
-          this.detailInfoData = res.data;
-          this.$set(this.detailInfoData, "fwfxList", [{ dm: "", mc: "" }]);
+      for (var j = 0; j < this.form.cyrList.length; j++) {
+        var data;
+        if (this.form.cyrList[j].file) {
+          await Exportwj({ id: this.form.cyrList[j].id.toString() }).then(
+            (res) => {
+              data = new File([res], this.form.cyrList[j].file.fileName, {
+                type: "application/png",
+                lastModified: Date.now(),
+              });
+              this.form.cyrList[j].fileList.push(data);
+              // let binaryData = [];
+              // binaryData.push(res);
+              // this.form.cyrList[j].imageUrl = window.URL.createObjectURL(
+              //   new Blob(binaryData)
+              // );
+              // console.log(
+              //   "  this.form.cyrList[j].imageUrl",
+              //   this.form.cyrList[j].imageUrl
+              // );
+              this.form.cyrList[
+                j
+              ].imageUrl = `${window.location.origin}/sfile/${this.form.cyrList[j].file.proId}`;
+            }
+          );
+        }
+        this.jsOps.push({
+          mc: this.form.cyrList[j].cyrMc,
+          gh: this.form.cyrList[j].cyrGh,
         });
       }
+      // console.log("form", this.form);
+      // console.log(this.jsOps);
     },
-    handleBack() {
-      this.$router.go(-1);
+    xinzeng() {
+      if (this.form.cyrList.length < 10) {
+        this.form.cyrList.push({
+          fileList: [], //文件
+          cyrJj: "", //简介
+          cyrMc: "", //名称
+          cyrGh: "", //工号
+          acceptVlaue: "",
+          imageUrl: "",
+        });
+      } else {
+        this.$message.error("最多新增十位参与人数据");
+      }
     },
-    handleCancle() {
-      this.$router.go(-1);
+    shanchu(num) {
+      this.form.cyrList.splice(num, 1);
     },
-    checkFormAdd() {
+    apply() {
+      if (!this.checkForm()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        let data = {
+          hdid: this.id,
+          dgjsktgrs: this.form.dgjsktgrs,
+          ntwwt: this.form.ntwwt,
+          //sxjsgh: this.form.xzjs.gh.splice(",")[1],
+          // sxjsxm: this.form.xzjs.gh.splice(",")[0],
+          sxjsgh: this.form.xzjs.gh,
+          sxjsxm: this.form.xzjs.mc,
+        };
+        jsxwcSqTj(data).then((res) => {
+          this.$router.go(-1);
+        });
+      }
+    },
+    change(file, fileList, ind) {
+      this.form.cyrList[ind].fileList = [];
+      const index = file.name.lastIndexOf(".");
+      const ext = file.name.substr(index + 1);
+      let uid = file.uid;
+      let idx = fileList.findIndex((item) => item.uid === uid);
+      if ("jpe, jpeg, jpg, png".indexOf(ext) == -1) {
+        this.$message.error("请上传图片格式");
+        fileList.splice(idx, 1);
+      } else if (Number(file.size / 1024 / 1024) > 2) {
+        this.$message.error("图片大小不超过2M,上传失败");
+        fileList.splice(idx, 1);
+      } else {
+        //让前端图片回显
+        console.log("huixian");
+        let binaryData = [];
+        binaryData.push(file.raw);
+        this.form.cyrList[ind].imageUrl = window.URL.createObjectURL(
+          new Blob(binaryData)
+        );
+        console.log(
+          " this.form.cyrList[ind].imageUrl",
+          this.form.cyrList[ind].imageUrl
+        );
+      }
+      //取当前的file存入filelist
+      this.form.cyrList[ind].fileList.push(file);
+      console.log(
+        "  this.form.cyrList[ind].fileList2222",
+        this.form.cyrList[ind].fileList
+      );
+    },
+    querySearch(queryString, cb) {
+      if (queryString != "") {
+        let callBackArr = [];
+        var XmXgh = { xm: queryString };
+        var result = [];
+        var resultNew = [];
+        getXmXgh(XmXgh).then((res) => {
+          result = res.data.stuList;
+          resultNew = result.map((ele) => {
+            return {
+              value: `${ele.mc}(${ele.dm})`,
+              label: ele.dm,
+              xm: ele.mc,
+            };
+          });
+          resultNew.forEach((item) => {
+            if (item.value.indexOf(queryString) > -1) {
+              callBackArr.push(item);
+            }
+          });
+          cb(callBackArr);
+        });
+      }
+    },
+    handleSelect(item, index) {
+      this.form.cyrList[index].cyrMc = item.xm;
+      this.form.cyrList[index].cyrGh = item.label;
+    },
+    // 表单校验
+    checkForm() {
       // 1.校验必填项
       let validForm = false;
-      this.$refs.formAdd.validate((valid) => {
+      this.$refs.form.validate((valid) => {
         validForm = valid;
       });
       if (!validForm) {
@@ -545,173 +387,12 @@ export default {
       }
       return true;
     },
-    handlUpdata() {
-      //this.$set(this.detailInfoData, "fwfxList", this.fwfxList);
-      this.$set(this.detailInfoData, "kfwsjdList", this.kfwsjdList);
-      this.$set(
-        this.detailInfoData,
-        "qzsjStart",
-        this.detailInfoData.time[0] || ""
-      );
-      this.$set(
-        this.detailInfoData,
-        "qzsjEnd",
-        this.detailInfoData.time[1] || ""
-      );
-      let data = this.detailInfoData;
-      if (!this.checkFormAdd()) {
-        this.$message.error("请完善表单信息!");
-      } else {
-        insert(data)
-          .then((res) => {
-            this.$message.success("新增成功");
-            this.$router.go(-1);
-          })
-          .catch((err) => {});
-      }
-    },
-    jia(row, index) {
-      var obj = {
-        dm: "",
-        mc: "",
-      };
-      this.detailInfoData.fwfxList.push(obj);
-    },
-    jian(row, index) {
-      this.detailInfoData.fwfxList.splice(index, 1);
-    },
   },
 };
 </script>
+
 <style lang="scss" scoped>
-.wrap {
-  display: flex;
-  flex-direction: row;
-  .detail_right {
-    flex: 1;
-    background: #fff;
-    padding: 30px;
-    .right_top {
-      .toptitle {
-        text-align: center;
-        font-weight: 500;
-        font-size: 24px;
-        color: #005657;
-        line-height: 24px;
-      }
-      .timeWrap {
-        text-align: center;
-        font-weight: 400;
-        font-size: 16px;
-        color: #383838;
-        line-height: 28px;
-        .updataTime {
-          margin-left: 20px;
-        }
-      }
-    }
-    .headline {
-      padding-left: 20px;
-      box-sizing: border-box;
-      font-weight: 600;
-      font-size: 20px;
-      color: #000;
-      line-height: 28px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      .editBtn {
-        padding: 4px 5px;
-        margin-right: 20px;
-        // border: 1px solid #005657;
-        border-radius: 4px;
-        font-weight: 400;
-        font-size: 14px;
-        color: #005657;
-        cursor: pointer;
-        .addIcon {
-          display: inline-block;
-          width: 20px;
-          height: 20px;
-          background: url("~@/assets/images/arrowDown.png") no-repeat;
-          vertical-align: middle;
-          margin-bottom: 4px;
-        }
-      }
-    }
-
-    .tableStyle {
-      position: relative;
-      padding: 20px;
-      .information {
-        padding: 0 20px;
-        .rowStyle {
-          padding: 0 !important;
-          margin: 0;
-          border-bottom: 1px solid #cccccc;
-        }
-        .wrap {
-          display: flex;
-          align-items: center;
-          .title {
-            flex: 0 0 200px;
-            line-height: 48px;
-            background: #e0e0e0;
-            text-align: right;
-            padding-right: 5px;
-            margin: 0 !important;
-          }
-          .content {
-            font-weight: 400;
-            font-size: 14px;
-            color: #1f1f1f;
-            line-height: 48px;
-            margin-left: 16px;
-          }
-        }
-      }
-      .pieceName {
-        box-sizing: border-box;
-        padding-top: 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-weight: 500;
-        font-size: 18px;
-        color: #1f1f1f;
-        line-height: 28px;
-      }
-      .inputArea {
-        display: flex;
-        flex-direction: column;
-        //align-items: center;
-        .title {
-          //   flex: 0 0 160px;
-          //   line-height: 48px;
-          //   background: #e0e0e0;
-          //   text-align: right;
-          //   padding-right: 5px;
-          //   margin: 0 !important;
-          font-weight: 400;
-          font-size: 16px;
-          color: #1f1f1f;
-          line-height: 22px;
-          margin: 16px;
-          text-align: left;
-        }
-        .content {
-          .cishu {
-            margin-bottom: 10px;
-          }
-        }
-      }
-      .tableArea {
-        padding-right: 20px;
-        padding-left: 20px;
-      }
-    }
-  }
-
+.addHomeSchool {
   .editBottom {
     width: 100%;
     height: 60px;
@@ -741,35 +422,94 @@ export default {
       background: #005657;
       color: #fff;
     }
-    .editIcon {
-      background: #005657;
-      color: #fff;
-      // background: url('~@/assets/images/icon_edit_white.png');
+  }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: default;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409eff;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 158px;
+    height: 158px;
+    line-height: 158px;
+    text-align: center;
+  }
+  .avatar {
+    border-radius: 50%;
+    width: 158px;
+    height: 158px;
+    display: block;
+  }
+  .permissions {
+    margin-top: 20px;
+    flex-direction: row;
+    background: #fff;
+    padding: 20px;
+    // height: calc(100vh - 250px);
+    .title {
+      display: flex;
+      font-weight: 600;
+      font-size: 20px;
+      color: #1f1f1f;
+      line-height: 28px;
+      margin-bottom: 10px;
     }
   }
-  .icon {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    vertical-align: top;
-    margin-right: 5px;
+  .fullGreen {
+    // border:1px solid #005657;
+    color: #fff;
+    background: #005657;
   }
-  .jia {
-    margin-top: 9px;
-    background: url("~@/assets/images/jia.png") no-repeat;
+  .borderRed {
+    border: 1px solid #e8e8e8;
+    color: red;
+    background: #fff;
+  }
+  .btns {
+    margin-right: 15px;
+    padding: 0px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    .title1 {
+      font-size: 14px;
+      text-align: center;
+      line-height: 32px;
+      // vertical-align: middle;
+    }
+    .icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      vertical-align: top;
+      margin-right: 5px;
+    }
+    .passIcon {
+      margin-top: 10px;
+      background: url("~@/assets/assistantPng/add.png") no-repeat;
+    }
+    .lightIcon {
+      margin-top: 9px;
+      background: url("~@/assets/assistantPng/delete.png") no-repeat;
+    }
   }
 
-  .jian {
-    margin-top: 9px;
-    background: url("~@/assets/images/jian.png") no-repeat;
-  }
-  ::v-deep .el-form .el-form-item__error {
-    top: 21%;
-    right: 5% !important;
-    left: unset;
-  }
-  ::v-deep .el-form .el-form-item {
-    margin-bottom: 0px;
+  ::v-deep .el-upload-dragger {
+    background-color: #fff;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 360px;
+    height: 210px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
   }
 }
 </style>

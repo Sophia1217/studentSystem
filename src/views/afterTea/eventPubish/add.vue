@@ -29,7 +29,11 @@
               <div style="width: 1350px">
                 <el-row :gutter="20">
                   <el-col :span="7">
-                    <el-form-item label="姓名" :rules="rules.common" :prop="'cyrList.'+ind+'.acceptVlaue'" >
+                    <el-form-item
+                      label="姓名"
+                      :rules="rules.common"
+                      :prop="'cyrList.' + ind + '.acceptVlaue'"
+                    >
                       <el-autocomplete
                         v-model="ele.acceptVlaue"
                         :fetch-suggestions="querySearch"
@@ -156,6 +160,7 @@
               <el-form-item label="活动时间" prop="hdsj" :rules="rules.common">
                 <el-date-picker
                   v-model="form.hdsj"
+                  :picker-options="pickerOptions0"
                   type="date"
                   format="yyyy 年 MM 月 dd 日"
                   :clearable="true"
@@ -172,6 +177,7 @@
                 :rules="rules.common"
               >
                 <el-time-picker
+                  @change="startChange"
                   format="HH时mm分"
                   v-model="form.hdkssj"
                   :clearable="true"
@@ -188,6 +194,7 @@
                 :rules="rules.common"
               >
                 <el-time-picker
+                  @change="endChange"
                   format="HH时mm分"
                   v-model="form.hdjssj"
                   :clearable="true"
@@ -240,8 +247,18 @@ import { getXmXgh } from "@/api/assistantWork/talk";
 import { add } from "@/api/teacherTea/index";
 export default {
   mixins: [myMixins],
+  computed: {},
   data() {
     return {
+      pickerOptions0: {
+        disabledDate(time) {
+          //选择当天或者当天之后的日期，这两种方法都可以
+          // return time.getTime() < Date.now() - 1 * 24 * 3600 * 1000;
+          return time.getTime() < Date.now() - 8.64e7;
+          //选择当天或者当天之前的日期，
+          //  return time.getTime() > Date.now() - 8.64e6
+        },
+      },
       form: {
         cyrList: [
           {
@@ -280,6 +297,22 @@ export default {
   },
 
   methods: {
+    startChange() {
+      if (this.form.hdjssj) {
+        if (this.form.hdkssj > this.form.hdjssj) {
+          this.$message.error("开始时间不得大于结束时间");
+          this.form.hdkssj = "";
+        }
+      }
+    },
+    endChange() {
+      if (this.form.hdkssj) {
+        if (this.form.hdkssj > this.form.hdjssj) {
+          this.$message.error("结束时间不得小于开始时间");
+          this.form.hdjssj = "";
+        }
+      }
+    },
     xinzeng() {
       if (this.form.cyrList.length < 10) {
         this.form.cyrList.push({
@@ -341,7 +374,7 @@ export default {
           if (res.errcode == "00") {
             this.$message.success("新增成功");
             this.$router.push({
-              path: "/afterTea/eventPubish",
+              path: "/afterTeaTeacher/eventPubish",
             });
           } else {
             this.$message.error("新增失败");

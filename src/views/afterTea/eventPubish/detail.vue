@@ -174,6 +174,7 @@
                 <el-date-picker
                   v-else
                   v-model="form.hdsj"
+                  :picker-options="pickerOptions0"
                   type="date"
                   format="yyyy 年 MM 月 dd 日"
                   :clearable="true"
@@ -195,6 +196,7 @@
                   format="HH时mm分"
                   v-model="form.hdkssj"
                   :clearable="true"
+                  @change="startChange"
                   value-format="HH:mm"
                   placeholder="选择开始时间"
                 >
@@ -211,6 +213,7 @@
                 <el-time-picker
                   v-else
                   format="HH时mm分"
+                  @change="endChange"
                   v-model="form.hdjssj"
                   :clearable="true"
                   value-format="HH:mm"
@@ -271,6 +274,15 @@ export default {
   mixins: [myMixins],
   data() {
     return {
+      pickerOptions0: {
+        disabledDate(time) {
+          //选择当天或者当天之后的日期，这两种方法都可以
+          // return time.getTime() < Date.now() - 1 * 24 * 3600 * 1000;
+          return time.getTime() < Date.now() - 8.64e7;
+          //选择当天或者当天之前的日期，
+          //  return time.getTime() > Date.now() - 8.64e6
+        },
+      },
       bjzt: "1",
       form: {
         cyrList: [
@@ -311,15 +323,30 @@ export default {
     this.getAllCollege();
     this.lgnSn = this.$route.query.lgnSn; //逻辑主键
     this.allInfo = this.$route.query.allInfo; //基本信息
-    console.log(" this.allInfo", this.allInfo);
     this.form = Object.assign(this.form, this.allInfo);
     this.getInfo();
   },
 
   methods: {
+    startChange() {
+      if (this.form.hdjssj) {
+        if (this.form.hdkssj > this.form.hdjssj) {
+          this.$message.error("开始时间不得大于结束时间");
+          this.form.hdkssj = "";
+        }
+      }
+    },
+    endChange() {
+      if (this.form.hdkssj) {
+        if (this.form.hdkssj > this.form.hdjssj) {
+          this.$message.error("结束时间不得小于开始时间");
+          this.form.hdjssj = "";
+        }
+      }
+    },
     back() {
       this.$router.push({
-        path: "/afterTea/eventPubish",
+        path: "/afterTeaTeacher/eventPubish",
       });
     },
     async getInfo() {
@@ -423,7 +450,7 @@ export default {
           if (res.errcode == "00") {
             this.$message.success("编辑成功");
             this.$router.push({
-              path: "/afterTea/eventPubish",
+              path: "/afterTeaTeacher/eventPubish",
             });
           } else {
             this.$message.error("编辑失败");

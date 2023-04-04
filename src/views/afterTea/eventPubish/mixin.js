@@ -1,7 +1,7 @@
 /*
  * @Author: qingtian
  * @Date: 2023-03-28 14:19:16
- * @LastEditTime: 2023-03-28 14:20:33
+ * @LastEditTime: 2023-04-03 17:09:47
  * @LastEditors: ***
  * @Description:
  * @FilePath: \studentsystem\src\views\afterTea\eventPubish\mixin.js

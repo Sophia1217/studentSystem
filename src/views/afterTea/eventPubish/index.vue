@@ -429,11 +429,11 @@ export default {
     },
     // 导出确认
     handleConfirm() {
-      let idList = [];
+      let ids = [];
       for (let item_row of this.multipleSelection) {
-        idList.push(item_row.id);
+        ids.push(item_row.id);
       }
-      this.$set(this.exportParams, "idList", idList);
+      this.$set(this.exportParams, "ids", ids);
       exp(this.exportParams)
         .then((res) => {
           this.downloadFn(res, "活动列表导出.xlsx", "xlsx");
@@ -460,7 +460,7 @@ export default {
 
     add() {
       this.$router.push({
-        path: "/afterTea/eventPubishAdd",
+        path: "/afterTeaTeacher/eventPubishAdd",
       });
     },
     checkFormEdit() {

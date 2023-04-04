@@ -628,9 +628,9 @@
               >
                 <div class="sqList">
                   <el-input-number
+                    :min="100000000000000000"
+                    :max="100000000000000000000000"
                     style="width: 216px"
-                    :min="14"
-                    :max="9999999"
                     :controls="false"
                     v-model="formAdd.yhkh"
                     placeholder="请输入内容"

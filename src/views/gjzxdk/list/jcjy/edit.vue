@@ -264,6 +264,7 @@
                   <el-select
                     v-else
                     v-model="formAdd.shengdm"
+                    :placeholder="formAdd.shengdm || ''"
                     placeholder="请选择"
                     @change="change1"
                   >
@@ -674,9 +675,9 @@
                   <span v-if="bjzt == 1"> {{ formAdd.yhkh }}</span>
                   <el-input-number
                     v-else
+                    :min="100000000000000000"
+                    :max="100000000000000000000000"
                     style="width: 216px"
-                    :min="14"
-                    :max="9999999"
                     :controls="false"
                     v-model="formAdd.yhkh"
                     placeholder="请输入内容"
@@ -805,6 +806,7 @@ export default {
   methods: {
     binaji() {
       this.bjzt = 2;
+      this.formAdd.shengdm = "";
       this.formAdd.shidm = "";
       this.formAdd.xiandm = "";
       this.formAdd.xiangdm = "";

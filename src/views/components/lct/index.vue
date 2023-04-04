@@ -129,9 +129,13 @@ export default {
     },
     inner(val) {
       var processInstanceId = val;
-      lct({ processInstanceId }).then((res) => {
-        this.url = window.URL.createObjectURL(res);
-      });
+      try {
+        lct({ processInstanceId }).then((res) => {
+          if (res) {
+            this.url = window.URL.createObjectURL(res);
+          }
+        });
+      } catch (err) {}
       lctTable({ processInstanceId }).then((res) => {
         this.tableLct = res.data;
       });

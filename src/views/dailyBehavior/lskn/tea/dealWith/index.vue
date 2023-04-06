@@ -457,6 +457,7 @@
                     class="el-upload"
                     :disabled="true"
                     ref="upload"
+                    :on-preview="handlePreview"
                     :file-list="scope.row.fileList"
                   >
                   </el-upload>
@@ -1251,7 +1252,7 @@ export default {
       flex-direction: row;
       align-items: center;
       background: #fff;
-     
+
       .elSelect {
         width: 150px;
       }

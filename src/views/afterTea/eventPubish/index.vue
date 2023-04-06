@@ -415,7 +415,7 @@ export default {
     },
     hadleDetail2(row) {
       this.$router.push({
-        path: "/afterTea/eventPubishDetail",
+        path: "/afterTeaTeacher/eventPubishDetail",
         query: {
           allInfo: row,
           lgnSn: row.id,

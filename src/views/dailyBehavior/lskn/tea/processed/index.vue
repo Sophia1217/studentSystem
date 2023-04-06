@@ -441,6 +441,7 @@
                     class="el-upload"
                     :disabled="true"
                     ref="upload"
+                    :on-preview="handlePreview"
                     :file-list="scope.row.fileList"
                   >
                   </el-upload>
@@ -466,6 +467,7 @@
                   <el-upload
                     action="#"
                     class="el-upload"
+                    :on-preview="handlePreview"
                     :auto-upload="false"
                     :disabled="true"
                     :file-list="scope.row.fileList"

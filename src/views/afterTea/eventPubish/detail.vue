@@ -361,12 +361,14 @@ export default {
       for (var j = 0; j < this.form.cyrList.length; j++) {
         var data;
         if (this.form.cyrList[j].file) {
-          await Exportwj({ id: this.form.cyrList[j].id.toString() }).then(
+          await Exportwj({ id: this.form.cyrList[j].file.id.toString() }).then(
             (res) => {
+              // console.log("res", res);
               data = new File([res], this.form.cyrList[j].file.fileName, {
                 type: "application/png",
                 lastModified: Date.now(),
               });
+              // console.log("tdat", data);
               this.form.cyrList[j].fileList.push(data);
               // let binaryData = [];
               // binaryData.push(res);
@@ -377,14 +379,30 @@ export default {
               //   "  this.form.cyrList[j].imageUrl",
               //   this.form.cyrList[j].imageUrl
               // );
-              this.form.cyrList[
-                j
-              ].imageUrl = `${window.location.origin}/sfile/${this.form.cyrList[j].file.proId}`;
+              // let url = "data:image/jpeg;base64,";
+              // console.log("this.arrBUff", this.arrBUff(res));
+              // url = url + this.arrBUff(res);
+              // console.log("url", url);
+              // this.form.cyrList[j].imageUrl = url;
+              // console.log("createObjectURL", URL.createObjectURL(res));
+              this.form.cyrList[j].imageUrl = URL.createObjectURL(res);
+              // this.form.cyrList[
+              //   j
+              // ].imageUrl = `${window.location.origin}/sfile/${this.form.cyrList[j].file.proId}`;
             }
           );
         }
       }
-      console.log("form", this.form);
+      // console.log("form", this.form);
+    },
+    arrBUff(buffer) {
+      let binary = "";
+      const bytes = new Uint8Array(buffer);
+      const len = bytes.byteLength;
+      for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return window.btoa(binary);
     },
     xinzeng() {
       if (this.form.cyrList.length < 10) {

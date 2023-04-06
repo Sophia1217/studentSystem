@@ -977,7 +977,11 @@ export default {
     handlUpdata() {
       if (!this.checkFormAdd()) {
         this.$message.error("请完善表单相关信息！");
-      } else if (!this.detailInfoData.xnxfbzList[0].xn && this.sqlxm == 1) {
+      } else if (
+        this.detailInfoData.xnxfbzList &&
+        !this.detailInfoData.xnxfbzList[0].xn &&
+        this.sqlxm == 1
+      ) {
         this.$message.error("请至少填写一学年的学费申请！");
       } else {
         // for (let i = 0; i < this.detailInfoData.xnxfbzList.length; i++) {

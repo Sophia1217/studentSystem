@@ -223,12 +223,7 @@
             sortable
           >
           </el-table-column>
-          <el-table-column
-            fixed="right"
-            label="操作"
-            align="center"
-            width="240"
-          >
+          <el-table-column fixed="right" label="操作" width="240">
             <template slot-scope="scope">
               <el-button
                 type="text"
@@ -236,7 +231,7 @@
                 @click="showDetail(scope.row, 1)"
               >
                 <i class="scopeIncon handledie"></i>
-                <span style="margin-left: 5px">详情</span>
+                <span class="handleName" style="margin-left: 5px">详情</span>
               </el-button>
             </template>
           </el-table-column>
@@ -634,6 +629,12 @@ export default {
 
 <style lang="scss" scoped>
 .talkRec {
+  .handleName {
+    font-weight: 400;
+    font-size: 14px;
+    color: #005657;
+    line-height: 28px;
+  }
   .scopeIncon {
     display: inline-block;
     width: 20px;

@@ -14,7 +14,7 @@
                   action="#"
                   :file-list="ele.fileList"
                   :show-file-list="false"
-                  :disabled="bjzt == '1' ? true : false"
+                  disabled
                   :on-change="
                     (item, item1) => {
                       change(item, item1, ind);
@@ -130,7 +130,7 @@
           <el-row :gutter="20">
             <el-col :span="23">
               <el-form-item label="所选教授" prop="xzjs" :rules="rules.common">
-                <span v-if="bjzt == '1'">{{ form.xzjs }}</span>
+                <span v-if="bjzt == '1'">{{ form.sxjsxm }}</span>
                 <el-select
                   v-else
                   v-model="form.xzjs"
@@ -139,10 +139,10 @@
                   size="small"
                 >
                   <el-option
-                    v-for="item in jsOps"
-                    :key="item.mc"
+                    v-for="(item, index) in jsOps"
+                    :key="index"
                     :label="item.mc"
-                    :value="item"
+                    :value="item.gh"
                   ></el-option>
                 </el-select>
               </el-form-item>
@@ -273,7 +273,7 @@ export default {
         }
         this.jsOps.push({
           mc: this.form.cyrList[j].cyrMc,
-          gh: this.form.cyrList[j].cyrGh,
+          gh: this.form.cyrList[j].cyrMc + "," + this.form.cyrList[j].cyrGh,
         });
       }
       // console.log("form", this.form);
@@ -305,10 +305,10 @@ export default {
           hdid: this.id,
           dgjsktgrs: this.form.dgjsktgrs,
           ntwwt: this.form.ntwwt,
-          //sxjsgh: this.form.xzjs.gh.splice(",")[1],
-          // sxjsxm: this.form.xzjs.gh.splice(",")[0],
-          sxjsgh: this.form.xzjs.gh,
-          sxjsxm: this.form.xzjs.mc,
+          sxjsgh: this.form.xzjs.split(",")[1],
+          sxjsxm: this.form.xzjs.split(",")[0],
+          // sxjsgh: this.form.xzjs.gh,
+          // sxjsxm: this.form.xzjs.mc,
         };
         jsxwcSqTj(data).then((res) => {
           this.$router.go(-1);

@@ -51,7 +51,7 @@
           >
           </el-table-column>
           <el-table-column
-            prop="cyrxm"
+            prop="cyrmc"
             label="参与人"
             sortable="custom"
             :min-width="120"

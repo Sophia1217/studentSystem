@@ -469,7 +469,7 @@ export default {
       this.$set(this.exportParams, "ids", ids);
       exportYsh(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "大病优惠已处理列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "教授交流会已处理列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`

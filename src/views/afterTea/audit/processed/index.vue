@@ -420,13 +420,13 @@ export default {
     handleConfirm() {
       let ids = [];
       for (let item_row of this.multipleSelection) {
-        ids.push(item_row.businesId);
+        ids.push(item_row.id);
       }
       this.exportParams.pageNum = 0;
       this.$set(this.exportParams, "ids", ids);
       exportDsh(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "大病优惠待审核列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "教授交流会待审核列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`

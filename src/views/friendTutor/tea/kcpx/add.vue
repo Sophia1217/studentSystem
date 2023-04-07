@@ -61,7 +61,9 @@
             <el-col :span="12">
               <el-form-item label="QQ" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <span> </span>
+                  <span>
+                    {{ formAdd.qqhm }}
+                  </span>
                 </div>
               </el-form-item>
             </el-col>
@@ -339,6 +341,7 @@ export default {
         dwhmc: "",
         zydmmc: "",
         yddh: "",
+        qqhm: "",
         kczt: "",
         lb: "",
         kkdd: "",
@@ -393,6 +396,7 @@ export default {
       this.formAdd.dwhmc = this.multipleSelection1.dwhmc;
       this.formAdd.zydmmc = this.multipleSelection1.zydmmc;
       this.formAdd.yddh = this.multipleSelection1.yddh;
+      this.formAdd.qqhm = this.multipleSelection1.qqhm;
       this.formAdd.lb = this.multipleSelection1.lb;
       this.showExport = false;
     },

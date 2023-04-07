@@ -673,15 +673,15 @@
               >
                 <div class="sqList">
                   <span v-if="bjzt == 1"> {{ formAdd.yhkh }}</span>
-                  <el-input-number
+                  <el-input
                     v-else
-                    :min="100000000000000000"
-                    :max="100000000000000000000000"
+                    type="number"
+                    oninput="if(value.length > 5) value = value.slice(0,30)"
                     style="width: 216px"
                     :controls="false"
                     v-model="formAdd.yhkh"
                     placeholder="请输入内容"
-                  ></el-input-number>
+                  ></el-input>
                 </div>
               </el-form-item>
             </el-col>

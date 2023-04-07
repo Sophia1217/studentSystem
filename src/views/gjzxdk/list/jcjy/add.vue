@@ -627,14 +627,14 @@
                 label-width="42%"
               >
                 <div class="sqList">
-                  <el-input-number
-                    :min="100000000000000000"
-                    :max="100000000000000000000000"
+                  <el-input
+                    type="number"
+                    oninput="if(value.length > 5) value = value.slice(0,30)"
                     style="width: 216px"
                     :controls="false"
                     v-model="formAdd.yhkh"
                     placeholder="请输入内容"
-                  ></el-input-number>
+                  ></el-input>
                 </div>
               </el-form-item>
             </el-col>

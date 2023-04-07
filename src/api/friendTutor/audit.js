@@ -69,3 +69,36 @@ export function tyFlow(query) {
         responseType:'blob'
     })
   }
+
+//教师端-名单查询
+export function queryMdList(query) {
+  return request({
+    url: '/rcswPbfdXxzxmd/queryMdList',
+    method: 'post',
+    data: query
+  })
+}
+//教师端-新增名单加入 查询接口
+export function queryAllXm(query) {
+  return request({
+    url: '/rcswPbfdXxzxmd/queryFdyList',
+    method: 'post',
+    data: query
+  })
+}
+//教师端-名单新增
+export function mdAdd(query) {
+  return request({
+    url: '/rcswPbfdXxzxmd/queryMdAdd',
+    method: 'post',
+    data: query
+  })
+}
+//教师端-名单删除
+export function mdDelete(query) {
+  return request({
+    url: '/rcswPbfdXxzxmd/queryMdDelete',
+    method: 'post',
+    data: query
+  })
+}

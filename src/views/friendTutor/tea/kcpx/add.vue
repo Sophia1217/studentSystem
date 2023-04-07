@@ -397,7 +397,9 @@ export default {
       this.formAdd.zydmmc = this.multipleSelection1.zydmmc;
       this.formAdd.yddh = this.multipleSelection1.yddh;
       this.formAdd.qqhm = this.multipleSelection1.qqhm;
-      this.formAdd.lb = this.multipleSelection1.lb;
+      this.formAdd.lb = this.multipleSelection1.lb = "校级"
+        ? "1"
+        : (this.multipleSelection1.lb = "院级" ? "0" : "");
       this.showExport = false;
     },
     changeTableSort(column) {

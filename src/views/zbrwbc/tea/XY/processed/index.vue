@@ -730,6 +730,7 @@ export default {
           sqlxm: row.sqlxm,
           taskId: row.taskId,
           status: row.status,
+          sqjezj: row.sqjezj,
         },
       });
     },

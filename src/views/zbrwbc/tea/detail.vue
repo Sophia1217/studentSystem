@@ -560,7 +560,12 @@
                 </el-form-item>
               </el-col>
               <el-col :span="6" v-if="jeFlag == '02'">
-                <el-form-item label="审批金额" label-width="120px" prop="pzje">
+                <el-form-item
+                  label="审批金额"
+                  label-width="120px"
+                  prop="spje"
+                  :rules="editDetails.shjg == '01' ? rules.pzje : null"
+                >
                   <el-input-number
                     v-model="editDetails.spje"
                     controls-position="right"
@@ -618,6 +623,40 @@
         >
       </span>
     </el-dialog>
+    <el-dialog title="退回选择" :visible.sync="thTableModal" width="20%">
+      <template>
+        <el-table
+          :data="tableInner"
+          ref="multipleTable1"
+          style="width: 100%"
+          :default-sort="{ prop: 'date', order: 'descending' }"
+        >
+          <el-table-column width="55">
+            <template slot-scope="scope">
+              <el-radio
+                :label="scope.$index"
+                v-model="tempRadio"
+                @change.native="getRow(scope.$index, scope.row)"
+                >{{ "" }}</el-radio
+              >
+            </template>
+          </el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            width="50"
+          ></el-table-column>
+          <el-table-column prop="actName" label="节点名称" sortable="custom">
+          </el-table-column>
+        </el-table>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="thTableCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="thTableConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -631,7 +670,7 @@ import {
   tyFlow,
   htFlow,
 } from "@/api/zbrw/zbrw";
-
+import { backFlow } from "@/api/thrift/gwAuditYjs";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import lctCom from "../../../components/lct";
 export default {
@@ -639,7 +678,9 @@ export default {
   data() {
     return {
       isEdit: this.$route.query.isEdit,
-
+      tableInner: [],
+      thTableModal: false,
+      tempRadio: false,
       xh: this.$route.query.xh,
       lctModal: false,
 
@@ -679,6 +720,7 @@ export default {
         shjg: [
           { required: true, message: "审核结果不能为空", trigger: "change" },
         ],
+        pzje: [{ required: true, message: "不能为空", trigger: "change" }],
       },
       sqlxm: this.$route.query.sqlxm,
     };
@@ -784,7 +826,6 @@ export default {
         backFlow(processid).then((res) => {
           this.tableInner = res.data;
         });
-        this.thTableModal = true;
       } else if (val && val == "02") {
         this.jeFlag = "01";
         this.conformType = "拒绝";
@@ -811,13 +852,14 @@ export default {
         // actName: "",
       };
       if (this.conformType == "退回") {
-        data.actId = this.multipleSelection1.actId;
-        data.actName = this.multipleSelection1.actName;
-        htFlow([data]).then((res) => {
-          this.conformModal = false;
-          this.$router.go(-1);
-          this.$message.success("已退回");
-        });
+        this.thTableModal = true;
+        // data.actId = this.multipleSelection1.actId;
+        // data.actName = this.multipleSelection1.actName;
+        // htFlow([data]).then((res) => {
+        //   this.conformModal = false;
+        //   this.$router.go(-1);
+        //   this.$message.success("已退回");
+        // });
       } else if (this.conformType == "拒绝") {
         jjFlow([data]).then((res) => {
           this.conformModal = false;
@@ -825,7 +867,7 @@ export default {
           this.$message.success("已拒绝");
         });
       } else {
-        if (this.editDetails.spje) {
+        if (this.editDetails.spje <= this.$route.query.sqjezj) {
           data.spje = this.editDetails.spje;
           data.opMsg = this.editDetails.shyj
             ? `审批金额为${this.editDetails.spje},审批意见：${this.editDetails.shyj}`
@@ -836,10 +878,39 @@ export default {
             this.$message.success("已成功通过");
           });
         } else {
-          this.$message.error("请输入审批金额！");
+          this.$message.error("审批金额不能大于申请金额！");
         }
       }
       this.conformModal = false;
+    },
+    getRow(index, row) {
+      this.multipleSelection1 = row;
+    },
+    thTableCancel() {
+      this.thTableModal = false;
+    },
+    thTableConfirm() {
+      if (!!this.tempRadio || this.tempRadio === 0) {
+        this.thTableModal = false;
+        this.thModal = true;
+        let data = {
+          businesId: this.$route.query.id,
+          processId: this.$route.query.processid,
+          taskId: this.$route.query.taskId,
+          xh: this.$route.query.xh,
+          status: this.$route.query.status,
+          opMsg: this.editDetails.shyj ? this.editDetails.shyj : "",
+          actId: this.multipleSelection1.actId,
+          actName: this.multipleSelection1.actName,
+        };
+        htFlow([data]).then((res) => {
+          this.conformModal = false;
+          this.$router.go(-1);
+          this.$message.success("已退回");
+        });
+      } else {
+        this.$message.error("请先勾选退回的节点");
+      }
     },
   },
 };
@@ -1035,14 +1106,6 @@ export default {
       color: #fff;
       // background: url('~@/assets/images/icon_edit_white.png');
     }
-  }
-  ::v-deep .el-form .el-form-item__error {
-    top: 21%;
-    right: unset;
-    left: 68% !important;
-  }
-  ::v-deep .el-form .el-form-item {
-    margin-bottom: 0px;
   }
 }
 </style>

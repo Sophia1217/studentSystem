@@ -18,7 +18,7 @@
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
             <el-option label="联系电话" value="yddh"></el-option>
-            <el-option label="审核人" value="shrxm"></el-option>
+            <!-- <el-option label="审核人" value="shrxm"></el-option> -->
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
             >查询</el-button

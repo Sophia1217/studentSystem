@@ -358,8 +358,6 @@ export default {
         kcscList: [],
         xn: this.queryParams.xn,
         xqm: this.queryParams.xqm,
-        shsjStart: rqs || "",
-        shsjEnd: rqe || "",
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,

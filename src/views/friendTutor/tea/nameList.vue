@@ -395,19 +395,12 @@ export default {
         .catch((err) => {});
     },
     showDetail(row, flag) {
-      let schooling = ""; // 3 4 5 是本科
-      if (row.pyccm == 1 || row.pyccm == 2) {
-        // 1 2 是研究生
-        schooling = 2;
-      } else {
-        schooling = 1;
-      }
       this.$router.push({
-        path: "/student/studetails",
+        path: "/politicalwork/detailInfo",
         query: {
           gh: row.gh,
-          show: flag, // 1是详情，2是编辑
-          schooling: schooling,
+          id: row.date,
+          show: flag,
         },
       });
     },

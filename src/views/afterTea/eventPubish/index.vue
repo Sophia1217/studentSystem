@@ -401,9 +401,10 @@ export default {
         this.id = row.id;
       }
       var data = {
-        hdId: row.id || this.id,
+        hdId: this.id,
         ...this.queryParams1,
       };
+      delete data.total;
       pjmxList(data).then((res) => {
         this.pjDate = res.data;
         this.pjModal = true;
@@ -412,6 +413,9 @@ export default {
     },
     closePJ() {
       this.pjModal = !this.pjModal;
+      this.id = "";
+      this.queryParams1.pageNum = 1;
+      this.queryParams1.pageSize = 10;
     },
     hadleDetail2(row) {
       this.$router.push({

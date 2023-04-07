@@ -18,13 +18,18 @@
               <el-form-item label="姓名" class="grayBg" label-width="42%">
                 <div class="sqList">
                   <span>{{ formAdd.dsm }}</span>
+                  <el-button
+                    style="margin-left: 50%; background: #005657; color: #fff"
+                    @click="showExport = true"
+                    >选择</el-button
+                  >
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="性别" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <span> 男</span>
+                  <span>{{ formAdd.xbmmc }} </span>
                 </div>
               </el-form-item>
             </el-col>
@@ -33,14 +38,14 @@
             <el-col :span="12">
               <el-form-item label="培养单位" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <span> 艺术设计学院</span>
+                  <span>{{ formAdd.dwhmc }}</span>
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="专业" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <span> 艺术设计专业</span>
+                  <span>{{ formAdd.zydmmc }}</span>
                 </div>
               </el-form-item>
             </el-col>
@@ -49,14 +54,14 @@
             <el-col :span="12">
               <el-form-item label="联系电话" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <span> 16133132132</span>
+                  <span> {{ formAdd.yddh }}</span>
                 </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="QQ" class="grayBg" label-width="42%">
                 <div class="sqList">
-                  <span> 32132132</span>
+                  <span> </span>
                 </div>
               </el-form-item>
             </el-col>
@@ -238,13 +243,86 @@
         <span class="title">保存</span>
       </div>
     </div>
+    <el-dialog
+      title="导师选择"
+      :visible.sync="showExport"
+      width="50%"
+      :close-on-click-modal="false"
+    >
+      <template>
+        <div class="mt15">
+          <el-table
+            :data="tableData"
+            style="width: 100%"
+            @sort-change="changeTableSort"
+          >
+            <el-table-column width="55">
+              <template slot-scope="scope">
+                <el-radio
+                  :label="scope.$index"
+                  v-model="tempRadio"
+                  @change.native="getRow(scope.$index, scope.row)"
+                  >{{ "" }}</el-radio
+                >
+              </template>
+            </el-table-column>
+            <el-table-column
+              type="index"
+              label="序号"
+              width="50"
+            ></el-table-column>
+            <el-table-column prop="xh" label="学号" width="100" sortable>
+            </el-table-column>
+            <el-table-column prop="xm" label="姓名" width="85" sortable>
+            </el-table-column>
+            <el-table-column
+              prop="dwhmc"
+              label="培养单位"
+              min-width="100"
+              sortable
+            >
+            </el-table-column>
+            <el-table-column
+              prop="zydmmc"
+              label="专业"
+              min-width="100"
+              sortable
+              show-overflow-tooltip
+            >
+            </el-table-column>
+            <el-table-column
+              prop="yddh"
+              label="联系电话"
+              min-width="100"
+              sortable
+            />
+          </el-table>
+        </div>
+        <pagination
+          v-show="queryParams.total > 0"
+          :total="queryParams.total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="handleSearch"
+        />
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="showExport = false">取 消</el-button>
+          <el-button type="primary" class="confirm" @click="showsure"
+            >确 定</el-button
+          >
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { kcpkAdd } from "@/api/kcpk/index";
+import { queryPbsqDskList } from "@/api/friendTutor/teacherKu";
 export default {
   data() {
     return {
+      showExport: false,
+      tableData: [],
       bjzt: 2,
       dkInfo: [], //贷款信息
       jjModal: false,
@@ -255,10 +333,14 @@ export default {
       thly: "",
       tempRadio: false,
       formAdd: {
-        dsm: "罗紫怡",
-        dsh: "2021210055",
+        dsm: "",
+        dsh: "",
+        xbmmc: "",
+        dwhmc: "",
+        zydmmc: "",
+        yddh: "",
         kczt: "",
-        lb: "校级",
+        lb: "",
         kkdd: "",
         kjnrs: "",
         qzsjArr: [],
@@ -268,6 +350,13 @@ export default {
         kkcs: "",
         kcjh: "",
         kkxn: "",
+      },
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        total: 0,
+        orderZd: "",
+        orderPx: "",
       },
       lgnsn: "",
       commonParams: {},
@@ -293,9 +382,52 @@ export default {
   },
   mounted() {
     this.formAdd.kkxn = this.$route.query.xn;
+    this.handleSearch();
   },
 
   methods: {
+    showsure() {
+      this.formAdd.dsm = this.multipleSelection1.xm;
+      this.formAdd.dsh = this.multipleSelection1.xh;
+      this.formAdd.xbmmc = this.multipleSelection1.xbmmc;
+      this.formAdd.dwhmc = this.multipleSelection1.dwhmc;
+      this.formAdd.zydmmc = this.multipleSelection1.zydmmc;
+      this.formAdd.yddh = this.multipleSelection1.yddh;
+      this.formAdd.lb = this.multipleSelection1.lb;
+      this.showExport = false;
+    },
+    changeTableSort(column) {
+      this.queryParams.orderZd = column.prop;
+      this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
+      this.handleSearch();
+    },
+    handleSearch() {
+      let data = {
+        xm: null,
+        xh: null,
+        yddh: null,
+        shrxm: null,
+        dwhList: [],
+        zydmList: [],
+        fwfxDmList: [],
+        kcscList: [],
+        xn: "",
+        xqm: "",
+        zgzt: "",
+        shsjStart: "",
+        shsjEnd: "",
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+      };
+      queryPbsqDskList(data)
+        .then((res) => {
+          this.tableData = res.data;
+          this.queryParams.total = res.totalCount;
+        })
+        .catch((err) => {});
+    },
     checkFormAdd() {
       // 1.校验必填项
       let validForm = false;
@@ -317,12 +449,12 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-      kcpkAdd(this.formAdd).then((res) => {
-        this.$message.success("新增成功");
-        this.$router.push({
-          path: "/friendTutor/kcpk",
+        kcpkAdd(this.formAdd).then((res) => {
+          this.$message.success("新增成功");
+          this.$router.push({
+            path: "/friendTutor/kcpk",
+          });
         });
-      });
       }
     },
     //确认

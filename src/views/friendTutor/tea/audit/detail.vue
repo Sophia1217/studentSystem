@@ -284,7 +284,7 @@
       <div class="btn editIcon" @click="editButtonClick">编辑</div>
     </div> -->
 
-    <div class="editBottom">
+    <div class="editBottom" v-if="isEdit != 4">
       <div class="btn cancel" @click="lctClick">审核记录</div>
       <div class="btn cancel" v-if="isEdit == 1" @click="thClick">退回</div>
       <div class="btn cancel" v-if="isEdit == 1" @click="jjClick">拒绝</div>

@@ -72,6 +72,7 @@
             :min-width="100"
             label="地点"
             sortable="custom"
+            :show-overflow-tooltip="true"
           >
           </el-table-column>
           <el-table-column prop="hdlb" label="类别"> </el-table-column>

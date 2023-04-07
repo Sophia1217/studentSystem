@@ -249,25 +249,16 @@ export default {
       for (var j = 0; j < this.form.cyrList.length; j++) {
         var data;
         if (this.form.cyrList[j].file) {
-          await Exportwj({ id: this.form.cyrList[j].id.toString() }).then(
+          await Exportwj({ id: this.form.cyrList[j].file.id.toString() }).then(
             (res) => {
               data = new File([res], this.form.cyrList[j].file.fileName, {
                 type: "application/png",
                 lastModified: Date.now(),
               });
+
               this.form.cyrList[j].fileList.push(data);
-              // let binaryData = [];
-              // binaryData.push(res);
-              // this.form.cyrList[j].imageUrl = window.URL.createObjectURL(
-              //   new Blob(binaryData)
-              // );
-              // console.log(
-              //   "  this.form.cyrList[j].imageUrl",
-              //   this.form.cyrList[j].imageUrl
-              // );
-              this.form.cyrList[
-                j
-              ].imageUrl = `${window.location.origin}/sfile/${this.form.cyrList[j].file.proId}`;
+
+              this.form.cyrList[j].imageUrl = URL.createObjectURL(res);
             }
           );
         }

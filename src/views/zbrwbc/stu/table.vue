@@ -790,7 +790,7 @@
             <el-col :span="12" class="rowStyle">
               <div class="wrap">
                 <div class="title">贷款银行</div>
-                <div class="content">{{ item.dkyh }}</div>
+                <div class="content">{{ item.dkyhmc }}</div>
               </div>
             </el-col>
           </el-row>

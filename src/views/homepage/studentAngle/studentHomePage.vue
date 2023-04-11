@@ -370,6 +370,63 @@
         <div class="item stuInfoClick"></div>
       </div>
     </el-row>
+    <el-row>
+      <div class="row">
+        <div class="item stuInfoClick" @click="xscfClick">
+          <div class="medalImage">
+            <img src="~@/assets/images/medal.png" alt="" />
+          </div>
+          <div class="content">
+            <div class="title1"><span class="stuinfoTitle">学生处分</span></div>
+            <div class="title2">
+              <span class="baseInfo">处分与矫正教育</span>
+            </div>
+          </div>
+        </div>
+        <div class="item stuInfoClick">
+          <div class="medalImage">
+            <img src="~@/assets/images/medal.png" alt="" />
+          </div>
+          <div class="content">
+            <div class="title1">
+              <span class="stuinfoTitle">待补充</span>
+            </div>
+            <div class="title2">
+              <span class="baseInfo">待补充</span>
+            </div>
+          </div>
+        </div>
+        <div class="item stuInfoClick">
+          <div style="display: flex">
+            <div class="medalImage">
+              <img src="~@/assets/images/medal.png" alt="" />
+            </div>
+            <div class="content">
+              <div class="title1">
+                <span class="stuinfoTitle">待补充</span>
+              </div>
+              <div class="title2">
+                <span class="baseInfo">待补充</span>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex">
+            <div class="medalImage">
+              <img src="~@/assets/images/medal.png" alt="" />
+            </div>
+            <div class="content">
+              <div class="title1">
+                <span class="stuinfoTitle">待补充</span>
+              </div>
+              <div class="title2">
+                <span class="baseInfo">待补充</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="item stuInfoClick"></div>
+      </div>
+    </el-row>
   </div>
 </template>
 
@@ -505,6 +562,11 @@ export default {
     jsxwcClick() {
       this.$router.push({
         path: "/afterTea",
+      });
+    },
+    xscfClick() {
+      this.$router.push({
+        path: "/stuPunish",
       });
     },
   },

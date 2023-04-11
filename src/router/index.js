@@ -1271,6 +1271,34 @@ export const stuRoutes = [
   "childrenId":null,
   "auth":"1"
  },
+ {
+  "id":0,
+  "modId":"5131",
+  "name":"stuPunish",
+  "path":"/stuPunish",
+  "title":"学生处分",
+  "component":"stuPunish/stu/index",
+  "icon":"",
+  "modPid":"-1",
+  "isChild":"2",
+  "sortId":31,
+  "modStatus":"1",
+  "hidden":true,
+  "alwaysShow":true,
+  "rem":"",
+  "roleIds":null,
+  "isChecked":null,
+  "vueChecked":false,
+  "meta":{
+      "icon":"",
+      "title":"学生处分"
+  },
+  "children":[
+
+  ],
+  "childrenId":null,
+  "auth":"1"
+ },
     ];
 
 // 动态路由，基于用户权限动态去加载

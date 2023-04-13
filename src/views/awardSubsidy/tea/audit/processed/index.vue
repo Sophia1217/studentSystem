@@ -564,23 +564,6 @@ export default {
       this.exportParams = data;
       this.showExport = true;
     },
-    getRow(index, row) {
-      this.multipleSelection1 = row;
-      console.log(row);
-    },
-    thTableCancel() {
-      this.thTableModal = false;
-    },
-    thTableConfirm() {
-      if (!!this.tempRadio || this.tempRadio === 0) {
-        this.thTableModal = false;
-        if (this.detailModal == false) {
-          this.thModal = true;
-        }
-      } else {
-        this.$message.error("请先勾选退回的节点");
-      }
-    },
     getAllCollege() {
       getCollege()
         .then((res) => {

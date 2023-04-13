@@ -397,9 +397,7 @@ export default {
       this.formAdd.zydmmc = this.multipleSelection1.zydmmc;
       this.formAdd.yddh = this.multipleSelection1.yddh;
       this.formAdd.qqhm = this.multipleSelection1.qqhm;
-      this.formAdd.lb = this.multipleSelection1.lb = "校级"
-        ? "1"
-        : (this.multipleSelection1.lb = "院级" ? "0" : "");
+      this.formAdd.lb = this.multipleSelection1.lb;
       this.showExport = false;
     },
     changeTableSort(column) {
@@ -455,6 +453,9 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
+        this.formAdd.lb = this.formAdd.lb = "校级"
+          ? "1"
+          : (this.multipleSelection1.lb = "院级" ? "0" : "");
         kcpkAdd(this.formAdd).then((res) => {
           this.$message.success("新增成功");
           this.$router.push({

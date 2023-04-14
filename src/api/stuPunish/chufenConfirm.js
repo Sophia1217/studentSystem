@@ -16,7 +16,7 @@ export function querycfjgList(query) {
     data: query
   })
 }
-//修改确认状态
+//处分确认修改确认状态
 export function updateQrztm(query) {
   return request({
     url: '/rcswWjcf/updateQrztm',
@@ -24,10 +24,10 @@ export function updateQrztm(query) {
     data: query
   })
 }
-//修改处分结果
+//修改处分结果（日期文号）
 export function updateCfjg(query) {
   return request({
-    url: '/rcswWjcf/importupdateCfjg',
+    url: '/rcswWjcf/updateCfjg',
     method: 'post',
     data: query
   })

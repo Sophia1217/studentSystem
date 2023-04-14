@@ -17,6 +17,8 @@
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
+            <el-option label="确认人" value="qrrxm"></el-option>
+            <el-option label="处分文号" value="cfwh"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
             >查询</el-button
@@ -31,13 +33,12 @@
       <!-- 更多选择 -->
       <div class="moreSelect" v-if="isMore">
         <el-row :gutter="20" class="mt15">
-          <el-col :span="6">
+          <el-col :span="8">
             <span>培养单位：</span>
             <el-select
               v-model="moreIform.ssdwdm"
               multiple
               collapse-tags
-              @change="changeXY"
               placeholder="请选择"
               size="small"
             >
@@ -49,27 +50,10 @@
               ></el-option>
             </el-select>
           </el-col>
-          <el-col :span="6">
-            <span>班<span v-html="'\u3000\u3000'"></span>级：</span>
+          <el-col :span="8">
+            <span>处分等级：</span>
             <el-select
-              v-model="moreIform.bjdm"
-              multiple
-              collapse-tags
-              placeholder="请选择"
-              size="small"
-            >
-              <el-option
-                v-for="item in bjOps"
-                :key="item.dm"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="6">
-            <span>建议处分等级：</span>
-            <el-select
-              v-model="moreIform.jycfdjmList"
+              v-model="moreIform.cfdjmList"
               multiple
               collapse-tags
               placeholder="请选择"
@@ -83,22 +67,21 @@
               ></el-option>
             </el-select>
           </el-col>
-          <el-col :span="6">
-            <span>审核状态：</span>
-            <el-select
-              v-model="moreIform.statusList"
-              multiple
-              collapse-tags
-              placeholder="请选择"
-              size="small"
-            >
-              <el-option
-                v-for="item in ztStatus"
-                :key="item.dm"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
+        </el-row>
+        <el-row :gutter="20" class="mt15">
+          <el-col :span="20">
+            <span>处分日期：</span>
+            <el-date-picker
+              type="daterange"
+              placeholder="选择日期"
+              v-model="datePicker"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              style="width= 60px;"
+            ></el-date-picker>
           </el-col>
         </el-row>
         <!-- <el-row :gutter="20" class="mt15">
@@ -119,7 +102,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">已处理列表</span>
+          <span class="title">学生列表</span>
           <div style="margin-left: 10px">
             <el-cascader
               v-model="dqXnxq"
@@ -131,10 +114,13 @@
         </div>
         <div class="headerRight">
           <div class="btns borderOrange" @click="expor">
-            <i class="icon orangeIcon"></i><span class="title">导出</span>
+            <i class="icon orangeIcon"></i><span class="title">导入</span>
           </div>
           <!-- <div class="btns fullGreen" @click="chehui">
-            <i class="icon greenIcon"></i><span class="title1">撤回</span>
+            <i class="icon backIcon"></i><span class="title1">撤回</span>
+          </div> -->
+          <!-- <div class="btns fullGreen" @click="queren">
+            <i class="icon passIcon"></i><span class="title1">确认</span>
           </div> -->
         </div>
       </div>
@@ -163,45 +149,85 @@
             sortable="custom"
           >
           </el-table-column>
-          <el-table-column prop="bjdmmc" label="班级" sortable="custom">
-          </el-table-column>
           <el-table-column
-            prop="wjssmsFdy"
-            label="违纪事实描述"
-            min-width="130px"
-            sortable="custom"
-            :show-overflow-tooltip="true"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="jycfdjmmc"
-            label="建议处分等级"
-            min-width="130px"
+            prop="cfdjmmc"
+            label="处分等级"
+            width="100px"
             sortable="custom"
           >
           </el-table-column>
           <el-table-column
-            prop="sqsj"
-            label="申请时间"
+            prop="qrr"
+            label="确认人"
             min-width="100px"
             sortable="custom"
           >
           </el-table-column>
           <el-table-column
-            prop="statusChinese"
-            label="审核状态"
-            min-width="100px"
+            prop="cfrq"
+            label="处分日期"
+            min-width="135px"
             sortable="custom"
           >
+            <template slot-scope="scope">
+              <el-date-picker
+                v-model="scope.row.cfrq"
+                type="date"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                placeholder="选择日期"
+                style="width: 135px"
+                :clearable="false"
+                @change="changeSJ(scope.row, 1)"
+              >
+              </el-date-picker>
+            </template>
           </el-table-column>
-          <el-table-column prop="createDwhMc" label="审核进度">
+          <el-table-column
+            prop="cfrq"
+            label="处分期限"
+            min-width="230px"
+            sortable="custom"
+          >
+            <template slot-scope="scope">
+              <el-date-picker
+                type="daterange"
+                placeholder="选择日期"
+                v-model="scope.row.datePickerEdit"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                style="width: 230px"
+                :clearable="false"
+                @change="changeSJ(scope.row, 2)"
+              ></el-date-picker>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="cfwh"
+            label="处分文号"
+            min-width="130px"
+            sortable="custom"
+          >
+            <template slot-scope="scope">
+              <el-input
+                v-model="scope.row.cfwh"
+                maxlength="100"
+                placeholder="请输入"
+                @change="changeSJ(scope.row, 3)"
+              />
+            </template>
+          </el-table-column>
+          <!-- <el-table-column prop="createDwhMc" label="审核进度">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
                 <span class="handleName">流转记录</span>
               </el-button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
 
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
@@ -265,6 +291,7 @@
                         <div class="content">{{ basicInfo.ssdwdmmc }}</div>
                       </div>
                     </el-col>
+
                     <el-col :span="12" class="rowStyle">
                       <div class="wrap">
                         <div class="title">年级</div>
@@ -288,194 +315,77 @@
                   </el-row>
                 </div>
               </div>
-              <!-- <div class="formLeft"><span class="title">学院意见</span></div> -->
+              <div class="formLeft"><span class="title">学院意见</span></div>
               <div>
                 <el-row :gutter="20">
                   <el-col :span="10">
                     <el-form-item label="违纪事实描述" label-width="120px">
-                      {{ formDetails.wjssmsFdy }}
+                      {{ formDetails.wjssmsXgbfzr }}
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row :gutter="20">
                   <el-col :span="20">
                     <el-form-item label="处分依据条款" label-width="120px">
-                      {{ formDetails.cfyjtkFdy }}
+                      {{ formDetails.cfyjtkXgbfzr }}
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row :gutter="20">
                   <el-col :span="20">
-                    <el-form-item label="建议处分等级" label-width="120px">
-                      {{ formDetails.jycfdjmmc }}
+                    <el-form-item label="处分等级" label-width="120px">
+                      {{ formDetails.cfdjmmc }}
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row :gutter="20">
                   <el-col :span="20">
                     <el-form-item label="单位建议" label-width="120px">
-                      {{ formDetails.dwjyFdy }}
+                      {{ formDetails.dwjyXgbfzr }}
                     </el-form-item>
                   </el-col>
                 </el-row>
-                <el-row :gutter="20">
-                  <el-col :span="20">
-                    <el-form-item label="附件信息" label-width="120px">
-                      <div v-for="item in formDetails.fileList">
-                        <div
-                          style="display: flex; justify-content: space-between"
-                        >
-                          <a>
-                            {{ item.fileName }}
-                          </a>
-                          <!-- <el-button>预览</el-button> -->
+                <el-table
+                  :data="tableDataDetail"
+                  ref="multipleTable"
+                  style="width: 100%"
+                >
+                  <el-table-column prop="cfrq" label="处分日期">
+                  </el-table-column>
+                  <el-table-column prop="cfqxStart" label="处分开始日期">
+                  </el-table-column>
+                  <el-table-column prop="cfqxEnd" label="处分结束日期">
+                  </el-table-column>
+                  <el-table-column
+                    prop="cfwh"
+                    label="处分文号"
+                    :show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <!-- <el-table-column prop="fjName" label="附件" width="140">
+                    <template slot-scope="scope">
+                      <div class="moban">
+                        <div class="content">
+                          <el-button
+                            type="text"
+                            size="small"
+                            @click="xzWj(scope.row, 1)"
+                          >
+                            <span class="handleName">{{
+                              scope.row.fjName
+                            }}</span>
+                          </el-button>
                         </div>
                       </div>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
+                    </template>
+                  </el-table-column> -->
+                </el-table>
               </div>
             </el-form>
           </div>
         </template>
         <span slot="footer" class="dialog-footer footerFlex">
-          <el-button
-            @click="detailCancel"
-            style="margin-right: 12px; padding: 8px 20px"
-            >关 闭</el-button
-          >
-        </span>
-      </el-dialog>
-      <el-dialog
-        title="详情"
-        :visible.sync="editModal"
-        width="50%"
-        :close-on-click-modal="false"
-      >
-        <div class="headline2">处理决定告知书</div>
-        <div class="backDetail" style="margin-left: 30px; margin-right: 30px">
-          <div class="formRight">
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">学号</div>
-                  <div class="content">{{ basicInfo.xh }}</div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">姓名</div>
-                  <div class="content">{{ basicInfo.xm }}</div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">性别</div>
-                  <div class="content">{{ basicInfo.xbmmc }}</div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">培养层次</div>
-                  <div class="content">{{ basicInfo.pyccmmc }}</div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">培养单位</div>
-                  <div class="content">{{ basicInfo.ssdwdmmc }}</div>
-                </div>
-              </el-col>
-
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">年级</div>
-                  <div class="content">{{ basicInfo.ssnj }}</div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">专业</div>
-                  <div class="content">{{ basicInfo.zydmmc }}</div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">班级</div>
-                  <div class="content">{{ basicInfo.bjmc }}</div>
-                </div>
-              </el-col>
-            </el-row>
-          </div>
-        </div>
-        <div class="headline">学院意见</div>
-        <div style="margin-left: 30px; margin-right: 30px">
-          <el-form
-            ref="formEdit"
-            :model="formEdit"
-            :rules="rules"
-            label-width="130px"
-          >
-            <el-form-item
-              label="违纪事实描述"
-              prop="wjssmsXgbfzr"
-              :rules="rules.common"
-            >
-              <el-input
-                type="textarea"
-                v-model="formEdit.wjssmsXgbfzr"
-                maxlength="500"
-              />
-            </el-form-item>
-            <el-form-item
-              label="处分依据条款"
-              prop="cfyjtkXgbfzr"
-              :rules="rules.common"
-            >
-              <el-input
-                type="textarea"
-                v-model="formEdit.cfyjtkXgbfzr"
-                maxlength="500"
-              />
-            </el-form-item>
-            <el-form-item
-              label="处分等级"
-              prop="cfdjm"
-              :rules="rules.common"
-            >
-              <el-select v-model="formEdit.cfdjm" placeholder="请选择">
-                <el-option
-                  v-for="(item, index) in cfdjOps"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item
-              label="单位建议"
-              prop="dwjyXgbfzr"
-              :rules="rules.common"
-            >
-              <el-input
-                type="textarea"
-                v-model="formEdit.dwjyXgbfzr"
-                maxlength="500"
-              />
-            </el-form-item>
-          </el-form>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="detailCancel">取 消</el-button>
-          <el-button type="primary" class="confirm" @click="editClick"
-            >确 定</el-button
-          >
+          <el-button @click="detailCancel">关 闭</el-button>
         </span>
       </el-dialog>
       <pagination
@@ -495,15 +405,6 @@
         >
       </span>
     </el-dialog>
-    <el-dialog title="撤回" :visible.sync="chehuiModal" width="20%">
-      <span>确认撤回？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="chCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="chConfirm()"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
     <lctCom
       ref="child"
       :lctModal="lctModal"
@@ -513,19 +414,19 @@
 </template>
 
 <script>
-import CheckboxCom from "../../../../components/checkboxCom";
-import { chbyId } from "@/api/afterTea/audit";
-import { queryXnXq } from "@/api/dailyBehavior/vocationTea";
+import CheckboxCom from "../../../components/checkboxCom";
 import {
-  queryYshList,
-  exportYsh,
-  wjcfDetail,
-  updateQgzxGw,
-} from "@/api/stuPunish/nichufen";
+  uploadFile,
+  delFile,
+  downloadFile,
+  queryFile,
+} from "@/api/common/file";
+import { queryXnXq } from "@/api/dailyBehavior/vocationTea";
+import { querycfjgList, updateCfjg } from "@/api/stuPunish/chufenConfirm";
+import { exportYsh, wjcfDetail } from "@/api/stuPunish/nichufen";
 import { queryKnssqxsjbxx } from "@/api/familyDifficulties/stu";
-import { getBJ, getZY } from "@/api/student/index";
 import { getCollege } from "@/api/class/maintenanceClass";
-import lctCom from "../../../../components/lct";
+import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
   name: "manStudent",
@@ -542,9 +443,7 @@ export default {
       isMore: false,
       moreIform: {
         ssdwdm: [], // 学院下拉框
-        bjdm: [],
-        jycfdjmList: [],
-        statusList: [],
+        cfdjmList: [],
       },
       exportParams: {},
       leng: 0,
@@ -570,11 +469,8 @@ export default {
       },
       multipleSelection: [],
       detailModal: false,
-      editModal: false,
       formDetails: {},
-      formEdit: {},
       basicInfo: {},
-      chehuiModal: false,
       delArr: [],
       dqXnxq: [],
       XnxqProps: {
@@ -584,6 +480,7 @@ export default {
         children: "dataCodeCascadingList", //匹配响应数据中的children }
       },
       options: [],
+      tableDataDetail: [],
       rules: {
         common: [
           {
@@ -630,23 +527,6 @@ export default {
       }
       this.handleSearch();
     },
-    changeXY(val) {
-      if (val && val.length == 0) {
-        this.moreIform.bjdm = []; // 班级
-      }
-      this.getBJ(val);
-    },
-    getBJ(val) {
-      this.bjOps = [];
-      let data = { DWH: val };
-      if (Object.keys(val).length !== 0) {
-        getBJ(data)
-          .then((res) => {
-            this.bjOps = res.data;
-          })
-          .catch((err) => {});
-      }
-    },
     // 导出取消
     handleCancel() {
       this.showExport = false;
@@ -675,12 +555,20 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
+        qrrxm: this.select == "qrrxm" ? this.searchVal : null,
+        cfwh: this.select == "cfwh" ? this.searchVal : null,
         ssdwdm: this.moreIform.ssdwdm,
-        bjdm: this.moreIform.bjdm,
-        jycfdjmList: this.moreIform.jycfdjmList,
-        statusList: this.moreIform.statusList,
+        cfdjmList: this.moreIform.cfdjmList,
         xn: this.queryParams.xn,
         xqm: this.queryParams.xqm,
+        cfrqStart:
+          this.datePicker && this.datePicker.length > 0
+            ? this.datePicker[0]
+            : "",
+        cfrqEnd:
+          this.datePicker && this.datePicker.length > 0
+            ? this.datePicker[1]
+            : "",
         // pyccm: this.training.choose || [],
 
         pageNum: this.queryParams.pageNum,
@@ -713,56 +601,18 @@ export default {
     },
 
     hadleDetail(row) {
-      // console.log("row", row);
+      console.log("row", row);
+      this.tableDataDetail[0] = row;
       queryKnssqxsjbxx({ xh: row.xh }).then((res) => {
         this.basicInfo = res.data;
       });
       wjcfDetail({ id: row.id }).then((res) => {
-        if (this.$store.getters.roleId == "03") {
-          //学工部负责人
-          this.formEdit = res.data;
-          this.editModal = true;
-        } else {
-          this.formDetails = res.data;
-          this.detailModal = true;
-        }
+        this.formDetails = res.data;
+        this.detailModal = true;
       });
-    },
-    checkFormEdit() {
-      // 1.校验必填项
-      let validForm = false;
-      this.$refs.formEdit.validate((valid) => {
-        validForm = valid;
-      });
-      if (!validForm) {
-        return false;
-      }
-
-      return true;
     },
     detailCancel() {
       this.detailModal = false;
-      this.editModal = false;
-    },
-    editClick() {
-      if (!this.checkFormEdit()) {
-        this.$message.error("请完善表单相关信息！");
-        return;
-      } else {
-        var params = {
-          xh: this.basicInfo.xh,
-          wjssmsXgbfzr: this.formEdit.wjssmsXgbfzr,
-          cfyjtkXgbfzr: this.formEdit.cfyjtkXgbfzr,
-          cfdjm: this.formEdit.cfdjm,
-          dwjyXgbfzr: this.formEdit.dwjyXgbfzr,
-          id: this.formEdit.id,
-        };
-        updateQgzxGw(params).then((res) => {
-          this.$message.success("处分告知书修改成功");
-          this.editModal = false;
-          this.handleSearch();
-        });
-      }
     },
     changeSelect() {
       this.searchVal = "";
@@ -772,12 +622,20 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
+        qrrxm: this.select == "qrrxm" ? this.searchVal : null,
+        cfwh: this.select == "cfwh" ? this.searchVal : null,
         ssdwdm: this.moreIform.ssdwdm,
-        bjdm: this.moreIform.bjdm,
-        jycfdjmList: this.moreIform.jycfdjmList,
-        statusList: this.moreIform.statusList,
+        cfdjmList: this.moreIform.cfdjmList,
         xn: this.queryParams.xn,
         xqm: this.queryParams.xqm,
+        cfrqStart:
+          this.datePicker && this.datePicker.length > 0
+            ? this.datePicker[0]
+            : "",
+        cfrqEnd:
+          this.datePicker && this.datePicker.length > 0
+            ? this.datePicker[1]
+            : "",
         // pyccm: this.training.choose || [],
 
         pageNum: this.queryParams.pageNum,
@@ -785,12 +643,22 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryYshList(data)
+      querycfjgList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
+          this.insertDate();
         })
         .catch((err) => {});
+    },
+    //处分期限赋值
+    insertDate() {
+      for (let i = 0; i < this.tableData.length; i++) {
+        this.tableData[i].datePickerEdit = [];
+        this.tableData[i].datePickerEdit[0] = this.tableData[i].cfqxStart;
+        this.tableData[i].datePickerEdit[1] = this.tableData[i].cfqxEnd;
+      }
+      // console.log("row", this.tableData);
     },
     // 点击更多
     handleMore() {
@@ -851,32 +719,32 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
     },
-    chehui() {
-      if (this.delArr && this.delArr.length > 0) {
-        var flag = 1;
-        for (let index = 0; index < this.delArr.length; index++) {
-          if (this.multipleSelection[index].qrzt !== "0") {
-            this.$message.error("请选择未确认数据！");
-            flag = 2;
-            break;
-          }
-        }
-        if (flag == 1) {
-          this.chehuiModal = true;
-        }
+    changeSJ(row, flag) {
+      if (flag == 1) {
+        var data = {
+          id: row.id,
+          cfrq: row.cfrq,
+        };
+      } else if (flag == 2) {
+        // if (row.datePickerEdit && row.datePickerEdit.length > 0) {
+        //   console.log("date0", row.datePickerEdit[0]);
+        //   console.log("date1", row.datePickerEdit[1]);
+        // }
+        var data = {
+          id: row.id,
+          cfqxStart: row.datePickerEdit[0],
+          cfqxEnd: row.datePickerEdit[1],
+        };
       } else {
-        this.$message.error("请先勾选数据");
+        var data = {
+          id: row.id,
+          cfwh: row.cfwh,
+        };
       }
-    },
-    chConfirm() {
-      chbyId({ ids: this.delArr }).then((res) => {
+      updateCfjg(data).then((res) => {
+        this.$message.success("修改成功");
         this.handleSearch();
-        this.chehuiModal = false;
-        this.$message.success("撤销成功");
       });
-    },
-    chCancel() {
-      this.chehuiModal = false;
     },
   },
 };
@@ -963,28 +831,7 @@ export default {
       background: #fafafa;
     }
   }
-  .headline {
-    padding: 15px;
-    box-sizing: border-box;
-    font-weight: 600;
-    font-size: 20px;
-    color: #1f1f1f;
-    line-height: 28px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .headline2 {
-    padding: 15px;
-    box-sizing: border-box;
-    font-weight: 600;
-    font-size: 20px;
-    color: #1f1f1f;
-    line-height: 28px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+
   .tableWrap {
     background: #fff;
     padding: 20px;
@@ -1084,9 +931,9 @@ export default {
             background: url("~@/assets/assistantPng/out.png") no-repeat;
           }
 
-          .greenIcon {
+          .passIcon {
             margin-top: 10px;
-            background: url("~@/assets/assistantPng/add.png") no-repeat;
+            background: url("~@/assets/images/passWhite.png") no-repeat;
           }
 
           .refuseIcon {

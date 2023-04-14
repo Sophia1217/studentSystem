@@ -67,9 +67,9 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <span>建议处分等级：</span>
+            <span>处分等级：</span>
             <el-select
-              v-model="moreIform.jycfdjmList"
+              v-model="moreIform.cfdjmList"
               multiple
               collapse-tags
               placeholder="请选择"
@@ -84,9 +84,9 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <span>审核状态：</span>
+            <span>状态：</span>
             <el-select
-              v-model="moreIform.statusList"
+              v-model="moreIform.qrztList"
               multiple
               collapse-tags
               placeholder="请选择"
@@ -119,7 +119,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">已处理列表</span>
+          <span class="title">学生列表</span>
           <div style="margin-left: 10px">
             <el-cascader
               v-model="dqXnxq"
@@ -130,12 +130,15 @@
           </div>
         </div>
         <div class="headerRight">
-          <div class="btns borderOrange" @click="expor">
+          <!-- <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
-          </div>
-          <!-- <div class="btns fullGreen" @click="chehui">
-            <i class="icon greenIcon"></i><span class="title1">撤回</span>
           </div> -->
+          <!-- <div class="btns fullGreen" @click="chehui">
+            <i class="icon backIcon"></i><span class="title1">撤回</span>
+          </div> -->
+          <div class="btns fullGreen" @click="queren">
+            <i class="icon passIcon"></i><span class="title1">确认</span>
+          </div>
         </div>
       </div>
       <div class="mt15">
@@ -166,7 +169,7 @@
           <el-table-column prop="bjdmmc" label="班级" sortable="custom">
           </el-table-column>
           <el-table-column
-            prop="wjssmsFdy"
+            prop="wjssmsXgbfzr"
             label="违纪事实描述"
             min-width="130px"
             sortable="custom"
@@ -174,34 +177,34 @@
           >
           </el-table-column>
           <el-table-column
-            prop="jycfdjmmc"
-            label="建议处分等级"
+            prop="cfdjmmc"
+            label="处分等级"
             min-width="130px"
             sortable="custom"
           >
           </el-table-column>
           <el-table-column
-            prop="sqsj"
-            label="申请时间"
+            prop="qrztmChinese"
+            label="状态"
             min-width="100px"
             sortable="custom"
           >
           </el-table-column>
           <el-table-column
-            prop="statusChinese"
-            label="审核状态"
+            prop="cfrq"
+            label="处分日期"
             min-width="100px"
             sortable="custom"
           >
           </el-table-column>
-          <el-table-column prop="createDwhMc" label="审核进度">
+          <!-- <el-table-column prop="createDwhMc" label="审核进度">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
                 <span class="handleName">流转记录</span>
               </el-button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
 
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
@@ -265,6 +268,7 @@
                         <div class="content">{{ basicInfo.ssdwdmmc }}</div>
                       </div>
                     </el-col>
+
                     <el-col :span="12" class="rowStyle">
                       <div class="wrap">
                         <div class="title">年级</div>
@@ -288,37 +292,37 @@
                   </el-row>
                 </div>
               </div>
-              <!-- <div class="formLeft"><span class="title">学院意见</span></div> -->
+              <div class="formLeft"><span class="title">学院意见</span></div>
               <div>
                 <el-row :gutter="20">
                   <el-col :span="10">
                     <el-form-item label="违纪事实描述" label-width="120px">
-                      {{ formDetails.wjssmsFdy }}
+                      {{ formDetails.wjssmsXgbfzr }}
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row :gutter="20">
                   <el-col :span="20">
                     <el-form-item label="处分依据条款" label-width="120px">
-                      {{ formDetails.cfyjtkFdy }}
+                      {{ formDetails.cfyjtkXgbfzr }}
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row :gutter="20">
                   <el-col :span="20">
-                    <el-form-item label="建议处分等级" label-width="120px">
-                      {{ formDetails.jycfdjmmc }}
+                    <el-form-item label="处分等级" label-width="120px">
+                      {{ formDetails.cfdjmmc }}
                     </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row :gutter="20">
                   <el-col :span="20">
                     <el-form-item label="单位建议" label-width="120px">
-                      {{ formDetails.dwjyFdy }}
+                      {{ formDetails.dwjyXgbfzr }}
                     </el-form-item>
                   </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <!-- <el-row :gutter="20">
                   <el-col :span="20">
                     <el-form-item label="附件信息" label-width="120px">
                       <div v-for="item in formDetails.fileList">
@@ -328,152 +332,18 @@
                           <a>
                             {{ item.fileName }}
                           </a>
-                          <!-- <el-button>预览</el-button> -->
                         </div>
                       </div>
                     </el-form-item>
                   </el-col>
-                </el-row>
+                </el-row> -->
               </div>
             </el-form>
           </div>
         </template>
         <span slot="footer" class="dialog-footer footerFlex">
-          <el-button
-            @click="detailCancel"
-            style="margin-right: 12px; padding: 8px 20px"
-            >关 闭</el-button
-          >
-        </span>
-      </el-dialog>
-      <el-dialog
-        title="详情"
-        :visible.sync="editModal"
-        width="50%"
-        :close-on-click-modal="false"
-      >
-        <div class="headline2">处理决定告知书</div>
-        <div class="backDetail" style="margin-left: 30px; margin-right: 30px">
-          <div class="formRight">
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">学号</div>
-                  <div class="content">{{ basicInfo.xh }}</div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">姓名</div>
-                  <div class="content">{{ basicInfo.xm }}</div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">性别</div>
-                  <div class="content">{{ basicInfo.xbmmc }}</div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">培养层次</div>
-                  <div class="content">{{ basicInfo.pyccmmc }}</div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">培养单位</div>
-                  <div class="content">{{ basicInfo.ssdwdmmc }}</div>
-                </div>
-              </el-col>
-
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">年级</div>
-                  <div class="content">{{ basicInfo.ssnj }}</div>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">专业</div>
-                  <div class="content">{{ basicInfo.zydmmc }}</div>
-                </div>
-              </el-col>
-              <el-col :span="12" class="rowStyle">
-                <div class="wrap">
-                  <div class="title">班级</div>
-                  <div class="content">{{ basicInfo.bjmc }}</div>
-                </div>
-              </el-col>
-            </el-row>
-          </div>
-        </div>
-        <div class="headline">学院意见</div>
-        <div style="margin-left: 30px; margin-right: 30px">
-          <el-form
-            ref="formEdit"
-            :model="formEdit"
-            :rules="rules"
-            label-width="130px"
-          >
-            <el-form-item
-              label="违纪事实描述"
-              prop="wjssmsXgbfzr"
-              :rules="rules.common"
-            >
-              <el-input
-                type="textarea"
-                v-model="formEdit.wjssmsXgbfzr"
-                maxlength="500"
-              />
-            </el-form-item>
-            <el-form-item
-              label="处分依据条款"
-              prop="cfyjtkXgbfzr"
-              :rules="rules.common"
-            >
-              <el-input
-                type="textarea"
-                v-model="formEdit.cfyjtkXgbfzr"
-                maxlength="500"
-              />
-            </el-form-item>
-            <el-form-item
-              label="处分等级"
-              prop="cfdjm"
-              :rules="rules.common"
-            >
-              <el-select v-model="formEdit.cfdjm" placeholder="请选择">
-                <el-option
-                  v-for="(item, index) in cfdjOps"
-                  :key="index"
-                  :label="item.mc"
-                  :value="item.dm"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item
-              label="单位建议"
-              prop="dwjyXgbfzr"
-              :rules="rules.common"
-            >
-              <el-input
-                type="textarea"
-                v-model="formEdit.dwjyXgbfzr"
-                maxlength="500"
-              />
-            </el-form-item>
-          </el-form>
-        </div>
-        <span slot="footer" class="dialog-footer">
           <el-button @click="detailCancel">取 消</el-button>
-          <el-button type="primary" class="confirm" @click="editClick"
+          <el-button type="primary" class="confirm" @click="querenDetail"
             >确 定</el-button
           >
         </span>
@@ -504,6 +374,15 @@
         >
       </span>
     </el-dialog>
+    <el-dialog title="确认" :visible.sync="querenModal" width="20%">
+      <span>确认？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="qrCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="qrConfirm()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
     <lctCom
       ref="child"
       :lctModal="lctModal"
@@ -513,19 +392,15 @@
 </template>
 
 <script>
-import CheckboxCom from "../../../../components/checkboxCom";
+import CheckboxCom from "../../../components/checkboxCom";
 import { chbyId } from "@/api/afterTea/audit";
 import { queryXnXq } from "@/api/dailyBehavior/vocationTea";
-import {
-  queryYshList,
-  exportYsh,
-  wjcfDetail,
-  updateQgzxGw,
-} from "@/api/stuPunish/nichufen";
+import { queryCfqrList, updateQrztm } from "@/api/stuPunish/chufenConfirm";
+import { exportYsh, wjcfDetail } from "@/api/stuPunish/nichufen";
 import { queryKnssqxsjbxx } from "@/api/familyDifficulties/stu";
 import { getBJ, getZY } from "@/api/student/index";
 import { getCollege } from "@/api/class/maintenanceClass";
-import lctCom from "../../../../components/lct";
+import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
   name: "manStudent",
@@ -543,8 +418,8 @@ export default {
       moreIform: {
         ssdwdm: [], // 学院下拉框
         bjdm: [],
-        jycfdjmList: [],
-        statusList: [],
+        cfdjmList: [],
+        qrztList: [],
       },
       exportParams: {},
       leng: 0,
@@ -570,11 +445,10 @@ export default {
       },
       multipleSelection: [],
       detailModal: false,
-      editModal: false,
       formDetails: {},
-      formEdit: {},
       basicInfo: {},
       chehuiModal: false,
+      querenModal: false,
       delArr: [],
       dqXnxq: [],
       XnxqProps: {
@@ -677,8 +551,8 @@ export default {
         xh: this.select == "xh" ? this.searchVal : null,
         ssdwdm: this.moreIform.ssdwdm,
         bjdm: this.moreIform.bjdm,
-        jycfdjmList: this.moreIform.jycfdjmList,
-        statusList: this.moreIform.statusList,
+        cfdjmList: this.moreIform.cfdjmList,
+        qrztList: this.moreIform.qrztList,
         xn: this.queryParams.xn,
         xqm: this.queryParams.xqm,
         // pyccm: this.training.choose || [],
@@ -714,55 +588,18 @@ export default {
 
     hadleDetail(row) {
       // console.log("row", row);
+      this.delArr = [row.id];
+      console.log("this.delArr", this.delArr);
       queryKnssqxsjbxx({ xh: row.xh }).then((res) => {
         this.basicInfo = res.data;
       });
       wjcfDetail({ id: row.id }).then((res) => {
-        if (this.$store.getters.roleId == "03") {
-          //学工部负责人
-          this.formEdit = res.data;
-          this.editModal = true;
-        } else {
-          this.formDetails = res.data;
-          this.detailModal = true;
-        }
+        this.formDetails = res.data;
+        this.detailModal = true;
       });
-    },
-    checkFormEdit() {
-      // 1.校验必填项
-      let validForm = false;
-      this.$refs.formEdit.validate((valid) => {
-        validForm = valid;
-      });
-      if (!validForm) {
-        return false;
-      }
-
-      return true;
     },
     detailCancel() {
       this.detailModal = false;
-      this.editModal = false;
-    },
-    editClick() {
-      if (!this.checkFormEdit()) {
-        this.$message.error("请完善表单相关信息！");
-        return;
-      } else {
-        var params = {
-          xh: this.basicInfo.xh,
-          wjssmsXgbfzr: this.formEdit.wjssmsXgbfzr,
-          cfyjtkXgbfzr: this.formEdit.cfyjtkXgbfzr,
-          cfdjm: this.formEdit.cfdjm,
-          dwjyXgbfzr: this.formEdit.dwjyXgbfzr,
-          id: this.formEdit.id,
-        };
-        updateQgzxGw(params).then((res) => {
-          this.$message.success("处分告知书修改成功");
-          this.editModal = false;
-          this.handleSearch();
-        });
-      }
     },
     changeSelect() {
       this.searchVal = "";
@@ -774,8 +611,8 @@ export default {
         xh: this.select == "xh" ? this.searchVal : null,
         ssdwdm: this.moreIform.ssdwdm,
         bjdm: this.moreIform.bjdm,
-        jycfdjmList: this.moreIform.jycfdjmList,
-        statusList: this.moreIform.statusList,
+        cfdjmList: this.moreIform.cfdjmList,
+        qrztList: this.moreIform.qrztList,
         xn: this.queryParams.xn,
         xqm: this.queryParams.xqm,
         // pyccm: this.training.choose || [],
@@ -785,7 +622,7 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryYshList(data)
+      queryCfqrList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
@@ -855,8 +692,8 @@ export default {
       if (this.delArr && this.delArr.length > 0) {
         var flag = 1;
         for (let index = 0; index < this.delArr.length; index++) {
-          if (this.multipleSelection[index].qrzt !== "0") {
-            this.$message.error("请选择未确认数据！");
+          if (this.multipleSelection[index].qrztm !== "02") {
+            this.$message.error("请选择已确认数据！");
             flag = 2;
             break;
           }
@@ -877,6 +714,44 @@ export default {
     },
     chCancel() {
       this.chehuiModal = false;
+    },
+    queren() {
+      if (this.delArr && this.delArr.length > 0) {
+        var flag = 1;
+        for (let index = 0; index < this.delArr.length; index++) {
+          if (this.multipleSelection[index].qrztm !== "01") {
+            this.$message.error("非待确认数据！");
+            flag = 2;
+            break;
+          }
+        }
+        if (flag == 1) {
+          this.querenModal = true;
+        }
+      } else {
+        this.$message.error("请先勾选数据");
+      }
+    },
+    querenDetail() {
+      if (this.formDetails.qrztm !== "01") {
+        this.$message.error("非待确认数据");
+      } else {
+        updateQrztm({ ids: [this.formDetails.id] }).then((res) => {
+        this.handleSearch();
+        this.detailModal = false;
+        this.$message.success("确认成功");
+      });
+      }
+    },
+    qrConfirm() {
+      updateQrztm({ ids: this.delArr }).then((res) => {
+        this.handleSearch();
+        this.querenModal = false;
+        this.$message.success("确认成功");
+      });
+    },
+    qrCancel() {
+      this.querenModal = false;
     },
   },
 };
@@ -963,28 +838,7 @@ export default {
       background: #fafafa;
     }
   }
-  .headline {
-    padding: 15px;
-    box-sizing: border-box;
-    font-weight: 600;
-    font-size: 20px;
-    color: #1f1f1f;
-    line-height: 28px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .headline2 {
-    padding: 15px;
-    box-sizing: border-box;
-    font-weight: 600;
-    font-size: 20px;
-    color: #1f1f1f;
-    line-height: 28px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+
   .tableWrap {
     background: #fff;
     padding: 20px;
@@ -1084,9 +938,9 @@ export default {
             background: url("~@/assets/assistantPng/out.png") no-repeat;
           }
 
-          .greenIcon {
+          .passIcon {
             margin-top: 10px;
-            background: url("~@/assets/assistantPng/add.png") no-repeat;
+            background: url("~@/assets/images/passWhite.png") no-repeat;
           }
 
           .refuseIcon {

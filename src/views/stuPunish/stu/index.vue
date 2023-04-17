@@ -11,10 +11,10 @@
         </el-tabs>
       </div>
       <div class="detail_right" v-if="activeName == '0'">
-        <dksq></dksq>
+        <xscf></xscf>
       </div>
       <div class="detail_right" v-if="activeName == '1'">
-        <byqr></byqr>
+        <jzjy></jzjy>
       </div>
     </div>
   </div>

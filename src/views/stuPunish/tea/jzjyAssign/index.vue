@@ -1,17 +1,9 @@
-<!--
- * @Author: qingtian
- * @Date: 2023-04-11 09:03:18
- * @LastEditTime: 2023-04-13 09:01:31
- * @LastEditors: ***
- * @Description: 
- * @FilePath: \studentsystem\src\views\stuPunish\tea\jzjyAssign\index.vue
--->
 
 <template>
   <div class="talk">
     <el-tabs v-model="activeName" class="tabs" @tab-click="handleClick">
       <el-tab-pane label="待审核" name="first">
-        <span slot="label"><i class="icon tabsicon_ke"></i>待审核</span>
+        <span slot="label"><i class="icon tabsicon_ke"></i>待处理</span>
       </el-tab-pane>
       <el-tab-pane label="已处理" name="second">
         <span slot="label"><i class="icon tabsicon_quan"></i>已处理</span>
@@ -23,8 +15,8 @@
 </template>
 
 <script>
-import dealWith from "./ysh.vue";
-import processed from "./dsh.vue";
+import processed from "./processed/index.vue";
+import dealWith from "./dealWith/index.vue";
 export default {
   name: "insurance",
   components: { processed, dealWith },

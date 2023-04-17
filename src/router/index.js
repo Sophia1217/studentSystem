@@ -87,7 +87,29 @@ export const constantRoutes = [
     hidden: true,
   },
 
- 
+  {
+    path: "/punishment",
+    meta: { title: "学生处分", icon: "monitor" },
+    component: Layout,
+    hidden: false,
+    children: [
+      {
+        name: "jzjyAssign",
+        path: "jzjyAssign",
+        component: (resolve) =>
+          require(["@/views/stuPunish/tea/jzjyAssign/index"], resolve),
+        meta: { title: "矫正教育指派", icon: "" },
+      },
+      {
+        name: "jzjyIdentify",
+        path: "jzjyIdentify",
+        component: (resolve) =>
+          require(["@/views/stuPunish/tea/jzjyIdentify/index"], resolve),
+        meta: { title: "矫正教育鉴定", icon: "" },
+      },
+     
+    ],
+  },
   
   // {
   //   path: '/user',
@@ -1292,6 +1314,34 @@ export const stuRoutes = [
   "meta":{
       "icon":"",
       "title":"学生处分"
+  },
+  "children":[
+
+  ],
+  "childrenId":null,
+  "auth":"1"
+ },
+ {
+  "id":0,
+  "modId":"5132",
+  "name":"stuPunish",
+  "path":"/stuPunish",
+  "title":"矫正教育鉴定",
+  "component":"stuPunish/stu/jzjyIdentify",
+  "icon":"",
+  "modPid":"-1",
+  "isChild":"2",
+  "sortId":32,
+  "modStatus":"1",
+  "hidden":true,
+  "alwaysShow":true,
+  "rem":"",
+  "roleIds":null,
+  "isChecked":null,
+  "vueChecked":false,
+  "meta":{
+      "icon":"",
+      "title":"矫正教育鉴定"
   },
   "children":[
 

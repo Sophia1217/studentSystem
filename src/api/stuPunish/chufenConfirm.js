@@ -32,6 +32,16 @@ export function updateCfjg(query) {
     data: query
   })
 }
+//处分结果模板下载
+export function mbDown(query) {
+  return request({
+    url: '/rcswWjcf/downLoad',
+    method: 'post',
+    responseType: "blob",
+    data: query
+  })
+}
+
 
 
 

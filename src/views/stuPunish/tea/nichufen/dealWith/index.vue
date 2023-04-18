@@ -133,9 +133,9 @@
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <!-- <div class="btns fullGreen" @click="chehui">
-            <i class="icon greenIcon"></i><span class="title1">撤回</span>
-          </div> -->
+          <div class="btns fullGreen" @click="chehui">
+            <i class="icon backIcon"></i><span class="title1">撤回</span>
+          </div>
         </div>
       </div>
       <div class="mt15">
@@ -444,11 +444,7 @@
                 maxlength="500"
               />
             </el-form-item>
-            <el-form-item
-              label="处分等级"
-              prop="cfdjm"
-              :rules="rules.common"
-            >
+            <el-form-item label="处分等级" prop="cfdjm" :rules="rules.common">
               <el-select v-model="formEdit.cfdjm" placeholder="请选择">
                 <el-option
                   v-for="(item, index) in cfdjOps"
@@ -496,7 +492,11 @@
       </span>
     </el-dialog>
     <el-dialog title="撤回" :visible.sync="chehuiModal" width="20%">
-      <span>确认撤回？</span>
+      <template>
+        <div style="margin-bottom: 10px;"><span>{{ statusName }}理由:</span></div>
+        
+        <el-input placeholder="请输入理由" v-model="chehuily"></el-input>
+      </template>
       <span slot="footer" class="dialog-footer">
         <el-button @click="chCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="chConfirm()"
@@ -514,13 +514,13 @@
 
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
-import { chbyId } from "@/api/afterTea/audit";
 import { queryXnXq } from "@/api/dailyBehavior/vocationTea";
 import {
   queryYshList,
   exportYsh,
   wjcfDetail,
   updateQgzxGw,
+  chbyId,
 } from "@/api/stuPunish/nichufen";
 import { queryKnssqxsjbxx } from "@/api/familyDifficulties/stu";
 import { getBJ, getZY } from "@/api/student/index";
@@ -575,6 +575,7 @@ export default {
       formEdit: {},
       basicInfo: {},
       chehuiModal: false,
+      chehuily: "",
       delArr: [],
       dqXnxq: [],
       XnxqProps: {
@@ -584,6 +585,7 @@ export default {
         children: "dataCodeCascadingList", //匹配响应数据中的children }
       },
       options: [],
+      statusName: "",
       rules: {
         common: [
           {
@@ -854,26 +856,57 @@ export default {
     chehui() {
       if (this.delArr && this.delArr.length > 0) {
         var flag = 1;
-        for (let index = 0; index < this.delArr.length; index++) {
-          if (this.multipleSelection[index].qrzt !== "0") {
-            this.$message.error("请选择未确认数据！");
-            flag = 2;
-            break;
+        if (this.delArr.length > 1) {
+          this.$message.error("请选择单条数据！");
+          this.handleSearch();
+        } else {
+          for (let index = 0; index < this.delArr.length; index++) {
+            if (
+              this.multipleSelection[index].status !== "10" &&
+              this.multipleSelection[index].status !== "09"
+            ) {
+              this.$message.error("请选择已通过或拒绝状态数据！");
+              flag = 2;
+              break;
+            }
           }
-        }
-        if (flag == 1) {
-          this.chehuiModal = true;
+          if (flag == 1) {
+            if (this.multipleSelection[0].status == "10") {
+              this.statusName = "拒绝";
+            } else {
+              this.statusName = "已通过";
+            }
+            this.chehuily = "";
+            this.chehuiModal = true;
+          }
         }
       } else {
         this.$message.error("请先勾选数据");
       }
     },
     chConfirm() {
-      chbyId({ ids: this.delArr }).then((res) => {
-        this.handleSearch();
-        this.chehuiModal = false;
-        this.$message.success("撤销成功");
-      });
+      if (this.chehuily == "") {
+        this.$message.error("请输入撤回理由！");
+      } else {
+        var statusChe = "";
+        if (this.multipleSelection[0].status == "10") {
+          statusChe = "09";
+        } else {
+          statusChe = "10";
+        }
+        var data = {
+          id: this.multipleSelection[0].id,
+          message: this.chehuily,
+          mkId: "5a9f04c6-dcf6-11ed-850b-52549e666099", //违纪处分模块
+          processid: this.multipleSelection[0].processId,
+          status: statusChe,
+        };
+        chbyId(data).then((res) => {
+          this.handleSearch();
+          this.chehuiModal = false;
+          this.$message.success("撤销成功");
+        });
+      }
     },
     chCancel() {
       this.chehuiModal = false;

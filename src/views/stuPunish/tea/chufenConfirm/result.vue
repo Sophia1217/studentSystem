@@ -113,15 +113,25 @@
           </div>
         </div>
         <div class="headerRight">
-          <div class="btns borderOrange" @click="expor">
+          <!-- <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导入</span>
+          </div> -->
+          <div class="btns borderBlue" @click="mbDown">
+            <i class="icon downIcon"></i><span class="btutitle">模板下载</span>
           </div>
-          <!-- <div class="btns fullGreen" @click="chehui">
-            <i class="icon backIcon"></i><span class="title1">撤回</span>
-          </div> -->
-          <!-- <div class="btns fullGreen" @click="queren">
-            <i class="icon passIcon"></i><span class="title1">确认</span>
-          </div> -->
+          <div class="btns borderBlue">
+            <el-upload
+              accept=".xlsx,.xls"
+              :auto-upload="true"
+              :action="uploadUrl"
+              :show-file-list="false"
+              :headers="fileHeader"
+              :on-success="upLoadSuccess"
+              :on-error="upLoadError"
+            >
+              <i class="icon blueIcon"></i><span class="btutitle">导入</span>
+            </el-upload>
+          </div>
         </div>
       </div>
       <div class="mt15">
@@ -139,8 +149,8 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" sortable="custom" />
-          <el-table-column prop="xm" label="姓名" sortable="custom">
+          <el-table-column prop="xh" label="学号" width="100px" sortable="custom" />
+          <el-table-column prop="xm" label="姓名" width="100px" sortable="custom">
           </el-table-column>
           <el-table-column
             prop="ssdwdmmc"
@@ -210,6 +220,7 @@
             label="处分文号"
             min-width="130px"
             sortable="custom"
+            :show-overflow-tooltip="true"
           >
             <template slot-scope="scope">
               <el-input
@@ -218,6 +229,41 @@
                 placeholder="请输入"
                 @change="changeSJ(scope.row, 3)"
               />
+            </template>
+          </el-table-column>
+          <el-table-column label="附件" min-width="350">
+            <template slot-scope="scope">
+              <div>
+                <div v-for="item in scope.row.fileList">
+                  <div style="display: flex; justify-content: space-between">
+                    <el-button type="text" size="small" @click="xzWj(item)">
+                      <span class="handleName">{{ item.fileName }}</span>
+                    </el-button>
+                    <el-button type="text" size="small" @click="delWj(item)">
+                      <span>删除</span>
+                    </el-button>
+                  </div>
+                </div>
+                <el-upload
+                  accept=".pdf,.jpg"
+                  :auto-upload="true"
+                  :action="uploadUrlUp"
+                  :show-file-list="false"
+                  :headers="fileHeader"
+                  :data="fileDataUp"
+                  :on-success="upLoadSuccess"
+                  :on-error="upLoadError"
+                >
+                  <el-button
+                    type="text"
+                    size="small"
+                    style="margin-left: 10px"
+                    @click="thmb(scope.row)"
+                  >
+                    <span class="handleName">上传协议附件</span>
+                  </el-button>
+                </el-upload>
+              </div>
             </template>
           </el-table-column>
           <!-- <el-table-column prop="createDwhMc" label="审核进度">
@@ -362,23 +408,30 @@
                     :show-overflow-tooltip="true"
                   >
                   </el-table-column>
-                  <!-- <el-table-column prop="fjName" label="附件" width="140">
+                  <el-table-column prop="fjName" label="附件" min-width="140">
                     <template slot-scope="scope">
-                      <div class="moban">
-                        <div class="content">
+                      <div v-for="item in scope.row.fileList">
+                        <div
+                          style="display: flex; justify-content: space-between"
+                        >
                           <el-button
                             type="text"
                             size="small"
-                            @click="xzWj(scope.row, 1)"
+                            @click="xzWj(item)"
                           >
-                            <span class="handleName">{{
-                              scope.row.fjName
-                            }}</span>
+                            <span class="handleName">{{ item.fileName }}</span>
                           </el-button>
+                          <!-- <el-button
+                            type="text"
+                            size="small"
+                            @click="delWj(item)"
+                          >
+                            <span>删除</span>
+                          </el-button> -->
                         </div>
                       </div>
                     </template>
-                  </el-table-column> -->
+                  </el-table-column>
                 </el-table>
               </div>
             </el-form>
@@ -415,24 +468,48 @@
 
 <script>
 import CheckboxCom from "../../../components/checkboxCom";
-import {
-  uploadFile,
-  delFile,
-  downloadFile,
-  queryFile,
-} from "@/api/common/file";
+import { querywj, Exportwj, delwj } from "@/api/assistantWork/classEvent";
 import { queryXnXq } from "@/api/dailyBehavior/vocationTea";
-import { querycfjgList, updateCfjg } from "@/api/stuPunish/chufenConfirm";
+import {
+  querycfjgList,
+  updateCfjg,
+  mbDown,
+} from "@/api/stuPunish/chufenConfirm";
 import { exportYsh, wjcfDetail } from "@/api/stuPunish/nichufen";
 import { queryKnssqxsjbxx } from "@/api/familyDifficulties/stu";
 import { getCollege } from "@/api/class/maintenanceClass";
 import lctCom from "../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
+import { getToken } from "@/utils/auth";
 export default {
   name: "manStudent",
   components: { CheckboxCom, lctCom },
+  computed: {
+    fileDataUp: {
+      get() {
+        return {
+          pageType: "xscf",
+          roleType: "rcsw",
+          businesId: this.businesId,
+        };
+      },
+    },
+    fileHeader: {
+      get() {
+        return {
+          accessToken: getToken(), // 让每个请求携带自定义token 请根据实际情况自行修改
+          uuid: new Date().getTime(),
+          clientId: "111",
+        };
+      },
+    },
+  },
   data() {
     return {
+      uploadUrl: process.env.VUE_APP_BASE_API + "/rcswWjcf/importExcelCfjg",
+      uploadUrlUp:
+        process.env.VUE_APP_BASE_API + "/fileCommon/uploadFileCommon",
+      businesId: "",
       showExport: false,
       lctModal: false,
       ztStatus: [],
@@ -481,6 +558,8 @@ export default {
       },
       options: [],
       tableDataDetail: [],
+      fileList: [],
+      fileListAdd: [],
       rules: {
         common: [
           {
@@ -526,6 +605,34 @@ export default {
         this.queryParams.xqm = this.dqXnxq[1];
       }
       this.handleSearch();
+    },
+    //模板下载
+    mbDown() {
+      mbDown().then((res) => {
+        this.downloadFn(res, "处分结果学生列表模板下载", "xlsx");
+        this.$message.success("操作成功");
+      });
+    },
+    //导入失败
+    upLoadError(err, file, fileList) {
+      this.$message({
+        type: "error",
+        message: "上传失败",
+      });
+    },
+    upLoadSuccess(res, file, fileList) {
+      if (res.errcode == "00") {
+        this.$message({
+          type: "success",
+          message: res.errmsg,
+        });
+        this.handleSearch();
+      } else {
+        this.$message({
+          type: "error",
+          message: res.errmsg,
+        });
+      }
     },
     // 导出取消
     handleCancel() {
@@ -726,10 +833,6 @@ export default {
           cfrq: row.cfrq,
         };
       } else if (flag == 2) {
-        // if (row.datePickerEdit && row.datePickerEdit.length > 0) {
-        //   console.log("date0", row.datePickerEdit[0]);
-        //   console.log("date1", row.datePickerEdit[1]);
-        // }
         var data = {
           id: row.id,
           cfqxStart: row.datePickerEdit[0],
@@ -743,6 +846,22 @@ export default {
       }
       updateCfjg(data).then((res) => {
         this.$message.success("修改成功");
+        this.handleSearch();
+      });
+    },
+    thmb(row) {
+      this.businesId = row.id;
+    },
+    //下载附件
+    xzWj(item) {
+      Exportwj({ id: item.id.toString() }).then((res) => {
+        this.url = window.URL.createObjectURL(res);
+        this.downloadFn(res, item.fileName);
+      });
+    },
+    delWj(item) {
+      delwj({ id: item.id.toString() }).then((res) => {
+        this.$message.success("附件删除成功");
         this.handleSearch();
       });
     },
@@ -778,7 +897,14 @@ export default {
     color: #005657;
     line-height: 28px;
   }
-
+  .moban {
+    display: flex;
+    // flex-direction: row;
+    justify-content: space-between;
+    .inline-block {
+      display: inline-block;
+    }
+  }
   .mt15 {
     margin-top: 15px;
   }
@@ -893,7 +1019,12 @@ export default {
           padding: 0px 10px;
           cursor: pointer;
           border-radius: 4px;
-
+          .btutitle {
+            font-size: 14px;
+            text-align: center;
+            line-height: 32px;
+            // vertical-align: middle;
+          }
           .title {
             font-size: 14px;
             text-align: center;
@@ -930,20 +1061,9 @@ export default {
             margin-top: 10px;
             background: url("~@/assets/assistantPng/out.png") no-repeat;
           }
-
-          .passIcon {
+          .downIcon {
             margin-top: 10px;
-            background: url("~@/assets/images/passWhite.png") no-repeat;
-          }
-
-          .refuseIcon {
-            margin-top: 10px;
-            background: url("~@/assets/images/refuse.png") no-repeat;
-          }
-
-          .backIcon {
-            margin-top: 10px;
-            background: url("~@/assets/images/back.png") no-repeat;
+            background: url("~@/assets/images/down.png") no-repeat;
           }
         }
       }

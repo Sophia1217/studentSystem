@@ -115,3 +115,11 @@ export function exportYsh(query) {
     data: query
   })
 }
+//撤回操作
+export function chbyId(query) {
+  return request({
+    url: '/flowable/chbyId',
+    method: 'post',
+    data: query
+  })
+}

@@ -34,3 +34,24 @@ export function updateJzztm(query) {
     })
   }
  
+  
+//矫正教育鉴定审核_列表查询
+  export function queryJdList(query) {
+    return request({
+      url: '/rcswJzjyjd/queryJdList',
+      method: 'post',
+      
+      data: query
+    })
+  }
+  
+ // 矫正教育鉴定保存
+  export function saveGw(query) {
+    return request({
+      url: '/rcswJzjyjd/saveGw',
+      method: 'post',
+      
+      data: query
+    })
+  }
+ 

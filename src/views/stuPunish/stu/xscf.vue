@@ -39,32 +39,32 @@
           <el-table-column
             prop="wjssmsXgbfzr"
             label="违纪事实描述"
-            sortable="custom"
+            
             :show-overflow-tooltip="true"
           />
           <el-table-column
             prop="cfdjmmc"
             label="处分等级"
-            sortable="custom"
+            
             :show-overflow-tooltip="true"
           >
           </el-table-column>
           <el-table-column
             prop="cfqxStart"
             label="处分开始时间"
-            sortable="custom"
+            
           >
           </el-table-column>
           <el-table-column
             prop="cfqxEnd"
             label="处分结束时间"
-            sortable="custom"
+            
           >
           </el-table-column>
-          <el-table-column prop="jzjyztmc" label="矫正教育" sortable="custom">
+          <el-table-column prop="jzjyztmc" label="矫正教育" >
           </el-table-column>
 
-          <el-table-column prop="cfztmmc" label="处分状态" sortable="custom">
+          <el-table-column prop="cfztmmc" label="处分状态" >
           </el-table-column>
 
           <el-table-column

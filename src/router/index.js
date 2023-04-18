@@ -87,29 +87,7 @@ export const constantRoutes = [
     hidden: true,
   },
 
-  {
-    path: "/punishment",
-    meta: { title: "学生处分", icon: "monitor" },
-    component: Layout,
-    hidden: false,
-    children: [
-      {
-        name: "jzjyAssign",
-        path: "jzjyAssign",
-        component: (resolve) =>
-          require(["@/views/stuPunish/tea/jzjyAssign/index"], resolve),
-        meta: { title: "矫正教育指派", icon: "" },
-      },
-      {
-        name: "jzjyIdentify",
-        path: "jzjyIdentify",
-        component: (resolve) =>
-          require(["@/views/stuPunish/tea/jzjyIdentify/index"], resolve),
-        meta: { title: "矫正教育鉴定", icon: "" },
-      },
-     
-    ],
-  },
+  
   
   // {
   //   path: '/user',
@@ -1324,8 +1302,8 @@ export const stuRoutes = [
  {
   "id":0,
   "modId":"5132",
-  "name":"stuPunish",
-  "path":"/stuPunish",
+  "name":"stuPunishdetail",
+  "path":"/stuPunishdetail",
   "title":"矫正教育鉴定",
   "component":"stuPunish/stu/jzjyIdentify",
   "icon":"",

@@ -110,9 +110,9 @@
           <span>学年</span>
         </div>
         <div class="headerRight">
-          <!-- <div class="btns borderOrange" @click="expor">
+          <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
-          </div> -->
+          </div>
         </div>
       </div>
       <div class="mt15">
@@ -329,6 +329,15 @@
         @pagination="handleSearch"
       />
     </div>
+    <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
+      <span>确认导出数据？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="handleConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -342,7 +351,7 @@ import { getBJ } from "@/api/student/index";
 
 import {
   queryZpList,
-  saveZp,
+  excelExportRcswZpList,
   queryGwListAll,
 } from "@/api/stuPunish/jzjyAssign";
 export default {
@@ -350,7 +359,7 @@ export default {
     return {
       editModal: false,
       formEdit: {},
-
+      showExport: false,
       gwList: [],
       searchVal: "",
       select: "",
@@ -367,6 +376,7 @@ export default {
       leng: 0,
       tableData: [],
       updownDate: [],
+      multipleSelection: [],
       allDwh: [],
       bjOps: [], // 班级下拉
       allXn: [], //学年下拉
@@ -391,6 +401,50 @@ export default {
   },
 
   methods: {
+    // 导出取消
+    handleCancel() {
+      this.showExport = false;
+    },
+    // 导出确认
+    handleConfirm() {
+      let idList = [];
+      idList = this.multipleSelection.map((item) => item.id);
+      this.exportParams.pageNum = 0;
+      this.exportParams.pageSize = 0;
+      this.$set(this.exportParams, "ids", idList);
+      console.log(this.exportParams);
+
+      excelExportRcswZpList(this.exportParams)
+        .then((res) => {
+          this.downloadFn(res, "矫正教育岗位指派已处理列表导出.xlsx", "xlsx");
+          if (this.$store.getters.excelcount > 0) {
+            this.$message.success(
+              `已成功导出${this.$store.getters.excelcount}条数据`
+            );
+          }
+        })
+        .catch((err) => {});
+
+      this.showExport = false;
+    },
+    expor() {
+      let data = {
+        xm: this.select == "xm" ? this.searchVal : null,
+        xh: this.select == "xh" ? this.searchVal : null,
+        xn: this.moreIform.xn,
+        gwMainMc: this.moreIform.zpgw,
+        cfdjm: this.moreIform.cfdj,
+        bjdm: this.moreIform.bjm,
+        ssdwdm: this.moreIform.dwh,
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        orderZd: this.queryParams.orderZd,
+        orderPx: this.queryParams.orderPx,
+        jzjyzt: "03",
+      }; //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
+      this.exportParams = data;
+      this.showExport = true;
+    },
     //获取学年
     getSchoolYears() {
       queryXn()
@@ -666,7 +720,7 @@ export default {
             vertical-align: top;
             margin-right: 5px;
             margin-top: 10px;
-            background: url("~@/assets/assistantPng/in.png") no-repeat;
+            background: url("~@/assets/assistantPng/out.png") no-repeat;
           }
         }
         .orangeIcon {

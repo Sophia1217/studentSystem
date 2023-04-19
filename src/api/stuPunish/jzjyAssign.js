@@ -36,3 +36,13 @@ export function saveZp(query) {
       params: query
     })
   }
+  
+//矫正教育指派列表导出
+export function excelExportRcswZpList(query) {
+  return request({
+    url: '/rcswJzjy/excelExportRcswZpList',
+    method: 'post',
+    responseType:'blob',
+    data: query
+  })
+}

@@ -87,78 +87,80 @@
       <!-- 岗位信息 -->
       <div class="headline">岗位信息</div>
       <div class="tableStyle">
-        <div class="information">
-          <el-row :gutter="20">
-            <el-col :span="24">
-              <el-form-item label="岗位名称" prop="gwMainMc">
-                {{ formEdit.gwMainMc }}
-              </el-form-item>
-            </el-col>
-          </el-row>
+        <el-form :model="formEdit">
+          <div class="information">
+            <el-row :gutter="20">
+              <el-col :span="24">
+                <el-form-item label="岗位名称" prop="gwMainMc">
+                  {{ formEdit.gwMainMc }}
+                </el-form-item>
+              </el-col>
+            </el-row>
 
-          <el-row :gutter="20">
-            <el-col :span="8">
-              <el-form-item label="岗位类型" prop="gwTypeMc">
-                {{ formEdit.gwTypeMc }}
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="用人部门" prop="gwYrbmc">
-                {{ formEdit.gwYrbmc }}
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="可接纳人数" prop="gwKjnrs">
-                {{ formEdit.gwKjnrs }}
-              </el-form-item>
-            </el-col>
-          </el-row>
+            <el-row :gutter="20">
+              <el-col :span="8">
+                <el-form-item label="岗位类型" prop="gwTypeMc">
+                  {{ formEdit.gwTypeMc }}
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="用人部门" prop="gwYrbmc">
+                  {{ formEdit.gwYrbmc }}
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="可接纳人数" prop="gwKjnrs">
+                  {{ formEdit.gwKjnrs }}
+                </el-form-item>
+              </el-col>
+            </el-row>
 
-          <el-row :gutter="20">
-            <el-col :span="23">
-              <el-form-item label="工作地点" prop="gwGzdd">
-                {{ formEdit.gwGzdd }}
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="8">
-              <el-form-item label="指导老师" prop="gwZdls">
-                {{ formEdit.gwZdls }}
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="联系方式" prop="gwLxfs">
-                {{ formEdit.gwLxfs }}
-              </el-form-item>
-            </el-col>
-          </el-row>
+            <el-row :gutter="20">
+              <el-col :span="23">
+                <el-form-item label="工作地点" prop="gwGzdd">
+                  {{ formEdit.gwGzdd }}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8">
+                <el-form-item label="指导老师" prop="gwZdls">
+                  {{ formEdit.gwZdls }}
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="联系方式" prop="gwLxfs">
+                  {{ formEdit.gwLxfs }}
+                </el-form-item>
+              </el-col>
+            </el-row>
 
-          <el-row :gutter="20">
-            <el-col :span="23">
-              <el-form-item label="工作内容" prop="gwGznr">
-                {{ formEdit.gwGznr }}
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="8">
-              <el-form-item label="时长" prop="xs">
-                {{ formEdit.xs }}
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="谈话总次数" prop="thcs">
-                {{ formEdit.thcs }}次
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="最早可结束时间" prop="zzkjssj">
-                {{ formEdit.zzkjssj }}
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </div>
+            <el-row :gutter="20">
+              <el-col :span="23">
+                <el-form-item label="工作内容" prop="gwGznr">
+                  {{ formEdit.gwGznr }}
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="8">
+                <el-form-item label="时长" prop="xs">
+                  {{ formEdit.xs }}
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="谈话总次数" prop="thcs">
+                  {{ formEdit.thcs }}次
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="最早可结束时间" prop="zzkjssj">
+                  {{ formEdit.zzkjssj }}
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </div>
+        </el-form>
       </div>
       <!-- 打卡记录 -->
       <div class="headline">

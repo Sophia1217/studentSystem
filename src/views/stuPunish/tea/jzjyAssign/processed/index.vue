@@ -392,6 +392,157 @@
           >
         </span>
       </el-dialog>
+      <el-dialog
+        title="详情"
+        :visible.sync="detailModal"
+        :before-close="detailCancel"
+        width="50%"
+      >
+        <template>
+          <div class="baseInfo">
+            <el-form :model="formDetails">
+              <!-- <div class="formLeft"><span class="title">基本信息</span></div> -->
+              <div class="backDetail">
+                <div class="formRight">
+                  <el-row :gutter="20">
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">学号</div>
+                        <div class="content">{{ stuInfo.xh }}</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">姓名</div>
+                        <div class="content">{{ stuInfo.xm }}</div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="20">
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">性别</div>
+                        <div class="content">{{ stuInfo.xbmmc }}</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">培养层次</div>
+                        <div class="content">{{ stuInfo.pyccmmc }}</div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="20">
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">培养单位</div>
+                        <div class="content">{{ stuInfo.ssdwdmmc }}</div>
+                      </div>
+                    </el-col>
+
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">年级</div>
+                        <div class="content">{{ stuInfo.ssnj }}</div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="20">
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">专业</div>
+                        <div class="content">{{ stuInfo.zydmmc }}</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="12" class="rowStyle">
+                      <div class="wrap">
+                        <div class="title">班级</div>
+                        <div class="content">{{ stuInfo.bjmc }}</div>
+                      </div>
+                    </el-col>
+                  </el-row>
+                </div>
+              </div>
+              <div class="formLeft"><span class="title">学院意见</span></div>
+              <div>
+                <el-row :gutter="20">
+                  <el-col :span="10">
+                    <el-form-item label="违纪事实描述" label-width="120px">
+                      {{ formDetails.wjssmsXgbfzr }}
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="20">
+                    <el-form-item label="处分依据条款" label-width="120px">
+                      {{ formDetails.cfyjtkXgbfzr }}
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="20">
+                    <el-form-item label="处分等级" label-width="120px">
+                      {{ formDetails.cfdjmmc }}
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="20">
+                    <el-form-item label="单位建议" label-width="120px">
+                      {{ formDetails.dwjyXgbfzr }}
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-table
+                  :data="tableDataDetail"
+                  ref="multipleTable"
+                  style="width: 100%"
+                >
+                  <el-table-column prop="cfrq" label="处分日期">
+                  </el-table-column>
+                  <el-table-column prop="cfqxStart" label="处分开始日期">
+                  </el-table-column>
+                  <el-table-column prop="cfqxEnd" label="处分结束日期">
+                  </el-table-column>
+                  <el-table-column
+                    prop="cfwh"
+                    label="处分文号"
+                    :show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column prop="fjName" label="附件" min-width="140">
+                    <template slot-scope="scope">
+                      <div v-for="item in scope.row.fileList">
+                        <div
+                          style="display: flex; justify-content: space-between"
+                        >
+                          <el-button
+                            type="text"
+                            size="small"
+                            @click="xzWj(item)"
+                          >
+                            <span class="handleName">{{ item.fileName }}</span>
+                          </el-button>
+                          <!-- <el-button
+                            type="text"
+                            size="small"
+                            @click="delWj(item)"
+                          >
+                            <span>删除</span>
+                          </el-button> -->
+                        </div>
+                      </div>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+            </el-form>
+          </div>
+        </template>
+        <span slot="footer" class="dialog-footer footerFlex">
+          <el-button @click="detailCancel">关 闭</el-button>
+        </span>
+      </el-dialog>
       <pagination
         v-show="queryParams.total > 0"
         :total="queryParams.total"
@@ -413,17 +564,18 @@ import {
 } from "@/api/stuPunish/jzjyAssign";
 import { xhQuery } from "@/api/dailyBehavior/lskn";
 import { getCollege } from "@/api/class/maintenanceClass";
-import { backFlow } from "@/api/dailyBehavior/dormTea";
+
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getBJ } from "@/api/student/index";
 import { getYears } from "@/api/test/fdySelfTest";
-
+import { queryKnssqxsjbxx } from "@/api/familyDifficulties/stu";
+import { wjcfDetail } from "@/api/stuPunish/nichufen";
 export default {
   name: "dksh",
   data() {
     return {
       showExport: false,
-
+      detailModal: false,
       searchVal: "",
       select: "",
       isMore: false,
@@ -434,7 +586,7 @@ export default {
         cfdj: [],
       },
       gwList: [],
-
+      tableDataDetail: [],
       cfdjOps: [],
       editModal: false,
       rules: {
@@ -447,7 +599,9 @@ export default {
         ],
       },
       formEdit: {},
+      formDetails: {},
       basicInfo: {},
+      stuInfo: {},
       exportParams: {},
       leng: 0,
       tableData: [],
@@ -474,7 +628,7 @@ export default {
     this.authConfirm(this.$route.path.split("/"));
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getAllCollege();
-    this.getCode("dmcfdjm"); // 培养层次
+    this.getCode("dmcfdjm");
     this.getSchoolYears();
   },
 
@@ -583,7 +737,19 @@ export default {
           .catch((err) => {});
       }
     },
-    hadleDetail(row) {},
+    hadleDetail(row) {
+      this.detailModal = true;
+      this.tableDataDetail[0] = row;
+      queryKnssqxsjbxx({ xh: row.xh }).then((res) => {
+        this.stuInfo = res.data;
+      });
+      wjcfDetail({ id: row.id }).then((res) => {
+        this.formDetails = res.data;
+      });
+    },
+    detailCancel() {
+      this.detailModal = false;
+    },
     changeSelect() {
       this.searchVal = "";
     },
@@ -877,6 +1043,92 @@ export default {
     .backIcon {
       margin-top: 10px;
       background: url("~@/assets/images/back.png") no-repeat;
+    }
+  }
+  .baseInfo {
+    // padding: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
+
+    // overflow-x: auto;
+    .formLeft {
+      background: #fff;
+      // display: flex;
+      align-items: flex-start;
+
+      .title {
+        font-weight: 600;
+        font-size: 16px;
+        color: #1f1f1f;
+        line-height: 20px;
+      }
+    }
+  }
+
+  .backDetail {
+    display: flex;
+    margin-bottom: 20px;
+    flex-direction: row;
+
+    .formRight {
+      width: 100%;
+      margin-top: 15px;
+
+      .rowStyle {
+        padding: 0 !important;
+        margin: 0;
+        border-bottom: 1px solid #cccccc;
+      }
+
+      .wrap {
+        display: flex;
+        align-items: center;
+
+        .title {
+          flex: 0 0 160px;
+          line-height: 48px;
+          background: #e0e0e0;
+          text-align: right;
+          padding-right: 5px;
+          margin: 0 !important;
+        }
+
+        .content {
+          font-weight: 400;
+          font-size: 14px;
+          color: #1f1f1f;
+          line-height: 22px;
+          margin-left: 16px;
+        }
+      }
+
+      .GreenButton {
+        //border: 1px solid grey;
+        height: 49px;
+        border-radius: 2px;
+        background: #005657;
+      }
+
+      .title1 {
+        font-size: 16px;
+        text-align: center;
+        line-height: 48px;
+        color: #fff;
+        // vertical-align: middle;
+      }
+
+      .icon {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        vertical-align: top;
+        margin-right: 5px;
+      }
+
+      .greenIcon {
+        margin: 15px;
+        background: url("~@/assets/assistantPng/add.png") no-repeat;
+      }
     }
   }
 }

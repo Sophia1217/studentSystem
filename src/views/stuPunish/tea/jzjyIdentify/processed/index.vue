@@ -76,21 +76,20 @@
         <div class="headerLeft">
           <span class="title">学生列表</span>
           <el-select
-            v-model="moreIform.nd"
+            v-model="moreIform.xn"
             collapse-tags
-            @change="changeNd"
+            @change="handleSearch"
             placeholder="请选择"
-            size="small"
-            style="width: 90px; margin: 0 15px 0"
+            style="width: 130px; margin: 0 15px 0"
           >
             <el-option
-              v-for="(item, index) in allNd"
+              v-for="(item, index) in allXn"
               :key="index"
-              :label="item"
-              :value="item"
+              :label="item.mc"
+              :value="item.mc"
             ></el-option>
           </el-select>
-          <span>年度</span>
+          <span>学年</span>
         </div>
         <div class="headerRight">
           <div class="btns borderOrange" @click="expor">
@@ -298,6 +297,7 @@
       @handleCloseLct="handleCloseLct"
     ></lctCom>
     <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
+      <span>确认导出?</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="handleConfirm"
@@ -312,9 +312,12 @@
 import {
   queryDclDbjz,
   excelExportRcswDbjzDcl,
+  jjFlow,
+  tyFlow,
+  htFlow,
 } from "@/api/stuPunish/jzjyIdentify";
-import { jjFlow, tyFlow, htFlow } from "@/api/zbrw/zbrw";
-import { getYears } from "@/api/test/fdySelfTest";
+
+import { queryXn } from "@/api/dailyBehavior/yearSum";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { backFlow } from "@/api/dailyBehavior/dormTea";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
@@ -356,7 +359,7 @@ export default {
       updownDate: [],
       allDwh: [],
       bjOps: [], // 班级下拉
-      allNd: [], //学年下拉
+      allXn: [], //学年下拉
       zyOps: [],
       sqlxOps: [
         { dm: "1", mc: "退役士兵" },
@@ -401,10 +404,10 @@ export default {
   methods: {
     //获取学年
     getSchoolYears() {
-      getYears()
+      queryXn()
         .then((res) => {
-          this.allNd = res.data.rows;
-          this.moreIform.nd = res.data.rows[0];
+          this.allXn = res.data;
+          this.moreIform.xn = res.data[0].mc;
           this.handleSearch();
         })
         .catch((err) => {});
@@ -422,7 +425,7 @@ export default {
       this.$set(this.exportParams, "ids", ids);
       excelExportRcswDbjzDcl(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "征兵入伍待审核列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "矫正教育鉴定待处理列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -437,7 +440,7 @@ export default {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
         zpgw: this.select == "zpgw" ? this.searchVal : null,
-
+        xn: this.moreIform.xn,
         zzkjssj: "",
         status: [],
         bj: this.moreIform.bjm,
@@ -630,7 +633,7 @@ export default {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
         zpgw: this.select == "zpgw" ? this.searchVal : null,
-
+        xn: this.moreIform.xn,
         zzkjssj: "",
         status: [],
         bj: this.moreIform.bjm,

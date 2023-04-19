@@ -441,7 +441,7 @@ export default {
         if (this.flag == 1) {
           this.form.fileList = [...this.form.bksfile, ...this.form.yjsfile];
 
-          if (this.form.fileList.length > 0) {
+          if (this.form.fileList && this.form.fileList.length > 0) {
             this.form.fileList.map((file) => {
               formData.append("files", file.raw);
             });
@@ -530,46 +530,55 @@ export default {
         pageNum: 1,
         pageSize: 10,
       };
-      await queryRcswXnxjsz(data).then((res) => {
+      let res = await queryRcswXnxjsz(data);
+      if (res.errcode == "00") {
         this.form.yjsfjId = res.data[0].yjsfjId;
         this.form.bkfjId = res.data[0].bkfjId;
-      });
+      }
       querywj({ businesId: value + "bk" }).then((res) => {
         this.form.bksfile = res.data;
-        this.form.bksfile = this.form.bksfile.map((ele) => {
-          return {
-            name: ele.fileName,
-            ...ele,
-          };
-        });
+        if (this.form.bksfile && this.form.bksfile.length > 0) {
+          this.form.bksfile = this.form.bksfile.map((ele) => {
+            return {
+              name: ele.fileName,
+              ...ele,
+            };
+          });
+        }
       });
       querywj({ businesId: value + "yjs" }).then((res) => {
         this.form.yjsfile = res.data;
-        this.form.yjsfile = this.form.yjsfile.map((ele) => {
-          return {
-            name: ele.fileName,
-            ...ele,
-          };
-        });
+        if (this.form.yjsfile && this.form.yjsfile.length > 0) {
+          this.form.yjsfile = this.form.yjsfile.map((ele) => {
+            return {
+              name: ele.fileName,
+              ...ele,
+            };
+          });
+        }
       });
-      Exportwj({ id: this.form.bkfjId.toString() }).then((res) => {
-        console.log("res", res);
-        // console.log("typeofres", typeof res);
-        this.form.bksfile = new File([res], this.form.bksfile[0].name, {
-          type: "application/pdf",
-          lastModified: Date.now(),
+      if (this.form.bksfile && this.form.bksfile.length > 0) {
+        Exportwj({ id: this.form.bkfjId.toString() }).then((res) => {
+          console.log("res", res);
+          // console.log("typeofres", typeof res);
+          this.form.bksfile = new File([res], this.form.bksfile[0].name, {
+            type: "application/pdf",
+            lastModified: Date.now(),
+          });
+          console.log("this.form.bksfile", this.form.bksfile);
         });
-        console.log("this.form.bksfile", this.form.bksfile);
-      });
-      Exportwj({ id: this.form.yjsfjId.toString() }).then((res) => {
-        //this.url = window.URL.createObjectURL(res);
-        this.form.yjsfile = new File([res], this.form.yjsfile[0].name, {
-          type: "application/pdf",
-          lastModified: Date.now(),
+      }
+      if (this.form.yjsfile && this.form.yjsfile.length > 0) {
+        Exportwj({ id: this.form.yjsfjId.toString() }).then((res) => {
+          //this.url = window.URL.createObjectURL(res);
+          this.form.yjsfile = new File([res], this.form.yjsfile[0].name, {
+            type: "application/pdf",
+            lastModified: Date.now(),
+          });
+          console.log("this.form.yjfile", this.form.yjsfile);
+          //this.downloadFn(res, row.bkfileName);
         });
-        console.log("this.form.yjfile", this.form.yjsfile);
-        //this.downloadFn(res, row.bkfileName);
-      });
+      }
     },
     formfileChange(file, fileList, index) {
       //console.log("file", file);

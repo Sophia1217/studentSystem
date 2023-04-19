@@ -244,6 +244,7 @@
         @pagination="handleSearch"
       />
       <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
+        <span>确认导出?</span>
         <span slot="footer" class="dialog-footer">
           <el-button @click="handleCancel">取 消</el-button>
           <el-button type="primary" class="confirm" @click="handleConfirm"
@@ -262,7 +263,10 @@
 
 <script>
 import { queryXn } from "@/api/dailyBehavior/yearSum";
-import { queryZbrwFlowYclList, excelExportDone } from "@/api/zbrw/zbrw";
+import {
+  queryYclDbjz,
+  excelExportRcswDbjzYcl,
+} from "@/api/stuPunish/jzjyIdentify";
 import { getCollege } from "@/api/class/maintenanceClass";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 import { getBJ, getZY } from "@/api/student/index";
@@ -320,7 +324,7 @@ export default {
     this.authConfirm(this.$route.path.split("/"));
     this.AUTHFLAG = this.$store.getters.AUTHFLAG;
     this.getAllCollege();
-    this.getCode("dmsplcm"); // 培养层次
+    this.getCode("dmsplcm");
 
     this.getSchoolYears();
   },
@@ -371,9 +375,9 @@ export default {
         ids.push(item_row.id);
       }
       this.$set(this.exportParams, "ids", ids);
-      excelExportDone(this.exportParams)
+      excelExportRcswDbjzYcl(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "征兵入伍已处理列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "矫正教育鉴定已处理列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -385,33 +389,15 @@ export default {
     },
 
     expor() {
-      var data = {};
-      data = {
+      let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        shr1: this.select == "shrxm" ? this.searchVal : null,
-        zydmList: this.moreIform.zydmList,
-        sqlxmList: this.moreIform.sqlxm,
+        zpgw: this.select == "zpgw" ? this.searchVal : null,
         xn: this.moreIform.xn,
-        sqsjEnd:
-          this.queryParams.sqsj && this.queryParams.sqsj.length > 0
-            ? this.queryParams.sqsj[1]
-            : "",
-        sqsjStart:
-          this.queryParams.sqsj && this.queryParams.sqsj.length > 0
-            ? this.queryParams.sqsj[0]
-            : "",
-        statusList: this.moreIform.ztStatus,
-        shsjEnd:
-          this.queryParams.shsj && this.queryParams.shsj.length > 0
-            ? this.queryParams.shsj[1]
-            : "",
-        shsjStart:
-          this.queryParams.shsj && this.queryParams.shsj.length > 0
-            ? this.queryParams.shsj[0]
-            : "",
-        bjmList: this.moreIform.bjm,
-        pydwmLsit: this.moreIform.dwh,
+        zzkjssj: "",
+        status: this.moreIform.ztStatus,
+        bj: this.moreIform.bjm,
+        pydw: this.moreIform.dwh,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
@@ -466,35 +452,18 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        shr1: this.select == "shrxm" ? this.searchVal : null,
-        zydmList: this.moreIform.zydmList,
-        sqlxmList: this.moreIform.sqlxm,
+        zpgw: this.select == "zpgw" ? this.searchVal : null,
         xn: this.moreIform.xn,
-        sqsjEnd:
-          this.queryParams.sqsj && this.queryParams.sqsj.length > 0
-            ? this.queryParams.sqsj[1]
-            : "",
-        sqsjStart:
-          this.queryParams.sqsj && this.queryParams.sqsj.length > 0
-            ? this.queryParams.sqsj[0]
-            : "",
-        statusList: this.moreIform.ztStatus,
-        shsjEnd:
-          this.queryParams.shsj && this.queryParams.shsj.length > 0
-            ? this.queryParams.shsj[1]
-            : "",
-        shsjStart:
-          this.queryParams.shsj && this.queryParams.shsj.length > 0
-            ? this.queryParams.shsj[0]
-            : "",
-        bjmList: this.moreIform.bjm,
-        pydwmLsit: this.moreIform.dwh,
+        zzkjssj: "",
+        status: this.moreIform.ztStatus,
+        bj: this.moreIform.bjm,
+        pydw: this.moreIform.dwh,
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryZbrwFlowYclList(data)
+      queryYclDbjz(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;

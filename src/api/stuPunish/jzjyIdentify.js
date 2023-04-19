@@ -24,7 +24,15 @@ export function excelExportRcswDbjzDcl(query) {
       data: query
     })
   }
-  
+  //教师端-yi处理列表导出
+export function excelExportRcswDbjzYcl(query) {
+  return request({
+    url: '/rcswJzjyjd/excelExportRcswDbjzYcl',
+    method: 'post',
+    responseType:'blob',
+    data: query
+  })
+}
 //教师端-已处理列表
 export function queryYclDbjz(query) {
     return request({
@@ -34,3 +42,30 @@ export function queryYclDbjz(query) {
       data: query
     })
   }
+  //教师端-拒绝
+export function jjFlow(query) {
+  return request({
+    url: '/rcswJzjyjd/jjFlow',
+    method: 'post',
+   
+    data: query
+  })
+}
+//根据选中节点退回
+export function htFlow(query) {
+  return request({
+    url: '/rcswJzjyjd/htFlow',
+    method: 'post',
+   
+    data: query
+  })
+}
+//教师端-同意
+export function tyFlow(query) {
+  return request({
+    url: '/rcswJzjyjd/tyFlow',
+    method: 'post',
+   
+    data: query
+  })
+}

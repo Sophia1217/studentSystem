@@ -33,6 +33,14 @@ export function updateJzztm(query) {
       data: query
     })
   }
+  export function updateQrztm(query) {
+    return request({
+      url: '/rcswWjcf/updateQrztm',
+      method: 'post',
+      
+      data: query
+    })
+  }
  
   
 //矫正教育鉴定审核_列表查询

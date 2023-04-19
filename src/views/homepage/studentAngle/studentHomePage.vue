@@ -397,30 +397,15 @@
           </div>
         </div>
         <div class="item stuInfoClick">
-          <div style="display: flex">
-            <div class="medalImage">
-              <img src="~@/assets/images/medal.png" alt="" />
-            </div>
-            <div class="content">
-              <div class="title1">
-                <span class="stuinfoTitle">待补充</span>
-              </div>
-              <div class="title2">
-                <span class="baseInfo">待补充</span>
-              </div>
-            </div>
+          <div class="medalImage">
+            <img src="~@/assets/images/medal.png" alt="" />
           </div>
-          <div style="display: flex">
-            <div class="medalImage">
-              <img src="~@/assets/images/medal.png" alt="" />
+          <div class="content">
+            <div class="title1">
+              <span class="stuinfoTitle">待补充</span>
             </div>
-            <div class="content">
-              <div class="title1">
-                <span class="stuinfoTitle">待补充</span>
-              </div>
-              <div class="title2">
-                <span class="baseInfo">待补充</span>
-              </div>
+            <div class="title2">
+              <span class="baseInfo">待补充</span>
             </div>
           </div>
         </div>

@@ -23,7 +23,7 @@
       </div>
       <div class="mt15">
         <el-table
-          :data="tableDate"
+          :data="tableData"
           ref="multipleTable"
           style="width: 100%"
           @selection-change="handleSelectionChange"
@@ -47,14 +47,20 @@
             :show-overflow-tooltip="true"
           >
           </el-table-column>
-          <el-table-column prop="cfqxStart" label="指派岗位"> </el-table-column>
-          <el-table-column prop="cfqxEnd" label="已修/应修时长">
+          <el-table-column prop="lx" label="处分类型"> </el-table-column>
+          <el-table-column prop="gwMainMc" label="指派岗位"> </el-table-column>
+          <el-table-column prop="xsed" label="已修/应修学时">
+            <template slot-scope="scope">
+              <div>{{ scope.row.xsed }}/{{ scope.row.xs }}</div>
+            </template>
           </el-table-column>
-          <el-table-column prop="jzjyztmc" label="已读/应谈话次数">
+          <el-table-column prop="thcsed" label="已谈/应谈次数">
+            <template slot-scope="scope">
+              <div>{{ scope.row.thcsed }}/{{ scope.row.thcs }}</div>
+            </template>
           </el-table-column>
-
-          <el-table-column prop="cfztmmc" label="最早可结束时间" />
-          <el-table-column prop="zt" label="状态"> </el-table-column>
+          <el-table-column prop="zzkjssj" label="最早可结束时间" />
+          <el-table-column prop="jzjyzt" label="状态"> </el-table-column>
 
           <el-table-column
             fixed="right"
@@ -90,10 +96,7 @@
   </div>
 </template>
 <script>
-import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
-import { queryKnssqxsjbxx } from "@/api/familyDifficulties/stu";
-import { wjcfDetail } from "@/api/stuPunish/nichufen";
-import { queryJdList } from "@/api/stuPunish/stu";
+import { queryXSList } from "@/api/stuPunish/stu";
 export default {
   data() {
     return {
@@ -104,7 +107,7 @@ export default {
       detailModal: false,
       delModal: false,
 
-      tableDate: [],
+      tableData: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -136,7 +139,14 @@ export default {
   },
 
   methods: {
-    showDetail(row) {},
+    showDetail(row) {
+      this.$router.push({
+        path: "/jzjyDetail",
+        query: {
+          bodyData: row,
+        },
+      });
+    },
     showJD(row) {
       this.$router.push({
         path: "/stuPunishdetail",
@@ -155,8 +165,8 @@ export default {
     },
 
     query() {
-      queryJdList(this.queryParams).then((res) => {
-        this.tableDate = res.data;
+      queryXSList(this.queryParams).then((res) => {
+        this.tableData = res.data;
       });
     },
   },

@@ -275,6 +275,7 @@
           <el-form-item label="菜单编号" prop="modId" :rules="rules.common">
             <el-input
               v-model="formEdit.modId"
+              disabled
               placeholder="教师端一级标题编号示例01、02，二级示例0101、0102"
             />
           </el-form-item>

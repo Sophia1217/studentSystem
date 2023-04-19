@@ -54,4 +54,14 @@ export function updateJzztm(query) {
       data: query
     })
   }
+//矫正教育_录入_学生端列表
+export function queryXSList(query) {
+  return request({
+    url: '/rcswJzjy/queryXSList',
+    method: 'get',
+    params: query
+  })
+}
+
+
  

@@ -1327,6 +1327,34 @@ export const stuRoutes = [
   "childrenId":null,
   "auth":"1"
  },
+  {
+    "id": 0,
+    "modId": "5133",
+    "name": "jzjyDetail",
+    "path": "/jzjyDetail",
+    "title": "矫正教育详情",
+    "component": "stuPunish/stu/jzjyDetail",
+    "icon": "",
+    "modPid": "-1",
+    "isChild": "2",
+    "sortId": 33,
+    "modStatus": "1",
+    "hidden": true,
+    "alwaysShow": true,
+    "rem": "",
+    "roleIds": null,
+    "isChecked": null,
+    "vueChecked": false,
+    "meta": {
+      "icon": "",
+      "title": "矫正教育详情"
+    },
+    "children": [
+
+    ],
+    "childrenId": null,
+    "auth": "1"
+  },
     ];
 
 // 动态路由，基于用户权限动态去加载

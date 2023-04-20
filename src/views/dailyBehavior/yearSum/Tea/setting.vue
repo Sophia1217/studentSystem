@@ -1,4 +1,4 @@
- <template>
+<template>
   <div class="basicInfo">
     <div class="tableWrap">
       <div class="headerTop">
@@ -294,7 +294,9 @@ export default {
         sqKg: "",
         sqkfsj: "",
         bksfile: [],
+        bksfiletest: [],
         yjsfile: [],
+        yjsfiletest: {},
         bkfjId: "",
         yjsfjId: "",
         bkfileInfo: "",
@@ -426,7 +428,7 @@ export default {
         return;
       } else {
         let formData = new FormData();
-
+        // console.log("queidngSave", this.form);
         formData.append("xn", this.form.dqxn);
         formData.append("sqKg", this.form.sqKg);
         formData.append(
@@ -440,7 +442,6 @@ export default {
 
         if (this.flag == 1) {
           this.form.fileList = [...this.form.bksfile, ...this.form.yjsfile];
-
           if (this.form.fileList && this.form.fileList.length > 0) {
             this.form.fileList.map((file) => {
               formData.append("files", file.raw);
@@ -454,8 +455,8 @@ export default {
           //     formData.append("files", item);
           //   });
           // }
-          formData.append("files", this.form.bksfile);
-          formData.append("files", this.form.yjsfile);
+          formData.append("files", this.form.bksfiletest);
+          formData.append("files", this.form.yjsfiletest);
         }
         //console.log("this.form.fileList", this.form.fileList);
 
@@ -535,7 +536,7 @@ export default {
         this.form.yjsfjId = res.data[0].yjsfjId;
         this.form.bkfjId = res.data[0].bkfjId;
       }
-      querywj({ businesId: value + "bk" }).then((res) => {
+      await querywj({ businesId: value + "bk" }).then((res) => {
         this.form.bksfile = res.data;
         if (this.form.bksfile && this.form.bksfile.length > 0) {
           this.form.bksfile = this.form.bksfile.map((ele) => {
@@ -546,7 +547,7 @@ export default {
           });
         }
       });
-      querywj({ businesId: value + "yjs" }).then((res) => {
+      await querywj({ businesId: value + "yjs" }).then((res) => {
         this.form.yjsfile = res.data;
         if (this.form.yjsfile && this.form.yjsfile.length > 0) {
           this.form.yjsfile = this.form.yjsfile.map((ele) => {
@@ -559,9 +560,8 @@ export default {
       });
       if (this.form.bksfile && this.form.bksfile.length > 0) {
         Exportwj({ id: this.form.bkfjId.toString() }).then((res) => {
-          console.log("res", res);
           // console.log("typeofres", typeof res);
-          this.form.bksfile = new File([res], this.form.bksfile[0].name, {
+          this.form.bksfiletest = new File([res], this.form.bksfile[0].name, {
             type: "application/pdf",
             lastModified: Date.now(),
           });
@@ -571,7 +571,7 @@ export default {
       if (this.form.yjsfile && this.form.yjsfile.length > 0) {
         Exportwj({ id: this.form.yjsfjId.toString() }).then((res) => {
           //this.url = window.URL.createObjectURL(res);
-          this.form.yjsfile = new File([res], this.form.yjsfile[0].name, {
+          this.form.yjsfiletest = new File([res], this.form.yjsfile[0].name, {
             type: "application/pdf",
             lastModified: Date.now(),
           });
@@ -791,4 +791,3 @@ export default {
   }
 }
 </style>
-

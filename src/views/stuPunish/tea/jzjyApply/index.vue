@@ -50,7 +50,12 @@
             :show-overflow-tooltip="true"
           >
           </el-table-column>
-          <el-table-column prop="gwGzdd" label="工作地点" sortable="custom"  :show-overflow-tooltip="true">
+          <el-table-column
+            prop="gwGzdd"
+            label="工作地点"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
           </el-table-column>
           <el-table-column prop="gwYrbmc" label="用人部门" sortable="custom">
           </el-table-column>
@@ -58,7 +63,12 @@
           </el-table-column>
           <el-table-column prop="gwZdls" label="指导教师" sortable="custom">
           </el-table-column>
-          <el-table-column prop="gwLxfs" label="联系电话" sortable="custom"  :show-overflow-tooltip="true">
+          <el-table-column
+            prop="gwLxfs"
+            label="联系电话"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
           </el-table-column>
           <el-table-column
             fixed="right"
@@ -427,6 +437,7 @@
 </template>
 <script>
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+import { getXmXgh } from "@/api/assistantWork/homeSchool";
 import {
   queryList,
   delList,
@@ -436,7 +447,6 @@ import {
   save,
 } from "@/api/jzjyGwsq/index";
 import { queryZgJbxxDwh } from "@/api/dailyBehavior/thriftbumen";
-import { getXmXgh } from "@/api/assistantWork/talk";
 export default {
   watch: {
     detailModal: function (newV) {
@@ -522,12 +532,12 @@ export default {
         var result = [];
         var resultNew = [];
         getXmXgh(XmXgh).then((res) => {
-          result = res.data.stuList;
+          result = res && res.data;
           resultNew = result.map((ele) => {
             return {
-              value: `${ele.mc}(${ele.dm})`,
-              label: ele.dm,
-              xm: ele.mc,
+              value: `${ele.xm}(${ele.gh})`,
+              label: ele.gh,
+              xm: ele.xm,
             };
           });
           resultNew.forEach((item) => {
@@ -580,7 +590,8 @@ export default {
       });
     },
     showDetail(row) {
-      this.detailForm = row;
+      //深克隆，浅克隆会影响当前row的数据
+      this.detailForm = JSON.parse(JSON.stringify(row));
       this.detailModal = true;
     },
     showDel() {

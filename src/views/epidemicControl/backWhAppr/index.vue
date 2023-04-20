@@ -125,7 +125,6 @@
           ref="multipleTable"
           style="width: 100%"
           @selection-change="handleSelectionChange"
-          :default-sort="{ prop: 'date', order: 'descending' }"
           @sort-change="changeTableSort"
         >
           <el-table-column type="selection" width="55"></el-table-column>

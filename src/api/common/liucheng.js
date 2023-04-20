@@ -1,3 +1,11 @@
+/*
+ * @Author: qingtian
+ * @Date: 2023-02-09 09:47:36
+ * @LastEditTime: 2023-04-20 10:11:37
+ * @LastEditors: ***
+ * @Description:
+ * @FilePath: \studentsystem\src\api\common\liucheng.js
+ */
 import request from "@/utils/request";
 
 // 根据流程实例号查询流程日志
@@ -40,5 +48,13 @@ export function lctjHeader(query) {
     url: "/flowable/getFlowNodeName",
     method: "post",
     data: query,
+  });
+}
+
+export function getMkIdAndMkList(query) {
+  return request({
+    url: "/flowable/getMkIdAndMkList",
+    method: "get",
+    params: query,
   });
 }

@@ -50,7 +50,7 @@
             :show-overflow-tooltip="true"
           >
           </el-table-column>
-          <el-table-column prop="gwGzdd" label="工作地点" sortable="custom">
+          <el-table-column prop="gwGzdd" label="工作地点" sortable="custom"  :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="gwYrbmc" label="用人部门" sortable="custom">
           </el-table-column>
@@ -58,7 +58,7 @@
           </el-table-column>
           <el-table-column prop="gwZdls" label="指导教师" sortable="custom">
           </el-table-column>
-          <el-table-column prop="gwLxfs" label="联系电话" sortable="custom">
+          <el-table-column prop="gwLxfs" label="联系电话" sortable="custom"  :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column
             fixed="right"
@@ -131,6 +131,8 @@
                 :rules="rules.common"
               >
                 <el-input
+                  maxlength="50"
+                  show-word-limit
                   v-model="addForm.gwMainMc"
                   placeholder="请输入内容"
                 ></el-input>
@@ -166,12 +168,14 @@
                 prop="gwKjnrs"
                 :rules="rules.common"
               >
-                <el-input-number
-                  :controls="false"
-                  :min="0"
+                <el-input
+                  type="number"
+                  oninput="if(value.length > 5) value = value.slice(0,10)"
+                  maxlength="5"
+                  show-word-limit
                   v-model="addForm.gwKjnrs"
                   placeholder="请输入内容"
-                ></el-input-number>
+                ></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -183,6 +187,8 @@
                 :rules="rules.common"
               >
                 <el-input
+                  maxlength="100"
+                  show-word-limit
                   v-model="addForm.gwGzdd"
                   placeholder="请输入内容"
                 ></el-input>
@@ -214,6 +220,8 @@
               >
                 <el-input
                   type="number"
+                  oninput="if(value.length > 5) value = value.slice(0,50)"
+                  show-word-limit
                   v-model="addForm.gwLxfs"
                   placeholder="请输入内容"
                 ></el-input>
@@ -230,6 +238,8 @@
                 <el-input
                   type="textarea"
                   :rows="5"
+                  maxlength="500"
+                  show-word-limit
                   v-model="addForm.gwGznr"
                   placeholder="请输入内容"
                 ></el-input>
@@ -267,6 +277,8 @@
                 :rules="rules.common"
               >
                 <el-input
+                  maxlength="50"
+                  show-word-limit
                   v-if="bjzt == '2'"
                   v-model="detailForm.gwMainMc"
                   placeholder="请输入内容"
@@ -309,13 +321,13 @@
                 prop="gwKjnrs"
                 :rules="rules.common"
               >
-                <el-input-number
+                <el-input
                   v-if="bjzt == '2'"
-                  :controls="false"
-                  :min="0"
+                  oninput="if(value.length > 5) value = value.slice(0,10)"
+                  type="number"
                   v-model="detailForm.gwKjnrs"
                   placeholder="请输入内容"
-                ></el-input-number>
+                ></el-input>
                 <span v-else>{{ detailForm.gwKjnrs }}</span>
               </el-form-item>
             </el-col>
@@ -328,6 +340,7 @@
                 :rules="rules.common"
               >
                 <el-input
+                  maxlength="100"
                   v-if="bjzt == '2'"
                   v-model="detailForm.gwGzdd"
                   placeholder="请输入内容"
@@ -364,6 +377,7 @@
                 <el-input
                   v-if="bjzt == '2'"
                   type="number"
+                  oninput="if(value.length > 5) value = value.slice(0,50)"
                   v-model="detailForm.gwLxfs"
                   placeholder="请输入内容"
                 ></el-input>
@@ -380,6 +394,8 @@
               >
                 <el-input
                   v-if="bjzt == '2'"
+                  maxlength="500"
+                  show-word-limit
                   type="textarea"
                   :rows="5"
                   v-model="detailForm.gwGznr"
@@ -434,7 +450,7 @@ export default {
       bjzt: "1",
       addForm: {
         gwGzdd: "", //工作地点
-        gwGznr: undefined, //工作内容
+        gwGznr: "", //工作内容
         gwKjnrs: "", //可接纳人数
         gwLxfs: "", //联系方式
         gwMainMc: "", //岗位名称

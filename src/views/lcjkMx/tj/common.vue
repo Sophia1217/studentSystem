@@ -27,9 +27,9 @@
           <span class="title">审核统计表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <div class="btns borderOrange" @click="handleExport">
+          <!-- <div class="btns borderOrange" @click="handleExport">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="mt15">
@@ -70,7 +70,7 @@
 
 <script>
 import { talkTable, expTalk } from "@/api/assistantWork/talk";
-import { lctjTable, lctjHeader } from "@/api/common/liucheng";
+import { lctjTable, lctjHeader, getMkIdAndMkList } from "@/api/common/liucheng";
 export default {
   data() {
     return {
@@ -78,19 +78,19 @@ export default {
       moreIform: {
         mk: "",
         mkArr: [
-          { dm: "efea295e-dcbb-11ed-850b-52549e666099", mc: "乘车优惠" },
-          { dm: "efea2c1a-dcbb-11ed-850b-52549e666099", mc: "日常请假" },
-          {
-            dm: "efea2c84-dcbb-11ed-850b-52549e666099",
-            mc: "学籍异动_保留学籍",
-          },
-          { dm: "efea2cd8-dcbb-11ed-850b-52549e666099", mc: "学籍异动_复学" },
-          { dm: "efea2d2e-dcbb-11ed-850b-52549e666099", mc: "学籍异动_退学" },
-          { dm: "efea2d76-dcbb-11ed-850b-52549e666099", mc: "学籍异动_休学" },
-          { dm: "efea2dc7-dcbb-11ed-850b-52549e666099", mc: "证件补办" },
-          { dm: "efea2e19-dcbb-11ed-850b-52549e666099", mc: "日常销假" },
-          { dm: "efea2e5d-dcbb-11ed-850b-52549e666099", mc: "住宿申请" },
-          { dm: "efea2ea8-dcbb-11ed-850b-52549e666099 ", mc: "临时困难" },
+          // { dm: "efea295e-dcbb-11ed-850b-52549e666099", mc: "乘车优惠" },
+          // { dm: "efea2c1a-dcbb-11ed-850b-52549e666099", mc: "日常请假" },
+          // {
+          //   dm: "efea2c84-dcbb-11ed-850b-52549e666099",
+          //   mc: "学籍异动_保留学籍",
+          // },
+          // { dm: "efea2cd8-dcbb-11ed-850b-52549e666099", mc: "学籍异动_复学" },
+          // { dm: "efea2d2e-dcbb-11ed-850b-52549e666099", mc: "学籍异动_退学" },
+          // { dm: "efea2d76-dcbb-11ed-850b-52549e666099", mc: "学籍异动_休学" },
+          // { dm: "efea2dc7-dcbb-11ed-850b-52549e666099", mc: "证件补办" },
+          // { dm: "efea2e19-dcbb-11ed-850b-52549e666099", mc: "日常销假" },
+          // { dm: "efea2e5d-dcbb-11ed-850b-52549e666099", mc: "住宿申请" },
+          // { dm: "efea2ea8-dcbb-11ed-850b-52549e666099 ", mc: "临时困难" },
           // dm:"efea2f84-dcbb-11ed-850b-52549e666099" ,mc:"学年小结",
           // dm:"efea311a-dcbb-11ed-850b-52549e666099", mc:"家庭经济困难",
           // dm:"efea3195-dcbb-11ed-850b-52549e666099" ,mc:"勤工助学_岗位设置",
@@ -129,19 +129,19 @@ export default {
       testDate: [],
       isMore: false,
       MKLIST: [
-        { dm: "efea295e-dcbb-11ed-850b-52549e666099", mc: "乘车优惠" },
-        { dm: "efea2c1a-dcbb-11ed-850b-52549e666099", mc: "日常请假" },
-        {
-          dm: "efea2c84-dcbb-11ed-850b-52549e666099",
-          mc: "学籍异动_保留学籍",
-        },
-        { dm: "efea2cd8-dcbb-11ed-850b-52549e666099", mc: "学籍异动_复学" },
-        { dm: "efea2d2e-dcbb-11ed-850b-52549e666099", mc: "学籍异动_退学" },
-        { dm: "efea2d76-dcbb-11ed-850b-52549e666099", mc: "学籍异动_休学" },
-        { dm: "efea2dc7-dcbb-11ed-850b-52549e666099", mc: "证件补办" },
-        { dm: "efea2e19-dcbb-11ed-850b-52549e666099", mc: "日常销假" },
-        { dm: "efea2e5d-dcbb-11ed-850b-52549e666099", mc: "住宿申请" },
-        { dm: "efea2ea8-dcbb-11ed-850b-52549e666099", mc: "临时困难" },
+        // { dm: "efea295e-dcbb-11ed-850b-52549e666099", mc: "乘车优惠" },
+        // { dm: "efea2c1a-dcbb-11ed-850b-52549e666099", mc: "日常请假" },
+        // {
+        //   dm: "efea2c84-dcbb-11ed-850b-52549e666099",
+        //   mc: "学籍异动_保留学籍",
+        // },
+        // { dm: "efea2cd8-dcbb-11ed-850b-52549e666099", mc: "学籍异动_复学" },
+        // { dm: "efea2d2e-dcbb-11ed-850b-52549e666099", mc: "学籍异动_退学" },
+        // { dm: "efea2d76-dcbb-11ed-850b-52549e666099", mc: "学籍异动_休学" },
+        // { dm: "efea2dc7-dcbb-11ed-850b-52549e666099", mc: "证件补办" },
+        // { dm: "efea2e19-dcbb-11ed-850b-52549e666099", mc: "日常销假" },
+        // { dm: "efea2e5d-dcbb-11ed-850b-52549e666099", mc: "住宿申请" },
+        // { dm: "efea2ea8-dcbb-11ed-850b-52549e666099", mc: "临时困难" },
       ], //模块
       showExport: false,
       queryParams: {
@@ -151,8 +151,16 @@ export default {
       },
     };
   },
-  mounted() {},
+  mounted() {
+    this.getList();
+  },
   methods: {
+    getList() {
+      getMkIdAndMkList().then((res) => {
+        this.MKLIST = res.data;
+        console.log("res", res);
+      });
+    },
     mkchange(value) {
       lctjHeader(value).then((res) => {
         var categoryProp = res.data;

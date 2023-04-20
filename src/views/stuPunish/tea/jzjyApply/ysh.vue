@@ -12,6 +12,8 @@
             v-model="select"
             @change="changeSelect"
             class="elSelect"
+
+            
             slot="prepend"
             placeholder="请选择查询条件"
           >
@@ -116,6 +118,7 @@
           style="width: 100%"
           @selection-change="handleSelectionChange"
           @sort-change="changeTableSort"
+          
         >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
@@ -136,7 +139,7 @@
             :show-overflow-tooltip="true"
           >
           </el-table-column>
-          <el-table-column prop="gwGzdd" label="工作地点" sortable="custom">
+          <el-table-column prop="gwGzdd" label="工作地点" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="gwYrbmc" label="用人部门" sortable="custom">
           </el-table-column>
@@ -144,7 +147,7 @@
           </el-table-column>
           <el-table-column prop="gwZdls" label="指导教师" sortable="custom">
           </el-table-column>
-          <el-table-column prop="gwLxfs" label="联系电话" sortable="custom">
+          <el-table-column prop="gwLxfs" label="联系电话" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column prop="statusMc" label="审核状态" sortable="custom">
           </el-table-column>

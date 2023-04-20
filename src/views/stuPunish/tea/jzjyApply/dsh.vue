@@ -127,7 +127,12 @@
             :show-overflow-tooltip="true"
           >
           </el-table-column>
-          <el-table-column prop="gwGzdd" label="工作地点" sortable="custom">
+          <el-table-column
+            prop="gwGzdd"
+            label="工作地点"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          >
           </el-table-column>
           <el-table-column prop="gwYrbmc" label="用人部门" sortable="custom">
           </el-table-column>
@@ -135,7 +140,7 @@
           </el-table-column>
           <el-table-column prop="gwZdls" label="指导教师" sortable="custom">
           </el-table-column>
-          <el-table-column prop="gwLxfs" label="联系电话" sortable="custom">
+          <el-table-column prop="gwLxfs" label="联系电话" sortable="custom" :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">

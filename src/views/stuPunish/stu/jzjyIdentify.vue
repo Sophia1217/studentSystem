@@ -144,18 +144,18 @@
             </el-row>
             <el-row :gutter="20">
               <el-col :span="8">
-                <el-form-item label="时长" prop="xs">
-                  {{ formEdit.xs }}
+                <el-form-item label="学时" prop="xs">
+                  {{ basicInfo.xs }}
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="谈话总次数" prop="thcs">
-                  {{ formEdit.thcs }}次
+                  {{ basicInfo.thcs }}次
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="最早可结束时间" prop="zzkjssj">
-                  {{ formEdit.zzkjssj }}
+                  {{ basicInfo.zzkjssj }}
                 </el-form-item>
               </el-col>
             </el-row>
@@ -167,12 +167,12 @@
         <div>打卡记录</div>
       </div>
       <div class="tableStyle">
-        已完成：{{ detailInfoData.nj }}学时 应完成：{{ detailInfoData.nj }}学时
+        已完成：{{ basicInfo.xsed }}学时 应完成：{{ basicInfo.xs }}学时
       </div>
       <!-- 谈话记录 -->
       <div class="headline">谈话记录</div>
       <div class="tableStyle">
-        已完成：{{ detailInfoData.nj }}次 应完成：{{ detailInfoData.nj }}次
+        已完成：{{ basicInfo.thcsed }}次 应完成：{{ basicInfo.thcs }}次
       </div>
       <div class="headline">文本总结</div>
       <div class="tableStyle">
@@ -214,7 +214,7 @@ export default {
       isEdit: 2,
 
       xh: this.$store.getters.userId,
-
+      basicInfo: {},
       detailInfoData: {},
 
       tableData: {},
@@ -224,6 +224,8 @@ export default {
   created() {},
   mounted() {
     this.getDetail();
+    this.basicInfo = this.$route.query.bodyData;
+    this.formEdit = this.detailInfoData.gwInfo;
   },
   methods: {
     getCode(data) {
@@ -256,13 +258,36 @@ export default {
       this.isEdit = 2;
     },
     handlUpdata() {
-      saveGw(this.formEdit)
-        .then((res) => {
-          this.$message.success("保存成功");
-          this.getDetail();
-          this.isEdit = 2;
-        })
-        .catch((err) => {});
+      if (!this.formEdit.wbzj) {
+        this.$message.error("文本总结不能为空！");
+      } else {
+        let data = {
+          gwGzdd: this.formEdit.gwGzdd,
+          gwGznr: this.formEdit.gwGznr,
+          gwLxfs: this.formEdit.gwLxfs,
+          gwMainMc: this.formEdit.gwMainMc,
+          gwType: this.formEdit.gwType,
+          gwTypeMc: this.formEdit.gwTypeMc,
+          gwYrbm: this.formEdit.gwYrbm,
+          gwYrbmc: this.formEdit.gwYrbmc,
+          gwZdls: this.formEdit.gwZdls,
+          id: this.basicInfo.id,
+          jzjygwId: this.formEdit.id,
+          thcs: this.basicInfo.thcs,
+          wbzj: this.formEdit.wbzj,
+          xh: this.basicInfo.xh,
+          xm: this.basicInfo.xm,
+          xs: this.basicInfo.xs,
+          zzkjssj: this.basicInfo.zzkjssj,
+        };
+        saveGw(data)
+          .then((res) => {
+            this.$message.success("保存成功");
+            this.getDetail();
+            this.isEdit = 2;
+          })
+          .catch((err) => {});
+      }
     },
   },
 };

@@ -189,7 +189,7 @@
         title="指派"
         :visible.sync="editModal"
         @close="editCance"
-        width="50%"
+        width="80%"
         :close-on-click-modal="false"
       >
         <template>
@@ -282,7 +282,7 @@
                         v-for="(item, index) in gwList"
                         :key="index"
                         :label="item.gwMainMc"
-                        :value="item"
+                        :value="item.id"
                       ></el-option>
                     </el-select>
                   </el-form-item>
@@ -659,7 +659,7 @@ export default {
         return;
       } else {
         let data = {
-          gwid: this.formEdit.gwList.id,
+          gwid: this.formEdit.gwList,
           id: this.multipleSelection[0].id,
           xs: this.formEdit.xs,
           zzkjssj: this.formEdit.zzkjssj,
@@ -691,14 +691,17 @@ export default {
       }
     },
     setOther(val) {
-      console.log(val);
-      this.$set(this.formEdit, "gwTypeMc", val.gwTypeMc);
-      this.$set(this.formEdit, "gwYrbmc", val.gwYrbmc);
-      this.$set(this.formEdit, "gwKjnrs", val.gwKjnrs);
-      this.$set(this.formEdit, "gwGzdd", val.gwGzdd);
-      this.$set(this.formEdit, "gwZdls", val.gwZdls);
-      this.$set(this.formEdit, "gwLxfs", val.gwLxfs);
-      this.$set(this.formEdit, "gwGznr", val.gwGznr);
+      for (let item of this.gwList) {
+        if (val == item.id) {
+          this.$set(this.formEdit, "gwTypeMc", item.gwTypeMc);
+          this.$set(this.formEdit, "gwYrbmc", item.gwYrbmc);
+          this.$set(this.formEdit, "gwKjnrs", item.gwKjnrs);
+          this.$set(this.formEdit, "gwGzdd", item.gwGzdd);
+          this.$set(this.formEdit, "gwZdls", item.gwZdls);
+          this.$set(this.formEdit, "gwLxfs", item.gwLxfs);
+          this.$set(this.formEdit, "gwGznr", item.gwGznr);
+        }
+      }
     },
     checkFormEdit() {
       // 1.校验必填项

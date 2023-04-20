@@ -150,6 +150,9 @@ export default {
     showJD(row) {
       this.$router.push({
         path: "/stuPunishdetail",
+        query: {
+          bodyData: row,
+        },
       });
     },
     changeTableSort(column) {

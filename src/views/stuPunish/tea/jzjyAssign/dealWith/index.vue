@@ -509,6 +509,7 @@ export default {
       });
       for (let val of this.gwList) {
         if (row.gwid == val.id) {
+          this.$set(this.formEdit, "gwMainMc", val.gwMainMc);
           this.$set(this.formEdit, "gwTypeMc", val.gwTypeMc);
           this.$set(this.formEdit, "gwYrbmc", val.gwYrbmc);
           this.$set(this.formEdit, "gwKjnrs", val.gwKjnrs);

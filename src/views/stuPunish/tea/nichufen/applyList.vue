@@ -594,6 +594,7 @@ import { queryXnXq } from "@/api/dailyBehavior/vocationTea";
 import { getCollege, getGrade } from "@/api/class/maintenanceClass";
 import { getZY, getBJ } from "@/api/student/index";
 import { queryKnssqxsjbxx } from "@/api/familyDifficulties/stu";
+import { delwj } from "@/api/assistantWork/classEvent";
 import { queryStuList } from "@/api/familyDifficulties/difficultTea";
 import {
   insertWjcfsq,
@@ -841,7 +842,7 @@ export default {
       this.chehuiModal = false;
     },
     ch() {
-      cxById({ids: this.delArr}).then((res) => {
+      cxById({ ids: this.delArr }).then((res) => {
         this.$message.success("撤回成功");
         this.query();
         this.chehuiModal = false;
@@ -921,7 +922,14 @@ export default {
     },
 
     xinzeng() {
-      this.formAdd = {};
+      this.formAdd = {
+        xh: "",
+        wjssmsFdy: "",
+        cfyjtkFdy: "",
+        jycfdjm: "",
+        dwjyFdy: "",
+        fileList: [],
+      };
       this.fileList = [];
       this.addModal = true;
     },

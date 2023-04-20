@@ -149,8 +149,18 @@
             label="序号"
             width="50"
           ></el-table-column>
-          <el-table-column prop="xh" label="学号" width="100px" sortable="custom" />
-          <el-table-column prop="xm" label="姓名" width="100px" sortable="custom">
+          <el-table-column
+            prop="xh"
+            label="学号"
+            width="100px"
+            sortable="custom"
+          />
+          <el-table-column
+            prop="xm"
+            label="姓名"
+            width="100px"
+            sortable="custom"
+          >
           </el-table-column>
           <el-table-column
             prop="ssdwdmmc"
@@ -760,11 +770,16 @@ export default {
     },
     //处分期限赋值
     insertDate() {
-      for (let i = 0; i < this.tableData.length; i++) {
-        this.tableData[i].datePickerEdit = [];
-        this.tableData[i].datePickerEdit[0] = this.tableData[i].cfqxStart;
-        this.tableData[i].datePickerEdit[1] = this.tableData[i].cfqxEnd;
+      if (this.tableData.length > 0) {
+        for (let i = 0; i < this.tableData.length; i++) {
+          if (this.tableData[i].cfqxEnd !== null) {
+            this.tableData[i].datePickerEdit = [];
+            this.tableData[i].datePickerEdit[0] = this.tableData[i].cfqxStart;
+            this.tableData[i].datePickerEdit[1] = this.tableData[i].cfqxEnd;
+          }
+        }
       }
+
       // console.log("row", this.tableData);
     },
     // 点击更多

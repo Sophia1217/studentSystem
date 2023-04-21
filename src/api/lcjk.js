@@ -1,7 +1,7 @@
 /*
  * @Author: qingtian
  * @Date: 2023-04-04 15:14:14
- * @LastEditTime: 2023-04-18 16:13:57
+ * @LastEditTime: 2023-04-21 14:04:22
  * @LastEditors: ***
  * @Description:
  * @FilePath: \studentsystem\src\api\lcjk.js
@@ -210,6 +210,24 @@ export function zjbbList(query) {
 export function zjbbEXP(query) {
   return request({
     url: "/zjbbFlow/excelExportQueryJKLB",
+    method: "post",
+    data: query,
+    responseType: "blob",
+  });
+}
+
+export function lsknList(query) {
+  return request({
+    url: "/rcswLskn/queryJKLB",
+    method: "post",
+    data: query,
+  });
+}
+
+//临时困难
+export function lsknEXP(query) {
+  return request({
+    url: "rcswLskn/excelExportQueryJKLB",
     method: "post",
     data: query,
     responseType: "blob",

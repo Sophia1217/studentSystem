@@ -156,7 +156,8 @@ export default {
   },
   methods: {
     getList() {
-      getMkIdAndMkList().then((res) => {
+      // 1:日常事务，2：评奖评优，3：奖助申请
+      getMkIdAndMkList("1").then((res) => {
         this.MKLIST = res.data;
         console.log("res", res);
       });

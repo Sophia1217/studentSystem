@@ -214,7 +214,7 @@
                 :rules="rules.common"
               >
                 <el-input
-                  maxlength="50"
+                  maxlength="5"
                   v-model="scope.row.dkXs"
                   placeholder="请输入"
                 ></el-input
@@ -446,43 +446,30 @@ export default {
         let formData = new FormData();
         formData.append("jzjyId", this.detailInfoData.id);
 
-        if (this.formEdit.tableDataDk && this.formEdit.tableDataDk.length > 0) {
-          for (let i = 0; i < this.formEdit.tableDataDk.length; i++) {
-            var dkdata = this.formEdit.tableDataDk[i];
-            formData.append("dkList[" + i + "].dkNr", dkdata.dkNr);
-            formData.append("dkList[" + i + "].dkRq", dkdata.dkRq);
-            formData.append("dkList[" + i + "].dkSj", dkdata.dkSj);
-            formData.append("dkList[" + i + "].dkXs", dkdata.dkXs);
-          }
-        } else {
-          console.log(11111);
-          formData.append("dkList[0].dkNr", "");
-          formData.append("dkList[0].dkRq", "");
-          formData.append("dkList[0].dkSj", "");
-          formData.append("dkList[0]dkXs", "");
+        for (let i = 0; i < this.formEdit.tableDataDk.length; i++) {
+          var dkdata = this.formEdit.tableDataDk[i];
+          formData.append("dkList[" + i + "].dkNr", dkdata.dkNr);
+          formData.append("dkList[" + i + "].dkRq", dkdata.dkRq);
+          formData.append("dkList[" + i + "].dkSj", dkdata.dkSj);
+          formData.append("dkList[" + i + "].dkXs", dkdata.dkXs);
         }
-        if (this.formEdit.tableDataTh && this.formEdit.tableDataTh.length > 0) {
-          for (let j = 0; j < this.formEdit.tableDataTh.length; j++) {
-            var thdata = this.formEdit.tableDataTh[j];
-            formData.append("thList[" + j + "].thNr", thdata.thNr);
-            formData.append("thList[" + j + "].thRq", thdata.thRq);
-            if (
-              this.formEdit.tableDataTh[j].fileTh &&
-              this.formEdit.tableDataTh[j].fileTh.length > 0
-            ) {
-              this.formEdit.tableDataTh[j].fileTh.map((ele) => {
-                formData.append("thList[" + j + "].file", ele.raw);
-              });
-            }
+        for (let j = 0; j < this.formEdit.tableDataTh.length; j++) {
+          var thdata = this.formEdit.tableDataTh[j];
+          formData.append("thList[" + j + "].thNr", thdata.thNr);
+          formData.append("thList[" + j + "].thRq", thdata.thRq);
+          if (
+            this.formEdit.tableDataTh[j].fileTh &&
+            this.formEdit.tableDataTh[j].fileTh.length > 0
+          ) {
+            this.formEdit.tableDataTh[j].fileTh.map((ele) => {
+              formData.append("thList[" + j + "].file", ele.raw);
+            });
           }
-        } else {
-          formData.append("thList[0].thNr", "");
-          formData.append("thList[0].thRq", "");
         }
         importDkThJl(formData).then((res) => {
           if (res.errcode == "00") {
             this.$message.success("保存成功");
-            this.getDetail();
+            this.$router.go(-1);
           } else {
             this.$message.error("保存失败");
           }

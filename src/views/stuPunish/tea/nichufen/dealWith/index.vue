@@ -493,8 +493,10 @@
     </el-dialog>
     <el-dialog title="撤回" :visible.sync="chehuiModal" width="20%">
       <template>
-        <div style="margin-bottom: 10px;"><span>{{ statusName }}理由:</span></div>
-        
+        <div style="margin-bottom: 10px">
+          <span>{{ statusName }}理由:</span>
+        </div>
+
         <el-input placeholder="请输入理由" v-model="chehuily"></el-input>
       </template>
       <span slot="footer" class="dialog-footer">
@@ -858,7 +860,6 @@ export default {
         var flag = 1;
         if (this.delArr.length > 1) {
           this.$message.error("请选择单条数据！");
-          this.handleSearch();
         } else {
           for (let index = 0; index < this.delArr.length; index++) {
             if (
@@ -897,7 +898,8 @@ export default {
         var data = {
           id: this.multipleSelection[0].id,
           message: this.chehuily,
-          mkId: "5a9f04c6-dcf6-11ed-850b-52549e666099", //违纪处分模块
+          // mkId: "5a9f04c6-dcf6-11ed-850b-52549e666099", //违纪处分模块
+          mk: "学生处分",
           processid: this.multipleSelection[0].processId,
           status: statusChe,
         };

@@ -60,7 +60,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="zzkjssj" label="最早可结束时间" />
-          <el-table-column prop="jzjyzt" label="状态"> </el-table-column>
+          <el-table-column prop="jzjyztmc" label="状态"> </el-table-column>
 
           <el-table-column
             fixed="right"

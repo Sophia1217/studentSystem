@@ -155,7 +155,11 @@
         </div>
       </div>
       <el-table :data="tableDataDk" ref="multipleTable" style="width: 100%">
-        <el-table-column type="dkRq" label="日期" min-width="100"></el-table-column>
+        <el-table-column
+          prop="dkRq"
+          label="日期"
+          min-width="100"
+        ></el-table-column>
         <el-table-column prop="dkSj" label="起止时间"> </el-table-column>
         <el-table-column prop="dkNr" label="工作内容"> </el-table-column>
         <el-table-column prop="dkXs" label="时长（小时）"> </el-table-column>
@@ -170,16 +174,22 @@
         </div>
       </div>
       <el-table :data="tableDataTh" ref="multipleTable" style="width: 100%">
-        <el-table-column type="thRq" label="日期" min-width="100"></el-table-column>
+        <el-table-column
+          prop="thRq"
+          label="日期"
+          min-width="100"
+        ></el-table-column>
         <el-table-column prop="thNr" label="谈话内容" min-width="150">
         </el-table-column>
         <el-table-column prop="fjName" label="附件" min-width="140">
           <template slot-scope="scope">
-            <div v-for="item in scope.row.file">
-              <div style="display: flex; justify-content: space-between">
-                <el-button type="text" size="small">
-                  <span>{{ item.fileName }}</span>
-                </el-button>
+            <div v-if="scope.row.file !== null">
+              <div v-for="item in [scope.row.file]">
+                <div style="display: flex; justify-content: space-between">
+                  <el-button type="text" size="small" @click="xzWj(item)">
+                    <span class="handleName">{{ item.fileName || "" }}</span>
+                  </el-button>
+                </div>
               </div>
             </div>
           </template>
@@ -206,6 +216,7 @@ import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import { saveGw } from "@/api/stuPunish/stu";
 import { queryLRDkList, queryLRThList } from "@/api/stuPunish/jzjyMaintain";
 import { queryKnssqxsjbxx } from "@/api/familyDifficulties/stu";
+import { Exportwj } from "@/api/assistantWork/classEvent";
 export default {
   data() {
     return {
@@ -223,7 +234,7 @@ export default {
   },
   created() {},
   mounted() {
-    this.xh =this.$store.getters.userId;
+    this.xh = this.$store.getters.userId;
     this.detailInfoData = this.$route.query.bodyData;
     this.formGw = this.detailInfoData.gwInfo;
     // console.log("this.detailInfoData", this.detailInfoData);
@@ -270,6 +281,13 @@ export default {
           this.isEdit = 2;
         })
         .catch((err) => {});
+    },
+    //下载附件
+    xzWj(item) {
+      Exportwj({ id: item.id.toString() }).then((res) => {
+        this.url = window.URL.createObjectURL(res);
+        this.downloadFn(res, item.fileName);
+      });
     },
   },
 };
@@ -437,6 +455,12 @@ export default {
       color: #fff;
       // background: url('~@/assets/images/icon_edit_white.png');
     }
+  }
+  .handleName {
+    font-weight: 400;
+    font-size: 14px;
+    color: #005657;
+    line-height: 28px;
   }
 }
 </style>

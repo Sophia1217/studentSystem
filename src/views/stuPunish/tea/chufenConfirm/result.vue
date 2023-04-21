@@ -221,7 +221,8 @@
                 end-placeholder="结束日期"
                 style="width: 230px"
                 :clearable="false"
-                @change="changeSJ(scope.row, 2)"
+                
+                @input="editCfqx(scope.row)"
               ></el-date-picker>
             </template>
           </el-table-column>
@@ -774,8 +775,10 @@ export default {
         for (let i = 0; i < this.tableData.length; i++) {
           if (this.tableData[i].cfqxEnd !== null) {
             this.tableData[i].datePickerEdit = [];
-            this.tableData[i].datePickerEdit[0] = this.tableData[i].cfqxStart;
-            this.tableData[i].datePickerEdit[1] = this.tableData[i].cfqxEnd;
+            this.tableData[i].datePickerEdit.push(this.tableData[i].cfqxStart);
+            this.tableData[i].datePickerEdit.push(this.tableData[i].cfqxEnd);
+            // this.tableData[i].datePickerEdit[0] = this.tableData[i].cfqxStart ||"";
+            // this.tableData[i].datePickerEdit[1] = this.tableData[i].cfqxEnd ||"";
           }
         }
       }
@@ -841,6 +844,9 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
     },
+    editCfqx(row){
+      this.changeSJ(row,2);
+    },
     changeSJ(row, flag) {
       if (flag == 1) {
         var data = {
@@ -861,6 +867,9 @@ export default {
       }
       updateCfjg(data).then((res) => {
         this.$message.success("修改成功");
+        this.handleSearch();
+      })
+      .catch((err) => {
         this.handleSearch();
       });
     },

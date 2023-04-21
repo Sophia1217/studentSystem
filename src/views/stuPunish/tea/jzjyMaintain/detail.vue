@@ -213,11 +213,13 @@
                 :prop="'tableDataDk.' + scope.$index + '.dkXs'"
                 :rules="rules.common"
               >
-                <el-input
-                  maxlength="5"
+                <el-input-number
+                  :min="0"
+                  :max="9999"
+                  controls-position="right"
                   v-model="scope.row.dkXs"
                   placeholder="请输入"
-                ></el-input
+                ></el-input-number
               ></el-form-item>
             </template>
           </el-table-column>
@@ -402,22 +404,16 @@ export default {
           let res2 = await Exportwj({
             id: this.formEdit.tableDataTh[j].file.id.toString(),
           });
-          //判断res.error为新的接口返回
-          if (res.errcode == "00") {
-            data = new File(
-              [res2],
-              this.formEdit.tableDataTh[j].file.fileName,
-              {
-                type: "application/png",
-                lastModified: Date.now(),
-              }
-            );
-            //最多传一个文件时可这样写，否则要循环
-            this.$set(this.formEdit.tableDataTh[j].fileTh[0], "raw", data);
-            // console.log("th", this.formEdit.tableDataTh[j]);
-          }
+          data = new File([res2], this.formEdit.tableDataTh[j].file.fileName, {
+            type: "application/png",
+            lastModified: Date.now(),
+          });
+          //最多传一个文件时可这样写，否则要循环
+          this.$set(this.formEdit.tableDataTh[j].fileTh[0], "raw", data);
+          // console.log("th", this.formEdit.tableDataTh[j]);
         }
       }
+      
     },
     jia2(ind) {
       if (ind == 1) {
@@ -476,20 +472,20 @@ export default {
         });
       }
     },
-    beforeRemoveList(file, fileList, row) {
+    beforeRemoveList(file, fileList, index) {
       // console.log("file", file);
       // console.log("fileList", fileList);
       let uid = file.uid;
       let idx = fileList.findIndex((item) => item.uid === uid);
       fileList.splice(idx, 0);
       // this.fileList = fileList;
-      this.formEdit.tableDataTh[row].fileTh = fileList;
+      this.formEdit.tableDataTh[index].fileTh = fileList;
       // if (file.id) {
       //   //如果是后端返回的文件就走删除接口，不然前端自我删除
       //   delwj({ id: file.id.toString() }).then();
       // }
     },
-    fileChangeList(file, fileList, row) {
+    fileChangeList(file, fileList, index) {
       if (Number(file.size / 1024 / 1024) > 1) {
         let uid = file.uid;
         let idx = fileList.findIndex((item) => item.uid === uid);
@@ -497,7 +493,7 @@ export default {
         this.$message.error("单个文件大小不得超过2M");
       } else {
         //多行表上传附件
-        this.formEdit.tableDataTh[row].fileTh = fileList;
+        this.formEdit.tableDataTh[index].fileTh = fileList;
         // console.log("fileList", fileList);
       }
     },

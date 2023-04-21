@@ -378,6 +378,7 @@
                       placeholder="选择日期"
                       value-format="yyyy-MM-dd "
                       v-model="formEdit.zzkjssj"
+                      :picker-options="pickerOptionsBegin"
                     ></el-date-picker>
                   </el-form-item>
                 </el-col>
@@ -581,6 +582,12 @@ export default {
   name: "dksh",
   data() {
     return {
+      pickerOptionsBegin: {
+        disabledDate: (time) => {
+          // return time.getTime() < new Date(this.cfrq).getTime() + 8.64e7;
+          return time.getTime() < new Date(this.cfrq).getTime();
+        },
+      },
       showExport: false,
       detailModal: false,
       searchVal: "",
@@ -612,7 +619,7 @@ export default {
       exportParams: {},
       leng: 0,
       tableData: [],
-
+      cfrq: "",
       allDwh: [],
       bjOps: [], // 班级下拉
       allXn: [], //学年下拉
@@ -686,6 +693,7 @@ export default {
         this.$message.error("请勾选一名学生！");
       } else {
         let row = this.multipleSelection[0];
+        this.cfrq = row.cfrq;
         this.editModal = true;
         xhQuery({ xh: row.xh }).then((res) => {
           this.basicInfo = res.data;

@@ -296,12 +296,11 @@ export default {
         saveJd(data)
           .then((res) => {
             this.$message.success("保存成功");
-
+            this.getDetail();
             this.$router.go(-1);
           })
           .catch((err) => {});
       }
-      this.getDetail();
     },
   },
 };

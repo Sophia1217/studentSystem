@@ -47,7 +47,7 @@
             :show-overflow-tooltip="true"
           >
           </el-table-column>
-          <el-table-column prop="lx" label="处分类型"> </el-table-column>
+
           <el-table-column prop="gwMainMc" label="指派岗位"> </el-table-column>
           <el-table-column prop="xsed" label="已修/应修学时">
             <template slot-scope="scope">

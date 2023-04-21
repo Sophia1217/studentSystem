@@ -162,6 +162,7 @@
           <el-table-column prop="mj" label="门禁" sortable="custom" />
 
           <el-table-column prop="wxwl" label="无线网络" sortable="custom" />
+          <el-table-column prop="slrq" label="失联日期" sortable="custom" />
           <el-table-column prop="yjdj" label="预警等级" sortable="custom" />
           <!-- 
           <el-table-column fixed="right" label="操作" width="180">

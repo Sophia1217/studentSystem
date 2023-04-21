@@ -137,7 +137,7 @@
           >
           </el-table-column>
           <el-table-column
-            prop="pydw"
+            prop="pydwmc"
             label="培养单位"
             sortable
             show-overflow-tooltip
@@ -146,46 +146,31 @@
           </el-table-column>
 
           <el-table-column
-            prop="bj"
+            prop="bjmc"
             label="班级"
             sortable
             show-overflow-tooltip
             min-width="100"
           >
           </el-table-column>
-          <el-table-column
-            prop="sqlx"
-            label="指派岗位"
-            min-width="100"
-            sortable
-            show-overflow-tooltip
-          >
-          </el-table-column>
-          <el-table-column
-            prop="sqjezj"
-            label="已修/应修学时"
-            min-width="100"
-            sortable
-          >
-          </el-table-column
-          ><el-table-column
-            prop="sqsj"
-            label="已读/应读次数"
-            min-width="100"
-            sortable
-          >
-          </el-table-column>
-          ><el-table-column
-            prop="sqsj"
-            label="最早可结束时间"
-            min-width="100"
-            sortable
-          >
-          </el-table-column>
 
-          <!-- <el-table-column
-            prop="statusMc"
-            label="申核状态"
+          <el-table-column prop="gwMainMc" label="指派岗位" sortable>
+          </el-table-column>
+          <el-table-column prop="yxxs" label="已修/应修学时">
+            <template slot-scope="scope">
+              <div>{{ scope.row.xsed }}/{{ scope.row.xs }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="ytcs" label="已谈/应谈次数">
+            <template slot-scope="scope">
+              <div>{{ scope.row.thcsed }}/{{ scope.row.thcs }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="zzkjssj" label="最早可结束时间" sortable />
+
+          <el-table-column
+            prop="statusChinese"
+            label="审核状态"
             sortable="custom"
             min-width="100"
           ></el-table-column>
@@ -202,7 +187,7 @@
                 <span>流程记录</span>
               </el-button>
             </template>
-          </el-table-column> -->
+          </el-table-column>
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
               <el-button
@@ -469,8 +454,8 @@ export default {
       this.lctModal = false;
     },
     lctClick(row) {
-      if (!!row.processid) {
-        this.$refs.child.inner(row.processid);
+      if (!!row.processId) {
+        this.$refs.child.inner(row.processId);
         this.lctModal = true;
       } else {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");
@@ -611,16 +596,13 @@ export default {
     },
     hadleDetail(row) {
       this.$router.push({
-        path: "/dailyBehavior/zbrwTea/rwdcDetail",
+        path: "/jzjyTea/jzjyIdtDetail",
         query: {
           xh: row.xh,
+
+          bodyData: row,
+          wbzj: row.wbzj,
           isEdit: 1,
-          id: row.id,
-          processid: row.processid,
-          sqlxm: row.sqlxm,
-          taskId: row.taskId,
-          status: row.status,
-          sqjezj: row.sqjezj,
         },
       });
     },
@@ -660,7 +642,7 @@ export default {
       this.multipleSelection = val;
       this.commonParams = this.multipleSelection.map((v) => ({
         businesId: v.id,
-        processId: v.processid,
+        processId: v.processId,
         status: v.status,
         taskId: v.taskId,
         xh: v.xh,

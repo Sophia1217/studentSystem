@@ -398,147 +398,154 @@
         :before-close="detailCancel"
         width="50%"
       >
-        <template>
-          <div class="baseInfo">
-            <el-form :model="formDetails">
-              <!-- <div class="formLeft"><span class="title">基本信息</span></div> -->
-              <div class="backDetail">
-                <div class="formRight">
-                  <el-row :gutter="20">
-                    <el-col :span="12" class="rowStyle">
-                      <div class="wrap">
-                        <div class="title">学号</div>
-                        <div class="content">{{ stuInfo.xh }}</div>
-                      </div>
-                    </el-col>
-                    <el-col :span="12" class="rowStyle">
-                      <div class="wrap">
-                        <div class="title">姓名</div>
-                        <div class="content">{{ stuInfo.xm }}</div>
-                      </div>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="20">
-                    <el-col :span="12" class="rowStyle">
-                      <div class="wrap">
-                        <div class="title">性别</div>
-                        <div class="content">{{ stuInfo.xbmmc }}</div>
-                      </div>
-                    </el-col>
-                    <el-col :span="12" class="rowStyle">
-                      <div class="wrap">
-                        <div class="title">培养层次</div>
-                        <div class="content">{{ stuInfo.pyccmmc }}</div>
-                      </div>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="20">
-                    <el-col :span="12" class="rowStyle">
-                      <div class="wrap">
-                        <div class="title">培养单位</div>
-                        <div class="content">{{ stuInfo.ssdwdmmc }}</div>
-                      </div>
-                    </el-col>
+        <div style="margin: 20px">
+          <template>
+            <div class="baseInfo">
+              <el-form :model="formDetails">
+                <!-- <div class="formLeft"><span class="title">基本信息</span></div> -->
+                <div class="backDetail">
+                  <div class="formRight">
+                    <el-row :gutter="20">
+                      <el-col :span="12" class="rowStyle">
+                        <div class="wrap">
+                          <div class="title">学号</div>
+                          <div class="content">{{ stuInfo.xh }}</div>
+                        </div>
+                      </el-col>
+                      <el-col :span="12" class="rowStyle">
+                        <div class="wrap">
+                          <div class="title">姓名</div>
+                          <div class="content">{{ stuInfo.xm }}</div>
+                        </div>
+                      </el-col>
+                    </el-row>
+                    <el-row :gutter="20">
+                      <el-col :span="12" class="rowStyle">
+                        <div class="wrap">
+                          <div class="title">性别</div>
+                          <div class="content">{{ stuInfo.xbmmc }}</div>
+                        </div>
+                      </el-col>
+                      <el-col :span="12" class="rowStyle">
+                        <div class="wrap">
+                          <div class="title">培养层次</div>
+                          <div class="content">{{ stuInfo.pyccmmc }}</div>
+                        </div>
+                      </el-col>
+                    </el-row>
+                    <el-row :gutter="20">
+                      <el-col :span="12" class="rowStyle">
+                        <div class="wrap">
+                          <div class="title">培养单位</div>
+                          <div class="content">{{ stuInfo.ssdwdmmc }}</div>
+                        </div>
+                      </el-col>
 
-                    <el-col :span="12" class="rowStyle">
-                      <div class="wrap">
-                        <div class="title">年级</div>
-                        <div class="content">{{ stuInfo.ssnj }}</div>
-                      </div>
+                      <el-col :span="12" class="rowStyle">
+                        <div class="wrap">
+                          <div class="title">年级</div>
+                          <div class="content">{{ stuInfo.ssnj }}</div>
+                        </div>
+                      </el-col>
+                    </el-row>
+                    <el-row :gutter="20">
+                      <el-col :span="12" class="rowStyle">
+                        <div class="wrap">
+                          <div class="title">专业</div>
+                          <div class="content">{{ stuInfo.zydmmc }}</div>
+                        </div>
+                      </el-col>
+                      <el-col :span="12" class="rowStyle">
+                        <div class="wrap">
+                          <div class="title">班级</div>
+                          <div class="content">{{ stuInfo.bjmc }}</div>
+                        </div>
+                      </el-col>
+                    </el-row>
+                  </div>
+                </div>
+                <div class="formLeft"><span class="title">学院意见</span></div>
+                <div>
+                  <el-row :gutter="20">
+                    <el-col :span="10">
+                      <el-form-item label="违纪事实描述" label-width="120px">
+                        {{ formDetails.wjssmsXgbfzr }}
+                      </el-form-item>
                     </el-col>
                   </el-row>
                   <el-row :gutter="20">
-                    <el-col :span="12" class="rowStyle">
-                      <div class="wrap">
-                        <div class="title">专业</div>
-                        <div class="content">{{ stuInfo.zydmmc }}</div>
-                      </div>
-                    </el-col>
-                    <el-col :span="12" class="rowStyle">
-                      <div class="wrap">
-                        <div class="title">班级</div>
-                        <div class="content">{{ stuInfo.bjmc }}</div>
-                      </div>
+                    <el-col :span="20">
+                      <el-form-item label="处分依据条款" label-width="120px">
+                        {{ formDetails.cfyjtkXgbfzr }}
+                      </el-form-item>
                     </el-col>
                   </el-row>
-                </div>
-              </div>
-              <div class="formLeft"><span class="title">学院意见</span></div>
-              <div>
-                <el-row :gutter="20">
-                  <el-col :span="10">
-                    <el-form-item label="违纪事实描述" label-width="120px">
-                      {{ formDetails.wjssmsXgbfzr }}
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                  <el-col :span="20">
-                    <el-form-item label="处分依据条款" label-width="120px">
-                      {{ formDetails.cfyjtkXgbfzr }}
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                  <el-col :span="20">
-                    <el-form-item label="处分等级" label-width="120px">
-                      {{ formDetails.cfdjmmc }}
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                  <el-col :span="20">
-                    <el-form-item label="单位建议" label-width="120px">
-                      {{ formDetails.dwjyXgbfzr }}
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-table
-                  :data="tableDataDetail"
-                  ref="multipleTable"
-                  style="width: 100%"
-                >
-                  <el-table-column prop="cfrq" label="处分日期">
-                  </el-table-column>
-                  <el-table-column prop="cfqxStart" label="处分开始日期">
-                  </el-table-column>
-                  <el-table-column prop="cfqxEnd" label="处分结束日期">
-                  </el-table-column>
-                  <el-table-column
-                    prop="cfwh"
-                    label="处分文号"
-                    :show-overflow-tooltip="true"
+                  <el-row :gutter="20">
+                    <el-col :span="20">
+                      <el-form-item label="处分等级" label-width="120px">
+                        {{ formDetails.cfdjmmc }}
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="20">
+                    <el-col :span="20">
+                      <el-form-item label="单位建议" label-width="120px">
+                        {{ formDetails.dwjyXgbfzr }}
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-table
+                    :data="tableDataDetail"
+                    ref="multipleTable"
+                    style="width: 100%"
                   >
-                  </el-table-column>
-                  <el-table-column prop="fjName" label="附件" min-width="140">
-                    <template slot-scope="scope">
-                      <div v-for="item in scope.row.fileList">
-                        <div
-                          style="display: flex; justify-content: space-between"
-                        >
-                          <el-button
-                            type="text"
-                            size="small"
-                            @click="xzWj(item)"
+                    <el-table-column prop="cfrq" label="处分日期">
+                    </el-table-column>
+                    <el-table-column prop="cfqxStart" label="处分开始日期">
+                    </el-table-column>
+                    <el-table-column prop="cfqxEnd" label="处分结束日期">
+                    </el-table-column>
+                    <el-table-column
+                      prop="cfwh"
+                      label="处分文号"
+                      :show-overflow-tooltip="true"
+                    >
+                    </el-table-column>
+                    <el-table-column prop="fjName" label="附件" min-width="140">
+                      <template slot-scope="scope">
+                        <div v-for="item in scope.row.fileList">
+                          <div
+                            style="
+                              display: flex;
+                              justify-content: space-between;
+                            "
                           >
-                            <span class="handleName">{{ item.fileName }}</span>
-                          </el-button>
-                          <!-- <el-button
+                            <el-button
+                              type="text"
+                              size="small"
+                              @click="xzWj(item)"
+                            >
+                              <span class="handleName">{{
+                                item.fileName
+                              }}</span>
+                            </el-button>
+                            <!-- <el-button
                             type="text"
                             size="small"
                             @click="delWj(item)"
                           >
                             <span>删除</span>
                           </el-button> -->
+                          </div>
                         </div>
-                      </div>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </div>
-            </el-form>
-          </div>
-        </template>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </div>
+              </el-form>
+            </div>
+          </template>
+        </div>
         <span slot="footer" class="dialog-footer footerFlex">
           <el-button @click="detailCancel">关 闭</el-button>
         </span>

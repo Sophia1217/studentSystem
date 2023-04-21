@@ -87,12 +87,12 @@
       <!-- 岗位信息 -->
       <div class="headline">岗位信息</div>
       <div class="tableStyle">
-        <el-form :model="formEdit">
+        <el-form :model="basicInfo">
           <div class="information">
             <el-row :gutter="20">
               <el-col :span="24">
                 <el-form-item label="岗位名称" prop="gwMainMc">
-                  {{ formEdit.gwMainMc }}
+                  {{ basicInfo.gwMainMc }}
                 </el-form-item>
               </el-col>
             </el-row>
@@ -100,17 +100,17 @@
             <el-row :gutter="20">
               <el-col :span="8">
                 <el-form-item label="岗位类型" prop="gwTypeMc">
-                  {{ formEdit.gwTypeMc }}
+                  {{ basicInfo.gwTypeMc }}
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="用人部门" prop="gwYrbmc">
-                  {{ formEdit.gwYrbmc }}
+                  {{ basicInfo.gwYrbmc }}
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="可接纳人数" prop="gwKjnrs">
-                  {{ formEdit.gwKjnrs }}
+                  {{ basicInfo.gwKjnrs }}
                 </el-form-item>
               </el-col>
             </el-row>
@@ -118,19 +118,19 @@
             <el-row :gutter="20">
               <el-col :span="23">
                 <el-form-item label="工作地点" prop="gwGzdd">
-                  {{ formEdit.gwGzdd }}
+                  {{ basicInfo.gwGzdd }}
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
                 <el-form-item label="指导老师" prop="gwZdls">
-                  {{ formEdit.gwZdls }}
+                  {{ basicInfo.gwZdls }}
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="联系方式" prop="gwLxfs">
-                  {{ formEdit.gwLxfs }}
+                  {{ basicInfo.gwLxfs }}
                 </el-form-item>
               </el-col>
             </el-row>
@@ -138,7 +138,7 @@
             <el-row :gutter="20">
               <el-col :span="23">
                 <el-form-item label="工作内容" prop="gwGznr">
-                  {{ formEdit.gwGznr }}
+                  {{ basicInfo.gwGznr }}
                 </el-form-item>
               </el-col>
             </el-row>
@@ -183,51 +183,170 @@
               :rows="5"
               maxlength="1000"
               show-word-limit
-              v-model="formEdit.wbzj"
-              :readonly="isEdit == 2"
+              v-model="wbzj"
+              readonly
             />
           </div>
         </div>
       </div>
+      <div class="headline" v-if="isEdit == 1">审核信息</div>
+      <div class="tableStyle" style="margin-bottom: 20px" v-if="isEdit == 1">
+        <el-form :model="editDetails" ref="editDetails">
+          <div class="information" style="margin-bottom: 20px">
+            <el-row :gutter="20">
+              <el-col :span="10">
+                <el-form-item
+                  label="审核结果"
+                  label-width="120px"
+                  prop="shjg"
+                  :rules="rules.shjg"
+                >
+                  <el-select
+                    v-model="editDetails.shjg"
+                    @change="changeJG(editDetails.shjg)"
+                    placeholder="请选择"
+                    :disabled="isEdit == 2"
+                  >
+                    <el-option
+                      v-for="item in shjgOps"
+                      :key="item.dm"
+                      :label="item.mc"
+                      :value="item.dm"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </div>
+          <div class="information">
+            <el-row :gutter="20">
+              <el-col :span="20">
+                <el-form-item label="审核意见" label-width="120px" prop="shyj">
+                  <el-input
+                    v-model="editDetails.shyj"
+                    :autosize="{ minRows: 4 }"
+                    type="textarea"
+                    maxlength="500"
+                    :readonly="isEdit == 2"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </div>
+        </el-form>
+      </div>
     </div>
 
-    <!-- <div class="editBottom" v-show="isEdit == 1">
-      <div class="btn confirm" @click="handlUpdata">保存</div>
-    </div> -->
-    <div v-if="isEdit != 1" class="editBottom">
+    <div class="editBottom">
+      <div class="btn cancel" @click="lctClick">审核记录</div>
       <div class="btn cancel" @click="handleBack">返回</div>
-      <div class="btn editIcon" @click="editButtonClick">编辑</div>
+      <div class="btn editIcon" v-show="isEdit == 1" @click="handlUpdata">
+        确定
+      </div>
     </div>
 
-    <div v-if="isEdit == 1" class="editBottom">
-      <div class="btn cancel" @click="handleCancle">取消</div>
-      <div class="btn confirm" @click="handlUpdata">保存</div>
-    </div>
+    <lctCom
+      ref="child"
+      :lctModal="lctModal"
+      @handleCloseLct="handleCloseLct"
+    ></lctCom>
+    <el-dialog
+      :title="conformText"
+      :visible.sync="conformModal"
+      width="30%"
+      :close-on-click-modal="false"
+    >
+      <span>确认{{ conformType }}？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="finalCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="finalConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <el-dialog title="退回选择" :visible.sync="thTableModal" width="20%">
+      <template>
+        <el-table
+          :data="tableInner"
+          ref="multipleTable1"
+          style="width: 100%"
+          :default-sort="{ prop: 'date', order: 'descending' }"
+        >
+          <el-table-column width="55">
+            <template slot-scope="scope">
+              <el-radio
+                :label="scope.$index"
+                v-model="tempRadio"
+                @change.native="getRow(scope.$index, scope.row)"
+                >{{ "" }}</el-radio
+              >
+            </template>
+          </el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            width="50"
+          ></el-table-column>
+          <el-table-column prop="actName" label="节点名称" sortable="custom">
+          </el-table-column>
+        </el-table>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="thTableCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="thTableConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
-import { queryJdList, saveJd } from "@/api/stuPunish/stu";
 import { JzjyjdInfo } from "@/api/stuPunish/jzjyIdentify";
 import { queryKnssqxsjbxx } from "@/api/familyDifficulties/stu";
+import lctCom from "../../../components/lct";
+import { jjFlow, tyFlow, htFlow } from "@/api/stuPunish/jzjyIdentify";
 export default {
+  components: { lctCom },
   data() {
     return {
-      isEdit: 2,
+      isEdit: this.$route.query.isEdit,
+      tableInner: [],
+      thTableModal: false,
+      tempRadio: false,
 
-      xh: this.$store.getters.userId,
+      lctModal: false,
+
+      xh: this.$route.query.xh,
       basicInfo: {},
       detailInfoData: {},
-      basicInfo: this.$route.query.bodyData,
+      wbzj: this.$route.query.wbzj,
       tableData: {},
       formEdit: {},
+      editDetails: {
+        shyj: "",
+        shjg: "",
+      },
+      conformModal: false,
+      conformType: "",
+      conformText: "",
+      shjgOps: [
+        { dm: "01", mc: "通过" },
+        { dm: "02", mc: "拒绝" },
+        { dm: "03", mc: "退回" },
+      ],
+      rules: {
+        shjg: [
+          { required: true, message: "审核结果不能为空", trigger: "change" },
+        ],
+      },
     };
   },
   created() {},
   mounted() {
     this.getDetail();
-
-    this.formEdit = this.basicInfo.gwInfo;
+    this.basicInfo = this.$route.query.bodyData;
+    // this.formEdit = this.basicInfo.gwInfo;
   },
   methods: {
     getCode(data) {
@@ -241,67 +360,130 @@ export default {
       });
     },
 
-    editButtonClick() {
-      this.isEdit = 1;
+    handleCloseLct() {
+      this.lctModal = false;
+    },
+    lctClick() {
+      if (!!this.basicInfo.processId) {
+        this.$refs.child.inner(this.basicInfo.processId);
+        this.lctModal = true;
+      } else {
+        this.$message.warning("此项经历为管理员新增，暂无流程数据");
+      }
     },
     getDetail() {
       queryKnssqxsjbxx({ xh: this.xh }).then((res) => {
         this.detailInfoData = res.data;
-      });
-
-      JzjyjdInfo({ id: this.basicInfo.id }).then((res) => {
-        if (res.data) {
-          this.$set(this.formEdit, "wbzj", res.data.wbzj);
-        }
       });
     },
 
     handleBack() {
       this.$router.go(-1);
     },
-    handleCancle() {
-      this.isEdit = 2;
+    checkFormAdd() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.editDetails.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
+      }
+      return true;
     },
     handlUpdata() {
-      if (!this.formEdit.wbzj) {
-        this.$message.error("文本总结不能为空！");
-      } else if (
-        // (this.formEdit.wbzj.match(/[^ -~]/g) == null
-        //   ? this.formEdit.wbzj.length
-        //   : this.formEdit.wbzj.length +
-        //     this.formEdit.wbzj.match(/[^ -~]/g).length) < 500
-        this.formEdit.wbzj.length < 500
-      ) {
-        this.$message.error("文本总结不得少于500字！");
+      if (!this.checkFormAdd()) {
+        this.$message.error("请完善表单相关信息！");
       } else {
-        let data = {
-          gwGzdd: this.formEdit.gwGzdd,
-          gwGznr: this.formEdit.gwGznr,
-          gwLxfs: this.formEdit.gwLxfs,
-          gwMainMc: this.formEdit.gwMainMc,
-          gwType: this.formEdit.gwType,
-          gwTypeMc: this.formEdit.gwTypeMc,
-          gwYrbm: this.formEdit.gwYrbm,
-          gwYrbmc: this.formEdit.gwYrbmc,
-          gwZdls: this.formEdit.gwZdls,
-          cfId: this.basicInfo.id,
-          jzjygwId: this.formEdit.id,
-          thcs: this.basicInfo.thcs,
-          wbzj: this.formEdit.wbzj,
-          xh: this.basicInfo.xh,
-          xm: this.basicInfo.xm,
-          xs: this.basicInfo.xs,
-          zzkjssj: this.basicInfo.zzkjssj,
-        };
-        saveJd(data)
-          .then((res) => {
-            this.$message.success("保存成功");
-
-            this.$router.go(-1);
-          })
-          .catch((err) => {});
+        this.conformModal = true;
       }
-      this.getDetail();
+    },
+    changeJG(val) {
+      if (val && val == "03") {
+        var processid = { processId: this.basicInfo.taskId };
+        this.conformType = "退回";
+        this.conformText = "退回确认";
+        backFlow(processid).then((res) => {
+          this.tableInner = res.data;
+        });
+      } else if (val && val == "02") {
+        this.conformType = "拒绝";
+        this.conformText = "拒绝确认";
+      } else {
+        this.conformType = "同意";
+        this.conformText = "同意确认";
+      }
+    },
+    finalCancel() {
+      this.conformModal = false;
+    },
+    finalConfirm() {
+      var data = {
+        businesId: this.basicInfo.id,
+        processId: this.basicInfo.processId,
+        taskId: this.basicInfo.taskId,
+        xh: this.xh,
+        status: this.basicInfo.status,
+        opMsg: this.editDetails.shyj ? this.editDetails.shyj : "",
+        // spje: this.formDetails1.spje ? this.formDetails1.spje : "",
+        // actId: "",
+        // actName: "",
+      };
+      if (this.conformType == "退回") {
+        this.thTableModal = true;
+        // data.actId = this.multipleSelection1.actId;
+        // data.actName = this.multipleSelection1.actName;
+        // htFlow([data]).then((res) => {
+        //   this.conformModal = false;
+        //   this.$router.go(-1);
+        //   this.$message.success("已退回");
+        // });
+      } else if (this.conformType == "拒绝") {
+        jjFlow([data]).then((res) => {
+          this.conformModal = false;
+          this.$router.go(-1);
+          this.$message.success("已拒绝");
+        });
+      } else {
+        data.opMsg = this.editDetails.shyj
+          ? `审批意见：${this.editDetails.shyj}`
+          : "";
+        tyFlow([data]).then((res) => {
+          this.conformModal = false;
+          this.$router.go(-1);
+          this.$message.success("已成功通过");
+        });
+      }
+      this.conformModal = false;
+    },
+    getRow(index, row) {
+      this.multipleSelection1 = row;
+    },
+    thTableCancel() {
+      this.thTableModal = false;
+    },
+    thTableConfirm() {
+      if (!!this.tempRadio || this.tempRadio === 0) {
+        this.thTableModal = false;
+        this.thModal = true;
+        let data = {
+          businesId: this.basicInfo.id,
+          processId: this.basicInfo.processId,
+          taskId: this.basicInfo.taskId,
+          xh: this.xh,
+          status: this.basicInfo.status,
+          opMsg: this.editDetails.shyj ? this.editDetails.shyj : "",
+          actId: this.multipleSelection1.actId,
+          actName: this.multipleSelection1.actName,
+        };
+        htFlow([data]).then((res) => {
+          this.conformModal = false;
+          this.$router.go(-1);
+          this.$message.success("已退回");
+        });
+      } else {
+        this.$message.error("请先勾选退回的节点");
+      }
     },
   },
 };

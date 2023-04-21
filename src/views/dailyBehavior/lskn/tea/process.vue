@@ -58,6 +58,7 @@
           max-height="800"
           @sort-change="changeTableSort"
           show-summary
+          :summary-method="getSummaries"
         >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
@@ -342,6 +343,7 @@ export default {
       },
       row: {},
       rowEdit: "",
+      sumNum: {},
       rules: {
         dwh: [
           {
@@ -379,6 +381,20 @@ export default {
   },
 
   methods: {
+    getSummaries() {
+      var sums = [
+        "",
+        "合计",
+        "",
+        this.sumNum.bksjhedSum,
+        this.sumNum.bkssyedSum,
+        this.sumNum.bksRatio,
+        this.sumNum.yjsjhedSum,
+        this.sumNum.yjssyedSum,
+        this.sumNum.yjsRatio,
+      ];
+      return sums;
+    },
     jia(row, index) {
       var obj = { dwh: "", bksjhed: "", yjsjhed: "", nd: this.nd };
       this.formAdd.addList.push(obj);
@@ -501,6 +517,7 @@ export default {
             { dwh: "", bksjhed: "", yjsjhed: "", nd: this.nd },
           ]);
           this.handleSearch();
+          this.querySum();
         })
         .catch((err) => {});
       getCollege()
@@ -588,7 +605,8 @@ export default {
     },
     querySum() {
       queryAnalyze(this.nd).then((res) => {
-        // console.log(res);
+        console.log(res);
+        this.sumNum = res.data;
       });
     },
 

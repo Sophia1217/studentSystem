@@ -163,7 +163,7 @@
             sortable="custom"
           />
           <el-table-column
-            prop="sjscsj"
+            prop="zjscsj"
             label="最近刷出时间"
             sortable="custom"
           />

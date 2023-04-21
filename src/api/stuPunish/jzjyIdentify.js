@@ -69,3 +69,15 @@ export function tyFlow(query) {
     data: query
   })
 }
+
+
+
+//矫正教育结果-详情
+export function JzjyjdInfo(query) {
+  return request({
+    url: '/rcswJzjyjd/JzjyjdInfo',
+    method: 'post',
+   
+    data: query
+  })
+}

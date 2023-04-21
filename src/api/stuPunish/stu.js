@@ -54,9 +54,9 @@ export function updateJzztm(query) {
   }
   
  // 矫正教育鉴定保存
-  export function saveGw(query) {
+  export function saveJd(query) {
     return request({
-      url: '/rcswJzjyjd/saveGw',
+      url: '/rcswJzjyjd/saveJd',
       method: 'post',
       
       data: query

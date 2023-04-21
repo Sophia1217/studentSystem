@@ -17,7 +17,7 @@
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
-            <el-option label="审核人" value="shrxm"></el-option>
+            <el-option label="指派岗位" value="zpgw"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
             >查询</el-button
@@ -95,7 +95,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">申请列表</span> <i class="Updataicon"></i>
+          <span class="title">已处理列表</span> <i class="Updataicon"></i>
           <el-select
             v-model="moreIform.xn"
             collapse-tags
@@ -148,66 +148,43 @@
           >
           </el-table-column>
           <el-table-column
-            prop="pydw"
+            prop="pydwmc"
             label="培养单位"
             sortable
             show-overflow-tooltip
             min-width="100"
           >
           </el-table-column>
+
           <el-table-column
-            prop="zy"
-            label="专业"
+            prop="bjmc"
+            label="班级"
             sortable
             show-overflow-tooltip
             min-width="100"
           >
           </el-table-column>
-          <el-table-column
-            prop="sqlx"
-            label="申请类型"
-            min-width="100"
-            sortable
-            show-overflow-tooltip
-          >
+
+          <el-table-column prop="gwMainMc" label="指派岗位" sortable>
           </el-table-column>
-          <el-table-column
-            prop="sqjezj"
-            label="申请减免总计（元）"
-            min-width="100"
-            sortable
-          >
-          </el-table-column
-          ><el-table-column
-            prop="sqsj"
-            label="申请时间"
-            min-width="100"
-            sortable
-          >
+          <el-table-column prop="yxxs" label="已修/应修学时">
+            <template slot-scope="scope">
+              <div>{{ scope.row.xsed }}/{{ scope.row.xs }}</div>
+            </template>
           </el-table-column>
-          <el-table-column
-            prop="spje"
-            label="审批金额"
-            min-width="100"
-            sortable
-          >
+          <el-table-column prop="ytcs" label="已谈/应谈次数">
+            <template slot-scope="scope">
+              <div>{{ scope.row.thcsed }}/{{ scope.row.thcs }}</div>
+            </template>
           </el-table-column>
+          <el-table-column prop="zzkjssj" label="最早可结束时间" sortable />
+
           <el-table-column
-            prop="shsj"
-            label="审批时间"
-            min-width="100"
-            sortable
-          >
-          </el-table-column>
-          <el-table-column prop="shr" label="审核人" min-width="100" sortable>
-          </el-table-column>
-          <el-table-column
-            prop="statusMc"
-            label="申核状态"
+            prop="statusChinese"
+            label="审核状态"
             sortable="custom"
             min-width="100"
-          >
-          </el-table-column>
+          ></el-table-column>
           <el-table-column
             prop="jg"
             label="审核进度"
@@ -344,8 +321,8 @@ export default {
       this.lctModal = false;
     },
     lctClick(row) {
-      if (!!row.processid) {
-        this.$refs.child.inner(row.processid);
+      if (!!row.processId) {
+        this.$refs.child.inner(row.processId);
         this.lctModal = true;
       } else {
         this.$message.warning("此项经历为管理员新增，暂无流程数据");
@@ -353,15 +330,12 @@ export default {
     },
     handleDetail(row) {
       this.$router.push({
-        path: "/dailyBehavior/zbrwTea/rwdcDetail",
+        path: "/jzjyTea/jzjyIdtDetail",
         query: {
           xh: row.xh,
           isEdit: 2,
-          id: row.id,
-          processid: row.processid,
-          sqlxm: row.sqlxm,
-          taskId: row.taskId,
-          status: row.status,
+          bodyData: row,
+          wbzj: row.wbzj,
         },
       });
     },

@@ -289,6 +289,7 @@
                 ref="upload"
                 :limit="1"
                 :file-list="scope.row.fileTh"
+                :on-preview="handlePreview"
                 :on-change="
                   (file, fileList) => {
                     fileChangeList(file, fileList, scope.$index);
@@ -396,6 +397,8 @@ export default {
       for (var j = 0; j < this.formEdit.tableDataTh.length; j++) {
         var data;
         if (this.formEdit.tableDataTh[j].file) {
+          this.formEdit.tableDataTh[j].file.name =
+            this.formEdit.tableDataTh[j].file.fileName;
           //将file赋值给fileTh
           this.formEdit.tableDataTh[j].fileTh = [];
           this.formEdit.tableDataTh[j].fileTh.push(
@@ -471,6 +474,13 @@ export default {
           }
         });
       }
+    },
+    handlePreview(file) {
+      //用于文件下载
+      Exportwj({ id: file.id.toString() }).then((res) => {
+        this.url = window.URL.createObjectURL(res);
+        this.downloadFn(res, file.fileName);
+      });
     },
     beforeRemoveList(file, fileList, index) {
       // console.log("file", file);

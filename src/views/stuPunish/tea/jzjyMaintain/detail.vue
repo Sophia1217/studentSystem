@@ -346,8 +346,7 @@ export default {
         gwInfo: {},
       },
 
-      formGw: {},
-      formEdit: {
+      formGw: {
         gwMainMc: "",
         gwTypeMc: "",
         gwKjnrs: "",
@@ -355,6 +354,10 @@ export default {
         gwZdls: "",
         gwLxfs: "",
         gwGznr: "",
+      },
+      formEdit: {
+        tableDataDk: [],
+        tableDataTh: [],
       },
       rules: {
         common: [
@@ -421,7 +424,6 @@ export default {
           // console.log("th", this.formEdit.tableDataTh[j]);
         }
       }
-      
     },
     jia2(ind) {
       if (ind == 1) {

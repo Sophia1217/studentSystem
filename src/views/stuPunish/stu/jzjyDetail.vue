@@ -14,7 +14,7 @@
               <div class="wrap">
                 <div class="title">学号</div>
                 <div class="content">
-                  {{ detailInfoData.xh }}
+                  {{ basicInfo.xh }}
                 </div>
               </div>
             </el-col>
@@ -22,7 +22,7 @@
               <div class="wrap">
                 <div class="title">姓名</div>
                 <div class="content">
-                  {{ detailInfoData.xm }}
+                  {{ basicInfo.xm }}
                 </div>
               </div>
             </el-col>
@@ -32,7 +32,7 @@
               <div class="wrap">
                 <div class="title">性别</div>
                 <div class="content">
-                  {{ detailInfoData.xbmmc }}
+                  {{ basicInfo.xbmmc }}
                 </div>
               </div>
             </el-col>
@@ -40,7 +40,7 @@
               <div class="wrap">
                 <div class="title">培养层次</div>
                 <div class="content">
-                  {{ detailInfoData.pyccmmc }}
+                  {{ basicInfo.pyccmmc }}
                 </div>
               </div>
             </el-col>
@@ -50,7 +50,7 @@
               <div class="wrap">
                 <div class="title">培养单位</div>
                 <div class="content">
-                  {{ detailInfoData.ssdwdmmc }}
+                  {{ basicInfo.ssdwdmmc }}
                 </div>
               </div>
             </el-col>
@@ -58,7 +58,7 @@
               <div class="wrap">
                 <div class="title">年级</div>
                 <div class="content">
-                  {{ detailInfoData.ssnj }}
+                  {{ basicInfo.ssnj }}
                 </div>
               </div>
             </el-col>
@@ -68,7 +68,7 @@
               <div class="wrap">
                 <div class="title">专业</div>
                 <div class="content">
-                  {{ detailInfoData.zydmmc }}
+                  {{ basicInfo.zydmmc }}
                 </div>
               </div>
             </el-col>
@@ -76,7 +76,7 @@
               <div class="wrap">
                 <div class="title">班级</div>
                 <div class="content">
-                  {{ detailInfoData.bjmc }}
+                  {{ basicInfo.bjmc }}
                 </div>
               </div>
             </el-col>
@@ -223,7 +223,15 @@ export default {
       isEdit: 2,
       xh: "",
       basicInfo: {},
-      formGw: {},
+      formGw: {
+        gwMainMc: "",
+        gwTypeMc: "",
+        gwKjnrs: "",
+        gwGzdd: "",
+        gwZdls: "",
+        gwLxfs: "",
+        gwGznr: "",
+      },
       detailInfoData: {
         id: "",
         gwInfo: {},
@@ -236,7 +244,7 @@ export default {
   mounted() {
     this.xh = this.$store.getters.userId;
     this.detailInfoData = this.$route.query.bodyData;
-    this.formGw = this.detailInfoData.gwInfo;
+
     // console.log("this.detailInfoData", this.detailInfoData);
     this.getDetail();
   },
@@ -259,6 +267,9 @@ export default {
       queryKnssqxsjbxx({ xh: this.xh }).then((res) => {
         this.basicInfo = res.data;
       });
+      if (this.detailInfoData.gwInfo) {
+        this.formGw = this.detailInfoData.gwInfo;
+      }
       queryLRDkList({ jzjyId: this.detailInfoData.id }).then((res) => {
         this.tableDataDk = res.data;
       });

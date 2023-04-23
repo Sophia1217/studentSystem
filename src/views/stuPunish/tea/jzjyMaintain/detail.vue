@@ -348,8 +348,13 @@ export default {
 
       formGw: {},
       formEdit: {
-        tableDataDk: [],
-        tableDataTh: [],
+        gwMainMc: "",
+        gwTypeMc: "",
+        gwKjnrs: "",
+        gwGzdd: "",
+        gwZdls: "",
+        gwLxfs: "",
+        gwGznr: "",
       },
       rules: {
         common: [

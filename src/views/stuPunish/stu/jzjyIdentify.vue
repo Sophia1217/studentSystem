@@ -220,14 +220,20 @@ export default {
       detailInfoData: {},
       basicInfo: this.$route.query.bodyData,
       tableData: {},
-      formEdit: {},
+      formEdit: {
+        gwMainMc: "",
+        gwTypeMc: "",
+        gwKjnrs: "",
+        gwGzdd: "",
+        gwZdls: "",
+        gwLxfs: "",
+        gwGznr: "",
+      },
     };
   },
   created() {},
   mounted() {
     this.getDetail();
-
-    this.formEdit = this.basicInfo.gwInfo;
   },
   methods: {
     getCode(data) {
@@ -248,6 +254,9 @@ export default {
       queryKnssqxsjbxx({ xh: this.xh }).then((res) => {
         this.detailInfoData = res.data;
       });
+      if (this.basicInfo.gwInfo) {
+        this.formEdit = this.basicInfo.gwInfo;
+      }
 
       JzjyjdInfo({ id: this.basicInfo.id }).then((res) => {
         if (res.data) {

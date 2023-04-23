@@ -322,7 +322,15 @@ export default {
       detailInfoData: {},
       wbzj: this.$route.query.wbzj,
       tableData: {},
-      formEdit: {},
+      formEdit: {
+        gwMainMc: "",
+        gwTypeMc: "",
+        gwKjnrs: "",
+        gwGzdd: "",
+        gwZdls: "",
+        gwLxfs: "",
+        gwGznr: "",
+      },
       editDetails: {
         shyj: "",
         shjg: "",

@@ -1355,6 +1355,118 @@ export const stuRoutes = [
     "childrenId": null,
     "auth": "1"
   },
+  {
+    "id": 0,
+    "modId": "5134",
+    "name": "vacationSchoolStu",
+    "path": "/vacationSchoolStu",
+    "title": "假期留校",
+    "component": "dailyBehavior/vacationSchool/stu/index",
+    "icon": "",
+    "modPid": "-1",
+    "isChild": "2",
+    "sortId": 34,
+    "modStatus": "1",
+    "hidden": true,
+    "alwaysShow": true,
+    "rem": "",
+    "roleIds": null,
+    "isChecked": null,
+    "vueChecked": false,
+    "meta": {
+      "icon": "",
+      "title": "假期留校"
+    },
+    "children": [
+
+    ],
+    "childrenId": null,
+    "auth": "1"
+  },
+  {
+    "id": 0,
+    "modId": "5135",
+    "name": "careerStu",
+    "path": "/careerStu",
+    "title": "生涯发展与咨询",
+    "component": "dailyBehavior/career/stu/index",
+    "icon": "",
+    "modPid": "-1",
+    "isChild": "2",
+    "sortId": 35,
+    "modStatus": "1",
+    "hidden": true,
+    "alwaysShow": true,
+    "rem": "",
+    "roleIds": null,
+    "isChecked": null,
+    "vueChecked": false,
+    "meta": {
+      "icon": "",
+      "title": "生涯发展与咨询"
+    },
+    "children": [
+
+    ],
+    "childrenId": null,
+    "auth": "1"
+  },
+  {
+    "id": 0,
+    "modId": "5136",
+    "name": "careerBookDetail",
+    "path": "/careerBookDetail",
+    "title": "预约登记",
+    "component": "dailyBehavior/career/stu/bookDetail",
+    "icon": "",
+    "modPid": "-1",
+    "isChild": "2",
+    "sortId": 36,
+    "modStatus": "1",
+    "hidden": true,
+    "alwaysShow": true,
+    "rem": "",
+    "roleIds": null,
+    "isChecked": null,
+    "vueChecked": false,
+    "meta": {
+      "icon": "",
+      "title": "预约登记"
+    },
+    "children": [
+
+    ],
+    "childrenId": null,
+    "auth": "1"
+  },
+  {
+    "id": 0,
+    "modId": "5137",
+    "name": "careerMybook",
+    "path": "/careerMybook",
+    "title": "我的预约",
+    "component": "dailyBehavior/career/stu/mybook",
+    "icon": "",
+    "modPid": "-1",
+    "isChild": "2",
+    "sortId": 37,
+    "modStatus": "1",
+    "hidden": true,
+    "alwaysShow": true,
+    "rem": "",
+    "roleIds": null,
+    "isChecked": null,
+    "vueChecked": false,
+    "meta": {
+      "icon": "",
+      "title": "我的预约"
+    },
+    "children": [
+
+    ],
+    "childrenId": null,
+    "auth": "1"
+  },
     ];
 
 // 动态路由，基于用户权限动态去加载

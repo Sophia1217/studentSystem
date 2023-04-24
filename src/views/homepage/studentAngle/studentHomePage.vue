@@ -273,7 +273,7 @@
           </div>
         </div>
       </div>
-      <div class="item">
+      <div class="item stuInfoClick" @click="jqlxClick">
         <div class="medalImage">
           <img src="~@/assets/images/medal.png" alt="" />
         </div>
@@ -282,7 +282,7 @@
             <span class="stuinfoTitle">假期留校申请</span>
           </div>
           <div class="title2">
-            <span class="baseInfo">模块建设中</span>
+            <span class="baseInfo">留校申请、离校登记</span>
           </div>
         </div>
       </div>
@@ -383,16 +383,16 @@
             </div>
           </div>
         </div>
-        <div class="item stuInfoClick">
+        <div class="item stuInfoClick" @click="syfzClick">
           <div class="medalImage">
             <img src="~@/assets/images/medal.png" alt="" />
           </div>
           <div class="content">
             <div class="title1">
-              <span class="stuinfoTitle">待补充</span>
+              <span class="stuinfoTitle">生涯发展与咨询</span>
             </div>
             <div class="title2">
-              <span class="baseInfo">待补充</span>
+              <span class="baseInfo">生涯发展咨询预约</span>
             </div>
           </div>
         </div>
@@ -552,6 +552,16 @@ export default {
     xscfClick() {
       this.$router.push({
         path: "/stuPunish",
+      });
+    },
+    jqlxClick() {
+      this.$router.push({
+        path: "/vacationSchoolStu",
+      });
+    },
+    syfzClick() {
+      this.$router.push({
+        path: "/careerStu",
       });
     },
   },

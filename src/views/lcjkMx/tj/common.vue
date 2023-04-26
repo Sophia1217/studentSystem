@@ -4,17 +4,17 @@
       <div class="search">
         <div class="checkbox">
           <el-select
-            v-model="moreIform.mk"
+            v-model="mk"
             @change="mkchange"
-            collapse-tags
             placeholder="请选择"
+            value-key="dm"
             size="medium"
           >
             <el-option
               v-for="item in MKLIST"
               :key="item.dm"
               :label="item.mc"
-              :value="item.dm"
+              :value="item"
             ></el-option>
           </el-select>
         </div>
@@ -27,13 +27,19 @@
           <span class="title">审核统计表</span> <i class="Updataicon"></i>
         </div>
         <div class="headerRight">
-          <!-- <div class="btns borderOrange" @click="handleExport">
+          <div
+            class="btns borderOrange"
+            @click="handleExport"
+            v-if="testDate.length > 0"
+          >
             <i class="icon orangeIcon"></i><span class="title">导出</span>
-          </div> -->
+          </div>
         </div>
       </div>
       <div class="mt15">
         <el-table
+          id="table"
+          ref="excelDom"
           :data="testDate"
           style="width: 100%"
           :span-method="arraySpanMethod"
@@ -70,79 +76,17 @@
 
 <script>
 import { talkTable, expTalk } from "@/api/assistantWork/talk";
+import FileSaver from "file-saver";
+import { utils, writeFile, read } from "xlsx";
 import { lctjTable, lctjHeader, getMkIdAndMkList } from "@/api/common/liucheng";
 export default {
   data() {
     return {
       tableHeader: [],
-      moreIform: {
-        mk: "",
-        mkArr: [
-          // { dm: "efea295e-dcbb-11ed-850b-52549e666099", mc: "乘车优惠" },
-          // { dm: "efea2c1a-dcbb-11ed-850b-52549e666099", mc: "日常请假" },
-          // {
-          //   dm: "efea2c84-dcbb-11ed-850b-52549e666099",
-          //   mc: "学籍异动_保留学籍",
-          // },
-          // { dm: "efea2cd8-dcbb-11ed-850b-52549e666099", mc: "学籍异动_复学" },
-          // { dm: "efea2d2e-dcbb-11ed-850b-52549e666099", mc: "学籍异动_退学" },
-          // { dm: "efea2d76-dcbb-11ed-850b-52549e666099", mc: "学籍异动_休学" },
-          // { dm: "efea2dc7-dcbb-11ed-850b-52549e666099", mc: "证件补办" },
-          // { dm: "efea2e19-dcbb-11ed-850b-52549e666099", mc: "日常销假" },
-          // { dm: "efea2e5d-dcbb-11ed-850b-52549e666099", mc: "住宿申请" },
-          // { dm: "efea2ea8-dcbb-11ed-850b-52549e666099 ", mc: "临时困难" },
-          // dm:"efea2f84-dcbb-11ed-850b-52549e666099" ,mc:"学年小结",
-          // dm:"efea311a-dcbb-11ed-850b-52549e666099", mc:"家庭经济困难",
-          // dm:"efea3195-dcbb-11ed-850b-52549e666099" ,mc:"勤工助学_岗位设置",
-          // dm:"efea320f-dcbb-11ed-850b-52549e666099", mc:"勤工助学_学生申请",
-          // dm:"efea3280-dcbb-11ed-850b-52549e666099" ,mc:"奖助申请",
-          // dm:"efea32ed-dcbb-11ed-850b-52549e666099 ",mc:"国家助学贷款",
-          // dm:"efea3352-dcbb-11ed-850b-52549e666099 ",mc:"基层就业",
-          // dm:"efea34b4-dcbb-11ed-850b-52549e666099 ",mc:"勤工助学_岗位设置_研究生三助",
-          // dm:'efea3524-dcbb-11ed-850b-52549e666099 ',mc:"勤工助学_学生申请_研究生三助",
-          // dm:"efea358e-dcbb-11ed-850b-52549e666099" ,mc:"大病救助",
-          // dm:"efea35f3-dcbb-11ed-850b-52549e666099 ",mc:"朋辈辅导_朋辈申请",
-          // dm:"efea365b-dcbb-11ed-850b-52549e666099", mc:"教授下午茶",
-          // dm:"efea36e9-dcbb-11ed-850b-52549e666099 ",mc:"征兵入伍退役代偿",
-          // dm:"efea3750-dcbb-11ed-850b-52549e666099" ,mc:"毕业鉴定",
-          // dm:"efea37b4-dcbb-11ed-850b-52549e666099" ,mc:"矫正教育岗位",
-          // dm:"efea3824-dcbb-11ed-850b-52549e666099", mc:"日常事务-学生处分",
-          // dm:"efea388e-dcbb-11ed-850b-52549e666099" ,mc:"创业经历",
-          // dm:"efea38f6-dcbb-11ed-850b-52549e666099", mc:"干部经历",
-          // dm:"efea3961-dcbb-11ed-850b-52549e666099" ,mc:"活动信息",
-          // dm:"efea39c2-dcbb-11ed-850b-52549e666099", mc:"奖学金",
-          // dm:"efea3a22-dcbb-11ed-850b-52549e666099 ",mc:"论文期刊",
-          // dm:"efea3a86-dcbb-11ed-850b-52549e666099 ",mc:"能力等级证书",
-          // dm:"efea3ae7-dcbb-11ed-850b-52549e666099" ,mc:"软件著作",
-          // dm:"efea3b49-dcbb-11ed-850b-52549e666099" ,mc:"荣誉称号",
-          // dm:"efea3ba8-dcbb-11ed-850b-52549e666099", mc:"社会实践",
-          // dm:"efea3c07-dcbb-11ed-850b-52549e666099 ",mc:"社团经历",
-          // dm:"efea3c65-dcbb-11ed-850b-52549e666099", mc:"培训经历",
-          // dm:"efea3cc4-dcbb-11ed-850b-52549e666099", mc:"学习成绩",
-          // dm:"efea3d24-dcbb-11ed-850b-52549e666099" ,mc:"研究报告",
-          // dm:"efea3d86-dcbb-11ed-850b-52549e666099" ,mc:"资格认证",
-          // dm:"efea3de5-dcbb-11ed-850b-52549e666099 ",mc:"专利",
-          // dm:"efea3e47-dcbb-11ed-850b-52549e666099" ,mc:"志愿服务",
-          // dm:"efea3f52-dcbb-11ed-850b-52549e666099", mc:"著作",
-        ],
-      },
+      mk: {},
       testDate: [],
       isMore: false,
-      MKLIST: [
-        // { dm: "efea295e-dcbb-11ed-850b-52549e666099", mc: "乘车优惠" },
-        // { dm: "efea2c1a-dcbb-11ed-850b-52549e666099", mc: "日常请假" },
-        // {
-        //   dm: "efea2c84-dcbb-11ed-850b-52549e666099",
-        //   mc: "学籍异动_保留学籍",
-        // },
-        // { dm: "efea2cd8-dcbb-11ed-850b-52549e666099", mc: "学籍异动_复学" },
-        // { dm: "efea2d2e-dcbb-11ed-850b-52549e666099", mc: "学籍异动_退学" },
-        // { dm: "efea2d76-dcbb-11ed-850b-52549e666099", mc: "学籍异动_休学" },
-        // { dm: "efea2dc7-dcbb-11ed-850b-52549e666099", mc: "证件补办" },
-        // { dm: "efea2e19-dcbb-11ed-850b-52549e666099", mc: "日常销假" },
-        // { dm: "efea2e5d-dcbb-11ed-850b-52549e666099", mc: "住宿申请" },
-        // { dm: "efea2ea8-dcbb-11ed-850b-52549e666099", mc: "临时困难" },
-      ], //模块
+      MKLIST: [], //模块
       showExport: false,
       queryParams: {
         pageNum: 1,
@@ -157,13 +101,15 @@ export default {
   methods: {
     getList() {
       // 1:日常事务，2：评奖评优，3：奖助申请
-      getMkIdAndMkList("1").then((res) => {
+      var data = {
+        type: 1,
+      };
+      getMkIdAndMkList(data).then((res) => {
         this.MKLIST = res.data;
-        console.log("res", res);
       });
     },
     mkchange(value) {
-      lctjHeader(value).then((res) => {
+      lctjHeader(value.dm).then((res) => {
         var categoryProp = res.data;
         const categoryPropXData = Object.keys(categoryProp || {});
         const categoryPropYData = Object.values(categoryProp || {});
@@ -177,12 +123,12 @@ export default {
         this.tableHeader = newDataArr;
         this.moveLastToFirst(this.tableHeader);
       });
-      lctjTable({ mkId: value }).then((res) => {
+      lctjTable({ mkId: value.dm }).then((res) => {
         this.testDate = res.data;
       });
     },
     moveLastToFirst(list) {
-      console.log("list", list);
+      // console.log("list", list);
       if (list !== null && list.length > 0) {
         let last = list.pop(); // 删除数组最后一个元素，并返回该元素
         list.unshift(last);
@@ -260,75 +206,118 @@ export default {
       this.showExport = false;
     },
     expTalk() {
-      if (this.delArr && this.delArr.length > 0) {
-        var ids = this.delArr;
-        expTalk({ ids: ids }).then((res) => {
-          this.downloadFn(res, "谈心谈话下载", "xlsx");
-          if (this.$store.getters.excelcount > 0) {
-            this.$message.success(
-              `已成功导出${this.$store.getters.excelcount}条数据`
-            );
-          }
-          this.handleSearch();
-        });
-      } else {
-        let data = {
-          xm: this.select == "xm" ? this.searchVal : null,
-          xh: this.select == "xh" ? this.searchVal : null,
-          thzt: this.select == "thzt" ? this.searchVal : null,
-          thrxm: this.select == "thrxm" ? this.searchVal : null,
-          thrgh: this.select == "thrgh" ? this.searchVal : null,
-          thdd: this.select == "thdd" ? this.searchVal : null,
-          dwh: this.moreIform.xydm,
-          starttime:
-            this.dateArray && this.dateArray.length > 0
-              ? this.dateArray[0]
-              : "",
-          endtime:
-            this.dateArray && this.dateArray > 0 ? this.dateArray[1] : "",
-          pageNum: this.queryParams.pageNum,
-          pageSize: this.queryParams.pageSize,
-          orderZd: this.queryParams.orderZd,
-          orderPx: this.queryParams.orderPx,
-        };
-        expTalk({ ...data }).then((res) => {
-          this.downloadFn(res, "谈心谈话下载", "xlsx");
-          if (this.$store.getters.excelcount > 0) {
-            this.$message.success(
-              `已成功导出${this.$store.getters.excelcount}条数据`
-            );
-          }
-          this.handleSearch();
-        });
-      }
+      // const ws = utils.json_to_sheet(this.testDate);
+      // const wb = utils.book_new();
+      // utils.book_append_sheet(wb, ws, "wenjianyi");
+      // writeFile(wb, "test.xlsx");
+      // const tableDom = this.$refs.excelDom;
+      //
+      //
+      //
+      //
+      //
+      const tableDom = document.querySelector("#table");
+      const wb2 = utils.book_new();
+      const tablews = utils.table_to_sheet(tableDom);
+      const name = `${this.mk.mc}`;
+      utils.book_append_sheet(wb2, tablews, name);
+      writeFile(wb2, `${this.mk.mc}流程统计.xlsx`);
+      // console.log("wb2wb2wb2", wb2.Sheets.wenjianyi2222["!cols"]);
+      // wb2.Sheets.wenjianyi2222["!cols"] = [];
+      // wb2.Sheets.wenjianyi2222[E1].s = { wpx: "200px" };
+      // wb2.Sheets.wenjianyi2222["!cols"] = [
+      //   { wpx: 40 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      //   { wpx: 120 },
+      // ];
+
+      //  wb2.Sheets.wenjianyi2222.
+      // 动态添加前24列  宽为140px
+      // for (let a = 0; a < 24; a++) {
+      //   wb2.Sheets.wenjianyi2222["!cols"].push({
+      //     wpx: 200,
+      //   });
+      // }
       this.showExport = false;
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      // var xlsxParam = { raw: true };
+      // /* 从表生成工作簿对象 */
+      // var wb = XLSX.utils.table_to_book(
+      //   document.querySelector("#table"),
+      //   xlsxParam
+      // );
+      // /* 获取二进制字符串作为输出 */
+      // var wbout = XLSX.write(wb, {
+      //   bookType: "xlsx",
+      //   bookSST: true,
+      //   type: "array",
+      // });
+      // try {
+      //   FileSaver.saveAs(
+      //     //Blob 对象表示一个不可变、原始数据的类文件对象。
+      //     //Blob 表示的不一定是JavaScript原生格式的数据。
+      //     //File 接口基于Blob，继承了 blob 的功能并将其扩展使其支持用户系统上的文件。
+      //     //返回一个新创建的 Blob 对象，其内容由参数中给定的数组串联组成。
+      //     new Blob([wbout], { type: "application/octet-stream" }),
+      //     "日常事务流程统计数据表"
+      //   );
+      // } catch (e) {
+      //   if (typeof console !== "undefined") console.log(e, wbout);
+      // }
+      // this.showExport = false;
+      // return wbout;
     },
     // 查询
-    handleSearch() {
-      let data = {
-        xm: this.select == "xm" ? this.searchVal : null,
-        xh: this.select == "xh" ? this.searchVal : null,
-        thzt: this.select == "thzt" ? this.searchVal : null,
-        thrxm: this.select == "thrxm" ? this.searchVal : null,
-        thrgh: this.select == "thrgh" ? this.searchVal : null,
-        thdd: this.select == "thdd" ? this.searchVal : null,
-        dwh: this.moreIform.xydm,
-        starttime:
-          this.dateArray && this.dateArray.length > 0 ? this.dateArray[0] : "",
-        endtime:
-          this.dateArray && this.dateArray.length > 0 ? this.dateArray[1] : "",
-        pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
-      };
-      talkTable(data)
-        .then((res) => {
-          this.tableData = res.data;
-          this.queryParams.total = res.totalCount;
-        })
-        .catch((err) => {});
-    },
+    // handleSearch() {
+    //   let data = {
+    //     xm: this.select == "xm" ? this.searchVal : null,
+    //     xh: this.select == "xh" ? this.searchVal : null,
+    //     thzt: this.select == "thzt" ? this.searchVal : null,
+    //     thrxm: this.select == "thrxm" ? this.searchVal : null,
+    //     thrgh: this.select == "thrgh" ? this.searchVal : null,
+    //     thdd: this.select == "thdd" ? this.searchVal : null,
+    //     dwh: this.moreIform.xydm,
+    //     starttime:
+    //       this.dateArray && this.dateArray.length > 0 ? this.dateArray[0] : "",
+    //     endtime:
+    //       this.dateArray && this.dateArray.length > 0 ? this.dateArray[1] : "",
+    //     pageNum: this.queryParams.pageNum,
+    //     pageSize: this.queryParams.pageSize,
+    //     orderZd: this.queryParams.orderZd,
+    //     orderPx: this.queryParams.orderPx,
+    //   };
+    //   talkTable(data)
+    //     .then((res) => {
+    //       this.tableData = res.data;
+    //       this.queryParams.total = res.totalCount;
+    //     })
+    //     .catch((err) => {});
+    // },
     // 点击更多
   },
 };

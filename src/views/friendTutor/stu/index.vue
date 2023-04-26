@@ -7,7 +7,8 @@
       <div class="detail_left">
         <el-tabs v-model="activeName" class="tab_left" tab-position="left">
           <el-tab-pane label="朋辈辅导申请" name="0"> </el-tab-pane>
-          <el-tab-pane label="课程安排" name="1"> </el-tab-pane>
+          <el-tab-pane label="课程申请" name="1"> </el-tab-pane>
+          <el-tab-pane label="课程安排" name="2"> </el-tab-pane>
         </el-tabs>
       </div>
       <div class="detail_right" v-if="activeName == '0'">
@@ -16,17 +17,22 @@
       <div class="detail_right" v-if="activeName == '1'">
         <classSet></classSet>
       </div>
+      <div class="detail_right" v-if="activeName == '2'">
+        <kcap></kcap>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import apply from "./apply/list.vue";
 import classSet from "./classSet/index.vue";
+import kcap from "./kcap/index.vue";
 import topTitle from "../../components/topTitle";
 export default {
   components: {
     apply,
     classSet,
+    kcap,
     topTitle,
   },
   data() {

@@ -1,7 +1,7 @@
 /*
  * @Author: qingtian
  * @Date: 2023-03-21 14:09:58
- * @LastEditTime: 2023-03-22 10:52:58
+ * @LastEditTime: 2023-04-25 14:57:01
  * @LastEditors: ***
  * @Description:
  * @FilePath: \studentsystem\src\api\kcpk\index.js
@@ -94,5 +94,31 @@ export function scoreByAdmin(query) {
     url: "/rcswPbfdKcb/scoreByAdmin",
     method: "post",
     data: query,
+  });
+}
+
+//学生端课程安排列表查询
+export function kcapStuList(query) {
+  return request({
+    url: "/rcswPbfdKcb/querySelfKcList",
+    method: "post",
+    data: query,
+  });
+}
+
+export function thInfo(query) {
+  return request({
+    url: "/rcswPbfdKcb/queryNumber",
+    method: "get",
+    params: query,
+  });
+}
+
+export function getQrcode(query) {
+  return request({
+    url: "/rcswPbfdKcb/exportGetQrcode",
+    method: "get",
+    params: query,
+    responseType: "blob",
   });
 }

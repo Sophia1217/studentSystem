@@ -2358,7 +2358,7 @@
                  
               </template>
             </el-table-column>   
-        <el-table-column prop="lwjbm" label="论文级别">
+        <el-table-column prop="lwjbm" label="收录类别">
               <template slot-scope="scope">
                 <div v-if="isEdit == 1"><el-select
                         v-model="scope.row.lwjbm"
@@ -3083,7 +3083,7 @@ export default {
     this.getCode("dmxwm");
     this.getCode("dmhyzkm");
     this.getCode("dmxz");
-    this.getCode("dmlwkwjbm");
+    this.getCode("dmlwsllbm");
     this.getCode("dmrskhjgm");
     this.getCode("dmzzbzwmcm");
     this.getCode("dmzzbzwjbm");
@@ -3172,7 +3172,7 @@ export default {
               this.byxxlbOps = res.data;
               break;
 
-            case "dmlwkwjbm":
+            case "dmlwsllbm":
               this.lwjbmOps = res.data;
               break;
             case "dmgwxzm":

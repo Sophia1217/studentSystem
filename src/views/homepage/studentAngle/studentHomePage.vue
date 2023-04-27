@@ -520,9 +520,15 @@ export default {
       });
     },
     bysjdbClick() {
-      this.$router.push({
-        path: "/graduateIdentification",
-      });
+      if (this.benkeShow) {
+        this.$router.push({
+          path: "/graduateIdentification",
+        });
+      } else {
+        this.$router.push({
+          path: "/graduateIdtYjs",
+        });
+      }
     },
     jiangzhuClick() {
       this.$router.push({

@@ -117,7 +117,9 @@ export default {
   },
   data() {
     return {
-      activeName: "0",
+      activeName: this.$route.query.activeName
+        ? this.$route.query.activeName
+        : "0",
       routeTitle: "",
     };
   },

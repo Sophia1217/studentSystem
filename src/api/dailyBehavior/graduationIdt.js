@@ -172,3 +172,19 @@ export function delwj(query) {
       params: query
   })
 }
+//毕业鉴定详情保存_研究生
+export function updateByjdDetailYjs(query) {
+  return request({
+    url: '/rcswByjd/updateByjdDetailYjs',
+    method: 'post',
+    data: query
+  })
+}
+//毕业鉴定详情_研究生
+export function getByjdYjsDetail(query) {
+  return request({
+    url: '/rcswByjd/getByjdYjsDetail',
+    method: 'post',
+    data: query
+  })
+}

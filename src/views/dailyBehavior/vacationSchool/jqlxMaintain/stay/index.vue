@@ -17,7 +17,6 @@
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
-            <el-option label="审核人" value="shrxm"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
             >查询</el-button
@@ -51,16 +50,16 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <span>班<span v-html="'\u3000\u3000'"></span>级：</span>
+            <span>专<span v-html="'\u3000\u3000'"></span>业：</span>
             <el-select
-              v-model="moreIform.bjdm"
+              v-model="moreIform.zydm"
               multiple
               collapse-tags
               placeholder="请选择"
               size="small"
             >
               <el-option
-                v-for="item in bjOps"
+                v-for="item in zyOps"
                 :key="item.dm"
                 :label="item.mc"
                 :value="item.dm"
@@ -84,7 +83,7 @@
               ></el-option>
             </el-select>
           </el-col>
-          <el-col :span="6">
+          <!-- <el-col :span="6">
             <span>审核状态：</span>
             <el-select
               v-model="moreIform.statusList"
@@ -100,7 +99,7 @@
                 :value="item.dm"
               ></el-option>
             </el-select>
-          </el-col>
+          </el-col> -->
         </el-row>
         <el-row :gutter="20" class="mt15">
           <el-col :span="20">
@@ -164,7 +163,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">已处理列表</span>
+          <span class="title">学生列表</span>
           <div style="margin-left: 10px">
             <el-cascader
               v-model="dqXnxq"
@@ -178,9 +177,9 @@
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
           </div>
-          <div class="btns fullGreen" @click="chehui">
+          <!-- <div class="btns fullGreen" @click="chehui">
             <i class="icon backIcon"></i><span class="title1">撤回</span>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="mt15">
@@ -216,8 +215,8 @@
           >
           </el-table-column>
           <el-table-column
-            prop="bjdmmc"
-            label="班级"
+            prop="zydmmc"
+            label="专业"
             min-width="100px"
             sortable="custom"
           >
@@ -250,41 +249,14 @@
             sortable="custom"
           >
           </el-table-column>
-          <el-table-column
-            prop="statusChinese"
-            label="审核状态"
-            min-width="100px"
-            sortable="custom"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="shr"
-            label="审核人"
-            min-width="100px"
-            sortable="custom"
-          >
-          </el-table-column>
-          <el-table-column prop="createDwhMc" label="审核进度">
+          <!-- <el-table-column prop="createDwhMc" label="审核进度">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
                 <span class="handleName">流转记录</span>
               </el-button>
             </template>
-          </el-table-column>
-
-          <el-table-column fixed="right" label="操作" width="140">
-            <template slot-scope="scope">
-              <el-button
-                type="text"
-                size="small"
-                @click="hadleDetail(scope.row)"
-              >
-                <i class="scopeIncon handledie"></i>
-                <span class="handleName">详情</span>
-              </el-button>
-            </template>
-          </el-table-column>
+          </el-table-column> -->
         </el-table>
       </div>
       <pagination
@@ -326,11 +298,13 @@
     ></lctCom>
   </div>
 </template>
-
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import { queryXnXq } from "@/api/dailyBehavior/vocationTea";
-import { queryYshList, exportYsh } from "@/api/dailyBehavior/vacationSchoolTea";
+import {
+  queryLiuxList,
+  exportLiux,
+} from "@/api/dailyBehavior/vacationSchoolTea";
 import { chbyId } from "@/api/common/liucheng";
 import { queryRelatedLd } from "@/api/assistantWork/dormitory";
 import { getBJ, getZY } from "@/api/student/index";
@@ -353,16 +327,16 @@ export default {
       isMore: false,
       moreIform: {
         ssdwdm: [], // 学院下拉框
-        bjdm: [],
+        zydm: [],
         ld: [],
-        statusList: [],
+        // statusList: [],
       },
       exportParams: {},
       leng: 0,
       tableData: [],
       allDwh: [],
       ssxxOps: [],
-      bjOps: [],
+      zyOps: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -447,17 +421,18 @@ export default {
     },
     changeXY(val) {
       if (val && val.length == 0) {
-        this.moreIform.bjdm = []; // 班级
+        this.moreIform.zydm = [];
       }
-      this.getBJ(val);
+      this.getZY(val);
     },
-    getBJ(val) {
-      this.bjOps = [];
+    // 学院找专业
+    getZY(val) {
+      this.zyOps = [];
       let data = { DWH: val };
       if (Object.keys(val).length !== 0) {
-        getBJ(data)
+        getZY(data)
           .then((res) => {
-            this.bjOps = res.data;
+            this.zyOps = res.data;
           })
           .catch((err) => {});
       }
@@ -468,15 +443,15 @@ export default {
     },
     // 导出确认
     handleConfirm() {
-      let ids = [];
+      let xhs = [];
       for (let item_row of this.multipleSelection) {
-        ids.push(item_row.id);
+        xhs.push(item_row.xh);
       }
       this.exportParams.pageNum = 0;
-      this.$set(this.exportParams, "ids", ids);
-      exportYsh(this.exportParams)
+      this.$set(this.exportParams, "xhs", xhs);
+      exportLiux(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "留校申请已处理列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "留校申请列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -490,11 +465,10 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        shrxm: this.select == "shrxm" ? this.searchVal : null,
         ssdwdm: this.moreIform.ssdwdm,
-        bjdm: this.moreIform.bjdm,
+        zydm: this.moreIform.zydm,
         ld: this.moreIform.ld,
-        statusList: this.moreIform.statusList,
+        // statusList: this.moreIform.statusList,
         xn: this.queryParams.xn,
         xqm: this.queryParams.xqm,
         lxkssjStart:
@@ -555,11 +529,10 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        shrxm: this.select == "shrxm" ? this.searchVal : null,
         ssdwdm: this.moreIform.ssdwdm,
-        bjdm: this.moreIform.bjdm,
+        zydm: this.moreIform.zydm,
         ld: this.moreIform.ld,
-        statusList: this.moreIform.statusList,
+        // statusList: this.moreIform.statusList,
         xn: this.queryParams.xn,
         xqm: this.queryParams.xqm,
         lxkssjStart:
@@ -586,7 +559,7 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryYshList(data)
+      queryLiuxList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;

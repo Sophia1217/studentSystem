@@ -50,3 +50,80 @@ export function exportYsh(query) {
     data: query
   })
 }
+
+
+
+//假期留校维护_未知状态列表
+export function queryYtxxsList(data) {
+  return request({
+    url: '/rcswJqlxlx/queryYtxxsList',
+    method: 'post',
+    data: data
+  })
+}
+
+//假期留校维护_留校申请列表
+export function queryLiuxList(data) {
+  return request({
+    url: '/rcswJqlxlx/queryLiuxList',
+    method: 'post',
+    data: data
+  })
+}
+//假期留校维护_离校申请列表返回
+export function queryLixList(data) {
+  return request({
+    url: '/rcswJqlxlx/queryLixList',
+    method: 'post',
+    data: data
+  })
+}
+//假期留校维护_留校申请列表导出
+export function exportLiux(query) {
+  return request({
+    url: '/rcswJqlxlx/excelExportLiuxList',
+    method: 'post',
+    responseType: "blob",
+    data: query
+  })
+}
+//假期留校维护_离校申请列表导出
+export function exportLix(query) {
+  return request({
+    url: '/rcswJqlxlx/excelExportLixList',
+    method: 'post',
+    responseType: "blob",
+    data: query
+  })
+}
+//假期留校维护_未知状态列表导出
+export function exportYtxxs(query) {
+  return request({
+    url: '/rcswJqlxlx/excelExportYtxxsList',
+    method: 'post',
+    responseType: "blob",
+    data: query
+  })
+}
+//假期留校维护_应填写学生参数设置
+export function setYtxxs(data) {
+  return request({
+    url: '/rcswJqlxlx/ytxxscssz',
+    method: 'post',
+    data: data
+  })
+}
+//假期留校维护_应填写学生参数设置详情
+export function setYtxxsDetail(data) {
+  return request({
+    url: '/rcswJqlxlx/ytxxscsszInfo',
+    method: 'post',
+    data: data
+  })
+}
+
+
+
+
+
+

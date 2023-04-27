@@ -17,7 +17,6 @@
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
-            <el-option label="审核人" value="shrxm"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
             >查询</el-button
@@ -51,16 +50,16 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <span>班<span v-html="'\u3000\u3000'"></span>级：</span>
+            <span>专<span v-html="'\u3000\u3000'"></span>业：</span>
             <el-select
-              v-model="moreIform.bjdm"
+              v-model="moreIform.zydm"
               multiple
               collapse-tags
               placeholder="请选择"
               size="small"
             >
               <el-option
-                v-for="item in bjOps"
+                v-for="item in zyOps"
                 :key="item.dm"
                 :label="item.mc"
                 :value="item.dm"
@@ -83,55 +82,6 @@
                 :value="item.dm"
               ></el-option>
             </el-select>
-          </el-col>
-          <el-col :span="6">
-            <span>审核状态：</span>
-            <el-select
-              v-model="moreIform.statusList"
-              multiple
-              collapse-tags
-              placeholder="请选择"
-              size="small"
-            >
-              <el-option
-                v-for="item in ztStatus"
-                :key="item.dm"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="20">
-            <span>留校开始时间：</span>
-            <el-date-picker
-              type="daterange"
-              placeholder="选择日期"
-              v-model="datePickerStart"
-              format="yyyy-MM-dd"
-              value-format="yyyy-MM-dd"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              :clearable="false"
-            ></el-date-picker>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" class="mt15">
-          <el-col :span="20">
-            <span>留校结束时间：</span>
-            <el-date-picker
-              type="daterange"
-              placeholder="选择日期"
-              v-model="datePickerEnd"
-              format="yyyy-MM-dd"
-              value-format="yyyy-MM-dd"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              :clearable="false"
-            ></el-date-picker>
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
@@ -164,7 +114,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">已处理列表</span>
+          <span class="title">未知状态人员列表</span>
           <div style="margin-left: 10px">
             <el-cascader
               v-model="dqXnxq"
@@ -175,11 +125,11 @@
           </div>
         </div>
         <div class="headerRight">
+          <div class="btns borderOrange" @click="setting">
+            <i class="icon setIcon"></i><span class="title">设置</span>
+          </div>
           <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
-          </div>
-          <div class="btns fullGreen" @click="chehui">
-            <i class="icon backIcon"></i><span class="title1">撤回</span>
           </div>
         </div>
       </div>
@@ -206,7 +156,7 @@
           />
           <el-table-column prop="xm" label="姓名" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xbmc" label="性别" sortable="custom">
+          <el-table-column prop="xbmmc" label="性别" sortable="custom">
           </el-table-column>
           <el-table-column
             prop="ssdwdmmc"
@@ -216,8 +166,8 @@
           >
           </el-table-column>
           <el-table-column
-            prop="bjdmmc"
-            label="班级"
+            prop="zydmmc"
+            label="专业"
             min-width="100px"
             sortable="custom"
           >
@@ -229,42 +179,7 @@
             sortable="custom"
           >
           </el-table-column>
-          <el-table-column
-            prop="lxyy"
-            label="留校原因"
-            min-width="100px"
-            sortable="custom"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="lxkssj"
-            label="留校开始日期"
-            min-width="130px"
-            sortable="custom"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="lxjssj"
-            label="留校结束日期"
-            min-width="130px"
-            sortable="custom"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="statusChinese"
-            label="审核状态"
-            min-width="100px"
-            sortable="custom"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="shr"
-            label="审核人"
-            min-width="100px"
-            sortable="custom"
-          >
-          </el-table-column>
-          <el-table-column prop="createDwhMc" label="审核进度">
+          <!-- <el-table-column prop="createDwhMc" label="审核进度">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
@@ -272,7 +187,6 @@
               </el-button>
             </template>
           </el-table-column>
-
           <el-table-column fixed="right" label="操作" width="140">
             <template slot-scope="scope">
               <el-button
@@ -284,7 +198,7 @@
                 <span class="handleName">详情</span>
               </el-button>
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </el-table>
       </div>
       <pagination
@@ -304,13 +218,99 @@
         >
       </span>
     </el-dialog>
-    <el-dialog title="撤回" :visible.sync="chehuiModal" width="20%">
+    <el-dialog title="设置" :visible.sync="setModal" width="50%">
       <template>
-        <div style="margin-bottom: 10px">
-          <span>{{ statusName }}理由:</span>
-        </div>
-
-        <el-input placeholder="请输入理由" v-model="chehuily"></el-input>
+        <el-form
+          :model="formSet"
+          ref="formSet"
+          :rules="rules"
+          label-width="80px"
+        >
+          <el-row :gutter="20">
+            <el-col :span="6">
+              <el-form-item
+                label="培养层次"
+                prop="pyccmList"
+                :rules="rules.common"
+              >
+                <el-select
+                  v-model="formSet.pyccmList"
+                  placeholder="多选"
+                  multiple
+                >
+                  <el-option
+                    v-for="(item, index) in pyccOptions"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item
+                label="年级"
+                label-width="60px"
+                prop="ssnjList"
+                :rules="rules.common"
+              >
+                <el-select
+                  v-model="formSet.ssnjList"
+                  placeholder="多选"
+                  multiple
+                >
+                  <el-option
+                    v-for="(item, index) in allNj"
+                    :key="index"
+                    :label="item"
+                    :value="item"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item
+                label="学习形式"
+                prop="xxxsmList"
+                :rules="rules.common"
+              >
+                <el-select
+                  v-model="formSet.xxxsmList"
+                  placeholder="多选"
+                  multiple
+                >
+                  <el-option
+                    v-for="(item, index) in xxxsOps"
+                    :key="index"
+                    :label="item.mc"
+                    :value="item.dm"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item
+                label="是否在校"
+                prop="sfzxList"
+                :rules="rules.common"
+              >
+                <el-select
+                  v-model="formSet.sfzxList"
+                  placeholder="多选"
+                  multiple
+                >
+                  <el-option
+                    v-for="item in dmsfbzm"
+                    :key="item.dm"
+                    :label="item.mc"
+                    :value="item.dm"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
       </template>
       <span slot="footer" class="dialog-footer">
         <el-button @click="chCancel">取 消</el-button>
@@ -330,11 +330,16 @@
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
 import { queryXnXq } from "@/api/dailyBehavior/vocationTea";
-import { queryYshList, exportYsh } from "@/api/dailyBehavior/vacationSchoolTea";
-import { chbyId } from "@/api/common/liucheng";
+import {
+  queryYtxxsList,
+  exportYtxxs,
+  setYtxxs,
+  setYtxxsDetail,
+} from "@/api/dailyBehavior/vacationSchoolTea";
 import { queryRelatedLd } from "@/api/assistantWork/dormitory";
+import { getLevel } from "@/api/class/maintenanceClass";
 import { getBJ, getZY } from "@/api/student/index";
-import { getCollege } from "@/api/class/maintenanceClass";
+import { getCollege, getGrade } from "@/api/class/maintenanceClass";
 import lctCom from "../../../../components/lct";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
@@ -346,23 +351,21 @@ export default {
       lctModal: false,
       ztStatus: [],
       status: [],
-      datePickerStart: [],
-      datePickerEnd: [],
+      datePicker: [],
       searchVal: "",
       select: "",
       isMore: false,
       moreIform: {
         ssdwdm: [], // 学院下拉框
-        bjdm: [],
+        zydm: [],
         ld: [],
-        statusList: [],
       },
       exportParams: {},
       leng: 0,
       tableData: [],
       allDwh: [],
+      zyOps: [], // 专业下拉
       ssxxOps: [],
-      bjOps: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -380,7 +383,7 @@ export default {
         isIndeterminate: true,
       },
       multipleSelection: [],
-      chehuiModal: false,
+      setModal: false,
       chehuily: "",
       delArr: [],
       dqXnxq: [],
@@ -392,6 +395,16 @@ export default {
       },
       options: [],
       statusName: "",
+      formSet: {
+        pyccmList: [],
+        sfzxList: [],
+        ssnjList: [],
+        xxxsmList: [],
+      },
+      pyccOptions: [],
+      allNj: [], //年级下拉
+      xxxsOps: [],
+      dmsfbzm: [], //  是否
       dmxbmOPs: {
         // 性别：
         checkAll: false,
@@ -410,12 +423,13 @@ export default {
       },
     };
   },
-
   mounted() {
     this.getXnxq();
-    this.getAllCollege();
+    this.getAllOptions();
+    this.getCode1("dmrsxxxsm"); // 学习形式
     this.getCode1("dmsplcm");
-    this.getCode("dmxbm");
+    this.getCode1("dmsfbzm"); // 是否
+    this.getCode("dmxbm"); //性别
   },
 
   methods: {
@@ -447,17 +461,18 @@ export default {
     },
     changeXY(val) {
       if (val && val.length == 0) {
-        this.moreIform.bjdm = []; // 班级
+        this.moreIform.zydm = [];
       }
-      this.getBJ(val);
+      this.getZY(val);
     },
-    getBJ(val) {
-      this.bjOps = [];
+    // 学院找专业
+    getZY(val) {
+      this.zyOps = [];
       let data = { DWH: val };
       if (Object.keys(val).length !== 0) {
-        getBJ(data)
+        getZY(data)
           .then((res) => {
-            this.bjOps = res.data;
+            this.zyOps = res.data;
           })
           .catch((err) => {});
       }
@@ -468,15 +483,15 @@ export default {
     },
     // 导出确认
     handleConfirm() {
-      let ids = [];
+      let xhs = [];
       for (let item_row of this.multipleSelection) {
-        ids.push(item_row.id);
+        xhs.push(item_row.xh);
       }
       this.exportParams.pageNum = 0;
-      this.$set(this.exportParams, "ids", ids);
-      exportYsh(this.exportParams)
+      this.$set(this.exportParams, "xhs", xhs);
+      exportYtxxs(this.exportParams)
         .then((res) => {
-          this.downloadFn(res, "留校申请已处理列表导出.xlsx", "xlsx");
+          this.downloadFn(res, "未知状态人员列表导出.xlsx", "xlsx");
           if (this.$store.getters.excelcount > 0) {
             this.$message.success(
               `已成功导出${this.$store.getters.excelcount}条数据`
@@ -490,29 +505,11 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        shrxm: this.select == "shrxm" ? this.searchVal : null,
         ssdwdm: this.moreIform.ssdwdm,
-        bjdm: this.moreIform.bjdm,
+        zydm: this.moreIform.zydm,
         ld: this.moreIform.ld,
-        statusList: this.moreIform.statusList,
         xn: this.queryParams.xn,
         xqm: this.queryParams.xqm,
-        lxkssjStart:
-          this.datePickerStart && this.datePickerStart.length > 0
-            ? this.datePickerStart[0]
-            : "",
-        lxkssjEnd:
-          this.datePickerStart && this.datePickerStart.length > 0
-            ? this.datePickerStart[1]
-            : "",
-        lxjssjStart:
-          this.datePickerEnd && this.datePickerEnd.length > 0
-            ? this.datePickerEnd[0]
-            : "",
-        lxjssjEnd:
-          this.datePickerEnd && this.datePickerEnd.length > 0
-            ? this.datePickerEnd[1]
-            : "",
         xbm: this.dmxbmOPs.choose || [],
         // pyccm: this.training.choose || [],
 
@@ -531,13 +528,31 @@ export default {
           case "dmsplcm": //审批结果
             this.ztStatus = res.data;
             break;
+          case "dmrsxxxsm": //学习形式
+            this.xxxsOps = res.data;
+            break;
+          case "dmsfbzm": //是否
+            this.dmsfbzm = res.data;
+            break;
         }
       });
     },
-    getAllCollege() {
+    getAllOptions() {
       getCollege()
         .then((res) => {
           this.allDwh = res.data.rows;
+        })
+        .catch((err) => {});
+      getLevel().then((response) => {
+        // 获取培养层次列表数据
+        if (response.errcode == "00") {
+          this.pyccOptions = response.data.rows;
+        }
+      });
+      //年级
+      getGrade()
+        .then((res) => {
+          this.allNj = res.data.rows;
         })
         .catch((err) => {});
       queryRelatedLd().then((response) => {
@@ -555,29 +570,11 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        shrxm: this.select == "shrxm" ? this.searchVal : null,
         ssdwdm: this.moreIform.ssdwdm,
-        bjdm: this.moreIform.bjdm,
+        zydm: this.moreIform.zydm,
         ld: this.moreIform.ld,
-        statusList: this.moreIform.statusList,
         xn: this.queryParams.xn,
         xqm: this.queryParams.xqm,
-        lxkssjStart:
-          this.datePickerStart && this.datePickerStart.length > 0
-            ? this.datePickerStart[0]
-            : "",
-        lxkssjEnd:
-          this.datePickerStart && this.datePickerStart.length > 0
-            ? this.datePickerStart[1]
-            : "",
-        lxjssjStart:
-          this.datePickerEnd && this.datePickerEnd.length > 0
-            ? this.datePickerEnd[0]
-            : "",
-        lxjssjEnd:
-          this.datePickerEnd && this.datePickerEnd.length > 0
-            ? this.datePickerEnd[1]
-            : "",
         xbm: this.dmxbmOPs.choose || [],
         // pyccm: this.training.choose || [],
 
@@ -586,7 +583,7 @@ export default {
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryYshList(data)
+      queryYtxxsList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
@@ -673,63 +670,52 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
     },
-    chehui() {
-      if (this.delArr && this.delArr.length > 0) {
-        var flag = 1;
-        if (this.delArr.length > 1) {
-          this.$message.error("请选择单条数据！");
-        } else {
-          for (let index = 0; index < this.delArr.length; index++) {
-            if (
-              this.multipleSelection[index].status !== "10" &&
-              this.multipleSelection[index].status !== "09"
-            ) {
-              this.$message.error("请选择已通过或拒绝状态数据！");
-              flag = 2;
-              break;
-            }
-          }
-          if (flag == 1) {
-            if (this.multipleSelection[0].status == "10") {
-              this.statusName = "拒绝";
-            } else {
-              this.statusName = "已通过";
-            }
-            this.chehuily = "";
-            this.chehuiModal = true;
-          }
-        }
-      } else {
-        this.$message.error("请先勾选数据");
+    checkFormAdd() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.formSet.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
       }
+      return true;
+    },
+    setting() {
+      var data = {
+        xn: this.queryParams.xn,
+        xqm: this.queryParams.xqm,
+      };
+      //设置详情
+      setYtxxsDetail(data).then((res) => {
+        this.setModal = true;
+        this.formSet = res.data;
+      });
     },
     chConfirm() {
-      if (this.chehuily == "") {
-        this.$message.error("请输入撤回理由！");
+      if (!this.checkFormAdd()) {
+        this.$message.error("请完善表单信息！");
       } else {
-        var statusChe = "";
-        if (this.multipleSelection[0].status == "10") {
-          statusChe = "09";
-        } else {
-          statusChe = "10";
-        }
+        var aa = [];
+        console.log(this.formSet.pyccmList, aa.join(","));
         var data = {
-          id: this.multipleSelection[0].id,
-          message: this.chehuily,
-          // mkId: "5a9f04c6-dcf6-11ed-850b-52549e666099", //违纪处分模块
-          mk: "假期留校",
-          processid: this.multipleSelection[0].processId,
-          status: statusChe,
+          pyccm: this.formSet.pyccmList.join(","), //数组拼字符串
+          ssnj: this.formSet.ssnjList.join(","),
+          sfzx: this.formSet.sfzxList.join(","),
+          xxxsm: this.formSet.xxxsmList.join(","),
+          // id: "",
+          xn: this.queryParams.xn,
+          xqm: this.queryParams.xqm,
         };
-        chbyId(data).then((res) => {
+        setYtxxs(data).then((res) => {
           this.handleSearch();
-          this.chehuiModal = false;
-          this.$message.success("撤销成功");
+          this.setModal = false;
+          this.$message.success("设置成功");
         });
       }
     },
     chCancel() {
-      this.chehuiModal = false;
+      this.setModal = false;
     },
   },
 };
@@ -942,11 +928,10 @@ export default {
             background: url("~@/assets/assistantPng/add.png") no-repeat;
           }
 
-          .refuseIcon {
+          .setIcon {
             margin-top: 10px;
-            background: url("~@/assets/images/refuse.png") no-repeat;
+            background: url("~@/assets/images/set.png") no-repeat;
           }
-
           .backIcon {
             margin-top: 10px;
             background: url("~@/assets/images/back.png") no-repeat;

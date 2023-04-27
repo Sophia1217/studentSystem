@@ -199,7 +199,6 @@
             <el-form-item
               label="离校去向"
               prop="lxqxSheng"
-              label-width="100px"
               :rules="rules.common"
             >
               <div>
@@ -557,7 +556,7 @@ export default {
     //点击详情
     hadleDetail(row) {
       this.addModalLi = true;
-      console.log("row", row);
+      // console.log("row", row);
       this.formAddLi = row;
     },
     EditStatus() {

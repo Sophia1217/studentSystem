@@ -269,7 +269,7 @@
           <div style="margin-top: 10px">
             <el-row>
               <el-col :span="4">
-                <div class="label">可服务时间段</div>
+                <div class="label">可服务时间段（多选）</div>
               </el-col>
             </el-row>
 
@@ -343,6 +343,38 @@
                 </template>
               </el-table-column>
             </el-table>
+          </div>
+        </div>
+        <div class="headline">
+          <div>自身学业情况简述</div>
+        </div>
+        <div class="tableStyle">
+          <div class="inputArea" style="margin-bottom: 20px">
+            <el-form-item prop="bz1" :rules="rules.common">
+              <el-input
+                type="textarea"
+                :rows="5"
+                maxlength="500"
+                v-model="detailInfoData.bz1"
+                :readonly="flag != 1"
+              />
+            </el-form-item>
+          </div>
+        </div>
+        <div class="headline">
+          <div>申请理由简述</div>
+        </div>
+        <div class="tableStyle">
+          <div class="inputArea" style="margin-bottom: 20px">
+            <el-form-item prop="bz2" :rules="rules.common">
+              <el-input
+                type="textarea"
+                :rows="5"
+                maxlength="500"
+                v-model="detailInfoData.bz2"
+                :readonly="flag != 1"
+              />
+            </el-form-item>
           </div>
         </div>
         <!-- 课程计划及预期效果 -->

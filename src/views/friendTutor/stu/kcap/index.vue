@@ -51,26 +51,20 @@
             </template>
           </el-table-column>
           <el-table-column prop="kkdd" label="开课地点"> </el-table-column>
-          <el-table-column
-            prop="sfpj"
-            label="评价"
-            sortable="custom"
-            :show-overflow-tooltip="true"
-            fixed="right"
-          >
+          <el-table-column label="发起评价" sortable="custom">
             <template slot-scope="scope">
               <el-button
                 type="text"
                 size="small"
                 disabled
-                v-if="scope.row.sfpj == 1"
+                v-if="scope.row.sfkspj == 1"
               >
                 <span> 已评价 </span>
               </el-button>
               <el-button
                 type="text"
                 size="small"
-                @click="chModal(scope.row)"
+                @click="pjCLI(scope.row)"
                 v-else
               >
                 <span> 评价 </span>
@@ -84,14 +78,6 @@
             width="240"
           >
             <template slot-scope="scope">
-              <el-button
-                type="text"
-                size="small"
-                @click="showDetail(scope.row)"
-              >
-                <i class="scopeIncon handledie"></i>
-                <span style="margin-left: 5px">详情</span>
-              </el-button>
               <el-button type="text" size="small" @click="daka(scope.row)">
                 <span style="margin-left: 5px">打卡</span>
               </el-button>
@@ -177,7 +163,7 @@
 </template>
 <script>
 import { apply, comment, reject } from "@/api/friendTutor/classSet";
-import { kcapStuList, thInfo, getQrcode } from "@/api/kcpk";
+import { kcapStuList, thInfo, getQrcode, upList } from "@/api/kcpk";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
   data() {
@@ -233,6 +219,32 @@ export default {
   },
 
   methods: {
+    pjCLI(row) {
+      var data = {
+        id: row.id,
+        sfkspj: "1",
+      };
+      this.$confirm("是否开启评价?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          upList(data).then((res) => {
+            this.$message({
+              type: "success",
+              message: "开启评价成功!",
+            });
+            this.query();
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消评价",
+          });
+        });
+    },
     daka(row) {
       var data = {
         kcId: row.id,

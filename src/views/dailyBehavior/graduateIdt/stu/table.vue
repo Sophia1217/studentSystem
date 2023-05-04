@@ -1,6 +1,6 @@
 <template>
   <div class="wrap">
-    <topTitle :routeTitle="routeTitle"></topTitle>
+    <!-- <topTitle :routeTitle="routeTitle"></topTitle> -->
     <!-- 基本情况 -->
     <div class="detail_right">
       <div class="right_top">

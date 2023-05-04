@@ -1467,6 +1467,62 @@ export const stuRoutes = [
     "childrenId": null,
     "auth": "1"
   },
+  {
+    "id": 0,
+    "modId": "5138",
+    "name": "graduateIdtyjs",
+    "path": "/graduateIdtyjs",
+    "title": "毕业生鉴定研究生",
+    "component": "dailyBehavior/graduateIdt/stu/tableyjs",
+    "icon": "",
+    "modPid": "-1",
+    "isChild": "2",
+    "sortId": 38,
+    "modStatus": "1",
+    "hidden": true,
+    "alwaysShow": true,
+    "rem": "",
+    "roleIds": null,
+    "isChecked": null,
+    "vueChecked": false,
+    "meta": {
+      "icon": "",
+      "title": "毕业生鉴定研究生"
+    },
+    "children": [
+
+    ],
+    "childrenId": null,
+    "auth": "1"
+  },
+  {
+    "id": 0,
+    "modId": "5139",
+    "name": "graduateIdtList",
+    "path": "/graduateIdtList",
+    "title": "毕业生鉴定",
+    "component": "dailyBehavior/graduateIdt/stu/index",
+    "icon": "",
+    "modPid": "-1",
+    "isChild": "2",
+    "sortId": 39,
+    "modStatus": "1",
+    "hidden": true,
+    "alwaysShow": true,
+    "rem": "",
+    "roleIds": null,
+    "isChecked": null,
+    "vueChecked": false,
+    "meta": {
+      "icon": "",
+      "title": "毕业生鉴定"
+    },
+    "children": [
+
+    ],
+    "childrenId": null,
+    "auth": "1"
+  },
     ];
 
 // 动态路由，基于用户权限动态去加载

@@ -520,15 +520,18 @@ export default {
       });
     },
     bysjdbClick() {
-      if (this.benkeShow) {
-        this.$router.push({
-          path: "/graduateIdentification",
-        });
-      } else {
-        this.$router.push({
-          path: "/graduateIdtYjs",
-        });
-      }
+      // if (this.benkeShow) {
+      //   this.$router.push({
+      //     path: "/graduateIdentification",
+      //   });
+      // } else {
+      //   this.$router.push({
+      //     path: "/graduateIdtYjs",
+      //   });
+      // }
+      this.$router.push({
+        path: "/graduateIdtList",
+      });
     },
     jiangzhuClick() {
       this.$router.push({

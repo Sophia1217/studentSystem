@@ -1,0 +1,1380 @@
+<template>
+  <div class="wrap">
+    <!-- 基本情况 -->
+    <div class="detail_right">
+      <div class="right_top">
+        <p class="toptitle">华中师范大学生涯发展与求职咨询登记表</p>
+      </div>
+      <!-- 学生本人基本情况 -->
+      <div class="headline">学生本人基本情况</div>
+      <div class="tableStyle">
+        <div class="information">
+          <el-row :gutter="20">
+            <el-col :span="8" class="rowStyle">
+              <div class="wrap">
+                <div class="title">学号</div>
+                <div class="content">
+                  {{ detailInfoData.xh }}
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="8" class="rowStyle">
+              <div class="wrap">
+                <div class="title">姓名</div>
+                <div class="content">
+                  {{ detailInfoData.xm }}
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="8" class="rowStyle">
+              <div class="wrap">
+                <div class="title">性别</div>
+                <div class="content">
+                  {{ detailInfoData.xb }}
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8" class="rowStyle">
+              <div class="wrap">
+                <div class="title">学院</div>
+                <div class="content">
+                  {{ detailInfoData.dwmc }}
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="8" class="rowStyle">
+              <div class="wrap">
+                <div class="title">专业</div>
+                <div class="content">
+                  {{ detailInfoData.zymc }}
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="8" class="rowStyle">
+              <div class="wrap">
+                <div class="title">年级</div>
+                <div class="content">
+                  {{ detailInfoData.nj }}
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8" class="rowStyle">
+              <div class="wrap">
+                <div class="title">是否毕业生</div>
+                <div class="content">
+                  <el-radio-group v-model="tableData.sfgcxs">
+                    <el-radio label="1" size="large">是</el-radio>
+                    <el-radio label="2" size="large">否</el-radio>
+                  </el-radio-group>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="8" class="rowStyle">
+              <div class="wrap">
+                <div class="title">手机</div>
+                <div class="content">
+                  {{ detailInfoData.yddh }}
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="8" class="rowStyle">
+              <div class="wrap">
+                <div class="title">QQ</div>
+                <div class="content">
+                  {{ detailInfoData.qqhm }}
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+
+      <!-- 来访者教育信息 -->
+      <div class="headline">来访者教育信息</div>
+      <div class="tableStyle">
+        <div class="information">
+          <el-row :gutter="20">
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">高中就读学校</div>
+                <div class="content">
+                  {{ detailInfoData.gzjdxx }}
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">高中毕业年份</div>
+                <div class="content">
+                  {{ detailInfoData.gzbynf }}
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">本（专）科就读学校及专业</div>
+                <div class="content">
+                  {{ detailInfoData.bzkjdxxjzy }}
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">本（专科）毕业年份</div>
+                <div class="content">
+                  {{ detailInfoData.bzkbynf }}
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">硕士就读学校及专业</div>
+                <div class="content">
+                  {{ detailInfoData.ssjdxxjzy }}
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">硕士毕业年份</div>
+                <div class="content">
+                  {{ detailInfoData.ssbynf }}
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">接受职业资格证书培训情况</div>
+                <div class="content">
+                  <el-input v-model="tableData.zyzgzs" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">在教育方面的抱负是怎样的</div>
+                <div class="content">
+                  <el-input v-model="tableData.jyfmbf" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <!-- 来访者实习实践信息 -->
+      <div class="headline">来访者实习实践信息</div>
+      <div class="tableStyle">
+        <div class="information">
+          <el-row :gutter="20">
+            <el-col :span="24" class="rowStyle">
+              <div class="wrap">
+                <div class="title">实习实践经历1</div>
+                <div class="content">
+                  <el-input v-model="tableData.sxsjjl1" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="24" class="rowStyle">
+              <div class="wrap">
+                <div class="title">实习实践经历2</div>
+                <div class="content">
+                  <el-input v-model="tableData.sxsjjl2" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="24" class="rowStyle">
+              <div class="wrap">
+                <div class="title">实习实践经历3</div>
+                <div class="content">
+                  <el-input v-model="tableData.sxsjjl3" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">特殊爱好</div>
+                <div class="content">
+                  <el-input v-model="tableData.tsah" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">休闲兴趣</div>
+                <div class="content">
+                  <el-input v-model="tableData.xxxq" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">志愿者工作</div>
+                <div class="content">
+                  <el-input v-model="tableData.zyzgz" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">其他公益活动</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtgyhd" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">任学生干部经历</div>
+                <div class="content">
+                  <el-input v-model="tableData.xsgbjl" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">其他实践经历</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <!-- 来访者生涯发展信息 -->
+      <div class="headline">来访者生涯发展信息</div>
+      <div class="tableStyle">
+        <!-- <div class="pieceName">学生本学年已获资助情况</div> -->
+        <div class="inputArea">
+          <div class="title">当前生涯抱负</div>
+          <div class="content">
+            <el-input
+              type="textarea"
+              :rows="5"
+              maxlength="500"
+              v-model="tableData.dqsybf"
+            />
+          </div>
+          <div class="title">
+            什么人或事对来访者的生涯（或职业）产生了重大影响？
+          </div>
+          <div class="content">
+            <el-input
+              type="textarea"
+              :rows="5"
+              maxlength="500"
+              v-model="tableData.rssyyx"
+            />
+          </div>
+
+          <div class="title">来访者童年时对职业的兴趣或幻想是什么？</div>
+          <div class="content">
+            <el-input
+              type="textarea"
+              :rows="5"
+              maxlength="500"
+              v-model="tableData.tnzyxq"
+            />
+          </div>
+          <div class="title">来访者现在喜欢什么样的休闲活动或爱好？</div>
+          <div class="content">
+            <el-input
+              type="textarea"
+              :rows="5"
+              maxlength="500"
+              v-model="tableData.xzxxah"
+            />
+          </div>
+          <div class="title">来访者过去喜欢什么样的休闲活动或爱好？</div>
+          <div class="content">
+            <el-input
+              type="textarea"
+              :rows="5"
+              maxlength="500"
+              v-model="tableData.gqxxah"
+            />
+          </div>
+          <div class="title">
+            来访者是否有任何一种身体缺陷及其对生涯发展产生了什么样的影响？
+          </div>
+          <div class="content">
+            <el-input
+              type="textarea"
+              :rows="5"
+              maxlength="500"
+              v-model="tableData.sfstqxyx"
+            />
+          </div>
+          <div class="title">对于当前的处境，来访者最满意的是什么？</div>
+          <div class="content">
+            <el-input
+              type="textarea"
+              :rows="5"
+              maxlength="500"
+              v-model="tableData.dqzmy"
+            />
+          </div>
+          <div class="title">对于当前的处境，来访者最不满意的是什么？</div>
+          <div class="content">
+            <el-input
+              type="textarea"
+              :rows="5"
+              maxlength="500"
+              v-model="tableData.dqzbmy"
+            />
+          </div>
+        </div>
+      </div>
+      <!-- 来访者关注的问题 -->
+      <div class="headline">来访者关注的问题</div>
+      <div class="tableStyle">
+        <div class="checkbox">
+          <checkboxCom
+            :objProp="dmxbmOPs"
+            @checkedTraining="dmxbmCheck"
+          ></checkboxCom>
+        </div>
+      </div>
+      <!-- </div>采访者心理状态信息 -->
+      <div class="headline">采访者心理状态信息</div>
+
+      <div class="more" @click="handleMore">
+        <i v-if="!isMore" class="moreIcon chevronDown"></i>
+        <i v-else class="moreIcon chevronUp"></i>
+      </div>
+      <div class="backDetail" v-if="isMore">
+        <div class="formLeft">
+          <div class="title">外貌</div>
+        </div>
+        <div class="formRight">
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">整体印象</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">清爽干净</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">打扮合适</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">特殊的身体特征</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div class="backDetail" v-if="isMore">
+        <div class="formLeft">
+          <div class="title">行为</div>
+        </div>
+        <div class="formRight">
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">
+                  对咨询师的态度（眼神交流、是否愿意回答问题）
+                </div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">习惯（抽烟、身体左右摇摆等）</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">动作迟缓或坐立不安</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">颤栗或痉挛</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">明显的残疾（视觉、听觉、运动）</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">其它不寻常怪癖</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div class="backDetail" v-if="isMore">
+        <div class="formLeft">
+          <div class="title">言语</div>
+        </div>
+        <div class="formRight">
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">发音或沟通有困难</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">言语有压力或缓慢</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24" class="rowStyle">
+              <div class="wrap">
+                <div class="title">奇特的言语或用词</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div class="backDetail" v-if="isMore">
+        <div class="formLeft">
+          <div class="title">情绪</div>
+        </div>
+        <div class="formRight">
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">可观察到的情绪</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">情绪是否恰当</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">心境是否稳定</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">情感平淡或迟钝</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div class="backDetail" v-if="isMore">
+        <div class="formLeft">
+          <div class="title">对现实的定位</div>
+        </div>
+        <div class="formRight">
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">对时间的觉察（年、月、日、时）</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">对地点的觉察（面谈在哪里进行）</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">对人的觉察（咨询师是谁、来访者是谁）</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">对情境的觉察（现在正在进行什么）</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div class="backDetail" v-if="isMore">
+        <div class="formLeft">
+          <div class="title">专心与贯注</div>
+        </div>
+        <div class="formRight">
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">
+                  能够聚焦于刺激（如让来访者颠倒重复3个词语，或重复至少五个不连续的阿拉伯数字）
+                </div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">
+                  能够保持注意力（如让来访者从100中减去17）
+                </div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24" class="rowStyle">
+              <div class="wrap">
+                <div class="title">
+                  能够保持警觉并做出反应（或者打瞌睡和/或分神）
+                </div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div class="backDetail" v-if="isMore">
+        <div class="formLeft">
+          <div class="title">思维过程</div>
+        </div>
+        <div class="formRight">
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">能够进行抽象思维</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">想入非非</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">松散的联想</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">重复或反复言语</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">思维的连贯或持续性</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">反应迟钝或混乱</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div class="backDetail" v-if="isMore">
+        <div class="formLeft">
+          <div class="title">思维内容</div>
+        </div>
+        <div class="formRight">
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">自杀观念</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">暴力或攻击性</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">妄想症</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">强迫观念或强迫性冲动</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">受迫害的观念</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">恐惧或恐怖症</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24" class="rowStyle">
+              <div class="wrap">
+                <div class="title">其它显著的思维</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div class="backDetail" v-if="isMore">
+        <div class="formLeft">
+          <div class="title">知觉</div>
+        </div>
+        <div class="formRight">
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">幻觉（列举类型）</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">其它异常的感觉经验</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div class="backDetail" v-if="isMore">
+        <div class="formLeft">
+          <div class="title">记忆</div>
+        </div>
+        <div class="formRight">
+          <el-row>
+            <el-col :span="24" class="rowStyle">
+              <div class="wrap">
+                <div class="title">即时记忆的准确性</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">
+                  短时记忆的准确性（面谈中途对最初面谈时所提供信息的记忆）
+                </div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">
+                  长时记忆的准确性（对过去几天、几周或几个月之内的信息的记忆）
+                </div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div class="backDetail" v-if="isMore">
+        <div class="formLeft">
+          <div class="title">智力</div>
+        </div>
+        <div class="formRight">
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">教育水平</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">词汇量水平</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24" class="rowStyle">
+              <div class="wrap">
+                <div class="title">整体智力情况</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div class="backDetail" v-if="isMore">
+        <div class="formLeft">
+          <div class="title">判断与洞察</div>
+        </div>
+        <div class="formRight">
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">做决策的能力</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">解决问题的能力</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">对自身问题的性质的觉察</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">易冲动性</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24" class="rowStyle">
+              <div class="wrap">
+                <div class="title">自我意象的特征（特别是优点和缺点）</div>
+                <div class="content">
+                  <el-input v-model="tableData.qtsjjl" maxlength="100" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div class="headline">采访者的疾病史</div>
+      <div class="tableStyle">
+        <div class="information">
+          <el-row :gutter="20">
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">过去有何种疾病</div>
+                <div class="content">
+                  <el-input v-model="tableData.sxsjjl1" />
+                </div>
+              </div>
+            </el-col>
+
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">过去有何种疾病2</div>
+                <div class="content">
+                  <el-input v-model="tableData.sxsjjl2" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">发生过哪些重大事故</div>
+                <div class="content">
+                  <el-input v-model="tableData.sxsjjl1" />
+                </div>
+              </div>
+            </el-col>
+
+            <el-col :span="12" class="rowStyle">
+              <div class="wrap">
+                <div class="title">
+                  疾病和重大事故对来访者的生涯发展产生了什么样的影响？
+                </div>
+                <div class="content">
+                  <el-input v-model="tableData.sxsjjl2" />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div class="headline">咨询规划</div>
+      <div class="tableStyle">
+        <el-table :data="tableData" style="width: 100%">
+          <el-table-column
+            type="index"
+            label="序号"
+            width="50"
+          ></el-table-column>
+          <el-table-column prop="xh" label="规划日期" width="100">
+          </el-table-column>
+          <el-table-column prop="xm" label="规划时间" width="85">
+          </el-table-column>
+
+          <el-table-column prop="dwhmc" label="实际咨询日期"> </el-table-column>
+          <el-table-column prop="zydmmc" label="实际咨询时间">
+          </el-table-column>
+          <el-table-column prop="fwfxMc" label="面谈方式"> </el-table-column>
+
+          <el-table-column fixed="right" label="过程简述及建议" width="140">
+            <template slot-scope="scope">
+              <el-button
+                type="text"
+                size="small"
+                @click="hadleDetail(scope.row)"
+              >
+                <span class="handleName">简述及建议</span>
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div style="padding: 30px">
+        <span> 咨询过程中是否帮来访者修改了简历</span>
+        <el-radio-group v-model="radio">
+          <el-radio :label="true">是</el-radio>
+          <el-radio :label="false">否</el-radio>
+        </el-radio-group>
+      </div>
+    </div>
+
+    <div class="editBottom">
+      <div class="btn cancel" @click="handleCancle">取消</div>
+      <div class="btn confirm" @click="handlUpdata">提交</div>
+    </div>
+    <el-dialog title="简述及建议" :visible.sync="showAdvice" width="50%">
+      <el-form :model="advice">
+        <el-form-item label="过程简述">
+          <el-input
+            type="textarea"
+            :rows="5"
+            maxlength="500"
+            v-model="tableData.dqsybf"
+        /></el-form-item>
+        <el-form-item label="咨询师建议">
+          <el-input
+            type="textarea"
+            :rows="5"
+            maxlength="500"
+            v-model="tableData.dqsybf"
+        /></el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancelAdvice">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="confirmAdvice"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+  </div>
+</template>
+<script>
+import CheckboxCom from "../../../components/checkboxCom";
+import { InsertJtList, GetDetail } from "@/api/familyDifficulties/table";
+import { getXsJbxx } from "@/api/career/bookStu";
+import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+export default {
+  components: { CheckboxCom },
+  data() {
+    return {
+      isEdit: 2,
+      nd: "",
+      xh: "",
+      activeName: "0",
+      detailInfoData: {},
+      jtList: [],
+      njOptions: [],
+      lwjbmOps: [],
+      pxjbmOps: [], //培训级别码
+      tableData: {},
+      checked: true,
+      isMore: false,
+      dmxbmOPs: {
+        // 性别：
+        // checkAll: false,
+        choose: [],
+        checkBox: [
+          { dm: "01", mc: "1. 渴望提升自己" },
+          { dm: "02", mc: "2. 需要生涯决策方面的帮助" },
+          { dm: "03", mc: "3. 对于职业选择不确定" },
+        ],
+        isIndeterminate: true,
+      },
+      showAdvice: false,
+      advice: {},
+    };
+  },
+  created() {},
+  mounted() {
+    this.getCode("dmlwkwjbm");
+    this.getCode("dmpxjbm");
+    this.getDetail();
+    this.xh = this.$store.getters.userId;
+  },
+  methods: {
+    handleMore() {
+      this.isMore = !this.isMore;
+    },
+    getDetail() {
+      getXsJbxx({ xh: this.$store.getters.userId }).then((res) => {
+        // this.tableData = res.data.addList;
+        this.detailInfoData = res.data;
+        // this.jtList = res.data.jtList;
+      });
+    },
+    getCode(data) {
+      this.getCodeInfoByEnglish(data);
+    },
+    getCodeInfoByEnglish(paramsData) {
+      const data = { codeTableEnglish: paramsData };
+      getCodeInfoByEnglish(data).then((res) => {
+        switch (paramsData) {
+          case "dmlwkwjbm":
+            this.lwjbmOps = res.data;
+            break;
+          case "dmpxjbm":
+            this.pxjbmOps = res.data;
+            break;
+        }
+      });
+    },
+    editButtonClick() {
+      this.isEdit = 1;
+    },
+    handleBack() {
+      this.$router.go(-1);
+    },
+    handleCancle() {
+      this.isEdit = 2;
+      this.$router.go(-1);
+    },
+    handlUpdata() {
+      if (!this.checked) {
+        this.$message.error("请勾选承诺协议!");
+      } else {
+        this.$set(this.tableData, "xh", this.xh);
+        // this.$set(this.tableData, "xm", this.detailInfoData.xm);
+        // this.$set(this.tableData, "jtcyList", this.jtList);
+        this.$set(this.tableData, "yyid", "11");
+        this.$set(this.tableData, "mtfs", "1"); //1线上，2线下
+        let data = this.tableData;
+        InsertJtList(data)
+          .then((res) => {
+            this.$message.success("提交成功");
+            // this.getDetail();
+            this.$router.go(-1);
+          })
+          .catch((err) => {});
+      }
+    },
+    //关注问题多选
+    dmxbmCheck(value) {
+      let checkedCount = value.length;
+      // this.dmxbmOPs.checkAll = checkedCount === this.dmxbmOPs.checkBox.length;
+      this.dmxbmOPs.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.dmxbmOPs.checkBox.length;
+      // console.log(this.dmxbmOPs.choose, "单选");
+    },
+    cancelAdvice() {
+      this.showAdvice = false;
+    },
+    confirmAdvice() {
+      this.showAdvice = false;
+    },
+    hadleDetail() {
+      this.showAdvice = true;
+    },
+  },
+};
+</script>
+<style lang="scss" scoped>
+.wrap {
+  display: flex;
+  flex-direction: row;
+  .detail_right {
+    flex: 1;
+    background: #fff;
+    padding: 30px;
+    .right_top {
+      .toptitle {
+        text-align: center;
+        font-weight: 500;
+        font-size: 24px;
+        color: #005657;
+        line-height: 24px;
+      }
+      .timeWrap {
+        text-align: center;
+        font-weight: 400;
+        font-size: 16px;
+        color: #383838;
+        line-height: 28px;
+        .updataTime {
+          margin-left: 20px;
+        }
+      }
+    }
+    .headline {
+      padding-left: 20px;
+      box-sizing: border-box;
+      font-weight: 600;
+      font-size: 20px;
+      color: #000;
+      line-height: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .editBtn {
+        padding: 4px 5px;
+        margin-right: 20px;
+        // border: 1px solid #005657;
+        border-radius: 4px;
+        font-weight: 400;
+        font-size: 14px;
+        color: #005657;
+        cursor: pointer;
+        .addIcon {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          background: url("~@/assets/images/arrowDown.png") no-repeat;
+          vertical-align: middle;
+          margin-bottom: 4px;
+        }
+      }
+    }
+    .more {
+      flex: 0 0 100px;
+      margin-left: 20px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      color: #005657;
+      cursor: pointer;
+      .moreIcon {
+        display: block;
+        width: 20px;
+        height: 20px;
+      }
+      .chevronDown {
+        background: url("~@/assets/images/chevronDown.png") no-repeat;
+      }
+      .chevronUp {
+        background: url("~@/assets/images/chevronUp.png") no-repeat;
+      }
+    }
+    .tableStyle {
+      position: relative;
+      padding: 20px;
+      .information {
+        padding: 0 20px;
+        .rowStyle {
+          padding: 0 !important;
+          margin: 0;
+          border-bottom: 1px solid #cccccc;
+        }
+        .wrap {
+          display: flex;
+          align-items: center;
+          .title {
+            flex: 0 0 200px;
+            line-height: 48px;
+            background: #e0e0e0;
+            text-align: right;
+            padding-right: 5px;
+            margin: 0 !important;
+          }
+          .content {
+            font-weight: 400;
+            font-size: 14px;
+            color: #1f1f1f;
+            line-height: 22px;
+            margin-left: 16px;
+          }
+        }
+      }
+      .pieceName {
+        box-sizing: border-box;
+        padding-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 500;
+        font-size: 18px;
+        color: #1f1f1f;
+        line-height: 28px;
+      }
+      .inputArea {
+        display: flex;
+        flex-direction: column;
+        //align-items: center;
+        .title {
+          //   flex: 0 0 160px;
+          //   line-height: 48px;
+          //   background: #e0e0e0;
+          //   text-align: right;
+          //   padding-right: 5px;
+          //   margin: 0 !important;
+          font-weight: 400;
+          font-size: 16px;
+          color: #1f1f1f;
+          line-height: 22px;
+          margin: 16px;
+          text-align: left;
+        }
+        .content {
+          .cishu {
+            margin-bottom: 10px;
+          }
+        }
+      }
+      .tableArea {
+        padding-right: 20px;
+        padding-left: 20px;
+      }
+    }
+    .backDetail {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: row;
+      border-style: solid;
+      border-width: 1px;
+      border-color: #cccccc;
+      .formLeft {
+        width: 15%;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        .title {
+          width: 100%;
+          text-align: center;
+        }
+      }
+      .formRight {
+        width: 85%;
+        .rowStyle {
+          padding: 0 !important;
+          margin: 0;
+          border-bottom: 1px solid #cccccc;
+        }
+        .wrap {
+          display: flex;
+          align-items: center;
+          .title {
+            flex: 0 0 160px;
+            line-height: 48px;
+            background: #e0e0e0;
+            text-align: right;
+            padding-right: 5px;
+            margin: 0 !important;
+          }
+          .content {
+            display: flex;
+            font-weight: 400;
+            font-size: 14px;
+            color: #1f1f1f;
+            line-height: 22px;
+            margin-left: 16px;
+          }
+        }
+      }
+    }
+  }
+  .editBottom {
+    width: 100%;
+    height: 60px;
+    background: #fff;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 -2px 6px -1px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    .btn {
+      width: 84px;
+      height: 36px;
+      line-height: 36px;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid #005657;
+      border-radius: 2px;
+      margin-right: 20px;
+    }
+    .cancel {
+      color: #005657;
+    }
+    .confirm {
+      background: #005657;
+      color: #fff;
+    }
+    .editIcon {
+      background: #005657;
+      color: #fff;
+      // background: url('~@/assets/images/icon_edit_white.png');
+    }
+  }
+}
+</style>

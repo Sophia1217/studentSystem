@@ -188,3 +188,11 @@ export function getByjdYjsDetail(query) {
     data: query
   })
 }
+
+export function querybyjdsqList(query) {
+  return request({
+    url: '/rcswByjd/querybyjdsqList',
+    method: 'post',
+    data: query
+  })
+}

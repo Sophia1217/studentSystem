@@ -295,6 +295,7 @@ import {
   deleteList,
   queryTeaInfoByGh,
   detail,
+  downLoad,
 } from "@/api/career/zxs";
 import { getXmXgh } from "@/api/assistantWork/homeSchool";
 import { getToken } from "@/utils/auth";
@@ -314,7 +315,7 @@ export default {
   },
   data() {
     return {
-      uploadUrl: process.env.VUE_APP_BASE_API + "/rcswJtknXjmd/import",
+      uploadUrl: process.env.VUE_APP_BASE_API + "/syfzZxsb/importExcel",
       showExport: false,
       lctModal: false,
       showRemove: false,
@@ -404,10 +405,10 @@ export default {
       this.addModel = false;
     },
     mbDown() {
-      //   downLoad().then((res) => {
-      //     this.downloadFn(res, "名单维护模板下载", "xlsx");
-      //     this.$message.success("下载成功！");
-      //   });
+      downLoad().then((res) => {
+        this.downloadFn(res, "咨询师列表模板下载", "xlsx");
+        this.$message.success("下载成功！");
+      });
     },
     upLoadError(err, file, fileList) {
       this.$message({

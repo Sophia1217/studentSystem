@@ -673,6 +673,8 @@ export default {
           byjdXxjlListRes: this.tableData,
           rcswByjdJbxxRes: this.detailInfoData,
           xh: this.xh,
+          // id: this.detailInfoData.id,
+          // processid: this.detailInfoData.processid,
         };
         updateByjdDetail(data)
           .then((res) => {
@@ -694,9 +696,11 @@ export default {
     },
     tj() {
       let data = {
-        byjdXxjlListRes: this.tableData,
-        rcswByjdJbxxRes: this.detailInfoData,
-        xh: this.xh,
+        // byjdXxjlListRes: this.tableData,
+        // rcswByjdJbxxRes: this.detailInfoData,
+        // xh: this.xh,
+        id: this.detailInfoData.id,
+        processid: this.detailInfoData.processid,
       };
       tjByjd(data).then((res) => {
         if (res.errcode == "00") {
@@ -727,9 +731,8 @@ export default {
     },
     ch() {
       let data = {
-        byjdXxjlListRes: this.tableData,
-        rcswByjdJbxxRes: this.detailInfoData,
-        xh: this.xh,
+        id: this.detailInfoData.id,
+        processid: this.detailInfoData.processid,
       };
       byjdCxById(data).then((res) => {
         this.$message.success("撤回成功");

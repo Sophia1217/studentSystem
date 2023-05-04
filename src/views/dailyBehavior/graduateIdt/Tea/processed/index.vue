@@ -470,10 +470,17 @@ export default {
         .catch((err) => {});
     },
     hadleDetail(row) {
-      this.$router.push({
-        path: "/dailyBehavior/graduateIdt/graDetail",
-        query: { xh: row.xh, taskId: row.taskId, isEdit: 2 },
-      });
+      if (row.pyccm == "3") {
+        this.$router.push({
+          path: "/dailyBehavior/graduateIdt/graDetail",
+          query: { xh: row.xh, taskId: row.taskId, isEdit: 2 },
+        });
+      } else {
+        this.$router.push({
+          path: "/dailyBehavior/graduateIdt/graDetailYjs",
+          query: { xh: row.xh, taskId: row.taskId, isEdit: 2 },
+        });
+      }
     },
     editClick() {
       if (!this.editDetails.shjg) {

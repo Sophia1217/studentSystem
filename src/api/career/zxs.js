@@ -47,3 +47,14 @@ export function detail(query) {
     params: query
   })
 }
+
+
+//教师端-模板下载
+export function downLoad(query) {
+  return request({
+    url: '/syfzZxsb/downLoad',
+    method: 'post',
+   responseType:'blob',
+    data: query
+  })
+}

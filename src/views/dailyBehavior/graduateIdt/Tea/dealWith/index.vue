@@ -449,10 +449,17 @@ export default {
         .catch((err) => {});
     },
     hadleDetail(row) {
-      this.$router.push({
-        path: "/dailyBehavior/graduateIdt/graDetail",
-        query: { xh: row.xh, taskId: row.taskId, isEdit: 3 },
-      });
+      if (row.pyccm == "3") {
+        this.$router.push({
+          path: "/dailyBehavior/graduateIdt/graDetail",
+          query: { xh: row.xh, taskId: row.taskId, isEdit: 3 },
+        });
+      } else {
+        this.$router.push({
+          path: "/dailyBehavior/graduateIdt/graDetailYjs",
+          query: { xh: row.xh, taskId: row.taskId, isEdit: 3 },
+        });
+      }
     },
     detailCancel() {
       this.detailModal = false;

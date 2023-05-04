@@ -1,6 +1,5 @@
 <template>
   <div class="wrap">
-    <topTitle :routeTitle="routeTitle"></topTitle>
     <!-- 基本情况 -->
     <div class="detail_right">
       <div class="right_top">
@@ -91,9 +90,6 @@
         <!-- 获奖情况 -->
         <div class="headline" style="margin-top: 40px">
           <div>获奖情况</div>
-          <div class="editBtn" @click="addDetailInfoData(1)" v-if="isEdit == 1">
-            <i class="addIcon" /> 新增
-          </div>
         </div>
         <div class="tableStyle">
           <el-table :data="tableData1" style="width: 100%">
@@ -105,9 +101,6 @@
         <!-- 科研情况 -->
         <div class="headline">
           <div>科研情况</div>
-          <div class="editBtn" @click="addDetailInfoData(2)" v-if="isEdit == 1">
-            <i class="addIcon" /> 新增
-          </div>
         </div>
         <div class="tableStyle">
           <el-table :data="tableData2" style="width: 100%">
@@ -121,9 +114,6 @@
         <!-- 实践情况 -->
         <div class="headline">
           <div>实践情况</div>
-          <div class="editBtn" @click="addDetailInfoData(3)" v-if="isEdit == 1">
-            <i class="addIcon" /> 新增
-          </div>
         </div>
         <div class="tableStyle">
           <el-table :data="tableData3" style="width: 100%">
@@ -136,9 +126,6 @@
         <!-- 本人建立 -->
         <div class="headline">
           <div>本人简历</div>
-          <div class="editBtn" @click="addDetailInfoData(4)" v-if="isEdit == 1">
-            <i class="addIcon" /> 新增
-          </div>
         </div>
         <div class="tableStyle">
           <el-table :data="tableData4" style="width: 100%">
@@ -157,24 +144,11 @@
                 <div>{{ scope.row.crdzzwmc }}</div>
               </template>
             </el-table-column>
-            <!-- <el-table-column type="fixed" label="操作" v-if="isEdit == 1">
-              <template slot-scope="scope">
-                <div
-                  class="deleteBtn"
-                  @click="deleteWorkBrifeData(scope.row, scope.$index)"
-                >
-                  <i class="el-icon-close" />
-                </div>
-              </template>
-            </el-table-column> -->
           </el-table>
         </div>
         <!-- 实践情况 -->
         <div class="headline">
           <div>主要家庭成员及社会关系</div>
-          <div class="editBtn" @click="addDetailInfoData(5)" v-if="isEdit == 1">
-            <i class="addIcon" /> 新增
-          </div>
         </div>
         <div class="tableStyle">
           <el-table :data="tableData5" style="width: 100%">
@@ -199,7 +173,7 @@
                   maxlength="1500"
                   show-word-limit
                   v-model="formAdd.zwjd"
-                  :readonly="isEdit == 2"
+                  readonly
                 />
               </div>
             </el-form-item>
@@ -212,7 +186,7 @@
                 show-word-limit
                 v-model="formAdd.bzjd"
                 placeholder="导师审核时需要填写"
-                readonly
+                :readonly="flag != 1 || isEdit != 2"
               />
             </div>
             <div class="title">研究生培养单位意见</div>
@@ -224,7 +198,7 @@
                 show-word-limit
                 v-model="formAdd.ydzzyj"
                 placeholder="培养单位审核时需要填写"
-                readonly
+                :readonly="flag != 2 || isEdit != 2"
               />
             </div>
           </div>
@@ -236,40 +210,49 @@
     <!-- <div class="editBottom" v-show="isEdit == 1">
       <div class="btn confirm" @click="handlUpdata">保存</div>
     </div> -->
-    <div v-if="isEdit != 1" class="editBottom">
+    <div class="editBottom">
       <div class="btn cancel" @click="lctClick">审核记录</div>
-      <div class="btn cancel" @click="chModal">撤回</div>
-
-      <div class="btn editIcon" @click="tjModal">提交</div>
+      <div class="btn cancel" v-if="isEdit == 2" @click="thClick">退回</div>
+      <!-- <div class="btn cancel" v-if="isEdit == 2" @click="jjClick">拒绝</div> -->
+      <div class="btn editIcon" v-if="isEdit == 2" @click="tjClick">通过</div>
 
       <div class="btn cancel" @click="handleBack">返回</div>
-      <div class="btn editIcon" @click="editButtonClick">编辑</div>
     </div>
-
-    <div v-if="isEdit == 1" class="editBottom">
-      <div class="btn cancel" @click="handleCancle">取消</div>
-      <div class="btn confirm" @click="handlUpdata">保存</div>
-    </div>
-    <el-dialog title="撤回" :visible.sync="chehuiModal" width="20%">
-      <span>确认撤回？</span>
+    <el-dialog title="退回选择" :visible.sync="thTableModal" width="20%">
+      <template>
+        <el-table
+          :data="tableInner"
+          ref="multipleTable1"
+          style="width: 100%"
+          :default-sort="{ prop: 'date', order: 'descending' }"
+        >
+          <el-table-column width="55">
+            <template slot-scope="scope">
+              <el-radio
+                :label="scope.$index"
+                v-model="tempRadio"
+                @change.native="getRow(scope.$index, scope.row)"
+                >{{ "" }}</el-radio
+              >
+            </template>
+          </el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            width="50"
+          ></el-table-column>
+          <el-table-column prop="actName" label="节点名称" sortable="custom">
+          </el-table-column>
+        </el-table>
+      </template>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="chCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="ch()"
+        <el-button @click="thTableCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="thTableConfirm"
           >确 定</el-button
         >
       </span>
     </el-dialog>
-    <el-dialog title="提交" :visible.sync="submitModal" width="30%">
-      <template>
-        <div>
-          <span>确认提交？</span>
-        </div>
-      </template>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="subCancel">取 消</el-button>
-        <el-button type="primary" class="confirm" @click="tj">确 定</el-button>
-      </span>
-    </el-dialog>
+
     <lctCom
       ref="child"
       :lctModal="lctModal"
@@ -284,8 +267,12 @@ import {
   byjdCxById,
   tjByjd,
   updateByjdDetailYjs,
+  htFlow,
+  jjFlow,
+  tyFlow,
 } from "@/api/dailyBehavior/graduationIdt";
 import lctCom from "../../../components/lct";
+import { backFlow } from "@/api/dailyBehavior/dormTea";
 import topTitle from "../../../components/topTitle";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 
@@ -294,9 +281,9 @@ export default {
   data() {
     return {
       formAdd: {},
-      isEdit: 2,
+      isEdit: this.$route.query.isEdit,
       nd: "",
-      xh: this.$store.getters.userId,
+      xh: this.$route.query.xh,
       activeName: "0",
       detailInfoData: {},
       routeTitle: "毕业生鉴定表",
@@ -316,6 +303,15 @@ export default {
       lctModal: false,
       chehuiModal: false,
       submitModal: false,
+      thTableModal: false,
+      tempRadio: false,
+      tableInner: [],
+      flag:
+        this.$store.getters.roleId == "08"
+          ? 1
+          : this.$store.getters.roleId == "06"
+          ? 2
+          : 3, //1为班主任2为辅导员
       rules: {
         blank: [{ required: true, message: "不能为空", trigger: "blur" }],
       },
@@ -359,19 +355,7 @@ export default {
     deleteWorkBrifeData(row, index) {
       this.tableData.splice(index, 1);
     },
-    // async getOption() {
-    //   await getFdyNdByGh({ gh: this.gh }).then((response) => {
-    //     // 获取年级列表数据
-    //     if (response.errcode == "00") {
-    //       this.njOptions = response.data;
-    //       console.log(response);
-    //       this.nd = this.$route.query.nd
-    //         ? this.$route.query.nd
-    //         : this.njOptions[0];
-    //     }
-    //   });
-    //   this.getDetail();
-    // },
+
     editButtonClick() {
       this.isEdit = 1;
     },
@@ -388,32 +372,7 @@ export default {
         this.tableData5 = res.data.rcswByjdJtcygxYjsRes || [];
       });
     },
-    addDetailInfoData(index) {
-      if (index == 1) {
-        this.$router.push({
-          path: "/stuGrowFiles/filesDetail",
-          query: {
-            activeName: "3",
-          },
-        });
-      } else if (index == 2) {
-        this.$router.push({
-          path: "/stuGrowFiles/filesDetail",
-          query: {
-            activeName: "1",
-          },
-        });
-      } else if (index == 3) {
-        this.$router.push({
-          path: "/stuGrowFiles/filesDetail",
-          query: {
-            activeName: "5",
-          },
-        });
-      } else if (index == 4) {
-        this.tableData.push({});
-      }
-    },
+
     handleBack() {
       this.$router.go(-1);
     },
@@ -421,54 +380,110 @@ export default {
       this.isEdit = 2;
       this.$refs.formAdd.clearValidate();
     },
-    handlUpdata() {
-      if (!this.checkFormAdd()) {
-        this.$message.error("请完善表单相关信息！");
-        return;
-      } else {
-        let data = {
-          bzyj: this.formAdd.bzjd,
-          ydzzyj: this.formAdd.ydzzyj,
-          zwjd: this.formAdd.zwjd,
-          xh: this.xh,
-          id: this.formAdd.id ? this.formAdd.id : "",
-        };
 
-        updateByjdDetailYjs(data)
-          .then((res) => {
-            this.$message.success("保存成功");
-            this.getDetail();
-            this.isEdit = 2;
-          })
-          .catch((err) => {});
-      }
-    },
-    //}
-    //},
-    tjModal() {
-      if (this.formAdd.status == "01") {
-        this.submitModal = true;
+    tjClick() {
+      if (this.flag == 1 && !this.formAdd.bzjd) {
+        this.$message.error("导师意见不能为空！");
+      } else if (this.flag == 2 && !this.formAdd.ydzzyj) {
+        this.$message.error("研究生培养单位意见不能为空！");
       } else {
-        this.$message.error("不是草稿状态数据，不可以提交");
+        var data = {
+          businesId: this.formAdd.id,
+          processId: this.formAdd.processid,
+          status: this.formAdd.status,
+          taskId: this.$route.query.taskId,
+
+          opMsg:
+            this.flag == 1
+              ? this.formAdd.bzjd
+              : this.flag == 2
+              ? this.detailInfoData.ydzzyj
+              : "已通过",
+        };
+        //通过
+
+        tyFlow(data).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("审核已通过");
+            this.$router.go(-1);
+          }
+        });
       }
     },
-    tj() {
-      let data = {
-        id: this.formAdd.id,
-        processid: this.formAdd.processid,
+    jjClick() {
+      // if (this.flag == 1 && !this.detailInfoData.bzjd) {
+      //   this.$message.error("班组鉴定结果不能为空！");
+      // } else if (this.flag == 2 && !this.detailInfoData.ydzzyj) {
+      //   this.$message.error("院系党组织意见不能为空！");
+      // } else {
+      var data = {
+        businesId: this.formAdd.id,
+        processId: this.formAdd.processid,
+        status: this.formAdd.status,
+        taskId: this.$route.query.taskId,
+
+        opMsg:
+          this.flag == 1
+            ? this.formAdd.bzjd
+            : this.flag == 2
+            ? this.formAdd.ydzzyj
+            : "已拒绝",
       };
-      tjByjd(data).then((res) => {
+      //拒绝
+      jjFlow(data).then((res) => {
         if (res.errcode == "00") {
-          this.$message.success("提交成功");
-          this.getDetail();
-          this.submitModal = false;
-        } else {
-          this.$message.error("提交失败");
+          this.$message.success("已拒绝");
+          this.$router.go(-1);
         }
       });
+      // }
     },
-    subCancel() {
-      this.submitModal = false;
+    thClick() {
+      // if (this.flag == 1 && !this.detailInfoData.bzjd) {
+      //   this.$message.error("班组鉴定结果不能为空！");
+      // } else if (this.flag == 2 && !this.detailInfoData.ydzzyj) {
+      //   this.$message.error("院系党组织意见不能为空！");
+      // } else {
+      var processId = { processId: this.$route.query.taskId };
+      backFlow(processId).then((res) => {
+        this.tableInner = res.data;
+      });
+      this.thTableModal = true;
+      // }
+    },
+    thTableCancel() {
+      this.thTableModal = false;
+    },
+    thTableConfirm() {
+      if (!!this.tempRadio || this.tempRadio === 0) {
+        var data = {
+          businesId: this.formAdd.id,
+          processId: this.formAdd.processid,
+          status: this.formAdd.status,
+          taskId: this.$route.query.taskId,
+
+          opMsg:
+            this.flag == 1
+              ? this.formAdd.bzjd
+              : this.flag == 2
+              ? this.formAdd.ydzzyj
+              : "已退回",
+          actId: this.multipleSelection1.actId,
+          actName: this.multipleSelection1.actName,
+        };
+        htFlow(data).then((res) => {
+          if (res.errcode == "00") {
+            this.$message.success("退回成功");
+            this.thTableModal = false;
+            this.$router.go(-1);
+          }
+        });
+      } else {
+        this.$message.error("请先勾选退回的节点");
+      }
+    },
+    getRow(index, row) {
+      this.multipleSelection1 = row;
     },
     lctClick() {
       if (!!this.formAdd.processid) {
@@ -480,27 +495,6 @@ export default {
     },
     handleCloseLct() {
       this.lctModal = false;
-    },
-    chCancel() {
-      this.chehuiModal = false;
-    },
-    ch() {
-      let data = {
-        id: this.formAdd.id,
-        processid: this.formAdd.processid,
-      };
-      byjdCxById(data).then((res) => {
-        this.$message.success("撤回成功");
-        this.getDetail();
-        this.chehuiModal = false;
-      });
-    },
-    chModal() {
-      if (this.formAdd.status !== "02") {
-        this.$message.error("存在非待审核状态数据，不可以撤回");
-      } else {
-        this.chehuiModal = true;
-      }
     },
   },
 };

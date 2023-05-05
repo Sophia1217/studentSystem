@@ -13,15 +13,15 @@
           >
             <el-form-item label="姓名" prop="bjmc">
               <el-input
-                v-model="formSearch.bjmc"
+                v-model="formSearch.xm"
                 placeholder="请输入姓名"
                 clearable
-                @keyup.enter.native="handleQuery"
+                @keyup.enter.native="query"
               />
             </el-form-item>
-            <el-form-item label="工作单位" prop="ssdwdmList">
+            <el-form-item label="工作单位" prop="gzdwList">
               <el-select
-                v-model="formSearch.ssdwdmList"
+                v-model="formSearch.gzdwList"
                 placeholder="未选择"
                 clearable
                 multiple
@@ -44,7 +44,6 @@
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
-                :clearable="false"
               ></el-date-picker>
             </el-form-item>
             <el-form-item>
@@ -53,39 +52,21 @@
                 size="mini"
                 icon="el-icon-search"
                 class="background: #005657"
-                @click="handleQuery"
+                @click="query"
                 >查询</el-button
               >
             </el-form-item>
           </el-form>
         </div>
         <div class="headerRight">
-          <!-- <div style="margin-right: 15px">
-            <el-dropdown split-button @command="xnxjDaochu">
-              <span class="el-dropdown-link"> 学年小结表导出</span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="1">PDF下载</el-dropdown-item>
-                <el-dropdown-item command="2">Word下载</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </div> -->
-          <!-- <div class="btns borderLight" @click="showDel">
-            <i class="icon lightIcon"></i><span class="title">删除</span>
-          </div>
-          <div class="btns borderLight" @click="chModal">
-            <i class="icon chIcon"></i><span class="title2">撤回</span>
-          </div> -->
-          <div class="btns borderLight" @click="tjModal">
+          <div class="btns borderLight" @click="myBook">
             <span class="title2">我的预约</span>
           </div>
-          <div class="btns borderLight" @click="showDetail(1)">
+          <!-- <div class="btns borderLight" @click="showDetail(1)">
             <span class="title2">预约</span>
           </div>
-          <div class="btns borderLight" @click="bookDetail(1, 1)">
+          <div class="btns borderLight" @click="bookDetail(11, 1)">
             <span class="title2">预约登记</span>
-          </div>
-          <!-- <div class="btns borderGreen" @click="xinzeng">
-            <i class="icon greenIcon"></i><span class="title1">新增</span>
           </div> -->
         </div>
       </div>
@@ -106,23 +87,28 @@
           ></el-table-column>
           <el-table-column prop="xm" label="姓名" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xn" label="工作单位" sortable="custom">
+          <el-table-column prop="dwmc" label="工作单位" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xn" label="职称" sortable="custom">
+          <el-table-column prop="zcmc" label="职称" sortable="custom">
           </el-table-column>
-          <el-table-column prop="xn" label="联系方式" sortable="custom">
-          </el-table-column>
-          <el-table-column prop="xm" label="日期" sortable="custom">
+          <el-table-column prop="yddh" label="联系方式" sortable="custom">
           </el-table-column>
           <el-table-column
-            prop="sqsj"
+            prop="rqfw"
+            label="日期"
+            min-width="130px"
+            sortable="custom"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="pbsj"
             label="时间"
-            min-width="200px"
+            min-width="220px"
             :show-overflow-tooltip="true"
             sortable="custom"
           >
           </el-table-column>
-          <el-table-column prop="xn" label="地点" sortable="custom">
+          <el-table-column prop="zxdd" label="地点" sortable="custom">
           </el-table-column>
           <!-- <el-table-column
             prop="jg"
@@ -191,10 +177,10 @@
                   width="50"
                 ></el-table-column>
 
-                <el-table-column prop="xm" label="日期"> </el-table-column>
-                <el-table-column prop="ssdwdmmc" label="时间" min-width="100px">
+                <el-table-column prop="rq" label="日期"> </el-table-column>
+                <el-table-column prop="sd" label="时间" min-width="100px">
                 </el-table-column>
-                <el-table-column prop="bjdmmc" label="状态" />
+                <el-table-column prop="yyzt" label="状态" />
                 <el-table-column label="附件" width="180">
                   <template slot-scope="scope">
                     <div style="display: flex; justify-content: space-between">
@@ -202,15 +188,31 @@
                         type="text"
                         size="small"
                         @click="bookDetail(scope.row, 1)"
+                        :disabled="scope.row.yyzt == '可约' ? false : true"
                       >
-                        <span class="handleName">线上预约</span>
+                        <span
+                          :class="
+                            scope.row.yyzt == '可约'
+                              ? 'handleName'
+                              : 'handleNone'
+                          "
+                          >线上预约</span
+                        >
                       </el-button>
                       <el-button
                         type="text"
                         size="small"
                         @click="bookDetail(scope.row, 2)"
+                        :disabled="scope.row.yyzt == '可约' ? false : true"
                       >
-                        <span class="handleName">线下预约</span>
+                        <span
+                          :class="
+                            scope.row.yyzt == '可约'
+                              ? 'handleName'
+                              : 'handleNone'
+                          "
+                          >线下预约</span
+                        >
                       </el-button>
                     </div>
                   </template>
@@ -250,13 +252,8 @@
 </template>
 <script>
 import { edit, tj } from "@/api/dailyBehavior/xnxjStu";
-import {
-  queryList,
-  insert,
-  deleteList,
-  queryTeaInfoByGh,
-  detail,
-} from "@/api/career/bookStu";
+import { queryPbList, queryZxsPbxxYyzt } from "@/api/career/bookStu";
+import { detail } from "@/api/career/zxs";
 import lctCom from "../../../components/lct";
 import topTitle from "../../../components/topTitle";
 import {
@@ -281,7 +278,7 @@ export default {
       submitModal: false,
       editModal: false,
       formEdit: {},
-      tableData: [{ xm: "zxhsnh" }],
+      tableData: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -298,9 +295,12 @@ export default {
       XN: "",
       dwOps: [],
       datePicker: [],
-      formSearch: {},
+      formSearch: {
+        xm: "",
+        gzdwList: [],
+      },
       imageUrl: "",
-      basicInfo: { dutyData: [{xm:"dfgfg"}] },
+      basicInfo: { dutyData: [] },
       rules: {},
     };
   },
@@ -312,9 +312,6 @@ export default {
   },
 
   methods: {
-    handleQuery() {
-      this.query();
-    },
     BackHomepage() {
       this.$router.push({
         path: "/studentHomePage",
@@ -327,39 +324,34 @@ export default {
         })
         .catch((err) => {});
     },
+    //预约
     showDetail(row) {
-      this.formEdit = row;
       this.editModal = true;
+      // detail({ id: row.id })
+      //   .then((res) => {
+      //     this.basicInfo = res.data;
+      //   })
+      //   .catch((err) => {});
+      queryZxsPbxxYyzt({ gh: row.gh })
+        .then((res) => {
+          this.basicInfo.dutyData = res.data;
+        })
+        .catch((err) => {});
     },
     bookDetail(row, flag) {
       console.log(row.id);
       this.$router.push({
         path: "/careerBookDetail",
-        query: {},
+        query: {
+          mtfs: flag, //1线上，2线下
+          yyid: row.id,
+        },
       });
     },
-    tjModal() {
-      var falg = 1;
-      //判断是否是草稿数据
-      for (var i = 0; i < this.val.length; i++) {
-        if (this.val[i].status !== "01") falg = 2;
-      }
-      const newArr = this.val.map((item) => item.xn);
-      const arrSet = new Set(newArr);
-      arrSet.size === newArr.length;
-      if (arrSet.size < this.val.length) {
-        this.$message.error("请不要选择重复学年");
-      } else {
-        if (falg == 1) {
-          if (this.tjArr && this.tjArr.length > 0) {
-            this.submitModal = true;
-          } else {
-            this.$message.error("请先勾选数据");
-          }
-        } else {
-          this.$message.error("不是草稿状态数据，不可以提交");
-        }
-      }
+    myBook() {
+      this.$router.push({
+        path: "/careerMybook",
+      });
     },
     tj() {
       var data = this.val;
@@ -437,12 +429,13 @@ export default {
     },
     query() {
       var data = {
-        xh: this.$store.getters.userId,
-        lxsjStart:
+        xm: this.formSearch.xm,
+        gzdwList: this.formSearch.gzdwList,
+        pbrqks:
           this.datePicker && this.datePicker.length > 0
             ? this.datePicker[0]
             : "",
-        lxsjEnd:
+        pbrqjs:
           this.datePicker && this.datePicker.length > 0
             ? this.datePicker[1]
             : "",
@@ -451,7 +444,7 @@ export default {
         orderZd: this.queryParams.orderZd ? this.queryParams.orderZd : "",
         orderPx: this.queryParams.orderPx ? this.queryParams.orderPx : "",
       };
-      queryList(data).then((res) => {
+      queryPbList(data).then((res) => {
         this.tableData = res.data;
         this.queryParams.totalCount = res.totalCount;
       });
@@ -638,12 +631,6 @@ export default {
       }
     }
   }
-  .handleName {
-    font-weight: 400;
-    font-size: 14px;
-    color: #005657;
-    line-height: 28px;
-  }
   .baseInfo {
     // padding: 20px;
     margin-left: 30px;
@@ -685,5 +672,17 @@ export default {
       }
     }
   }
+}
+.handleName {
+  font-weight: 400;
+  font-size: 14px;
+  color: #005657;
+  line-height: 28px;
+}
+.handleNone {
+  font-weight: 400;
+  font-size: 14px;
+  color: #cce0e1ff;
+  line-height: 28px;
 }
 </style>

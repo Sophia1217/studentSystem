@@ -356,11 +356,6 @@
         </div>
       </div>
     </div>
-    <!-- <div v-if="isEdit != 1" class="editBottom">
-      <div class="btn cancel" @click="handleBack">返回</div>
-      <div class="btn editIcon" @click="editButtonClick">编辑</div>
-    </div> -->
-
     <div class="editBottom">
       <div class="btn cancel" @click="handleCancle">取消</div>
       <div class="btn confirm" @click="handlUpdata">提交</div>
@@ -370,20 +365,15 @@
 <script>
 import CheckboxCom from "../../../components/checkboxCom";
 import { InsertJtList, GetDetail } from "@/api/familyDifficulties/table";
-import { getXsJbxx } from "@/api/career/bookStu";
+import { getXsJbxx, insertSyfzXsyyDetail } from "@/api/career/bookStu";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
   components: { CheckboxCom },
   data() {
     return {
-      isEdit: 2,
-      nd: "",
       xh: "",
-      activeName: "0",
       detailInfoData: {},
-      jtList: [],
       njOptions: [],
-      lwjbmOps: [],
       pxjbmOps: [], //培训级别码
       tableData: {},
       checked: true,
@@ -392,27 +382,56 @@ export default {
         // checkAll: false,
         choose: [],
         checkBox: [
-          { dm: "01", mc: "1. 渴望提升自己" },
-          { dm: "02", mc: "2. 需要生涯决策方面的帮助" },
-          { dm: "03", mc: "3. 对于职业选择不确定" },
+          { dm: "1", mc: "1. 渴望提升自己" },
+          { dm: "2", mc: "2. 需要生涯决策方面的帮助" },
+          { dm: "3", mc: "3. 对于职业选择不确定" },
+          { dm: "4", mc: "4. 渴望探索重新定位以及找工作策略" },
+          { dm: "5", mc: "5. 需要规划未来" },
+          { dm: "6", mc: "6. 需要改变生涯目标" },
+          { dm: "7", mc: "7. 需要选择主修专业方面的帮助" },
+          { dm: "8", mc: "8. 需要设立长期的生涯目标" },
+          { dm: "9", mc: "9. 需要职业方面的信息" },
+          { dm: "10", mc: "10. 需要劳动力市场方面的信息" },
+          { dm: "11", mc: "11. 需要为毕业求职做好准备" },
+          { dm: "12", mc: "12. 需要求职方面的帮助" },
+          { dm: "13", mc: "13. 学业或工作压力" },
+          {
+            dm: "14",
+            mc: "14. 已签约毕业生由于工作条件（如工作时间、工作地点等）的原因导致的工作不满意",
+          },
+          {
+            dm: "15",
+            mc: "15. 已签约毕业生由于工作职责要求的原因导致的工作不满意",
+          },
+          {
+            dm: "16",
+            mc: "16. 由于与朋辈、师长或上司等之间的人际关系导致的工作不满意",
+          },
+          { dm: "17", mc: "17. 一般的生活不满意" },
+          {
+            dm: "18. 关系方面的压力（如父母、师长、同辈、重要他人，等等）",
+            mc: "18. 关系方面的压力（如父母、师长、同辈、重要他人，等等）",
+          },
         ],
         isIndeterminate: true,
       },
+      mtfs: "", //1线上，2线下
+      yyid: "", //预约排班表id
     };
   },
   created() {},
   mounted() {
-    this.getCode("dmlwkwjbm");
     this.getCode("dmpxjbm");
     this.getDetail();
     this.xh = this.$store.getters.userId;
+    this.mtfs = this.$route.query.mtfs;
+    this.yyid = this.$route.query.yyid;
   },
   methods: {
     getDetail() {
       getXsJbxx({ xh: this.$store.getters.userId }).then((res) => {
         // this.tableData = res.data.addList;
         this.detailInfoData = res.data;
-        // this.jtList = res.data.jtList;
       });
     },
     getCode(data) {
@@ -422,23 +441,13 @@ export default {
       const data = { codeTableEnglish: paramsData };
       getCodeInfoByEnglish(data).then((res) => {
         switch (paramsData) {
-          case "dmlwkwjbm":
-            this.lwjbmOps = res.data;
-            break;
           case "dmpxjbm":
             this.pxjbmOps = res.data;
             break;
         }
       });
     },
-    editButtonClick() {
-      this.isEdit = 1;
-    },
-    handleBack() {
-      this.$router.go(-1);
-    },
     handleCancle() {
-      this.isEdit = 2;
       this.$router.go(-1);
     },
     handlUpdata() {
@@ -446,12 +455,11 @@ export default {
         this.$message.error("请勾选承诺协议!");
       } else {
         this.$set(this.tableData, "xh", this.xh);
-        // this.$set(this.tableData, "xm", this.detailInfoData.xm);
-        // this.$set(this.tableData, "jtcyList", this.jtList);
-        this.$set(this.tableData, "yyid", "11");
-        this.$set(this.tableData, "mtfs", "1"); //1线上，2线下
+        this.$set(this.tableData, "yyid", this.yyid);
+        this.$set(this.tableData, "mtfs", this.mtfs); //1线上，2线下,
+        this.$set(this.tableData, "gzwtList", this.dmxbmOPs.choose || []);
         let data = this.tableData;
-        InsertJtList(data)
+        insertSyfzXsyyDetail(data)
           .then((res) => {
             this.$message.success("提交成功");
             // this.getDetail();

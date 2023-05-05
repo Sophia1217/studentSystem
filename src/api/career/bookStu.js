@@ -1,19 +1,11 @@
 import request from '@/utils/request'
 
-//教师列表
-export function queryList(data) {
+//排班信息列表
+export function queryPbList(query) {
   return request({
-    url: '/syfzXsyy/getSyfzXsyyDetail',
-    method: 'get',
-    params: data
-  })
-}
-//预约详情
-export function getSyfzXsyyDetail(data) {
-  return request({
-    url: '/syfzXsyy/getSyfzXsyyDetail',
-    method: 'get',
-    params: data
+    url: '/syfzXsyy/querySyfzXsyyPbList',
+    method: 'post',
+    data: query
   })
 }
 //基本信息
@@ -32,46 +24,7 @@ export function insertSyfzXsyyDetail(data) {
     data: data
   })
 }
-//老师取消预约
-export function lsCancelSubscribe(data) {
-  return request({
-    url: '/syfzXsyy/lsCancelSubscribe',
-    method: 'post',
-    data: data
-  })
-}
-//老师同意预约
-export function lsCheckSubscribe(data) {
-  return request({
-    url: '/syfzXsyy/lsCheckSubscribe',
-    method: 'post',
-    data: data
-  })
-}
-//老师拒绝预约
-export function lsRefuseSubscribe(data) {
-  return request({
-    url: '/syfzXsyy/lsRefuseSubscribe',
-    method: 'post',
-    data: data
-  })
-}
-//老师待处理
-export function querySyfzXsyyLsDclList(query) {
-  return request({
-    url: '/syfzXsyy/querySyfzXsyyLsDclList',
-    method: 'post',
-    data: query
-  })
-}
-//老师已处理
-export function querySyfzXsyyLsYclList(query) {
-  return request({
-    url: '/syfzXsyy/querySyfzXsyyLsYclList',
-    method: 'post',
-    data: query
-  })
-}
+
 //我的预约
 export function queryXsBookList(query) {
   return request({
@@ -96,6 +49,18 @@ export function xsEvaluate(query) {
     data: query
   })
 }
+//咨询师详情排班列表
+export function queryZxsPbxxYyzt(query) {
+  return request({
+    url: 'syfzZxsb/queryZxsPbxxYyzt',
+    method: 'post',
+    data: query
+  })
+}
+
+
+
+
 
 
 

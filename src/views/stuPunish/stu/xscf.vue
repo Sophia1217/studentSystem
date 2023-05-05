@@ -9,10 +9,10 @@
           <div class="btns borderLight" @click="jzjy()">
             <i class="icon tjIcon"></i><span class="title2">矫正教育</span>
           </div>
-          <!-- <div class="btns borderLight" @click="showDel">
+          <div class="btns borderLight" @click="showDel">
             <i class="icon lightIcon"></i><span class="title">解除</span>
           </div>
-
+          <!-- 
           <div class="btns borderLight" @click="chModal">
             <i class="icon chIcon"></i><span class="title2">申诉</span>
           </div> -->
@@ -39,33 +39,21 @@
           <el-table-column
             prop="wjssmsXgbfzr"
             label="违纪事实描述"
-            
             :show-overflow-tooltip="true"
           />
           <el-table-column
             prop="cfdjmmc"
             label="处分等级"
-            
             :show-overflow-tooltip="true"
           >
           </el-table-column>
-          <el-table-column
-            prop="cfqxStart"
-            label="处分开始时间"
-            
-          >
+          <el-table-column prop="cfqxStart" label="处分开始时间">
           </el-table-column>
-          <el-table-column
-            prop="cfqxEnd"
-            label="处分结束时间"
-            
-          >
+          <el-table-column prop="cfqxEnd" label="处分结束时间">
           </el-table-column>
-          <el-table-column prop="jzjyztmc" label="矫正教育" >
-          </el-table-column>
+          <el-table-column prop="jzjyztmc" label="矫正教育"> </el-table-column>
 
-          <el-table-column prop="cfztmmc" label="处分状态" >
-          </el-table-column>
+          <el-table-column prop="cfztmmc" label="处分状态"> </el-table-column>
 
           <el-table-column
             fixed="right"
@@ -264,6 +252,7 @@
 </template>
 <script>
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
+import { jccfButton } from "@/api/xscfNew.js";
 import { queryKnssqxsjbxx } from "@/api/familyDifficulties/stu";
 import { wjcfDetail } from "@/api/stuPunish/nichufen";
 import { queryXscfList, updateJzztm, updateQrztm } from "@/api/stuPunish/stu";
@@ -295,7 +284,6 @@ export default {
         fzxn: "",
         gwTime: [],
       },
-
       xh: this.$store.getters.userId,
     };
   },
@@ -369,21 +357,48 @@ export default {
     detailCancel() {
       this.detailModal = false;
     },
-    // showDel() {
-    //   var falg = 1;
-    //   for (var i = 0; i < this.val.length; i++) {
-    //     if (this.val[i].status !== "01") falg = 2;
-    //   }
-    //   if (falg == 1) {
-    //     if (this.delArr && this.delArr.length > 0) {
-    //       this.delModal = true;
-    //     } else {
-    //       this.$message.error("请先勾选数据");
-    //     }
-    //   } else {
-    //     this.$message.error("存在非草稿状态数据，不可以删除");
-    //   }
-    // },
+    showDel() {
+      if (this.delArr.length == 1) {
+        var falg = 1;
+        for (var i = 0; i < this.val.length; i++) {
+          if (this.val[i].cfztm !== "02") falg = 2;
+        }
+        if (falg == 1) {
+          this.$prompt("申请理由", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning",
+          })
+            .then(({ value }) => {
+              console.log("val", this.val);
+              var data = {
+                cfId: this.delArr[0],
+                sqly: value,
+                // xh: this.val[0].xh,
+                // xm: this.val[0].xm,
+              };
+              console.log("data", data);
+              jccfButton(data).then((res) => {
+                this.$message({
+                  type: "success",
+                  message: "解除成功!",
+                });
+                this.handleSearch();
+              });
+            })
+            .catch(() => {
+              this.$message({
+                type: "info",
+                message: "已取消解除",
+              });
+            });
+        } else {
+          this.$message.error("存在非已确认状态数据，不可以解除");
+        }
+      } else {
+        this.$message.error("只能选择一条数据进行解除");
+      }
+    },
     // del() {
     //   deleteQgzxXssq({ idList: this.delArr }).then((res) => {
     //     this.query();

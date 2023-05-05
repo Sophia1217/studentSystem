@@ -140,7 +140,8 @@
                     :prop="'table.' + scope.$index + '.xn'"
                     :rules="rules.xn"
                   >
-                    <el-select
+                    <span>{{ scope.row.xn }}</span>
+                    <!-- <el-select
                       v-model="scope.row.xn"
                       collapse-tags
                       placeholder="请选择学年"
@@ -152,7 +153,7 @@
                         :label="item"
                         :value="item"
                       ></el-option>
-                    </el-select>
+                    </el-select> -->
                   </el-form-item>
                 </template>
               </el-table-column>
@@ -162,7 +163,8 @@
                     :prop="'table.' + scope.$index + '.xq'"
                     :rules="rules.xq"
                   >
-                    <el-select v-model="scope.row.xq" placeholder="请选择">
+                    <span>{{ scope.row.xq }}</span>
+                    <!-- <el-select v-model="scope.row.xq" placeholder="请选择">
                       <el-option
                         v-for="item in dmxqm"
                         :key="item.value"
@@ -170,7 +172,7 @@
                         :value="item.dm"
                       >
                       </el-option>
-                    </el-select>
+                    </el-select> -->
                   </el-form-item>
                 </template>
               </el-table-column>
@@ -496,7 +498,7 @@ import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 import topTitle from "../../../components/topTitle";
 
 export default {
-  components: { lctCom,topTitle },
+  components: { lctCom, topTitle },
   data() {
     return {
       allNj: [],

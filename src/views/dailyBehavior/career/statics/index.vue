@@ -36,7 +36,7 @@
             width="50"
           ></el-table-column>
 
-          <el-table-column prop="xm" label="姓名" sortable="custom">
+          <el-table-column prop="xmXgh" label="姓名" sortable="custom">
           </el-table-column>
           <el-table-column
             prop="dwmc"
@@ -117,15 +117,14 @@
 
 <script>
 import {
-  queryList,
-  insert,
-  deleteList,
-  queryTeaInfoByGh,
-  detail,
-  downLoad,
-} from "@/api/career/zxs";
+  analyzeList,
+  excelExport,
+  excelExportStu,
+  stuList,
+} from "@/api/career/statics";
 import { getXmXgh } from "@/api/assistantWork/homeSchool";
 import { getToken } from "@/utils/auth";
+import { queryXnXq } from "@/api/dailyBehavior/vocationTea";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
   name: "manStudent",
@@ -184,10 +183,25 @@ export default {
   },
 
   mounted() {
-    this.handleChangeXnxq();
+    this.getXnxq();
   },
 
   methods: {
+    //获取学年学期
+    getXnxq() {
+      queryXnXq().then((res) => {
+        this.options = res.data;
+        for (let item of res.data) {
+          for (let num of item.dataCodeCascadingList)
+            if (num.dataCodeCascadingList !== null) {
+              this.dqXnxq = [item.dm, num.dm];
+            }
+        }
+        this.queryParams.xn = this.dqXnxq[0];
+        this.queryParams.xq = this.dqXnxq[1];
+        this.handleSearch();
+      });
+    },
     // 导出取消
     handleCancel() {
       this.showExport = false;
@@ -196,50 +210,32 @@ export default {
     handleConfirm() {
       let idList = [];
       for (let item_row of this.multipleSelection) {
-        idList.push(item_row.businesId);
+        idList.push(item_row.id);
       }
       this.exportParams.pageNum = 0;
       this.exportParams.pageSize = 0;
-      this.$set(this.exportParams, "ids", idList);
-      //   excelExportPbsqFlow(this.exportParams)
-      //     .then((res) => {
-      //       this.downloadFn(res, "朋辈辅导待审核列表导出.xlsx", "xlsx");
-      //       if (this.$store.getters.excelcount > 0) {
-      //         this.$message.success(
-      //           `已成功导出${this.$store.getters.excelcount}条数据`
-      //         );
-      //       }
-      //     })
-      //     .catch((err) => {});
+      this.$set(this.exportParams, "idList", idList);
+      excelExport(this.exportParams)
+        .then((res) => {
+          this.downloadFn(res, "咨询统计列表导出.xlsx", "xlsx");
+          if (this.$store.getters.excelcount > 0) {
+            this.$message.success(
+              `已成功导出${this.$store.getters.excelcount}条数据`
+            );
+          }
+        })
+        .catch((err) => {});
 
       this.showExport = false;
     },
     async expor() {
-      let rqs,
-        rqe = "";
-      if (this.datePicker && this.datePicker.length > 0) {
-        rqs = this.datePicker[0];
-        rqe = this.datePicker[1];
-      }
       let data = {
-        xm: this.select == "xm" ? this.searchVal : null,
-        xh: this.select == "xh" ? this.searchVal : null,
-        yddh: this.select == "yddh" ? this.searchVal : null,
-        dwhList: this.moreIform.dwhList,
-        zydmList: this.moreIform.zydmList,
-        lbList: this.moreIform.lbList,
-        fwfxDmList: this.moreIform.fwfxDmList,
-        kcscList: [],
-        xn: this.queryParams.xn,
-        xqm: this.queryParams.xqm,
-
-        loginId: this.$store.getters.userId,
-        sqsjStart: rqs || "",
-        sqsjEnd: rqe || "",
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
+        xn: this.queryParams.xn,
+        xq: this.queryParams.xq,
       }; //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
       this.exportParams = data;
       this.showExport = true;
@@ -249,23 +245,20 @@ export default {
       this.$router.push({
         path: "/dailyBehavior/career/staticsDeatil",
         query: {
-          xh: row.xh,
-          id: row.id,
-          isEdit: 1,
-          taskId: row.taskId,
-          processid: row.processid,
-          status: row.status,
+          xn: this.queryParams.xn,
+          xq: this.queryParams.xq,
+          gh: row.gh,
         },
       });
     },
     handleChangeXnxq() {
       this.queryParams.xn = " ";
-      this.queryParams.xqm = "";
+      this.queryParams.xq = "";
       if (this.dqXnxq[0]) {
         this.queryParams.xn = this.dqXnxq[0];
       }
       if (this.dqXnxq[1]) {
-        this.queryParams.xqm = this.dqXnxq[1];
+        this.queryParams.xq = this.dqXnxq[1];
       }
       this.handleSearch();
     },
@@ -279,8 +272,10 @@ export default {
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
+        xn: this.queryParams.xn,
+        xq: this.queryParams.xq,
       };
-      queryList(data)
+      analyzeList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;

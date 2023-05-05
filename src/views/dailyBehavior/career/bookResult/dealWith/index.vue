@@ -17,7 +17,7 @@
           >
             <el-option label="学号" value="xh"></el-option>
             <el-option label="姓名" value="xm"></el-option>
-            <el-option label="联系电话" value="yddh"></el-option>
+            <el-option label="预约地点" value="yydd"></el-option>
             <!-- <el-option label="审核人" value="shrxm"></el-option> -->
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"
@@ -68,27 +68,10 @@
               ></el-option>
             </el-select>
           </el-col>
-          <el-col :span="8">
-            <span>类<span v-html="'\u3000\u3000'"></span>别：</span>
-            <el-select
-              v-model="moreIform.lbList"
-              multiple
-              collapse-tags
-              placeholder="请选择"
-              size="small"
-            >
-              <el-option
-                v-for="item in sqlbOps"
-                :key="item.dm"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
-          </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
           <el-col :span="20">
-            <span>审核时间：</span>
+            <span>预约日期：</span>
             <el-date-picker
               type="daterange"
               placeholder="选择日期"
@@ -103,22 +86,19 @@
           </el-col>
         </el-row>
         <el-row :gutter="20" class="mt15">
-          <el-col :span="8">
-            <span>服务方向：</span>
-            <el-select
-              v-model="moreIform.fwfxDmList"
-              multiple
-              collapse-tags
-              placeholder="请选择"
-              size="small"
+          <el-col :span="20">
+            <span>预约时间：</span>
+            <el-time-picker
+              is-range
+              v-model="timePicker"
+              format="HH:mm"
+              value-format="HH:mm"
+              range-separator="至"
+              start-placeholder="开始时间"
+              end-placeholder="结束时间"
+              placeholder="选择时间范围"
             >
-              <el-option
-                v-for="item in fwfxOps"
-                :key="item.dm"
-                :label="item.mc"
-                :value="item.dm"
-              ></el-option>
-            </el-select>
+            </el-time-picker>
           </el-col>
         </el-row>
       </div>
@@ -127,7 +107,7 @@
     <div class="tableWrap mt15">
       <div class="headerTop">
         <div class="headerLeft">
-          <span class="title">已处理列表</span>
+          <span class="title">已咨询列表</span>
           <div class="yearOption">
             <el-cascader
               v-model="dqXnxq"
@@ -138,9 +118,9 @@
           </div>
         </div>
         <div class="headerRight">
-          <div class="btns borderOrange" @click="expor">
+          <!-- <div class="btns borderOrange" @click="expor">
             <i class="icon orangeIcon"></i><span class="title">导出</span>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="mt15">
@@ -164,59 +144,26 @@
           </el-table-column>
 
           <el-table-column
-            prop="dwhmc"
+            prop="pydw"
             label="培养单位"
             min-width="100"
             sortable
           >
           </el-table-column>
-          <el-table-column prop="zydmmc" label="专业" min-width="100" sortable>
+          <el-table-column prop="zymc" label="专业" min-width="100" sortable>
           </el-table-column>
           <el-table-column
-            prop="fwfxMc"
-            label="服务方向"
+            prop="yyrq"
+            label="预约日期"
             min-width="100"
             :show-overflow-tooltip="true"
             sortable
           >
           </el-table-column>
-          <el-table-column prop="lb" label="类别" min-width="100" sortable>
+          <el-table-column prop="yysj" label="预约时间" min-width="100">
           </el-table-column>
-          <el-table-column
-            prop="kcsc"
-            label="课程时长(分钟)"
-            min-width="100"
-            sortable
-          >
-          </el-table-column>
-          <el-table-column
-            prop="yddh"
-            label="联系电话"
-            min-width="100"
-            sortable
-          >
-          </el-table-column>
-          <el-table-column
-            prop="sqsj"
-            label="申请时间"
-            min-width="100"
-            sortable
-          >
-          </el-table-column>
-          <el-table-column
-            prop="statusChinese"
-            label="审核状态"
-            min-width="100"
-            sortable
-          >
-          </el-table-column>
-          <el-table-column prop="createDwhMc" label="审核进度">
-            <template slot-scope="scope">
-              <el-button type="text" size="small" @click="lctClick(scope.row)">
-                <i class="scopeIncon lct"></i>
-                <span class="handleName">流转记录</span>
-              </el-button>
-            </template>
+
+          <el-table-column prop="yydd" label="地点" min-width="100">
           </el-table-column>
 
           <el-table-column fixed="right" label="操作" width="140">
@@ -227,7 +174,7 @@
                 @click="hadleDetail(scope.row)"
               >
                 <i class="scopeIncon handledie"></i>
-                <span class="handleName">详情</span>
+                <span class="handleName">登记</span>
               </el-button>
             </template>
           </el-table-column>
@@ -242,7 +189,7 @@
         @pagination="handleSearch"
       />
     </div>
-    <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
+    <!-- <el-dialog title="导出提示" :visible.sync="showExport" width="30%">
       <span>确认导出数据？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancel">取 消</el-button>
@@ -250,7 +197,7 @@
           >确 定</el-button
         >
       </span>
-    </el-dialog>
+    </el-dialog> -->
 
     <lctCom
       ref="child"
@@ -262,26 +209,12 @@
 
 <script>
 import CheckboxCom from "../../../../components/checkboxCom";
-import {
-  excelExportPbsqFlow,
-  excelExportPbsqFlowed,
-  queryPbsqFlowedList,
-  queryPbsqFlowList,
-} from "@/api/friendTutor/audit";
 
 import { getCollege, getGrade } from "@/api/class/maintenanceClass";
 import { getZY } from "@/api/student/index";
 import { queryXnXq } from "@/api/dailyBehavior/vocationTea";
 import lctCom from "../../../../components/lct";
-import {
-  queryByjdFlowedList,
-  queryByjdFlowList,
-  htFlow,
-  jjFlow,
-  tyFlow,
-  exportByjd,
-  excelExporYsht,
-} from "@/api/dailyBehavior/graduationIdt";
+import { consultedList } from "@/api/career/result";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
   name: "manStudent",
@@ -296,6 +229,7 @@ export default {
       options: [],
       status: [],
       datePicker: [],
+      timePicker: null,
       searchVal: "",
       select: "",
       isMore: false,
@@ -350,63 +284,66 @@ export default {
   },
 
   methods: {
-    // 导出取消
-    handleCancel() {
-      this.showExport = false;
-    },
-    // 导出确认
-    handleConfirm() {
-      let idList = [];
-      for (let item_row of this.multipleSelection) {
-        idList.push(item_row.businesId);
-      }
-      this.exportParams.pageNum = 0;
-      this.exportParams.pageSize = 0;
-      this.$set(this.exportParams, "ids", idList);
-      excelExportPbsqFlowed(this.exportParams)
-        .then((res) => {
-          this.downloadFn(res, "朋辈辅导已审核列表导出.xlsx", "xlsx");
-          if (this.$store.getters.excelcount > 0) {
-            this.$message.success(
-              `已成功导出${this.$store.getters.excelcount}条数据`
-            );
-          }
-        })
-        .catch((err) => {});
+    // // 导出取消
+    // handleCancel() {
+    //   this.showExport = false;
+    // },
+    // // 导出确认
+    // handleConfirm() {
+    //   let idList = [];
+    //   for (let item_row of this.multipleSelection) {
+    //     idList.push(item_row.businesId);
+    //   }
+    //   this.exportParams.pageNum = 0;
+    //   this.exportParams.pageSize = 0;
+    //   this.$set(this.exportParams, "ids", idList);
+    //   excelExportPbsqFlowed(this.exportParams)
+    //     .then((res) => {
+    //       this.downloadFn(res, "朋辈辅导已审核列表导出.xlsx", "xlsx");
+    //       if (this.$store.getters.excelcount > 0) {
+    //         this.$message.success(
+    //           `已成功导出${this.$store.getters.excelcount}条数据`
+    //         );
+    //       }
+    //     })
+    //     .catch((err) => {});
 
-      this.showExport = false;
-    },
-    async expor() {
-      let rqs,
-        rqe = "";
-      if (this.datePicker && this.datePicker.length > 0) {
-        rqs = this.datePicker[0];
-        rqe = this.datePicker[1];
-      }
-      let data = {
-        xm: this.select == "xm" ? this.searchVal : null,
-        xh: this.select == "xh" ? this.searchVal : null,
-        yddh: this.select == "yddh" ? this.searchVal : null,
-        shrxm: this.select == "shrxm" ? this.searchVal : null,
-        dwhList: this.moreIform.dwhList,
-        zydmList: this.moreIform.zydmList,
-        lbList: this.moreIform.lbList,
-        fwfxDmList: this.moreIform.fwfxDmList,
-        kcscList: [],
-        xn: this.queryParams.xn,
-        xqm: this.queryParams.xqm,
+    //   this.showExport = false;
+    // },
+    // async expor() {
+    //   let rqs,
+    //     rqe = "";
+    //   if (this.datePicker && this.datePicker.length > 0) {
+    //     rqs = this.datePicker[0];
+    //     rqe = this.datePicker[1];
+    //   }
+    //     if (this.timePicker && this.timePicker.length > 0) {
+    //     sjs = this.timePicker[0];
+    //     sje = this.timePicker[1];
+    //   }
+    //   let data = {
+    //    xm: this.select == "xm" ? this.searchVal : null,
+    //     xh: this.select == "xh" ? this.searchVal : null,
+    //     yydd: this.select == "yydd" ? this.searchVal : null,
+    //     pydwmList: this.moreIform.dwhList,
+    //     zydmList: this.moreIform.zydmList,
 
-        loginId: this.$store.getters.userId,
-        shsjStart: rqs || "",
-        shsjEnd: rqe || "",
-        pageNum: this.queryParams.pageNum,
-        pageSize: this.queryParams.pageSize,
-        orderZd: this.queryParams.orderZd,
-        orderPx: this.queryParams.orderPx,
-      }; //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
-      this.exportParams = data;
-      this.showExport = true;
-    },
+    //     xn: this.queryParams.xn,
+    //     xq: this.queryParams.xqm,
+
+    //     loginId: this.$store.getters.userId,
+    //     yyrqks: rqs || "",
+    //     yyrqjs: rqe || "",
+    //     yysjks:sjs||"",
+    //     yysjjs:sje||"",
+    //     pageNum: this.queryParams.pageNum,
+    //     pageSize: this.queryParams.pageSize,
+    //     orderZd: this.queryParams.orderZd,
+    //     orderPx: this.queryParams.orderPx,
+    //   }; //这些参数不能写在查询条件中，因为导出条件时候有可能没触发查询事件
+    //   this.exportParams = data;
+    //   this.showExport = true;
+    // },
     getCode(val) {
       const data = { codeTableEnglish: val };
       getCodeInfoByEnglish(data).then((res) => {
@@ -477,14 +414,9 @@ export default {
     },
     hadleDetail(row) {
       this.$router.push({
-        path: "/friendTutor/friendTutorDetail",
+        path: "/dailyBehavior/career/dengjiTable",
         query: {
-          xh: row.xh,
-          id: row.id,
-          isEdit: 2,
-          taskId: row.taskId,
-          processid: row.processid,
-          status: row.status,
+          id: row.xxyyId,
         },
       });
     },
@@ -499,32 +431,37 @@ export default {
     handleSearch() {
       let rqs,
         rqe = "";
+      let sjs,
+        sje = "";
       if (this.datePicker && this.datePicker.length > 0) {
         rqs = this.datePicker[0];
         rqe = this.datePicker[1];
       }
+      if (this.timePicker && this.timePicker.length > 0) {
+        sjs = this.timePicker[0];
+        sje = this.timePicker[1];
+      }
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        yddh: this.select == "yddh" ? this.searchVal : null,
-        shrxm: this.select == "shrxm" ? this.searchVal : null,
-        dwhList: this.moreIform.dwhList,
+        yydd: this.select == "yydd" ? this.searchVal : null,
+        pydwmList: this.moreIform.dwhList,
         zydmList: this.moreIform.zydmList,
-        lbList: this.moreIform.lbList,
-        fwfxDmList: this.moreIform.fwfxDmList,
-        kcscList: [],
+
         xn: this.queryParams.xn,
-        xqm: this.queryParams.xqm,
+        xq: this.queryParams.xqm,
 
         loginId: this.$store.getters.userId,
-        shsjStart: rqs || "",
-        shsjEnd: rqe || "",
+        yyrqks: rqs || "",
+        yyrqjs: rqe || "",
+        yysjks: sjs || "",
+        yysjjs: sje || "",
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
         orderZd: this.queryParams.orderZd,
         orderPx: this.queryParams.orderPx,
       };
-      queryPbsqFlowedList(data)
+      consultedList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;

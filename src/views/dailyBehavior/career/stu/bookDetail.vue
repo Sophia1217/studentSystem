@@ -66,7 +66,7 @@
               <div class="wrap">
                 <div class="title">是否毕业生</div>
                 <div class="content">
-                  <el-radio-group v-model="tableData.sfgcxs">
+                  <el-radio-group v-model="tableData.sfbys">
                     <el-radio label="1" size="large">是</el-radio>
                     <el-radio label="2" size="large">否</el-radio>
                   </el-radio-group>
@@ -349,10 +349,19 @@
       <div class="headline">来访者关注的问题</div>
       <div class="tableStyle">
         <div class="checkbox">
-          <checkboxCom
+          <el-checkbox-group v-model="tableData.gzwtList">
+            <el-checkbox
+              v-for="item in gzwtOps"
+              :label="item.dm"
+              :key="item.dm"
+            >
+              <div>{{ item.mc }}</div>
+            </el-checkbox>
+          </el-checkbox-group>
+          <!-- <checkboxCom
             :objProp="dmxbmOPs"
             @checkedTraining="dmxbmCheck"
-          ></checkboxCom>
+          ></checkboxCom> -->
         </div>
       </div>
     </div>
@@ -375,48 +384,49 @@ export default {
       detailInfoData: {},
       njOptions: [],
       pxjbmOps: [], //培训级别码
-      tableData: {},
+      tableData: { sfbys: "", gzwtList: [] },
       checked: true,
       dmxbmOPs: {
         // 性别：
-        // checkAll: false,
+        checkAll: false,
         choose: [],
-        checkBox: [
-          { dm: "1", mc: "1. 渴望提升自己" },
-          { dm: "2", mc: "2. 需要生涯决策方面的帮助" },
-          { dm: "3", mc: "3. 对于职业选择不确定" },
-          { dm: "4", mc: "4. 渴望探索重新定位以及找工作策略" },
-          { dm: "5", mc: "5. 需要规划未来" },
-          { dm: "6", mc: "6. 需要改变生涯目标" },
-          { dm: "7", mc: "7. 需要选择主修专业方面的帮助" },
-          { dm: "8", mc: "8. 需要设立长期的生涯目标" },
-          { dm: "9", mc: "9. 需要职业方面的信息" },
-          { dm: "10", mc: "10. 需要劳动力市场方面的信息" },
-          { dm: "11", mc: "11. 需要为毕业求职做好准备" },
-          { dm: "12", mc: "12. 需要求职方面的帮助" },
-          { dm: "13", mc: "13. 学业或工作压力" },
-          {
-            dm: "14",
-            mc: "14. 已签约毕业生由于工作条件（如工作时间、工作地点等）的原因导致的工作不满意",
-          },
-          {
-            dm: "15",
-            mc: "15. 已签约毕业生由于工作职责要求的原因导致的工作不满意",
-          },
-          {
-            dm: "16",
-            mc: "16. 由于与朋辈、师长或上司等之间的人际关系导致的工作不满意",
-          },
-          { dm: "17", mc: "17. 一般的生活不满意" },
-          {
-            dm: "18. 关系方面的压力（如父母、师长、同辈、重要他人，等等）",
-            mc: "18. 关系方面的压力（如父母、师长、同辈、重要他人，等等）",
-          },
-        ],
+        checkBox: [],
         isIndeterminate: true,
       },
       mtfs: "", //1线上，2线下
       yyid: "", //预约排班表id
+      gzwtOps: [
+        { dm: "1", mc: "1. 渴望提升自己" },
+        { dm: "2", mc: "2. 需要生涯决策方面的帮助" },
+        { dm: "3", mc: "3. 对于职业选择不确定" },
+        { dm: "4", mc: "4. 渴望探索重新定位以及找工作策略" },
+        { dm: "5", mc: "5. 需要规划未来" },
+        { dm: "6", mc: "6. 需要改变生涯目标" },
+        { dm: "7", mc: "7. 需要选择主修专业方面的帮助" },
+        { dm: "8", mc: "8. 需要设立长期的生涯目标" },
+        { dm: "9", mc: "9. 需要职业方面的信息" },
+        { dm: "10", mc: "10. 需要劳动力市场方面的信息" },
+        { dm: "11", mc: "11. 需要为毕业求职做好准备" },
+        { dm: "12", mc: "12. 需要求职方面的帮助" },
+        { dm: "13", mc: "13. 学业或工作压力" },
+        {
+          dm: "14",
+          mc: "14. 已签约毕业生由于工作条件（如工作时间、工作地点等）的原因导致的工作不满意",
+        },
+        {
+          dm: "15",
+          mc: "15. 已签约毕业生由于工作职责要求的原因导致的工作不满意",
+        },
+        {
+          dm: "16",
+          mc: "16. 由于与朋辈、师长或上司等之间的人际关系导致的工作不满意",
+        },
+        { dm: "17", mc: "17. 一般的生活不满意" },
+        {
+          dm: "18",
+          mc: "18. 关系方面的压力（如父母、师长、同辈、重要他人，等等）",
+        },
+      ],
     };
   },
   created() {},
@@ -430,7 +440,6 @@ export default {
   methods: {
     getDetail() {
       getXsJbxx({ xh: this.$store.getters.userId }).then((res) => {
-        // this.tableData = res.data.addList;
         this.detailInfoData = res.data;
       });
     },
@@ -451,13 +460,12 @@ export default {
       this.$router.go(-1);
     },
     handlUpdata() {
-      if (!this.checked) {
-        this.$message.error("请勾选承诺协议!");
+      if (!this.tableData.sfbys) {
+        this.$message.error("请选择是否为毕业生!");
       } else {
         this.$set(this.tableData, "xh", this.xh);
         this.$set(this.tableData, "yyid", this.yyid);
         this.$set(this.tableData, "mtfs", this.mtfs); //1线上，2线下,
-        this.$set(this.tableData, "gzwtList", this.dmxbmOPs.choose || []);
         let data = this.tableData;
         insertSyfzXsyyDetail(data)
           .then((res) => {
@@ -471,7 +479,7 @@ export default {
     //关注问题多选
     dmxbmCheck(value) {
       let checkedCount = value.length;
-      // this.dmxbmOPs.checkAll = checkedCount === this.dmxbmOPs.checkBox.length;
+      this.dmxbmOPs.checkAll = checkedCount === this.dmxbmOPs.checkBox.length;
       this.dmxbmOPs.isIndeterminate =
         checkedCount > 0 && checkedCount < this.dmxbmOPs.checkBox.length;
       // console.log(this.dmxbmOPs.choose, "单选");

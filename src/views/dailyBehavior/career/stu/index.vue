@@ -79,7 +79,7 @@
           @sort-change="changeTableSort"
           :default-sort="{ prop: 'date', order: 'descending' }"
         >
-          <el-table-column type="selection" width="55"></el-table-column>
+          <!-- <el-table-column type="selection" width="55"></el-table-column> -->
           <el-table-column
             type="index"
             label="序号"

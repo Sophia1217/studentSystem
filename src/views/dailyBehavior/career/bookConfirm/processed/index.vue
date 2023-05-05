@@ -201,6 +201,19 @@
             min-width="100px"
             sortable="custom"
           >
+            <template slot-scope="scope">
+              <el-date-picker
+                v-model="scope.row.yyrq"
+                type="date"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                placeholder="选择日期"
+                style="width: 135px"
+                :clearable="false"
+                @change="changeSJ(scope.row, 1)"
+              >
+              </el-date-picker>
+            </template>
           </el-table-column>
           <el-table-column
             prop="yysj"
@@ -208,6 +221,20 @@
             min-width="130px"
             sortable="custom"
           >
+            <template slot-scope="scope">
+              <el-time-picker
+                is-range
+                v-model="scope.row.updateTime"
+                format="HH:mm"
+                value-format="HH:mm"
+                range-separator="至"
+                start-placeholder="开始时间"
+                end-placeholder="结束时间"
+                :clearable="false"
+                style="width: 240px"
+              >
+              </el-time-picker>
+            </template>
           </el-table-column>
           <el-table-column
             prop="yydd"
@@ -266,7 +293,7 @@
       </span>
     </el-dialog>
     <el-dialog title="确认" :visible.sync="querenModal" width="20%">
-      <span>确认？</span>
+      <span>确认同意预约？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="qrCancel">取 消</el-button>
         <el-button type="primary" class="confirm" @click="qrConfirm()"
@@ -412,6 +439,52 @@ export default {
           .catch((err) => {});
       }
     },
+    // 时间期限赋值
+    insertDate() {
+      if (this.tableData.length > 0) {
+        for (let i = 0; i < this.tableData.length; i++) {
+          if (this.tableData[i].yysj !== null) {
+            this.tableData[i].updateTime = [];
+            this.tableData[i].updateTime.push(
+              this.tableData[i].yysj.slice(0, 5)
+            );
+            this.tableData[i].updateTime.push(
+              this.tableData[i].yysj.slice(6, 11)
+            );
+          }
+        }
+      }
+    },
+    editCfqx(row) {
+      this.changeSJ(row, 2);
+    },
+    changeSJ(row, flag) {
+      if (flag == 1) {
+        var data = {
+          id: row.id,
+          yyrq: row.yyrq,
+        };
+      } else if (flag == 2) {
+        var data = {
+          id: row.id,
+          yysjks: row.updateTime[0],
+          yysjjs: row.updateTime[1],
+        };
+      } else {
+        var data = {
+          id: row.id,
+          cfwh: row.cfwh,
+        };
+      }
+      updateSjZxsj(data)
+        .then((res) => {
+          this.$message.success("修改成功");
+          this.handleSearch();
+        })
+        .catch((err) => {
+          this.handleSearch();
+        });
+    },
     // 导出取消
     handleCancel() {
       this.showExport = false;
@@ -532,6 +605,7 @@ export default {
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
+          this.insertDate();
         })
         .catch((err) => {});
     },

@@ -58,16 +58,16 @@
           <el-table-column prop="xm" label="姓名" sortable="custom">
           </el-table-column>
           <el-table-column
-            prop="ssdwdmmc"
+            prop="dwmc"
             label="单位"
             min-width="100px"
             sortable="custom"
           >
           </el-table-column>
-          <el-table-column prop="bjdmmc" label="职称" sortable="custom">
+          <el-table-column prop="zcmc" label="职称" sortable="custom">
           </el-table-column>
           <el-table-column
-            prop="wjssmsFdy"
+            prop="yddh"
             label="联系方式"
             min-width="130px"
             sortable="custom"
@@ -75,7 +75,7 @@
           >
           </el-table-column>
           <el-table-column
-            prop="jycfdjmmc"
+            prop="rqfw"
             label="日期"
             min-width="130px"
             :show-overflow-tooltip="true"
@@ -83,7 +83,7 @@
           >
           </el-table-column>
           <el-table-column
-            prop="sqsj"
+            prop="pbsj"
             label="时间"
             min-width="200px"
             :show-overflow-tooltip="true"
@@ -91,7 +91,7 @@
           >
           </el-table-column>
           <el-table-column
-            prop="sqsj"
+            prop="zxdd"
             label="地点"
             min-width="200px"
             :show-overflow-tooltip="true"
@@ -118,6 +118,7 @@
         :visible.sync="addModel"
         width="50%"
         :close-on-click-modal="false"
+        @close="closeAdd"
       >
         <template>
           <el-form
@@ -130,50 +131,60 @@
             <div class="baseInfo">
               <div style="margin-bottom: 20px">
                 <el-table
-                  :data="form.fwfxList"
+                  :data="form.ghList"
                   ref="multipleTable"
                   style="width: 100%"
                 >
-                  <el-table-column prop="dm" label="姓名" :min-width="300">
+                  <el-table-column prop="xm" label="姓名" :min-width="300">
                     <template slot-scope="scope">
                       <el-form-item
-                        :prop="'fwfxList.' + scope.$index + '.dm'"
+                        label-width="0px"
+                        :prop="'ghList.' + scope.$index + '.xm'"
                         :rules="rules.common"
                       >
-                        <el-select
-                          v-model="scope.row.dm"
-                          filterable
-                          allow-create
-                        >
-                          <el-option
-                            v-for="(item, index) in fwfxOps"
-                            :key="index"
-                            :label="item.mc"
-                            :value="item.mc"
-                          ></el-option>
-                        </el-select>
+                        <el-autocomplete
+                          v-model="scope.row.xm"
+                          :fetch-suggestions="querySearchPart"
+                          placeholder="请输入姓名"
+                          :trigger-on-focus="false"
+                          size="small"
+                          @select="selectXm"
+                        ></el-autocomplete>
                       </el-form-item>
                     </template>
                   </el-table-column>
 
-                  <el-table-column prop="mc" label="分数" :min-width="230">
+                  <el-table-column prop="dwmc" label="单位" :min-width="230">
                     <template slot-scope="scope">
-                      <el-form-item :prop="'fwfxList.' + scope.$index + '.mc'">
-                        {{}}
+                      <el-form-item
+                        :prop="'ghList.' + scope.$index + '.dwmc'"
+                        label-width="0px"
+                      >
+                        {{ scope.row.dwmc }}
                       </el-form-item>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="mc" label="职称" :min-width="230">
+                  <el-table-column prop="zcmc" label="职称" :min-width="230">
                     <template slot-scope="scope">
-                      <el-form-item :prop="'fwfxList.' + scope.$index + '.mc'">
-                        {{}}
+                      <el-form-item
+                        :prop="'ghList.' + scope.$index + '.zcmc'"
+                        label-width="0px"
+                      >
+                        {{ scope.row.zcmc }}
                       </el-form-item>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="mc" label="联系方式" :min-width="230">
+                  <el-table-column
+                    prop="yddh"
+                    label="联系方式"
+                    :min-width="230"
+                  >
                     <template slot-scope="scope">
-                      <el-form-item :prop="'fwfxList.' + scope.$index + '.mc'">
-                        {{}}
+                      <el-form-item
+                        :prop="'ghList.' + scope.$index + '.yddh'"
+                        label-width="0px"
+                      >
+                        {{ scope.row.yddh }}
                       </el-form-item>
                     </template>
                   </el-table-column>
@@ -190,20 +201,16 @@
                       <el-cascader
                         v-model="form.xnxq"
                         :options="options"
-                        @change="handleChangeXnxq"
+                        @change="handleChangeXnxqAdd"
                         :props="XnxqProps"
                       ></el-cascader>
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item
-                      label="日期"
-                      prop="time"
-                      :rules="rules.common"
-                    >
+                    <el-form-item label="日期" prop="rq" :rules="rules.common">
                       <el-date-picker
                         type="daterange"
-                        v-model="form.time"
+                        v-model="form.rq"
                         value-format="yyyy-MM-dd"
                       />
                     </el-form-item>
@@ -305,6 +312,14 @@
 <script>
 import { queryXnXq } from "@/api/dailyBehavior/vocationTea";
 import { queryYshList, updateQgzxGw } from "@/api/stuPunish/nichufen";
+import { queryPbList, insert, deleteList } from "@/api/career/zxsPb";
+import {
+  queryTeaInfoByGh,
+  detail,
+  downLoad,
+  queryList,
+} from "@/api/career/zxs";
+import { getXmXgh } from "@/api/assistantWork/homeSchool";
 import { getToken } from "@/utils/auth";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
@@ -337,6 +352,8 @@ export default {
       leng: 0,
       tableData: [],
       form: {
+        ghList: [{ xm: "", dwmc: "", zcmc: "", yddh: "" }],
+        xnxq: [],
         kfwsjdList: [
           {
             Mon: false,
@@ -429,6 +446,60 @@ export default {
   },
 
   methods: {
+    closeAdd() {
+      this.$ref.form.resetFields();
+      this.form = {
+        ghList: [{ xm: "", dwmc: "", zcmc: "", yddh: "" }],
+        xnxq: [],
+        kfwsjdList: [
+          {
+            Mon: false,
+            Tues: false,
+            Wed: false,
+            Thur: false,
+            Fri: false,
+            Sat: false,
+            Sun: false,
+          },
+          {
+            Mon: false,
+            Tues: false,
+            Wed: false,
+            Thur: false,
+            Fri: false,
+            Sat: false,
+            Sun: false,
+          },
+          {
+            Mon: false,
+            Tues: false,
+            Wed: false,
+            Thur: false,
+            Fri: false,
+            Sat: false,
+            Sun: false,
+          },
+          {
+            Mon: false,
+            Tues: false,
+            Wed: false,
+            Thur: false,
+            Fri: false,
+            Sat: false,
+            Sun: false,
+          },
+          {
+            Mon: false,
+            Tues: false,
+            Wed: false,
+            Thur: false,
+            Fri: false,
+            Sat: false,
+            Sun: false,
+          },
+        ],
+      };
+    },
     indexMethod(val) {
       var index = [
         "8:00~10:00",
@@ -496,22 +567,33 @@ export default {
       }
       this.handleSearch();
     },
+    handleChangeXnxqAdd() {
+      this.form.xn = " ";
+      this.form.xqm = "";
+      if (this.form.xnxq[0]) {
+        this.form.xn = this.form.xnxq[0];
+      }
+      if (this.form.xnxq[1]) {
+        this.form.xqm = this.form.xnxq[1];
+      }
+      this.handleSearch();
+    },
     hadleDetail(row) {},
-    changeXm() {},
+
     del() {
       this.showRemove = true;
     },
     handleRemove() {
-      //   if (this.multipleSelection.length > 0) {
-      //     let idlist = this.multipleSelection.map((item) => item.id);
-      //     deleteData(idlist).then((res) => {
-      //       this.$message.success("删除成功");
-      //       this.showRemove = false;
-      //       this.handleSearch();
-      //     });
-      //   } else {
-      //     this.$message.error("请至少选择一条数据！");
-      //   }
+      if (this.multipleSelection.length > 0) {
+        let idlist = this.multipleSelection.map((item) => item.id);
+        deleteList({ idList: idlist }).then((res) => {
+          this.$message.success("删除成功");
+          this.showRemove = false;
+          this.handleSearch();
+        });
+      } else {
+        this.$message.error("请至少选择一条数据！");
+      }
     },
     removeCancel() {
       this.showRemove = false;
@@ -519,7 +601,7 @@ export default {
     checkFormEdit() {
       // 1.校验必填项
       let validForm = false;
-      this.$refs.formEdit.validate((valid) => {
+      this.$refs.form.validate((valid) => {
         validForm = valid;
       });
       if (!validForm) {
@@ -537,23 +619,24 @@ export default {
         return;
       } else {
         var params = {
-          xh: this.basicInfo.xh,
-          wjssmsXgbfzr: this.formEdit.wjssmsXgbfzr,
-          cfyjtkXgbfzr: this.formEdit.cfyjtkXgbfzr,
-          cfdjm: this.formEdit.cfdjm,
-          dwjyXgbfzr: this.formEdit.dwjyXgbfzr,
-          id: this.formEdit.id,
+          gh: this.form.gh[1],
+          jsrq: this.form.rq[1] ? this.form.rq[1] : null,
+          ksrq: this.form.rq[0] ? this.form.rq[0] : null,
+          kfwsjdList: this.form.kfwsjdList,
+          xm: this.form.ghList[0].xm.split("(")[0],
+          xn: this.form.xn,
+          xqm: this.form.xqm,
+          zxdd: this.form.zxdd,
         };
-        updateQgzxGw(params).then((res) => {
-          this.$message.success("处分告知书修改成功");
+
+        insert(params).then((res) => {
+          this.$message.success("新增成功");
           this.addModel = false;
           this.handleSearch();
         });
       }
     },
-    changeSelect() {
-      this.searchVal = "";
-    },
+
     // 查询
     handleSearch() {
       let data = {
@@ -564,26 +647,10 @@ export default {
         xn: this.queryParams.xn,
         xqm: this.queryParams.xqm,
       };
-      queryYshList(data)
+      queryPbList(data)
         .then((res) => {
           this.tableData = res.data;
           this.queryParams.total = res.totalCount;
-        })
-        .catch((err) => {});
-    },
-
-    getCode(data) {
-      this.getCodeInfoByEnglish(data);
-    },
-    getCodeInfoByEnglish(paramsData) {
-      let data = { codeTableEnglish: paramsData };
-      getCodeInfoByEnglish(data)
-        .then((res) => {
-          switch (paramsData) {
-            case "dmpyccm":
-              this.$set(this.training, "checkBox", res.data);
-              break;
-          }
         })
         .catch((err) => {});
     },
@@ -598,6 +665,49 @@ export default {
       this.queryParams.orderZd = column.prop;
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
+    },
+    querySearchPart(queryString, cb) {
+      if (queryString != "") {
+        let callBackArr = [];
+        var Xm = { xm: queryString };
+        var result = [];
+        var resultNew = [];
+        queryList(Xm).then((res) => {
+          // console.log("res",res.data);
+          result = res.data.length > 0 ? res.data : [];
+          resultNew = result.map((ele) => {
+            //注意此处必须要value的对象名，不然resolve的值无法显示，即使接口有数据返回，也无法展示
+            //所以前端自己更换字段名，也可以找后台换,前端写有点浪费时间
+            //此处找后台约定好
+            return {
+              value: `${ele.xm}(${ele.gh})`,
+              gh: ele.gh,
+              xm: ele.xm,
+            };
+          });
+          resultNew.forEach((item) => {
+            if (item.value.indexOf(queryString) > -1) {
+              callBackArr.push(item);
+            }
+          });
+          if (callBackArr.length == 0) {
+            cb([{ value: "暂无数据", price: "暂无数据" }]);
+          } else {
+            cb(callBackArr);
+          }
+        });
+      }
+    },
+    selectXm() {
+      let gh = this.form.ghList[0].xm.match(/\(([^)]*)\)/);
+      this.$set(this.form, "gh", gh);
+      queryTeaInfoByGh({ gh: gh[1] }).then((res) => {
+        if (res.data) {
+          this.$set(this.form.ghList[0], "zcmc", res.data.zcmc);
+          this.$set(this.form.ghList[0], "yddh", res.data.yddh);
+          this.$set(this.form.ghList[0], "dwmc", res.data.dwmc);
+        }
+      });
     },
   },
 };

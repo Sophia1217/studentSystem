@@ -141,8 +141,8 @@
             <div class="headline">排班信息</div>
             <div>
               <el-table
-                :data="basicInfo.dutyData"
-                ref="dutyData"
+                :data="basicInfo.pbxxList"
+                ref="pbxxList"
                 style="width: 100%"
               >
                 <el-table-column
@@ -151,10 +151,10 @@
                   width="50"
                 ></el-table-column>
 
-                <el-table-column prop="xm" label="日期"> </el-table-column>
-                <el-table-column prop="ssdwdmmc" label="时间" min-width="100px">
+                <el-table-column prop="rq" label="日期"> </el-table-column>
+                <el-table-column prop="sd" label="时间" min-width="100px">
                 </el-table-column>
-                <el-table-column prop="bjdmmc" label="状态" />
+                <el-table-column prop="yyzt" label="状态" />
               </el-table>
             </div>
           </div>

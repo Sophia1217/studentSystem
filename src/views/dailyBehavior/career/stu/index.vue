@@ -163,7 +163,7 @@
                 >
                   <div style="margin-bottom: 20px">
                     <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    <span v-else class="avatar-uploader-icon">暂无图片</span>
                   </div>
                 </el-upload>
                 <div class="title">咨询师：{{ basicInfo.xm }}</div>
@@ -704,6 +704,29 @@ export default {
         line-height: 30px;
       }
     }
+  }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409eff;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 158px;
+    height: 158px;
+    line-height: 158px;
+    text-align: center;
+  }
+
+  .avatar {
+    border-radius: 50%;
+    width: 158px;
+    height: 158px;
+    display: block;
   }
 }
 .handleName {

@@ -731,7 +731,7 @@ export default {
       }
       this.detailModal = true;
       this.editparams = row;
-      this.editDetails.shyj = "";
+      this.$set(this.editDetails,"shyj","");
       var data = {
         // xh: row.xh,
         // roleId: this.$store.getters.roleId,

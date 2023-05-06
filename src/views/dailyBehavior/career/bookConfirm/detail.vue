@@ -14,7 +14,7 @@
               <div class="wrap">
                 <div class="title">学号</div>
                 <div class="content">
-                  {{ detailInfoData.xh }}
+                  {{ basicInfo.xh }}
                 </div>
               </div>
             </el-col>
@@ -22,7 +22,7 @@
               <div class="wrap">
                 <div class="title">姓名</div>
                 <div class="content">
-                  {{ detailInfoData.xm }}
+                  {{ basicInfo.xm }}
                 </div>
               </div>
             </el-col>
@@ -30,7 +30,7 @@
               <div class="wrap">
                 <div class="title">性别</div>
                 <div class="content">
-                  {{ detailInfoData.xb }}
+                  {{ basicInfo.xb }}
                 </div>
               </div>
             </el-col>
@@ -40,7 +40,7 @@
               <div class="wrap">
                 <div class="title">学院</div>
                 <div class="content">
-                  {{ detailInfoData.dwmc }}
+                  {{ basicInfo.dwmc }}
                 </div>
               </div>
             </el-col>
@@ -48,7 +48,7 @@
               <div class="wrap">
                 <div class="title">专业</div>
                 <div class="content">
-                  {{ detailInfoData.zymc }}
+                  {{ basicInfo.zymc }}
                 </div>
               </div>
             </el-col>
@@ -56,7 +56,7 @@
               <div class="wrap">
                 <div class="title">年级</div>
                 <div class="content">
-                  {{ detailInfoData.nj }}
+                  {{ basicInfo.nj }}
                 </div>
               </div>
             </el-col>
@@ -77,7 +77,7 @@
               <div class="wrap">
                 <div class="title">手机</div>
                 <div class="content">
-                  {{ detailInfoData.yddh }}
+                  {{ basicInfo.yddh }}
                 </div>
               </div>
             </el-col>
@@ -85,7 +85,7 @@
               <div class="wrap">
                 <div class="title">QQ</div>
                 <div class="content">
-                  {{ detailInfoData.qqhm }}
+                  {{ basicInfo.qqhm }}
                 </div>
               </div>
             </el-col>
@@ -102,7 +102,7 @@
               <div class="wrap">
                 <div class="title">高中就读学校</div>
                 <div class="content">
-                  {{ detailInfoData.gzjdxx }}
+                  {{ basicInfo.gzjdxx }}
                 </div>
               </div>
             </el-col>
@@ -110,7 +110,7 @@
               <div class="wrap">
                 <div class="title">高中毕业年份</div>
                 <div class="content">
-                  {{ detailInfoData.gzbynf }}
+                  {{ basicInfo.gzbynf }}
                 </div>
               </div>
             </el-col>
@@ -120,7 +120,7 @@
               <div class="wrap">
                 <div class="title">本（专）科就读学校及专业</div>
                 <div class="content">
-                  {{ detailInfoData.bzkjdxxjzy }}
+                  {{ basicInfo.bzkjdxxjzy }}
                 </div>
               </div>
             </el-col>
@@ -128,7 +128,7 @@
               <div class="wrap">
                 <div class="title">本（专科）毕业年份</div>
                 <div class="content">
-                  {{ detailInfoData.bzkbynf }}
+                  {{ basicInfo.bzkbynf }}
                 </div>
               </div>
             </el-col>
@@ -138,7 +138,7 @@
               <div class="wrap">
                 <div class="title">硕士就读学校及专业</div>
                 <div class="content">
-                  {{ detailInfoData.ssjdxxjzy }}
+                  {{ basicInfo.ssjdxxjzy }}
                 </div>
               </div>
             </el-col>
@@ -146,7 +146,7 @@
               <div class="wrap">
                 <div class="title">硕士毕业年份</div>
                 <div class="content">
-                  {{ detailInfoData.ssbynf }}
+                  {{ basicInfo.ssbynf }}
                 </div>
               </div>
             </el-col>
@@ -383,7 +383,7 @@
 </template>
 <script>
 import CheckboxCom from "../../../components/checkboxCom";
-import { getXsJbxx, insertSyfzXsyyDetail } from "@/api/career/bookStu";
+import { getXsJbxx } from "@/api/career/bookStu";
 import { getSyfzXsyyDetail } from "@/api/career/bookTea";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {
@@ -392,6 +392,7 @@ export default {
     return {
       xh: "",
       detailInfoData: {},
+      basicInfo: {},
       njOptions: [],
       pxjbmOps: [], //培训级别码
       checked: true,
@@ -442,12 +443,12 @@ export default {
   mounted() {
     this.getCode("dmpxjbm");
     this.getDetail();
-    this.xh = this.$store.getters.userId;
-    // this.mtfs = this.$route.query.mtfs;
-    // this.yyid = this.$route.query.yyid;
   },
   methods: {
     getDetail() {
+      getXsJbxx({ xh: this.$route.query.xh }).then((res) => {
+        this.basicInfo = res.data;
+      });
       getSyfzXsyyDetail({ id: this.$route.query.id }).then((res) => {
         this.detailInfoData = res.data;
       });

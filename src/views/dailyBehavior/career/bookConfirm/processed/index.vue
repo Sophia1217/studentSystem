@@ -232,6 +232,7 @@
                 end-placeholder="结束时间"
                 :clearable="false"
                 style="width: 240px"
+                @blur="changeSJ(scope.row,2)"
               >
               </el-time-picker>
             </template>
@@ -460,15 +461,20 @@ export default {
     },
     changeSJ(row, flag) {
       if (flag == 1) {
+        //改日期
         var data = {
-          id: row.id,
+          yyid: row.yyid,
           yyrq: row.yyrq,
-        };
-      } else if (flag == 2) {
-        var data = {
-          id: row.id,
           yysjks: row.updateTime[0],
           yysjjs: row.updateTime[1],
+        };
+      } else if (flag == 2) {
+        //改时间
+        var data = {
+          yyid: row.yyid,
+          yysjks: row.updateTime[0],
+          yysjjs: row.updateTime[1],
+          yyrq: row.yyrq,
         };
       } else {
         var data = {
@@ -561,6 +567,7 @@ export default {
         query: {
           // mtfs: glag, //1线上，2线下
           id: row.id,
+          xh:row.xh,
         },
       });
     },

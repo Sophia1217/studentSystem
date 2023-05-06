@@ -253,7 +253,6 @@
 <script>
 import { edit, tj } from "@/api/dailyBehavior/xnxjStu";
 import { queryPbList, queryZxsPbxxYyzt } from "@/api/career/bookStu";
-import { detail } from "@/api/career/zxs";
 import lctCom from "../../../components/lct";
 import topTitle from "../../../components/topTitle";
 import {

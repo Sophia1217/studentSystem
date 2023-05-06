@@ -156,7 +156,7 @@
               <div class="wrap">
                 <div class="title">接受职业资格证书培训情况</div>
                 <div class="content">
-                  <el-input v-model="tableData.zyzgzs" />
+                  <el-input v-model="tableData.zyzgzs" maxlength="200"/>
                 </div>
               </div>
             </el-col>
@@ -164,7 +164,7 @@
               <div class="wrap">
                 <div class="title">在教育方面的抱负是怎样的</div>
                 <div class="content">
-                  <el-input v-model="tableData.jyfmbf" />
+                  <el-input v-model="tableData.jyfmbf" maxlength="200"/>
                 </div>
               </div>
             </el-col>
@@ -180,7 +180,7 @@
               <div class="wrap">
                 <div class="title">实习实践经历1</div>
                 <div class="content">
-                  <el-input v-model="tableData.sxsjjl1" />
+                  <el-input v-model="tableData.sxsjjl1" maxlength="200"/>
                 </div>
               </div>
             </el-col>
@@ -190,7 +190,7 @@
               <div class="wrap">
                 <div class="title">实习实践经历2</div>
                 <div class="content">
-                  <el-input v-model="tableData.sxsjjl2" />
+                  <el-input v-model="tableData.sxsjjl2" maxlength="200"/>
                 </div>
               </div>
             </el-col>
@@ -200,7 +200,7 @@
               <div class="wrap">
                 <div class="title">实习实践经历3</div>
                 <div class="content">
-                  <el-input v-model="tableData.sxsjjl3" />
+                  <el-input v-model="tableData.sxsjjl3" maxlength="200"/>
                 </div>
               </div>
             </el-col>
@@ -210,7 +210,7 @@
               <div class="wrap">
                 <div class="title">特殊爱好</div>
                 <div class="content">
-                  <el-input v-model="tableData.tsah" />
+                  <el-input v-model="tableData.tsah" maxlength="200"/>
                 </div>
               </div>
             </el-col>
@@ -218,7 +218,7 @@
               <div class="wrap">
                 <div class="title">休闲兴趣</div>
                 <div class="content">
-                  <el-input v-model="tableData.xxxq" />
+                  <el-input v-model="tableData.xxxq" maxlength="200"/>
                 </div>
               </div>
             </el-col>
@@ -228,7 +228,7 @@
               <div class="wrap">
                 <div class="title">志愿者工作</div>
                 <div class="content">
-                  <el-input v-model="tableData.zyzgz" />
+                  <el-input v-model="tableData.zyzgz" maxlength="200"/>
                 </div>
               </div>
             </el-col>
@@ -236,7 +236,7 @@
               <div class="wrap">
                 <div class="title">其他公益活动</div>
                 <div class="content">
-                  <el-input v-model="tableData.qtgyhd" />
+                  <el-input v-model="tableData.qtgyhd" maxlength="200"/>
                 </div>
               </div>
             </el-col>
@@ -246,7 +246,7 @@
               <div class="wrap">
                 <div class="title">任学生干部经历</div>
                 <div class="content">
-                  <el-input v-model="tableData.xsgbjl" />
+                  <el-input v-model="tableData.xsgbjl" maxlength="200"/>
                 </div>
               </div>
             </el-col>
@@ -254,7 +254,7 @@
               <div class="wrap">
                 <div class="title">其他实践经历</div>
                 <div class="content">
-                  <el-input v-model="tableData.qtsjjl" />
+                  <el-input v-model="tableData.qtsjjl" maxlength="200"/>
                 </div>
               </div>
             </el-col>
@@ -373,7 +373,6 @@
 </template>
 <script>
 import CheckboxCom from "../../../components/checkboxCom";
-import { InsertJtList, GetDetail } from "@/api/familyDifficulties/table";
 import { getXsJbxx, insertSyfzXsyyDetail } from "@/api/career/bookStu";
 import { getCodeInfoByEnglish } from "@/api/politicalWork/basicInfo";
 export default {

@@ -138,7 +138,7 @@
       <div class="headerTop">
         <div class="headerLeft">
           <span class="title">待确认列表</span>
-          <el-select
+          <!-- <el-select
             v-model="moreIform.nd"
             collapse-tags
             @change="handleSearch"
@@ -152,7 +152,7 @@
               :value="item"
             ></el-option>
           </el-select>
-          <span>年度</span>
+          <span>年度</span> -->
         </div>
         <div class="headerRight">
           <div class="btns borderBlue" @click="mbDown1">
@@ -216,13 +216,6 @@
           </el-table-column>
           <el-table-column prop="bj" label="班级" min-width="100" sortable>
           </el-table-column>
-          <el-table-column
-            prop="bysj"
-            label="毕业时间"
-            min-width="100"
-            sortable
-          >
-          </el-table-column>
           <el-table-column fixed="right" label="操作" width="240">
             <template slot-scope="scope">
               <el-button
@@ -255,7 +248,17 @@
       </span>
     </el-dialog>
     <el-dialog title="确认提示" :visible.sync="qrExport" width="30%">
-      <span>确认毕业？</span>
+      <div style="padding: 15px">
+        <span style="margin-right: 10px; font-weight: 600">毕业年月</span>
+        <el-date-picker
+          v-model="bysj"
+          type="month"
+          format="yyyy 年 MM 月"
+          value-format="yyyy-MM"
+          placeholder="请选择毕业年月"
+        >
+        </el-date-picker>
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleCancelB">取 消</el-button>
         <el-button type="primary" class="confirm" @click="handleConfirmB"
@@ -342,6 +345,7 @@ export default {
       },
       multipleSelection: [],
       njOps: [],
+      bysj: "",
     };
   },
 
@@ -409,6 +413,7 @@ export default {
     queren() {
       if (this.multipleSelection.length > 0) {
         this.qrExport = true;
+        this.bysj = "";
       } else {
         this.$message.error("请先勾选数据");
       }
@@ -418,13 +423,17 @@ export default {
     },
     // 确认
     handleConfirmB() {
-      checkBys({ xhs: this.xhArr })
-        .then((res) => {
-          this.$message.success("确认成功");
-          this.handleSearch();
-          this.qrExport = false;
-        })
-        .catch((err) => {});
+      if (!this.bysj) {
+        this.$message.error("请选择毕业年月!");
+      } else {
+        checkBys({ xhs: this.xhArr, bysj: this.bysj })
+          .then((res) => {
+            this.$message.success("确认成功");
+            this.handleSearch();
+            this.qrExport = false;
+          })
+          .catch((err) => {});
+      }
     },
     //模板下载
     mbDown1() {
@@ -469,7 +478,7 @@ export default {
         pyccmList: this.training.choose || [],
         njList: this.moreIform.njList,
         zydmList: this.moreIform.zydmList,
-        nd: this.moreIform.nd,
+        // nd: this.moreIform.nd,
         pageNum: 0,
         pageSize: 0,
         orderZd: this.queryParams.orderZd,
@@ -533,7 +542,7 @@ export default {
       let data = {
         xm: this.select == "xm" ? this.searchVal : null,
         xh: this.select == "xh" ? this.searchVal : null,
-        nd: this.moreIform.nd,
+        // nd: this.moreIform.nd,
         // bysjEnd:
         //   this.queryParams.dksjArr && this.queryParams.dksjArr.length > 0
         //     ? this.queryParams.dksjArr[1]

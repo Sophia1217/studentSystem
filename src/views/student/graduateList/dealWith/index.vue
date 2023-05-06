@@ -157,6 +157,9 @@
           <div class="btns borderBlue" @click="expor">
             <i class="icon outIcon"></i><span class="title">导出</span>
           </div>
+          <div class="btns borderBlue" @click="chehui">
+            <i class="icon backIcon"></i><span class="title">撤销</span>
+          </div>
         </div>
       </div>
       <div class="mt15">
@@ -193,7 +196,7 @@
           </el-table-column>
           <el-table-column
             prop="bysj"
-            label="毕业时间"
+            label="预计毕业年月"
             min-width="100"
             sortable
           >
@@ -234,11 +237,20 @@
         >
       </span>
     </el-dialog>
+    <el-dialog title="撤销" :visible.sync="chehuiModal" width="20%">
+      <span>确认撤销？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="chCancel">取 消</el-button>
+        <el-button type="primary" class="confirm" @click="chConfirm()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { queryYqrList, exportBysYqr } from "@/api/student/graduateList";
+import { queryYqrList, exportBysYqr, chbyId } from "@/api/student/graduateList";
 import { getYears } from "@/api/jccy/index";
 import { getCollege, getGrade } from "@/api/class/maintenanceClass";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
@@ -292,6 +304,7 @@ export default {
       },
       xhArr: [],
       multipleSelection: [],
+      chehuiModal: false,
     };
   },
 
@@ -504,6 +517,23 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
     },
+    chehui() {
+      if (this.xhArr && this.xhArr.length > 0) {
+        this.chehuiModal = true;
+      } else {
+        this.$message.error("请先勾选数据");
+      }
+    },
+    chConfirm() {
+      chbyId({ xhs: this.xhArr }).then((res) => {
+        this.handleSearch();
+        this.chehuiModal = false;
+        this.$message.success("撤销成功");
+      });
+    },
+    chCancel() {
+      this.chehuiModal = false;
+    },
   },
 };
 </script>
@@ -599,6 +629,10 @@ export default {
           background: #fff;
           border: 1px solid grey;
         }
+        .fullGreen {
+          color: #fff;
+          background: #005657;
+        }
         .lightIcon {
           margin-top: 9px;
           background: url("~@/assets/assistantPng/delete.png") no-repeat;
@@ -659,6 +693,10 @@ export default {
           .outIcon {
             margin-top: 10px;
             background: url("~@/assets/assistantPng/out.png") no-repeat;
+          }
+          .backIcon {
+            margin-top: 10px;
+            background: url("~@/assets/images/back.png") no-repeat;
           }
         }
       }

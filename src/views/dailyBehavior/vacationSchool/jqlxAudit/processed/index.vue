@@ -237,8 +237,9 @@
           <el-table-column
             prop="lxyy"
             label="留校原因"
-            min-width="100px"
+            min-width="150px"
             sortable="custom"
+            :show-overflow-tooltip="true"
           >
           </el-table-column>
           <el-table-column
@@ -496,7 +497,7 @@ export default {
             ? this.datePickerEnd[1]
             : "",
         xbm: this.dmxbmOPs.choose || [],
-            // pyccm: this.training.choose || [],
+        // pyccm: this.training.choose || [],
 
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,

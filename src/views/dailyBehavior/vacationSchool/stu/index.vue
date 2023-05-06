@@ -35,7 +35,12 @@
             label="留校结束日期"
             sortable="custom"
           />
-          <el-table-column prop="lxyy" label="留校原因" sortable="custom" />
+          <el-table-column
+            prop="lxyy"
+            label="留校原因"
+            sortable="custom"
+            :show-overflow-tooltip="true"
+          />
           <el-table-column prop="sqsj" label="申请时间" sortable="custom" />
           <el-table-column
             prop="statusChinese"

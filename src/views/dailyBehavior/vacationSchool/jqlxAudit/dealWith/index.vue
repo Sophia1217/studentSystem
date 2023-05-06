@@ -232,8 +232,9 @@
           <el-table-column
             prop="lxyy"
             label="留校原因"
-            min-width="100px"
+            min-width="150px"
             sortable="custom"
+            :show-overflow-tooltip="true"
           >
           </el-table-column>
           <el-table-column
@@ -269,19 +270,6 @@
               <el-button type="text" size="small" @click="lctClick(scope.row)">
                 <i class="scopeIncon lct"></i>
                 <span class="handleName">流转记录</span>
-              </el-button>
-            </template>
-          </el-table-column>
-
-          <el-table-column fixed="right" label="操作" width="140">
-            <template slot-scope="scope">
-              <el-button
-                type="text"
-                size="small"
-                @click="hadleDetail(scope.row)"
-              >
-                <i class="scopeIncon handledie"></i>
-                <span class="handleName">详情</span>
               </el-button>
             </template>
           </el-table-column>

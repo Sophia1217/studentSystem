@@ -147,11 +147,25 @@
           <div class="baseInfo">
             <div class="information">
               <div class="picture" style="width: 30%">
-                <div style="margin-bottom: 20px">
-                  <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </div>
-                <!-- </el-upload> -->
+                <el-upload
+                  class="avatar-uploader"
+                  action="#"
+                  :file-list="basicInfo.fileList"
+                  :show-file-list="false"
+                  :on-change="
+                    (item, item1) => {
+                      change(item, item1);
+                    }
+                  "
+                  :auto-upload="false"
+                  ref="upload"
+                  disabled
+                >
+                  <div style="margin-bottom: 20px">
+                    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  </div>
+                </el-upload>
                 <div class="title">咨询师：{{ basicInfo.xm }}</div>
                 <div class="post">{{ basicInfo.zcmc }}</div>
               </div>
@@ -254,6 +268,7 @@
 import { edit, tj } from "@/api/dailyBehavior/xnxjStu";
 import { queryPbList, queryZxsPbxxYyzt } from "@/api/career/bookStu";
 import { detail } from "@/api/career/zxs";
+import { Exportwj } from "@/api/assistantWork/classEvent";
 import lctCom from "../../../components/lct";
 import topTitle from "../../../components/topTitle";
 import {
@@ -325,16 +340,31 @@ export default {
         .catch((err) => {});
     },
     //预约
-    showDetail(row) {
+    async showDetail(row) {
       this.editModal = true;
-      detail({ id: row.zxsbId })
+      await detail({ id: row.zxsbId })
         .then((res) => {
           this.basicInfo = res.data;
         })
         .catch((err) => {});
+      if (this.basicInfo.fileList && this.basicInfo.fileList.length > 0) {
+        var data;
+        Exportwj({ id: this.basicInfo.fileList[0].id.toString() }).then(
+          (res) => {
+            // console.log("res", res);
+            data = new File([res], this.basicInfo.fileList[0].fileName, {
+              type: "application/png",
+              lastModified: Date.now(),
+            });
+            this.basicInfo.fileList.push(data);
+            this.basicInfo.imageUrl = URL.createObjectURL(res);
+          }
+        );
+      }
       queryZxsPbxxYyzt({ gh: row.gh })
         .then((res) => {
           this.basicInfo.dutyData = res.data;
+          this.$forceUpdate();
         })
         .catch((err) => {});
     },

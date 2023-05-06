@@ -1131,90 +1131,108 @@
         </div>
       </div>
       <div class="headline">咨询规划</div>
-      <!-- <div class="editBtn" @click="addDetailInfoData(1)" v-if="isEdit == 1">
-          <i class="addIcon" /> 新增
-        </div> -->
-      <div class="tableStyle">
-        <el-table :data="tableData.zxghList" style="width: 100%">
-          <el-table-column
-            type="index"
-            label="序号"
-            width="50"
-          ></el-table-column>
-          <el-table-column prop="ghrq" label="规划日期" width="100">
-          </el-table-column>
-          <el-table-column prop="ghsj" label="规划时间" width="120">
-          </el-table-column>
+      <el-form ref="form" :model="tableData" :rules="rules">
+        <div class="tableStyle">
+          <el-table :data="tableData.zxghList" style="width: 100%">
+            <el-table-column
+              type="index"
+              label="序号"
+              width="50"
+            ></el-table-column>
+            <el-table-column prop="ghrq" label="规划日期" width="100">
+            </el-table-column>
+            <el-table-column prop="ghsj" label="规划时间" width="120">
+            </el-table-column>
 
-          <el-table-column prop="sjzxrq" label="实际咨询日期">
-            <template slot-scope="scope">
-              <div v-if="!scope.row.change">{{ scope.row.sjzxrq }}</div>
-              <el-date-picker
-                v-else
-                type="date"
-                placeholder="请选择日期"
-                v-model="scope.row.sjzxrq"
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyy-MM-dd"
-                style="width= 60px;"
-              ></el-date-picker>
-            </template>
-          </el-table-column>
+            <el-table-column prop="sjzxrq" label="实际咨询日期">
+              <template slot-scope="scope">
+                <el-form-item
+                  :rules="rules.common"
+                  :prop="'zxghList.' + scope.$index + '.sjzxrq'"
+                >
+                  <div v-if="!scope.row.change || isEdit == 1">
+                    {{ scope.row.sjzxrq }}
+                  </div>
+                  <el-date-picker
+                    v-else
+                    type="date"
+                    placeholder="请选择日期"
+                    v-model="scope.row.sjzxrq"
+                    format="yyyy 年 MM 月 dd 日"
+                    value-format="yyyy-MM-dd"
+                    style="width= 60px;"
+                  ></el-date-picker>
+                </el-form-item>
+              </template>
+            </el-table-column>
 
-          <el-table-column prop="sjzxsjArr" label="实际咨询时间">
-            <template slot-scope="scope">
-              <div v-if="!scope.row.change">
-                {{ scope.row.sjzxsjArr[0] }}至{{ scope.row.sjzxsjArr[1] }}
-              </div>
-              <el-time-picker
-                v-else
-                is-range
-                v-model="scope.row.sjzxsjArr"
-                format="HH:mm"
-                value-format="HH:mm"
-                range-separator="至"
-                start-placeholder="开始时间"
-                end-placeholder="结束时间"
-                placeholder="选择时间范围"
-              >
-              </el-time-picker>
-            </template>
-          </el-table-column>
-          <el-table-column prop="mtfs" label="面谈方式">
-            <template slot-scope="scope">
-              <div v-if="!scope.row.change">{{ scope.row.mtfs }}</div>
-              <el-select
-                v-else
-                v-model="scope.row.mtfs"
-                placeholder="请选择"
-                size="small"
-              >
-                <el-option
-                  v-for="item in mtfsOps"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
-            </template>
-          </el-table-column>
+            <el-table-column prop="sjzxsjArr" label="实际咨询时间">
+              <template slot-scope="scope">
+                <el-form-item
+                  :rules="rules.common"
+                  :prop="'zxghList.' + scope.$index + '.sjzxsjArr'"
+                >
+                  <div v-if="!scope.row.change || isEdit == 1">
+                    {{ scope.row.sjzxsjArr[0] }}至{{ scope.row.sjzxsjArr[1] }}
+                  </div>
+                  <el-time-picker
+                    v-else
+                    is-range
+                    v-model="scope.row.sjzxsjArr"
+                    format="HH:mm"
+                    value-format="HH:mm"
+                    range-separator="至"
+                    start-placeholder="开始时间"
+                    end-placeholder="结束时间"
+                    placeholder="选择时间范围"
+                  >
+                  </el-time-picker>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column prop="mtfs" label="面谈方式">
+              <template slot-scope="scope">
+                <el-form-item
+                  :rules="rules.common"
+                  :prop="'zxghList.' + scope.$index + '.mtfs'"
+                >
+                  <div v-if="!scope.row.change || isEdit == 1">
+                    {{ scope.row.mtfs }}
+                  </div>
+                  <el-select
+                    v-else
+                    v-model="scope.row.mtfs"
+                    placeholder="请选择"
+                    size="small"
+                  >
+                    <el-option
+                      v-for="item in mtfsOps"
+                      :key="item"
+                      :label="item"
+                      :value="item"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </template>
+            </el-table-column>
 
-          <el-table-column fixed="right" label="过程简述及建议" width="140">
-            <template slot-scope="scope">
-              <el-button
-                type="text"
-                size="small"
-                @click="hadleDetail(scope.row)"
-              >
-                <span class="handleName">简述及建议</span>
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
+            <el-table-column fixed="right" label="过程简述及建议" width="140">
+              <template slot-scope="scope">
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="hadleDetail(scope.row)"
+                >
+                  <span class="handleName">简述及建议</span>
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </el-form>
       <div style="padding: 30px">
-        <span> 咨询过程中是否帮来访者修改了简历</span>
-        <el-radio-group v-model="tableData.sfxgjl">
+        <span> 咨询过程中是否帮来访者修改了简历: </span>
+        <el-radio-group v-model="tableData.sfxgjl" :disabled="isEdit == 1">
           <el-radio label="1">是</el-radio>
           <el-radio label="0">否</el-radio>
         </el-radio-group>
@@ -1223,7 +1241,9 @@
 
     <div class="editBottom">
       <div class="btn cancel" @click="handleCancle">返回</div>
-      <div class="btn confirm" @click="handlUpdata">保存</div>
+      <div class="btn confirm" v-if="isEdit == 2" @click="handlUpdata">
+        保存
+      </div>
     </div>
     <el-dialog
       title="简述及建议"
@@ -1238,7 +1258,7 @@
             :rows="5"
             maxlength="500"
             v-model="advice.js"
-            :readonly="!confirmshow"
+            :readonly="!confirmshow || isEdit == 1"
         /></el-form-item>
         <el-form-item label="咨询师建议">
           <el-input
@@ -1246,7 +1266,7 @@
             :rows="5"
             maxlength="500"
             v-model="advice.jy"
-            :readonly="!confirmshow"
+            :readonly="!confirmshow || isEdit == 1"
         /></el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -1278,7 +1298,7 @@ export default {
           {
             ghrq: this.$route.query.yyrq,
             ghsj: this.$route.query.yysj,
-
+            sjzxsjArr: [],
             sjzxrq: "",
             sjzxsj: null,
             mtfs: "",
@@ -1298,7 +1318,15 @@ export default {
       njOptions: [],
       lwjbmOps: [],
       pxjbmOps: [], //培训级别码
-
+      rules: {
+        common: [
+          {
+            required: true,
+            message: " ",
+            trigger: "blur",
+          },
+        ],
+      },
       confirmshow: true,
       isMore: false,
       dmxbmOPs: {
@@ -1391,36 +1419,52 @@ export default {
       this.isEdit = 2;
       this.$router.go(-1);
     },
-    handlUpdata() {
-      if (this.$route.query.id) {
-        this.$set(this.tableData, "id", this.$route.query.id);
+    checkForm() {
+      // 1.校验必填项
+      let validForm = false;
+      this.$refs.form.validate((valid) => {
+        validForm = valid;
+      });
+      if (!validForm) {
+        return false;
       }
+      return true;
+    },
+    handlUpdata() {
+      if (!this.checkForm()) {
+        this.$message.error("请完善表单相关信息！");
+        return;
+      } else {
+        if (this.$route.query.id) {
+          this.$set(this.tableData, "id", this.$route.query.id);
+        }
 
-      this.$set(this.tableData, "xh", this.$route.query.xh);
-      this.$set(this.tableData, "xxyyId", this.$route.query.xxyyId);
-      this.$set(this.tableData, "xn", this.$route.query.xn);
-      this.$set(this.tableData, "xq", this.$route.query.xq);
-      let zxghList = this.tableData.zxghList.slice(-1)[0];
-      this.$set(this.tableData, "ghrq", zxghList.ghrq);
-      this.$set(this.tableData, "ghsj", zxghList.ghsj);
-      this.$set(this.tableData, "sjzxrq", zxghList.sjzxrq);
+        this.$set(this.tableData, "xh", this.$route.query.xh);
+        this.$set(this.tableData, "xxyyId", this.$route.query.xxyyId);
+        this.$set(this.tableData, "xn", this.$route.query.xn);
+        this.$set(this.tableData, "xq", this.$route.query.xq);
+        let zxghList = this.tableData.zxghList.slice(-1)[0];
+        this.$set(this.tableData, "ghrq", zxghList.ghrq);
+        this.$set(this.tableData, "ghsj", zxghList.ghsj);
+        this.$set(this.tableData, "sjzxrq", zxghList.sjzxrq);
 
-      // this.$set(
-      //   this.tableData,
-      //   "sjzxsj",
-      //   zxghList.sjzxsj[0] + "-" + zxghList.sjzxsj[1]
-      // );
-      this.$set(this.tableData, "sjzxsjArr", zxghList.sjzxsjArr);
-      this.$set(this.tableData, "mtfs", zxghList.mtfs); //1线上，2线下
-      let data = this.tableData;
+        // this.$set(
+        //   this.tableData,
+        //   "sjzxsj",
+        //   zxghList.sjzxsj[0] + "-" + zxghList.sjzxsj[1]
+        // );
+        this.$set(this.tableData, "sjzxsjArr", zxghList.sjzxsjArr);
+        this.$set(this.tableData, "mtfs", zxghList.mtfs); //1线上，2线下
+        let data = this.tableData;
 
-      alterRegis(data)
-        .then((res) => {
-          this.$message.success("保存成功");
-          // this.getDetail();
-          this.$router.go(-1);
-        })
-        .catch((err) => {});
+        alterRegis(data)
+          .then((res) => {
+            this.$message.success("保存成功");
+            // this.getDetail();
+            this.$router.go(-1);
+          })
+          .catch((err) => {});
+      }
     },
     dmxbmCheck(value) {
       let checkedCount = value.length;
@@ -1444,7 +1488,7 @@ export default {
       this.showAdvice = true;
       this.$set(this.advice, "js", row.js);
       this.$set(this.advice, "jy", row.jy);
-      if (row.id && !row.change) {
+      if (this.isEdit == 1 || (row.id && !row.change)) {
         this.confirmshow = false;
       } else {
         this.confirmshow = true;
@@ -1701,6 +1745,14 @@ export default {
       color: #fff;
       // background: url('~@/assets/images/icon_edit_white.png');
     }
+  }
+  ::v-deep .el-form .el-form-item__error {
+    top: 21%;
+    right: unset;
+    left: 68% !important;
+  }
+  ::v-deep .el-form .el-form-item {
+    margin-bottom: 0px;
   }
 }
 </style>

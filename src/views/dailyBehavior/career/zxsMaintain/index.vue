@@ -108,24 +108,29 @@
           <div class="baseInfo">
             <div class="information">
               <div class="picture" style="width: 30%">
-                <!-- <el-upload
+                <el-upload
                   class="avatar-uploader"
                   action="#"
-                  :file-list="ele.fileList"
+                  :file-list="basicInfo.fileList"
                   :show-file-list="false"
                   :on-change="
                     (item, item1) => {
-                      change(item, item1, ind);
+                      change(item, item1);
                     }
                   "
                   :auto-upload="false"
                   ref="upload"
-                > -->
-                <div style="margin-bottom: 20px">
-                  <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </div>
-                <!-- </el-upload> -->
+                  disabled
+                >
+                  <div style="margin-bottom: 20px">
+                    <img
+                      v-if="basicInfo.imageUrl"
+                      :src="basicInfo.imageUrl"
+                      class="avatar"
+                    />
+                    <span v-else class="avatar-uploader-icon">暂无图片</span>
+                  </div>
+                </el-upload>
                 <div class="title">咨询师：{{ basicInfo.xm }}</div>
                 <div class="post">{{ basicInfo.zcmc }}</div>
               </div>
@@ -185,13 +190,17 @@
                     :show-file-list="false"
                     :on-change="
                       (item, item1) => {
-                        change(item, item1, ind);
+                        change(item, item1);
                       }
                     "
                     :auto-upload="false"
                     ref="upload"
                   >
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                    <img
+                      v-if="form.imageUrl"
+                      :src="form.imageUrl"
+                      class="avatar"
+                    />
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                   </el-upload>
                   <div class="title">
@@ -330,16 +339,8 @@ export default {
       leng: 0,
       tableData: [],
       form: {
-        cyrList: [
-          {
-            fileList: [], //文件
-            cyrJj: "", //简介
-            cyrMc: "", //名称
-            cyrGh: "", //工号
-            acceptVlaue: "",
-            imageUrl: "",
-          },
-        ],
+        fileList: [], //文件
+        imageUrl: "",
       },
       queryParams: {
         pageNum: 1,
@@ -374,29 +375,28 @@ export default {
   },
 
   methods: {
-    change(file, fileList, ind) {
-      //   //因为上传覆盖，直接置空
-      //   this.form.cyrList[ind].fileList = [];
-      //   const index = file.name.lastIndexOf(".");
-      //   const ext = file.name.substr(index + 1);
-      //   let uid = file.uid;
-      //   let idx = fileList.findIndex((item) => item.uid === uid);
-      //   if ("jpe, jpeg, jpg, png".indexOf(ext) == -1) {
-      //     this.$message.error("请上传图片格式");
-      //     fileList.splice(idx, 1);
-      //   } else if (Number(file.size / 1024 / 1024) > 2) {
-      //     this.$message.error("图片大小不超过2M,上传失败");
-      //     fileList.splice(idx, 1);
-      //   } else {
-      //     //让前端图片回显
-      //     let binaryData = [];
-      //     binaryData.push(file.raw);
-      //     this.form.cyrList[ind].imageUrl = window.URL.createObjectURL(
-      //       new Blob(binaryData)
-      //     );
-      //   }
-      //   //取当前的file存入filelist
-      //   this.form.cyrList[ind].fileList.push(file);
+    change(file, fileList) {
+      //因为上传覆盖，直接置空
+      this.form.fileList = [];
+      const index = file.name.lastIndexOf(".");
+      const ext = file.name.substr(index + 1);
+      let uid = file.uid;
+      let idx = fileList.findIndex((item) => item.uid === uid);
+      if ("jpe, jpeg, jpg, png".indexOf(ext) == -1) {
+        this.$message.error("请上传图片格式");
+        fileList.splice(idx, 1);
+      } else if (Number(file.size / 1024 / 1024) > 2) {
+        this.$message.error("图片大小不超过2M,上传失败");
+        fileList.splice(idx, 1);
+      } else {
+        console.log(11111111);
+        //让前端图片回显
+        let binaryData = [];
+        binaryData.push(file.raw);
+        this.form.imageUrl = window.URL.createObjectURL(new Blob(binaryData));
+      }
+      //取当前的file存入filelist
+      this.form.fileList.push(file);
     },
     xinzeng() {
       this.addModel = true;
@@ -475,6 +475,21 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
+        // let formData = new FormData();
+        // formData.append("xm", this.form.xm);
+        // formData.append("gh", this.form.gh[1]);
+        // formData.append("grxx", this.form.grxx);
+        // formData.append("zxfx", this.form.zxfx);
+        // formData.append("yddh", this.form.yddh);
+        // formData.append("zcmc", this.form.zcmc ? this.form.zcmc : "");
+        // if (this.form.fileList.length > 0) {
+        //   formData.append(
+        //     "file",
+        //     this.form.fileList && this.form.fileList[0].raw
+        //       ? this.form.fileList[0].raw
+        //       : ""
+        //   );
+        // }
         var params = {
           xm: this.form.xm,
           gh: this.form.gh[1],
@@ -809,6 +824,7 @@ export default {
     line-height: 158px;
     text-align: center;
   }
+
   .avatar {
     border-radius: 50%;
     width: 158px;

@@ -173,7 +173,7 @@
                 size="small"
                 @click="hadleDetail(scope.row)"
               >
-                <i class="scopeIncon handledie"></i>
+                <i class="scopeIncon handleEdit"></i>
                 <span class="handleName">登记</span>
               </el-button>
             </template>
@@ -527,6 +527,9 @@ export default {
   }
   .handledie {
     background: url("~@/assets/images/details.png");
+  }
+  .handleEdit {
+    background: url("~@/assets/images/edit.png");
   }
   .handleName {
     font-weight: 400;

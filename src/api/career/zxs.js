@@ -12,7 +12,7 @@ export function queryList(query) {
 //新增修改
 export function insert(query) {
   return request({
-    url: '/syfzZxsb/insert',
+    url: '/syfzZxsb/importInsert',
     method: 'post',
    
     data: query

@@ -72,7 +72,7 @@
           >
           </el-table-column>
           <el-table-column
-            prop="grxx"
+            prop="cs"
             label="次数"
             min-width="200px"
             :show-overflow-tooltip="true"

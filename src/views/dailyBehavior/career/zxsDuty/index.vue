@@ -447,7 +447,7 @@ export default {
 
   methods: {
     closeAdd() {
-      this.$ref.form.resetFields();
+      this.$refs.form.resetFields();
       this.form = {
         ghList: [{ xm: "", dwmc: "", zcmc: "", yddh: "" }],
         xnxq: [],

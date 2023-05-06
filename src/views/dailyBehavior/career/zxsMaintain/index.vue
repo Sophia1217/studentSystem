@@ -177,6 +177,7 @@
         :visible.sync="addModel"
         width="50%"
         :close-on-click-modal="false"
+        @close="closeAdd()"
       >
         <template>
           <el-form :model="form" :rules="rules" ref="form">
@@ -308,6 +309,7 @@ import {
 } from "@/api/career/zxs";
 import { getXmXgh } from "@/api/assistantWork/homeSchool";
 import { getToken } from "@/utils/auth";
+import { Exportwj } from "@/api/assistantWork/classEvent";
 import { getCodeInfoByEnglish } from "@/api/student/fieldSettings";
 export default {
   name: "manStudent",
@@ -430,11 +432,26 @@ export default {
         });
       }
     },
-    hadleDetail(row) {
+    async hadleDetail(row) {
       this.detailModal = true;
-      detail({ id: row.id }).then((res) => {
+      await detail({ id: row.id }).then((res) => {
         this.basicInfo = res.data;
       });
+
+      if (this.basicInfo.fileList && this.basicInfo.fileList.length > 0) {
+        var data;
+        Exportwj({ id: this.basicInfo.fileList[0].id.toString() }).then(
+          (res) => {
+            // console.log("res", res);
+            data = new File([res], this.basicInfo.fileList[0].fileName, {
+              type: "application/png",
+              lastModified: Date.now(),
+            });
+            this.basicInfo.fileList.push(data);
+            this.basicInfo.imageUrl = URL.createObjectURL(res);
+          }
+        );
+      }
     },
     changeXm() {},
     del() {
@@ -475,30 +492,30 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        // let formData = new FormData();
-        // formData.append("xm", this.form.xm);
-        // formData.append("gh", this.form.gh[1]);
-        // formData.append("grxx", this.form.grxx);
-        // formData.append("zxfx", this.form.zxfx);
-        // formData.append("yddh", this.form.yddh);
-        // formData.append("zcmc", this.form.zcmc ? this.form.zcmc : "");
-        // if (this.form.fileList.length > 0) {
-        //   formData.append(
-        //     "file",
-        //     this.form.fileList && this.form.fileList[0].raw
-        //       ? this.form.fileList[0].raw
-        //       : ""
-        //   );
-        // }
-        var params = {
-          xm: this.form.xm,
-          gh: this.form.gh[1],
-          grxx: this.form.grxx,
-          zxfx: this.form.zxfx,
-          yddh: this.form.yddh,
-          zcmc: this.form.zcmc ? this.form.zcmc : "",
-        };
-        insert(params).then((res) => {
+        let formData = new FormData();
+        formData.append("xm", this.form.xm);
+        formData.append("gh", this.form.gh[1]);
+        formData.append("grxx", this.form.grxx);
+        formData.append("zxfx", this.form.zxfx);
+        formData.append("yddh", this.form.yddh);
+        formData.append("zcmc", this.form.zcmc ? this.form.zcmc : "");
+        if (this.form.fileList.length > 0) {
+          formData.append(
+            "file",
+            this.form.fileList && this.form.fileList[0].raw
+              ? this.form.fileList[0].raw
+              : ""
+          );
+        }
+        // var params = {
+        //   xm: this.form.xm,
+        //   gh: this.form.gh[1],
+        //   grxx: this.form.grxx,
+        //   zxfx: this.form.zxfx,
+        //   yddh: this.form.yddh,
+        //   zcmc: this.form.zcmc ? this.form.zcmc : "",
+        // };
+        insert(formData).then((res) => {
           this.$message.success("新增成功");
           this.addModel = false;
           this.handleSearch();
@@ -583,8 +600,13 @@ export default {
         });
       }
     },
+    closeAdd() {
+      this.$refs.form.resetFields();
+      this.form.fileList = [];
+      console.log(this.form);
+      // this.form.imageUrl = "";
+    },
     selectXm() {
-      console.log(this.form.xm);
       let gh = this.form.xm.match(/\(([^)]*)\)/);
       this.$set(this.form, "gh", gh);
       queryTeaInfoByGh({ gh: gh[1] }).then((res) => {

@@ -407,14 +407,16 @@ export default {
     },
     hadleDetail(row) {
       this.$router.push({
-        path: "/dailyBehavior/career/bookConfirmDetail",
+        path: "/dailyBehavior/career/dengjiTable",
         query: {
           xh: row.xh,
           id: row.id,
-          isEdit: 2,
-          taskId: row.taskId,
-          processid: row.processid,
-          status: row.status,
+          xxyyId: row.xxyyId,
+          yyrq: row.yyrq,
+          yysj: row.yysj,
+          xn: this.queryParams.xn,
+          xq: this.queryParams.xqm,
+          isEdit: 1,
         },
       });
     },

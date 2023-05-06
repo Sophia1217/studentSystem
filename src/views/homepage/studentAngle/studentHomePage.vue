@@ -418,6 +418,7 @@
 <script>
 import TopTitle from "@/components/TopTitle/index.vue";
 import { queryXjydAuth } from "@/api/common/liucheng";
+import { querySfsbys } from "@/api/dailyBehavior/graduationIdt";
 import { xhQuery } from "@/api/dailyBehavior/lskn";
 export default {
   name: "studentHomePage", // 学生视角首页内容
@@ -529,8 +530,11 @@ export default {
       //     path: "/graduateIdtYjs",
       //   });
       // }
-      this.$router.push({
-        path: "/graduateIdtList",
+
+      querySfsbys().then((res) => {
+        this.$router.push({
+          path: "/graduateIdtList",
+        });
       });
     },
     jiangzhuClick() {

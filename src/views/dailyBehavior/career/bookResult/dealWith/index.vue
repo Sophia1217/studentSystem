@@ -416,7 +416,14 @@ export default {
       this.$router.push({
         path: "/dailyBehavior/career/dengjiTable",
         query: {
-          id: row.xxyyId,
+          xh: row.xh,
+          id: row.id,
+          xxyyId: row.xxyyId,
+          yyrq: row.yyrq,
+          yysj: row.yysj,
+          xn: this.queryParams.xn,
+          xq: this.queryParams.xqm,
+          isEdit: 2,
         },
       });
     },

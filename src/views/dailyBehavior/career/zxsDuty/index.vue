@@ -240,37 +240,37 @@
                       
                     </template> -->
                   </el-table-column>
-                  <el-table-column prop="Mon" label="星期一" width="180">
+                  <el-table-column prop="Mon" label="星期一" width="80">
                     <template slot-scope="scope">
                       <el-checkbox v-model="scope.row.Mon" size="large" />
                     </template>
                   </el-table-column>
-                  <el-table-column prop="Tues" label="星期二" width="180">
+                  <el-table-column prop="Tues" label="星期二" width="80">
                     <template slot-scope="scope">
                       <el-checkbox v-model="scope.row.Tues" size="large" />
                     </template>
                   </el-table-column>
-                  <el-table-column prop="Wed" label="星期三" width="180">
+                  <el-table-column prop="Wed" label="星期三" width="80">
                     <template slot-scope="scope">
                       <el-checkbox v-model="scope.row.Wed" size="large" />
                     </template>
                   </el-table-column>
-                  <el-table-column prop="Thur" label="星期四" width="180">
+                  <el-table-column prop="Thur" label="星期四" width="80">
                     <template slot-scope="scope">
                       <el-checkbox v-model="scope.row.Thur" size="large" />
                     </template>
                   </el-table-column>
-                  <el-table-column prop="Fri" label="星期五" width="180">
+                  <el-table-column prop="Fri" label="星期五" width="80">
                     <template slot-scope="scope">
                       <el-checkbox v-model="scope.row.Fri" size="large" />
                     </template>
                   </el-table-column>
-                  <el-table-column prop="Sat" label="星期六" width="180">
+                  <el-table-column prop="Sat" label="星期六" width="80">
                     <template slot-scope="scope">
                       <el-checkbox v-model="scope.row.Sat" size="large" />
                     </template>
                   </el-table-column>
-                  <el-table-column prop="Sun" label="星期日" width="180">
+                  <el-table-column prop="Sun" label="星期日" width="80">
                     <template slot-scope="scope">
                       <el-checkbox v-model="scope.row.Sun" size="large" />
                     </template>

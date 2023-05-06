@@ -351,30 +351,7 @@
               :readonly="isEdit != 1"
             />
           </div>
-          <div class="title">班组鉴定</div>
-          <div class="content">
-            <el-input
-              type="textarea"
-              :rows="5"
-              maxlength="500"
-              show-word-limit
-              v-model="detailInfoData.bzjd"
-              placeholder="班主任审核时需要填写"
-              :readonly="flag != 1 || isEdit != 2"
-            />
-          </div>
-          <div class="title">院系党组织意见</div>
-          <div class="content">
-            <el-input
-              type="textarea"
-              :rows="5"
-              maxlength="500"
-              show-word-limit
-              v-model="detailInfoData.ydzzyj"
-              placeholder="院系审核时需要填写"
-              :readonly="flag != 2 || isEdit != 2"
-            />
-          </div>
+
           <div class="title">毕业实习单位和主要内容</div>
           <div class="content">
             <el-input
@@ -428,6 +405,30 @@
               show-word-limit
               v-model="detailInfoData.gzyy"
               :readonly="isEdit != 1"
+            />
+          </div>
+          <div class="title">班组鉴定</div>
+          <div class="content">
+            <el-input
+              type="textarea"
+              :rows="5"
+              maxlength="500"
+              show-word-limit
+              v-model="detailInfoData.bzjd"
+              placeholder="班主任审核时需要填写"
+              :readonly="flag != 1 || isEdit != 2"
+            />
+          </div>
+          <div class="title">院系党组织意见</div>
+          <div class="content">
+            <el-input
+              type="textarea"
+              :rows="5"
+              maxlength="500"
+              show-word-limit
+              v-model="detailInfoData.ydzzyj"
+              placeholder="院系审核时需要填写"
+              :readonly="flag != 2 || isEdit != 2"
             />
           </div>
         </div>

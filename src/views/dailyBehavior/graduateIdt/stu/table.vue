@@ -347,7 +347,7 @@
                 <el-input
                   type="textarea"
                   :rows="3"
-                  maxlength="200"
+                  maxlength="300"
                   show-word-limit
                   v-model="detailInfoData.jtcyxq"
                   :readonly="isEdit == 2"
@@ -362,7 +362,7 @@
                 <el-input
                   type="textarea"
                   :rows="3"
-                  maxlength="200"
+                  maxlength="300"
                   show-word-limit
                   v-model="detailInfoData.jtcyzkxq"
                   :readonly="isEdit == 2"
@@ -382,37 +382,14 @@
                 />
               </div>
             </el-form-item>
-            <div class="title">班组鉴定</div>
-            <div class="content">
-              <el-input
-                type="textarea"
-                :rows="5"
-                maxlength="500"
-                show-word-limit
-                v-model="detailInfoData.bzjd"
-                placeholder="班主任审核时需要填写"
-                readonly
-              />
-            </div>
-            <div class="title">院系党组织意见</div>
-            <div class="content">
-              <el-input
-                type="textarea"
-                :rows="5"
-                maxlength="500"
-                show-word-limit
-                v-model="detailInfoData.ydzzyj"
-                placeholder="院系审核时需要填写"
-                readonly
-              />
-            </div>
+
             <el-form-item :rules="rules.blank" prop="xxdwxq">
               <div class="title">毕业实习单位和主要内容</div>
               <div class="content">
                 <el-input
                   type="textarea"
                   :rows="3"
-                  maxlength="200"
+                  maxlength="300"
                   show-word-limit
                   v-model="detailInfoData.xxdwxq"
                   :readonly="isEdit == 2"
@@ -471,6 +448,30 @@
                 />
               </div>
             </el-form-item>
+            <div class="title">班组鉴定</div>
+            <div class="content">
+              <el-input
+                type="textarea"
+                :rows="5"
+                maxlength="500"
+                show-word-limit
+                v-model="detailInfoData.bzjd"
+                placeholder="班主任审核时需要填写"
+                readonly
+              />
+            </div>
+            <div class="title">院系党组织意见</div>
+            <div class="content">
+              <el-input
+                type="textarea"
+                :rows="5"
+                maxlength="500"
+                show-word-limit
+                v-model="detailInfoData.ydzzyj"
+                placeholder="院系审核时需要填写"
+                readonly
+              />
+            </div>
           </div>
           <div style="padding: 30px"></div>
         </div>

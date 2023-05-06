@@ -196,3 +196,11 @@ export function querybyjdsqList(query) {
     data: query
   })
 }
+//是否是毕业生
+export function querySfsbys(query) {
+  return request({
+    url: '/rcswByjd/querySfsbys',
+    method: 'post',
+    data: query
+  })
+}

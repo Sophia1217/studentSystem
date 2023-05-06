@@ -417,7 +417,7 @@ export default {
         kcscList: [],
         xn: "",
         xqm: "",
-        zgzt: "",
+        zgzt: "0",
         shsjStart: "",
         shsjEnd: "",
         pageNum: this.queryParams.pageNum,

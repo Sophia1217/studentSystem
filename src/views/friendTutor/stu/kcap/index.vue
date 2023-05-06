@@ -38,7 +38,17 @@
           <el-table-column prop="kksj" label="开课时间"> </el-table-column>
           <el-table-column prop="kkcs" label="次数"> </el-table-column>
           <el-table-column prop="kjnrs" label="可接纳人数"> </el-table-column>
-          <el-table-column prop="ykrs" label="约课人员"> </el-table-column>
+          <el-table-column prop="ykrs" label="约课人员">
+            <template slot-scope="scope">
+              <el-button
+                type="text"
+                size="small"
+                @click="thmodal(scope.row, 1)"
+              >
+                <span>{{ scope.row.tkrs }}</span>
+              </el-button>
+            </template>
+          </el-table-column>
           <el-table-column prop="tkrs" label="退课人员">
             <template slot-scope="scope">
               <el-button

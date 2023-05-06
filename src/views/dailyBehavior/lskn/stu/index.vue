@@ -140,10 +140,11 @@
                     :prop="'table.' + scope.$index + '.xn'"
                     :rules="rules.xn"
                   >
-                    <span>{{ scope.row.xn }}</span>
-                    <!-- <el-select
+                    <!-- <span>{{ scope.row.xn }}</span> -->
+                    <el-select
                       v-model="scope.row.xn"
                       collapse-tags
+                      :disabled="true"
                       placeholder="请选择学年"
                       size="small"
                     >
@@ -153,7 +154,7 @@
                         :label="item"
                         :value="item"
                       ></el-option>
-                    </el-select> -->
+                    </el-select>
                   </el-form-item>
                 </template>
               </el-table-column>
@@ -163,8 +164,12 @@
                     :prop="'table.' + scope.$index + '.xq'"
                     :rules="rules.xq"
                   >
-                    <span>{{ scope.row.xq }}</span>
-                    <!-- <el-select v-model="scope.row.xq" placeholder="请选择">
+                    <!-- <span>{{ scope.row.xq }}</span> -->
+                    <el-select
+                      v-model="scope.row.xq"
+                      placeholder="请选择"
+                      :disabled="true"
+                    >
                       <el-option
                         v-for="item in dmxqm"
                         :key="item.value"
@@ -172,7 +177,7 @@
                         :value="item.dm"
                       >
                       </el-option>
-                    </el-select> -->
+                    </el-select>
                   </el-form-item>
                 </template>
               </el-table-column>
@@ -824,9 +829,7 @@ export default {
         this.$message.error("请完善表单相关信息！");
         return;
       } else {
-        console.log("this.fileListAdd", this.fileListAdd);
         var data = this.formEdit;
-        console.log("data", data);
         let formData = new FormData();
         formData.append("sqje", data.table[0].sqje);
         formData.append("sqly", data.sqly);
@@ -859,7 +862,6 @@ export default {
           return;
         } else {
           var data = this.formAdd;
-          console.log("data", data);
           let formData = new FormData();
           formData.append("sqje", data.table[0].sqje);
           formData.append("sqly", data.sqly);
@@ -896,6 +898,7 @@ export default {
         orderPx: this.queryParams.orderPx ? this.queryParams.orderPx : "",
       };
       queryXnXQ().then((res) => {
+        console.log("res", res);
         this.XnXQ = res.data ? res.data[0] : {};
       });
       query(data).then((res) => {

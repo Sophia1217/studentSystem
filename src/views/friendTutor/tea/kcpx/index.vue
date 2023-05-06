@@ -118,7 +118,7 @@
               v-for="(item, index) in allXn"
               :key="index"
               :label="item.mc"
-              :value="item.dm"
+              :value="item.mc"
             ></el-option>
           </el-select>
           <span>学年</span>

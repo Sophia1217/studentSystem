@@ -95,7 +95,7 @@
                 label-width="42%"
               >
                 <div class="sqList">
-                  <span> {{ formAdd.lb }}</span>
+                  <span> {{ formAdd.lb ? "校级" : "院级" }}</span>
                 </div>
               </el-form-item>
             </el-col>

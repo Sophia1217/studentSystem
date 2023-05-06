@@ -553,7 +553,7 @@ export default {
     },
     mbDown1() {
       mbDown().then((res) => {
-        this.downloadFn(res, "贷款结果模板下载", "xlsx");
+        this.downloadFn(res, "解除处分结果模板下载", "xlsx");
       });
     },
     // 查询学院

@@ -343,7 +343,6 @@ export default {
         statusList: [],
       },
       exportParams: {},
-      leng: 0,
       tableData: [],
       allDwh: [],
       ssxxOps: [],
@@ -366,7 +365,6 @@ export default {
         isIndeterminate: true,
       },
       multipleSelection: [],
-      multipleSelection1: "",
       jjModal: false,
       jjly: "",
       dqXnxq: [],
@@ -377,7 +375,6 @@ export default {
         children: "dataCodeCascadingList", //匹配响应数据中的children }
       },
       options: [],
-      formEdit: {},
       dmxbmOPs: {
         // 性别：
         checkAll: false,

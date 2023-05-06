@@ -524,6 +524,7 @@ import {
   updateQgzxGw,
   chbyId,
 } from "@/api/stuPunish/nichufen";
+import { getEndRole } from "@/api/common/liucheng";
 import { queryKnssqxsjbxx } from "@/api/familyDifficulties/stu";
 import { getBJ, getZY } from "@/api/student/index";
 import { getCollege } from "@/api/class/maintenanceClass";
@@ -855,30 +856,53 @@ export default {
       this.queryParams.orderPx = column.order === "descending" ? "1" : "0"; // 0是asc升序，1是desc降序
       this.handleSearch();
     },
-    chehui() {
+    async chehui() {
       if (this.delArr && this.delArr.length > 0) {
-        var flag = 1;
+        var flag = 1,
+          end = 1,
+          getRole = []; //流程最后一级角色
         if (this.delArr.length > 1) {
           this.$message.error("请选择单条数据！");
         } else {
-          for (let index = 0; index < this.delArr.length; index++) {
-            if (
-              this.multipleSelection[index].status !== "10" &&
-              this.multipleSelection[index].status !== "09"
-            ) {
-              this.$message.error("请选择已通过或拒绝状态数据！");
-              flag = 2;
+          //估计要用await
+          let resdata = await getEndRole({
+            processId: this.multipleSelection[0].processId,
+          });
+
+          if (resdata.errcode == "00") {
+            getRole = resdata.data;
+            // console.log("getRole", getRole);
+          }
+          //判断当前登录角色是不是流程最后一级
+          for (let j = 0; j < getRole.length; j++) {
+            if (getRole[j] == this.$store.getters.roleId) {
+              end = 2;
               break;
             }
           }
-          if (flag == 1) {
-            if (this.multipleSelection[0].status == "10") {
-              this.statusName = "拒绝";
-            } else {
-              this.statusName = "已通过";
+          //流程最后一级
+          if (end == 2) {
+            for (let index = 0; index < this.delArr.length; index++) {
+              if (
+                this.multipleSelection[index].status !== "10" &&
+                this.multipleSelection[index].status !== "09"
+              ) {
+                this.$message.error("请选择已通过或拒绝状态数据！");
+                flag = 2;
+                break;
+              }
             }
-            this.chehuily = "";
-            this.chehuiModal = true;
+            if (flag == 1) {
+              if (this.multipleSelection[0].status == "10") {
+                this.statusName = "拒绝";
+              } else {
+                this.statusName = "已通过";
+              }
+              this.chehuily = "";
+              this.chehuiModal = true;
+            }
+          } else {
+            this.$message.error("当前不是最后一级，不能撤回！");
           }
         }
       } else {

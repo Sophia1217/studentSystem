@@ -285,22 +285,10 @@ export default {
   data() {
     return {
       delArr: [],
-      subArr: [],
       title: "",
-      // // 总条数
-      // 批量删除确定框弹出
       showDelete: false,
-      // 详情框显示
-      open: false,
-
-      // // 查询参数
-
-      searchVal: "",
-      select: "",
-      isMore: false,
       lctModal: false,
       ztStatus: [], //状态
-      status: [],
       tableDataLi: [],
       tableDataLiu: [],
       multipleSelection: [],
@@ -341,7 +329,6 @@ export default {
       },
       options: [],
       fileList: [],
-      fileListAdd: [],
       routeTitle: "",
       updateCsd: "",
       rules: {
@@ -415,9 +402,6 @@ export default {
         }
       });
     },
-    selectChange() {
-      this.searchVal = "";
-    },
     //获取数据列表
     getList() {
       query()
@@ -431,20 +415,9 @@ export default {
     delCancel() {
       this.showDelete = false;
     },
-    // 详情对话框关闭按钮
-    cancel() {
-      this.open = false;
-    },
-
-    // 点击更多
-    handleMore() {
-      this.isMore = !this.isMore;
-    },
-
     // 列表多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      this.subArr = val.map((item) => item.id);
       this.delArr = val.map((item) => item.id);
     },
     //批量删除
@@ -539,16 +512,6 @@ export default {
       // console.log("row", row);
       this.formAddLi = row;
     },
-    EditStatus() {
-      this.isEdit = 1;
-      this.getAllld();
-    },
-    //详情编辑
-    editCance() {
-      this.editModal = false;
-      this.isEdit = 0;
-    },
-
     getLocationjl() {
       getLocationjl().then((res) => {
         this.options = res.data;

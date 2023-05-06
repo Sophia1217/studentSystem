@@ -66,3 +66,13 @@ export function chbyId(query) {
     data: query
   })
 }
+//教师端 - 返回当前流程最后一级角色
+export function getEndRole(query) {
+  return request({
+    url: '/flowable/getEndRole',
+    method: 'post',
+    data: query
+  })
+}
+
+

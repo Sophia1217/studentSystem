@@ -395,12 +395,7 @@ export default {
       },
       options: [],
       statusName: "",
-      formSet: {
-        pyccmList: [],
-        sfzxList: [],
-        ssnjList: [],
-        xxxsmList: [],
-      },
+      formSet: { id: "" },
       pyccOptions: [],
       allNj: [], //年级下拉
       xxxsOps: [],
@@ -689,21 +684,30 @@ export default {
       //设置详情
       setYtxxsDetail(data).then((res) => {
         this.setModal = true;
-        this.formSet = res.data;
+        if (res.data == null) {
+          this.$set(this.formSet, "pyccmList", []);
+          this.$set(this.formSet, "ssnjList", []);
+          this.$set(this.formSet, "sfzxList", []);
+          this.$set(this.formSet, "xxxsmList", []);
+        } else {
+          this.formSet = res.data;
+          console.log("this.formSet.id", this.formSet.id);
+        }
       });
     },
     chConfirm() {
       if (!this.checkFormAdd()) {
         this.$message.error("请完善表单信息！");
       } else {
-        var aa = [];
-        console.log(this.formSet.pyccmList, aa.join(","));
+        console.log("this.formSet.id", this.formSet.id);
+        // var aa = [];
+        // console.log(this.formSet.pyccmList, aa.join(","));
         var data = {
           pyccm: this.formSet.pyccmList.join(","), //数组拼字符串
           ssnj: this.formSet.ssnjList.join(","),
           sfzx: this.formSet.sfzxList.join(","),
           xxxsm: this.formSet.xxxsmList.join(","),
-          // id: "",
+          id: this.formSet.id || "",
           xn: this.queryParams.xn,
           xqm: this.queryParams.xqm,
         };

@@ -141,7 +141,7 @@
               <el-input
                 v-model="formAddLiu.lxyy"
                 type="textarea"
-                maxlength="2000"
+                maxlength="500"
                 placeholder="请输入"
               ></el-input>
             </el-form-item>
@@ -160,7 +160,6 @@
       :visible.sync="addModalLi"
       width="40%"
       :close-on-click-modal="false"
-      @close="emptyAdd()"
     >
       <el-form
         ref="formAddLi"
@@ -210,7 +209,7 @@
                 ></el-cascader>
                 <el-input
                   v-model="formAddLi.lxqxXxdz"
-                  maxlength="255"
+                  maxlength="200"
                   placeholder="请输入详细地址"
                 />
               </div>
@@ -230,7 +229,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="关系" prop="gx" :rules="rules.common">
-              <el-input v-model="formAddLi.gx" maxlength="5" />
+              <el-input v-model="formAddLi.gx" maxlength="10" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -240,7 +239,7 @@
               <el-input
                 v-model="formAddLi.lxyy"
                 type="textarea"
-                maxlength="2000"
+                maxlength="500"
                 placeholder="请输入"
               ></el-input>
             </el-form-item>
@@ -344,6 +343,7 @@ export default {
       fileList: [],
       fileListAdd: [],
       routeTitle: "",
+      updateCsd: "",
       rules: {
         common: [
           {
@@ -389,11 +389,6 @@ export default {
         return false;
       }
       return true;
-    },
-    emptyAdd() {
-      this.$nextTick(() => {
-        this.$refs.formAddLi.resetFields();
-      });
     },
     handleCloseLct() {
       this.lctModal = false;
@@ -462,22 +457,6 @@ export default {
         })
         .catch((err) => {});
     },
-    /**批量删除按钮*/
-    handleDelete() {
-      var falg = 1;
-      for (var i = 0; i < this.multipleSelection.length; i++) {
-        if (this.multipleSelection[i].status !== "01") falg = 2;
-      }
-      if (falg == 1) {
-        if (this.delArr && this.delArr.length > 0) {
-          this.showDelete = true;
-        } else {
-          this.$message.error("请先勾选数据");
-        }
-      } else {
-        this.$message.error("存在非草稿状态数据，不可以删除");
-      }
-    },
     //假期留校
     lxsq() {
       this.addModalLiu = true;
@@ -522,6 +501,7 @@ export default {
     //离校登记
     lxdj() {
       this.addModalLi = true;
+      this.formAddLi = {};
     },
     addCanceLi() {
       this.addModalLi = false;
@@ -540,7 +520,7 @@ export default {
           lxyy: this.formAddLi.lxyy,
           qxlx: this.formAddLi.qxlx,
           lxqxXxdz: this.formAddLi.lxqxXxdz,
-          lxqxSheng: this.formAddLi.lxqxSheng,
+          lxqxSheng: this.updateCsd ? this.updateCsd : this.formAddLi.lxqxSheng,
         };
         editLi(data).then((res) => {
           if (res.errcode == "00") {
@@ -568,33 +548,19 @@ export default {
       this.editModal = false;
       this.isEdit = 0;
     },
-    // 搜索查询按钮
-    searchClick() {
-      this.queryParams.pageNum = 1;
-      //日期
-      let rqs,
-        rqe = "";
-      if (this.datePicker && this.datePicker.length > 0) {
-        rqs = this.datePicker[0];
-        rqe = this.datePicker[1];
-      }
-      this.queryParams.sqsjStart = rqs;
-      this.queryParams.sqsjEnd = rqe;
-      this.queryParams.statusList = this.status;
-      this.getList(this.queryParams);
-    },
+
     getLocationjl() {
       getLocationjl().then((res) => {
         this.options = res.data;
       });
     },
     handleChangeJg(value) {
-      if (value.length == 1) {
-        this.formAddLi.lxqxSheng = value[0]; //若是简单下拉框，则绑定v-model就可以
-      } else if (value.length == 2) {
-        this.formAddLi.lxqxSheng = value[1];
+      if (value && value.length == 1) {
+        this.updateCsd = value[0]; //若是简单下拉框，则绑定v-model就可以
+      } else if (value && value.length == 2) {
+        this.updateCsd = value[1];
       } else {
-        this.formAddLi.lxqxSheng = value[2];
+        this.updateCsd = value[2];
       }
     },
   },

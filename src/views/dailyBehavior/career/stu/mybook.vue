@@ -147,6 +147,7 @@ export default {
       pf: "",
       pjyj: "",
       yyid: "",
+      id: "",
     };
   },
   mounted() {
@@ -157,7 +158,10 @@ export default {
   methods: {
     pingjia(row) {
       this.pingjiaModal = true;
-      this.yyid = row.id;
+      this.yyid = row.yyid;
+      this.id = row.id;
+      this.pf = "";
+      this.pjyj = "";
     },
     //提交评价
     pjConfirm() {
@@ -165,6 +169,7 @@ export default {
         pf: this.pf,
         pjyj: this.pjyj,
         yyid: this.yyid,
+        id: this.id,
       };
       if (!this.pf) {
         this.$message.error("请选择评分分数！");

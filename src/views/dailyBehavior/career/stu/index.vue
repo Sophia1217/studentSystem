@@ -253,6 +253,7 @@
 <script>
 import { edit, tj } from "@/api/dailyBehavior/xnxjStu";
 import { queryPbList, queryZxsPbxxYyzt } from "@/api/career/bookStu";
+import { detail } from "@/api/career/zxs";
 import lctCom from "../../../components/lct";
 import topTitle from "../../../components/topTitle";
 import {
@@ -326,11 +327,11 @@ export default {
     //预约
     showDetail(row) {
       this.editModal = true;
-      // detail({ id: row.id })
-      //   .then((res) => {
-      //     this.basicInfo = res.data;
-      //   })
-      //   .catch((err) => {});
+      detail({ id: row.zxsbId })
+        .then((res) => {
+          this.basicInfo = res.data;
+        })
+        .catch((err) => {});
       queryZxsPbxxYyzt({ gh: row.gh })
         .then((res) => {
           this.basicInfo.dutyData = res.data;
@@ -655,7 +656,8 @@ export default {
         .post {
           font-size: 16px;
           color: #1f1f1f;
-          line-height: 30px;
+          line-height: 28px;
+          margin-left: 15px;
         }
       }
       .itemtitle {

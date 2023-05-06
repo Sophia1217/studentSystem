@@ -68,6 +68,16 @@ export function queryYqrList(data) {
     data: data
   })
 }
+//撤销已确认
+export function chbyId(data) {
+  return request({
+    url: '/xsBysmd/deleteYqrList',
+    method: 'post',
+    data: data
+  })
+}
+
+
 
 
 

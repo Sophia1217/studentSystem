@@ -178,7 +178,9 @@
                 <div class="word">{{ basicInfo.grxx }}</div>
               </div>
             </div>
-            <div class="headline">排班信息</div>
+            <div style="margin-bottom: 10px; font-weight: 600; font-size: 16px">
+              排班信息
+            </div>
             <div>
               <el-table
                 :data="basicInfo.dutyData"

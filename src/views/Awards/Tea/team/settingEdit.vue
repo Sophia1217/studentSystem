@@ -778,19 +778,19 @@ export default {
       });
     },
     quxiao() {
-      if (!this.checkFormInner()) {
-        this.$message.error("请完善表单相关信息！");
-        return;
-      } else {
-        this.mxdxModal = false;
-      }
+      // if (!this.checkFormInner()) {
+      //   this.$message.error("请完善表单相关信息！");
+      //   return;
+      // } else {
+      this.mxdxModal = false;
+      // }
     },
     quxiao1() {
-      if (!this.checkFormInner()) {
-        this.$message.error("请完善表单相关信息！");
-        this.mxdxModal = true;
-      } else {
-      }
+      // if (!this.checkFormInner()) {
+      //   this.$message.error("请完善表单相关信息！");
+      //   this.mxdxModal = true;
+      // } else {
+      // }
     },
     pyccChange(e, row) {
       //这里处理选择本科还是研究生不同展示的逻辑

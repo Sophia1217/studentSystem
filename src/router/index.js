@@ -86,6 +86,12 @@ export const constantRoutes = [
     name: "studentHomePage",
     hidden: true,
   },
+  {
+    path: "/dataShow",
+    component: () => import("@/views/dataShow/mainPage.vue"),
+    name: "dataShow",
+    hidden: true,
+  },
 
   
   
